@@ -12,7 +12,7 @@
 
 	<div class="relative z-10 max-w-3xl">
 		{#if data?.title}
-			<h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl" class:text-white={data?.backgroundImage}>
+			<h1 class="text-4xl font-bold text-red-700 tracking-tight sm:text-5xl md:text-6xl" class:text-white={data?.backgroundImage}>
 				{data.title}
 			</h1>
 		{/if}
