@@ -23,15 +23,17 @@
 <div class="prose prose-lg mx-auto max-w-3xl px-6 py-12">
 	{#if data?.content || isEditable}
 		<EditableField
+			fieldKey="Text.content"
+			label="Текст"
 			value={String(data?.content ?? '')}
 			{isEditable}
 			multiline
 			onSave={(v) => saveField('content', v)}
 			class="block"
 		>
-			{#if data?.content}
-				{@html data.content}
-			{/if}
+			{#snippet children(displayValue)}
+				{@html displayValue}
+			{/snippet}
 		</EditableField>
 	{/if}
 </div>

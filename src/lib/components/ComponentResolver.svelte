@@ -3,6 +3,7 @@
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
 	import type { EditContext } from '$lib/utils/page-edit';
+	import EditModal from '$lib/components/EditModal.svelte';
 
 	// Template registries — each template exports its own component map
 	import * as TestTemplate from './templates/Test';
@@ -89,4 +90,9 @@
 
 {#if Footer && footerData}
 	<Footer data={footerData} />
+{/if}
+
+<!-- Глобальная модалка редактирования — одна на всю страницу -->
+{#if isEditable}
+	<EditModal />
 {/if}

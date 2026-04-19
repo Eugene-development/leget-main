@@ -31,35 +31,43 @@
 	<div class="relative z-10 max-w-3xl">
 		{#if data?.title || isEditable}
 			<EditableField
+				fieldKey="Hero.title"
+				label="Заголовок"
 				value={String(data?.title ?? '')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
 			>
-				<h1
-					class="text-4xl font-bold text-red-700 tracking-tight sm:text-5xl md:text-6xl"
-					class:text-white={data?.backgroundImage}
-				>
-					{data?.title ?? ''}
-				</h1>
+				{#snippet children(displayValue)}
+					<h1
+						class="text-4xl font-bold text-red-700 tracking-tight sm:text-5xl md:text-6xl"
+						class:text-white={data?.backgroundImage}
+					>
+						{displayValue}
+					</h1>
+				{/snippet}
 			</EditableField>
 		{/if}
 
 		{#if data?.subtitle || isEditable}
 			<EditableField
+				fieldKey="Hero.subtitle"
+				label="Подзаголовок"
 				value={String(data?.subtitle ?? '')}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('subtitle', v)}
 				class="mt-4 block"
 			>
-				<p
-					class="mt-4 text-lg sm:text-xl"
-					class:text-gray-200={data?.backgroundImage}
-					class:text-gray-600={!data?.backgroundImage}
-				>
-					{data?.subtitle ?? ''}
-				</p>
+				{#snippet children(displayValue)}
+					<p
+						class="mt-4 text-lg sm:text-xl"
+						class:text-gray-200={data?.backgroundImage}
+						class:text-gray-600={!data?.backgroundImage}
+					>
+						{displayValue}
+					</p>
+				{/snippet}
 			</EditableField>
 		{/if}
 	</div>
