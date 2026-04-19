@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ComponentResolver from '$lib/components/ComponentResolver.svelte';
-	import Header from '$lib/components/blocks/Header.svelte';
-	import Footer from '$lib/components/blocks/Footer.svelte';
+	import Header from '$lib/components/templates/Test/blocks/Header.svelte';
+	import Footer from '$lib/components/templates/Test/blocks/Footer.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

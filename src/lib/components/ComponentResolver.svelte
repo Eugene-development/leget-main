@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Hero from './blocks/Hero.svelte';
-	import Text from './blocks/Text.svelte';
+	import Hero from './templates/Test/blocks/Hero.svelte';
+	import Text from './templates/Test/blocks/Text.svelte';
 
 	let { components } = $props();
 
