@@ -9,6 +9,7 @@ const RENDER_PAGE_QUERY = `
 			site {
 				name
 				metaDescription
+				templateId
 				header { data }
 				footer { data }
 			}
@@ -22,6 +23,7 @@ interface RenderPageResponse {
 		site: {
 			name: string | null;
 			metaDescription: string | null;
+			templateId: number | null;
 			header: { data: Record<string, unknown> } | null;
 			footer: { data: Record<string, unknown> } | null;
 		};
