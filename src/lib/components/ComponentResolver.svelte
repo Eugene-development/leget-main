@@ -7,8 +7,8 @@
 
 	// Template registries — each template exports its own component map
 	import * as TestTemplate from './templates/Test';
-	// import * as Promo1Template from './templates/Promo-1';
-	// import * as Promo2Template from './templates/Promo-2';
+	import * as Promo1Template from './templates/Promo-1';
+	import * as Promo2Template from './templates/Promo-2';
 
 	type ComponentMap = Record<string, Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>>;
 
@@ -54,8 +54,8 @@
 	 */
 	function resolveTemplate(id: number | null): TemplateModule {
 		switch (id) {
-			// case 1: return Promo1Template as TemplateModule;
-			// case 2: return Promo2Template as TemplateModule;
+			case 2: return Promo1Template as unknown as TemplateModule;
+			case 3: return Promo2Template as unknown as TemplateModule;
 			default:
 				return TestTemplate as unknown as TemplateModule;
 		}
