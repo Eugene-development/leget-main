@@ -12,8 +12,16 @@
 		footer: { data: Record<string, unknown> } | null;
 	};
 
+	type PageComponent = {
+		type: string;
+		data: Record<string, unknown>;
+	};
+
 	const site = $derived(data.pageData?.site as SiteData | undefined);
 	const templateId = $derived(site?.templateId ?? null);
+	const pageSlug = $derived(data.pageData?.page?.slug ?? null);
+	const pageId = $derived(data.pageData?.page?.id ?? null);
+	const licenseId = $derived(data.pageData?.page?.licenseId ?? null);
 </script>
 
 <svelte:head>
@@ -27,7 +35,9 @@
 
 <ComponentResolver
 	{templateId}
+	slug={pageSlug}
 	headerData={site?.header?.data ?? null}
 	footerData={site?.footer?.data ?? null}
-	components={data.pageData?.page?.componentsData ?? []}
+	components={data.pageData?.page?.componentsData as PageComponent[] ?? []}
+	editContext={pageId && licenseId ? { pageId, licenseId } : null}
 />

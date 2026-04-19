@@ -13,7 +13,7 @@ const RENDER_PAGE_QUERY = `
 				header { data }
 				footer { data }
 			}
-			page { slug componentsData }
+			page { id licenseId slug componentsData }
 		}
 	}
 `;
@@ -28,6 +28,8 @@ interface RenderPageResponse {
 			footer: { data: Record<string, unknown> } | null;
 		};
 		page: {
+			id: string;
+			licenseId: string;
 			slug: string;
 			componentsData: unknown[];
 		};

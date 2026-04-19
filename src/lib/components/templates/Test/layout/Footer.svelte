@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 
@@ -11,13 +10,6 @@
 	const copyright = $derived(typeof data?.copyright === 'string' ? data.copyright : null);
 
 	let showLoginModal = $state(false);
-
-	// Initialise auth state once in the browser
-	$effect(() => {
-		if (browser) {
-			auth.init();
-		}
-	});
 
 	function handleAuthClick() {
 		if ($auth.isAuthenticated) {
