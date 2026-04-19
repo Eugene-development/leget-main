@@ -2,18 +2,7 @@
 
 declare global {
 	namespace App {
-		interface Locals {
-			pageData: {
-				site: {
-					name: string | null;
-					metaDescription: string | null;
-				};
-				page: {
-					slug: string;
-					componentsData: unknown[];
-				};
-			};
-		}
+		interface Locals {}
 	}
 }
 
