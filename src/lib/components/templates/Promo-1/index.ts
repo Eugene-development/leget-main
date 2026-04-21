@@ -2,9 +2,10 @@ import type { Component } from 'svelte';
 
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
-// Layout components (optional)
-export const Header: Component<{ data: Record<string, unknown> }> | undefined = undefined;
-export const Footer: Component<{ data: Record<string, unknown> }> | undefined = undefined;
+// Layout components
+import Header from './layout/Header.svelte';
+import Footer from './layout/Footer.svelte';
+export { Header, Footer };
 
 // Home page components
 import HomeHero     from './pages/home/Hero.svelte';

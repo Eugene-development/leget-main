@@ -77,8 +77,8 @@
 	const Footer = $derived(template.Footer ?? null);
 </script>
 
-{#if Header && headerData}
-	<Header data={headerData} />
+{#if Header}
+	<Header data={headerData ?? {}} />
 {/if}
 
 {#each components as element (element.type)}
@@ -88,8 +88,8 @@
 	{/if}
 {/each}
 
-{#if Footer && footerData}
-	<Footer data={footerData} />
+{#if Footer}
+	<Footer data={footerData ?? {}} />
 {/if}
 
 <!-- Глобальная модалка редактирования — одна на всю страницу -->
