@@ -25,9 +25,54 @@ import HomeBrands     from './pages/home/Brands.svelte';
 import AboutHero       from './pages/about/Hero.svelte';
 import AboutText       from './pages/about/Text.svelte';
 import AboutStatistics from './pages/about/Statistics.svelte';
+import AboutMission    from './pages/about/Mission.svelte';
+import AboutValues     from './pages/about/Values.svelte';
+import AboutWhyUs      from './pages/about/WhyUs.svelte';
+import AboutCTA        from './pages/about/AboutCTA.svelte';
 
 // Contact page components
 import ContactForm from './pages/contact/ContactForm.svelte';
+
+// Contacts page components
+import ContactsHero        from './pages/contacts/Hero.svelte';
+import ContactChannels     from './pages/contacts/ContactChannels.svelte';
+import ContactAddress      from './pages/contacts/ContactAddress.svelte';
+import ContactMessengers   from './pages/contacts/ContactMessengers.svelte';
+import ContactCTA          from './pages/contacts/ContactCTA.svelte';
+
+// Actions page components
+import ActionsHero           from './pages/actions/Hero.svelte';
+
+// Partnership page components
+import PartnershipHero        from './pages/partnership/Hero.svelte';
+import WhoWeInvite            from './pages/partnership/WhoWeInvite.svelte';
+import ForManufacturers       from './pages/partnership/ForManufacturers.svelte';
+import PartnershipBenefits    from './pages/partnership/Benefits.svelte';
+import HowToStart             from './pages/partnership/HowToStart.svelte';
+import PartnershipCTA         from './pages/partnership/PartnershipCTA.svelte';
+
+// Testimonials page components
+import TestimonialsHero       from './pages/testimonials/Hero.svelte';
+import TestimonialsGrid       from './pages/testimonials/TestimonialsGrid.svelte';
+
+// Installment page components
+import InstallmentHero         from './pages/installment/Hero.svelte';
+import InstallmentPlans        from './pages/installment/InstallmentPlans.svelte';
+import InstallmentRequirements from './pages/installment/InstallmentRequirements.svelte';
+import InstallmentSteps        from './pages/installment/InstallmentSteps.svelte';
+import InstallmentBanks        from './pages/installment/InstallmentBanks.svelte';
+import InstallmentFAQ          from './pages/installment/InstallmentFAQ.svelte';
+import InstallmentCTA          from './pages/installment/InstallmentCTA.svelte';
+
+// Guarantees page components
+import GuaranteesHero  from './pages/guarantees/Hero.svelte';
+import GuaranteeTerms  from './pages/guarantees/GuaranteeTerms.svelte';
+import WhatsCovered    from './pages/guarantees/WhatsCovered.svelte';
+import HowToApply      from './pages/guarantees/HowToApply.svelte';
+import GuaranteesCTA   from './pages/guarantees/GuaranteesCTA.svelte';import ActionsCards          from './pages/actions/ActionsCards.svelte';
+import ActionsCardsExtra     from './pages/actions/ActionsCardsExtra.svelte';
+import ActionsBanner         from './pages/actions/ActionsBanner.svelte';
+import ActionsCTA            from './pages/actions/ActionsCTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
@@ -49,8 +94,53 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		Hero:       AboutHero,
 		Text:       AboutText,
 		Statistics: AboutStatistics,
+		Mission:    AboutMission,
+		Values:     AboutValues,
+		WhyUs:      AboutWhyUs,
+		AboutCTA,
 	},
 	'/contact': {
 		ContactForm,
+	},
+	'/contacts': {
+		Hero:              ContactsHero,
+		ContactChannels,
+		ContactAddress,
+		ContactMessengers,
+		ContactCTA,
+	},
+	'/partnership': {
+		Hero:                 PartnershipHero,
+		WhoWeInvite,
+		ForManufacturers,
+		Benefits:             PartnershipBenefits,
+		HowToStart,
+		PartnershipCTA,
+	},
+	'/testimonials': {
+		Hero:             TestimonialsHero,
+		TestimonialsGrid,
+	},
+	'/installment': {
+		Hero:                    InstallmentHero,
+		InstallmentPlans,
+		InstallmentRequirements,
+		InstallmentSteps,
+		InstallmentBanks,
+		InstallmentFAQ,
+		InstallmentCTA,
+	},
+	'/guarantees': {
+		Hero:          GuaranteesHero,
+		GuaranteeTerms,
+		WhatsCovered,
+		HowToApply,
+		GuaranteesCTA,
+	},
+	'/actions': {		Hero:              ActionsHero,
+		ActionsCards,
+		ActionsCardsExtra,
+		ActionsBanner,
+		ActionsCTA,
 	},
 };

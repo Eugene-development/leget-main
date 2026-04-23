@@ -54,8 +54,8 @@
 	 */
 	function resolveTemplate(id: number | null): TemplateModule {
 		switch (id) {
-			case 2: return Promo1Template as unknown as TemplateModule;
-			case 3: return Promo2Template as unknown as TemplateModule;
+			case 1: return Promo1Template as unknown as TemplateModule;
+			case 2: return Promo2Template as unknown as TemplateModule;
 			default:
 				return TestTemplate as unknown as TemplateModule;
 		}
