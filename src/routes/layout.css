@@ -1,3 +1,121 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@theme {
+	/* Color Palette */
+	--color-primary: #2c2c2c;
+	--color-primary-light: #4a4a4a;
+	--color-secondary: #8b7355;
+	--color-secondary-light: #a89070;
+	--color-accent: #c4a87c;
+	--color-accent-light: #d4be9a;
+
+	--color-surface: #faf9f7;
+	--color-surface-warm: #f5f0eb;
+	--color-surface-card: #ffffff;
+	--color-surface-muted: #ede8e2;
+
+	--color-text-primary: #1a1a1a;
+	--color-text-secondary: #5c5c5c;
+	--color-text-muted: #9a9a9a;
+	--color-text-inverse: #ffffff;
+
+	--color-muted: var(--color-text-muted);
+	--color-inverse: var(--color-text-inverse);
+
+	--color-border-light: #e8e4de;
+	--color-border-medium: #d4cfc7;
+
+	/* Typography */
+	--font-heading: 'Cormorant Garamond', 'Georgia', serif;
+	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+	/* Spacing */
+	--spacing-section: 120px;
+	--spacing-section-sm: 100px;
+
+	/* Animations */
+	--animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	--animate-fade-in: fade-in 0.6s ease forwards;
+	--animate-slide-right: slide-right 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	--animate-scale-in: scale-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+	/* Shadows */
+	--shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.06);
+	--shadow-medium: 0 8px 40px rgba(0, 0, 0, 0.08);
+	--shadow-card: 0 2px 16px rgba(0, 0, 0, 0.04);
+	--shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@keyframes slide-right {
+	from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes scale-in {
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+/* Base Styles */
+html {
+	scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	font-family: var(--font-body);
+	color: var(--color-text-primary);
+	background-color: var(--color-surface);
+	line-height: 1.6;
+	overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-heading);
+	font-weight: 400;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-border-medium); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-secondary); }
+
+/* Selection */
+::selection {
+	background: var(--color-accent-light);
+	color: var(--color-text-primary);
+}
