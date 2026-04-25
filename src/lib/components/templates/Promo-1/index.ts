@@ -3,9 +3,10 @@ import type { Component } from 'svelte';
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
 // Layout components
+import Banner from './layout/Banner.svelte';
 import Header from './layout/Header.svelte';
 import Footer from './layout/Footer.svelte';
-export { Header, Footer };
+export { Banner, Header, Footer };
 
 // Home page components
 import HomeHero       from './pages/home/Hero.svelte';
@@ -34,26 +35,30 @@ import AboutCTA        from './pages/about/AboutCTA.svelte';
 import ContactForm from './pages/contact/ContactForm.svelte';
 
 // Contacts page components
-import ContactsHero        from './pages/contacts/Hero.svelte';
-import ContactChannels     from './pages/contacts/ContactChannels.svelte';
-import ContactAddress      from './pages/contacts/ContactAddress.svelte';
-import ContactMessengers   from './pages/contacts/ContactMessengers.svelte';
-import ContactCTA          from './pages/contacts/ContactCTA.svelte';
+import ContactsHero      from './pages/contacts/Hero.svelte';
+import ContactChannels   from './pages/contacts/ContactChannels.svelte';
+import ContactAddress    from './pages/contacts/ContactAddress.svelte';
+import ContactMessengers from './pages/contacts/ContactMessengers.svelte';
+import ContactCTA        from './pages/contacts/ContactCTA.svelte';
 
 // Actions page components
-import ActionsHero           from './pages/actions/Hero.svelte';
+import ActionsHero        from './pages/actions/Hero.svelte';
+import ActionsCards       from './pages/actions/ActionsCards.svelte';
+import ActionsCardsExtra  from './pages/actions/ActionsCardsExtra.svelte';
+import ActionsBanner      from './pages/actions/ActionsBanner.svelte';
+import ActionsCTA         from './pages/actions/ActionsCTA.svelte';
 
 // Partnership page components
-import PartnershipHero        from './pages/partnership/Hero.svelte';
-import WhoWeInvite            from './pages/partnership/WhoWeInvite.svelte';
-import ForManufacturers       from './pages/partnership/ForManufacturers.svelte';
-import PartnershipBenefits    from './pages/partnership/Benefits.svelte';
-import HowToStart             from './pages/partnership/HowToStart.svelte';
-import PartnershipCTA         from './pages/partnership/PartnershipCTA.svelte';
+import PartnershipHero     from './pages/partnership/Hero.svelte';
+import WhoWeInvite         from './pages/partnership/WhoWeInvite.svelte';
+import ForManufacturers    from './pages/partnership/ForManufacturers.svelte';
+import PartnershipBenefits from './pages/partnership/Benefits.svelte';
+import HowToStart          from './pages/partnership/HowToStart.svelte';
+import PartnershipCTA      from './pages/partnership/PartnershipCTA.svelte';
 
 // Testimonials page components
-import TestimonialsHero       from './pages/testimonials/Hero.svelte';
-import TestimonialsGrid       from './pages/testimonials/TestimonialsGrid.svelte';
+import TestimonialsHero from './pages/testimonials/Hero.svelte';
+import TestimonialsGrid from './pages/testimonials/TestimonialsGrid.svelte';
 
 // Installment page components
 import InstallmentHero         from './pages/installment/Hero.svelte';
@@ -65,14 +70,11 @@ import InstallmentFAQ          from './pages/installment/InstallmentFAQ.svelte';
 import InstallmentCTA          from './pages/installment/InstallmentCTA.svelte';
 
 // Guarantees page components
-import GuaranteesHero  from './pages/guarantees/Hero.svelte';
-import GuaranteeTerms  from './pages/guarantees/GuaranteeTerms.svelte';
-import WhatsCovered    from './pages/guarantees/WhatsCovered.svelte';
-import HowToApply      from './pages/guarantees/HowToApply.svelte';
-import GuaranteesCTA   from './pages/guarantees/GuaranteesCTA.svelte';import ActionsCards          from './pages/actions/ActionsCards.svelte';
-import ActionsCardsExtra     from './pages/actions/ActionsCardsExtra.svelte';
-import ActionsBanner         from './pages/actions/ActionsBanner.svelte';
-import ActionsCTA            from './pages/actions/ActionsCTA.svelte';
+import GuaranteesHero from './pages/guarantees/Hero.svelte';
+import GuaranteeTerms from './pages/guarantees/GuaranteeTerms.svelte';
+import WhatsCovered   from './pages/guarantees/WhatsCovered.svelte';
+import HowToApply     from './pages/guarantees/HowToApply.svelte';
+import GuaranteesCTA  from './pages/guarantees/GuaranteesCTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
@@ -103,17 +105,24 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		ContactForm,
 	},
 	'/contacts': {
-		Hero:              ContactsHero,
+		Hero: ContactsHero,
 		ContactChannels,
 		ContactAddress,
 		ContactMessengers,
 		ContactCTA,
 	},
+	'/actions': {
+		Hero:              ActionsHero,
+		ActionsCards,
+		ActionsCardsExtra,
+		ActionsBanner,
+		ActionsCTA,
+	},
 	'/partnership': {
-		Hero:                 PartnershipHero,
+		Hero:             PartnershipHero,
 		WhoWeInvite,
 		ForManufacturers,
-		Benefits:             PartnershipBenefits,
+		Benefits:         PartnershipBenefits,
 		HowToStart,
 		PartnershipCTA,
 	},
@@ -136,11 +145,5 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		WhatsCovered,
 		HowToApply,
 		GuaranteesCTA,
-	},
-	'/actions': {		Hero:              ActionsHero,
-		ActionsCards,
-		ActionsCardsExtra,
-		ActionsBanner,
-		ActionsCTA,
 	},
 };

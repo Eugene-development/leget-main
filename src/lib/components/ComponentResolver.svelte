@@ -13,6 +13,7 @@
 	type ComponentMap = Record<string, Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>>;
 
 	interface TemplateModule {
+		Banner?: Component<{ data: Record<string, unknown> }>;
 		Header?: Component<{ data: Record<string, unknown> }>;
 		Footer?: Component<{ data: Record<string, unknown> }>;
 		pageOverrides?: Record<string, ComponentMap>;
@@ -73,9 +74,14 @@
 	const componentMap = $derived(resolveComponentMap(template, slug));
 
 	// Layout components come from the template module directly (layout/)
+	const Banner = $derived(template.Banner ?? null);
 	const Header = $derived(template.Header ?? null);
 	const Footer = $derived(template.Footer ?? null);
 </script>
+
+{#if Banner}
+	<Banner data={headerData ?? {}} />
+{/if}
 
 {#if Header}
 	<Header data={headerData ?? {}} />
