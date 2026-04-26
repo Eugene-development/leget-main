@@ -66,7 +66,7 @@
 </script>
 
 <div
-	class="editable-field-wrapper relative inline-block {className}"
+	class="editable-field-wrapper relative block {className}"
 	role="group"
 	onmouseenter={() => { hovered = true; }}
 	onmouseleave={() => { hovered = false; }}
