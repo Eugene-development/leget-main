@@ -48,7 +48,7 @@
 
 <footer class="relative bg-primary text-inverse">
 	<!-- Decorative Top Line -->
-	<div class="h-px w-full bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+	<div class="h-px w-full bg-linear-to-r from-transparent via-accent to-transparent"></div>
 
 	<!-- Main Footer Content -->
 	<div class="mx-auto max-w-screen-xl px-6 pt-16 pb-10 lg:pt-20 lg:pb-14 xl:px-1">

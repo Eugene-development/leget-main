@@ -45,7 +45,7 @@
 
 <footer class="relative border-t border-surface-700/50 bg-surface-900">
 	<!-- Gradient divider line -->
-	<div class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-accent-500/50 to-transparent"></div>
+	<div class="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-accent-500/50 to-transparent"></div>
 
 	<div class="px-10 pt-16 pb-8 lg:px-24 xl:px-32">
 		<div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">

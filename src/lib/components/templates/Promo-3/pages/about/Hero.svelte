@@ -38,7 +38,7 @@
 			{#snippet children(displayValue)}
 				<h1 class="font-display text-5xl leading-tight font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
 					{displayValue}
-					<br /><span class="bg-gradient-to-r from-accent-500 to-accent-300 bg-clip-text text-transparent">{String(data?.titleAccent ?? '')}</span>
+					<br /><span class="bg-linear-to-r from-accent-500 to-accent-300 bg-clip-text text-transparent">{String(data?.titleAccent ?? '')}</span>
 				</h1>
 			{/snippet}
 		</EditableField>

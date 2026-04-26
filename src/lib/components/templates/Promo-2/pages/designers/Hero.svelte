@@ -55,7 +55,7 @@
 	<div class="absolute top-0 left-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 border border-white/5"></div>
 	<div class="absolute right-0 bottom-0 h-96 w-96 translate-x-1/3 translate-y-1/3 border border-white/5"></div>
 	<div class="absolute top-20 right-24 h-32 w-32 border border-white/5"></div>
-	<div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-secondary to-transparent opacity-40"></div>
+	<div class="absolute top-0 left-0 h-1 w-full bg-linear-to-r from-transparent via-secondary to-transparent opacity-40"></div>
 
 	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="max-w-2xl">

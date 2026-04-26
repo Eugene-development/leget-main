@@ -36,7 +36,7 @@
 			class:scale-105={visible}
 		/>
 		<div
-			class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/70 to-primary/30"
+			class="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/70 to-primary/30"
 		></div>
 	</div>
 

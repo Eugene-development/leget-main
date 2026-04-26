@@ -46,7 +46,7 @@
 	<div class="absolute right-0 bottom-0 h-48 w-48 border border-white/5 lg:h-80 lg:w-80"></div>
 	<!-- Gold accent line -->
 	<div
-		class="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
+		class="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-accent/50 to-transparent"
 	></div>
 
 	<div class="relative mx-auto max-w-3xl px-6 text-center xl:px-1">

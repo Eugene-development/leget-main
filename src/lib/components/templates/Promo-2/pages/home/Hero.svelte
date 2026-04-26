@@ -80,7 +80,7 @@
 				class:opacity-0={activeVideo !== i}
 			></video>
 		{/each}
-		<div class="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-transparent"></div>
+		<div class="absolute inset-0 bg-linear-to-r from-white/85 via-white/50 to-transparent"></div>
 		<div class="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent"></div>
 	</div>
 

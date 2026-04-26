@@ -48,7 +48,7 @@
 				alt={String(data?.title ?? '')}
 				class="h-[400px] w-full object-cover lg:h-[520px]"
 			/>
-			<div class="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/60 to-transparent"></div>
+			<div class="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/60 to-transparent"></div>
 
 			<!-- Overlay Content -->
 			<div class="absolute inset-0 flex items-center p-8 lg:p-16">

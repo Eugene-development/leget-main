@@ -42,8 +42,8 @@
 	bind:this={sectionEl}
 >
 	<!-- Decorative lines -->
-	<div class="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-border-light to-transparent"></div>
-	<div class="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-border-light to-transparent"></div>
+	<div class="absolute top-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border-light to-transparent"></div>
+	<div class="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border-light to-transparent"></div>
 
 	<!-- Subtle Background Pattern -->
 	<div

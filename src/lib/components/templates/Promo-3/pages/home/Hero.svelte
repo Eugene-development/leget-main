@@ -42,7 +42,7 @@
 			alt={String(data?.title ?? 'Плитка')}
 			class="size-full object-cover"
 		/>
-		<div class="absolute inset-0 bg-gradient-to-r from-surface-900 via-surface-900/85 to-surface-900/40"></div>
+		<div class="absolute inset-0 bg-linear-to-r from-surface-900 via-surface-900/85 to-surface-900/40"></div>
 		<div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-surface-900/30"></div>
 	</div>
 

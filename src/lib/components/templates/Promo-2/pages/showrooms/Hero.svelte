@@ -46,7 +46,7 @@
 			class="h-full w-full object-cover transition-transform duration-[2s]"
 			class:scale-105={visible}
 		/>
-		<div class="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/60 to-transparent"></div>
+		<div class="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/60 to-transparent"></div>
 	</div>
 
 	<!-- Content -->

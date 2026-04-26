@@ -46,8 +46,8 @@
 			</div>
 
 			<div class="relative rounded-3xl border border-surface-700/50 bg-surface-800/50 p-8 shadow-2xl backdrop-blur-sm lg:p-10">
-				<div class="absolute -top-px right-12 h-px w-24 bg-gradient-to-r from-transparent via-accent-500 to-transparent"></div>
-				<div class="absolute -bottom-px left-12 h-px w-24 bg-gradient-to-r from-transparent via-accent-500/50 to-transparent"></div>
+				<div class="absolute -top-px right-12 h-px w-24 bg-linear-to-r from-transparent via-accent-500 to-transparent"></div>
+				<div class="absolute -bottom-px left-12 h-px w-24 bg-linear-to-r from-transparent via-accent-500/50 to-transparent"></div>
 
 				{#if submitted}
 					<div class="flex flex-col items-center py-8 text-center">

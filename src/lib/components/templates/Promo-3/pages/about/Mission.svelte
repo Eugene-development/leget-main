@@ -32,7 +32,7 @@
 
 			<div class="relative">
 				<div class="relative rounded-3xl border border-surface-700/50 bg-surface-800/50 p-10 backdrop-blur-sm">
-					<div class="absolute -top-px left-10 h-px w-20 bg-gradient-to-r from-transparent via-accent-500 to-transparent"></div>
+					<div class="absolute -top-px left-10 h-px w-20 bg-linear-to-r from-transparent via-accent-500 to-transparent"></div>
 					<div class="mb-6 font-display text-6xl leading-none text-accent-500/20">"</div>
 					<EditableField fieldKey="Mission.quote" label="Цитата" value={String(data?.quote ?? 'Плитка — это не просто материал. Это основа атмосферы, которую вы создаёте в своём доме.')} {isEditable} multiline onSave={(v) => saveField('quote', v)} class="block">
 						{#snippet children(displayValue)}<blockquote class="font-display text-2xl leading-snug font-semibold text-white">{displayValue}</blockquote>{/snippet}
