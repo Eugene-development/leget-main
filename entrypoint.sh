@@ -11,17 +11,17 @@ API_BASE_URL_VALUE=""
 AUTH_API_URL_VALUE=""
 
 if [ -f "/run/secrets/frontend_url" ]; then
-    FRONTEND_URL_VALUE=$(cat /run/secrets/frontend_url)
+    FRONTEND_URL_VALUE=$(tr -d '[:space:]' < /run/secrets/frontend_url)
     echo "✅ FRONTEND_URL set from secret: $FRONTEND_URL_VALUE"
 fi
 
 if [ -f "/run/secrets/api_base_url" ]; then
-    API_BASE_URL_VALUE=$(cat /run/secrets/api_base_url)
+    API_BASE_URL_VALUE=$(tr -d '[:space:]' < /run/secrets/api_base_url)
     echo "✅ API_BASE_URL set from secret: $API_BASE_URL_VALUE"
 fi
 
 if [ -f "/run/secrets/auth_api_url" ]; then
-    AUTH_API_URL_VALUE=$(cat /run/secrets/auth_api_url)
+    AUTH_API_URL_VALUE=$(tr -d '[:space:]' < /run/secrets/auth_api_url)
     echo "✅ AUTH_API_URL set from secret: $AUTH_API_URL_VALUE"
 fi
 
