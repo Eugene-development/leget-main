@@ -28,7 +28,7 @@
 		></div>
 	</div>
 	<div class="absolute -left-40 top-0 size-80 rounded-full bg-white/5 blur-3xl"></div>
-	<div class="absolute -right-40 bottom-0 size-96 rounded-full bg-red-500/10 blur-3xl"></div>
+	<div class="absolute -right-40 bottom-0 size-96 rounded-full bg-sky-500/10 blur-3xl"></div>
 
 	<div class="relative mx-auto max-w-7xl px-6 text-center lg:px-8">
 		<EditableField
@@ -40,7 +40,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="text-base/7 font-semibold text-red-400">{displayValue}</p>
+				<p class="text-base/7 font-semibold text-sky-400">{displayValue}</p>
 			{/snippet}
 		</EditableField>
 

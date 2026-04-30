@@ -114,7 +114,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		ContactForm,
 	},
 	'/contacts': {
-		Hero: ContactsHero,
+		ContactsHero: ContactsHero,
 		ContactChannels,
 		ContactAddress,
 		ContactMessengers,
@@ -128,7 +128,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		ActionsCTA,
 	},
 	'/partnership': {
-		Hero:             PartnershipHero,
+		PartnershipHero:  PartnershipHero,
 		WhoWeInvite,
 		ForManufacturers,
 		Benefits:         PartnershipBenefits,
@@ -140,7 +140,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		TestimonialsGrid,
 	},
 	'/installment': {
-		Hero:                    InstallmentHero,
+		InstallmentHero: InstallmentHero,
 		InstallmentPlans,
 		InstallmentRequirements,
 		InstallmentSteps,
@@ -149,7 +149,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		InstallmentCTA,
 	},
 	'/guarantees': {
-		Hero:          GuaranteesHero,
+		GuaranteesHero: GuaranteesHero,
 		GuaranteeTerms,
 		WhatsCovered,
 		HowToApply,

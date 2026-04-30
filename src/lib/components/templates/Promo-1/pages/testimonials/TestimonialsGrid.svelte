@@ -47,11 +47,15 @@
 			: defaultReviews
 	);
 
-	// Разбиваем отзывы на 4 колонки для xl-сетки
 	const col1 = $derived(reviews.filter((_, i) => i % 4 === 0));
 	const col2 = $derived(reviews.filter((_, i) => i % 4 === 1));
 	const col3 = $derived(reviews.filter((_, i) => i % 4 === 2));
 	const col4 = $derived(reviews.filter((_, i) => i % 4 === 3));
+
+	// Global index counter for staggered delays
+	function getGlobalIndex(colIndex: number, itemIndex: number): number {
+		return itemIndex * 4 + colIndex;
+	}
 </script>
 
 <div class="bg-white pb-24 sm:pb-32">
@@ -59,7 +63,10 @@
 		<div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm/6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
 
 			<!-- Главный отзыв -->
-			<figure class="rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 sm:col-span-2 xl:col-start-2 xl:row-end-1">
+			<figure
+				class="review-card rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 sm:col-span-2 xl:col-start-2 xl:row-end-1"
+				style="animation-delay: 0ms"
+			>
 				<blockquote class="p-6 text-lg font-semibold tracking-tight text-gray-900 sm:p-12 sm:text-xl/8">
 					<p>{featured.text}</p>
 				</blockquote>
@@ -74,8 +81,11 @@
 			<!-- Колонка 1 -->
 			<div class="space-y-8 xl:contents xl:space-y-0">
 				<div class="space-y-8 xl:row-span-2">
-					{#each col1 as review}
-						<figure class="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5">
+					{#each col1 as review, i}
+						<figure
+							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
+							style="animation-delay: {getGlobalIndex(0, i) * 80 + 100}ms"
+						>
 							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
@@ -89,8 +99,11 @@
 
 				<!-- Колонка 2 -->
 				<div class="space-y-8 xl:row-start-1">
-					{#each col2 as review}
-						<figure class="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5">
+					{#each col2 as review, i}
+						<figure
+							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
+							style="animation-delay: {getGlobalIndex(1, i) * 80 + 100}ms"
+						>
 							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
@@ -104,8 +117,11 @@
 
 				<!-- Колонка 3 -->
 				<div class="space-y-8 xl:row-start-1">
-					{#each col3 as review}
-						<figure class="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5">
+					{#each col3 as review, i}
+						<figure
+							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
+							style="animation-delay: {getGlobalIndex(2, i) * 80 + 100}ms"
+						>
 							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
@@ -119,8 +135,11 @@
 
 				<!-- Колонка 4 -->
 				<div class="space-y-8 xl:row-span-2">
-					{#each col4 as review}
-						<figure class="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5">
+					{#each col4 as review, i}
+						<figure
+							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
+							style="animation-delay: {getGlobalIndex(3, i) * 80 + 100}ms"
+						>
 							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
@@ -135,3 +154,28 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	@keyframes reviewFadeUp {
+		from {
+			opacity: 0;
+			transform: translateY(24px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.review-card {
+		animation: reviewFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.review-card:hover {
+		transform: translateY(-4px);
+		box-shadow:
+			0 20px 25px -5px rgb(0 0 0 / 0.08),
+			0 8px 10px -6px rgb(0 0 0 / 0.08);
+	}
+</style>

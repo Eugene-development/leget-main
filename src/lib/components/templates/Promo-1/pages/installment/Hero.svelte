@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="relative overflow-hidden bg-linear-to-br from-red-600 via-red-500 to-red-700">
+<div class="relative overflow-hidden bg-linear-to-br from-violet-600 via-purple-600 to-indigo-700">
 	<div class="absolute inset-0 opacity-30"
 		style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
 	</div>
@@ -55,14 +55,14 @@
 				class="mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-6 max-w-2xl text-lg text-red-100">{displayValue}</p>
+					<p class="mx-auto mt-6 max-w-2xl text-lg text-purple-100">{displayValue}</p>
 				{/snippet}
 			</EditableField>
 
 			<div class="mt-10 flex flex-wrap justify-center gap-4">
 				<a
 					href="/contact"
-					class="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-red-600 shadow-lg transition-all hover:bg-red-50 hover:shadow-xl"
+					class="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
 				>
 					<EditableField
 						fieldKey="InstallmentHero.buttonText"

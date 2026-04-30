@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="bg-linear-to-r from-red-500 to-red-600 py-24">
+<div class="bg-linear-to-r from-violet-500 to-violet-600 py-24">
 	<div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
 		<div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
 			<svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,14 +51,14 @@
 			class="mt-4 block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto mt-4 max-w-xl text-lg text-red-100">{displayValue}</p>
+				<p class="mx-auto mt-4 max-w-xl text-lg text-purple-100">{displayValue}</p>
 			{/snippet}
 		</EditableField>
 
 		<div class="mt-8 flex flex-wrap justify-center gap-4">
 			<a
 				href="/contact"
-				class="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-red-600 shadow-lg transition-all hover:bg-red-50 hover:shadow-xl"
+				class="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
 			>
 				<EditableField
 					fieldKey="InstallmentCTA.buttonText"
