@@ -88,6 +88,15 @@ import DesignersTracks   from './pages/designers/DesignersTracks.svelte';
 import DesignersSteps    from './pages/designers/DesignersSteps.svelte';
 import DesignersForm     from './pages/designers/DesignersForm.svelte';
 
+// Yandex Direct landing page components
+import YandexDirectHero        from './pages/yandex-direct/Hero.svelte';
+import YandexDirectUSP         from './pages/yandex-direct/USP.svelte';
+import YandexDirectAdvantages  from './pages/yandex-direct/Advantages.svelte';
+import YandexDirectSteps       from './pages/yandex-direct/Steps.svelte';
+import YandexDirectSocialProof from './pages/yandex-direct/SocialProof.svelte';
+import YandexDirectOffer       from './pages/yandex-direct/Offer.svelte';
+import YandexDirectCTA         from './pages/yandex-direct/CTA.svelte';
+
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
 	'/': {
@@ -170,5 +179,14 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		DesignersTracks:   DesignersTracks,
 		DesignersSteps:    DesignersSteps,
 		DesignersForm:     DesignersForm,
+	},
+	'/yandex-direct': {
+		Hero:        YandexDirectHero,
+		USP:         YandexDirectUSP,
+		Advantages:  YandexDirectAdvantages,
+		Steps:       YandexDirectSteps,
+		SocialProof: YandexDirectSocialProof,
+		Offer:       YandexDirectOffer,
+		CTA:         YandexDirectCTA,
 	},
 };
