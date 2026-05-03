@@ -33,36 +33,57 @@
 			</div>
 
 			<EditableField
-				fieldKey="Hero.eyebrow"
-				label="Надпись над заголовком"
-				value={String(data?.eyebrow ?? 'Отзывы')}
+				fieldKey="Hero.title"
+				label="Заголовок"
+				value={String(data?.title ?? 'Отзывы о нас')}
 				{isEditable}
-				onSave={(v) => saveField('eyebrow', v)}
+				onSave={(v) => saveField('title', v)}
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<span class="inline-block rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm">{displayValue}</span>
+					<h1 class="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">{displayValue}</h1>
 				{/snippet}
 			</EditableField>
 
 			<EditableField
-				fieldKey="Hero.title"
-				label="Заголовок"
-				value={String(data?.title ?? 'Мы работаем ради таких отзывов клиентов о нашей работе')}
+				fieldKey="Hero.subtitle"
+				label="Подзаголовок"
+				value={String(data?.subtitle ?? 'Мы работаем ради таких отзывов клиентов о нашей работе')}
 				{isEditable}
 				multiline
-				onSave={(v) => saveField('title', v)}
+				onSave={(v) => saveField('subtitle', v)}
 				class="mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<h1 class="mt-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">{displayValue}</h1>
+					<p class="mx-auto mt-6 max-w-2xl text-lg text-pink-100">{displayValue}</p>
 				{/snippet}
 			</EditableField>
+
+			<div class="mt-10 flex flex-wrap justify-center gap-4">
+				<a
+					href={String(data?.buttonHref ?? '/contact')}
+					class="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-pink-600 shadow-lg transition-all hover:bg-pink-50 hover:shadow-xl"
+				>
+					<EditableField
+						fieldKey="Hero.buttonText"
+						label="Текст кнопки"
+						value={String(data?.buttonText ?? 'Оставить отзыв')}
+						{isEditable}
+						onSave={(v) => saveField('buttonText', v)}
+						class="inline"
+					>
+						{#snippet children(displayValue)}{displayValue}{/snippet}
+					</EditableField>
+					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+					</svg>
+				</a>
+			</div>
 		</div>
 	</div>
 	<div class="absolute bottom-0 left-0 right-0 pointer-events-none">
 		<svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#f8fafc" />
+			<path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#faf9f7" />
 		</svg>
 	</div>
 </div>
