@@ -21,8 +21,8 @@
 			: defaultLinks
 	);
 
-	const phone = $derived(String(data?.phone ?? ''));
-	const email = $derived(String(data?.email ?? ''));
+	const phone = $derived(data?.phone ? String(data.phone) : '+7 (999) 000-00-00');
+	const email = $derived(data?.email ? String(data.email) : 'info@leget.ru');
 	const favoritesHref = $derived(String(data?.favoritesHref ?? '/favorites'));
 </script>
 
@@ -42,7 +42,7 @@
 					{link.label}
 				</a>
 				{#if i < links.length - 1}
-					<svg viewBox="0 0 2 2" class="inline h-0.5 w-0.5 fill-current text-red-500 shrink-0" aria-hidden="true">
+					<svg viewBox="0 0 2 2" class="inline h-0.5 w-0.5 fill-current text-sky-500 shrink-0" aria-hidden="true">
 						<circle cx={1} cy={1} r={1} />
 					</svg>
 				{/if}
@@ -66,7 +66,7 @@
 				{/if}
 
 				{#if phone && email}
-					<svg viewBox="0 0 2 2" class="mx-1 inline h-0.5 w-0.5 fill-current text-red-500 shrink-0" aria-hidden="true">
+					<svg viewBox="0 0 2 2" class="mx-1 inline h-0.5 w-0.5 fill-current text-sky-500 shrink-0" aria-hidden="true">
 						<circle cx={1} cy={1} r={1} />
 					</svg>
 				{/if}
@@ -83,7 +83,7 @@
 				{/if}
 
 				{#if phone || email}
-					<svg viewBox="0 0 2 2" class="mx-1 inline h-0.5 w-0.5 fill-current text-red-500 shrink-0" aria-hidden="true">
+					<svg viewBox="0 0 2 2" class="mx-1 inline h-0.5 w-0.5 fill-current text-sky-500 shrink-0" aria-hidden="true">
 						<circle cx={1} cy={1} r={1} />
 					</svg>
 				{/if}

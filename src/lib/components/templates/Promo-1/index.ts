@@ -9,11 +9,7 @@ import Footer from './layout/Footer.svelte';
 export { Banner, Header, Footer };
 
 // Home page components
-import HomeHero       from './pages/home/Hero.svelte';
 import HomeHeroMain   from './pages/home/HeroMain.svelte';
-import HomeFeatures   from './pages/home/Features.svelte';
-import HomeText       from './pages/home/Text.svelte';
-import HomeCTA        from './pages/home/CTA.svelte';
 import HomeMessage    from './pages/home/Message.svelte';
 import HomePromoOffer from './pages/home/PromoOffer.svelte';
 import HomeEquipment  from './pages/home/Equipment.svelte';
@@ -88,11 +84,7 @@ import YandexDirectCTA         from './pages/yandex-direct/CTA.svelte';
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
 	'/': {
-		Hero:       HomeHero,
 		HeroMain:   HomeHeroMain,
-		Features:   HomeFeatures,
-		Text:       HomeText,
-		CTA:        HomeCTA,
 		Message:    HomeMessage,
 		PromoOffer: HomePromoOffer,
 		Equipment:  HomeEquipment,
