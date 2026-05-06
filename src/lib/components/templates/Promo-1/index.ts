@@ -30,6 +30,15 @@ import AboutCTA        from './pages/about/AboutCTA.svelte';
 // Contact page components
 import ContactForm from './pages/contact/ContactForm.svelte';
 
+// Services components
+import ConsultationHero from './pages/services/consultation/ConsultationHero.svelte';
+import ConsultationFeatures from './pages/services/consultation/ConsultationFeatures.svelte';
+import ConsultationCTA from './pages/services/consultation/ConsultationCTA.svelte';
+
+import DesignProjectHero from './pages/services/design-project/DesignProjectHero.svelte';
+import DesignProjectFeatures from './pages/services/design-project/DesignProjectFeatures.svelte';
+import DesignProjectCTA from './pages/services/design-project/DesignProjectCTA.svelte';
+
 // Contacts page components
 import ContactsHero      from './pages/contacts/Hero.svelte';
 import ContactChannels   from './pages/contacts/ContactChannels.svelte';
@@ -155,5 +164,15 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		SocialProof: YandexDirectSocialProof,
 		Offer:       YandexDirectOffer,
 		CTA:         YandexDirectCTA,
+	},
+	'/consultation': {
+		ConsultationHero,
+		ConsultationFeatures,
+		ConsultationCTA,
+	},
+	'/design-project': {
+		DesignProjectHero,
+		DesignProjectFeatures,
+		DesignProjectCTA,
 	},
 };
