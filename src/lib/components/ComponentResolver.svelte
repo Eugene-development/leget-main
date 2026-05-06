@@ -82,11 +82,11 @@
 </script>
 
 {#if Banner}
-	<Banner data={headerData ?? {}} />
+	<Banner data={headerData ?? {}} {editContext} {isEditable} />
 {/if}
 
 {#if Header}
-	<Header data={headerData ?? {}} />
+	<Header data={headerData ?? {}} {editContext} {isEditable} />
 {/if}
 
 {#each components as element (element.type)}
@@ -97,7 +97,7 @@
 {/each}
 
 {#if Footer}
-	<Footer data={footerData ?? {}} />
+	<Footer data={footerData ?? {}} {editContext} {isEditable} />
 {/if}
 
 <!-- Глобальная модалка редактирования — одна на всю страницу -->

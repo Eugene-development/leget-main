@@ -21,6 +21,8 @@
 		isEditable?: boolean;
 		/** Многострочное поле */
 		multiline?: boolean;
+		/** Отображать как инлайновый элемент */
+		inline?: boolean;
 		/** Callback сохранения */
 		onSave: (value: string) => Promise<void>;
 		/** CSS-класс для контейнера */
@@ -38,6 +40,7 @@
 		value,
 		isEditable = false,
 		multiline = false,
+		inline = false,
 		onSave,
 		class: className = '',
 		children
@@ -65,8 +68,9 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-	class="editable-field-wrapper relative block {className}"
+	class="editable-field-wrapper relative {inline ? 'inline-block' : 'block'} {className}"
 	role="group"
 	onmouseenter={() => { hovered = true; }}
 	onmouseleave={() => { hovered = false; }}

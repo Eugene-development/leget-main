@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import EditableField from '$lib/components/EditableField.svelte';
+	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
-		data = {}
+		data = $bindable({}),
+		editContext = null,
+		isEditable = false
 	}: {
 		data: Record<string, unknown>;
+		editContext: EditContext | null;
+		isEditable: boolean;
 	} = $props();
 
 	const defaultLinks = [
@@ -24,6 +30,13 @@
 	const phone = $derived(data?.phone ? String(data.phone) : '+7 (999) 000-00-00');
 	const email = $derived(data?.email ? String(data.email) : 'info@leget.ru');
 	const favoritesHref = $derived(String(data?.favoritesHref ?? '/favorites'));
+
+	async function saveField(field: string, value: string) {
+		if (!editContext) return;
+		const updated = { ...data, [field]: value };
+		await saveLayoutData(editContext, 'Header', updated);
+		data = updated;
+	}
 </script>
 
 <!-- Desktop Banner -->
@@ -56,12 +69,22 @@
 			<div class="items-center py-1.5 lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
 				{#if phone}
 					<div class="flex items-center justify-center px-2 py-1 text-xl font-semibold leading-6 xl:px-4">
-						<a
-							href="tel:{phone}"
-							class="text-base font-normal tracking-wide text-gray-50 antialiased hover:text-red-400 transition-colors"
+						<EditableField
+							fieldKey="Banner.phone"
+							label="Телефон"
+							value={phone}
+							onSave={(val) => saveField('phone', val)}
+							{isEditable}
 						>
-							{phone}
-						</a>
+							{#snippet children(displayValue)}
+								<a
+									href="tel:{displayValue}"
+									class="text-base font-normal tracking-wide text-gray-50 antialiased hover:text-red-400 transition-colors"
+								>
+									{displayValue}
+								</a>
+							{/snippet}
+						</EditableField>
 					</div>
 				{/if}
 
@@ -73,12 +96,22 @@
 
 				{#if email}
 					<div class="flex items-center justify-center px-2 py-1 text-xl font-semibold leading-6 xl:px-4">
-						<a
-							href="mailto:{email}"
-							class="text-base font-normal tracking-wide text-gray-50 antialiased hover:text-red-400 transition-colors"
+						<EditableField
+							fieldKey="Banner.email"
+							label="Email"
+							value={email}
+							onSave={(val) => saveField('email', val)}
+							{isEditable}
 						>
-							{email}
-						</a>
+							{#snippet children(displayValue)}
+								<a
+									href="mailto:{displayValue}"
+									class="text-base font-normal tracking-wide text-gray-50 antialiased hover:text-red-400 transition-colors"
+								>
+									{displayValue}
+								</a>
+							{/snippet}
+						</EditableField>
 					</div>
 				{/if}
 

@@ -2,10 +2,20 @@
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { cityStore } from '$lib/stores/city.svelte';
+	import EditableField from '$lib/components/EditableField.svelte';
+	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
-	let { data }: { data: Record<string, unknown> } = $props();
+	let {
+		data = $bindable({}),
+		editContext = null,
+		isEditable = false
+	}: {
+		data: Record<string, unknown>;
+		editContext: EditContext | null;
+		isEditable: boolean;
+	} = $props();
 
-	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Компания');
+	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Логотип');
 	const links = $derived(Array.isArray(data?.links) && (data.links as unknown[]).length > 0 ? (data.links as { href: string; label: string }[]) : [
 		{ href: '/',         label: 'Главная' },
 		{ href: '/actions',  label: 'Акции'   },
@@ -17,14 +27,24 @@
 	let menuOpen = $state(false);
 	let visibleCityMenu = $state(false);
 
-	const cities = [
-		{ label: 'Москва и МО' },
-		{ label: 'Санкт-Петербург' },
-		{ label: 'Новосибирск' },
-		{ label: 'Екатеринбург' },
-		{ label: 'Казань' },
-		{ label: 'Нижний Новгород' }
+	const defaultCities = [
+		'Москва и МО',
+		'Санкт-Петербург',
+		'Новосибирск',
+		'Екатеринбург',
+		'Казань',
+		'Нижний Новгород'
 	];
+
+	const citiesRaw = $derived(typeof data?.cities === 'string' ? data.cities : defaultCities.join('\n'));
+	const cities = $derived(citiesRaw.split('\n').filter(Boolean).map(c => ({ label: c.trim() })));
+
+	async function saveField(field: string, value: string) {
+		if (!editContext) return;
+		const updated = { ...data, [field]: value };
+		await saveLayoutData(editContext, 'Header', updated);
+		data = updated;
+	}
 </script>
 
 <header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -45,7 +65,19 @@
 				{:else}
 					<div class="flex flex-col items-center">
 						<div class="size-8 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 mb-1 transition-transform duration-300 group-hover:scale-110 shadow-sm"></div>
-						<span class="text-[10px] font-black uppercase tracking-[0.2em] text-sky-900 transition-transform duration-300 group-hover:scale-105">Логотип</span>
+						<EditableField
+							fieldKey="Header.siteName"
+							label="Название сайта"
+							value={!data?.siteName || data.siteName === 'Новострой' ? 'Логотип' : String(data.siteName)}
+							onSave={(val) => saveField('siteName', val)}
+							{isEditable}
+						>
+							{#snippet children(displayValue)}
+								<span class="text-[10px] font-black uppercase tracking-[0.2em] text-sky-900 transition-transform duration-300 group-hover:scale-105">
+									{displayValue}
+								</span>
+							{/snippet}
+						</EditableField>
 					</div>
 				{/if}
 				<div
@@ -126,6 +158,25 @@
 								{/if}
 							</button>
 						{/each}
+
+						{#if isEditable}
+							<div class="mt-2 border-t border-slate-100 pt-2">
+								<EditableField
+									fieldKey="Header.cities"
+									label="Список городов (каждый с новой строки)"
+									value={citiesRaw}
+									onSave={(val) => saveField('cities', val)}
+									{isEditable}
+									multiline
+								>
+									{#snippet children()}
+										<div class="flex w-full items-center justify-center rounded-lg border border-dashed border-slate-300 py-2 text-[10px] font-medium text-slate-400 transition-colors hover:border-sky-300 hover:text-sky-500">
+											Редактировать список
+										</div>
+									{/snippet}
+								</EditableField>
+							</div>
+						{/if}
 					</div>
 				{/if}
 			</div>

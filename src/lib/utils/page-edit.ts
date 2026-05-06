@@ -18,6 +18,16 @@ const UPSERT_MUTATION = `
   }
 `;
 
+const UPDATE_LICENSE_MUTATION = `
+  mutation UpdateLicense($id: ID!, $headerData: JSON, $footerData: JSON) {
+    updateLicense(id: $id, headerData: $headerData, footerData: $footerData) {
+      id
+      headerData
+      footerData
+    }
+  }
+`;
+
 export interface EditContext {
 	pageId: string;
 	licenseId: string;
@@ -58,6 +68,51 @@ export async function saveComponentData(
 				licenseId: context.licenseId,
 				type,
 				data
+			}
+		})
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+	}
+
+	const result = await response.json();
+
+	if (result.errors?.length) {
+		const msg = result.errors[0]?.message ?? 'GraphQL error';
+		throw new Error(msg);
+	}
+}
+
+/**
+ * Сохраняет данные хэдера или футера (глобальные для всего сайта).
+ */
+export async function saveLayoutData(
+	context: EditContext,
+	type: 'Header' | 'Footer',
+	data: Record<string, unknown>
+): Promise<void> {
+	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+	if (!token) {
+		throw new Error('Не авторизован');
+	}
+
+	const apiUrl = getGraphQLUrl();
+
+	const response = await fetch(apiUrl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			query: UPDATE_LICENSE_MUTATION,
+			variables: {
+				id: context.licenseId,
+				headerData: type === 'Header' ? data : undefined,
+				footerData: type === 'Footer' ? data : undefined
 			}
 		})
 	});
