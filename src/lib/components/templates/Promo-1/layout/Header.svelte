@@ -2,6 +2,7 @@
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { cityStore } from '$lib/stores/city.svelte';
+	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
@@ -24,7 +25,6 @@
 		{ href: '/contacts', label: 'Контакты' },
 	]);
 
-	let menuOpen = $state(false);
 	let visibleCityMenu = $state(false);
 	let visibleServicesMenu = $state(false);
 	let visibleCatalogMenu = $state(false);
@@ -66,13 +66,13 @@
 	}
 </script>
 
-<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
-	<div class="mx-auto flex max-w-9xl items-center justify-between px-4 py-4 sm:px-8">
+<header class="sticky top-0 z-50 w-full sm:border-b sm:border-slate-200 sm:bg-white/95 sm:backdrop-blur">
+	<div class="mx-auto hidden max-w-9xl items-center justify-between px-4 py-4 sm:flex sm:px-8">
 		<!-- Левая часть: Логотип -->
 		<div class="flex flex-1 justify-start">
 			<a
 				href="/"
-				class="group relative -m-1.5 -mb-10 flex flex-col items-center justify-center rounded-b-2xl bg-white px-6 py-4 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 z-30 min-w-[140px]"
+				class="group relative -m-1.5 -mb-10 hidden flex-col items-center justify-center rounded-b-2xl bg-white px-6 py-4 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 z-30 min-w-[140px] sm:flex"
 			>
 				<span class="sr-only">{siteName}</span>
 				{#if data?.logoUrl}
@@ -277,7 +277,7 @@
 			{/each}
 		</nav>
 
-		<!-- Правая часть: Выбор города и мобильное меню -->
+		<!-- Правая часть: Выбор города -->
 		<div class="flex flex-1 items-center justify-end gap-3">
 			<!-- Город -->
 			<div
@@ -356,28 +356,12 @@
 					</div>
 				{/if}
 			</div>
-
-			<!-- Mobile menu toggle -->
-			<button
-				type="button"
-				onclick={() => (menuOpen = !menuOpen)}
-				class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 sm:hidden"
-				aria-label="Меню"
-			>
-				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					{#if menuOpen}
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-					{:else}
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-					{/if}
-				</svg>
-			</button>
 		</div>
 	</div>
 
 	<!-- Mobile nav -->
-	{#if menuOpen}
-		<nav class="border-t border-slate-100 px-6 py-4 sm:hidden max-h-[70vh] overflow-y-auto">
+	{#if uiStore.menuOpen}
+		<nav class="bg-white border-t border-slate-100 px-6 py-4 sm:hidden max-h-[70vh] overflow-y-auto shadow-2xl">
 			{#each links as link}
 				{#if link.label === 'Услуги'}
 					<div class="py-2">
@@ -386,7 +370,7 @@
 							{#each serviceItems as service}
 								<a
 									href={service.href}
-									onclick={() => (menuOpen = false)}
+									onclick={() => uiStore.closeMenu()}
 									class="flex items-center gap-3 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 transition-colors"
 								>
 									<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600">
@@ -425,7 +409,7 @@
 							{#each catalogItems as item}
 								<a
 									href={item.href}
-									onclick={() => (menuOpen = false)}
+									onclick={() => uiStore.closeMenu()}
 									class="flex items-center gap-3 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 transition-colors"
 								>
 									<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600">
@@ -467,7 +451,7 @@
 				{:else}
 					<a
 						href={link.href}
-						onclick={() => (menuOpen = false)}
+						onclick={() => uiStore.closeMenu()}
 						class="block py-3 text-sm font-bold uppercase tracking-wider text-slate-700 hover:text-sky-600 transition-colors border-b border-slate-50 last:border-0"
 					>
 						{link.label}
@@ -493,6 +477,7 @@
 		</nav>
 	{/if}
 </header>
+
 
 <style>
 	.city-selector::before {

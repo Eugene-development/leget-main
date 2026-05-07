@@ -118,7 +118,7 @@
 				</div>
 			</div>
 
-			<div class="relative lg:col-span-7 lg:justify-self-end lg:block w-full" in:fly={{ x: 50, duration: 1000, delay: 200, easing: cubicOut }}>
+			<div class="relative hidden lg:col-span-7 lg:justify-self-end lg:block w-full" in:fly={{ x: 50, duration: 1000, delay: 200, easing: cubicOut }}>
 				<div class="absolute -inset-10 bg-gradient-to-tr from-violet-500/20 to-sky-500/20 blur-[80px] opacity-50"></div>
 				<div class="relative group">
 					<div class="relative z-10 overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl backdrop-blur-3xl bg-white/5 p-4 transition-transform duration-500 group-hover:scale-[1.02]">

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
@@ -147,13 +148,13 @@
 </div>
 
 <!-- Mobile Banner -->
-<div class="z-50 flex items-center justify-between bg-gray-900/90 backdrop-blur-md px-1.5 py-2 lg:hidden">
-	<a href="/" class="w-24 px-1">
+<div class="z-50 flex items-center justify-between bg-gray-900/90 backdrop-blur-md px-4 py-3 lg:hidden">
+	<a href="/" class="flex items-center gap-2">
 		<span class="sr-only">Главная</span>
 		{#if data?.logoUrl}
-			<img class="size-7 w-auto" src={String(data.logoUrl)} alt="Логотип" />
+			<img class="h-6 w-auto" src={String(data.logoUrl)} alt="Логотип" />
 		{:else}
-			<span class="text-sm font-bold text-white">{String(data?.siteName ?? '')}</span>
+			<div class="size-6 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 shadow-sm"></div>
 		{/if}
 	</a>
 
@@ -161,16 +162,16 @@
 		{#if phone}
 			<a
 				href="tel:{phone}"
-				class="font-display text-lg font-light tracking-wide text-gray-50 antialiased bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm"
+				class="font-display text-base font-light tracking-wide text-gray-50 antialiased bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-sm"
 			>
 				{phone}
 			</a>
 		{/if}
 	</div>
 
-	<div class="flex items-center w-24 justify-end">
+	<div class="flex items-center gap-1">
 		<!-- Избранное -->
-		<a href={favoritesHref} class="relative isolate z-20 flex items-center px-3">
+		<a href={favoritesHref} class="relative isolate z-20 flex items-center p-2">
 			<span class="sr-only">Избранное</span>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -186,5 +187,22 @@
 				<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
 			</svg>
 		</a>
+
+		<!-- Mobile menu toggle -->
+		<button
+			type="button"
+			onclick={() => uiStore.toggleMenu()}
+			class="relative z-20 flex items-center p-2 text-gray-50"
+			aria-label="Меню"
+		>
+			<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				{#if uiStore.menuOpen}
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+				{:else}
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+				{/if}
+			</svg>
+		</button>
 	</div>
 </div>
+

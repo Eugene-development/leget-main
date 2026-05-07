@@ -124,7 +124,7 @@
 			</div>
 
 			<div
-				class="relative w-full lg:col-span-7 lg:justify-self-end"
+				class="relative hidden w-full lg:col-span-7 lg:justify-self-end lg:block"
 				in:fly={{ x: 60, duration: 1200, delay: 200, easing: cubicOut }}
 			>
 				<div
