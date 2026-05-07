@@ -47,6 +47,16 @@ import MeasurementFeatures from './pages/services/measurement/MeasurementFeature
 import MeasurementWhy from './pages/services/measurement/MeasurementWhy.svelte';
 import MeasurementCTA from './pages/services/measurement/MeasurementCTA.svelte';
 
+import FurnitureProjectHero from './pages/services/furniture-project/FurnitureProjectHero.svelte';
+import FurnitureProjectFeatures from './pages/services/furniture-project/FurnitureProjectFeatures.svelte';
+import FurnitureProjectWhy from './pages/services/furniture-project/FurnitureProjectWhy.svelte';
+import FurnitureProjectCTA from './pages/services/furniture-project/FurnitureProjectCTA.svelte';
+
+import AssemblyHero from './pages/services/assembly/AssemblyHero.svelte';
+import AssemblyFeatures from './pages/services/assembly/AssemblyFeatures.svelte';
+import AssemblyWhy from './pages/services/assembly/AssemblyWhy.svelte';
+import AssemblyCTA from './pages/services/assembly/AssemblyCTA.svelte';
+
 // Contacts page components
 import ContactsHero      from './pages/contacts/Hero.svelte';
 import ContactChannels   from './pages/contacts/ContactChannels.svelte';
@@ -190,5 +200,17 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		MeasurementFeatures,
 		MeasurementWhy,
 		MeasurementCTA,
+	},
+	'/furniture-project': {
+		FurnitureProjectHero,
+		FurnitureProjectFeatures,
+		FurnitureProjectWhy,
+		FurnitureProjectCTA,
+	},
+	'/assembly': {
+		AssemblyHero,
+		AssemblyFeatures,
+		AssemblyWhy,
+		AssemblyCTA,
 	},
 };
