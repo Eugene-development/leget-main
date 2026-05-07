@@ -42,6 +42,11 @@ import DesignProjectFeatures from './pages/services/design-project/DesignProject
 import DesignProjectWhy from './pages/services/design-project/DesignProjectWhy.svelte';
 import DesignProjectCTA from './pages/services/design-project/DesignProjectCTA.svelte';
 
+import MeasurementHero from './pages/services/measurement/MeasurementHero.svelte';
+import MeasurementFeatures from './pages/services/measurement/MeasurementFeatures.svelte';
+import MeasurementWhy from './pages/services/measurement/MeasurementWhy.svelte';
+import MeasurementCTA from './pages/services/measurement/MeasurementCTA.svelte';
+
 // Contacts page components
 import ContactsHero      from './pages/contacts/Hero.svelte';
 import ContactChannels   from './pages/contacts/ContactChannels.svelte';
@@ -179,5 +184,11 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		DesignProjectFeatures,
 		DesignProjectWhy,
 		DesignProjectCTA,
+	},
+	'/measurement': {
+		MeasurementHero,
+		MeasurementFeatures,
+		MeasurementWhy,
+		MeasurementCTA,
 	},
 };
