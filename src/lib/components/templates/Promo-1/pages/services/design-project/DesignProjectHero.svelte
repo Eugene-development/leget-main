@@ -22,15 +22,19 @@
 	}
 </script>
 
-<section class="relative min-h-[85vh] flex items-center overflow-hidden bg-slate-950 py-24 lg:py-0">
+<section class="relative flex h-[calc(100vh-88px)] items-center overflow-hidden bg-slate-950">
 	<div class="absolute inset-0 z-0">
-		<div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20"></div>
-		<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent blur-[120px]"></div>
+		<div
+			class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:4rem_4rem] opacity-20"
+		></div>
+		<div
+			class="absolute top-0 left-1/2 h-full w-full -translate-x-1/2 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent blur-[120px]"
+		></div>
 	</div>
 
-	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full">
-		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-			<div in:fly={{ y: 30, duration: 1000, easing: cubicOut }}>
+	<div class="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-8">
+		<div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-24">
+			<div class="lg:col-span-5" in:fly={{ y: 30, duration: 1000, easing: cubicOut }}>
 				<EditableField
 					fieldKey="DesignProjectHero.badge"
 					label="Бейдж"
@@ -40,17 +44,19 @@
 					class="mb-8 inline-block"
 				>
 					{#snippet children(displayValue)}
-						<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest">
+						<div
+							class="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold tracking-widest text-emerald-400 uppercase"
+						>
 							{displayValue}
 						</div>
 					{/snippet}
 				</EditableField>
 
-				<h1 class="text-5xl font-black tracking-tight text-white sm:text-7xl leading-[1.05]">
+				<h1 class="text-5xl leading-[1.05] font-black tracking-tight text-white sm:text-7xl">
 					<EditableField
 						fieldKey="DesignProjectHero.title_part1"
 						label="Заголовок часть 1"
-						value={String(data?.title_part1 ?? 'Дизайн')}
+						value={String(data?.title_part1 ?? 'Проект')}
 						{isEditable}
 						onSave={(v) => saveField('title_part1', v)}
 						class="inline-block"
@@ -59,17 +65,20 @@
 							{displayValue}
 						{/snippet}
 					</EditableField>
-					<br/>
+					<br />
 					<EditableField
 						fieldKey="DesignProjectHero.title_part2"
 						label="Заголовок часть 2"
-						value={String(data?.title_part2 ?? 'проектирование')}
+						value={String(data?.title_part2 ?? 'дизайна')}
 						{isEditable}
 						onSave={(v) => saveField('title_part2', v)}
 						class="inline-block"
 					>
 						{#snippet children(displayValue)}
-							<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">{displayValue}</span>
+							<span
+								class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent"
+								>{displayValue}</span
+							>
 						{/snippet}
 					</EditableField>
 				</h1>
@@ -77,14 +86,17 @@
 				<EditableField
 					fieldKey="DesignProjectHero.description"
 					label="Описание"
-					value={String(data?.description ?? 'Создаем не просто красивые картинки, а детально проработанные технические решения для безупречной реализации вашего интерьера.')}
+					value={String(
+						data?.description ??
+							'Создаем не просто красивые картинки, а детально проработанные технические решения для безупречной реализации вашего интерьера.'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
 					class="mt-8 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="text-xl text-slate-400 leading-relaxed max-w-xl">
+						<p class="max-w-xl text-xl leading-relaxed text-slate-400">
 							{displayValue}
 						</p>
 					{/snippet}
@@ -111,17 +123,47 @@
 				</div>
 			</div>
 
-			<div class="relative" in:fly={{ x: 60, duration: 1200, delay: 200, easing: cubicOut }}>
-				<div class="relative group">
-					<div class="relative z-10 overflow-hidden rounded-[3rem] border border-white/10 shadow-[0_0_50px_rgba(16,185,129,0.1)]">
+			<div
+				class="relative w-full lg:col-span-7 lg:justify-self-end"
+				in:fly={{ x: 60, duration: 1200, delay: 200, easing: cubicOut }}
+			>
+				<div
+					class="absolute -inset-10 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 opacity-50 blur-[80px]"
+				></div>
+				<div class="group relative">
+					<div
+						class="relative z-10 overflow-hidden rounded-[3rem] border border-white/10 bg-white/5 p-4 shadow-2xl backdrop-blur-3xl transition-transform duration-500 group-hover:scale-[1.02]"
+					>
 						<img
-							src={String(data?.hero_image ?? 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=1200')}
+							src={String(
+								data?.hero_image ??
+									'/design_project_hero.png'
+							)}
 							alt="Interior Design Visualization"
-							class="w-full aspect-[4/5] object-cover"
+							class="aspect-[4/3] w-full rounded-[2.5rem] object-cover"
 						/>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- Scroll indicator -->
+	<div class="absolute bottom-10 left-1/2 z-20 -translate-x-1/2">
+		<button
+			onclick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+			class="group p-2 transition-all duration-300 hover:translate-y-1"
+			aria-label="Скролл вниз"
+		>
+			<svg
+				class="h-10 w-10 text-white/20 transition-colors group-hover:text-emerald-400"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+			</svg>
+		</button>
 	</div>
 </section>

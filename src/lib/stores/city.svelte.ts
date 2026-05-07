@@ -13,7 +13,15 @@ function getInitialCity() {
 	return DEFAULT_CITY;
 }
 
-let _city = $state(getInitialCity());
+let _city = $state(DEFAULT_CITY);
+
+// Only run this on the client
+if (typeof window !== 'undefined') {
+	const saved = localStorage.getItem(STORAGE_KEY);
+	if (saved) {
+		_city = saved;
+	}
+}
 
 export const cityStore = {
 	get city() {

@@ -109,11 +109,7 @@
 		<nav class="hidden items-center gap-6 sm:flex">
 			{#each links as link}
 				{#if link.label === 'Услуги'}
-					<div
-						class="relative flex items-center h-full"
-						onmouseenter={() => (visibleServicesMenu = true)}
-						onmouseleave={() => (visibleServicesMenu = false)}
-					>
+					<div role="group" class="relative flex items-center h-full" onmouseenter={() => (visibleServicesMenu = true)} onmouseleave={() => (visibleServicesMenu = false)}>
 						<button
 							type="button"
 							class="group relative px-2 py-1 text-sm font-bold uppercase tracking-wider transition-colors duration-300 flex items-center gap-1 {visibleServicesMenu ? 'text-sky-600' : 'text-slate-700'} hover:text-sky-600"
@@ -143,7 +139,7 @@
 								<div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent"></div>
 								
 								{#each serviceItems as service, idx}
-									<a
+									<a onclick={() => visibleServicesMenu = false}
 										href={service.href}
 										class="group flex items-start gap-3 rounded-xl p-3 transition-all duration-300 hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50 hover:translate-x-1"
 										transition:fly={{ y: -5, duration: 200, delay: idx * 40 }}
@@ -187,11 +183,7 @@
 						{/if}
 					</div>
 				{:else if link.label === 'Каталог'}
-					<div
-						class="relative flex items-center h-full"
-						onmouseenter={() => (visibleCatalogMenu = true)}
-						onmouseleave={() => (visibleCatalogMenu = false)}
-					>
+					<div role="group" class="relative flex items-center h-full" onmouseenter={() => (visibleCatalogMenu = true)} onmouseleave={() => (visibleCatalogMenu = false)}>
 						<button
 							type="button"
 							class="group relative px-2 py-1 text-sm font-bold uppercase tracking-wider transition-colors duration-300 flex items-center gap-1 {visibleCatalogMenu ? 'text-sky-600' : 'text-slate-700'} hover:text-sky-600"
@@ -221,7 +213,7 @@
 								<div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent"></div>
 								
 								{#each catalogItems as item, idx}
-									<a
+									<a onclick={() => visibleCatalogMenu = false}
 										href={item.href}
 										class="group flex items-start gap-3 rounded-xl p-3 transition-all duration-300 hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50 hover:translate-x-1"
 										transition:fly={{ y: -5, duration: 200, delay: idx * 40 }}

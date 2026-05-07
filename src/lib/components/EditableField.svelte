@@ -80,7 +80,7 @@
 		<button
 			type="button"
 			onclick={openModal}
-			class="absolute -top-2 -right-2 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 shadow-md ring-1 transition-all hover:bg-indigo-50 hover:ring-indigo-400"
+			class="absolute -top-2 -left-2 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 shadow-md ring-1 transition-all hover:bg-indigo-50 hover:ring-indigo-400"
 			class:ring-indigo-400={isActive}
 			class:bg-indigo-50={isActive}
 			class:ring-gray-200={!isActive}

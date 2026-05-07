@@ -33,10 +33,13 @@ import ContactForm from './pages/contact/ContactForm.svelte';
 // Services components
 import ConsultationHero from './pages/services/consultation/ConsultationHero.svelte';
 import ConsultationFeatures from './pages/services/consultation/ConsultationFeatures.svelte';
+import ConsultationWhy from './pages/services/consultation/ConsultationWhy.svelte';
+
 import ConsultationCTA from './pages/services/consultation/ConsultationCTA.svelte';
 
 import DesignProjectHero from './pages/services/design-project/DesignProjectHero.svelte';
 import DesignProjectFeatures from './pages/services/design-project/DesignProjectFeatures.svelte';
+import DesignProjectWhy from './pages/services/design-project/DesignProjectWhy.svelte';
 import DesignProjectCTA from './pages/services/design-project/DesignProjectCTA.svelte';
 
 // Contacts page components
@@ -168,11 +171,13 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/consultation': {
 		ConsultationHero,
 		ConsultationFeatures,
+		ConsultationWhy,
 		ConsultationCTA,
 	},
 	'/design-project': {
 		DesignProjectHero,
 		DesignProjectFeatures,
+		DesignProjectWhy,
 		DesignProjectCTA,
 	},
 };

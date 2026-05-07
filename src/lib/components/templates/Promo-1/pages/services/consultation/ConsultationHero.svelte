@@ -22,7 +22,7 @@
 	}
 </script>
 
-<section class="relative min-h-[80vh] flex items-center overflow-hidden bg-slate-950 py-20 lg:py-0">
+<section class="relative h-[calc(100vh-88px)] flex items-center overflow-hidden bg-slate-950">
 	<div class="absolute inset-0 z-0">
 		<div class="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4"></div>
 		<div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4"></div>
@@ -30,8 +30,8 @@
 	</div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full">
-		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-			<div in:fly={{ x: -50, duration: 1000, easing: cubicOut }}>
+		<div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
+			<div class="lg:col-span-5" in:fly={{ x: -50, duration: 1000, easing: cubicOut }}>
 				<EditableField
 					fieldKey="ConsultationHero.badge"
 					label="Бейдж"
@@ -118,18 +118,37 @@
 				</div>
 			</div>
 
-			<div class="relative lg:block" in:fly={{ x: 50, duration: 1000, delay: 200, easing: cubicOut }}>
+			<div class="relative lg:col-span-7 lg:justify-self-end lg:block w-full" in:fly={{ x: 50, duration: 1000, delay: 200, easing: cubicOut }}>
 				<div class="absolute -inset-10 bg-gradient-to-tr from-sky-500/20 to-indigo-500/20 blur-[80px] opacity-50"></div>
 				<div class="relative group">
 					<div class="relative z-10 overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl backdrop-blur-3xl bg-white/5 p-4 transition-transform duration-500 group-hover:scale-[1.02]">
 						<img
-							src={String(data?.hero_image ?? 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200')}
+							src={String(data?.hero_image ?? '/consultation_hero.png')}
 							alt="Interior Design Consultation"
-							class="rounded-[2rem] w-full aspect-[4/5] object-cover"
+							class="rounded-[2rem] w-full aspect-[4/3] object-cover"
 						/>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- Scroll indicator -->
+	<div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
+		<button 
+			onclick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+			class="group p-2 transition-all duration-300 hover:translate-y-1"
+			aria-label="Скролл вниз"
+		>
+			<svg 
+				class="w-10 h-10 text-white/20 group-hover:text-sky-400 transition-colors" 
+				fill="none" 
+				viewBox="0 0 24 24" 
+				stroke="currentColor" 
+				stroke-width="2"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+			</svg>
+		</button>
 	</div>
 </section>
