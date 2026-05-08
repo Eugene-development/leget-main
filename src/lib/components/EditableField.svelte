@@ -69,7 +69,8 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
+<svelte:element
+	this={inline ? 'span' : 'div'}
 	class="editable-field-wrapper relative {inline ? 'inline-block' : 'block'} {className}"
 	role="group"
 	onmouseenter={() => { hovered = true; }}
@@ -105,4 +106,4 @@
 
 	<!-- Контент: передаём displayValue в snippet -->
 	{@render children(displayValue)}
-</div>
+</svelte:element>

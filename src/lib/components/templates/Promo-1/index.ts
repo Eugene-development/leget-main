@@ -108,6 +108,14 @@ import YandexDirectSocialProof from './pages/yandex-direct/SocialProof.svelte';
 import YandexDirectOffer       from './pages/yandex-direct/Offer.svelte';
 import YandexDirectCTA         from './pages/yandex-direct/CTA.svelte';
 
+// Mebel page components
+import MebelHero      from './pages/mebel/MebelHero.svelte';
+import MebelBenefits  from './pages/mebel/MebelBenefits.svelte';
+import MebelSolutions from './pages/mebel/MebelSolutions.svelte';
+import MebelProcess   from './pages/mebel/MebelProcess.svelte';
+import MebelCTA       from './pages/mebel/MebelCTA.svelte';
+import MebelSidebar   from './pages/mebel/MebelSidebar.svelte';
+
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
 	'/': {
@@ -212,5 +220,13 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		AssemblyFeatures,
 		AssemblyWhy,
 		AssemblyCTA,
+	},
+	'/mebel': {
+		MebelSidebar,
+		MebelHero,
+		MebelBenefits,
+		MebelSolutions,
+		MebelProcess,
+		MebelCTA,
 	},
 };

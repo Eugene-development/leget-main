@@ -101,6 +101,7 @@
 					value={String(data?.partnersLabel ?? 'Наши партнёры-производители')}
 					{isEditable}
 					onSave={(v) => saveField('partnersLabel', v)}
+					inline
 					class="inline"
 				>
 					{#snippet children(displayValue)}{displayValue}{/snippet}
