@@ -125,6 +125,40 @@ import StoleshnicaServices  from './pages/stoleshnica/StoleshnicaServices.svelte
 import StoleshnicaCTA       from './pages/stoleshnica/StoleshnicaCTA.svelte';
 import StoleshnicaSidebar   from './pages/stoleshnica/StoleshnicaSidebar.svelte';
 
+// Bytovaya-tehnika page components
+import ByttehnikaSidebar    from './pages/bytovaya-tehnika/ByttehnikaSidebar.svelte';
+import ByttehnikaHero       from './pages/bytovaya-tehnika/ByttehnikaHero.svelte';
+import ByttehnikaBrands     from './pages/bytovaya-tehnika/ByttehnikaBrands.svelte';
+import ByttehnikaBenefits   from './pages/bytovaya-tehnika/ByttehnikaBenefits.svelte';
+import ByttehnikaCategories from './pages/bytovaya-tehnika/ByttehnikaCategories.svelte';
+import ByttehnikaComplex    from './pages/bytovaya-tehnika/ByttehnikaComplex.svelte';
+import ByttehnikaCTA        from './pages/bytovaya-tehnika/ByttehnikaCTA.svelte';
+
+// Santehnika page components
+import SantehnikaSidebar    from './pages/santehnika/SantehnikaSidebar.svelte';
+import SantehnikaHero       from './pages/santehnika/SantehnikaHero.svelte';
+import SantehnikaBrands     from './pages/santehnika/SantehnikaBrands.svelte';
+import SantehnikaSinkTypes  from './pages/santehnika/SantehnikaSinkTypes.svelte';
+import SantehnikaCategories from './pages/santehnika/SantehnikaCategories.svelte';
+import SantehnikaBenefits   from './pages/santehnika/SantehnikaBenefits.svelte';
+import SantehnikaComplex    from './pages/santehnika/SantehnikaComplex.svelte';
+import SantehnikaCTA        from './pages/santehnika/SantehnikaCTA.svelte';
+
+// Furnitura page components
+import FurnituraSidebar from './pages/furnitura/FurnituraSidebar.svelte';
+import FurnituraHero    from './pages/furnitura/FurnituraHero.svelte';
+import FurnituraShops   from './pages/furnitura/FurnituraShops.svelte';
+import FurnituraCTA     from './pages/furnitura/FurnituraCTA.svelte';
+
+// Plitka page components
+import PliitkaSidebar    from './pages/plitka/PliitkaSidebar.svelte';
+import PliitkaHero       from './pages/plitka/PliitkaHero.svelte';
+import PliitkaBrands     from './pages/plitka/PliitkaBrands.svelte';
+import PliitkaBenefits   from './pages/plitka/PliitkaBenefits.svelte';
+import PliitkaCategories from './pages/plitka/PliitkaCategories.svelte';
+import PliitkaComplex    from './pages/plitka/PliitkaComplex.svelte';
+import PliitkaCTA        from './pages/plitka/PliitkaCTA.svelte';
+
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
 	'/': {
@@ -246,5 +280,39 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		StoleshnicaSolutions,
 		StoleshnicaServices,
 		StoleshnicaCTA,
+	},
+	'/bytovaya-tehnika': {
+		ByttehnikaSidebar,
+		ByttehnikaHero,
+		ByttehnikaBrands,
+		ByttehnikaBenefits,
+		ByttehnikaCategories,
+		ByttehnikaComplex,
+		ByttehnikaCTA,
+	},
+	'/santehnika': {
+		SantehnikaSidebar,
+		SantehnikaHero,
+		SantehnikaBrands,
+		SantehnikaSinkTypes,
+		SantehnikaCategories,
+		SantehnikaBenefits,
+		SantehnikaComplex,
+		SantehnikaCTA,
+	},
+	'/furnitura': {
+		FurnituraSidebar,
+		FurnituraHero,
+		FurnituraShops,
+		FurnituraCTA,
+	},
+	'/plitka': {
+		PliitkaSidebar,
+		PliitkaHero,
+		PliitkaBrands,
+		PliitkaBenefits,
+		PliitkaCategories,
+		PliitkaComplex,
+		PliitkaCTA,
 	},
 };
