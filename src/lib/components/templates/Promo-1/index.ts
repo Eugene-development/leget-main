@@ -116,6 +116,15 @@ import MebelProcess   from './pages/mebel/MebelProcess.svelte';
 import MebelCTA       from './pages/mebel/MebelCTA.svelte';
 import MebelSidebar   from './pages/mebel/MebelSidebar.svelte';
 
+// Stoleshnica page components
+import StoleshnicaHero      from './pages/stoleshnica/StoleshnicaHero.svelte';
+import StoleshnicaMaterials from './pages/stoleshnica/StoleshnicaMaterials.svelte';
+import StoleshnicaBenefits  from './pages/stoleshnica/StoleshnicaBenefits.svelte';
+import StoleshnicaSolutions from './pages/stoleshnica/StoleshnicaSolutions.svelte';
+import StoleshnicaServices  from './pages/stoleshnica/StoleshnicaServices.svelte';
+import StoleshnicaCTA       from './pages/stoleshnica/StoleshnicaCTA.svelte';
+import StoleshnicaSidebar   from './pages/stoleshnica/StoleshnicaSidebar.svelte';
+
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
 	'/': {
@@ -228,5 +237,14 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		MebelSolutions,
 		MebelProcess,
 		MebelCTA,
+	},
+	'/stoleshnica': {
+		StoleshnicaSidebar,
+		StoleshnicaHero,
+		StoleshnicaMaterials,
+		StoleshnicaBenefits,
+		StoleshnicaSolutions,
+		StoleshnicaServices,
+		StoleshnicaCTA,
 	},
 };
