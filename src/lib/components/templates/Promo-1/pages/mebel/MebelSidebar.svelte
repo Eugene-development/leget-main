@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import EditableField from '$lib/components/EditableField.svelte';
+	import { auth } from '$lib/stores/auth';
+	import { browser } from '$app/environment';
+
+	import MebelProjectModal from './MebelProjectModal.svelte';
 
 	let {
 		data = $bindable(),
@@ -11,6 +16,20 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Поскольку динамические страницы (виртуальные) могут не иметь полноценного editContext,
+	// мы явно проверяем, авторизован ли пользователь как админ/владелец.
+	let isAdmin = $derived(browser ? $auth.isAuthenticated : false);
+
+	let isModalOpen = $state(false);
+	let addCategoryId = $state('');
+
+	function openAddModal(categoryId: string, e: Event) {
+		e.preventDefault();
+		e.stopPropagation();
+		addCategoryId = categoryId;
+		isModalOpen = true;
+	}
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -69,29 +88,65 @@
 	});
 </script>
 
+<MebelProjectModal 
+	isOpen={isModalOpen} 
+	onClose={() => isModalOpen = false} 
+	onSaved={() => window.location.reload()} 
+	categories={categories} 
+	initialCategoryId={addCategoryId} 
+/>
+
 <aside bind:this={sidebarElement} class="mebel-sidebar hidden lg:block" style="top: {offsetTop}px;">
 	<div class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
-		<h3 class="mb-6 text-lg font-medium text-slate-900">Категории мебели</h3>
+		<h3 class="mb-6 text-lg font-medium text-slate-900">
+			<EditableField
+				fieldKey="MebelSidebar.title"
+				label="Заголовок сайдбара"
+				value={String(data.title || 'Категории мебели')}
+				{isEditable}
+				inline
+				onSave={(v) => saveField('title', v)}
+			>
+				{#snippet children(val)}
+					{val}
+				{/snippet}
+			</EditableField>
+		</h3>
 
 		<nav class="space-y-1">
 			{#each categories as category}
 				{@const isActive = category.slug === data.activeSlug}
-				<a
-					href="/mebel/{category.slug}"
-					class="flex items-center justify-between rounded-lg px-4 py-3 transition-all {isActive
+				<div class="group flex items-center justify-between rounded-lg transition-all {isActive
 						? 'bg-sky-50 text-sky-600'
-						: 'text-slate-600 hover:bg-slate-50 hover:text-sky-600'}"
-				>
-					<span class="font-medium">{category.value}</span>
-					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M9 5l7 7-7 7"
-						/>
-					</svg>
-				</a>
+						: 'text-slate-600 hover:bg-slate-50 hover:text-sky-600'}">
+					<a
+						href="/mebel/{category.slug}"
+						class="flex-1 block px-4 py-3"
+					>
+						<div class="flex justify-between items-center font-medium">
+							<span>{category.value}</span>
+							{#if !isEditable && !editContext && !isAdmin}
+								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+								</svg>
+							{/if}
+						</div>
+					</a>
+					{#if isEditable || editContext || isAdmin}
+						<div class="pr-4 flex items-center justify-center">
+							<button 
+								type="button"
+								onclick={(e) => openAddModal(category.id, e)}
+								class="rounded-full bg-white p-1.5 text-sky-500 shadow-sm ring-1 ring-slate-200 hover:bg-sky-50 transition-colors"
+								title="Добавить проект в категорию"
+							>
+								<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+								</svg>
+							</button>
+						</div>
+					{/if}
+				</div>
 			{/each}
 		</nav>
 
