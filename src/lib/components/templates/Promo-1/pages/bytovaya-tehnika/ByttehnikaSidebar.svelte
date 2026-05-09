@@ -58,7 +58,12 @@
 				>
 					<span class="font-medium">{brand.title ?? brand.value ?? brand.name}</span>
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 5l7 7-7 7"
+						/>
 					</svg>
 				</a>
 			{/each}
@@ -67,7 +72,7 @@
 		<div class="mt-8 rounded-xl bg-sky-50 p-6">
 			<h4 class="font-bold text-sky-900">Подбор техники</h4>
 			<p class="mt-2 text-sm leading-relaxed text-sky-700">
-				Поможем выбрать бытовую технику под ваш проект мебели
+				Поможем выбрать бытовую технику под ваш проект
 			</p>
 			<button
 				class="mt-4 w-full rounded-lg bg-sky-500 py-2.5 text-sm font-semibold text-white transition-all hover:bg-sky-600"
@@ -86,6 +91,8 @@
 		z-index: 30;
 	}
 	@media (max-width: 1536px) {
-		.mebel-sidebar { left: 1.5rem; }
+		.mebel-sidebar {
+			left: 1.5rem;
+		}
 	}
 </style>

@@ -76,9 +76,16 @@
 		}
 
 		// 2. Pattern matching (dynamic routes)
+		const cleanSlug = pageSlug.startsWith('/') ? pageSlug : '/' + pageSlug;
+
+		// /mebel/{category}/{project}
+		if (cleanSlug.match(/^\/mebel\/[^\/]+\/[^\/]+$/)) {
+			return tmpl.pageOverrides['/mebel/{category}/{project}'] || {};
+		}
+		
 		// /mebel/{category}
-		if (pageSlug.startsWith('/mebel/') && tmpl.pageOverrides['/mebel/{category}']) {
-			return tmpl.pageOverrides['/mebel/{category}'];
+		if (cleanSlug.match(/^\/mebel\/[^\/]+$/)) {
+			return tmpl.pageOverrides['/mebel/{category}'] || {};
 		}
 
 		return {};

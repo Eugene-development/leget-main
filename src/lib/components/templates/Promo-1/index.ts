@@ -117,6 +117,9 @@ import MebelCTA       from './pages/mebel/MebelCTA.svelte';
 import MebelSidebar   from './pages/mebel/MebelSidebar.svelte';
 import MebelCategoryHero from './pages/mebel/MebelCategoryHero.svelte';
 import MebelProjectsGrid from './pages/mebel/MebelProjectsGrid.svelte';
+import MebelProjectHero from './pages/mebel/MebelProjectHero.svelte';
+import MebelProjectDescription from './pages/mebel/MebelProjectDescription.svelte';
+import MebelProjectSimilar from './pages/mebel/MebelProjectSimilar.svelte';
 
 // Stoleshnica page components
 import StoleshnicaHero      from './pages/stoleshnica/StoleshnicaHero.svelte';
@@ -279,6 +282,13 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		MebelCategoryHero,
 		MebelProjectsGrid,
 		MebelBenefits,
+		MebelCTA,
+	},
+	'/mebel/{category}/{project}': {
+		MebelSidebar,
+		MebelProjectHero,
+		MebelProjectDescription,
+		MebelProjectSimilar,
 		MebelCTA,
 	},
 	'/stoleshnica': {
