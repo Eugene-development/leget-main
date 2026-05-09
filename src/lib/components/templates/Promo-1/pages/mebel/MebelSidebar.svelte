@@ -79,7 +79,7 @@
 					href="/mebel/{category.slug}"
 					class="flex items-center justify-between rounded-lg px-4 py-3 text-slate-600 transition-all hover:bg-slate-50 hover:text-sky-600"
 				>
-					<span class="font-medium">{category.title}</span>
+					<span class="font-medium">{category.value}</span>
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
