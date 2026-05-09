@@ -16,7 +16,7 @@
 	}
 </script>
 
-<div class="mebel-container mt-12 mb-20">
+<div class="mebel-container mt-12 mb-12">
 	<div class="rounded-2xl bg-linear-to-r from-sky-500 to-cyan-600 p-8 text-center text-white sm:p-12">
 		<h2 class="text-2xl font-bold sm:text-3xl">
 			<EditableField 
@@ -74,3 +74,19 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.mebel-container {
+		max-width: 1536px;
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	@media (min-width: 1024px) {
+		.mebel-container {
+			padding-left: 360px;
+		}
+	}
+</style>

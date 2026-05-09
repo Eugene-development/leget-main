@@ -52,7 +52,7 @@
 	};
 </script>
 
-<div class="mebel-container mb-12 mt-12">
+<div class="mebel-container mt-12 mb-12">
 	<h2 class="mb-8 text-2xl font-bold text-slate-900">
 		<EditableField
 			fieldKey="MebelBenefits.title"
@@ -144,3 +144,19 @@
 		{/each}
 	</div>
 </div>
+
+<style>
+	.mebel-container {
+		max-width: 1536px;
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	@media (min-width: 1024px) {
+		.mebel-container {
+			padding-left: 360px;
+		}
+	}
+</style>

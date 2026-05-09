@@ -14,9 +14,9 @@
 	type ComponentMap = Record<string, Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>>;
 
 	interface TemplateModule {
-		Banner?: Component<{ data: Record<string, unknown> }>;
-		Header?: Component<{ data: Record<string, unknown> }>;
-		Footer?: Component<{ data: Record<string, unknown> }>;
+		Banner?: Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>;
+		Header?: Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>;
+		Footer?: Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>;
 		pageOverrides?: Record<string, ComponentMap>;
 	}
 
@@ -69,7 +69,19 @@
 	 */
 	function resolveComponentMap(tmpl: TemplateModule, pageSlug: string | null): ComponentMap {
 		if (!pageSlug || !tmpl.pageOverrides) return {};
-		return tmpl.pageOverrides[pageSlug] ?? {};
+		
+		// 1. Exact match
+		if (tmpl.pageOverrides[pageSlug]) {
+			return tmpl.pageOverrides[pageSlug];
+		}
+
+		// 2. Pattern matching (dynamic routes)
+		// /mebel/{category}
+		if (pageSlug.startsWith('/mebel/') && tmpl.pageOverrides['/mebel/{category}']) {
+			return tmpl.pageOverrides['/mebel/{category}'];
+		}
+
+		return {};
 	}
 
 	const template = $derived(resolveTemplate(templateId));
