@@ -66,6 +66,8 @@
 					<button
 						type="button"
 						onclick={() => (isLightboxOpen = true)}
+						aria-label="Открыть галерею"
+						title="Открыть галерею"
 						class="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:scale-110"
 					>
 						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,6 +100,7 @@
 						<button
 							type="button"
 							onclick={() => (selectedImageIndex = index)}
+							aria-label={`Выбрать изображение ${index + 1}`}
 							class="relative aspect-4/3 overflow-hidden rounded-xl border-2 transition-all {selectedImageIndex === index ? 'border-sky-500' : 'border-transparent hover:border-slate-200'}"
 						>
 							<img src={image.url} alt="" class="h-full w-full object-cover" />
@@ -138,7 +141,7 @@
 			<!-- Кнопки -->
 			<div class="mt-8 flex flex-col gap-4 sm:flex-row">
 				<button class="flex-1 rounded-xl bg-sky-500 px-8 py-4 font-bold text-white shadow-lg shadow-sky-200 transition-all hover:bg-sky-600 hover:shadow-xl">
-					Создать ваш проект
+					Создать проект в этом стиле
 				</button>
 				<a href="tel:+79154000020" class="flex items-center justify-center gap-2 rounded-xl border-2 border-slate-100 px-8 py-4 font-bold text-slate-700 transition-all hover:border-sky-500 hover:text-sky-600">
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -196,7 +199,10 @@
 			<!-- Навигация -->
 			{#if selectedImageIndex > 0}
 				<button
+					type="button"
 					onclick={() => selectedImageIndex--}
+					aria-label="Предыдущее изображение"
+					title="Назад"
 					class="absolute left-8 top-1/2 -translate-y-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
 				>
 					<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -207,7 +213,10 @@
 			
 			{#if selectedImageIndex < images.length - 1}
 				<button
+					type="button"
 					onclick={() => selectedImageIndex++}
+					aria-label="Следующее изображение"
+					title="Вперёд"
 					class="absolute right-8 top-1/2 -translate-y-1/2 flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
 				>
 					<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -218,7 +227,10 @@
 
 			<!-- Закрыть -->
 			<button
+				type="button"
 				onclick={() => (isLightboxOpen = false)}
+				aria-label="Закрыть галерею"
+				title="Закрыть"
 				class="absolute top-8 right-8 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
 			>
 				<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

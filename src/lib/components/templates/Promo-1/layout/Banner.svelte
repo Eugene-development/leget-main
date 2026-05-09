@@ -50,8 +50,8 @@
 				<a
 					href={link.href}
 					class={$page.url.pathname === link.href
-						? 'whitespace-nowrap text-xs text-red-400'
-						: 'whitespace-nowrap text-xs text-gray-50 hover:text-red-400 transition-colors'}
+						? 'whitespace-nowrap text-xs text-sky-400'
+						: 'whitespace-nowrap text-xs text-gray-50 hover:text-sky-300 transition-colors'}
 				>
 					{link.label}
 				</a>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { editStore } from '$lib/stores/edit.svelte';
 
 	/**
@@ -47,6 +48,8 @@
 	}: Props = $props();
 
 	let hovered = $state(false);
+	let wrapperEl: HTMLElement | null = $state(null);
+	let pencilAlign: 'left' | 'center' | 'right' = $state('center');
 
 	// Это поле активно в модалке?
 	const isActive = $derived(editStore.activeField?.key === fieldKey);
@@ -56,6 +59,26 @@
 
 	// Отображаемое значение: draft (live preview) когда активно, иначе сохранённое
 	const displayValue = $derived(isActive ? (editStore.activeField?.draft ?? value) : value);
+	const pencilPositionClass = $derived.by(() => {
+		if (pencilAlign === 'left') return 'left-0 -translate-x-0';
+		if (pencilAlign === 'right') return 'right-0 translate-x-0';
+		return 'left-1/2 -translate-x-1/2';
+	});
+
+	async function updatePencilAlignment() {
+		await tick();
+		if (!wrapperEl) return;
+		const textAlign = getComputedStyle(wrapperEl).textAlign;
+		if (textAlign === 'center') {
+			pencilAlign = 'center';
+			return;
+		}
+		if (textAlign === 'right' || textAlign === 'end') {
+			pencilAlign = 'right';
+			return;
+		}
+		pencilAlign = 'left';
+	}
 
 	function openModal() {
 		editStore.open({
@@ -66,12 +89,26 @@
 			onSave
 		});
 	}
+
+	onMount(() => {
+		updatePencilAlignment();
+		const onResize = () => updatePencilAlignment();
+		window.addEventListener('resize', onResize);
+		return () => window.removeEventListener('resize', onResize);
+	});
+
+	$effect(() => {
+		className;
+		inline;
+		updatePencilAlignment();
+	});
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <svelte:element
 	this={inline ? 'span' : 'div'}
 	class="editable-field-wrapper relative {inline ? 'inline-block' : 'block'} {className}"
+	bind:this={wrapperEl}
 	role="group"
 	onmouseenter={() => { hovered = true; }}
 	onmouseleave={() => { hovered = false; }}
@@ -81,7 +118,7 @@
 		<button
 			type="button"
 			onclick={openModal}
-			class="absolute -top-2 -left-2 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 shadow-md ring-1 transition-all hover:bg-indigo-50 hover:ring-indigo-400"
+			class="absolute -top-3 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 shadow-md ring-1 transition-all hover:bg-indigo-50 hover:ring-indigo-400 {pencilPositionClass}"
 			class:ring-indigo-400={isActive}
 			class:bg-indigo-50={isActive}
 			class:ring-gray-200={!isActive}
