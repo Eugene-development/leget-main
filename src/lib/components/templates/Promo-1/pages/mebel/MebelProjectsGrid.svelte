@@ -15,11 +15,6 @@
 	);
 	let totalPages = $derived(Math.ceil(projects.length / itemsPerPage));
 
-	const formatPrice = (price) => {
-		if (!price) return 'По запросу';
-		return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
-	};
-
 	// Reset page when projects change (e.g. category change)
 	$effect(() => {
 		if (projects) {
@@ -59,41 +54,69 @@
 					<article
 						class="group relative overflow-hidden rounded-2xl bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 					>
-						<!-- Метки -->
-						<div class="absolute left-3 top-3 z-10 flex gap-1.5">
-							{#if project.is_new}
-								<span
-									class="rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md"
-								>
-									Новинка
-								</span>
-							{/if}
-							{#if project.is_featured}
-								<span
-									class="rounded-full bg-amber-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md"
-								>
-									⭐ Хит
-								</span>
-							{/if}
-						</div>
+						<a href="/mebel/{categorySlug}/{project.slug}" class="block h-full">
+							<!-- Метки -->
+							<div class="absolute top-3 left-3 z-10 flex gap-1.5">
+								{#if project.is_new}
+									<span
+										class="rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md"
+									>
+										Новинка
+									</span>
+								{/if}
+								{#if project.is_featured}
+									<span
+										class="rounded-full bg-amber-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md"
+									>
+										⭐ Хит
+									</span>
+								{/if}
+							</div>
 
-						<a
-							href="/mebel/{categorySlug}/{project.slug}"
-							class="relative block aspect-4/3 overflow-hidden bg-slate-100"
-						>
-							{#if project.images && project.images.length > 0 && project.images[0].url}
-								<img
-									src={project.images[0].url}
-									alt={project.value}
-									class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-									loading="lazy"
-								/>
-							{:else}
+							<div class="relative block aspect-4/3 overflow-hidden bg-slate-100">
+								{#if project.images && project.images.length > 0 && project.images[0].url}
+									<img
+										src={project.images[0].url}
+										alt={project.value}
+										class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+										loading="lazy"
+									/>
+								{:else}
+									<div
+										class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-100 to-slate-200"
+									>
+										<svg
+											class="h-16 w-16 text-slate-300"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="1"
+												d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+											/>
+										</svg>
+									</div>
+								{/if}
 								<div
-									class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-100 to-slate-200"
-								>
+									class="absolute inset-0 bg-linear-to-t from-slate-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+								></div>
+							</div>
+
+							<div class="p-5">
+								{#if project.short_description}
+									<p class="line-clamp-1 text-xs text-slate-500">{project.short_description}</p>
+								{/if}
+								<div class="mt-3 flex items-start justify-between gap-4">
+									<h3
+										class="line-clamp-2 text-lg font-semibold text-slate-900 transition-colors group-hover:text-sky-600"
+									>
+										{project.value}
+									</h3>
 									<svg
-										class="h-16 w-16 text-slate-300"
+										class="mt-1 h-5 w-5 shrink-0 text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-500"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -101,46 +124,13 @@
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
-											stroke-width="1"
-											d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+											stroke-width="2"
+											d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
 										/>
 									</svg>
 								</div>
-							{/if}
-							<div
-								class="absolute inset-0 bg-linear-to-t from-slate-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-							></div>
-						</a>
-
-						<div class="p-5">
-							{#if project.short_description}
-								<p class="text-xs text-slate-500 line-clamp-1">{project.short_description}</p>
-							{/if}
-							<div class="mt-2 flex items-start justify-between gap-4">
-								<h3
-									class="line-clamp-2 text-lg font-semibold text-slate-900 transition-colors group-hover:text-sky-600"
-								>
-									{project.value}
-								</h3>
 							</div>
-							{#if project.price}
-								<div class="mt-3">
-									<span class="text-xs text-slate-500">от</span>
-									<span class="ml-1 text-xl font-bold text-slate-900"
-										>{formatPrice(project.price)}</span
-									>
-								</div>
-							{/if}
-							<a
-								href="/mebel/{categorySlug}/{project.slug}"
-								class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-sky-600 hover:text-sky-700"
-							>
-								Подробнее
-								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-								</svg>
-							</a>
-						</div>
+						</a>
 					</article>
 				{/each}
 			</div>
@@ -152,6 +142,7 @@
 						class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-all hover:bg-slate-50 disabled:opacity-30"
 						disabled={currentPage === 1}
 						onclick={() => currentPage--}
+						aria-label="Предыдущая страница"
 					>
 						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
@@ -181,9 +172,15 @@
 						class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-all hover:bg-slate-50 disabled:opacity-30"
 						disabled={currentPage === totalPages}
 						onclick={() => currentPage++}
+						aria-label="Следующая страница"
 					>
 						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 5l7 7-7 7"
+							/>
 						</svg>
 					</button>
 				</div>

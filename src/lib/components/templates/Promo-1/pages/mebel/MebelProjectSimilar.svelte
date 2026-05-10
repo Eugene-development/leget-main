@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { formatPrice } from '$lib/utils/format';
 
 	let {
 		data = {}
@@ -48,20 +47,23 @@
 					</div>
 				</div>
 
-				<div class="p-5">
+				<div class="p-5 flex items-start justify-between gap-4">
 					<h3 class="font-bold text-slate-900 transition-colors group-hover:text-sky-600 line-clamp-2">
 						{project.value}
 					</h3>
-					<div class="mt-3 flex items-baseline gap-2">
-						{#if project.price}
-							<span class="text-lg font-bold text-slate-900">{formatPrice(project.price)} ₽</span>
-							{#if project.old_price && project.old_price > project.price}
-								<span class="text-xs text-slate-400 line-through">{formatPrice(project.old_price)} ₽</span>
-							{/if}
-						{:else}
-							<span class="text-sm font-bold text-slate-900">По запросу</span>
-						{/if}
-					</div>
+					<svg
+						class="mt-0.5 h-5 w-5 shrink-0 text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+						/>
+					</svg>
 				</div>
 			</a>
 		{/each}

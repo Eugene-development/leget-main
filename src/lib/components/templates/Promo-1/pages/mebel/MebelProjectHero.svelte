@@ -30,7 +30,6 @@
 		data = updated;
 	}
 
-	import { formatPrice } from '$lib/utils/format';
 
 	// Закрытие лайтбокса по Escape
 	$effect(() => {
@@ -127,16 +126,6 @@
 				{project.value}
 			</h1>
 
-			<div class="mt-6 flex items-baseline gap-4">
-				{#if project.price}
-					<span class="text-3xl font-bold text-slate-900">{formatPrice(project.price)} ₽</span>
-					{#if project.old_price && project.old_price > project.price}
-						<span class="text-xl text-slate-400 line-through">{formatPrice(project.old_price)} ₽</span>
-					{/if}
-				{:else}
-					<span class="text-2xl font-bold text-slate-900">По запросу</span>
-				{/if}
-			</div>
 
 			<!-- Кнопки -->
 			<div class="mt-8 flex flex-col gap-4 sm:flex-row">

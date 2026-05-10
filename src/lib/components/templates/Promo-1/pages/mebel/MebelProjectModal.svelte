@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getGraphQLUrl } from '$lib/utils/config';
+	import ImageCropper from '$lib/components/ImageCropper.svelte';
 
 	interface Category {
 		id: string;
@@ -33,6 +34,11 @@
 	let files: FileList | null = $state(null);
 	let uploadProgress = $state(0);
 	
+	// Cropper state
+	let filesToProcess: File[] = $state([]);
+	let processedFiles: File[] = $state([]);
+	let currentFileToCrop: File | null = $state(null);
+
 	$effect(() => {
 		if (isOpen && initialCategoryId && !form.category_id) {
 			form.category_id = initialCategoryId;
@@ -103,6 +109,38 @@
 		if (result.errors) throw new Error(result.errors[0].message);
 	}
 
+	async function handleFileSelect(e: Event) {
+		const input = e.target as HTMLInputElement;
+		if (input.files && input.files.length > 0) {
+			filesToProcess = Array.from(input.files);
+			currentFileToCrop = filesToProcess[0];
+		}
+	}
+
+	function handleCropped(file: File) {
+		processedFiles = [...processedFiles, file];
+		filesToProcess = filesToProcess.slice(1);
+		
+		if (filesToProcess.length > 0) {
+			currentFileToCrop = filesToProcess[0];
+		} else {
+			currentFileToCrop = null;
+		}
+	}
+
+	function handleCropCancel() {
+		filesToProcess = filesToProcess.slice(1);
+		if (filesToProcess.length > 0) {
+			currentFileToCrop = filesToProcess[0];
+		} else {
+			currentFileToCrop = null;
+		}
+	}
+
+	function removeFile(index: number) {
+		processedFiles = processedFiles.filter((_, i) => i !== index);
+	}
+
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
 		if (!form.category_id || !form.value) return;
@@ -110,30 +148,34 @@
 		isSubmitting = true;
 		try {
 			const imageUrls: string[] = [];
-			if (files && files.length > 0) {
-				const totalFiles = files.length;
-				for (let i = 0; i < totalFiles; i++) {
-					const file = files[i];
-					const uploadInfo = await getUploadUrl(file);
-					await uploadFileToS3(file, uploadInfo.uploadUrl);
-					imageUrls.push(uploadInfo.objectUrl);
-					uploadProgress = Math.round(((i + 1) / totalFiles) * 100);
-				}
+			const totalFiles = processedFiles.length;
+			
+			for (let i = 0; i < totalFiles; i++) {
+				const file = processedFiles[i];
+				const uploadInfo = await getUploadUrl(file);
+				await uploadFileToS3(file, uploadInfo.uploadUrl);
+				imageUrls.push(uploadInfo.objectUrl);
+				uploadProgress = Math.round(((i + 1) / totalFiles) * 100);
 			}
 			
 			await upsertProject(imageUrls);
 			
 			onSaved();
 			onClose();
-			
-			form = { ...form, value: '', short_description: '', description: '', price: '', old_price: '' };
-			files = null;
-			uploadProgress = 0;
+			resetForm();
 		} catch (e) {
 			alert('Ошибка: ' + e);
 		} finally {
 			isSubmitting = false;
 		}
+	}
+
+	function resetForm() {
+		form = { ...form, value: '', short_description: '', description: '', price: '', old_price: '' };
+		files = null;
+		uploadProgress = 0;
+		processedFiles = [];
+		filesToProcess = [];
 	}
 </script>
 
@@ -196,20 +238,44 @@
 					</label>
 				</div>
 				
-				<div>
-					<label class="mb-1 block text-sm font-medium">Изображения (выберите несколько)</label>
-					<input type="file" multiple accept="image/*" bind:files class="w-full text-sm" />
+				<div class="pt-2">
+					<p class="mb-2 block text-sm font-medium">Изображения</p>
+					
+					<div class="grid grid-cols-4 gap-3 mb-3">
+						{#each processedFiles as file, i}
+							<div class="group relative aspect-square rounded-lg border overflow-hidden bg-slate-100">
+								<img src={URL.createObjectURL(file)} alt="Preview" class="h-full w-full object-cover" />
+								<button 
+									type="button" 
+									aria-label="Удалить изображение"
+									onclick={() => removeFile(i)}
+									class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+								>
+									<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+								</button>
+							</div>
+						{/each}
+						
+						{#if processedFiles.length < 8}
+							<label class="flex flex-col items-center justify-center aspect-square rounded-lg border-2 border-dashed border-slate-300 hover:border-sky-500 hover:bg-sky-50 cursor-pointer transition-all">
+								<svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+								<span class="text-[10px] text-slate-500 mt-1 text-center px-1">Добавить</span>
+								<input type="file" multiple accept="image/*" class="hidden" onchange={handleFileSelect} />
+							</label>
+						{/if}
+					</div>
 				</div>
 				
 				{#if uploadProgress > 0 && uploadProgress < 100}
-					<div class="w-full bg-slate-200 rounded-full h-2.5 mt-2">
-						<div class="bg-sky-600 h-2.5 rounded-full" style="width: {uploadProgress}%"></div>
+					<div class="w-full bg-slate-200 rounded-full h-2 mt-2">
+						<div class="bg-sky-600 h-2 rounded-full transition-all duration-300" style="width: {uploadProgress}%"></div>
 					</div>
+					<p class="text-[10px] text-center text-slate-500 mt-1">Загрузка в облако: {uploadProgress}%</p>
 				{/if}
 				
 				<div class="mt-6 flex justify-end gap-3 pt-4 border-t">
 					<button type="button" onclick={onClose} class="rounded-lg px-4 py-2 font-medium text-slate-600 hover:bg-slate-100">Отмена</button>
-					<button type="submit" disabled={isSubmitting} class="rounded-lg bg-sky-500 px-4 py-2 font-medium text-white hover:bg-sky-600 disabled:opacity-50">
+					<button type="submit" disabled={isSubmitting || processedFiles.length === 0} class="rounded-lg bg-sky-500 px-4 py-2 font-medium text-white hover:bg-sky-600 disabled:opacity-50">
 						{isSubmitting ? 'Сохранение...' : 'Сохранить'}
 					</button>
 				</div>
@@ -217,3 +283,12 @@
 		</div>
 	</div>
 {/if}
+
+{#if currentFileToCrop}
+	<ImageCropper 
+		imageFile={currentFileToCrop} 
+		onCrop={handleCropped} 
+		onCancel={handleCropCancel} 
+	/>
+{/if}
+

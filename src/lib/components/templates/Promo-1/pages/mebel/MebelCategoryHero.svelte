@@ -2,11 +2,7 @@
 	import { saveComponentData } from '$lib/utils/page-edit';
 	import EditableField from '$lib/components/EditableField.svelte';
 
-	let {
-		data = $bindable(),
-		editContext = null,
-		isEditable = false
-	} = $props();
+	let { data = $bindable(), editContext = null, isEditable = false } = $props();
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -26,7 +22,9 @@
 	};
 
 	function getHeroImage(slug) {
-		return categoryImages[slug] || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200';
+		return (
+			categoryImages[slug] || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200'
+		);
 	}
 </script>
 
@@ -63,7 +61,7 @@
 			</h1>
 
 			{#if data.description}
-				<div class="mt-4 max-w-xl text-lg text-slate-300">
+				<div class="mt-4 max-w-2xl text-lg text-slate-300">
 					<EditableField
 						fieldKey="MebelCategoryHero.description"
 						label="Описание"
@@ -105,9 +103,9 @@
 						/>
 					</svg>
 				</button>
+			</div>
 		</div>
 	</div>
-</div>
 </div>
 
 <style>
