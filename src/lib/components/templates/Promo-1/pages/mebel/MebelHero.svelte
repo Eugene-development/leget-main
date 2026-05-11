@@ -26,7 +26,7 @@
 	<section class="mebel-hero relative overflow-hidden rounded-2xl bg-slate-900">
 		<img src={bgImage} alt="Hero" class="absolute inset-0 h-full w-full object-cover opacity-40" />
 
-		<div class="relative px-8 py-16 sm:px-12 sm:py-20">
+		<div class="relative px-8 py-12 sm:px-12 sm:py-16">
 			<!-- Хлебные крошки -->
 			<nav class="mb-6 flex items-center gap-2 text-sm text-slate-400">
 				<a href="/" class="transition-colors hover:text-white">Главная</a>

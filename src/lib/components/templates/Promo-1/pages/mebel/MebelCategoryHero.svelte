@@ -35,9 +35,9 @@
 			alt={data.title}
 			class="absolute inset-0 h-full w-full object-cover opacity-40"
 		/>
-		<div class="relative px-8 py-20 sm:px-12 sm:py-32">
+		<div class="relative px-8 py-12 sm:px-12 sm:py-16">
 			<!-- Breadcrumb -->
-			<nav class="mb-4 flex items-center gap-2 text-sm text-slate-400">
+			<nav class="mb-6 flex items-center gap-2 text-sm text-slate-400">
 				<a href="/" class="transition-colors hover:text-white">Главная</a>
 				<span>/</span>
 				<a href="/mebel" class="transition-colors hover:text-white">Мебель</a>
@@ -61,7 +61,7 @@
 			</h1>
 
 			{#if data.description}
-				<div class="mt-4 max-w-2xl text-lg text-slate-300">
+				<div class="mt-4 max-w-xl text-lg text-slate-300">
 					<EditableField
 						fieldKey="MebelCategoryHero.description"
 						label="Описание"
@@ -78,7 +78,7 @@
 				</div>
 			{/if}
 
-			<div class="mt-6 flex flex-wrap gap-4">
+			<div class="mt-8 flex flex-wrap gap-4">
 				<button
 					class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-6 py-3 font-medium text-white transition-all hover:bg-sky-600"
 				>
