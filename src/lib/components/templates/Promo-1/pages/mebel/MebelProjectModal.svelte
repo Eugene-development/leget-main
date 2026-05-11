@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { getGraphQLUrl } from '$lib/utils/config';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
 
@@ -20,7 +21,7 @@
 	let isSubmitting = $state(false);
 	
 	let form = $state({
-		category_id: initialCategoryId,
+		category_id: '',
 		value: '',
 		short_description: '',
 		description: '',
@@ -40,8 +41,13 @@
 	let currentFileToCrop: File | null = $state(null);
 
 	$effect(() => {
-		if (isOpen && initialCategoryId && !form.category_id) {
-			form.category_id = initialCategoryId;
+		if (isOpen) {
+			untrack(() => {
+				resetForm();
+				if (initialCategoryId) {
+					form.category_id = initialCategoryId;
+				}
+			});
 		}
 	});
 
@@ -171,7 +177,17 @@
 	}
 
 	function resetForm() {
-		form = { ...form, value: '', short_description: '', description: '', price: '', old_price: '' };
+		form = {
+			category_id: initialCategoryId || '',
+			value: '',
+			short_description: '',
+			description: '',
+			price: '',
+			old_price: '',
+			is_new: false,
+			is_featured: false,
+			is_active: true
+		};
 		files = null;
 		uploadProgress = 0;
 		processedFiles = [];
@@ -189,8 +205,8 @@
 			
 			<form onsubmit={handleSubmit} class="space-y-4 text-slate-800">
 				<div>
-					<label class="mb-1 block text-sm font-medium">Категория *</label>
-					<select bind:value={form.category_id} required class="w-full rounded-lg border border-slate-200 p-2.5">
+					<label for="mebel-project-category" class="mb-1 block text-sm font-medium">Категория *</label>
+					<select id="mebel-project-category" bind:value={form.category_id} required class="w-full rounded-lg border border-slate-200 p-2.5">
 						{#each categories as cat}
 							<option value={cat.id}>{cat.value}</option>
 						{/each}
@@ -198,28 +214,28 @@
 				</div>
 				
 				<div>
-					<label class="mb-1 block text-sm font-medium">Название проекта *</label>
-					<input type="text" bind:value={form.value} required class="w-full rounded-lg border border-slate-200 p-2.5" />
+					<label for="mebel-project-value" class="mb-1 block text-sm font-medium">Название проекта *</label>
+					<input id="mebel-project-value" type="text" bind:value={form.value} required class="w-full rounded-lg border border-slate-200 p-2.5" />
 				</div>
 				
 				<div>
-					<label class="mb-1 block text-sm font-medium">Краткое описание</label>
-					<input type="text" bind:value={form.short_description} class="w-full rounded-lg border border-slate-200 p-2.5" />
+					<label for="mebel-project-short-description" class="mb-1 block text-sm font-medium">Краткое описание</label>
+					<input id="mebel-project-short-description" type="text" bind:value={form.short_description} class="w-full rounded-lg border border-slate-200 p-2.5" />
 				</div>
 				
 				<div>
-					<label class="mb-1 block text-sm font-medium">Полное описание</label>
-					<textarea bind:value={form.description} rows="3" class="w-full rounded-lg border border-slate-200 p-2.5"></textarea>
+					<label for="mebel-project-description" class="mb-1 block text-sm font-medium">Полное описание</label>
+					<textarea id="mebel-project-description" bind:value={form.description} rows="3" class="w-full rounded-lg border border-slate-200 p-2.5"></textarea>
 				</div>
 				
 				<div class="grid grid-cols-2 gap-4">
 					<div>
-						<label class="mb-1 block text-sm font-medium">Цена</label>
-						<input type="number" bind:value={form.price} class="w-full rounded-lg border border-slate-200 p-2.5" />
+						<label for="mebel-project-price" class="mb-1 block text-sm font-medium">Цена</label>
+						<input id="mebel-project-price" type="number" bind:value={form.price} class="w-full rounded-lg border border-slate-200 p-2.5" />
 					</div>
 					<div>
-						<label class="mb-1 block text-sm font-medium">Старая цена</label>
-						<input type="number" bind:value={form.old_price} class="w-full rounded-lg border border-slate-200 p-2.5" />
+						<label for="mebel-project-old-price" class="mb-1 block text-sm font-medium">Старая цена</label>
+						<input id="mebel-project-old-price" type="number" bind:value={form.old_price} class="w-full rounded-lg border border-slate-200 p-2.5" />
 					</div>
 				</div>
 				

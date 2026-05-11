@@ -129,6 +129,22 @@
 										/>
 									</svg>
 								</div>
+
+								<!-- Фичи (табы) -->
+								<div class="mt-4 flex flex-wrap gap-2">
+									<div class="flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5 text-[10px] font-semibold text-slate-600 border border-slate-100 group-hover:bg-amber-50 group-hover:border-amber-100 transition-colors">
+										<svg class="h-3 w-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+										</svg>
+										<span>Доставка и монтаж</span>
+									</div>
+									<div class="flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5 text-[10px] font-semibold text-slate-600 border border-slate-100 group-hover:bg-purple-50 group-hover:border-purple-100 transition-colors">
+										<svg class="h-3 w-3 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1" />
+										</svg>
+										<span>Рассрочка 0%</span>
+									</div>
+								</div>
 							</div>
 						</a>
 					</article>
