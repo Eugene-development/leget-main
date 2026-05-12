@@ -1,4 +1,5 @@
 <script lang="ts">
+	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -10,6 +11,24 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	async function saveField(field: string, value: any) {
+		if (!editContext) return;
+		const updated = { ...data, [field]: value };
+		await saveComponentData(editContext, 'TestimonialsGrid', updated);
+		data = updated;
+	}
+
+	async function updateFeatured(field: string, value: string) {
+		const updatedFeatured = { ...featured, [field]: value };
+		await saveField('featured', updatedFeatured);
+	}
+
+	async function updateReview(index: number, field: string, value: string) {
+		const updatedReviews = [...reviews];
+		updatedReviews[index] = { ...updatedReviews[index], [field]: value };
+		await saveField('reviews', updatedReviews);
+	}
 
 	const defaultFeatured = {
 		text: 'Ваша работа — это лучший знак качества. Убедились в этом снова. Наш новый гарнитур на кухне стал очень хорошим дополнением к интерьеру. Большое спасибо за вашу работу!',
@@ -68,12 +87,46 @@
 				style="animation-delay: 0ms"
 			>
 				<blockquote class="p-6 text-lg font-semibold tracking-tight text-gray-900 sm:p-12 sm:text-xl/8">
-					<p>{featured.text}</p>
+					<EditableField 
+						fieldKey="TestimonialsGrid.featured.text" 
+						label="Текст отзыва" 
+						value={featured.text} 
+						{isEditable} 
+						inline 
+						multiline
+						onSave={(v) => updateFeatured('text', v)}
+					>
+						{#snippet children(val)}
+							<p>{val}</p>
+						{/snippet}
+					</EditableField>
 				</blockquote>
 				<figcaption class="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-gray-900/10 px-6 py-4 sm:flex-nowrap">
 					<div class="flex-auto">
-						<div class="font-semibold">{featured.name}</div>
-						<div class="text-gray-600">{featured.location}</div>
+						<div class="font-semibold">
+							<EditableField 
+								fieldKey="TestimonialsGrid.featured.name" 
+								label="Имя автора" 
+								value={featured.name} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateFeatured('name', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</div>
+						<div class="text-gray-600">
+							<EditableField 
+								fieldKey="TestimonialsGrid.featured.location" 
+								label="Город" 
+								value={featured.location} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateFeatured('location', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</div>
 					</div>
 				</figcaption>
 			</figure>
@@ -82,15 +135,52 @@
 			<div class="space-y-8 xl:contents xl:space-y-0">
 				<div class="space-y-8 xl:row-span-2">
 					{#each col1 as review, i}
+						{@const globalIdx = getGlobalIndex(0, i)}
 						<figure
 							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {getGlobalIndex(0, i) * 80 + 100}ms"
+							style="animation-delay: {globalIdx * 80 + 100}ms"
 						>
-							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
+							<blockquote class="text-gray-900">
+								<EditableField 
+									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
+									label="Текст отзыва" 
+									value={review.text} 
+									{isEditable} 
+									inline 
+									multiline
+									onSave={(v) => updateReview(globalIdx, 'text', v)}
+								>
+									{#snippet children(val)}
+										<p>{val}</p>
+									{/snippet}
+								</EditableField>
+							</blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
-									<div class="font-semibold">{review.name}</div>
-									<div class="text-gray-600">{review.location}</div>
+									<div class="font-semibold">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
+											label="Имя автора" 
+											value={review.name} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'name', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
+									<div class="text-gray-600">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
+											label="Город" 
+											value={review.location} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'location', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
 								</div>
 							</figcaption>
 						</figure>
@@ -100,15 +190,52 @@
 				<!-- Колонка 2 -->
 				<div class="space-y-8 xl:row-start-1">
 					{#each col2 as review, i}
+						{@const globalIdx = getGlobalIndex(1, i)}
 						<figure
 							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {getGlobalIndex(1, i) * 80 + 100}ms"
+							style="animation-delay: {globalIdx * 80 + 100}ms"
 						>
-							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
+							<blockquote class="text-gray-900">
+								<EditableField 
+									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
+									label="Текст отзыва" 
+									value={review.text} 
+									{isEditable} 
+									inline 
+									multiline
+									onSave={(v) => updateReview(globalIdx, 'text', v)}
+								>
+									{#snippet children(val)}
+										<p>{val}</p>
+									{/snippet}
+								</EditableField>
+							</blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
-									<div class="font-semibold">{review.name}</div>
-									<div class="text-gray-600">{review.location}</div>
+									<div class="font-semibold">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
+											label="Имя автора" 
+											value={review.name} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'name', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
+									<div class="text-gray-600">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
+											label="Город" 
+											value={review.location} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'location', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
 								</div>
 							</figcaption>
 						</figure>
@@ -118,15 +245,52 @@
 				<!-- Колонка 3 -->
 				<div class="space-y-8 xl:row-start-1">
 					{#each col3 as review, i}
+						{@const globalIdx = getGlobalIndex(2, i)}
 						<figure
 							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {getGlobalIndex(2, i) * 80 + 100}ms"
+							style="animation-delay: {globalIdx * 80 + 100}ms"
 						>
-							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
+							<blockquote class="text-gray-900">
+								<EditableField 
+									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
+									label="Текст отзыва" 
+									value={review.text} 
+									{isEditable} 
+									inline 
+									multiline
+									onSave={(v) => updateReview(globalIdx, 'text', v)}
+								>
+									{#snippet children(val)}
+										<p>{val}</p>
+									{/snippet}
+								</EditableField>
+							</blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
-									<div class="font-semibold">{review.name}</div>
-									<div class="text-gray-600">{review.location}</div>
+									<div class="font-semibold">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
+											label="Имя автора" 
+											value={review.name} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'name', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
+									<div class="text-gray-600">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
+											label="Город" 
+											value={review.location} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'location', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
 								</div>
 							</figcaption>
 						</figure>
@@ -136,15 +300,52 @@
 				<!-- Колонка 4 -->
 				<div class="space-y-8 xl:row-span-2">
 					{#each col4 as review, i}
+						{@const globalIdx = getGlobalIndex(3, i)}
 						<figure
 							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {getGlobalIndex(3, i) * 80 + 100}ms"
+							style="animation-delay: {globalIdx * 80 + 100}ms"
 						>
-							<blockquote class="text-gray-900"><p>{review.text}</p></blockquote>
+							<blockquote class="text-gray-900">
+								<EditableField 
+									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
+									label="Текст отзыва" 
+									value={review.text} 
+									{isEditable} 
+									inline 
+									multiline
+									onSave={(v) => updateReview(globalIdx, 'text', v)}
+								>
+									{#snippet children(val)}
+										<p>{val}</p>
+									{/snippet}
+								</EditableField>
+							</blockquote>
 							<figcaption class="mt-6 flex items-center gap-x-4">
 								<div>
-									<div class="font-semibold">{review.name}</div>
-									<div class="text-gray-600">{review.location}</div>
+									<div class="font-semibold">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
+											label="Имя автора" 
+											value={review.name} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'name', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
+									<div class="text-gray-600">
+										<EditableField 
+											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
+											label="Город" 
+											value={review.location} 
+											{isEditable} 
+											inline 
+											onSave={(v) => updateReview(globalIdx, 'location', v)}
+										>
+											{#snippet children(val)}{val}{/snippet}
+										</EditableField>
+									</div>
 								</div>
 							</figcaption>
 						</figure>
@@ -154,6 +355,7 @@
 		</div>
 	</div>
 </div>
+
 
 <style>
 	@keyframes reviewFadeUp {

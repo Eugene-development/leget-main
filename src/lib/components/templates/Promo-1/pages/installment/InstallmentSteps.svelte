@@ -26,6 +26,13 @@
 		{ number: '✓', title: 'Заберите покупку',  text: 'Подпишите договор и пользуйтесь новой мебелью или техникой', final: true },
 	];
 
+	async function updateStep(index: number, field: string, value: string) {
+		if (!editContext) return;
+		const updatedSteps = [...steps];
+		updatedSteps[index] = { ...updatedSteps[index], [field]: value };
+		await saveField('steps', updatedSteps);
+	}
+
 	const steps = $derived(
 		Array.isArray(data?.steps) && (data.steps as unknown[]).length > 0
 			? (data.steps as typeof defaultSteps)
@@ -63,7 +70,7 @@
 		</div>
 
 		<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-			{#each steps as step}
+			{#each steps as step, i}
 				<div class="relative text-center">
 					<div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white shadow-lg
 						{step.final
@@ -71,8 +78,30 @@
 							: 'bg-linear-to-br from-red-500 to-red-600 shadow-red-500/25'}">
 						{step.number}
 					</div>
-					<h3 class="mt-6 text-lg font-semibold text-slate-900">{step.title}</h3>
-					<p class="mt-2 text-sm text-slate-500">{step.text}</p>
+					<h3 class="mt-6 text-lg font-semibold text-slate-900">
+						<EditableField 
+							fieldKey="InstallmentSteps.{i}.title" 
+							label="Заголовок шага" 
+							value={step.title} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateStep(i, 'title', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</h3>
+					<p class="mt-2 text-sm text-slate-500">
+						<EditableField 
+							fieldKey="InstallmentSteps.{i}.text" 
+							label="Описание шага" 
+							value={step.text} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateStep(i, 'text', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</p>
 					{#if !step.final}
 						<div class="absolute right-0 top-8 hidden h-0.5 w-full bg-linear-to-r from-red-200 to-transparent lg:block lg:w-1/2 lg:translate-x-1/2"></div>
 					{/if}

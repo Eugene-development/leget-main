@@ -1,7 +1,11 @@
 <script>
 	import EditableField from '$lib/components/EditableField.svelte';
 
-	let { data } = $props();
+	let {
+		data,
+		editContext = null,
+		isEditable = false
+	} = $props();
 
 	// Projects come from the backend enrichment
 	let projects = $derived(data.projects || []);

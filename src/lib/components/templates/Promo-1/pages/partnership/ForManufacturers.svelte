@@ -35,6 +35,20 @@
 		'Маркетинговая поддержка',
 	];
 
+	async function updateStat(index: number, field: string, value: string) {
+		if (!editContext) return;
+		const updatedStats = [...stats];
+		updatedStats[index] = { ...updatedStats[index], [field]: value };
+		await saveField('stats', updatedStats);
+	}
+
+	async function updateBenefit(index: number, value: string) {
+		if (!editContext) return;
+		const updatedBenefits = [...benefits];
+		updatedBenefits[index] = value;
+		await saveField('benefits', updatedBenefits);
+	}
+
 	const stats = $derived(
 		Array.isArray(data?.stats) && (data.stats as unknown[]).length > 0
 			? (data.stats as typeof defaultStats)
@@ -95,12 +109,21 @@
 				</EditableField>
 
 				<div class="mt-8 space-y-4">
-					{#each benefits as benefit}
+					{#each benefits as benefit, i}
 						<div class="flex items-center gap-3 text-slate-300">
 							<svg class="h-6 w-6 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
 							</svg>
-							{benefit}
+							<EditableField 
+								fieldKey="ForManufacturers.benefits.{i}" 
+								label="Преимущество" 
+								value={benefit} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateBenefit(i, v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
 						</div>
 					{/each}
 				</div>
@@ -132,10 +155,32 @@
 			<!-- Статистика -->
 			<div class="mt-12 lg:mt-0">
 				<div class="grid grid-cols-2 gap-4">
-					{#each stats as stat}
+					{#each stats as stat, i}
 						<div class="rounded-2xl bg-white/5 p-6 backdrop-blur">
-							<div class="text-4xl font-bold text-white">{stat.value}</div>
-							<div class="mt-2 text-slate-400">{stat.label}</div>
+							<div class="text-4xl font-bold text-white">
+								<EditableField 
+									fieldKey="ForManufacturers.stats.{i}.value" 
+									label="Значение" 
+									value={stat.value} 
+									{isEditable} 
+									inline 
+									onSave={(v) => updateStat(i, 'value', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</div>
+							<div class="mt-2 text-slate-400">
+								<EditableField 
+									fieldKey="ForManufacturers.stats.{i}.label" 
+									label="Метка" 
+									value={stat.label} 
+									{isEditable} 
+									inline 
+									onSave={(v) => updateStat(i, 'label', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</div>
 						</div>
 					{/each}
 				</div>

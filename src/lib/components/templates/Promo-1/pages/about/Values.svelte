@@ -37,6 +37,13 @@
 		cyan:    'bg-cyan-100 text-cyan-600',
 	};
 
+	async function updateItem(index: number, field: string, value: string) {
+		if (!editContext) return;
+		const updatedItems = [...items];
+		updatedItems[index] = { ...updatedItems[index], [field]: value };
+		await saveField('items', updatedItems);
+	}
+
 	const items = $derived(
 		Array.isArray(data?.items) && (data.items as unknown[]).length > 0
 			? (data.items as typeof defaultItems)
@@ -75,7 +82,7 @@
 		</div>
 
 		<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each items as item}
+			{#each items as item, i}
 				<div class="flex items-start gap-4">
 					<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl {colorMap[item.color] ?? colorMap.red}">
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,8 +90,30 @@
 						</svg>
 					</div>
 					<div>
-						<h3 class="text-lg font-semibold text-slate-900">{item.title}</h3>
-						<p class="mt-2 text-slate-600">{item.text}</p>
+						<h3 class="text-lg font-semibold text-slate-900">
+							<EditableField 
+								fieldKey="Values.{i}.title" 
+								label="Заголовок" 
+								value={item.title} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateItem(i, 'title', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</h3>
+						<p class="mt-2 text-slate-600">
+							<EditableField 
+								fieldKey="Values.{i}.text" 
+								label="Описание" 
+								value={item.text} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateItem(i, 'text', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</p>
 					</div>
 				</div>
 			{/each}

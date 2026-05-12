@@ -33,6 +33,13 @@
 		sky:     { bg: 'from-sky-100 to-blue-100',       icon: 'from-sky-500 to-blue-600 shadow-sky-500/25',          dot: 'bg-sky-500' },
 	};
 
+	async function updateCard(index: number, field: string, value: string) {
+		if (!editContext) return;
+		const updatedCards = [...cards];
+		updatedCards[index] = { ...updatedCards[index], [field]: value };
+		await saveField('cards', updatedCards);
+	}
+
 	const cards = $derived(
 		Array.isArray(data?.cards) && (data.cards as unknown[]).length > 0
 			? (data.cards as typeof defaultCards)
@@ -69,7 +76,7 @@
 	</div>
 
 	<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-		{#each cards as card}
+		{#each cards as card, i}
 			{@const c = colorMap[card.color] ?? colorMap.sky}
 			<div class="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 				<div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-linear-to-br {c.bg} opacity-50 transition-transform duration-300 group-hover:scale-150"></div>
@@ -79,8 +86,30 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
 						</svg>
 					</div>
-					<h3 class="mt-6 text-xl font-bold text-slate-900">{card.title}</h3>
-					<p class="mt-3 text-slate-600">{card.text}</p>
+					<h3 class="mt-6 text-xl font-bold text-slate-900">
+						<EditableField 
+							fieldKey="WhoWeInvite.{i}.title" 
+							label="Заголовок" 
+							value={card.title} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateCard(i, 'title', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</h3>
+					<p class="mt-3 text-slate-600">
+						<EditableField 
+							fieldKey="WhoWeInvite.{i}.text" 
+							label="Описание" 
+							value={card.text} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateCard(i, 'text', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</p>
 				</div>
 			</div>
 		{/each}

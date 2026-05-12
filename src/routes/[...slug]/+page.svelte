@@ -19,9 +19,13 @@
 
 	const site = $derived(data.pageData?.site as SiteData | undefined);
 	const templateId = $derived(site?.templateId ?? null);
-	const pageSlug = $derived(data.pageData?.page?.slug ?? null);
-	const pageId = $derived(data.pageData?.page?.id ?? null);
-	const licenseId = $derived(data.pageData?.page?.licenseId ?? null);
+	
+	const page = $derived(data.pageData?.page);
+	const pageSlug = $derived(page?.slug ?? null);
+	
+	// Try both camelCase and snake_case for licenseId to be resilient to GraphQL mapping
+	const pageId = $derived(page?.id ?? null);
+	const licenseId = $derived(page?.licenseId ?? (page as any)?.license_id ?? null);
 </script>
 
 <svelte:head>

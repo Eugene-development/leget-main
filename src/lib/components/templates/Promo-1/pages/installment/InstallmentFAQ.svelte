@@ -26,6 +26,13 @@
 		{ question: 'Нужны ли поручители?',                    answer: 'Нет, для оформления рассрочки поручители не требуются.' },
 	];
 
+	async function updateItem(index: number, field: string, value: string) {
+		if (!editContext) return;
+		const updatedItems = [...items];
+		updatedItems[index] = { ...updatedItems[index], [field]: value };
+		await saveField('items', updatedItems);
+	}
+
 	const items = $derived(
 		Array.isArray(data?.items) && (data.items as unknown[]).length > 0
 			? (data.items as typeof defaultItems)
@@ -51,10 +58,33 @@
 		</div>
 
 		<div class="mt-12 space-y-4">
-			{#each items as item}
+			{#each items as item, i}
 				<div class="rounded-2xl bg-white p-6 shadow-sm">
-					<h3 class="text-lg font-semibold text-slate-900">{item.question}</h3>
-					<p class="mt-2 text-slate-600">{item.answer}</p>
+					<h3 class="text-lg font-semibold text-slate-900">
+						<EditableField 
+							fieldKey="InstallmentFAQ.{i}.question" 
+							label="Вопрос" 
+							value={item.question} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateItem(i, 'question', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</h3>
+					<p class="mt-2 text-slate-600">
+						<EditableField 
+							fieldKey="InstallmentFAQ.{i}.answer" 
+							label="Ответ" 
+							value={item.answer} 
+							{isEditable} 
+							inline 
+							multiline
+							onSave={(v) => updateItem(i, 'answer', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</p>
 				</div>
 			{/each}
 		</div>

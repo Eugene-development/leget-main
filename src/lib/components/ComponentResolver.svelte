@@ -48,7 +48,11 @@
 		}
 	});
 
-	const isEditable = $derived(browser && $auth.isAuthenticated && editContext !== null);
+	const isEditable = $derived(
+		browser && 
+		$auth.isAuthenticated && 
+		(editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
+	);
 
 	/**
 	 * Map templateId (from License) to a template module.

@@ -30,6 +30,13 @@
 		{ years: '7',  unit: 'лет', title: 'Стекло и зеркала',    text: 'Закалённое стекло и зеркальные фасады с рисунком и без него', color: 'from-pink-500 to-rose-500 shadow-pink-500/25',      dot: 'from-pink-100 to-rose-100' },
 	];
 
+	async function updateItem(index: number, field: string, value: string) {
+		if (!editContext) return;
+		const updatedItems = [...items];
+		updatedItems[index] = { ...updatedItems[index], [field]: value };
+		await saveField('items', updatedItems);
+	}
+
 	const items = $derived(
 		Array.isArray(data?.items) && (data.items as unknown[]).length > 0
 			? (data.items as typeof defaultItems)
@@ -66,7 +73,7 @@
 	</div>
 
 	<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-		{#each items as item}
+		{#each items as item, i}
 			<div class="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 				<div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-linear-to-br {item.dot} opacity-50 transition-transform duration-300 group-hover:scale-150"></div>
 				<div class="relative">
@@ -76,11 +83,55 @@
 						</svg>
 					</div>
 					<div class="mt-4">
-						<span class="text-4xl font-bold text-slate-900">{item.years}</span>
-						<span class="ml-1 text-lg text-slate-500">{item.unit}</span>
+						<span class="text-4xl font-bold text-slate-900">
+							<EditableField 
+								fieldKey="GuaranteeTerms.{i}.years" 
+								label="Кол-во лет" 
+								value={item.years} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateItem(i, 'years', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</span>
+						<span class="ml-1 text-lg text-slate-500">
+							<EditableField 
+								fieldKey="GuaranteeTerms.{i}.unit" 
+								label="Ед. измерения" 
+								value={item.unit} 
+								{isEditable} 
+								inline 
+								onSave={(v) => updateItem(i, 'unit', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</span>
 					</div>
-					<h3 class="mt-2 text-lg font-semibold text-slate-900">{item.title}</h3>
-					<p class="mt-1 text-sm text-slate-500">{item.text}</p>
+					<h3 class="mt-2 text-lg font-semibold text-slate-900">
+						<EditableField 
+							fieldKey="GuaranteeTerms.{i}.title" 
+							label="Категория" 
+							value={item.title} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateItem(i, 'title', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</h3>
+					<p class="mt-1 text-sm text-slate-500">
+						<EditableField 
+							fieldKey="GuaranteeTerms.{i}.text" 
+							label="Описание" 
+							value={item.text} 
+							{isEditable} 
+							inline 
+							onSave={(v) => updateItem(i, 'text', v)}
+						>
+							{#snippet children(val)}{val}{/snippet}
+						</EditableField>
+					</p>
 				</div>
 			</div>
 		{/each}

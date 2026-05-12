@@ -1,8 +1,16 @@
 <script lang="ts">
-	import { saveComponentData } from '$lib/utils/page-edit';
+	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import EditableField from '$lib/components/EditableField.svelte';
 
-	let { data = $bindable(), editContext = null, isEditable = false } = $props();
+	let {
+		data = $bindable(),
+		editContext = null,
+		isEditable = false
+	}: {
+		data: any;
+		editContext?: EditContext | null;
+		isEditable?: boolean;
+	} = $props();
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
