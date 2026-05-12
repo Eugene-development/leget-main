@@ -86,7 +86,8 @@
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
+					Authorization: `Bearer ${token}`,
+					'X-Forwarded-Host': window.location.hostname
 				},
 				body: JSON.stringify({
 					query: `mutation UpsertMebelProject($input: UpsertMebelProjectInput!) {

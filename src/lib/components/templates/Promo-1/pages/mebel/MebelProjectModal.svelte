@@ -55,7 +55,7 @@
 		const token = localStorage.getItem('auth_token');
 		const res = await fetch(getGraphQLUrl(), {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, 'X-Forwarded-Host': window.location.hostname },
 			body: JSON.stringify({
 				query: `mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String) {
 					generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder) {
@@ -88,7 +88,7 @@
 		
 		const res = await fetch(getGraphQLUrl(), {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, 'X-Forwarded-Host': window.location.hostname },
 			body: JSON.stringify({
 				query: `mutation UpsertMebelProject($input: UpsertMebelProjectInput!) {
 					upsertMebelProject(input: $input) {
