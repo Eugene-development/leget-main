@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { auth } from '$lib/stores/auth';
@@ -91,7 +92,7 @@
 <MebelProjectModal 
 	isOpen={isModalOpen} 
 	onClose={() => isModalOpen = false} 
-	onSaved={() => window.location.reload()} 
+	onSaved={() => invalidateAll()} 
 	categories={categories} 
 	initialCategoryId={addCategoryId} 
 />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
+	import { invalidateAll, goto } from '$app/navigation';
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -117,9 +118,9 @@
 			if (saved && (saved.slug !== project.slug || categoryId !== (project.category_id || category.id))) {
 				const newCat = categories.find((c: any) => c.id === categoryId);
 				const catSlug = newCat?.slug || category.slug;
-				setTimeout(() => { window.location.href = `/mebel/${catSlug}/${saved.slug}`; }, 800);
+				setTimeout(() => { goto(`/mebel/${catSlug}/${saved.slug}`); }, 800);
 			} else {
-				setTimeout(() => window.location.reload(), 800);
+				setTimeout(() => invalidateAll(), 800);
 			}
 		} catch (e: any) {
 			saveError = e.message || 'Ошибка сохранения';
