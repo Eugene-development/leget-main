@@ -61,16 +61,22 @@
 					/>
 				{:else}
 					<div class="flex flex-col items-center">
-						<div class="mb-1 size-7 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 shadow-sm transition-transform duration-300 group-hover:scale-110"></div>
+						<div
+							class="mb-1 size-7 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 shadow-sm transition-transform duration-300 group-hover:scale-110"
+						></div>
 						<EditableField
 							fieldKey="Footer.siteName"
 							label="Название сайта"
-							value={!data?.siteName || data.siteName === 'Новострой' ? 'Логотип' : String(data.siteName)}
+							value={!data?.siteName || data.siteName === 'Новострой'
+								? 'Логотип'
+								: String(data.siteName)}
 							onSave={(val) => saveField('siteName', val)}
 							{isEditable}
 						>
 							{#snippet children(displayValue)}
-								<span class="text-[8px] font-black uppercase tracking-[0.2em] text-white transition-transform duration-300 group-hover:scale-105">
+								<span
+									class="text-[8px] font-black tracking-[0.2em] text-white uppercase transition-transform duration-300 group-hover:scale-105"
+								>
 									{displayValue}
 								</span>
 							{/snippet}
@@ -84,16 +90,15 @@
 						<h3 class="text-sm/6 font-semibold text-white">Информация</h3>
 						<ul role="list" class="mt-6 space-y-4">
 							<li>
-								<a href="/about" class="text-sm/6 text-gray-400 hover:text-white">О компании</a>
-							</li>
-							<li>
-								<a href="/partnership" class="text-sm/6 text-gray-400 hover:text-white"
-									>Партнёрство</a
-								>
+								<a href="/actions" class="text-sm/6 text-gray-400 hover:text-white">Акции</a>
 							</li>
 							<li>
 								<a href="/testimonials" class="text-sm/6 text-gray-400 hover:text-white">Отзывы</a>
 							</li>
+							<li>
+								<a href="/about" class="text-sm/6 text-gray-400 hover:text-white">О компании</a>
+							</li>
+
 							<li>
 								<a href="/contacts" class="text-sm/6 text-gray-400 hover:text-white">Контакты</a>
 							</li>
@@ -149,29 +154,20 @@
 								<a href="/santehnika" class="text-sm/6 text-gray-400 hover:text-white">Сантехника</a
 								>
 							</li>
+							<li>
+								<a href="/furnitura" class="text-sm/6 text-gray-400 hover:text-white">Фурнитура</a>
+							</li>
 						</ul>
 					</div>
 					<div class="mt-10 md:mt-0">
-						<h3 class="text-sm/6 font-semibold text-white">Вакансии</h3>
+						<h3 class="text-sm/6 font-semibold text-white">Прочее</h3>
 						<ul role="list" class="mt-6 space-y-4">
 							<li>
-								<a href="/vacancy/designer" class="text-sm/6 text-gray-400 hover:text-white"
-									>Дизайнер</a
-								>
+								<a href="/vacancy" class="text-sm/6 text-gray-400 hover:text-white">Вакансии</a>
 							</li>
 							<li>
-								<a href="/vacancy/assembler" class="text-sm/6 text-gray-400 hover:text-white"
-									>Сборщик</a
-								>
-							</li>
-							<li>
-								<a href="/vacancy/driver" class="text-sm/6 text-gray-400 hover:text-white"
-									>Водитель</a
-								>
-							</li>
-							<li>
-								<a href="/vacancy/marketer" class="text-sm/6 text-gray-400 hover:text-white"
-									>Маркетолог</a
+								<a href="/partnership" class="text-sm/6 text-gray-400 hover:text-white"
+									>Партнёрство</a
 								>
 							</li>
 						</ul>
@@ -232,7 +228,7 @@
 				<button
 					type="button"
 					onclick={handleAuthClick}
-					class="rounded-md bg-white/5 px-3 py-1.5 text-xs font-semibold text-gray-300 shadow-sm ring-1 ring-inset ring-white/10 transition-all hover:bg-white/10 hover:text-white"
+					class="rounded-md bg-white/5 px-3 py-1.5 text-xs font-semibold text-gray-300 shadow-sm ring-1 ring-white/10 transition-all ring-inset hover:bg-white/10 hover:text-white"
 				>
 					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
 				</button>
