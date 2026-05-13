@@ -175,78 +175,108 @@
 				</div>
 			</div>
 		</div>
-		<div
-			class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between"
-		>
-			<div>
-				<EditableField
-					fieldKey="Footer.subscribeTitle"
-					label="Заголовок подписки"
-					value={String(data?.subscribeTitle ?? 'Подписка на новости')}
-					onSave={(val) => saveField('subscribeTitle', val)}
-					{isEditable}
-				>
-					{#snippet children(displayValue)}
-						<h3 class="text-sm/6 font-semibold text-white">{displayValue}</h3>
-					{/snippet}
-				</EditableField>
+		{#if false}
+			<div
+				class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between"
+			>
+				<div>
+					<EditableField
+						fieldKey="Footer.subscribeTitle"
+						label="Заголовок подписки"
+						value={String(data?.subscribeTitle ?? 'Подписка на новости')}
+						onSave={(val) => saveField('subscribeTitle', val)}
+						{isEditable}
+					>
+						{#snippet children(displayValue)}
+							<h3 class="text-sm/6 font-semibold text-white">{displayValue}</h3>
+						{/snippet}
+					</EditableField>
 
-				<EditableField
-					fieldKey="Footer.subscribeText"
-					label="Текст подписки"
-					value={String(data?.subscribeText ?? 'Подпишитесь на новости и будьте в курсе всех новинок и акций.')}
-					onSave={(val) => saveField('subscribeText', val)}
-					{isEditable}
-					multiline
-				>
-					{#snippet children(displayValue)}
-						<p class="mt-2 text-sm/6 text-gray-300">
-							{displayValue}
-						</p>
-					{/snippet}
-				</EditableField>
-			</div>
-			{#if formSubmitted}
-				<span class="text-sm/6 text-gray-300">Спасибо за подписку!</span>
-			{:else}
-				<form onsubmit={handleSubmit} class="mt-6 sm:flex sm:max-w-md lg:mt-0">
-					<label for="email-address" class="sr-only">Адрес электронной почты</label>
-					<!-- Honeypot-поле (скрытое) -->
-					<div class="hidden">
-						<label for="checkbot" class="block text-sm font-medium text-gray-700"
-							>Оставьте это поле пустым</label
-						>
+					<EditableField
+						fieldKey="Footer.subscribeText"
+						label="Текст подписки"
+						value={String(
+							data?.subscribeText ?? 'Подпишитесь на новости и будьте в курсе всех новинок и акций.'
+						)}
+						onSave={(val) => saveField('subscribeText', val)}
+						{isEditable}
+						multiline
+					>
+						{#snippet children(displayValue)}
+							<p class="mt-2 text-sm/6 text-gray-300">
+								{displayValue}
+							</p>
+						{/snippet}
+					</EditableField>
+				</div>
+				{#if formSubmitted}
+					<span class="text-sm/6 text-gray-300">Спасибо за подписку!</span>
+				{:else}
+					<form onsubmit={handleSubmit} class="mt-6 sm:flex sm:max-w-md lg:mt-0">
+						<label for="email-address" class="sr-only">Адрес электронной почты</label>
+						<!-- Honeypot-поле (скрытое) -->
+						<div class="hidden">
+							<label for="checkbot" class="block text-sm font-medium text-gray-700"
+								>Оставьте это поле пустым</label
+							>
+							<input
+								type="text"
+								id="checkbot"
+								name="checkbot"
+								bind:value={testbot}
+								tabindex="-1"
+								autocomplete="off"
+								class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+							/>
+						</div>
 						<input
-							type="text"
-							id="checkbot"
-							name="checkbot"
-							bind:value={testbot}
-							tabindex="-1"
-							autocomplete="off"
-							class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none sm:text-sm"
+							type="email"
+							name="email-address"
+							id="email-address"
+							autocomplete="email"
+							required
+							class="w-full min-w-0 rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-pink-500 sm:w-56 sm:text-sm/6"
+							placeholder="Введите вашу почту"
 						/>
-					</div>
-					<input
-						type="email"
-						name="email-address"
-						id="email-address"
-						autocomplete="email"
-						required
-						class="w-full min-w-0 rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-pink-500 sm:w-56 sm:text-sm/6"
-						placeholder="Введите вашу почту"
-					/>
-					<div class="mt-4 sm:mt-0 sm:ml-4 sm:shrink-0">
-						<button
-							type="submit"
-							class="flex w-full items-center justify-center rounded-md bg-pink-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-500"
-							>Отправить</button
-						>
-					</div>
-				</form>
-			{/if}
-		</div>
-		<div class="mt-8 border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
-			<div class="flex items-center gap-8 md:order-2">
+						<div class="mt-4 sm:mt-0 sm:ml-4 sm:shrink-0">
+							<button
+								type="submit"
+								class="flex w-full items-center justify-center rounded-md bg-pink-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-500"
+								>Отправить</button
+							>
+						</div>
+					</form>
+				{/if}
+			</div>
+		{/if}
+		<div
+			class="mt-8 flex flex-col items-center gap-4 border-t border-white/10 pt-8 md:flex-row md:justify-between"
+		>
+			<div class="text-center md:text-left">
+				<p class="text-sm/6 text-gray-400">
+					&copy; {new Date().getFullYear()} Компания "<EditableField
+						fieldKey="Footer.siteName"
+						label="Название в копирайте"
+						value={!data?.siteName || data.siteName === 'Новострой'
+							? 'Логотип'
+							: String(data.siteName)}
+						onSave={(val) => saveField('siteName', val)}
+						{isEditable}
+						inline
+						>{#snippet children(displayValue)}<span>{displayValue}</span>{/snippet}</EditableField
+					>". Все права защищены.
+				</p>
+			</div>
+
+			<div class="flex items-center gap-8">
+				<p class="text-xs text-gray-500">
+					Разработка проекта — <a
+						href="https://leget.ru/"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-gray-400 transition-colors hover:text-white">Leget</a
+					>
+				</p>
 				<button
 					type="button"
 					onclick={handleAuthClick}
@@ -254,26 +284,7 @@
 				>
 					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
 				</button>
-				<!-- <iframe
-					title="stars"
-					src="https://yandex.ru/sprav/widget/rating-badge/75907151870?type=rating"
-					width="150"
-					height="50"
-					style="border: none;"
-				></iframe> -->
 			</div>
-			<p class="mt-8 text-sm/6 text-gray-400 md:order-1 md:mt-0">
-				&copy; {new Date().getFullYear()} Компания "<EditableField
-					fieldKey="Footer.siteName"
-					label="Название в копирайте"
-					value={!data?.siteName || data.siteName === 'Новострой'
-						? 'Логотип'
-						: String(data.siteName)}
-					onSave={(val) => saveField('siteName', val)}
-					{isEditable}
-					inline
-					>{#snippet children(displayValue)}<span>{displayValue}</span>{/snippet}</EditableField>". Все права защищены.
-			</p>
 		</div>
 	</div>
 </footer>
