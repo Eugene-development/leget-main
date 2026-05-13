@@ -179,10 +179,32 @@
 			class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between"
 		>
 			<div>
-				<h3 class="text-sm/6 font-semibold text-white">Подписка на новости</h3>
-				<p class="mt-2 text-sm/6 text-gray-300">
-					Подпишитесь на новости и будьте в курсе всех новинок и акций.
-				</p>
+				<EditableField
+					fieldKey="Footer.subscribeTitle"
+					label="Заголовок подписки"
+					value={String(data?.subscribeTitle ?? 'Подписка на новости')}
+					onSave={(val) => saveField('subscribeTitle', val)}
+					{isEditable}
+				>
+					{#snippet children(displayValue)}
+						<h3 class="text-sm/6 font-semibold text-white">{displayValue}</h3>
+					{/snippet}
+				</EditableField>
+
+				<EditableField
+					fieldKey="Footer.subscribeText"
+					label="Текст подписки"
+					value={String(data?.subscribeText ?? 'Подпишитесь на новости и будьте в курсе всех новинок и акций.')}
+					onSave={(val) => saveField('subscribeText', val)}
+					{isEditable}
+					multiline
+				>
+					{#snippet children(displayValue)}
+						<p class="mt-2 text-sm/6 text-gray-300">
+							{displayValue}
+						</p>
+					{/snippet}
+				</EditableField>
 			</div>
 			{#if formSubmitted}
 				<span class="text-sm/6 text-gray-300">Спасибо за подписку!</span>
@@ -241,8 +263,7 @@
 				></iframe> -->
 			</div>
 			<p class="mt-8 text-sm/6 text-gray-400 md:order-1 md:mt-0">
-				&copy; {new Date().getFullYear()} Компания "
-				<EditableField
+				&copy; {new Date().getFullYear()} Компания "<EditableField
 					fieldKey="Footer.siteName"
 					label="Название в копирайте"
 					value={!data?.siteName || data.siteName === 'Новострой'
@@ -251,9 +272,7 @@
 					onSave={(val) => saveField('siteName', val)}
 					{isEditable}
 					inline
-					>{#snippet children(displayValue)}<span>{displayValue}</span>{/snippet}</EditableField
-				>
-				". Все права защищены.
+					>{#snippet children(displayValue)}<span>{displayValue}</span>{/snippet}</EditableField>". Все права защищены.
 			</p>
 		</div>
 	</div>
