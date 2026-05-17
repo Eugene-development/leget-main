@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { cityStore } from '$lib/stores/city.svelte';
@@ -28,10 +29,6 @@
 					{ href: '/contacts', label: 'Контакты' }
 				]
 	);
-
-	let visibleCityMenu = $state(false);
-	let visibleServicesMenu = $state(false);
-	let visibleCatalogMenu = $state(false);
 
 	const catalogItems = [
 		{ href: '/mebel', label: 'Мебель', icon: 'sofa', desc: 'Кухни, шкафы, гардеробные' },
@@ -89,6 +86,28 @@
 			desc: 'Качественный монтаж вашей мебели'
 		}
 	];
+
+	let visibleCityMenu = $state(false);
+	let visibleServicesMenu = $state(false);
+	let visibleCatalogMenu = $state(false);
+	let hoveredItem = $state<string | null>(null);
+
+	const isCatalogActive = $derived(
+		hoveredItem === 'catalog' ||
+			(hoveredItem === null &&
+				(visibleCatalogMenu || catalogItems.some((item) => $page.url.pathname.startsWith(item.href))))
+	);
+
+	const isServicesActive = $derived(
+		hoveredItem === 'services' ||
+			(hoveredItem === null &&
+				(visibleServicesMenu || serviceItems.some((item) => $page.url.pathname === item.href)))
+	);
+
+	function isLinkActive(href: string) {
+		return hoveredItem === href || (hoveredItem === null && $page.url.pathname === href);
+	}
+
 
 	const defaultCities = [
 		'Москва и МО',
@@ -169,12 +188,18 @@
 					<div
 						role="group"
 						class="relative flex h-full items-center"
-						onmouseenter={() => (visibleServicesMenu = true)}
-						onmouseleave={() => (visibleServicesMenu = false)}
+						onmouseenter={() => {
+							visibleServicesMenu = true;
+							hoveredItem = 'services';
+						}}
+						onmouseleave={() => {
+							visibleServicesMenu = false;
+							hoveredItem = null;
+						}}
 					>
 						<button
 							type="button"
-							class="group relative flex items-center gap-1 px-2 py-1 text-sm font-bold tracking-wider uppercase transition-colors duration-300 {visibleServicesMenu
+							class="group relative flex items-center gap-1 px-2 py-1 text-sm font-bold tracking-wider uppercase transition-colors duration-300 {isServicesActive
 								? 'text-sky-600'
 								: 'text-slate-700'} hover:text-sky-600"
 							aria-expanded={visibleServicesMenu}
@@ -197,7 +222,7 @@
 							</svg>
 							<span
 								class="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-sky-500 transition-transform duration-300 group-hover:scale-x-100"
-								class:scale-x-100={visibleServicesMenu}
+								class:scale-x-100={isServicesActive}
 							></span>
 						</button>
 
@@ -304,12 +329,18 @@
 					<div
 						role="group"
 						class="relative flex h-full items-center"
-						onmouseenter={() => (visibleCatalogMenu = true)}
-						onmouseleave={() => (visibleCatalogMenu = false)}
+						onmouseenter={() => {
+							visibleCatalogMenu = true;
+							hoveredItem = 'catalog';
+						}}
+						onmouseleave={() => {
+							visibleCatalogMenu = false;
+							hoveredItem = null;
+						}}
 					>
 						<button
 							type="button"
-							class="group relative flex items-center gap-1 px-2 py-1 text-sm font-bold tracking-wider uppercase transition-colors duration-300 {visibleCatalogMenu
+							class="group relative flex items-center gap-1 px-2 py-1 text-sm font-bold tracking-wider uppercase transition-colors duration-300 {isCatalogActive
 								? 'text-sky-600'
 								: 'text-slate-700'} hover:text-sky-600"
 							aria-expanded={visibleCatalogMenu}
@@ -332,7 +363,7 @@
 							</svg>
 							<span
 								class="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-sky-500 transition-transform duration-300 group-hover:scale-x-100"
-								class:scale-x-100={visibleCatalogMenu}
+								class:scale-x-100={isCatalogActive}
 							></span>
 						</button>
 
@@ -450,11 +481,18 @@
 				{:else}
 					<a
 						href={link.href}
-						class="group relative px-2 py-1 text-sm font-bold tracking-wider text-slate-700 uppercase transition-colors duration-300 hover:text-sky-600"
+						class="group relative px-2 py-1 text-sm font-bold tracking-wider uppercase transition-colors duration-300 {isLinkActive(
+							link.href
+						)
+							? 'text-sky-600'
+							: 'text-slate-700'} hover:text-sky-600"
+						onmouseenter={() => (hoveredItem = link.href)}
+						onmouseleave={() => (hoveredItem = null)}
 					>
 						<span>{link.label}</span>
 						<span
 							class="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-sky-500 transition-transform duration-300 group-hover:scale-x-100"
+							class:scale-x-100={isLinkActive(link.href)}
 						></span>
 					</a>
 				{/if}
@@ -759,7 +797,11 @@
 					<a
 						href={link.href}
 						onclick={() => uiStore.closeMenu()}
-						class="block border-b border-slate-50 py-3 text-sm font-bold tracking-wider text-slate-700 uppercase transition-colors last:border-0 hover:text-sky-600"
+						class="block border-b border-slate-50 py-3 text-sm font-bold tracking-wider uppercase transition-colors last:border-0 {isLinkActive(
+							link.href
+						)
+							? 'text-sky-600'
+							: 'text-slate-700'} hover:text-sky-600"
 					>
 						{link.label}
 					</a>

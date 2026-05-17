@@ -36,16 +36,38 @@
 	<div class="bg-slate-50 py-16 sm:py-28">
 		<div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 lg:px-8">
 			<!-- Логотип -->
-			{#if data?.logoUrl}
+			{#if data?.logoUrl || isEditable}
 				<div class="w-full max-w-xs sm:max-w-sm">
-					<div class="relative">
-						<div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-sky-100 to-cyan-100 opacity-50 blur-xl"></div>
-						<img
-							src={String(data.logoUrl)}
-							alt={String(data?.logoAlt ?? 'Логотип')}
-							class="relative w-full rounded-2xl object-contain"
-						/>
-					</div>
+					<EditableField
+						fieldKey="Message.logoUrl"
+						label="Логотип (URL)"
+						value={String(data?.logoUrl ?? '')}
+						{isEditable}
+						onSave={(v) => saveField('logoUrl', v)}
+						class="block"
+					>
+						{#snippet children(displayValue)}
+							<div class="relative">
+								{#if displayValue}
+									<div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-sky-100 to-cyan-100 opacity-50 blur-xl"></div>
+									<img
+										src={displayValue || 'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
+										alt={String(data?.logoAlt ?? 'Логотип')}
+										class="relative w-full rounded-2xl object-contain"
+									/>
+								{:else if isEditable}
+									<div class="relative flex aspect-[4/1] w-full items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-100/50 text-slate-400 transition-colors hover:bg-slate-100">
+										<div class="flex flex-col items-center gap-2">
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+											</svg>
+											<span class="text-xs font-semibold uppercase tracking-wider">Логотип (URL)</span>
+										</div>
+									</div>
+								{/if}
+							</div>
+						{/snippet}
+					</EditableField>
 				</div>
 			{/if}
 

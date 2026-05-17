@@ -48,6 +48,34 @@
 		<div class="glass-panel w-full rounded-3xl border border-white/40 shadow-2xl overflow-hidden flex flex-col items-center">
 			<!-- Контент -->
 			<div class="px-6 py-12 md:px-12 md:py-14 text-center max-w-3xl mx-auto flex flex-col items-center">
+				<!-- Логотип -->
+				{#if data?.logoUrl || isEditable}
+					<div class="mb-8 w-32 md:w-48">
+						<EditableField
+							fieldKey="HeroMain.logoUrl"
+							label="Логотип (URL)"
+							value={String(data?.logoUrl ?? '')}
+							{isEditable}
+							onSave={(v) => saveField('logoUrl', v)}
+							class="block"
+						>
+							{#snippet children(displayValue)}
+								{#if displayValue}
+									<img
+										src={displayValue || 'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
+										alt={String(data?.logoAlt ?? 'Логотип')}
+										class="relative w-full rounded-2xl object-contain"
+									/>
+								{:else if isEditable}
+									<div class="border-2 border-dashed border-slate-400/30 rounded-2xl p-6 text-xs font-bold uppercase tracking-widest text-slate-500/50 backdrop-blur-sm bg-white/10">
+										Логотип
+									</div>
+								{/if}
+							{/snippet}
+						</EditableField>
+					</div>
+				{/if}
+
 				<!-- Название компании -->
 				<EditableField
 					fieldKey="HeroMain.companyName"
