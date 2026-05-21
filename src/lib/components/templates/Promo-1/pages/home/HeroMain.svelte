@@ -1,6 +1,7 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	let {
 		data = $bindable(),
@@ -136,12 +137,13 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<a
-								href={String(data?.buttonHref ?? '/contact')}
-								class="bg-transparent text-slate-900 border border-slate-900/40 font-semibold text-base py-4 px-10 rounded-xl cursor-pointer shadow-sm transition-all duration-300 ease-out hover:bg-white/80 hover:border-transparent hover:shadow-xl hover:-translate-y-0.5"
+							<button
+								type="button"
+								onclick={() => serviceOrderStore.open('design-project')}
+								class="bg-transparent text-slate-900 border border-slate-900/40 font-semibold text-base py-4 px-10 rounded-xl cursor-pointer shadow-sm transition-all duration-300 ease-out hover:bg-white/80 hover:border-transparent hover:shadow-xl hover:-translate-y-0.5 text-center"
 							>
 								{displayValue}
-							</a>
+							</button>
 						{/snippet}
 					</EditableField>
 				</div>

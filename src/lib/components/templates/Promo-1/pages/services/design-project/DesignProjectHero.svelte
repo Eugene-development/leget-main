@@ -3,6 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	let {
 		data = $bindable(),
@@ -114,7 +115,8 @@
 						{#snippet children(displayValue)}
 							<button
 								type="button"
-								class="group relative inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-10 py-5 text-base font-black text-white shadow-2xl shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-emerald-400 hover:shadow-emerald-500/40 active:scale-95"
+								onclick={() => serviceOrderStore.open('design-project')}
+								class="group relative inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-10 py-5 text-base font-black text-white shadow-2xl shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-emerald-400 hover:shadow-emerald-500/40 active:scale-95 cursor-pointer"
 							>
 								<span>{displayValue}</span>
 							</button>

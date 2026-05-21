@@ -503,6 +503,7 @@
 		<div class="flex flex-1 items-center justify-end gap-3">
 			<!-- Город -->
 			<div
+				role="group"
 				class="relative hidden sm:block"
 				onmouseenter={() => (visibleCityMenu = true)}
 				onmouseleave={() => (visibleCityMenu = false)}

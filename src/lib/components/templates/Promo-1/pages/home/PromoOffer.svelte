@@ -1,6 +1,7 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	let {
 		data = $bindable(),
@@ -135,9 +136,10 @@
 			</div>
 
 			<div class="promo-alt__actions">
-				<a
-					href={String(data?.primaryHref ?? '/contact')}
-					class="promo-alt__btn promo-alt__btn--primary"
+				<button
+					type="button"
+					onclick={() => serviceOrderStore.open('consultation')}
+					class="promo-alt__btn promo-alt__btn--primary text-center"
 				>
 					<EditableField
 						fieldKey="PromoOffer.primaryButton"
@@ -153,7 +155,7 @@
 						<line x1="5" y1="12" x2="19" y2="12"></line>
 						<polyline points="12 5 19 12 12 19"></polyline>
 					</svg>
-				</a>
+				</button>
 				<a
 					href={String(data?.secondaryHref ?? '/about')}
 					class="promo-alt__btn promo-alt__btn--secondary"

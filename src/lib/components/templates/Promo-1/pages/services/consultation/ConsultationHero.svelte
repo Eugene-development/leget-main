@@ -3,6 +3,8 @@
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
+
 
 	let {
 		data = $bindable(),
@@ -106,13 +108,15 @@
 						{#snippet children(displayValue)}
 							<button
 								type="button"
-								class="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-indigo-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-sky-500/20 transition-all duration-300 hover:scale-105 hover:shadow-sky-500/40 active:scale-95"
+								onclick={() => serviceOrderStore.open('consultation')}
+								class="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-indigo-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-sky-500/20 transition-all duration-300 hover:scale-105 hover:shadow-sky-500/40 active:scale-95 cursor-pointer"
 							>
 								<span>{displayValue}</span>
 								<svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
 								</svg>
 							</button>
+
 						{/snippet}
 					</EditableField>
 				</div>

@@ -3,6 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	let {
 		data = $bindable(),
@@ -106,7 +107,8 @@
 						{#snippet children(displayValue)}
 							<button
 								type="button"
-								class="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-violet-500 to-sky-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-violet-500/20 transition-all duration-300 hover:scale-105 hover:shadow-violet-500/40 active:scale-95"
+								onclick={() => serviceOrderStore.open('measurement')}
+								class="group relative inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-violet-500 to-sky-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-violet-500/20 transition-all duration-300 hover:scale-105 hover:shadow-violet-500/40 active:scale-95 cursor-pointer"
 							>
 								<span>{displayValue}</span>
 								<svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">

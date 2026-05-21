@@ -554,11 +554,19 @@
 {#if isLightboxOpen}
 	<div
 		class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl"
-		onclick={() => (isLightboxOpen = false)}
+		onclick={(e) => {
+			if (e.target === e.currentTarget) isLightboxOpen = false;
+		}}
+		onkeydown={(e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				isLightboxOpen = false;
+			}
+		}}
 		role="dialog"
 		aria-modal="true"
+		tabindex="-1"
 	>
-		<div class="relative max-h-screen max-w-screen-xl p-4" onclick={(e) => e.stopPropagation()}>
+		<div class="relative max-h-screen max-w-screen-xl p-4">
 			<div class="relative flex items-center justify-center w-[90vw] h-[85vh] max-w-5xl overflow-hidden rounded-xl bg-slate-900/50 shadow-2xl">
 				<img
 					src={images[selectedImageIndex].url}
