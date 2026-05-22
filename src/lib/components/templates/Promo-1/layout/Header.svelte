@@ -54,6 +54,38 @@
 		{ href: '/plitka', label: 'Плитка', icon: 'tiles', desc: 'Керамогранит и мозаика' }
 	];
 
+	const disabledRubrics = $derived(
+		Array.isArray(data?.disabledRubrics) ? (data.disabledRubrics as string[]) : []
+	);
+
+	const visibleCatalogItems = $derived(
+		isEditable
+			? catalogItems
+			: catalogItems.filter((item) => !disabledRubrics.includes(item.href))
+	);
+
+	async function handleToggleRubric(href: string, currentEnabled: boolean, e: Event) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		let updated: string[];
+		if (currentEnabled) {
+			updated = [...disabledRubrics, href];
+		} else {
+			updated = disabledRubrics.filter((h) => h !== href);
+		}
+
+		if (!editContext) return;
+		const updatedData = { ...data, disabledRubrics: updated };
+		try {
+			await saveLayoutData(editContext, 'Header', updatedData);
+			data = updatedData;
+		} catch (err: any) {
+			console.error('Failed to toggle rubric:', err);
+			alert('Не удалось сохранить настройки каталога: ' + (err.message || 'ошибка'));
+		}
+	}
+
 	const serviceItems = [
 		{
 			href: '/consultation',
@@ -95,7 +127,7 @@
 	const isCatalogActive = $derived(
 		hoveredItem === 'catalog' ||
 			(hoveredItem === null &&
-				(visibleCatalogMenu || catalogItems.some((item) => $page.url.pathname.startsWith(item.href))))
+				(visibleCatalogMenu || visibleCatalogItems.some((item) => $page.url.pathname.startsWith(item.href))))
 	);
 
 	const isServicesActive = $derived(
@@ -377,103 +409,131 @@
 									class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent"
 								></div>
 
-								{#each catalogItems as item, idx}
-									<a
-										onclick={() => (visibleCatalogMenu = false)}
-										href={item.href}
-										class="group flex items-start gap-3 rounded-xl p-3 transition-all duration-300 hover:translate-x-1 hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50"
-										transition:fly={{ y: -5, duration: 200, delay: idx * 40 }}
+								{#each visibleCatalogItems as item, idx}
+									{@const isEnabled = !disabledRubrics.includes(item.href)}
+									<div class="group flex items-center justify-between rounded-xl transition-all duration-300 hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50 w-full"
+										class:opacity-60={isEditable && !isEnabled}
+										class:bg-slate-50={isEditable && !isEnabled}
 									>
-										<div
-											class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-sky-100/50 to-indigo-100/50 text-sky-600 transition-all duration-300 group-hover:from-sky-500 group-hover:to-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-sky-500/25"
+										<a
+											onclick={() => (visibleCatalogMenu = false)}
+											href={item.href}
+											class="flex-1 flex items-start gap-3 p-3 transition-all duration-300 hover:translate-x-1"
+											class:pointer-events-none={isEditable && !isEnabled}
 										>
-											{#if item.icon === 'sofa'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M20 12V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4M4 12v6a2 2 0 002 2h2m10-8V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4m16 0v6a2 2 0 01-2 2h-2M4 12h16m-16 0v-2a2 2 0 012-2h12a2 2 0 012 2v2"
-													/>
-												</svg>
-											{:else if item.icon === 'surface'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M3 10h18M3 14h18m-9-4v8m-3-8v8m6-8v8M3 6h18a2 2 0 012 2v8a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"
-													/>
-												</svg>
-											{:else if item.icon === 'fridge'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9h4m-4 4h4"
-													/>
-												</svg>
-											{:else if item.icon === 'faucet'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-													/>
-												</svg>
-											{:else if item.icon === 'hinge'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
+											<div
+												class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-sky-100/50 to-indigo-100/50 text-sky-600 transition-all duration-300 group-hover:from-sky-500 group-hover:to-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-sky-500/25"
+											>
+												{#if item.icon === 'sofa'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M20 12V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4M4 12v6a2 2 0 002 2h2m10-8V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4m16 0v6a2 2 0 01-2 2h-2M4 12h16m-16 0v-2a2 2 0 012-2h12a2 2 0 012 2v2"
+														/>
+													</svg>
+												{:else if item.icon === 'surface'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M3 10h18M3 14h18m-9-4v8m-3-8v8m6-8v8M3 6h18a2 2 0 012 2v8a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"
+														/>
+													</svg>
+												{:else if item.icon === 'fridge'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9h4m-4 4h4"
+														/>
+													</svg>
+												{:else if item.icon === 'faucet'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+														/>
+													</svg>
+												{:else if item.icon === 'hinge'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
 														d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m12 12a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-													/>
-												</svg>
-											{:else if item.icon === 'tiles'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														/>
+													</svg>
+												{:else if item.icon === 'tiles'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+														/>
+													</svg>
+												{:else}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M4 6h16M4 12h16m-7 6h7"
+														/>
+													</svg>
+												{/if}
+											</div>
+											<div class="flex-1">
+												<div class="flex items-center gap-2">
+													<p
+														class="text-sm font-bold text-slate-900 transition-colors group-hover:text-sky-600"
+													>
+														{item.label}
+													</p>
+													{#if isEditable && !isEnabled}
+														<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
+													{/if}
+												</div>
+												<p class="mt-0.5 text-[11px] leading-tight text-slate-500">{item.desc}</p>
+											</div>
+											{#if !isEditable}
+												<svg
+													class="h-4 w-4 self-center text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-400"
+													fill="none"
+													viewBox="0 0 24 24"
+													stroke="currentColor"
+												>
 													<path
 														stroke-linecap="round"
 														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-													/>
-												</svg>
-											{:else}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M4 6h16M4 12h16m-7 6h7"
+														stroke-width="2"
+														d="M9 5l7 7-7 7"
 													/>
 												</svg>
 											{/if}
-										</div>
-										<div class="flex-1">
-											<p
-												class="text-sm font-bold text-slate-900 transition-colors group-hover:text-sky-600"
-											>
-												{item.label}
-											</p>
-											<p class="mt-0.5 text-[11px] leading-tight text-slate-500">{item.desc}</p>
-										</div>
-										<svg
-											class="h-4 w-4 text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-400"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M9 5l7 7-7 7"
-											/>
-										</svg>
-									</a>
+										</a>
+										{#if isEditable}
+											<div class="pr-3 flex items-center">
+												<button
+													type="button"
+													onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
+													class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+													title={isEnabled ? "Скрыть рубрику" : "Показать рубрику"}
+												>
+													<span
+														class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+													>
+													</span>
+												</button>
+											</div>
+										{/if}
+									</div>
 								{/each}
 							</div>
 						{/if}
@@ -715,82 +775,109 @@
 							{link.label}
 						</div>
 						<div class="grid gap-1 pl-2">
-							{#each catalogItems as item}
-								<a
-									href={item.href}
-									onclick={() => uiStore.closeMenu()}
-									class="flex items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:text-sky-600"
+							{#each visibleCatalogItems as item}
+								{@const isEnabled = !disabledRubrics.includes(item.href)}
+								<div class="group flex items-center justify-between rounded-lg transition-all duration-300 w-full"
+									class:opacity-60={isEditable && !isEnabled}
+									class:bg-slate-50={isEditable && !isEnabled}
 								>
-									<div
-										class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
+									<a
+										href={item.href}
+										onclick={() => uiStore.closeMenu()}
+										class="flex-1 flex items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:text-sky-600"
+										class:pointer-events-none={isEditable && !isEnabled}
 									>
-										{#if item.icon === 'sofa'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M20 12V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4M4 12v6a2 2 0 002 2h2m10-8V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4m16 0v6a2 2 0 01-2 2h-2M4 12h16m-16 0v-2a2 2 0 012-2h12a2 2 0 012 2v2"
-												/>
-											</svg>
-										{:else if item.icon === 'surface'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M3 10h18M3 14h18m-9-4v8m-3-8v8m6-8v8M3 6h18a2 2 0 012 2v8a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"
-												/>
-											</svg>
-										{:else if item.icon === 'fridge'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9h4m-4 4h4"
-												/>
-											</svg>
-										{:else if item.icon === 'faucet'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-												/>
-											</svg>
-										{:else if item.icon === 'hinge'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m12 12a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-												/>
-											</svg>
-										{:else if item.icon === 'tiles'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-												/>
-											</svg>
-										{:else}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M4 6h16M4 12h16m-7 6h7"
-												/>
-											</svg>
-										{/if}
-									</div>
-									{item.label}
-								</a>
+										<div
+											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
+										>
+											{#if item.icon === 'sofa'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M20 12V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4M4 12v6a2 2 0 002 2h2m10-8V8a2 2 0 00-2-2H6a2 2 0 00-2 2v4m16 0v6a2 2 0 01-2 2h-2M4 12h16m-16 0v-2a2 2 0 012-2h12a2 2 0 012 2v2"
+													/>
+												</svg>
+											{:else if item.icon === 'surface'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M3 10h18M3 14h18m-9-4v8m-3-8v8m6-8v8M3 6h18a2 2 0 012 2v8a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"
+													/>
+												</svg>
+											{:else if item.icon === 'fridge'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9h4m-4 4h4"
+													/>
+												</svg>
+											{:else if item.icon === 'faucet'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+													/>
+												</svg>
+											{:else if item.icon === 'hinge'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m12 12a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+													/>
+												</svg>
+											{:else if item.icon === 'tiles'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+													/>
+												</svg>
+											{:else}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M4 6h16M4 12h16m-7 6h7"
+													/>
+												</svg>
+											{/if}
+										</div>
+										<span class="flex items-center gap-2">
+											{item.label}
+											{#if isEditable && !isEnabled}
+												<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
+											{/if}
+										</span>
+									</a>
+									{#if isEditable}
+										<div class="pr-2 flex items-center">
+											<button
+												type="button"
+												onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
+												class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+												title={isEnabled ? "Скрыть рубрику" : "Показать рубрику"}
+											>
+												<span
+													class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+												>
+												</span>
+											</button>
+										</div>
+									{/if}
+								</div>
 							{/each}
 						</div>
 					</div>

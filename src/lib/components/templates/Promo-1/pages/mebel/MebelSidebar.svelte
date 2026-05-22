@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
-	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { saveComponentData, toggleCategory, type EditContext } from '$lib/utils/page-edit';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
@@ -18,12 +18,9 @@
 		isEditable?: boolean;
 	} = $props();
 
-	// Поскольку динамические страницы (виртуальные) могут не иметь полноценного editContext,
-	// мы явно проверяем, авторизован ли пользователь как админ/владелец.
-	let isAdmin = $derived(browser ? $auth.isAuthenticated : false);
-
 	let isModalOpen = $state(false);
 	let addCategoryId = $state('');
+	let togglingIds = $state(new Set<string>());
 
 	function openAddModal(categoryId: string, e: Event) {
 		e.preventDefault();
@@ -39,7 +36,33 @@
 		data = updated;
 	}
 
+	async function handleToggleCategory(id: string, currentEnabled: boolean, e: Event) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (togglingIds.has(id)) return;
+
+		togglingIds.add(id);
+		togglingIds = new Set(togglingIds);
+
+		try {
+			await toggleCategory(id, !currentEnabled);
+			await invalidateAll();
+		} catch (err: any) {
+			console.error('Failed to toggle category:', err);
+			alert('Не удалось изменить статус категории: ' + (err.message || 'ошибка'));
+		} finally {
+			togglingIds.delete(id);
+			togglingIds = new Set(togglingIds);
+		}
+	}
+
 	const categories = $derived(data.categories || []);
+	const visibleCategories = $derived(
+		isEditable 
+			? categories 
+			: categories.filter((c: any) => c.is_enabled !== false)
+	);
 
 	let offsetTop = $state(190); // Default aligned with hero margin-top (4rem is 64, plus header ~100)
 	let sidebarElement: HTMLElement | null = $state(null);
@@ -115,26 +138,36 @@
 		</h3>
 
 		<nav class="space-y-1">
-			{#each categories as category}
+			{#each visibleCategories as category}
 				{@const isActive = category.slug === data.activeSlug}
+				{@const isEnabled = category.is_enabled !== false}
 				<div class="group flex items-center justify-between rounded-lg transition-all {isActive
 						? 'bg-sky-50 text-sky-600'
-						: 'text-slate-600 hover:bg-slate-50 hover:text-sky-600'}">
+						: 'text-slate-600 hover:bg-slate-50 hover:text-sky-600'}"
+					class:opacity-50={isEditable && !isEnabled}
+					class:bg-slate-50={isEditable && !isEnabled}
+				>
 					<a
 						href="/mebel/{category.slug}"
 						class="flex-1 block px-4 py-3"
+						class:pointer-events-none={isEditable && !isEnabled}
 					>
 						<div class="flex justify-between items-center font-medium">
-							<span>{category.value}</span>
-							{#if !isEditable && !editContext && !isAdmin}
+							<div class="flex items-center gap-2">
+								<span>{category.value}</span>
+								{#if isEditable && !isEnabled}
+									<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
+								{/if}
+							</div>
+							{#if !isEditable}
 								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 								</svg>
 							{/if}
 						</div>
 					</a>
-					{#if isEditable || editContext || isAdmin}
-						<div class="pr-4 flex items-center justify-center">
+					{#if isEditable}
+						<div class="pr-4 flex items-center gap-2">
 							<button 
 								type="button"
 								onclick={(e) => openAddModal(category.id, e)}
@@ -144,6 +177,27 @@
 								<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
 								</svg>
+							</button>
+
+							<button
+								type="button"
+								onclick={(e) => handleToggleCategory(category.id, isEnabled, e)}
+								disabled={togglingIds.has(category.id)}
+								class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+								title={isEnabled ? "Скрыть категорию" : "Показать категорию"}
+							>
+								<span
+									class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+								>
+									{#if togglingIds.has(category.id)}
+										<span class="absolute inset-0 flex items-center justify-center">
+											<svg class="h-2.5 w-2.5 animate-spin text-sky-500" fill="none" viewBox="0 0 24 24">
+												<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+												<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+											</svg>
+										</span>
+									{/if}
+								</span>
 							</button>
 						</div>
 					{/if}

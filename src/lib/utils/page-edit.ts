@@ -140,6 +140,15 @@ const LIST_BUCKET_FILES_QUERY = `
   }
 `;
 
+const TOGGLE_CATEGORY_MUTATION = `
+  mutation ToggleCategory($id: ID!, $isEnabled: Boolean!) {
+    toggleCategory(id: $id, isEnabled: $isEnabled) {
+      id
+      is_enabled
+    }
+  }
+`;
+
 export interface BucketFile {
 	key: string;
 	url: string;
@@ -190,5 +199,42 @@ export async function listBucketFiles(
 	}
 
 	return (result.data?.listBucketFiles ?? []) as BucketFile[];
+}
+
+/**
+ * Переключает активность категории (is_enabled) в каталоге.
+ */
+export async function toggleCategory(id: string, isEnabled: boolean): Promise<void> {
+	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+	if (!token) {
+		throw new Error('Не авторизован');
+	}
+
+	const apiUrl = getGraphQLUrl();
+
+	const response = await fetch(apiUrl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			query: TOGGLE_CATEGORY_MUTATION,
+			variables: { id, isEnabled }
+		})
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+	}
+
+	const result = await response.json();
+
+	if (result.errors?.length) {
+		const msg = result.errors[0]?.message ?? 'GraphQL error';
+		throw new Error(msg);
+	}
 }
 
