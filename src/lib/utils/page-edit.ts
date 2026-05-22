@@ -128,3 +128,67 @@ export async function saveLayoutData(
 		throw new Error(msg);
 	}
 }
+
+const LIST_BUCKET_FILES_QUERY = `
+  query ListBucketFiles($folder: String, $maxKeys: Int) {
+    listBucketFiles(folder: $folder, maxKeys: $maxKeys) {
+      key
+      url
+      size
+      lastModified
+    }
+  }
+`;
+
+export interface BucketFile {
+	key: string;
+	url: string;
+	size: number | null;
+	lastModified: string | null;
+}
+
+/**
+ * Загружает список файлов из бакета для текущего лицензиата.
+ *
+ * @param folder  - папка внутри бакета (например «bg»). По умолчанию «bg».
+ * @param maxKeys - максимальное количество файлов (до 200). По умолчанию 100.
+ */
+export async function listBucketFiles(
+	folder = 'bg',
+	maxKeys = 100
+): Promise<BucketFile[]> {
+	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+	if (!token) {
+		throw new Error('Не авторизован');
+	}
+
+	const apiUrl = getGraphQLUrl();
+
+	const response = await fetch(apiUrl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			query: LIST_BUCKET_FILES_QUERY,
+			variables: { folder, maxKeys }
+		})
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+	}
+
+	const result = await response.json();
+
+	if (result.errors?.length) {
+		const msg = result.errors[0]?.message ?? 'GraphQL error';
+		throw new Error(msg);
+	}
+
+	return (result.data?.listBucketFiles ?? []) as BucketFile[];
+}
+

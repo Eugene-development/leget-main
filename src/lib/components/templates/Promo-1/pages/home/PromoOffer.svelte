@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
@@ -14,6 +15,7 @@
 	} = $props();
 
 	let isVisible = $state(false);
+	let showImagePicker = $state(false);
 
 	$effect(() => {
 		const timeout = setTimeout(() => { isVisible = true; }, 200);
@@ -32,6 +34,11 @@
 		await saveComponentData(editContext, 'PromoOffer', updated);
 		data = updated;
 	}
+
+	async function handleImageApprove(url: string) {
+		showImagePicker = false;
+		await saveField('image', url);
+	}
 </script>
 
 <section class="promo-alt">
@@ -49,6 +56,23 @@
 					class="promo-alt__image"
 				/>
 				<div class="promo-alt__image-border"></div>
+
+				{#if isEditable}
+					<button
+						type="button"
+						onclick={() => showImagePicker = true}
+						class="promo-alt__edit-overlay"
+						aria-label="Изменить изображение"
+					>
+						<span class="promo-alt__edit-btn">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+								<circle cx="12" cy="13" r="4"></circle>
+							</svg>
+							Изменить фото
+						</span>
+					</button>
+				{/if}
 			</div>
 			<div class="promo-alt__float promo-alt__float--1">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -174,6 +198,16 @@
 			</div>
 		</div>
 	</div>
+
+	{#if showImagePicker && editContext}
+		<BgImagePicker
+			editContext={editContext}
+			currentImage={String(data?.image ?? '')}
+			aspectRatio={1}
+			onApprove={handleImageApprove}
+			onClose={() => showImagePicker = false}
+		/>
+	{/if}
 </section>
 
 <style>
@@ -281,6 +315,48 @@
 		-webkit-mask-composite: xor;
 		mask-composite: exclude;
 		pointer-events: none;
+	}
+
+	.promo-alt__edit-overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(15, 23, 42, 0.6);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		border: none;
+		cursor: pointer;
+		width: 100%;
+		height: 100%;
+		border-radius: 1rem;
+	}
+
+	.promo-alt__image-frame:hover .promo-alt__edit-overlay {
+		opacity: 1;
+	}
+
+	.promo-alt__edit-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.625rem 1.25rem;
+		border-radius: 0.75rem;
+		background: linear-gradient(135deg, #f97316, #ea580c);
+		color: white;
+		font-size: 0.875rem;
+		font-weight: 600;
+		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+		transform: scale(0.9);
+		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+	}
+
+	.promo-alt__edit-overlay:hover .promo-alt__edit-btn {
+		transform: scale(1);
+		background: linear-gradient(135deg, #ea580c, #c2410c);
 	}
 
 	.promo-alt__float {
