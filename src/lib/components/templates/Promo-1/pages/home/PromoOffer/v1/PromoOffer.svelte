@@ -28,6 +28,10 @@
 			: ['Бесплатная сборка', 'Акции по бытовой технике', 'Каменная столешница в подарок']
 	);
 
+	const activeImage = $derived(
+		String(data?.imageV1 ?? data?.image ?? '/images/promo-happy-person.png')
+	);
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -37,7 +41,7 @@
 
 	async function handleImageApprove(url: string) {
 		showImagePicker = false;
-		await saveField('image', url);
+		await saveField('imageV1', url);
 	}
 </script>
 
@@ -51,7 +55,7 @@
 		<div class="promo-alt__image-wrapper">
 			<div class="promo-alt__image-frame">
 				<img
-					src={String(data?.image ?? '/images/promo-happy-person.png')}
+					src={activeImage}
 					alt={String(data?.imageAlt ?? 'Промо изображение')}
 					class="promo-alt__image"
 				/>
@@ -202,7 +206,8 @@
 	{#if showImagePicker && editContext}
 		<BgImagePicker
 			editContext={editContext}
-			currentImage={String(data?.image ?? '')}
+			currentImage={String(data?.imageV1 ?? data?.image ?? '')}
+			defaultImage="/images/promo-happy-person.png"
 			aspectRatio={1}
 			onApprove={handleImageApprove}
 			onClose={() => showImagePicker = false}

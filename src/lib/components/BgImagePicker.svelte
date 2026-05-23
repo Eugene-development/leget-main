@@ -8,12 +8,14 @@
 	let {
 		editContext,
 		currentImage = '',
+		defaultImage = '',
 		aspectRatio = 16 / 9,
 		onApprove,
 		onClose
 	}: {
 		editContext: EditContext;
 		currentImage?: string;
+		defaultImage?: string;
 		aspectRatio?: number;
 		onApprove: (url: string) => void;
 		onClose: () => void;
@@ -53,9 +55,21 @@
 		loadError = '';
 		try {
 			const files = await listBucketFiles('bg', 100);
-			images = files;
+			let allImages = [...files];
+			if (defaultImage) {
+				const hasDefault = files.some((f) => f.url === defaultImage);
+				if (!hasDefault) {
+					allImages.unshift({
+						key: 'default',
+						url: defaultImage,
+						size: null,
+						lastModified: null
+					});
+				}
+			}
+			images = allImages;
 			// Pre-select currently active image if present in list
-			const activeIdx = files.findIndex((f) => f.url === currentImage);
+			const activeIdx = allImages.findIndex((f) => f.url === currentImage);
 			selectedIndex = activeIdx >= 0 ? activeIdx : 0;
 		} catch (err) {
 			loadError = err instanceof Error ? err.message : 'Ошибка загрузки';

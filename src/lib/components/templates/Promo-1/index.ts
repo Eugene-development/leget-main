@@ -9,14 +9,14 @@ import Footer from './layout/Footer.svelte';
 export { Banner, Header, Footer };
 
 // Home page components
-import HomeHeroMain   from './pages/home/HeroMain.svelte';
-import HomeMessage    from './pages/home/Message.svelte';
-import HomePromoOffer from './pages/home/PromoOffer.svelte';
-import HomeEquipment  from './pages/home/Equipment.svelte';
-import HomeStage      from './pages/home/Stage.svelte';
-import HomeIncentives from './pages/home/Incentives.svelte';
-import HomeDirection  from './pages/home/Direction.svelte';
-import HomeBrands     from './pages/home/Brands.svelte';
+import HomeHeroMain   from './pages/home/HeroMain/index.svelte';
+import HomeMessage    from './pages/home/Message/index.svelte';
+import HomePromoOffer from './pages/home/PromoOffer/index.svelte';
+import HomeEquipment  from './pages/home/Equipment/index.svelte';
+import HomeStage      from './pages/home/Stage/index.svelte';
+import HomeIncentives from './pages/home/Incentives/index.svelte';
+import HomeDirection  from './pages/home/Direction/index.svelte';
+import HomeBrands     from './pages/home/Brands/index.svelte';
 
 // About page components
 import AboutHero       from './pages/about/Hero.svelte';

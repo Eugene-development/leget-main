@@ -29,6 +29,15 @@
 		await saveComponentData(editContext, 'Message', updated);
 		data = updated;
 	}
+
+	async function saveCardField(index: number, field: 'title' | 'description', value: string) {
+		if (!editContext) return;
+		const updatedCards = [...cards];
+		updatedCards[index] = { ...updatedCards[index], [field]: value };
+		const updated = { ...data, cards: updatedCards };
+		await saveComponentData(editContext, 'Message', updated);
+		data = updated;
+	}
 </script>
 
 <!-- О компании (Message) -->
@@ -97,15 +106,38 @@
 		<!-- Карточки преимуществ -->
 		<div class="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
 			<div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-				{#each cards as card}
+				{#each cards as card, i}
 					<div class="message-card group relative overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/80 transition-all duration-500 hover:shadow-lg hover:ring-slate-300 hover:-translate-y-1">
 						<div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-sky-50/80 transition-transform duration-500 group-hover:scale-125"></div>
 						<div class="relative">
 							<div class="mb-4 size-24 overflow-hidden rounded-xl">
 								<img src={card.image} alt={card.alt} class="h-full w-full object-cover" />
 							</div>
-							<h3 class="text-sm font-bold text-slate-900 sm:text-base">{card.title}</h3>
-							<p class="mt-1.5 text-xs leading-relaxed text-slate-500 sm:text-sm">{card.description}</p>
+							<h3 class="text-sm font-bold text-slate-900 sm:text-base">
+								<EditableField
+									fieldKey={`Message.cards.${i}.title`}
+									label="Заголовок"
+									value={card.title}
+									{isEditable}
+									onSave={(v) => saveCardField(i, 'title', v)}
+									class="inline"
+								>
+									{#snippet children(displayValue)}{displayValue}{/snippet}
+								</EditableField>
+							</h3>
+							<p class="mt-1.5 text-xs leading-relaxed text-slate-500 sm:text-sm">
+								<EditableField
+									fieldKey={`Message.cards.${i}.description`}
+									label="Описание"
+									value={card.description}
+									{isEditable}
+									multiline
+									onSave={(v) => saveCardField(i, 'description', v)}
+									class="block"
+								>
+									{#snippet children(displayValue)}{displayValue}{/snippet}
+								</EditableField>
+							</p>
 						</div>
 					</div>
 				{/each}

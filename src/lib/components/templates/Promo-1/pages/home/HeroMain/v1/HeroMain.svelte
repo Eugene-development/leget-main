@@ -21,12 +21,12 @@
 
 	const activeBgImage = $derived(
 		previewBgImage ??
-		String(data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')
+		String(data?.bgImageV1 ?? data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')
 	);
 
 	async function handleImageApprove(url: string) {
 		if (!editContext) return;
-		const updated = { ...data, bgImage: url };
+		const updated = { ...data, bgImageV1: url };
 		await saveComponentData(editContext, 'HeroMain', updated);
 		data = updated;
 		previewBgImage = null;
@@ -87,7 +87,8 @@
 	{#if showImagePicker && editContext}
 		<BgImagePicker
 			{editContext}
-			currentImage={String(data?.bgImage ?? '')}
+			currentImage={String(data?.bgImageV1 ?? data?.bgImage ?? '')}
+			defaultImage="https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg"
 			onApprove={handleImageApprove}
 			onClose={() => {
 				previewBgImage = null;
