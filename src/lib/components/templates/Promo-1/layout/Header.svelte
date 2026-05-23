@@ -51,7 +51,13 @@
 			desc: 'Смесители, мойки, аксессуары'
 		},
 		{ href: '/furnitura', label: 'Фурнитура', icon: 'hinge', desc: 'Ручки, петли, механизмы' },
-		{ href: '/plitka', label: 'Плитка', icon: 'tiles', desc: 'Керамогранит и мозаика' }
+		{
+			href: '/plitka',
+			label: 'Плитка',
+			icon: 'tiles',
+			desc: 'Керамогранит и мозаика',
+			comingSoon: true
+		}
 	];
 
 	const disabledRubrics = $derived(
@@ -59,9 +65,12 @@
 	);
 
 	const visibleCatalogItems = $derived(
-		isEditable
-			? catalogItems
-			: catalogItems.filter((item) => !disabledRubrics.includes(item.href))
+		catalogItems.filter(
+			(item) =>
+				item.comingSoon === true ||
+				isEditable ||
+				!disabledRubrics.includes(item.href)
+		)
 	);
 
 	async function handleToggleRubric(href: string, currentEnabled: boolean, e: Event) {
@@ -167,6 +176,24 @@
 		data = updated;
 	}
 </script>
+
+{#snippet comingSoonIndicator(paddingClass = 'pr-3')}
+	<div class="flex shrink-0 items-center {paddingClass}" title="В разработке">
+		<span
+			class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-200/80"
+			aria-hidden="true"
+		>
+			<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="1.5"
+					d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-2.791 2.697A6.98 6.98 0 0112 13.02a6.98 6.98 0 01-3.02-1.046m2.791 2.697L9.75 21"
+				/>
+			</svg>
+		</span>
+	</div>
+{/snippet}
 
 <header class="sticky top-0 z-50 w-full sm:bg-white/95 sm:shadow-lg sm:backdrop-blur">
 	<div class="max-w-9xl mx-auto hidden items-center justify-between px-4 py-4 sm:flex sm:px-8">
@@ -410,19 +437,36 @@
 								></div>
 
 								{#each visibleCatalogItems as item, idx}
-									{@const isEnabled = !disabledRubrics.includes(item.href)}
-									<div class="group flex items-center justify-between rounded-xl transition-all duration-300 hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50 w-full"
-										class:opacity-60={isEditable && !isEnabled}
-										class:bg-slate-50={isEditable && !isEnabled}
+									{@const isComingSoon = item.comingSoon === true}
+									{@const isEnabled = !isComingSoon && !disabledRubrics.includes(item.href)}
+									<div
+										class="group flex w-full items-center justify-between rounded-xl transition-all duration-300 {isComingSoon
+											? 'cursor-not-allowed opacity-60'
+											: 'hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50'}"
+										class:opacity-60={!isComingSoon && isEditable && !isEnabled}
+										class:bg-slate-50={!isComingSoon && isEditable && !isEnabled}
+										title={isComingSoon ? 'В разработке' : undefined}
 									>
 										<a
-											onclick={() => (visibleCatalogMenu = false)}
+											onclick={(e) => {
+												if (isComingSoon) {
+													e.preventDefault();
+													return;
+												}
+												visibleCatalogMenu = false;
+											}}
 											href={item.href}
-											class="flex-1 flex items-start gap-3 p-3 transition-all duration-300 hover:translate-x-1"
-											class:pointer-events-none={isEditable && !isEnabled}
+											tabindex={isComingSoon ? -1 : undefined}
+											aria-disabled={isComingSoon}
+											class="flex flex-1 items-start gap-3 p-3 transition-all duration-300 {isComingSoon
+												? 'pointer-events-none'
+												: 'hover:translate-x-1'}"
+											class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 										>
 											<div
-												class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-sky-100/50 to-indigo-100/50 text-sky-600 transition-all duration-300 group-hover:from-sky-500 group-hover:to-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-sky-500/25"
+												class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-sky-100/50 to-indigo-100/50 text-sky-600 transition-all duration-300 {isComingSoon
+													? ''
+													: 'group-hover:from-sky-500 group-hover:to-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-sky-500/25'}"
 											>
 												{#if item.icon === 'sofa'}
 													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -492,17 +536,19 @@
 											<div class="flex-1">
 												<div class="flex items-center gap-2">
 													<p
-														class="text-sm font-bold text-slate-900 transition-colors group-hover:text-sky-600"
+														class="text-sm font-bold text-slate-900 transition-colors {isComingSoon
+															? ''
+															: 'group-hover:text-sky-600'}"
 													>
 														{item.label}
 													</p>
-													{#if isEditable && !isEnabled}
+													{#if isEditable && !isEnabled && !isComingSoon}
 														<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
 													{/if}
 												</div>
 												<p class="mt-0.5 text-[11px] leading-tight text-slate-500">{item.desc}</p>
 											</div>
-											{#if !isEditable}
+											{#if !isEditable && !isComingSoon}
 												<svg
 													class="h-4 w-4 self-center text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-400"
 													fill="none"
@@ -519,19 +565,23 @@
 											{/if}
 										</a>
 										{#if isEditable}
-											<div class="pr-3 flex items-center">
-												<button
-													type="button"
-													onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
-													class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
-													title={isEnabled ? "Скрыть рубрику" : "Показать рубрику"}
-												>
-													<span
-														class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+											{#if isComingSoon}
+												{@render comingSoonIndicator()}
+											{:else}
+												<div class="pr-3 flex items-center">
+													<button
+														type="button"
+														onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
+														class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+														title={isEnabled ? 'Скрыть рубрику' : 'Показать рубрику'}
 													>
-													</span>
-												</button>
-											</div>
+														<span
+															class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+														>
+														</span>
+													</button>
+												</div>
+											{/if}
 										{/if}
 									</div>
 								{/each}
@@ -776,16 +826,31 @@
 						</div>
 						<div class="grid gap-1 pl-2">
 							{#each visibleCatalogItems as item}
-								{@const isEnabled = !disabledRubrics.includes(item.href)}
-								<div class="group flex items-center justify-between rounded-lg transition-all duration-300 w-full"
-									class:opacity-60={isEditable && !isEnabled}
-									class:bg-slate-50={isEditable && !isEnabled}
+								{@const isComingSoon = item.comingSoon === true}
+								{@const isEnabled = !isComingSoon && !disabledRubrics.includes(item.href)}
+								<div
+									class="group flex w-full items-center justify-between rounded-lg transition-all duration-300 {isComingSoon
+										? 'cursor-not-allowed opacity-60'
+										: ''}"
+									class:opacity-60={!isComingSoon && isEditable && !isEnabled}
+									class:bg-slate-50={!isComingSoon && isEditable && !isEnabled}
+									title={isComingSoon ? 'В разработке' : undefined}
 								>
 									<a
 										href={item.href}
-										onclick={() => uiStore.closeMenu()}
-										class="flex-1 flex items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:text-sky-600"
-										class:pointer-events-none={isEditable && !isEnabled}
+										onclick={(e) => {
+											if (isComingSoon) {
+												e.preventDefault();
+												return;
+											}
+											uiStore.closeMenu();
+										}}
+										tabindex={isComingSoon ? -1 : undefined}
+										aria-disabled={isComingSoon}
+										class="flex flex-1 items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors {isComingSoon
+											? 'pointer-events-none'
+											: 'hover:text-sky-600'}"
+										class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 									>
 										<div
 											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
@@ -857,25 +922,29 @@
 										</div>
 										<span class="flex items-center gap-2">
 											{item.label}
-											{#if isEditable && !isEnabled}
+											{#if isEditable && !isEnabled && !isComingSoon}
 												<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
 											{/if}
 										</span>
 									</a>
 									{#if isEditable}
-										<div class="pr-2 flex items-center">
-											<button
-												type="button"
-												onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
-												class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
-												title={isEnabled ? "Скрыть рубрику" : "Показать рубрику"}
-											>
-												<span
-													class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+										{#if isComingSoon}
+											{@render comingSoonIndicator('pr-2')}
+										{:else}
+											<div class="pr-2 flex items-center">
+												<button
+													type="button"
+													onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
+													class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+													title={isEnabled ? 'Скрыть рубрику' : 'Показать рубрику'}
 												>
-												</span>
-											</button>
-										</div>
+													<span
+														class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+													>
+													</span>
+												</button>
+											</div>
+										{/if}
 									{/if}
 								</div>
 							{/each}
