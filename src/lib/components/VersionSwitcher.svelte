@@ -15,7 +15,7 @@
 		isEditable: boolean;
 		componentType: string;
 		versionKey?: string | null;
-		selectedVersion: 'v1' | 'v2';
+		selectedVersion: 'v1' | 'v2' | 'disabled';
 	} = $props();
 
 	const actualVersionKey = $derived(
@@ -28,7 +28,7 @@
 	let hasManuallySelected = $state(false);
 	let isOpen = $state(false);
 
-	async function selectVersion(version: 'v1' | 'v2') {
+	async function selectVersion(version: 'v1' | 'v2' | 'disabled') {
 		if (version === selectedVersion) return;
 		selectedVersion = version;
 		hasManuallySelected = true;
@@ -45,7 +45,7 @@
 
 	// Синхронизация из внешних данных
 	$effect(() => {
-		const ver = (data?.[actualVersionKey] as 'v1' | 'v2') ?? 'v1';
+		const ver = (data?.[actualVersionKey] as 'v1' | 'v2' | 'disabled') ?? 'v1';
 		if (!hasManuallySelected && ver !== selectedVersion) {
 			selectedVersion = ver;
 		}
@@ -96,6 +96,14 @@
 					onclick={() => { selectVersion('v2'); isOpen = false; }}
 				>
 					Вариант 2
+				</button>
+				<!-- Кнопка отключения блока -->
+				<button
+					type="button"
+					class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'disabled' ? 'bg-red-500/20 text-red-200 border border-red-500/30 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-red-400 hover:bg-red-500/5 border border-transparent'}"
+					onclick={() => { selectVersion('disabled'); isOpen = false; }}
+				>
+					Отключить
 				</button>
 			</div>
 		{/if}
