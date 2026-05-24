@@ -52,7 +52,7 @@
 	}
 </script>
 
-<section class="relative w-full min-h-screen flex items-center justify-start overflow-hidden bg-slate-950 text-white font-sans">
+<section class="relative w-full min-h-full flex items-center justify-start overflow-hidden bg-slate-950 text-white font-sans">
 	<!-- Фоновое изображение (с глубоким боковым градиентом) -->
 	<div class="absolute inset-0 z-0">
 		<img
@@ -99,7 +99,7 @@
 	{/if}
 
 	<!-- Основной контент -->
-	<div class="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 md:px-12 md:py-28 lg:px-16 flex flex-col justify-between min-h-screen">
+	<div class="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 md:px-12 md:py-28 lg:px-16 flex flex-col justify-between min-h-full">
 		<!-- Верхняя панель (Логотип) -->
 		<div class="w-full flex items-center justify-between">
 			{#if data?.logoUrl || isEditable}

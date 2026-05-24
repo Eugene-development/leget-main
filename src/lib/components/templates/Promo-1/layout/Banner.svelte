@@ -38,8 +38,23 @@
 		await saveLayoutData(editContext, 'Header', updated);
 		data = updated;
 	}
+
+	let bannerEl: HTMLElement;
+
+	// Публикуем реальную высоту баннера в --banner-h на :root.
+	// HeroMain вычитает её вместе с --header-h из 100dvh.
+	$effect(() => {
+		if (!bannerEl) return;
+		const update = () =>
+			document.documentElement.style.setProperty('--banner-h', bannerEl.offsetHeight + 'px');
+		update();
+		const ro = new ResizeObserver(update);
+		ro.observe(bannerEl);
+		return () => ro.disconnect();
+	});
 </script>
 
+<div bind:this={bannerEl}>
 <!-- Desktop Banner -->
 <div class="z-50 hidden md:flex items-center bg-gray-950/90 backdrop-blur-sm px-4 sm:px-8">
 
@@ -204,5 +219,5 @@
 			</svg>
 		</button>
 	</div>
+	</div>
 </div>
-

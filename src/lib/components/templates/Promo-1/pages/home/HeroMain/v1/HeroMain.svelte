@@ -52,7 +52,7 @@
 	}
 </script>
 
-<section class="relative w-full min-h-screen flex items-start justify-center pt-8 md:pt-10 overflow-hidden text-gray-900">
+<section class="relative w-full min-h-full flex items-start justify-center pt-8 md:pt-10 overflow-hidden text-gray-900">
 	<!-- Фоновое изображение -->
 	<div class="absolute inset-0 z-0">
 		<img
@@ -234,9 +234,18 @@
 
 <style>
 	.glass-panel {
-		background: linear-gradient(145deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.3) 100%);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
+		/* Достаточно плотный фон — работает как самостоятельный fallback
+		   когда backdrop-filter недоступен (cross-origin изображение, старый браузер) */
+		background: linear-gradient(145deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.58) 100%);
+		backdrop-filter: blur(20px) saturate(180%);
+		-webkit-backdrop-filter: blur(20px) saturate(180%);
+	}
+
+	/* Fallback: если backdrop-filter не поддерживается — делаем фон ещё плотнее */
+	@supports not (backdrop-filter: blur(1px)) {
+		.glass-panel {
+			background: linear-gradient(145deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.80) 100%);
+		}
 	}
 
 	.hero-description {

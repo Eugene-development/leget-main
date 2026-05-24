@@ -18,7 +18,7 @@
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
-	<div class="relative w-full min-h-screen overflow-hidden {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}">
+	<div class="relative w-full hero-wrapper overflow-hidden {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}">
 		<!-- Встраиваемый переключатель версий -->
 		<VersionSwitcher 
 			bind:data 
@@ -55,6 +55,12 @@
 	</div>
 {/if}
 
-
-
-
+<style>
+	/* Hero занимает ровно видимый viewport минус высоту баннера + хедера.
+	   --banner-h задаётся Banner.svelte, --header-h — Header.svelte (оба через ResizeObserver).
+	   Дефолты (--banner-h: 36px, --header-h: 72px) прописаны в layout.css для SSR
+	   и исключают флеш при гидратации. */
+	.hero-wrapper {
+		min-height: calc(100dvh - var(--banner-h, 36px) - var(--header-h, 72px));
+	}
+</style>

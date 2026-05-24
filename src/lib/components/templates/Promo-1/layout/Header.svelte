@@ -128,7 +128,20 @@
 		}
 	];
 
+	let headerEl: HTMLElement;
 	let visibleCityMenu = $state(false);
+
+	// Публикуем реальную высоту хедера как CSS-переменную --header-h на :root.
+	// Hero-компоненты используют её для вычисления calc(100dvh - var(--header-h)).
+	$effect(() => {
+		if (!headerEl) return;
+		const update = () =>
+			document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+		update();
+		const ro = new ResizeObserver(update);
+		ro.observe(headerEl);
+		return () => ro.disconnect();
+	});
 	let visibleServicesMenu = $state(false);
 	let visibleCatalogMenu = $state(false);
 	let hoveredItem = $state<string | null>(null);
@@ -195,7 +208,7 @@
 	</div>
 {/snippet}
 
-<header class="sticky top-0 z-50 w-full sm:bg-white/95 sm:shadow-lg sm:backdrop-blur">
+<header bind:this={headerEl} class="sticky top-0 z-50 w-full sm:bg-white/95 sm:shadow-lg sm:backdrop-blur">
 	<div class="max-w-9xl mx-auto hidden items-center justify-between px-4 py-4 sm:flex sm:px-8">
 		<!-- Левая часть: Логотип -->
 		<div class="flex flex-1 justify-start">

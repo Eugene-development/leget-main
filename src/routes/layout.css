@@ -91,7 +91,14 @@ html {
 	scroll-behavior: smooth;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	/* Высота "хромовых" элементов (баннер + хедер).
+	   Задаём разумные дефолты на SSR, чтобы избежать флеша при гидратации.
+	   JS (ResizeObserver в Header.svelte / Banner.svelte) уточняет их. */
+	--banner-h: 36px; /* примерно: десктоп ~36px, мобайл ~48px */
+	--header-h: 72px; /* примерно: десктоп ~72px, мобайл — хедер скрыт */
 }
+
 
 body {
 	font-family: var(--font-body);
