@@ -58,6 +58,36 @@
 						url: 'https://www.aristo.ru'
 					},
 					{
+						name: 'Hettich',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						url: 'https://www.hettich.com'
+					},
+					{
+						name: 'Egger',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						url: 'https://www.egger.com'
+					},
+					{
+						name: 'Аристо',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						url: 'https://www.aristo.ru'
+					},
+					{
+						name: 'Hettich',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						url: 'https://www.hettich.com'
+					},
+					{
+						name: 'Egger',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						url: 'https://www.egger.com'
+					},
+					{
+						name: 'Аристо',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						url: 'https://www.aristo.ru'
+					},
+					{
 						name: 'Blum',
 						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
 						url: 'https://www.blum.com'
@@ -383,16 +413,21 @@
 					</EditableField>
 				</div>
 
-				<!-- Карточки доверия (Trust Badges - супер-компактные) -->
-				<div class="grid w-full max-w-2xl grid-cols-3 gap-3.5">
+				<!-- Карточки доверия (Trust Badges - супер-компактные, 6 штук) -->
+				<div class="grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
 					<!-- Карточка 1 -->
 					<div
-						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10"
+						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2.5 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10 sm:p-3"
 					>
 						<div
-							class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400"
+							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400 sm:h-10 sm:w-10"
 						>
-							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -402,18 +437,23 @@
 							</svg>
 						</div>
 						<div class="min-w-0">
-							<div class="truncate text-[10px] font-bold text-white">10+ лет гарантии</div>
-							<div class="truncate text-[9px] text-slate-400">Официальный договор</div>
+							<div class="truncate text-xs font-bold text-white sm:text-sm">10+ лет гарантии</div>
+							<div class="truncate text-[10px] text-slate-400 sm:text-xs">Официальный договор</div>
 						</div>
 					</div>
 					<!-- Карточка 2 -->
 					<div
-						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10"
+						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2.5 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10 sm:p-3"
 					>
 						<div
-							class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400"
+							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400 sm:h-10 sm:w-10"
 						>
-							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -423,18 +463,23 @@
 							</svg>
 						</div>
 						<div class="min-w-0">
-							<div class="truncate text-[10px] font-bold text-white">Своя фабрика</div>
-							<div class="truncate text-[9px] text-slate-400">Без наценки салонов</div>
+							<div class="truncate text-xs font-bold text-white sm:text-sm">Своя фабрика</div>
+							<div class="truncate text-[10px] text-slate-400 sm:text-xs">Без наценки салонов</div>
 						</div>
 					</div>
 					<!-- Карточка 3 -->
 					<div
-						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10"
+						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2.5 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10 sm:p-3"
 					>
 						<div
-							class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400"
+							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400 sm:h-10 sm:w-10"
 						>
-							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -444,8 +489,98 @@
 							</svg>
 						</div>
 						<div class="min-w-0">
-							<div class="truncate text-[10px] font-bold text-white">Проект за 2 часа</div>
-							<div class="truncate text-[9px] text-slate-400">Спецификация и 3D</div>
+							<div class="truncate text-xs font-bold text-white sm:text-sm">Проект за 2 часа</div>
+							<div class="truncate text-[10px] text-slate-400 sm:text-xs">Спецификация и 3D</div>
+						</div>
+					</div>
+					<!-- Карточка 4 -->
+					<div
+						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2.5 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10 sm:p-3"
+					>
+						<div
+							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400 sm:h-10 sm:w-10"
+						>
+							<svg
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+								/>
+							</svg>
+						</div>
+						<div class="min-w-0">
+							<div class="truncate text-xs font-bold text-white sm:text-sm">Рассрочка 0%</div>
+							<div class="truncate text-[10px] text-slate-400 sm:text-xs">До 12 месяцев</div>
+						</div>
+					</div>
+					<!-- Карточка 5 -->
+					<div
+						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2.5 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10 sm:p-3"
+					>
+						<div
+							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400 sm:h-10 sm:w-10"
+						>
+							<svg
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								/>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+								/>
+							</svg>
+						</div>
+						<div class="min-w-0">
+							<div class="truncate text-xs font-bold text-white sm:text-sm">Бесплатный замер</div>
+							<div class="truncate text-[10px] text-slate-400 sm:text-xs">Выезд с образцами</div>
+						</div>
+					</div>
+					<!-- Карточка 6 -->
+					<div
+						class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/5 p-2.5 backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/10 sm:p-3"
+					>
+						<div
+							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-sky-500/20 bg-sky-500/10 text-sky-400 sm:h-10 sm:w-10"
+						>
+							<svg
+								class="h-4 w-4 sm:h-5 sm:w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+								/>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+								/>
+							</svg>
+						</div>
+						<div class="min-w-0">
+							<div class="truncate text-xs font-bold text-white sm:text-sm">Сборка за 1 день</div>
+							<div class="truncate text-[10px] text-slate-400 sm:text-xs">Под ключ с техникой</div>
 						</div>
 					</div>
 				</div>
@@ -464,7 +599,7 @@
 					<!-- Заголовок карточки -->
 					<div class="flex items-center justify-between border-b border-white/5 pb-2.5">
 						<span class="text-xs font-black tracking-wider text-slate-400 uppercase"
-							>Каталог решений</span
+							>Решения по стилю</span
 						>
 						<span
 							class="rounded-full border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 text-[10px] font-bold text-sky-400"
