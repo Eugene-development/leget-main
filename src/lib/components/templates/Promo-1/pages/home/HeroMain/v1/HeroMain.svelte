@@ -185,7 +185,7 @@
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
-						value={String(data?.buttonText ?? 'Бесплатный дизайн-проект с расчётом стоимости')}
+						value={String(data?.buttonText ?? 'Дизайн-проект с расчётом стоимости')}
 						{isEditable}
 						onSave={(v) => saveField('buttonText', v)}
 						class="block"

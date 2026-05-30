@@ -44,11 +44,11 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
-			<div class="absolute inset-0 w-full h-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
 				<HeroV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div class="absolute inset-0 w-full h-full" in:fly={{ x: -1200, duration: 600 }} out:fly={{ x: -1200, duration: 600 }}>
+			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: -1200, duration: 600 }} out:fly={{ x: -1200, duration: 600 }}>
 				<HeroV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

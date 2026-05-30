@@ -5,6 +5,7 @@
 	import { cityStore } from '$lib/stores/city.svelte';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { editStore } from '$lib/stores/edit.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -208,7 +209,7 @@
 	</div>
 {/snippet}
 
-<header bind:this={headerEl} class="sticky top-0 z-50 w-full sm:bg-white/95 sm:shadow-lg sm:backdrop-blur">
+<header bind:this={headerEl} class="sticky top-0 z-[150] w-full sm:bg-white/95 sm:shadow-lg sm:backdrop-blur">
 	<div class="max-w-9xl mx-auto hidden items-center justify-between px-4 py-4 sm:flex sm:px-8">
 		<!-- Левая часть: Логотип -->
 		<div class="flex flex-1 justify-start">
@@ -302,7 +303,7 @@
 							<div class="absolute top-full left-1/2 h-4 w-full -translate-x-1/2"></div>
 							<div
 								transition:fly={{ y: -10, duration: 250, easing: cubicOut }}
-								class="absolute top-full left-1/2 z-40 mt-4 w-80 -translate-x-1/2 overflow-hidden rounded-2xl bg-white/98 p-2 shadow-2xl ring-1 ring-slate-200 backdrop-blur-xl"
+								class="absolute top-full left-1/2 z-50 mt-4 w-80 -translate-x-1/2 overflow-hidden rounded-2xl bg-white/98 p-2 shadow-2xl ring-1 ring-slate-200 backdrop-blur-xl"
 							>
 								<div
 									class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent"
@@ -443,7 +444,7 @@
 							<div class="absolute top-full left-1/2 h-4 w-full -translate-x-1/2"></div>
 							<div
 								transition:fly={{ y: -10, duration: 250, easing: cubicOut }}
-								class="absolute top-full left-1/2 z-40 mt-4 w-80 -translate-x-1/2 overflow-hidden rounded-2xl bg-white/98 p-2 shadow-2xl ring-1 ring-slate-200 backdrop-blur-xl"
+								class="absolute top-full left-1/2 z-50 mt-4 w-80 -translate-x-1/2 overflow-hidden rounded-2xl bg-white/98 p-2 shadow-2xl ring-1 ring-slate-200 backdrop-blur-xl"
 							>
 								<div
 									class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent"
@@ -687,7 +688,7 @@
 					<div class="absolute top-full right-0 left-0 h-3"></div>
 					<div
 						transition:fly={{ y: -10, duration: 200, easing: cubicOut }}
-						class="absolute top-full right-0 z-40 mt-3 w-48 overflow-hidden rounded-2xl bg-white p-2 shadow-xl ring-1 ring-slate-900/5"
+						class="absolute top-full right-0 z-50 mt-3 w-48 overflow-hidden rounded-2xl bg-white p-2 shadow-xl ring-1 ring-slate-900/5"
 					>
 						<div
 							class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500 to-transparent"
@@ -729,22 +730,21 @@
 
 						{#if isEditable}
 							<div class="mt-2 border-t border-slate-100 pt-2">
-								<EditableField
-									fieldKey="Header.cities"
-									label="Список городов (каждый с новой строки)"
-									value={citiesRaw}
-									onSave={(val) => saveField('cities', val)}
-									{isEditable}
-									multiline
+								<button
+									type="button"
+									onclick={() => {
+										editStore.open({
+											key: 'Header.cities',
+											label: 'Список городов (каждый с новой строки)',
+											value: citiesRaw,
+											multiline: true,
+											onSave: (val) => saveField('cities', val)
+										});
+									}}
+									class="flex w-full items-center justify-center rounded-lg border border-dashed border-slate-300 py-2 text-[10px] font-medium text-slate-400 transition-colors hover:border-sky-300 hover:text-sky-500 cursor-pointer"
 								>
-									{#snippet children()}
-										<div
-											class="flex w-full items-center justify-center rounded-lg border border-dashed border-slate-300 py-2 text-[10px] font-medium text-slate-400 transition-colors hover:border-sky-300 hover:text-sky-500"
-										>
-											Редактировать список
-										</div>
-									{/snippet}
-								</EditableField>
+									Редактировать список
+								</button>
 							</div>
 						{/if}
 					</div>

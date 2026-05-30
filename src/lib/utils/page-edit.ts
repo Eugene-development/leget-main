@@ -6,6 +6,7 @@
  */
 
 import { getGraphQLUrl } from '$lib/utils/config';
+import { invalidateAll } from '$app/navigation';
 
 const UPSERT_MUTATION = `
   mutation UpsertPageComponent($pageId: ID!, $licenseId: ID!, $type: String!, $data: JSON!) {
@@ -68,6 +69,66 @@ export async function saveComponentData(
 				licenseId: context.licenseId,
 				type,
 				data
+			}
+		})
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+	}
+
+	const result = await response.json();
+
+	if (result.errors?.length) {
+		const msg = result.errors[0]?.message ?? 'GraphQL error';
+		throw new Error(msg);
+	}
+
+	try {
+		await invalidateAll();
+	} catch (e) {
+		console.warn('Failed to invalidate all navigation data:', e);
+	}
+}
+
+const DELETE_COMPONENT_MUTATION = `
+  mutation DeletePageComponent($id: ID!, $licenseId: ID!) {
+    deletePageComponent(id: $id, licenseId: $licenseId) {
+      id
+    }
+  }
+`;
+
+/**
+ * Удаляет изменённый пользователем компонент страницы (сбрасывает к стартовому состоянию).
+ *
+ * @param context - pageId и licenseId
+ * @param componentId - ID записи PageComponent в базе данных
+ */
+export async function deleteComponentData(
+	context: EditContext,
+	componentId: string
+): Promise<void> {
+	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+	if (!token) {
+		throw new Error('Не авторизован');
+	}
+
+	const apiUrl = getGraphQLUrl();
+
+	const response = await fetch(apiUrl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			query: DELETE_COMPONENT_MUTATION,
+			variables: {
+				id: componentId,
+				licenseId: context.licenseId
 			}
 		})
 	});
