@@ -1,6 +1,8 @@
 <script lang="ts">
 	import HeroV1 from './v1/HeroMain.svelte';
 	import HeroV2 from './v2/HeroMain.svelte';
+	import HeroV3 from './v3/HeroMain.svelte';
+	import HeroV4 from './v4/HeroMain.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 	import { fly } from 'svelte/transition';
 
@@ -14,7 +16,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>('v1');
+	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'v4' | 'disabled'>('v1');
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -26,6 +28,7 @@
 			{isEditable} 
 			componentType="HeroMain" 
 			versionKey="heroVersion"
+			versions={['v1', 'v2', 'v3', 'v4']}
 			bind:selectedVersion 
 		/>
 
@@ -43,12 +46,20 @@
 		{/if}
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
-		{#if selectedVersion === 'v2'}
-			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+		{#if selectedVersion === 'v4'}
+			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: 500, y: 500, duration: 600 }} out:fly={{ x: -500, y: -500, duration: 600 }}>
+				<HeroV4 bind:data {editContext} {isEditable} />
+			</div>
+		{:else if selectedVersion === 'v3'}
+			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ y: 800, duration: 600 }} out:fly={{ y: -800, duration: 600 }}>
+				<HeroV3 bind:data {editContext} {isEditable} />
+			</div>
+		{:else if selectedVersion === 'v2'}
+			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: -1200, duration: 600 }}>
 				<HeroV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: -1200, duration: 600 }} out:fly={{ x: -1200, duration: 600 }}>
+			<div class="relative lg:absolute lg:inset-0 w-full h-auto lg:h-full" in:fly={{ x: -1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
 				<HeroV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

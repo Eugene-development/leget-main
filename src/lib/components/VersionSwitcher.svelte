@@ -9,14 +9,16 @@
 		isEditable = false,
 		componentType,
 		versionKey = null,
-		selectedVersion = $bindable()
+		selectedVersion = $bindable(),
+		versions = ['v1', 'v2']
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
 		componentType: string;
 		versionKey?: string | null;
-		selectedVersion: 'v1' | 'v2' | 'disabled';
+		selectedVersion: any;
+		versions?: ('v1' | 'v2' | 'v3' | 'v4')[];
 	} = $props();
 
 	const actualVersionKey = $derived(
@@ -29,7 +31,7 @@
 	let hasManuallySelected = $state(false);
 	let isOpen = $state(false);
 
-	async function selectVersion(version: 'v1' | 'v2' | 'disabled') {
+	async function selectVersion(version: 'v1' | 'v2' | 'v3' | 'v4' | 'disabled') {
 		if (version === selectedVersion) return;
 		selectedVersion = version;
 		hasManuallySelected = true;
@@ -46,7 +48,7 @@
 
 	// Синхронизация из внешних данных
 	$effect(() => {
-		const ver = (data?.[actualVersionKey] as 'v1' | 'v2' | 'disabled') ?? 'v1';
+		const ver = (data?.[actualVersionKey] as 'v1' | 'v2' | 'v3' | 'v4' | 'disabled') ?? 'v1';
 		if (!hasManuallySelected && ver !== selectedVersion) {
 			selectedVersion = ver;
 		}
@@ -91,7 +93,7 @@
 
 {#if isEditable && editContext}
 	<div class="absolute top-6 right-6 z-[100] select-none font-sans-premium flex items-center gap-2">
-		{#if componentType === 'HeroMain' && selectedVersion === 'v2'}
+		{#if componentType === 'HeroMain' && (selectedVersion === 'v2' || selectedVersion === 'v3' || selectedVersion === 'v4')}
 			<!-- Кнопка переключения темы -->
 			<button
 				type="button"
@@ -164,20 +166,42 @@
 					class="absolute left-0 top-12 z-50 w-44 rounded-2xl border border-white/10 bg-slate-950/90 p-1.5 shadow-2xl backdrop-blur-2xl flex flex-col gap-1"
 					transition:fly={{ y: -10, duration: 200 }}
 				>
-					<button
-						type="button"
-						class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'v1' ? 'bg-white/15 text-white border border-white/20 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'}"
-						onclick={() => { selectVersion('v1'); isOpen = false; }}
-					>
-						Вариант 1
-					</button>
-					<button
-						type="button"
-						class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'v2' ? 'bg-gradient-to-r from-sky-500/20 to-indigo-500/20 text-sky-200 border border-sky-500/30 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'}"
-						onclick={() => { selectVersion('v2'); isOpen = false; }}
-					>
-						Вариант 2
-					</button>
+					{#each versions as ver}
+						{#if ver === 'v1'}
+							<button
+								type="button"
+								class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'v1' ? 'bg-white/15 text-white border border-white/20 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'}"
+								onclick={() => { selectVersion('v1'); isOpen = false; }}
+							>
+								Вариант 1
+							</button>
+						{:else if ver === 'v2'}
+							<button
+								type="button"
+								class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'v2' ? 'bg-gradient-to-r from-sky-500/20 to-indigo-500/20 text-sky-200 border border-sky-500/30 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'}"
+								onclick={() => { selectVersion('v2'); isOpen = false; }}
+							>
+								Вариант 2
+							</button>
+						{:else if ver === 'v3'}
+							<button
+								type="button"
+								class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'v3' ? 'bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-200 border border-violet-500/30 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'}"
+								onclick={() => { selectVersion('v3'); isOpen = false; }}
+							>
+								Вариант 3
+							</button>
+						{:else if ver === 'v4'}
+							<button
+								type="button"
+								class="w-full text-left px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer {selectedVersion === 'v4' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-200 border border-emerald-500/30 shadow-md scale-[1.02]' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'}"
+								onclick={() => { selectVersion('v4'); isOpen = false; }}
+							>
+								Вариант 4
+							</button>
+						{/if}
+					{/each}
+
 					<!-- Кнопка отключения блока -->
 					<button
 						type="button"
