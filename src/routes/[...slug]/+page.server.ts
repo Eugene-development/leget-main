@@ -10,6 +10,7 @@ const RENDER_PAGE_QUERY = `
 				name
 				metaDescription
 				templateId
+				faviconUrl
 				header { data }
 				footer { data }
 			}
@@ -24,6 +25,7 @@ interface RenderPageResponse {
 			name: string | null;
 			metaDescription: string | null;
 			templateId: number | null;
+			faviconUrl: string | null;
 			header: { data: Record<string, unknown> } | null;
 			footer: { data: Record<string, unknown> } | null;
 		};

@@ -153,12 +153,20 @@
 		<div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-6 lg:h-20 xl:px-1">
 			<!-- Logo -->
 			<a href="/" class="group flex items-center gap-3" onclick={closeMenu}>
-				<span
-					class="text-3xl font-medium tracking-[0.2em] text-primary transition-colors duration-300 group-hover:text-secondary lg:text-4xl"
-					style="font-family: var(--font-heading);"
-				>
-					{siteName}
-				</span>
+				{#if data?.logoUrl}
+					<img
+						class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+						src={String(data.logoUrl)}
+						alt="Логотип {siteName}"
+					/>
+				{:else}
+					<span
+						class="text-3xl font-medium tracking-[0.2em] text-primary transition-colors duration-300 group-hover:text-secondary lg:text-4xl"
+						style="font-family: var(--font-heading);"
+					>
+						{siteName}
+					</span>
+				{/if}
 			</a>
 
 			<!-- Desktop Nav -->

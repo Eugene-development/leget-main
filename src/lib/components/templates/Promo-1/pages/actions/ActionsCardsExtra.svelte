@@ -2,6 +2,14 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
+	interface Card {
+		title: string;
+		description: string;
+		badge: string;
+		icon: string;
+		enabled?: boolean;
+	}
+
 	let {
 		data = $bindable(),
 		editContext = null,
@@ -12,14 +20,18 @@
 		isEditable?: boolean;
 	} = $props();
 
-	async function saveCards(updated: typeof defaultCards) {
-		if (!editContext) return;
+	async function saveCards(updated: Card[]) {
 		const updatedData = { ...data, cards: updated };
-		await saveComponentData(editContext, 'ActionsCardsExtra', updatedData);
 		data = updatedData;
+		if (!editContext) return;
+		try {
+			await saveComponentData(editContext, 'ActionsCardsExtra', updatedData);
+		} catch (err) {
+			console.error("Не удалось сохранить карточки:", err);
+		}
 	}
 
-	const defaultCards = [
+	const defaultCards: Card[] = [
 		{
 			title: 'Особое предложение',
 			description: 'Если вы приобретаете мебель повторно, то для вас будет особое предложение в виде скидки или подарка.',
@@ -40,87 +52,141 @@
 		}
 	];
 
-	const cards = $derived(
-		Array.isArray(data?.cards) && (data.cards as unknown[]).length > 0
-			? (data.cards as typeof defaultCards)
-			: defaultCards
+	let localCards = $state<Card[]>([]);
+
+	$effect(() => {
+		const cardsFromProps = Array.isArray(data?.cards) && (data.cards as unknown[]).length > 0
+			? (data.cards as Card[])
+			: defaultCards;
+		
+		if (JSON.stringify(localCards) !== JSON.stringify(cardsFromProps)) {
+			localCards = JSON.parse(JSON.stringify(cardsFromProps));
+		}
+	});
+
+	async function toggleCard(index: number, enabled: boolean) {
+		localCards[index] = { ...localCards[index], enabled };
+		const updatedData = { ...data, cards: $state.snapshot(localCards) };
+		data = updatedData;
+		if (!editContext) return;
+		try {
+			await saveComponentData(editContext, 'ActionsCardsExtra', updatedData);
+		} catch (err) {
+			console.error("Не удалось сохранить карточки:", err);
+		}
+	}
+
+	async function updateCardField(index: number, field: keyof Card, value: any) {
+		localCards[index] = { ...localCards[index], [field]: value };
+		const updatedData = { ...data, cards: $state.snapshot(localCards) };
+		data = updatedData;
+		if (!editContext) return;
+		try {
+			await saveComponentData(editContext, 'ActionsCardsExtra', updatedData);
+		} catch (err) {
+			console.error("Не удалось сохранить карточки:", err);
+		}
+	}
+
+	const hasVisibleCards = $derived(
+		isEditable || localCards.some((c) => c.enabled !== false)
 	);
 </script>
 
-<section class="bg-gray-50 py-24 sm:py-32">
-	<div class="mx-auto max-w-7xl px-6 lg:px-8">
-		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{#each cards as card, i}
-				<div
-					class="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg ring-1 ring-gray-200 transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:ring-amber-500"
-				>
-					<div
-						class="absolute -right-4 -top-4 size-24 rounded-full bg-amber-500/10 transition duration-300 group-hover:scale-150"
-					></div>
-					<div class="relative">
+{#if hasVisibleCards}
+	<section class="bg-gray-50 py-24 sm:py-32">
+		<div class="mx-auto max-w-7xl px-6 lg:px-8">
+			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+				{#each localCards as card, i}
+					{#if isEditable || card.enabled !== false}
 						<div
-							class="flex size-14 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/30"
+							class="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg ring-1 ring-gray-200 transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:ring-amber-500 {isEditable && card.enabled === false ? 'grayscale contrast-75 brightness-95 opacity-60' : ''}"
 						>
-							<svg class="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-								<path stroke-linecap="round" stroke-linejoin="round" d={card.icon} />
-							</svg>
+							<div
+								class="absolute -right-4 -top-4 size-24 rounded-full bg-amber-500/10 transition duration-300 group-hover:scale-150"
+							></div>
+							<div class="relative">
+								{#if isEditable}
+									<div class="absolute top-0 right-0 z-10 flex items-center">
+										<label class="inline-flex items-center gap-1.5 cursor-pointer bg-gray-50/95 backdrop-blur px-2.5 py-1 rounded-full border border-gray-100 shadow-sm hover:bg-gray-100 transition duration-200">
+											<input
+												type="checkbox"
+												checked={card.enabled !== false}
+												onchange={(e) => toggleCard(i, e.currentTarget.checked)}
+												class="sr-only peer"
+											/>
+											<div
+												class="relative w-7 h-4 bg-gray-200 rounded-full peer peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-amber-500"
+											></div>
+											<span class="text-[10px] font-bold tracking-wider uppercase text-gray-500 select-none">
+												{card.enabled !== false ? 'Вкл' : 'Выкл'}
+											</span>
+										</label>
+									</div>
+								{/if}
+
+								<div
+									class="flex size-14 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/30"
+								>
+									<svg class="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+										<path stroke-linecap="round" stroke-linejoin="round" d={card.icon} />
+									</svg>
+								</div>
+
+								<EditableField
+									fieldKey="ActionsCardsExtra.cards.{i}.title"
+									label="Заголовок карточки"
+									value={card.title}
+									{isEditable}
+									onSave={async (v) => {
+										await updateCardField(i, 'title', v);
+									}}
+									class="mt-6 block"
+								>
+									{#snippet children(displayValue)}
+										<h3 class="mt-6 text-xl font-semibold text-gray-900">{displayValue}</h3>
+									{/snippet}
+								</EditableField>
+
+								<EditableField
+									fieldKey="ActionsCardsExtra.cards.{i}.description"
+									label="Описание"
+									value={card.description}
+									{isEditable}
+									multiline
+									onSave={async (v) => {
+										await updateCardField(i, 'description', v);
+									}}
+									class="mt-3 block"
+								>
+									{#snippet children(displayValue)}
+										<p class="mt-3 text-base/7 text-gray-600">{displayValue}</p>
+									{/snippet}
+								</EditableField>
+
+								<div class="mt-6">
+									<EditableField
+										fieldKey="ActionsCardsExtra.cards.{i}.badge"
+										label="Бейдж"
+										value={card.badge}
+										{isEditable}
+										onSave={async (v) => {
+											await updateCardField(i, 'badge', v);
+										}}
+										class="inline-block"
+									>
+										{#snippet children(displayValue)}
+											<span class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">
+												{displayValue}
+											</span>
+										{/snippet}
+									</EditableField>
+								</div>
+							</div>
 						</div>
-
-						<EditableField
-							fieldKey="ActionsCardsExtra.cards.{i}.title"
-							label="Заголовок карточки"
-							value={card.title}
-							{isEditable}
-							onSave={async (v) => {
-								const updated = cards.map((c, idx) => idx === i ? { ...c, title: v } : c);
-								await saveCards(updated);
-							}}
-							class="mt-6 block"
-						>
-							{#snippet children(displayValue)}
-								<h3 class="mt-6 text-xl font-semibold text-gray-900">{displayValue}</h3>
-							{/snippet}
-						</EditableField>
-
-						<EditableField
-							fieldKey="ActionsCardsExtra.cards.{i}.description"
-							label="Описание"
-							value={card.description}
-							{isEditable}
-							multiline
-							onSave={async (v) => {
-								const updated = cards.map((c, idx) => idx === i ? { ...c, description: v } : c);
-								await saveCards(updated);
-							}}
-							class="mt-3 block"
-						>
-							{#snippet children(displayValue)}
-								<p class="mt-3 text-base/7 text-gray-600">{displayValue}</p>
-							{/snippet}
-						</EditableField>
-
-						<div class="mt-6">
-							<EditableField
-								fieldKey="ActionsCardsExtra.cards.{i}.badge"
-								label="Бейдж"
-								value={card.badge}
-								{isEditable}
-								onSave={async (v) => {
-									const updated = cards.map((c, idx) => idx === i ? { ...c, badge: v } : c);
-									await saveCards(updated);
-								}}
-								class="inline-block"
-							>
-								{#snippet children(displayValue)}
-									<span class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">
-										{displayValue}
-									</span>
-								{/snippet}
-							</EditableField>
-						</div>
-					</div>
-				</div>
-			{/each}
+					{/if}
+				{/each}
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
+{/if}

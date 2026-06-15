@@ -79,24 +79,32 @@
 	<div class="flex items-center justify-between px-10 lg:px-24 xl:px-32">
 		<!-- Logo -->
 		<a href="/" class="group flex items-center gap-3" onclick={closeMenu}>
-			<div
-				class="flex size-10 items-center justify-center rounded-lg border border-accent-500/30 bg-accent-500/10 transition-all duration-300 group-hover:border-accent-500 group-hover:bg-accent-500/20"
-			>
-				<svg viewBox="0 0 24 24" class="size-5 fill-none stroke-accent-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-					<rect x="3" y="3" width="8" height="8" rx="1" />
-					<rect x="13" y="3" width="8" height="8" rx="1" />
-					<rect x="3" y="13" width="8" height="8" rx="1" />
-					<rect x="13" y="13" width="8" height="8" rx="1" />
-				</svg>
-			</div>
-			<div>
-				<span class="font-display text-xl font-bold tracking-wider text-surface-50 uppercase transition-colors group-hover:text-accent-500">
-					{siteName}
-				</span>
-				<span class="block text-[10px] font-medium tracking-[0.3em] text-surface-300 uppercase">
-					{siteTagline}
-				</span>
-			</div>
+			{#if data?.logoUrl}
+				<img
+					class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+					src={String(data.logoUrl)}
+					alt="Логотип {siteName}"
+				/>
+			{:else}
+				<div
+					class="flex size-10 items-center justify-center rounded-lg border border-accent-500/30 bg-accent-500/10 transition-all duration-300 group-hover:border-accent-500 group-hover:bg-accent-500/20"
+				>
+					<svg viewBox="0 0 24 24" class="size-5 fill-none stroke-accent-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="3" y="3" width="8" height="8" rx="1" />
+						<rect x="13" y="3" width="8" height="8" rx="1" />
+						<rect x="3" y="13" width="8" height="8" rx="1" />
+						<rect x="13" y="13" width="8" height="8" rx="1" />
+					</svg>
+				</div>
+				<div>
+					<span class="font-display text-xl font-bold tracking-wider text-surface-50 uppercase transition-colors group-hover:text-accent-500">
+						{siteName}
+					</span>
+					<span class="block text-[10px] font-medium tracking-[0.3em] text-surface-300 uppercase">
+						{siteTagline}
+					</span>
+				</div>
+			{/if}
 		</a>
 
 		<!-- Desktop Nav -->

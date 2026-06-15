@@ -84,6 +84,16 @@
 		}
 	});
 
+	let previousAuth = $state<boolean | null>(null);
+	$effect(() => {
+		if (browser) {
+			if (previousAuth !== null && previousAuth !== $auth.isAuthenticated) {
+				invalidateAll();
+			}
+			previousAuth = $auth.isAuthenticated;
+		}
+	});
+
 	const isEditable = $derived(
 		browser && 
 		$auth.isAuthenticated && 
@@ -152,7 +162,7 @@
 	{@const Component = componentMap[element.type] ?? null}
 	{#if Component}
 		<div class="relative group/component">
-			<Component data={element.data} {editContext} {isEditable} />
+			<Component bind:data={element.data} {editContext} {isEditable} />
 
 			{#if isEditable && element.id && !componentsWithSwitcher.has(element.type)}
 				<div class="absolute top-6 right-6 z-40 opacity-0 group-hover/component:opacity-100 transition-opacity duration-300 pointer-events-none">

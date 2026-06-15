@@ -8,6 +8,7 @@
 		name: string | null;
 		metaDescription: string | null;
 		templateId: number | null;
+		faviconUrl: string | null;
 		header: { data: Record<string, unknown> } | null;
 		footer: { data: Record<string, unknown> } | null;
 	};
@@ -34,6 +35,9 @@
 	{/if}
 	{#if site?.metaDescription}
 		<meta name="description" content={site.metaDescription} />
+	{/if}
+	{#if site?.faviconUrl}
+		<link rel="icon" href={site.faviconUrl} />
 	{/if}
 </svelte:head>
 

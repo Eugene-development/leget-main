@@ -39,7 +39,7 @@
 	let cropFile = $state<File | null>(null);
 
 	// Thumbnail strip
-	let thumbStrip: HTMLDivElement;
+	let thumbStrip = $state<HTMLDivElement>();
 
 	// ─── Derived ────────────────────────────────────────────────────────────────
 	const selectedImage = $derived(images[selectedIndex] ?? null);
