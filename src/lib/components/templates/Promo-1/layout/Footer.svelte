@@ -51,39 +51,139 @@
 <footer class="bg-gray-900">
 	<div class="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
 		<div class="xl:grid xl:grid-cols-3 xl:gap-8">
-			<a href="/" class="group flex flex-col items-start">
-				<span class="sr-only">{siteName}</span>
-				{#if data?.logoUrl}
-					<img
-						class="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
-						src={String(data.logoUrl)}
-						alt="Логотип {siteName}"
-					/>
-				{:else}
-					<div class="flex flex-col items-center">
-						<div
-							class="mb-1 size-7 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 shadow-sm transition-transform duration-300 group-hover:scale-110"
-						></div>
+			<div class="flex flex-col items-start gap-4">
+				<h3 class="text-sm font-semibold text-white tracking-wider uppercase">Контакты</h3>
+				<ul class="space-y-3.5 text-sm text-gray-400">
+					<!-- Phone -->
+					<li class="flex items-center gap-3">
+						<svg class="h-5 w-5 text-pink-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+						</svg>
 						<EditableField
-							fieldKey="Footer.siteName"
-							label="Название сайта"
-							value={!data?.siteName || data.siteName === 'Новострой'
-								? 'Логотип'
-								: String(data.siteName)}
-							onSave={(val) => saveField('siteName', val)}
+							fieldKey="Footer.phone"
+							label="Телефон"
+							value={String(data?.phone ?? '+7 (999) 000-00-00')}
+							onSave={(val) => saveField('phone', val)}
 							{isEditable}
 						>
 							{#snippet children(displayValue)}
-								<span
-									class="text-[8px] font-black tracking-[0.2em] text-white uppercase transition-transform duration-300 group-hover:scale-105"
-								>
+								<a href="tel:{displayValue.replace(/[^+\d]/g, '')}" class="hover:text-white transition-colors">
 									{displayValue}
-								</span>
+								</a>
 							{/snippet}
 						</EditableField>
-					</div>
-				{/if}
-			</a>
+					</li>
+
+					<!-- Email -->
+					<li class="flex items-center gap-3">
+						<svg class="h-5 w-5 text-pink-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+						</svg>
+						<EditableField
+							fieldKey="Footer.email"
+							label="Email"
+							value={String(data?.email ?? 'info@site.ru')}
+							onSave={(val) => saveField('email', val)}
+							{isEditable}
+						>
+							{#snippet children(displayValue)}
+								<a href="mailto:{displayValue}" class="hover:text-white transition-colors">
+									{displayValue}
+								</a>
+							{/snippet}
+						</EditableField>
+					</li>
+
+					<!-- Address -->
+					<li class="flex items-start gap-3">
+						<svg class="h-5 w-5 text-pink-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+						</svg>
+						<EditableField
+							fieldKey="Footer.address"
+							label="Адрес"
+							value={String(data?.address ?? 'г. Москва, ул. Ленина, д. 10')}
+							onSave={(val) => saveField('address', val)}
+							{isEditable}
+							multiline
+						>
+							{#snippet children(displayValue)}
+								<span class="leading-snug">{displayValue}</span>
+							{/snippet}
+						</EditableField>
+					</li>
+
+					<!-- Working Hours -->
+					<li class="flex items-center gap-3">
+						<svg class="h-5 w-5 text-pink-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+						</svg>
+						<EditableField
+							fieldKey="Footer.hours"
+							label="Режим работы"
+							value={String(data?.hours ?? 'Пн–Вс: 9:00 — 21:00')}
+							onSave={(val) => saveField('hours', val)}
+							{isEditable}
+						>
+							{#snippet children(displayValue)}
+								<span>{displayValue}</span>
+							{/snippet}
+						</EditableField>
+					</li>
+				</ul>
+
+				<!-- Social Links -->
+				<div class="mt-4 flex gap-4">
+					<EditableField
+						fieldKey="Footer.telegram"
+						label="Telegram (ссылка)"
+						value={String(data?.telegram ?? '')}
+						onSave={(val) => saveField('telegram', val)}
+						{isEditable}
+					>
+						{#snippet children(displayValue)}
+							{#if displayValue || isEditable}
+								<a
+									href={displayValue || '#'}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-gray-400 hover:bg-pink-500 hover:text-white transition-all duration-300 shadow-sm"
+									title="Telegram"
+								>
+									<svg class="h-4.5 w-4.5 fill-currentColor" viewBox="0 0 24 24">
+										<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.5.15.13.1.17.24.18.33.01.06.02.19.01.29z"/>
+									</svg>
+								</a>
+							{/if}
+						{/snippet}
+					</EditableField>
+
+					<EditableField
+						fieldKey="Footer.whatsapp"
+						label="WhatsApp (ссылка)"
+						value={String(data?.whatsapp ?? '')}
+						onSave={(val) => saveField('whatsapp', val)}
+						{isEditable}
+					>
+						{#snippet children(displayValue)}
+							{#if displayValue || isEditable}
+								<a
+									href={displayValue || '#'}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 text-gray-400 hover:bg-pink-500 hover:text-white transition-all duration-300 shadow-sm"
+									title="WhatsApp"
+								>
+									<svg class="h-4.5 w-4.5 fill-currentColor" viewBox="0 0 24 24">
+										<path d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.758.459 3.473 1.332 4.984L2 22l5.201-1.365a9.927 9.927 0 004.811 1.253h.005c5.505 0 9.988-4.482 9.988-9.988C22 6.482 17.518 2 12.012 2zm6.275 13.99c-.258.724-1.25 1.328-1.725 1.402-.455.07-1.018.106-2.905-.678-2.42-.999-3.992-3.463-4.113-3.624-.121-.161-.99-1.317-.99-2.51 0-1.192.624-1.778.845-2.02.221-.241.483-.301.644-.301.161 0 .322.002.462.008.148.006.347-.056.544.422.201.489.684 1.667.745 1.788.06.121.101.262.02.423-.08.161-.121.262-.241.402-.121.141-.254.314-.362.422-.121.121-.248.254-.108.496.141.242.624 1.026 1.339 1.663.921.821 1.699 1.074 1.94 1.195.242.121.382.101.524-.06.141-.161.604-.704.765-.946.161-.242.322-.201.544-.121.221.08 1.402.663 1.644.784.242.121.402.181.463.282.06.1.06.583-.198 1.308z"/>
+									</svg>
+								</a>
+							{/if}
+						{/snippet}
+					</EditableField>
+				</div>
+			</div>
 			<div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
 				<div class="md:grid md:grid-cols-2 md:gap-8">
 					<div>

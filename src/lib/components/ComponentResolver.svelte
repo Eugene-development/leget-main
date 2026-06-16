@@ -181,7 +181,7 @@
 {/each}
 
 {#if Footer}
-	<Footer data={footerData ?? {}} {editContext} {isEditable} />
+	<Footer data={{ logoUrl: headerData?.logoUrl, ...footerData }} {editContext} {isEditable} />
 {/if}
 
 {#if isEditable}
