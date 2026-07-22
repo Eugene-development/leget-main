@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -16,10 +17,10 @@
 		Array.isArray(data?.cards) && data.cards.length > 0
 			? (data.cards as { title: string; description: string; image: string; alt: string }[])
 			: [
-					{ title: 'Дизайн-проект',    description: 'Бесплатный 3D-проект с визуализацией и точными замерами', image: '/message/design_project.png', alt: 'Дизайн-проект'    },
-					{ title: 'Мебель',            description: 'Производство по точным размерам и вашим предпочтениям',   image: '/message/kitchen.png',         alt: 'Мебель на заказ'  },
-					{ title: 'Партнёрство',       description: 'Сотрудничаем с лучшими фабриками и поставщиками',         image: '/message/partnership.png',     alt: 'Партнёрство'      },
-					{ title: 'Гарантия качества', description: 'Гарантия до 5 лет на мебель и полное сопровождение заказа', image: '/message/quality.png',       alt: 'Гарантия качества' },
+					{ title: 'Дизайн-проект',    description: 'Бесплатный 3D-проект с визуализацией и точными замерами', image: null, alt: 'Дизайн-проект'    },
+					{ title: 'Мебель',            description: 'Производство по точным размерам и вашим предпочтениям',   image: null,         alt: 'Мебель на заказ'  },
+					{ title: 'Партнёрство',       description: 'Сотрудничаем с лучшими фабриками и поставщиками',         image: null,     alt: 'Партнёрство'      },
+					{ title: 'Гарантия качества', description: 'Гарантия до 5 лет на мебель и полное сопровождение заказа', image: null,       alt: 'Гарантия качества' },
 				]
 	);
 
@@ -62,7 +63,7 @@
 						>
 							{#snippet children(displayValue)}
 								{#if displayValue}
-									<img
+									<ImageFallback
 										src={displayValue}
 										alt={String(data?.logoAlt ?? 'Логотип')}
 										class="w-full object-contain filter brightness-0 invert"
@@ -110,7 +111,7 @@
 						<div class="relative flex flex-col h-full justify-between">
 							<div>
 								<div class="mb-5 size-16 overflow-hidden rounded-2xl border border-white/10 bg-slate-900 group-hover:border-sky-500/30 transition-colors duration-300">
-									<img src={card.image} alt={card.alt} class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+									<ImageFallback src={card.image} alt={card.alt} class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
 								</div>
 								<h3 class="text-base font-bold text-white group-hover:text-sky-300 transition-colors duration-300">
 									<EditableField
@@ -154,8 +155,7 @@
 </section>
 
 <style>
-	/* Outfit Font for modern tech look */
-	@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
 
 	blockquote {
 		font-family: 'Outfit', sans-serif;

@@ -97,11 +97,10 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.1s"
 			>
-				<img
+				<img loading="lazy"
 					src="https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg"
 					alt="Цех сборки"
-					class="bento-media"
-				/>
+					class="bento-media">
 			</div>
 
 			<!-- Cell 2 — top right -->
@@ -110,11 +109,10 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.2s"
 			>
-				<img
+				<img loading="lazy"
 					src="https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg"
 					alt="ЧПУ-станки"
-					class="bento-media"
-				/>
+					class="bento-media">
 			</div>
 
 			<!-- Cell 3 — middle right -->
@@ -123,11 +121,10 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.3s"
 			>
-				<img
+				<img loading="lazy"
 					src="https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg"
 					alt="Окрасочная камера"
-					class="bento-media"
-				/>
+					class="bento-media">
 			</div>
 
 			<!-- Cell 4 — bottom left -->
@@ -136,11 +133,10 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.4s"
 			>
-				<img
+				<img loading="lazy"
 					src="https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg"
 					alt="Склад"
-					class="bento-media"
-				/>
+					class="bento-media">
 			</div>
 
 			<!-- Cell 5 — bottom right wide -->
@@ -149,11 +145,10 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.5s"
 			>
-				<img
+				<img loading="lazy"
 					src="https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg"
 					alt="Контроль качества"
-					class="bento-media"
-				/>
+					class="bento-media">
 			</div>
 		</div>
 	</div>

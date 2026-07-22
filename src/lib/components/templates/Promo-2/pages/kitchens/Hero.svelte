@@ -43,7 +43,6 @@
 >
 	<div class="absolute inset-0 z-0">
 		<img
-			src="/images/kitchen_assembly.png"
 			alt="Премиальные кухни"
 			class="h-full w-full object-cover opacity-30 mix-blend-overlay"
 		/>

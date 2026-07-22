@@ -123,7 +123,6 @@
 	<!-- Right: image -->
 	<div class="relative hidden overflow-hidden bg-border-light lg:block">
 		<img
-			src="/images/promo-wardrobe.png"
 			alt="Премиальная гардеробная"
 			class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 		/>

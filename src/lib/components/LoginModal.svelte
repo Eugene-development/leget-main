@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth';
+	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
+	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 
 	let { onClose }: { onClose: () => void } = $props();
 
@@ -8,6 +10,10 @@
 	let errors = $state({ email: '', password: '' });
 	let submitError = $state('');
 	let isSubmitting = $state(false);
+
+	// SmartCaptcha (защита от ботов)
+	let captchaToken = $state<string | null>(null);
+	let captchaRef = $state<{ reset: () => void } | undefined>();
 
 	function isValidEmail(value: string) {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -40,13 +46,22 @@
 		event.preventDefault();
 		if (!validate()) return;
 
+		// Антибот: при включённой капче требуется токен
+		if (SITE_KEY && !captchaToken) {
+			submitError = 'Подтвердите, что вы не робот.';
+			return;
+		}
+
 		isSubmitting = true;
 		submitError = '';
 
 		try {
-			await auth.login(email, password);
+			await auth.login(email, password, captchaToken);
 			onClose();
 		} catch (err: unknown) {
+			// Токен одноразовый — сбрасываем капчу для повторной попытки
+			captchaRef?.reset();
+			captchaToken = null;
 			submitError = err instanceof Error ? err.message : 'Не удалось войти. Проверьте данные.';
 		} finally {
 			isSubmitting = false;
@@ -145,6 +160,16 @@
 					{/if}
 				</div>
 			</div>
+
+			{#if SITE_KEY}
+				<div class="mt-4">
+					<SmartCaptcha
+						bind:this={captchaRef}
+						onverify={(token: string) => (captchaToken = token)}
+						onerror={() => (captchaToken = null)}
+					/>
+				</div>
+			{/if}
 
 			{#if submitError}
 				<div class="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">

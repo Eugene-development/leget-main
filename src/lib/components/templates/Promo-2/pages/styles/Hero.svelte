@@ -33,7 +33,7 @@
 	<!-- Background Image with fixed attachment -->
 	<div
 		class="absolute inset-0 bg-cover bg-fixed bg-center"
-		style="background-image: url('/images/style-neoclassic.png');"
+		style=""
 	></div>
 
 	<!-- Light Overlay -->

@@ -110,11 +110,10 @@
 				</div>
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
-						<img
+						<img loading="lazy"
 							src="https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg"
 							alt="Проектирование кухни технологами"
-							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105">
 					</div>
 				</div>
 			</div>
@@ -127,11 +126,10 @@
 			>
 				<div class="lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
-						<img
+						<img loading="lazy"
 							src="https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg"
 							alt="Производственный процесс"
-							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105">
 					</div>
 				</div>
 				<div class="lg:w-1/2">
@@ -215,11 +213,9 @@
 				</div>
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
-						<img
-							src="/images/kitchen_assembly.png"
+						<img loading="lazy"
 							alt="Сборка кухни"
-							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105">
 					</div>
 				</div>
 			</div>

@@ -47,5 +47,5 @@
 	headerData={site?.header?.data ?? null}
 	footerData={site?.footer?.data ?? null}
 	components={data.pageData?.page?.componentsData as PageComponent[] ?? []}
-	editContext={pageId && licenseId ? { pageId, licenseId } : null}
+	editContext={pageId && licenseId ? { pageId, licenseId, templateId, slug: pageSlug } : null}
 />

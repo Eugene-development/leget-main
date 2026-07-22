@@ -43,11 +43,10 @@
 			class="relative overflow-hidden opacity-0 transition-all duration-700"
 			class:animate-scale-in={visible}
 		>
-			<img
-				src={String(data?.image ?? '/images/promo-kitchen-painted.png')}
+			<img loading="lazy"
+				src={String(data?.image ?? '')}
 				alt={String(data?.title ?? '')}
-				class="h-[400px] w-full object-cover lg:h-[520px]"
-			/>
+				class="h-[400px] w-full object-cover lg:h-[520px]">
 			<div class="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/60 to-transparent"></div>
 
 			<!-- Overlay Content -->

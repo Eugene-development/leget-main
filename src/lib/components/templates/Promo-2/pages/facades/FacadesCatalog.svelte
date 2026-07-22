@@ -36,7 +36,7 @@
 			title: 'Массив дерева',
 			description:
 				'Классика, которая никогда не выходит из моды. Натуральная текстура дуба или ясеня привносит в дом тепло и уют. Фасады из массива поддаются реставрации и с годами становятся только благороднее.',
-			image: '/images/facade_wood.png',
+			image: null,
 			details: {
 				base: 'Массив ясеня / дуба',
 				coating: 'Эмаль, масловоск, воскобейц, патина',
@@ -50,7 +50,7 @@
 			title: 'Пластики',
 			description:
 				'Максимально устойчивые к царапинам, ударам и температурам материал. Пластики идеально имитируют текстуры бетона, камня или дерева, сохраняя при этом индустриальную строгость и премиальный вид.',
-			image: '/images/facade_hpl.png',
+			image: null,
 			details: {
 				base: 'Плита МДФ',
 				coating: 'Декоративный пластик',
@@ -78,7 +78,7 @@
 			title: 'Акрил',
 			description:
 				'Идеально ровная, зеркальная глянцевая или бархатистая матовая поверхность. Фасады из акрила обладают высокой ударопрочностью, не выцветают на солнце и придают интерьеру премиальный блеск.',
-			image: '/images/facade_acrylic.png',
+			image: null,
 			details: {
 				base: 'Плита МДФ',
 				coating: 'Акриловый пластик',
@@ -143,11 +143,10 @@
 						class:animate-fade-up={itemVisibility[facade.id]}
 						style="animation-delay: 0.2s"
 					>
-						<img
-							src={facade.image}
+						<img loading="lazy"
+							src={facade.image || undefined}
 							alt={facade.title}
-							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105">
 						<div
 							class="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent lg:hidden"
 						></div>

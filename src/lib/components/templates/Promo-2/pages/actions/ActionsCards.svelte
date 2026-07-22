@@ -42,7 +42,7 @@
 			description: 'Наша самая популярная акция. Кухонный гарнитур с премиум скидкой 30%',
 			oldPrice: '600 000',
 			newPrice: '420 000',
-			image: '/images/promo-kitchen-painted.png',
+			image: null,
 			until: '31 мая 2026'
 		},
 		{
@@ -55,7 +55,7 @@
 			description: 'Бесплатная доставка и подъём грузчиками на любой заказ в черте города',
 			oldPrice: '7 000',
 			newPrice: '0',
-			image: '/images/promo-delivery-zov.png',
+			image: null,
 			until: '31 мая 2026'
 		},
 		{
@@ -68,7 +68,7 @@
 			description: 'Получите в подарок бытовую технику при заказе кухонного гарнитура',
 			oldPrice: null,
 			newPrice: '0',
-			image: '/images/promo-appliances.png',
+			image: null,
 			until: '31 мая 2026'
 		}
 	];
@@ -188,11 +188,10 @@
 				>
 					<!-- Image -->
 					<div class="relative aspect-[3/2] overflow-hidden">
-						<img
-							src={card.image}
+						<img loading="lazy"
+							src={card.image || undefined}
 							alt={card.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
 						<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
 
 						<!-- Tag badge -->

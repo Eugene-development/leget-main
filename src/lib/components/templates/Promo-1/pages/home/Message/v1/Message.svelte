@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -16,10 +17,10 @@
 		Array.isArray(data?.cards) && data.cards.length > 0
 			? (data.cards as { title: string; description: string; image: string; alt: string }[])
 			: [
-					{ title: 'Дизайн-проект',    description: 'Бесплатный 3D-проект с визуализацией и точными замерами', image: '/message/design_project.png', alt: 'Дизайн-проект'    },
-					{ title: 'Мебель',            description: 'Производство по точным размерам и вашим предпочтениям',   image: '/message/kitchen.png',         alt: 'Мебель на заказ'  },
-					{ title: 'Партнёрство',       description: 'Сотрудничаем с лучшими фабриками и поставщиками',         image: '/message/partnership.png',     alt: 'Партнёрство'      },
-					{ title: 'Гарантия качества', description: 'Гарантия до 5 лет на мебель и полное сопровождение заказа', image: '/message/quality.png',       alt: 'Гарантия качества' },
+					{ title: 'Дизайн-проект',    description: 'Бесплатный 3D-проект с визуализацией и точными замерами', image: null, alt: 'Дизайн-проект'    },
+					{ title: 'Мебель',            description: 'Производство по точным размерам и вашим предпочтениям',   image: null,         alt: 'Мебель на заказ'  },
+					{ title: 'Партнёрство',       description: 'Сотрудничаем с лучшими фабриками и поставщиками',         image: null,     alt: 'Партнёрство'      },
+					{ title: 'Гарантия качества', description: 'Гарантия до 5 лет на мебель и полное сопровождение заказа', image: null,       alt: 'Гарантия качества' },
 				]
 	);
 
@@ -59,7 +60,7 @@
 							<div class="relative">
 								{#if displayValue}
 									<div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-sky-100 to-cyan-100 opacity-50 blur-xl"></div>
-									<img
+									<ImageFallback
 										src={displayValue || 'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
 										alt={String(data?.logoAlt ?? 'Логотип')}
 										class="relative w-full rounded-2xl object-contain"
@@ -111,7 +112,7 @@
 						<div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-sky-50/80 transition-transform duration-500 group-hover:scale-125"></div>
 						<div class="relative">
 							<div class="mb-4 size-24 overflow-hidden rounded-xl">
-								<img src={card.image} alt={card.alt} class="h-full w-full object-cover" />
+								<ImageFallback src={card.image} alt={card.alt} class="h-full w-full object-cover" />
 							</div>
 							<h3 class="text-sm font-bold text-slate-900 sm:text-base">
 								<EditableField
@@ -119,6 +120,7 @@
 									label="Заголовок"
 									value={card.title}
 									{isEditable}
+									inline
 									onSave={(v) => saveCardField(i, 'title', v)}
 									class="inline"
 								>
@@ -132,6 +134,7 @@
 									value={card.description}
 									{isEditable}
 									multiline
+									inline
 									onSave={(v) => saveCardField(i, 'description', v)}
 									class="block"
 								>

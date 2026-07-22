@@ -58,7 +58,7 @@ function createAuthStore() {
 		},
 
 		/** Login with email/password, store token on success */
-		async login(email: string, password: string): Promise<void> {
+		async login(email: string, password: string, captchaToken: string | null = null): Promise<void> {
 			const authApiUrl = getAuthApiUrl();
 			const response = await fetch(`${authApiUrl}/auth/login`, {
 				method: 'POST',
@@ -66,13 +66,19 @@ function createAuthStore() {
 					'Content-Type': 'application/json',
 					Accept: 'application/json'
 				},
-				body: JSON.stringify({ email: email.trim().toLowerCase(), password })
+				body: JSON.stringify({
+					email: email.trim().toLowerCase(),
+					password,
+					captcha_token: captchaToken
+				})
 			});
 
 			const result = await response.json();
 
 			if (!response.ok || !result.success) {
-				throw new Error(result.message || 'Ошибка входа');
+				// При непройденной капче у бэкенда есть более понятное сообщение в errors.
+				const captchaErr = result?.errors?.captcha_token?.[0];
+				throw new Error(captchaErr || result.message || 'Ошибка входа');
 			}
 
 			if (result.token) {

@@ -31,7 +31,6 @@
 	<!-- Background Image -->
 	<div class="absolute inset-0">
 		<img
-			src="/images/showroom.png"
 			alt="Салон мебели"
 			class="h-full w-full object-cover transition-transform duration-[2s]"
 			class:scale-105={visible}

@@ -61,7 +61,7 @@
 	<div class="absolute inset-0">
 		<!-- Mobile: static image -->
 		<img
-			src={String(data?.mobileImage ?? '/images/hero-kitchen.png')}
+			src={String(data?.mobileImage ?? '')}
 			alt={String(data?.title ?? 'Hero')}
 			class="h-full w-full object-cover md:hidden"
 		/>
@@ -70,7 +70,7 @@
 			<video
 				src={isDesktop ? src : undefined}
 				autoplay={isDesktop && i === 0}
-				preload={isDesktop ? 'auto' : 'none'}
+				preload={isDesktop ? 'metadata' : 'none'}
 				muted
 				playsinline
 				bind:this={videoEls[i]}

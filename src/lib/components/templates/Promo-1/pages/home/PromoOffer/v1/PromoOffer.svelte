@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -29,7 +30,7 @@
 	);
 
 	const activeImage = $derived(
-		String(data?.imageV1 ?? data?.image ?? '/images/promo-happy-person.png')
+		String(data?.imageV1 ?? data?.image ?? '')
 	);
 
 	async function saveField(field: string, value: string) {
@@ -54,7 +55,7 @@
 		<!-- Изображение -->
 		<div class="promo-alt__image-wrapper">
 			<div class="promo-alt__image-frame">
-				<img
+				<ImageFallback
 					src={activeImage}
 					alt={String(data?.imageAlt ?? 'Промо изображение')}
 					class="promo-alt__image"
@@ -207,7 +208,7 @@
 		<BgImagePicker
 			editContext={editContext}
 			currentImage={String(data?.imageV1 ?? data?.image ?? '')}
-			defaultImage="/images/promo-happy-person.png"
+			defaultImage=""
 			aspectRatio={1}
 			onApprove={handleImageApprove}
 			onClose={() => showImagePicker = false}
@@ -297,7 +298,7 @@
 		overflow: hidden;
 	}
 
-	.promo-alt__image {
+	:global(.promo-alt__image) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -305,7 +306,7 @@
 		transition: transform 0.7s ease;
 	}
 
-	.promo-alt__image-frame:hover .promo-alt__image {
+	.promo-alt__image-frame:hover :global(.promo-alt__image) {
 		transform: scale(1.05);
 	}
 

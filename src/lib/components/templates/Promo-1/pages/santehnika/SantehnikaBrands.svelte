@@ -25,7 +25,7 @@
 				class="group flex h-20 items-center justify-center rounded-xl bg-white p-4 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
 				in:fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}>
 				{#if brand.logo}
-					<img src={brand.logo} alt={brand.title ?? brand.value} class="max-h-10 max-w-full object-contain" />
+					<img loading="lazy" src={brand.logo} alt={brand.title ?? brand.value} class="max-h-10 max-w-full object-contain">
 				{:else}
 					<span class="text-base font-bold text-slate-500 transition-colors group-hover:text-sky-600">
 						{brand.title ?? brand.value ?? brand.name}

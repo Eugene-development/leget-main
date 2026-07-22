@@ -258,14 +258,7 @@
 	const activeStyle = $derived(styleOptions[activeStyleIndex]);
 </script>
 
-<svelte:head>
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-		rel="stylesheet"
-	/>
-</svelte:head>
+<!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
 
 <section
 	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-x-hidden transition-colors duration-500 lg:h-full {isLight
@@ -987,7 +980,7 @@
 
 <style>
 	/* Кастомные шрифты и эффекты */
-	@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+	/* Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte */
 
 	:global(.font-display) {
 		font-family: 'Playfair Display', serif !important;
@@ -995,28 +988,6 @@
 
 	:global(.font-sans-premium) {
 		font-family: 'Jost', sans-serif !important;
-	}
-
-	/* Премиальные градиенты наложения */
-	.bg-overlay {
-		background: linear-gradient(
-			90deg,
-			rgba(8, 11, 22, 0.98) 0%,
-			rgba(8, 11, 22, 0.9) 30%,
-			rgba(8, 11, 22, 0.7) 60%,
-			rgba(8, 11, 22, 0.4) 100%
-		);
-	}
-
-	@media (max-width: 1024px) {
-		.bg-overlay {
-			background: linear-gradient(
-				180deg,
-				rgba(8, 11, 22, 0.98) 0%,
-				rgba(8, 11, 22, 0.92) 50%,
-				rgba(8, 11, 22, 0.8) 100%
-			);
-		}
 	}
 
 	/* Тонкая сетка поверх фона для технологичного стиля */

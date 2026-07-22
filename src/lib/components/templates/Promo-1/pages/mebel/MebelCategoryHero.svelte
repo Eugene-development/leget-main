@@ -19,17 +19,17 @@
 		data = updated;
 	}
 
-	// Fallback images for categories
-	const categoryImages = {
+	// Fallback images for categories (only files that actually exist in static/)
+	const categoryImages: Record<string, string> = {
 		kitchens: '/kuhni_hero.png',
 		wardrobes: '/wardrobe_project_no_text.png',
 		'dressing-rooms': '/dressing_room_hero.png',
-		hallways: '/hallway_hero.png',
-		'kids-furniture': '/kids_furniture_hero.png',
-		'office-furniture': '/office_furniture_hero.png'
+		hallways: '',
+		'kids-furniture': '',
+		'office-furniture': ''
 	};
 
-	function getHeroImage(slug) {
+	function getHeroImage(slug: string) {
 		return (
 			categoryImages[slug] || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200'
 		);

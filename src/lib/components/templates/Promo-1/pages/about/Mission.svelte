@@ -99,7 +99,7 @@
 				>
 					{#snippet children(displayValue)}
 						{#if displayValue}
-							<img src={displayValue} alt="" class="w-full rounded-2xl shadow-xl" />
+							<img loading="lazy" src={displayValue} alt="" class="w-full rounded-2xl shadow-xl">
 						{/if}
 					{/snippet}
 				</EditableField>

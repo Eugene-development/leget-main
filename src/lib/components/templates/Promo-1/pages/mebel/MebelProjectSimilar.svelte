@@ -21,11 +21,10 @@
 			>
 				<div class="relative aspect-4/3 overflow-hidden bg-slate-100">
 					{#if project.images && project.images.length > 0}
-						<img
+						<img loading="lazy"
 							src={project.images[0].url}
 							alt={project.value}
-							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
 					{:else}
 						<div class="flex h-full w-full items-center justify-center bg-slate-50">
 							<svg class="h-10 w-10 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">

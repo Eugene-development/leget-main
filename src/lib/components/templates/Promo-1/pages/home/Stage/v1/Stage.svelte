@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -41,12 +42,21 @@
 		await saveComponentData(editContext, 'Stage', updated);
 		data = updated;
 	}
+
+	async function saveStepField(index: number, field: 'title' | 'description', value: string) {
+		if (!editContext) return;
+		const updatedSteps = [...steps];
+		updatedSteps[index] = { ...updatedSteps[index], [field]: value };
+		const updated = { ...data, steps: updatedSteps };
+		await saveComponentData(editContext, 'Stage', updated);
+		data = updated;
+	}
 </script>
 
 <!-- Этапы работы (Stage) -->
 <section class="relative isolate overflow-hidden py-24 sm:py-32">
-	<img
-		src={String(data?.bgImage ?? '/incentives/kitchen_main.png')}
+	<ImageFallback
+		src={String(data?.bgImage ?? '')}
 		alt="Интерьер с мебелью"
 		class="absolute inset-0 -z-20 h-full w-full object-cover"
 	/>
@@ -105,8 +115,33 @@
 							</svg>
 						</div>
 						<div>
-							<h3 class="text-lg font-semibold text-white">{step.title}</h3>
-							<p class="mt-2 text-sm text-slate-300">{step.description}</p>
+							<h3 class="text-lg font-semibold text-white">
+								<EditableField
+									fieldKey={`Stage.steps.${i}.title`}
+									label="Заголовок"
+									value={step.title}
+									{isEditable}
+									inline
+									onSave={(v) => saveStepField(i, 'title', v)}
+									class="inline"
+								>
+									{#snippet children(displayValue)}{displayValue}{/snippet}
+								</EditableField>
+							</h3>
+							<p class="mt-2 text-sm text-slate-300">
+								<EditableField
+									fieldKey={`Stage.steps.${i}.description`}
+									label="Описание"
+									value={step.description}
+									{isEditable}
+									multiline
+									inline
+									onSave={(v) => saveStepField(i, 'description', v)}
+									class="inline"
+								>
+									{#snippet children(displayValue)}{displayValue}{/snippet}
+								</EditableField>
+							</p>
 						</div>
 					</div>
 				</div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -16,10 +17,10 @@
 		Array.isArray(data?.gallery) && data.gallery.length > 0
 			? (data.gallery as { src: string; alt: string; label: string }[])
 			: [
-					{ src: '/incentives/wardrobe.png',      alt: 'Шкафы-купе',  label: 'Системы раздвижения' },
-					{ src: '/incentives/kitchen_detail.png', alt: 'Детали',      label: 'Фасады'              },
-					{ src: '/incentives/kitchen_main.png',   alt: 'Кухни',       label: 'Свет'                },
-					{ src: '/incentives/closet.png',         alt: 'Гардеробные', label: 'Гардеробные'         },
+					{ src: '',      alt: 'Шкафы-купе',  label: 'Системы раздвижения' },
+					{ src: '', alt: 'Детали',      label: 'Фасады'              },
+					{ src: '',   alt: 'Кухни',       label: 'Свет'                },
+					{ src: '',         alt: 'Гардеробные', label: 'Гардеробные'         },
 				]
 	);
 
@@ -97,7 +98,7 @@
 					{#each gallery.slice(0, 2) as item}
 						<div class="group relative overflow-hidden rounded-3xl bg-slate-200 shadow-xl border border-slate-200/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
 							<div class="aspect-[4/3] w-full overflow-hidden">
-								<img src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+								<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
 							</div>
 							<div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
 							<!-- Стеклянный шильдик названия на V2 -->
@@ -113,7 +114,7 @@
 					{#each gallery.slice(2, 4) as item}
 						<div class="group relative overflow-hidden rounded-3xl bg-slate-200 shadow-xl border border-slate-200/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
 							<div class="aspect-[4/3] w-full overflow-hidden">
-								<img src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+								<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
 							</div>
 							<div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
 							<!-- Стеклянный шильдик названия на V2 -->
@@ -130,7 +131,7 @@
 </section>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
 
 	.font-display {
 		font-family: 'Outfit', sans-serif;

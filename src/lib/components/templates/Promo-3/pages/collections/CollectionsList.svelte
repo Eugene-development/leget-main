@@ -7,14 +7,14 @@
 	let selectedBrands = $state(new Set<string>());
 
 	const defaultCollections = [
-		{ name: 'Nero Marquina',   brand: 'Kerama Marazzi', countryFlag: '🇷🇺', image: '/images/hero-bathroom.png',  tag: 'Хит продаж', tagColor: 'bg-amber-500',   href: '/collections/nero-marquina'   },
-		{ name: 'Calacatta Oro',   brand: 'Atlas Concorde', countryFlag: '🇮🇹', image: '/images/tile-marble.png',    tag: 'Люкс',       tagColor: 'bg-violet-600',  href: '/collections/calacatta-oro'   },
-		{ name: 'Urban Craft',     brand: 'Italon',         countryFlag: '🇷🇺', image: '/images/tile-terrazzo.png',  tag: 'Новинка',    tagColor: 'bg-emerald-600', href: '/collections/urban-craft'     },
-		{ name: 'Royal Deco',      brand: 'Laparet',        countryFlag: '🇷🇺', image: '/images/tile-geometric.png', tag: 'Эксклюзив',  tagColor: 'bg-rose-600',    href: '/collections/royal-deco'      },
-		{ name: 'Emerald Kitchen', brand: 'Cersanit',       countryFlag: '🇵🇱', image: '/images/tile-kitchen.png',   tag: 'Популярное', tagColor: 'bg-sky-600',     href: '/collections/emerald-kitchen' },
-		{ name: 'Hex Terracotta',  brand: 'Estima',         countryFlag: '🇷🇺', image: '/images/tile-hexagonal.png', tag: 'Тренд',      tagColor: 'bg-orange-500',  href: '/collections/hex-terracotta'  },
-		{ name: 'Marble Sky',      brand: 'Porcelanosa',    countryFlag: '🇪🇸', image: '/images/tile-marble.png',    tag: 'Люкс',       tagColor: 'bg-violet-600',  href: '/collections/marble-sky'      },
-		{ name: 'Stone Loft',      brand: 'Marazzi',        countryFlag: '🇮🇹', image: '/images/tile-geometric.png', tag: 'Новинка',    tagColor: 'bg-emerald-600', href: '/collections/stone-loft'      },
+		{ name: 'Nero Marquina',   brand: 'Kerama Marazzi', countryFlag: '🇷🇺', image: null,  tag: 'Хит продаж', tagColor: 'bg-amber-500',   href: '/collections/nero-marquina'   },
+		{ name: 'Calacatta Oro',   brand: 'Atlas Concorde', countryFlag: '🇮🇹', image: null,    tag: 'Люкс',       tagColor: 'bg-violet-600',  href: '/collections/calacatta-oro'   },
+		{ name: 'Urban Craft',     brand: 'Italon',         countryFlag: '🇷🇺', image: null,  tag: 'Новинка',    tagColor: 'bg-emerald-600', href: '/collections/urban-craft'     },
+		{ name: 'Royal Deco',      brand: 'Laparet',        countryFlag: '🇷🇺', image: null, tag: 'Эксклюзив',  tagColor: 'bg-rose-600',    href: '/collections/royal-deco'      },
+		{ name: 'Emerald Kitchen', brand: 'Cersanit',       countryFlag: '🇵🇱', image: null,   tag: 'Популярное', tagColor: 'bg-sky-600',     href: '/collections/emerald-kitchen' },
+		{ name: 'Hex Terracotta',  brand: 'Estima',         countryFlag: '🇷🇺', image: null, tag: 'Тренд',      tagColor: 'bg-orange-500',  href: '/collections/hex-terracotta'  },
+		{ name: 'Marble Sky',      brand: 'Porcelanosa',    countryFlag: '🇪🇸', image: null,    tag: 'Люкс',       tagColor: 'bg-violet-600',  href: '/collections/marble-sky'      },
+		{ name: 'Stone Loft',      brand: 'Marazzi',        countryFlag: '🇮🇹', image: null, tag: 'Новинка',    tagColor: 'bg-emerald-600', href: '/collections/stone-loft'      },
 	];
 
 	const collections = $derived(Array.isArray(data?.collections) && (data.collections as unknown[]).length > 0 ? (data.collections as typeof defaultCollections) : defaultCollections);
@@ -61,7 +61,7 @@
 				{#each filteredCollections as item}
 					<a href={item.href} class="group relative flex flex-col overflow-hidden rounded-2xl border border-surface-700/50 bg-surface-800/40 transition-all duration-500 hover:border-accent-500/30 hover:shadow-2xl hover:shadow-accent-500/5">
 						<div class="relative aspect-[4/3] overflow-hidden">
-							<img src={item.image} alt={item.name} class="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+							<img loading="lazy" src={item.image || undefined} alt={item.name} class="size-full object-cover transition-transform duration-700 group-hover:scale-110">
 							<div class="absolute inset-0 bg-gradient-to-t from-surface-900/70 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-80"></div>
 							<div class="absolute top-3 left-3"><span class="rounded-lg {item.tagColor} px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-lg">{item.tag}</span></div>
 							<div class="absolute right-3 bottom-3"><div class="flex items-center gap-1.5 rounded-lg border border-white/10 bg-surface-900/70 px-2.5 py-1.5 backdrop-blur-sm"><span class="text-base leading-none">{item.countryFlag}</span></div></div>

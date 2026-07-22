@@ -31,7 +31,6 @@
 	<!-- Background Image with Dark Overlay -->
 	<div class="absolute inset-0">
 		<img
-			src="/images/furniture_hero.png"
 			alt="Премиальная мебельная фурнитура"
 			class="h-full w-full object-cover transition-transform duration-[2.5s]"
 			class:scale-105={visible}

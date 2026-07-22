@@ -24,17 +24,17 @@
 		{
 			title: 'Современный стиль',
 			description: 'Минимализм в каждой детали. Гладкие матовые фасады, скрытая фурнитура, отсутствие лишних визуальных шумов. Идеально для функционального и чистого пространства.',
-			image: '/images/style-modern.png'
+			image: null
 		},
 		{
 			title: 'Неоклассика',
 			description: 'Утонченное сочетание традиций и современных тенденций. Изящная неглубокая фрезеровка фасадов, пастельная цветовая палитра и премиальные материалы.',
-			image: '/images/style-neoclassic.png'
+			image: null
 		},
 		{
 			title: 'Лофт',
 			description: 'Выразительная фактура натурального дерева, бетона и металла. Брутальные формы, индустриальный шик и максимальный акцент на естественные покрытия.',
-			image: '/images/style-loft.png'
+			image: null
 		}
 	];
 
@@ -107,11 +107,10 @@
 					style="animation-delay: {0.1 + i * 0.1}s"
 				>
 					<div class="aspect-[4/3] w-full overflow-hidden">
-						<img
-							src={style.image}
+						<img loading="lazy"
+							src={style.image || undefined}
 							alt={style.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
 					</div>
 					<div class="p-8">
 						<h3

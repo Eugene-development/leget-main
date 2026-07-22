@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import 'cropperjs/dist/cropper.css';
@@ -8,17 +8,22 @@
 		aspectRatio = NaN, // NaN = свободное соотношение
 		onCrop = () => {},
 		onCancel = () => {}
+	}: {
+		imageFile?: File | null;
+		aspectRatio?: number;
+		onCrop?: (file: File) => void;
+		onCancel?: () => void;
 	} = $props();
 
-	let imageElement = $state(null);
+	let imageElement: HTMLImageElement | null = $state(null);
 	let imageUrl = $state('');
 	let isProcessing = $state(false);
 	let isReady = $state(false);
 	let cropperReady = $state(false);
 
 	// Хранение вне $state чтобы избежать прокси
-	let CropperClass = null;
-	let cropperInstance = null;
+	let CropperClass: any = null;
+	let cropperInstance: any = null;
 
 	// Предустановленные соотношения сторон
 	const aspectRatios = [
@@ -88,7 +93,7 @@
 		}
 	});
 
-	function handleChangeAspectRatio(e, ratio) {
+	function handleChangeAspectRatio(e: MouseEvent, ratio: number) {
 		e.preventDefault();
 		e.stopPropagation();
 		selectedRatio = ratio;
@@ -97,19 +102,19 @@
 		}
 	}
 
-	function handleRotateLeft(e) {
+	function handleRotateLeft(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		if (cropperInstance) cropperInstance.rotate(-90);
 	}
 
-	function handleRotateRight(e) {
+	function handleRotateRight(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		if (cropperInstance) cropperInstance.rotate(90);
 	}
 
-	function handleFlipHorizontal(e) {
+	function handleFlipHorizontal(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		if (cropperInstance) {
@@ -118,7 +123,7 @@
 		}
 	}
 
-	function handleFlipVertical(e) {
+	function handleFlipVertical(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		if (cropperInstance) {
@@ -127,19 +132,19 @@
 		}
 	}
 
-	function handleReset(e) {
+	function handleReset(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		if (cropperInstance) cropperInstance.reset();
 	}
 
-	function handleCancel(e) {
+	function handleCancel(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		onCancel();
 	}
 
-	async function handleCrop(e) {
+	async function handleCrop(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -156,7 +161,7 @@
 			});
 
 			// Конвертируем canvas в blob
-			const blob = await new Promise((resolve) => {
+			const blob = await new Promise<any>((resolve) => {
 				canvas.toBlob(resolve, 'image/jpeg', 0.95);
 			});
 
@@ -171,7 +176,7 @@
 			isProcessing = false;
 		}
 	}
-	function handleKeydown(e) {
+	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
 			onCancel();
 		}

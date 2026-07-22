@@ -3,6 +3,8 @@
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
+	import { catalogItems } from './catalogItems';
+	import { serviceItems } from './serviceItems';
 
 	let {
 		data = $bindable({}),
@@ -19,6 +21,30 @@
 	let showLoginModal = $state(false);
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Логотип');
+
+	// Список отключённых в хэдере рубрик каталога. Прокидывается сюда из headerData
+	// через ComponentResolver. Список рубрик — общий с Header (см. ./catalogItems),
+	// поэтому фильтрация здесь полностью совпадает с хэдером.
+	const disabledRubrics = $derived(
+		Array.isArray(data?.disabledRubrics) ? (data.disabledRubrics as string[]) : []
+	);
+	// Аналогично для услуг (см. ./serviceItems) — единый список с хэдером.
+	const disabledServices = $derived(
+		Array.isArray(data?.disabledServices) ? (data.disabledServices as string[]) : []
+	);
+	// В футере показываем только опубликованные рубрики: comingSoon (например «Плитка»)
+	// и явно отключённые в хэдере здесь не нужны — футер для посетителей.
+	const visibleCatalogItems = $derived(
+		catalogItems.filter(
+			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
+		)
+	);
+	// Та же логика для услуг — скрываем comingSoon и отключённые в хэдере.
+	const visibleServiceItems = $derived(
+		serviceItems.filter(
+			(item) => item.comingSoon !== true && !disabledServices.includes(item.href)
+		)
+	);
 
 	// Простая обработка формы (без backend пока)
 	function handleSubmit(event: SubmitEvent) {
@@ -205,59 +231,34 @@
 						</ul>
 					</div>
 					<div class="mt-10 md:mt-0">
-						<h3 class="text-sm/6 font-semibold text-white">Услуги</h3>
-						<ul role="list" class="mt-6 space-y-4">
-							<li>
-								<a href="/consultation" class="text-sm/6 text-gray-400 hover:text-white"
-									>Консультация</a
-								>
-							</li>
-							<li>
-								<a href="/design-project" class="text-sm/6 text-gray-400 hover:text-white"
-									>Дизайн интерьера</a
-								>
-							</li>
-							<li>
-								<a href="/measurement" class="text-sm/6 text-gray-400 hover:text-white">Замер</a>
-							</li>
-							<li>
-								<a href="/furniture-project" class="text-sm/6 text-gray-400 hover:text-white"
-									>Проектирование мебели</a
-								>
-							</li>
-							<li>
-								<a href="/assembly" class="text-sm/6 text-gray-400 hover:text-white"
-									>Сборка и установка</a
-								>
-							</li>
-						</ul>
+						{#if visibleServiceItems.length > 0}
+							<h3 class="text-sm/6 font-semibold text-white">Услуги</h3>
+							<ul role="list" class="mt-6 space-y-4">
+								{#each visibleServiceItems as service}
+									<li>
+										<a href={service.href} class="text-sm/6 text-gray-400 hover:text-white"
+											>{service.label}</a
+										>
+									</li>
+								{/each}
+							</ul>
+						{/if}
 					</div>
 				</div>
 				<div class="md:grid md:grid-cols-2 md:gap-8">
 					<div>
 						<h3 class="text-sm/6 font-semibold text-white">Каталог</h3>
-						<ul role="list" class="mt-6 space-y-4">
-							<li>
-								<a href="/mebel" class="text-sm/6 text-gray-400 hover:text-white">Мебель</a>
-							</li>
-							<li>
-								<a href="/stoleshnica" class="text-sm/6 text-gray-400 hover:text-white"
-									>Столешницы</a
-								>
-							</li>
-							<li>
-								<a href="/tehnika" class="text-sm/6 text-gray-400 hover:text-white"
-									>Бытовая техника</a
-								>
-							</li>
-							<li>
-								<a href="/santehnika" class="text-sm/6 text-gray-400 hover:text-white">Сантехника</a
-								>
-							</li>
-							<li>
-								<a href="/furnitura" class="text-sm/6 text-gray-400 hover:text-white">Фурнитура</a>
-							</li>
-						</ul>
+						{#if visibleCatalogItems.length > 0}
+							<ul role="list" class="mt-6 space-y-4">
+								{#each visibleCatalogItems as item}
+									<li>
+										<a href={item.href} class="text-sm/6 text-gray-400 hover:text-white"
+											>{item.label}</a
+										>
+									</li>
+								{/each}
+							</ul>
+						{/if}
 					</div>
 					<div class="mt-10 md:mt-0">
 						<h3 class="text-sm/6 font-semibold text-white">Прочее</h3>

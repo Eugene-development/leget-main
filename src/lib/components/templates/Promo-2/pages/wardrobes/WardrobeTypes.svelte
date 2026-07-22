@@ -24,19 +24,19 @@
 		{
 			title: 'Встроенные шкафы',
 			description: 'Монтируются от пола до потолка, скрывая неровности стен и максимально эффективно используя ниши',
-			image: '/images/wardrobe_built_in.png',
+			image: null,
 			offset: ''
 		},
 		{
 			title: 'Корпусные решения',
 			description: 'Самостоятельные модули, которые можно перемещать. Акцентные фасады и витринные стеклянные элементы',
-			image: '/images/wardrobe_corpus.png',
+			image: null,
 			offset: 'lg:-translate-y-8'
 		},
 		{
 			title: 'Гардеробные комнаты',
 			description: 'Открытые и закрытые модульные системы премиум-класса с умной подсветкой и организаторами',
-			image: '/images/wardrobe_walk_in.png',
+			image: null,
 			offset: 'lg:-translate-y-16'
 		}
 	];
@@ -111,11 +111,10 @@
 				>
 					<div class="relative mb-6 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-[#F0F0F0] transition-all duration-500 group-hover:bg-[#E5E5E5]">
 						<div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/10 to-transparent"></div>
-						<img
-							src={type.image}
+						<img loading="lazy"
+							src={type.image || undefined}
 							alt={type.title}
-							class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-						/>
+							class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
 					</div>
 					<h3
 						class="mb-2 text-xl font-light tracking-wide text-primary"

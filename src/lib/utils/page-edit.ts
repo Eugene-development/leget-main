@@ -32,6 +32,96 @@ const UPDATE_LICENSE_MUTATION = `
 export interface EditContext {
 	pageId: string;
 	licenseId: string;
+	templateId?: number | null;
+	slug?: string | null;
+}
+
+const COMPONENT_ARTICLE_QUERY = `
+  query Component($templateId: Int!, $slug: String!, $type: String!) {
+    component(templateId: $templateId, slug: $slug, type: $type) {
+      article
+      variants {
+        version
+        article
+      }
+    }
+  }
+`;
+
+export interface ComponentVariantArticle {
+	version: number;
+	article: string;
+}
+
+export interface ComponentArticle {
+	article: string;
+	variants: ComponentVariantArticle[];
+}
+
+// In-memory cache to avoid refetching the same component's article on re-renders.
+const componentArticleCache = new Map<string, ComponentArticle | null>();
+
+/**
+ * Загружает артикул компонента каталога (и его вариантов) по координатам.
+ * Возвращает null, если компонент не найден в каталоге или запрос не удался.
+ *
+ * @param templateId - id шаблона (licenses.template_id)
+ * @param slug       - slug страницы внутри шаблона
+ * @param type       - тип компонента (совпадает с page_components.type)
+ */
+export async function fetchComponentArticle(
+	templateId: number,
+	slug: string,
+	type: string
+): Promise<ComponentArticle | null> {
+	const cacheKey = `${templateId}:${slug}:${type}`;
+	if (componentArticleCache.has(cacheKey)) {
+		return componentArticleCache.get(cacheKey) ?? null;
+	}
+
+	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	if (!token) {
+		return null;
+	}
+
+	try {
+		const apiUrl = getGraphQLUrl();
+		const response = await fetch(apiUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({
+				query: COMPONENT_ARTICLE_QUERY,
+				variables: { templateId, slug, type }
+			})
+		});
+
+		if (!response.ok) {
+			componentArticleCache.set(cacheKey, null);
+			return null;
+		}
+
+		const result = await response.json();
+		if (result.errors?.length) {
+			componentArticleCache.set(cacheKey, null);
+			return null;
+		}
+
+		const data = result.data?.component;
+		const value = data
+			? {
+					article: data.article as string,
+					variants: (data.variants ?? []) as ComponentVariantArticle[]
+				}
+			: null;
+		componentArticleCache.set(cacheKey, value);
+		return value;
+	} catch {
+		return null;
+	}
 }
 
 /**

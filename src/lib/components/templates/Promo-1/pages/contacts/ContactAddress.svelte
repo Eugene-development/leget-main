@@ -210,7 +210,7 @@
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<img src={displayValue} alt="Карта" class="w-full object-cover" />
+								<img loading="lazy" src={displayValue} alt="Карта" class="w-full object-cover">
 							{:else}
 								<div class="flex aspect-square items-center justify-center bg-gray-100">
 									<div class="text-center">

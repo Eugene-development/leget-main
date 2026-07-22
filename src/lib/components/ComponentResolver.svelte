@@ -13,12 +13,31 @@
 	import * as Promo2Template from './templates/Promo-2';
 	import * as Promo3Template from './templates/Promo-3';
 
-	type ComponentMap = Record<string, Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>>;
+	type ComponentMap = Record<
+		string,
+		Component<{
+			data: Record<string, unknown>;
+			editContext?: EditContext | null;
+			isEditable?: boolean;
+		}>
+	>;
 
 	interface TemplateModule {
-		Banner?: Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>;
-		Header?: Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>;
-		Footer?: Component<{ data: Record<string, unknown>; editContext?: EditContext | null; isEditable?: boolean }>;
+		Banner?: Component<{
+			data: Record<string, unknown>;
+			editContext?: EditContext | null;
+			isEditable?: boolean;
+		}>;
+		Header?: Component<{
+			data: Record<string, unknown>;
+			editContext?: EditContext | null;
+			isEditable?: boolean;
+		}>;
+		Footer?: Component<{
+			data: Record<string, unknown>;
+			editContext?: EditContext | null;
+			isEditable?: boolean;
+		}>;
 		pageOverrides?: Record<string, ComponentMap>;
 	}
 
@@ -45,8 +64,21 @@
 	} = $props();
 
 	const componentsWithSwitcher = new Set([
-		'HeroMain', 'Message', 'PromoOffer', 'Equipment', 'Stage', 'Incentives', 'Brands',
-		'ActionsCards', 'KitchensGallery', 'WardrobesGallery', 'DesignersTracks', 'ActionsSteps', 'DesignersBenefits', 'KitchenStyles', 'DesignersSteps'
+		'HeroMain',
+		'Message',
+		'PromoOffer',
+		'Equipment',
+		'Stage',
+		'Incentives',
+		'Brands',
+		'ActionsCards',
+		'KitchensGallery',
+		'WardrobesGallery',
+		'DesignersTracks',
+		'ActionsSteps',
+		'DesignersBenefits',
+		'KitchenStyles',
+		'DesignersSteps'
 	]);
 
 	let isResetting = $state(false);
@@ -95,9 +127,7 @@
 	});
 
 	const isEditable = $derived(
-		browser && 
-		$auth.isAuthenticated && 
-		(editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
+		browser && $auth.isAuthenticated && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
 	/**
@@ -106,9 +136,12 @@
 	 */
 	function resolveTemplate(id: number | null): TemplateModule {
 		switch (id) {
-			case 1: return Promo1Template as unknown as TemplateModule;
-			case 2: return Promo2Template as unknown as TemplateModule;
-			case 3: return Promo3Template as unknown as TemplateModule;
+			case 1:
+				return Promo1Template as unknown as TemplateModule;
+			case 2:
+				return Promo2Template as unknown as TemplateModule;
+			case 3:
+				return Promo3Template as unknown as TemplateModule;
 			default:
 				return TestTemplate as unknown as TemplateModule;
 		}
@@ -119,7 +152,7 @@
 	 */
 	function resolveComponentMap(tmpl: TemplateModule, pageSlug: string | null): ComponentMap {
 		if (!pageSlug || !tmpl.pageOverrides) return {};
-		
+
 		// 1. Exact match
 		if (tmpl.pageOverrides[pageSlug]) {
 			return tmpl.pageOverrides[pageSlug];
@@ -132,7 +165,7 @@
 		if (cleanSlug.match(/^\/mebel\/[^\/]+\/[^\/]+$/)) {
 			return tmpl.pageOverrides['/mebel/{category}/{project}'] || {};
 		}
-		
+
 		// /mebel/{category}
 		if (cleanSlug.match(/^\/mebel\/[^\/]+$/)) {
 			return tmpl.pageOverrides['/mebel/{category}'] || {};
@@ -161,14 +194,16 @@
 {#each components as element (element.type)}
 	{@const Component = componentMap[element.type] ?? null}
 	{#if Component}
-		<div class="relative group/component">
+		<div class="group/component relative">
 			<Component bind:data={element.data} {editContext} {isEditable} />
 
 			{#if isEditable && element.id && !componentsWithSwitcher.has(element.type)}
-				<div class="absolute top-6 right-6 z-40 opacity-0 group-hover/component:opacity-100 transition-opacity duration-300 pointer-events-none">
+				<div
+					class="pointer-events-none absolute top-6 right-6 z-40 opacity-0 transition-opacity duration-300 group-hover/component:opacity-100"
+				>
 					<button
 						type="button"
-						class="pointer-events-auto px-4 py-2.5 rounded-2xl bg-slate-950/75 border border-white/10 text-white font-bold text-xs uppercase tracking-wider hover:bg-red-950/80 hover:border-red-500/30 hover:text-red-200 active:scale-95 transition-all duration-300 shadow-2xl cursor-pointer backdrop-blur-xl"
+						class="pointer-events-auto cursor-pointer rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-red-500/30 hover:bg-red-950/80 hover:text-red-200 active:scale-95"
 						onclick={() => handleResetComponent(element.id!, element.type)}
 						disabled={isResetting}
 					>
@@ -181,7 +216,16 @@
 {/each}
 
 {#if Footer}
-	<Footer data={{ logoUrl: headerData?.logoUrl, ...footerData }} {editContext} {isEditable} />
+	<Footer
+		data={{
+			logoUrl: headerData?.logoUrl,
+			disabledRubrics: headerData?.disabledRubrics,
+			disabledServices: headerData?.disabledServices,
+			...footerData
+		}}
+		{editContext}
+		{isEditable}
+	/>
 {/if}
 
 {#if isEditable}
@@ -189,27 +233,34 @@
 {/if}
 
 {#if showConfirmModal}
-	<div 
-		class="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md"
+	<div
+		class="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-md"
 		transition:fade={{ duration: 200 }}
 	>
 		<!-- Backdrop click to close -->
-		<button 
-			type="button" 
-			class="absolute inset-0 w-full h-full bg-transparent cursor-default outline-none border-none" 
-			onclick={() => showConfirmModal = false}
+		<button
+			type="button"
+			class="absolute inset-0 h-full w-full cursor-default border-none bg-transparent outline-none"
+			onclick={() => (showConfirmModal = false)}
 			aria-label="Закрыть"
 		></button>
 
 		<!-- Modal Card -->
-		<div 
-			class="relative z-10 max-w-md w-full rounded-3xl border border-white/10 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl flex flex-col items-center gap-5 text-center font-sans-premium"
+		<div
+			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-white/10 bg-slate-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ y: 20, duration: 300 }}
 		>
 			<!-- Warning Icon Container with subtle red glow -->
-			<div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)] animate-pulse">
-				<svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+			<div
+				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+			>
+				<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
 				</svg>
 			</div>
 
@@ -218,25 +269,25 @@
 				<h3 class="text-lg font-extrabold tracking-tight text-white uppercase">
 					Сбросить изменения?
 				</h3>
-				<p class="text-xs text-slate-400 leading-relaxed font-medium">
-					Вы уверены, что хотите сбросить контент блока 
-					<span class="text-slate-200 font-bold">"{activeResetType}"</span> 
-					к начальному состоянию? Все ваши изменения будут безвозвратно удалены.
+				<p class="text-xs leading-relaxed font-medium text-slate-400">
+					Вы уверены, что хотите сбросить контент блока
+					<span class="font-bold text-slate-200">"{activeResetType}"</span>
+					к начальному состоянию? Все изменения будут безвозвратно удалены.
 				</p>
 			</div>
 
 			<!-- Buttons Row -->
-			<div class="flex items-center gap-3 w-full mt-2">
+			<div class="mt-2 flex w-full items-center gap-3">
 				<button
 					type="button"
-					class="flex-1 py-3 px-4 rounded-xl border border-white/10 bg-white/5 text-white font-bold text-xs uppercase tracking-wider hover:bg-white/10 active:scale-98 transition-all duration-300 cursor-pointer"
-					onclick={() => showConfirmModal = false}
+					class="flex-1 cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-bold tracking-wider text-white uppercase transition-all duration-300 hover:bg-white/10 active:scale-98"
+					onclick={() => (showConfirmModal = false)}
 				>
 					Отмена
 				</button>
 				<button
 					type="button"
-					class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs uppercase tracking-wider hover:brightness-110 hover:shadow-lg hover:shadow-red-600/20 active:scale-98 transition-all duration-300 cursor-pointer"
+					class="flex-1 cursor-pointer rounded-xl bg-gradient-to-r from-red-600 to-rose-600 px-4 py-3 text-xs font-bold tracking-wider text-white uppercase transition-all duration-300 hover:shadow-lg hover:shadow-red-600/20 hover:brightness-110 active:scale-98"
 					onclick={confirmReset}
 					disabled={isResetting}
 				>

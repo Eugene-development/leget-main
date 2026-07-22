@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -26,7 +27,7 @@
 	);
 
 	const activeBgImage = $derived(
-		String(data?.bgImageV2 ?? data?.bgImage ?? '/incentives/kitchen_main.png')
+		String(data?.bgImageV2 ?? data?.bgImage ?? '')
 	);
 
 	// SVG иконки для каждого шага
@@ -45,11 +46,20 @@
 		await saveComponentData(editContext, 'Stage', updated);
 		data = updated;
 	}
+
+	async function saveStepField(index: number, field: 'title' | 'description', value: string) {
+		if (!editContext) return;
+		const updatedSteps = [...steps];
+		updatedSteps[index] = { ...updatedSteps[index], [field]: value };
+		const updated = { ...data, steps: updatedSteps };
+		await saveComponentData(editContext, 'Stage', updated);
+		data = updated;
+	}
 </script>
 
 <section class="relative isolate overflow-hidden py-24 sm:py-32 font-sans select-none text-white bg-slate-950">
 	<!-- Фоновая картинка с глубоким оверлеем -->
-	<img
+	<ImageFallback
 		src={activeBgImage}
 		alt="Интерьер с мебелью"
 		class="absolute inset-0 -z-20 h-full w-full object-cover scale-105"
@@ -121,9 +131,34 @@
 								<div class="flex items-center gap-3">
 									<span class="text-xs font-black text-sky-400 font-display">Шаг {i + 1}</span>
 									<span class="h-1.5 w-1.5 rounded-full bg-slate-600"></span>
-									<h3 class="text-lg font-bold text-white group-hover:text-sky-300 transition-colors duration-300">{step.title}</h3>
+									<h3 class="text-lg font-bold text-white group-hover:text-sky-300 transition-colors duration-300">
+										<EditableField
+											fieldKey={`Stage.steps.${i}.title`}
+											label="Заголовок"
+											value={step.title}
+											{isEditable}
+											inline
+											onSave={(v) => saveStepField(i, 'title', v)}
+											class="inline"
+										>
+											{#snippet children(displayValue)}{displayValue}{/snippet}
+										</EditableField>
+									</h3>
 								</div>
-								<p class="mt-2 text-xs md:text-sm leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">{step.description}</p>
+								<p class="mt-2 text-xs md:text-sm leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+									<EditableField
+										fieldKey={`Stage.steps.${i}.description`}
+										label="Описание"
+										value={step.description}
+										{isEditable}
+										multiline
+										inline
+										onSave={(v) => saveStepField(i, 'description', v)}
+										class="inline"
+									>
+										{#snippet children(displayValue)}{displayValue}{/snippet}
+									</EditableField>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -135,7 +170,7 @@
 </section>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
 
 	.font-display {
 		font-family: 'Outfit', sans-serif;

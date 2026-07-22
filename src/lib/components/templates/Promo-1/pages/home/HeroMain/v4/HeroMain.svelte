@@ -49,11 +49,7 @@
 	);
 </script>
 
-<svelte:head>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-</svelte:head>
+<!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
 
 <section
 	class="relative flex min-h-0 lg:min-h-[calc(100vh-var(--header-h,80px))] w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-zinc-100 text-zinc-900' : 'bg-black text-white'}"
@@ -194,6 +190,8 @@
 							<button
 								type="button"
 								onclick={() => activeSwatchIndex = idx}
+								aria-label="Палитра: {pal.name}"
+								aria-pressed={activeSwatchIndex === idx}
 								class="flex items-center justify-center p-[2px] rounded-full border transition-all duration-200 cursor-pointer {activeSwatchIndex === idx ? (isLight ? 'border-black' : 'border-white') : 'border-transparent hover:scale-105'}"
 							>
 								<div class="flex h-5 w-5 rounded-full overflow-hidden">
@@ -212,6 +210,7 @@
 				<div class="relative w-full h-full max-w-lg sm:max-w-xl">
 
 					<!-- КАРТОЧКА 1: Архитектурный план (Сзади) -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						class="absolute top-[8%] left-[6%] w-[68%] aspect-[4/3] border font-mono select-none p-4 transition-all duration-500 scale-95 origin-top-left rounded-xl backdrop-blur-md shadow-2xl {hoveredCardId === 'blueprint' ? 'z-40 border-indigo-500' : 'z-10'} {isLight ? 'border-zinc-200 bg-white/70 text-zinc-500' : 'border-zinc-800 bg-zinc-950/70 text-zinc-400'}"
 						style="transform: rotate(-6deg) {hoveredCardId === 'blueprint' ? 'scale(1.02)' : ''};"
@@ -236,6 +235,7 @@
 					</div>
 
 					<!-- КАРТОЧКА 2: Живой рендер кухни (В центре) -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						class="absolute top-[18%] right-[8%] w-[58%] aspect-[4/3] border p-1.5 transition-all duration-500 rounded-xl shadow-2xl overflow-hidden {hoveredCardId === 'render' ? 'z-40 border-sky-400 scale-[1.03]' : 'z-20'} {isLight ? 'border-zinc-200 bg-white' : 'border-zinc-800 bg-zinc-900'}"
 						style="transform: rotate(3deg);"
@@ -250,6 +250,7 @@
 					</div>
 
 					<!-- КАРТОЧКА 3: Натуральный Шпон (Снизу слева) -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						class="absolute bottom-[8%] left-[10%] w-[42%] aspect-square border p-2.5 transition-all duration-500 rounded-xl shadow-2xl {hoveredCardId === 'material' ? 'z-40 border-emerald-400 scale-[1.03]' : 'z-30'} {isLight ? 'border-zinc-200 bg-white' : 'border-zinc-850 bg-zinc-950'}"
 						style="transform: rotate(-10deg);"
@@ -267,6 +268,7 @@
 					</div>
 
 					<!-- КАРТОЧКА 4: Палитра и Цвета (Снизу справа) -->
+					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
 						class="absolute bottom-[16%] right-[10%] w-[38%] border p-3.5 transition-all duration-500 rounded-xl shadow-2xl {hoveredCardId === 'colors' ? 'z-40 border-amber-400 scale-[1.03]' : 'z-35'} {isLight ? 'border-zinc-200 bg-white' : 'border-zinc-850 bg-zinc-950'}"
 						style="transform: rotate(8deg);"
@@ -317,12 +319,6 @@
 </section>
 
 <style>
-	/* Тонкая сетка поверх фона для бруталистского стиля */
-	.bg-radial-mesh {
-		background-image: radial-gradient(rgba(115, 115, 115, 0.12) 1px, transparent 0);
-		background-size: 20px 20px;
-	}
-
 	:global(.font-sans-premium) {
 		font-family: 'Jost', sans-serif !important;
 	}

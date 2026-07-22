@@ -55,7 +55,7 @@
 					<div class="flex items-start gap-4">
 						<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl {shop.logo ? '' : g.bg}">
 							{#if shop.logo}
-								<img src={shop.logo} alt={shop.title ?? shop.value} class="h-14 w-14 object-contain" />
+								<img loading="lazy" src={shop.logo} alt={shop.title ?? shop.value} class="h-14 w-14 object-contain">
 							{:else}
 								<span class="text-2xl font-bold {g.text}">
 									{(shop.title ?? shop.value ?? '?').charAt(0)}
@@ -91,7 +91,7 @@
 							<div class="mt-2 flex flex-wrap gap-2">
 								{#each shop.brands.filter((b: any) => b.is_active !== false) as brand}
 									{#if brand.logo}
-										<img src={brand.logo} alt={brand.value} class="h-6 object-contain" />
+										<img loading="lazy" src={brand.logo} alt={brand.value} class="h-6 object-contain">
 									{:else}
 										<span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">
 											{brand.value ?? brand.title}

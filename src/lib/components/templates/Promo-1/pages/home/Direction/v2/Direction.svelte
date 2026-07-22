@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -47,7 +48,7 @@
 	{#each directions as dir}
 		<div class="group relative flex min-h-[400px] sm:min-h-[500px] overflow-hidden rounded-3xl border border-white/5 shadow-2xl">
 			<!-- Фоновая картинка с зумом -->
-			<img
+			<ImageFallback
 				src={dir.image}
 				alt={dir.alt}
 				class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
@@ -87,7 +88,7 @@
 </section>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
 
 	.font-display {
 		font-family: 'Outfit', sans-serif;

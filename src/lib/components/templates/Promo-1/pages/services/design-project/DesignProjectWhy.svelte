@@ -47,11 +47,10 @@
 				<div class="absolute -bottom-6 -right-6 size-48 rounded-[2.5rem] bg-emerald-500 lg:size-64"></div>
 				<div class="absolute -left-4 -top-4 size-32 rounded-full bg-sky-500/30 blur-2xl"></div>
 				<div class="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition duration-500 hover:scale-105 border border-white/20">
-					<img
+					<img loading="lazy"
 						src={String(data?.imageUrl ?? "/design_process_review.png")}
 						alt="Дизайн интерьера"
-						class="aspect-square w-full object-cover"
-					/>
+						class="aspect-square w-full object-cover">
 				</div>
 			</div>
 

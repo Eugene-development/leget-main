@@ -38,7 +38,7 @@
 	<!-- Background -->
 	<div class="absolute inset-0">
 		<img
-			src={String(data?.image ?? '/images/hero-bathroom.png')}
+			src={String(data?.image ?? '')}
 			alt={String(data?.title ?? 'Плитка')}
 			class="size-full object-cover"
 		/>

@@ -63,11 +63,10 @@
 				<div
 					class="relative overflow-hidden rounded-[2.5rem] border border-white/20 shadow-2xl transition duration-500 hover:scale-105"
 				>
-					<img
+					<img loading="lazy"
 						src={String(data?.imageUrl ?? '/consultation_process.png')}
 						alt="Дизайн интерьера"
-						class="aspect-square w-full object-cover"
-					/>
+						class="aspect-square w-full object-cover">
 				</div>
 			</div>
 

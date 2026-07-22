@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -29,7 +30,7 @@
 		Array.isArray(data?.partners) && data.partners.length > 0
 			? (data.partners as { name: string; logo: string; url: string }[])
 			: [
-					{ name: 'ЗОВ',            logo: 'https://storage.zovrus/brand/logo-rus-x2.png',                                                                                                                url: 'https://zov.top/'             },
+					{ name: 'ЗОВ',            logo: 'https://zov.com.by/images/logo3.png',                                                                                                                          url: 'https://zov.top/'             },
 					{ name: 'Стильные кухни', logo: 'https://avatars.mds.yandex.net/i?id=ada48033e9cfa95f38d69fc9ae7b5bcc25b72f13-5037427-images-thumbs&n=13',                                                                     url: 'https://www.stilkuhni.ru/'     },
 					{ name: 'Мария',          logo: 'https://avatars.mds.yandex.net/i?id=b761d395235060d89bd5d574233ee6bca202edcb-2037526-images-thumbs&n=13',                                                                     url: 'https://www.marya.ru/'         },
 					{ name: 'Мистер Дорс',    logo: 'https://avatars.mds.yandex.net/i?id=cf4673eacc853d6f062852c16c8f10af8dd28ace-7909006-images-thumbs&n=13',                                                                     url: 'https://www.mrdoors.ru/'       },
@@ -81,7 +82,7 @@
 			{#each brands as brand}
 				<div class="group rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-sky-200 hover:shadow-lg">
 					<div class="flex items-center gap-4">
-						<img class="h-8 w-auto" src={brand.logo} alt={brand.name} />
+						<ImageFallback class="h-8 w-auto" src={brand.logo} alt={brand.name} />
 						<div>
 							<h3 class="font-semibold text-slate-900">{brand.name}</h3>
 							<p class="text-sm text-slate-500">{brand.country}</p>
@@ -110,7 +111,7 @@
 			<div class="mt-8 grid grid-cols-3 items-center gap-8 sm:grid-cols-6">
 				{#each partners as partner}
 					<a href={partner.url} target="_blank" rel="noopener noreferrer" class="group flex items-center justify-center">
-						<img
+						<ImageFallback
 							class="h-10 w-auto opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
 							src={partner.logo}
 							alt={partner.name}

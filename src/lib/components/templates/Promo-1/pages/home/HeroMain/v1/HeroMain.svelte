@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -55,7 +56,7 @@
 <section class="relative w-full min-h-full flex items-start justify-center pt-8 md:pt-10 overflow-hidden text-gray-900">
 	<!-- Фоновое изображение -->
 	<div class="absolute inset-0 z-0">
-		<img
+		<ImageFallback
 			src={activeBgImage}
 			alt="Фоновое изображение"
 			class="w-full h-full object-cover transition-all duration-500"
@@ -116,7 +117,7 @@
 						>
 							{#snippet children(displayValue)}
 								{#if displayValue}
-									<img
+									<ImageFallback
 										src={displayValue || 'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
 										alt={String(data?.logoAlt ?? 'Логотип')}
 										class="relative w-full rounded-2xl object-contain"
@@ -222,7 +223,7 @@
 								rel="noopener noreferrer"
 								class="group px-2 h-10 flex items-center justify-center opacity-90 transition-all duration-300 hover:opacity-100 hover:-translate-y-0.5 {i >= 3 ? 'hidden md:flex' : ''}"
 							>
-								<img class="max-w-full max-h-full object-contain" src={brand.logo} alt={brand.name} />
+								<ImageFallback class="max-w-full max-h-full object-contain" src={brand.logo} alt={brand.name} />
 							</a>
 						{/each}
 					</div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -47,7 +48,7 @@
 <section class="grid min-h-160 grid-cols-1 gap-1 lg:grid-cols-2">
 	{#each directions as dir}
 		<div class="group relative flex min-h-100 overflow-hidden">
-			<img
+			<ImageFallback
 				src={dir.image}
 				alt={dir.alt}
 				class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

@@ -30,7 +30,6 @@
 <section class="relative min-h-[90vh] overflow-hidden bg-surface">
 	<div class="absolute inset-0">
 		<img
-			src="/images/facades_hero_new.png"
 			alt="Мебельные фасады"
 			class="h-full w-full object-cover transition-transform duration-[2s]"
 			class:scale-105={visible}

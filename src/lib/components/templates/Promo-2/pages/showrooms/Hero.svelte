@@ -41,7 +41,6 @@
 	<!-- Background Image -->
 	<div class="absolute inset-0">
 		<img
-			src="/images/modern_showroom.png"
 			alt="Интерьер салона"
 			class="h-full w-full object-cover transition-transform duration-[2s]"
 			class:scale-105={visible}

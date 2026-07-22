@@ -20,12 +20,12 @@
 	}
 
 	const defaultCollections = [
-		{ name: 'Nero Marquina',   brand: 'Kerama Marazzi', price: 'от 2 890 ₽/м²', image: '/images/hero-bathroom.png',  tag: 'Хит продаж' },
-		{ name: 'Calacatta Oro',   brand: 'Atlas Concorde', price: 'от 4 150 ₽/м²', image: '/images/tile-marble.png',    tag: 'Люкс'       },
-		{ name: 'Urban Craft',     brand: 'Italon',         price: 'от 1 990 ₽/м²', image: '/images/tile-terrazzo.png',  tag: 'Новинка'    },
-		{ name: 'Royal Deco',      brand: 'Laparet',        price: 'от 3 490 ₽/м²', image: '/images/tile-geometric.png', tag: 'Эксклюзив'  },
-		{ name: 'Emerald Kitchen', brand: 'Cersanit',       price: 'от 1 690 ₽/м²', image: '/images/tile-kitchen.png',   tag: 'Популярное' },
-		{ name: 'Hex Terracotta',  brand: 'Estima',         price: 'от 2 340 ₽/м²', image: '/images/tile-hexagonal.png', tag: 'Тренд'      },
+		{ name: 'Nero Marquina',   brand: 'Kerama Marazzi', price: 'от 2 890 ₽/м²', image: null,  tag: 'Хит продаж' },
+		{ name: 'Calacatta Oro',   brand: 'Atlas Concorde', price: 'от 4 150 ₽/м²', image: null,    tag: 'Люкс'       },
+		{ name: 'Urban Craft',     brand: 'Italon',         price: 'от 1 990 ₽/м²', image: null,  tag: 'Новинка'    },
+		{ name: 'Royal Deco',      brand: 'Laparet',        price: 'от 3 490 ₽/м²', image: null, tag: 'Эксклюзив'  },
+		{ name: 'Emerald Kitchen', brand: 'Cersanit',       price: 'от 1 690 ₽/м²', image: null,   tag: 'Популярное' },
+		{ name: 'Hex Terracotta',  brand: 'Estima',         price: 'от 2 340 ₽/м²', image: null, tag: 'Тренд'      },
 	];
 
 	const collections = $derived(
@@ -59,7 +59,7 @@
 			{#each collections as item}
 				<div class="group relative overflow-hidden rounded-2xl border border-surface-700/50 bg-surface-800/80 transition-all duration-500 hover:border-accent-500/20 hover:shadow-2xl hover:shadow-accent-500/5">
 					<div class="relative aspect-[4/3] overflow-hidden">
-						<img src={item.image} alt={item.name} class="size-full object-cover transition-transform duration-700 group-hover:scale-105" />
+						<img loading="lazy" src={item.image || undefined} alt={item.name} class="size-full object-cover transition-transform duration-700 group-hover:scale-105">
 						<div class="absolute inset-0 bg-gradient-to-t from-surface-900/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
 						<div class="absolute top-4 left-4">
 							<span class="rounded-lg bg-highlight px-3 py-1.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-lg">{item.tag}</span>

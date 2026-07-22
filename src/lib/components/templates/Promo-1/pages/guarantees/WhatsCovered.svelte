@@ -12,7 +12,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	async function saveField(field: string, value: string) {
+	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'WhatsCovered', updated);
@@ -123,7 +123,7 @@
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<img src={displayValue} alt="Гарантия качества" class="relative rounded-2xl shadow-xl w-full object-cover" />
+								<img loading="lazy" src={displayValue} alt="Гарантия качества" class="relative rounded-2xl shadow-xl w-full object-cover">
 							{:else}
 								<div class="relative rounded-2xl bg-slate-100 shadow-xl aspect-video flex items-center justify-center">
 									<p class="text-slate-400 text-sm">Добавьте URL изображения</p>

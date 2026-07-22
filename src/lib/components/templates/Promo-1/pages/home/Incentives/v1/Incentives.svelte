@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -16,10 +17,10 @@
 		Array.isArray(data?.gallery) && data.gallery.length > 0
 			? (data.gallery as { src: string; alt: string; label: string }[])
 			: [
-					{ src: '/incentives/wardrobe.png',      alt: 'Шкафы-купе',  label: 'Системы раздвижения' },
-					{ src: '/incentives/kitchen_detail.png', alt: 'Детали',      label: 'Фасады'              },
-					{ src: '/incentives/kitchen_main.png',   alt: 'Кухни',       label: 'Свет'                },
-					{ src: '/incentives/closet.png',         alt: 'Гардеробные', label: 'Гардеробные'         },
+					{ src: '',      alt: 'Шкафы-купе',  label: 'Системы раздвижения' },
+					{ src: '', alt: 'Детали',      label: 'Фасады'              },
+					{ src: '',   alt: 'Кухни',       label: 'Свет'                },
+					{ src: '',         alt: 'Гардеробные', label: 'Гардеробные'         },
 				]
 	);
 
@@ -93,7 +94,7 @@
 					{#each gallery.slice(0, 2) as item}
 						<div class="group relative overflow-hidden rounded-3xl bg-slate-100 shadow-lg ring-1 ring-slate-200 transition-all duration-500 hover:shadow-xl hover:ring-slate-300">
 							<div class="aspect-4/3 w-full overflow-hidden">
-								<img src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+								<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
 							</div>
 							<div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"></div>
 							<div class="absolute bottom-6 left-6 text-white">
@@ -107,7 +108,7 @@
 					{#each gallery.slice(2, 4) as item}
 						<div class="group relative overflow-hidden rounded-3xl bg-slate-100 shadow-lg ring-1 ring-slate-200 transition-all duration-500 hover:shadow-xl hover:ring-slate-300">
 							<div class="aspect-4/3 w-full overflow-hidden">
-								<img src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+								<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
 							</div>
 							<div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"></div>
 							<div class="absolute bottom-6 left-6 text-white">

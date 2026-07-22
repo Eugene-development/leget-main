@@ -7,6 +7,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { editStore } from '$lib/stores/edit.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
+	import { catalogItems } from './catalogItems';
+	import { serviceItems } from './serviceItems';
 
 	let {
 		data = $bindable({}),
@@ -31,39 +33,32 @@
 				]
 	);
 
-	const catalogItems = [
-		{ href: '/mebel', label: 'Мебель', icon: 'sofa', desc: 'Кухни, шкафы, гардеробные' },
-		{
-			href: '/stoleshnica',
-			label: 'Столешницы',
-			icon: 'surface',
-			desc: 'Из камня, дерева и пластика'
-		},
-		{
-			href: '/bytovaya-tehnika',
-			label: 'Бытовая техника',
-			icon: 'fridge',
-			desc: 'Встраиваемая и отдельностоящая'
-		},
-		{
-			href: '/santehnika',
-			label: 'Сантехника',
-			icon: 'faucet',
-			desc: 'Смесители, мойки, аксессуары'
-		},
-		{ href: '/furnitura', label: 'Фурнитура', icon: 'hinge', desc: 'Ручки, петли, механизмы' },
-		{
-			href: '/plitka',
-			label: 'Плитка',
-			icon: 'tiles',
-			desc: 'Керамогранит и мозаика',
-			comingSoon: true
-		}
-	];
+	// Локальное состояние списков отключённых рубрик/услуг.
+	//
+	// data — bindable-пропс, но ComponentResolver передаёт его БЕЗ bind:, поэтому
+	// присваивание `data = updatedData` не гарантирует ре-рендер зависимых $derived.
+	// Чтобы переключатели реагировали мгновенно, храним списки в явном $state
+	// и синхронизируем их с data через $effect (на случай external-обновления data,
+	// например после invalidateAll). UI читает именно эти переменные.
+	let disabledRubrics = $state<string[]>([]);
+	let disabledServices = $state<string[]>([]);
 
-	const disabledRubrics = $derived(
-		Array.isArray(data?.disabledRubrics) ? (data.disabledRubrics as string[]) : []
-	);
+	$effect(() => {
+		const r = Array.isArray(data?.disabledRubrics) ? (data.disabledRubrics as string[]) : [];
+		const next = [...r].sort();
+		const cur = [...disabledRubrics].sort();
+		if (next.join('\u0001') !== cur.join('\u0001')) {
+			disabledRubrics = [...r];
+		}
+	});
+	$effect(() => {
+		const s = Array.isArray(data?.disabledServices) ? (data.disabledServices as string[]) : [];
+		const next = [...s].sort();
+		const cur = [...disabledServices].sort();
+		if (next.join('\u0001') !== cur.join('\u0001')) {
+			disabledServices = [...s];
+		}
+	});
 
 	const visibleCatalogItems = $derived(
 		catalogItems.filter(
@@ -74,60 +69,66 @@
 		)
 	);
 
+	const visibleServiceItems = $derived(
+		serviceItems.filter(
+			(item) =>
+				item.comingSoon === true ||
+				isEditable ||
+				!disabledServices.includes(item.href)
+		)
+	);
+
 	async function handleToggleRubric(href: string, currentEnabled: boolean, e: Event) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		let updated: string[];
-		if (currentEnabled) {
-			updated = [...disabledRubrics, href];
-		} else {
-			updated = disabledRubrics.filter((h) => h !== href);
-		}
+		// Мгновенный отклик UI: обновляем локальный $state синхронно.
+		disabledRubrics = currentEnabled
+			? [...disabledRubrics, href]
+			: disabledRubrics.filter((h) => h !== href);
 
 		if (!editContext) return;
-		const updatedData = { ...data, disabledRubrics: updated };
+		const updatedData = { ...data, disabledRubrics };
+		data = updatedData;
 		try {
 			await saveLayoutData(editContext, 'Header', updatedData);
-			data = updatedData;
 		} catch (err: any) {
+			// Откатываем локальное состояние при ошибке сохранения.
+			disabledRubrics = currentEnabled
+				? disabledRubrics.filter((h) => h !== href)
+				: [...disabledRubrics, href];
+			data = { ...data, disabledRubrics };
 			console.error('Failed to toggle rubric:', err);
 			alert('Не удалось сохранить настройки каталога: ' + (err.message || 'ошибка'));
 		}
 	}
 
-	const serviceItems = [
-		{
-			href: '/consultation',
-			label: 'Бесплатная консультация',
-			icon: 'chat',
-			desc: 'Профессиональная помощь в подборе решений'
-		},
-		{
-			href: '/design-project',
-			label: 'Дизайн интерьера',
-			icon: 'design',
-			desc: 'Индивидуальные 3D-проекты любой сложности'
-		},
-		{
-			href: '/measurement',
-			label: 'Замер помещения',
-			icon: 'ruler',
-			desc: 'Точные расчеты для идеальной установки'
-		},
-		{
-			href: '/furniture-project',
-			label: 'Проект мебели',
-			icon: 'project',
-			desc: 'Проработка конструктива и эргономики'
-		},
-		{
-			href: '/assembly',
-			label: 'Сборка и установка',
-			icon: 'tools',
-			desc: 'Качественный монтаж вашей мебели'
+	// Переключатель видимости услуги. Симметричен handleToggleRubric, но пишет
+	// в disabledServices — отдельный список, чтобы каталог и услуги управлялись независимо.
+	async function handleToggleService(href: string, currentEnabled: boolean, e: Event) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		// Мгновенный отклик UI: обновляем локальный $state синхронно.
+		disabledServices = currentEnabled
+			? [...disabledServices, href]
+			: disabledServices.filter((h) => h !== href);
+
+		if (!editContext) return;
+		const updatedData = { ...data, disabledServices };
+		data = updatedData;
+		try {
+			await saveLayoutData(editContext, 'Header', updatedData);
+		} catch (err: any) {
+			// Откатываем локальное состояние при ошибке сохранения.
+			disabledServices = currentEnabled
+				? disabledServices.filter((h) => h !== href)
+				: [...disabledServices, href];
+			data = { ...data, disabledServices };
+			console.error('Failed to toggle service:', err);
+			alert('Не удалось сохранить настройки услуг: ' + (err.message || 'ошибка'));
 		}
-	];
+	}
 
 	let headerEl: HTMLElement;
 	let visibleCityMenu = $state(false);
@@ -156,7 +157,7 @@
 	const isServicesActive = $derived(
 		hoveredItem === 'services' ||
 			(hoveredItem === null &&
-				(visibleServicesMenu || serviceItems.some((item) => $page.url.pathname === item.href)))
+				(visibleServicesMenu || visibleServiceItems.some((item) => $page.url.pathname === item.href)))
 	);
 
 	function isLinkActive(href: string) {
@@ -190,6 +191,20 @@
 		data = updated;
 	}
 </script>
+
+<!--
+	Google Fonts for the entire Promo-1 template loaded ONCE here.
+	Previously each v2/v3/v4 component had its own <link>/<style>@import,
+	causing redundant blocking requests that kept the tab spinner going.
+-->
+<svelte:head>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@400;600;700;800;900&display=swap"
+	/>
+</svelte:head>
 
 {#snippet comingSoonIndicator(paddingClass = 'pr-3')}
 	<div class="flex shrink-0 items-center {paddingClass}" title="В разработке">
@@ -309,91 +324,143 @@
 									class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500/50 to-transparent"
 								></div>
 
-								{#each serviceItems as service, idx}
-									<a
-										onclick={() => (visibleServicesMenu = false)}
-										href={service.href}
-										class="group flex items-start gap-3 rounded-xl p-3 transition-all duration-300 hover:translate-x-1 hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50"
+								{#each visibleServiceItems as service, idx}
+									{@const isComingSoon = service.comingSoon === true}
+									{@const isEnabled = !isComingSoon && !disabledServices.includes(service.href)}
+									<div
+										class="group flex w-full items-center justify-between rounded-xl transition-all duration-300 {isComingSoon
+											? 'cursor-not-allowed opacity-60'
+											: 'hover:bg-linear-to-r hover:from-sky-50/50 hover:to-indigo-50/50'}"
+										class:opacity-60={!isComingSoon && isEditable && !isEnabled}
+										class:bg-slate-50={!isComingSoon && isEditable && !isEnabled}
+										title={isComingSoon ? 'В разработке' : undefined}
 										transition:fly={{ y: -5, duration: 200, delay: idx * 40 }}
 									>
-										<div
-											class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-sky-100/50 to-indigo-100/50 text-sky-600 transition-all duration-300 group-hover:from-sky-500 group-hover:to-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-sky-500/25"
+										<a
+											onclick={(e) => {
+												if (isComingSoon) {
+													e.preventDefault();
+													return;
+												}
+												visibleServicesMenu = false;
+											}}
+											href={service.href}
+											tabindex={isComingSoon ? -1 : undefined}
+											aria-disabled={isComingSoon}
+											class="flex flex-1 items-start gap-3 p-3 transition-all duration-300 {isComingSoon
+												? 'pointer-events-none'
+												: 'hover:translate-x-1'}"
+											class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 										>
-											{#if service.icon === 'chat'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<div
+												class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-linear-to-br from-sky-100/50 to-indigo-100/50 text-sky-600 transition-all duration-300 {isComingSoon
+													? ''
+													: 'group-hover:from-sky-500 group-hover:to-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-sky-500/25'}"
+											>
+												{#if service.icon === 'chat'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+														/>
+													</svg>
+												{:else if service.icon === 'design'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+														/>
+													</svg>
+												{:else if service.icon === 'ruler'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+														/>
+													</svg>
+												{:else if service.icon === 'project'}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+														/>
+													</svg>
+												{:else}
+													<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+														/>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+														/>
+													</svg>
+												{/if}
+											</div>
+											<div class="flex-1">
+												<div class="flex items-center gap-2">
+													<p
+														class="text-sm font-bold text-slate-900 transition-colors {isComingSoon
+															? ''
+															: 'group-hover:text-sky-600'}"
+													>
+														{service.label}
+													</p>
+													{#if isEditable && !isEnabled && !isComingSoon}
+														<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
+													{/if}
+												</div>
+												<p class="mt-0.5 text-[11px] leading-tight text-slate-500">{service.desc}</p>
+											</div>
+											{#if !isEditable && !isComingSoon}
+												<svg
+													class="h-4 w-4 self-center text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-400"
+													fill="none"
+													viewBox="0 0 24 24"
+													stroke="currentColor"
+												>
 													<path
 														stroke-linecap="round"
 														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-													/>
-												</svg>
-											{:else if service.icon === 'design'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-													/>
-												</svg>
-											{:else if service.icon === 'ruler'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-													/>
-												</svg>
-											{:else if service.icon === 'project'}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
-													/>
-												</svg>
-											{:else}
-												<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-													/>
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="1.5"
-														d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+														stroke-width="2"
+														d="M9 5l7 7-7 7"
 													/>
 												</svg>
 											{/if}
-										</div>
-										<div class="flex-1">
-											<p
-												class="text-sm font-bold text-slate-900 transition-colors group-hover:text-sky-600"
-											>
-												{service.label}
-											</p>
-											<p class="mt-0.5 text-[11px] leading-tight text-slate-500">{service.desc}</p>
-										</div>
-										<svg
-											class="h-4 w-4 text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-400"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M9 5l7 7-7 7"
-											/>
-										</svg>
-									</a>
+										</a>
+										{#if isEditable}
+											{#if isComingSoon}
+												{@render comingSoonIndicator()}
+											{:else}
+												<div class="pr-3 flex items-center">
+													<button
+														type="button"
+														onclick={(e) => handleToggleService(service.href, isEnabled, e)}
+														class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+														title={isEnabled ? 'Скрыть услугу' : 'Показать услугу'}
+													>
+														<span
+															class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+														>
+														</span>
+													</button>
+												</div>
+											{/if}
+										{/if}
+									</div>
 								{/each}
 							</div>
 						{/if}
@@ -764,73 +831,119 @@
 						<div class="mb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
 							{link.label}
 						</div>
-						<div class="grid gap-1 pl-2">
-							{#each serviceItems as service}
-								<a
-									href={service.href}
-									onclick={() => uiStore.closeMenu()}
-									class="flex items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:text-sky-600"
-								>
+							<div class="grid gap-1 pl-2">
+								{#each visibleServiceItems as service}
+									{@const isComingSoon = service.comingSoon === true}
+									{@const isEnabled = !isComingSoon && !disabledServices.includes(service.href)}
 									<div
-										class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
+										class="group flex w-full items-center justify-between rounded-lg transition-all duration-300 {isComingSoon
+											? 'cursor-not-allowed opacity-60'
+											: ''}"
+										class:opacity-60={!isComingSoon && isEditable && !isEnabled}
+										class:bg-slate-50={!isComingSoon && isEditable && !isEnabled}
+										title={isComingSoon ? 'В разработке' : undefined}
 									>
-										{#if service.icon === 'chat'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-												/>
-											</svg>
-										{:else if service.icon === 'design'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-												/>
-											</svg>
-										{:else if service.icon === 'ruler'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-												/>
-											</svg>
-										{:else if service.icon === 'project'}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
-												/>
-											</svg>
-										{:else}
-											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-												/>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="1.5"
-													d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-												/>
-											</svg>
+										<a
+											href={service.href}
+											onclick={(e) => {
+												if (isComingSoon) {
+													e.preventDefault();
+													return;
+												}
+												uiStore.closeMenu();
+											}}
+											tabindex={isComingSoon ? -1 : undefined}
+											aria-disabled={isComingSoon}
+											class="flex flex-1 items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors {isComingSoon
+												? 'pointer-events-none'
+												: 'hover:text-sky-600'}"
+											class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
+										>
+											<div
+												class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
+											>
+												{#if service.icon === 'chat'}
+													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+														/>
+													</svg>
+												{:else if service.icon === 'design'}
+													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+														/>
+													</svg>
+												{:else if service.icon === 'ruler'}
+													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+														/>
+													</svg>
+												{:else if service.icon === 'project'}
+													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+														/>
+													</svg>
+												{:else}
+													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+														/>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															stroke-width="1.5"
+															d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+														/>
+													</svg>
+												{/if}
+											</div>
+											<span class="flex items-center gap-2">
+												{service.label}
+												{#if isEditable && !isEnabled && !isComingSoon}
+													<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
+												{/if}
+											</span>
+										</a>
+										{#if isEditable}
+											{#if isComingSoon}
+												{@render comingSoonIndicator('pr-2')}
+											{:else}
+												<div class="pr-2 flex items-center">
+													<button
+														type="button"
+														onclick={(e) => handleToggleService(service.href, isEnabled, e)}
+														class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+														title={isEnabled ? 'Скрыть услугу' : 'Показать услугу'}
+													>
+														<span
+															class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+														>
+														</span>
+													</button>
+												</div>
+											{/if}
 										{/if}
 									</div>
-									{service.label}
-								</a>
-							{/each}
-						</div>
+								{/each}
+							</div>
 					</div>
 				{:else if link.label === 'Каталог'}
 					<div class="py-2">

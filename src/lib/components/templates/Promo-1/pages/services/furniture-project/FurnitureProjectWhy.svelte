@@ -63,11 +63,10 @@
 				<div
 					class="relative overflow-hidden rounded-[2.5rem] border border-white/20 shadow-2xl transition duration-500 hover:scale-105"
 				>
-					<img
+					<img loading="lazy"
 						src={String(data?.imageUrl ?? '/furniture_design_process.png')}
 						alt="Мебель на заказ"
-						class="aspect-square w-full object-cover"
-					/>
+						class="aspect-square w-full object-cover">
 				</div>
 			</div>
 

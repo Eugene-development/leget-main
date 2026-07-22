@@ -20,10 +20,10 @@
 	}
 
 	const defaultCategories = [
-		{ title: 'Настенная плитка', description: 'Элегантные решения для стен',       image: '/images/tile-marble.png',     count: '340+ вариантов', href: '/catalog/wall'      },
-		{ title: 'Напольная плитка', description: 'Прочность и стиль для вашего пола', image: '/images/tile-hexagonal.png',  count: '280+ вариантов', href: '/catalog/floor'     },
-		{ title: 'Керамогранит',     description: 'Элегантная отделка нового поколения', image: '/images/tile-geometric.png', count: '420+ вариантов', href: '/catalog/porcelain' },
-		{ title: 'Мозаика',          description: 'Уникальные узоры для акцентных зон', image: '/images/tile-terrazzo.png',  count: '190+ вариантов', href: '/catalog/mosaic'    },
+		{ title: 'Настенная плитка', description: 'Элегантные решения для стен',       image: null,     count: '340+ вариантов', href: '/catalog/wall'      },
+		{ title: 'Напольная плитка', description: 'Прочность и стиль для вашего пола', image: null,  count: '280+ вариантов', href: '/catalog/floor'     },
+		{ title: 'Керамогранит',     description: 'Элегантная отделка нового поколения', image: null, count: '420+ вариантов', href: '/catalog/porcelain' },
+		{ title: 'Мозаика',          description: 'Уникальные узоры для акцентных зон', image: null,  count: '190+ вариантов', href: '/catalog/mosaic'    },
 	];
 
 	const categories = $derived(
@@ -58,7 +58,7 @@
 			{#each categories as cat}
 				<a href={cat.href} class="group relative overflow-hidden rounded-2xl border border-surface-700/50 bg-surface-800/50 transition-all duration-500 hover:border-accent-500/30 hover:shadow-2xl hover:shadow-accent-500/5">
 					<div class="aspect-[4/3] overflow-hidden">
-						<img src={cat.image} alt={cat.title} class="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+						<img loading="lazy" src={cat.image || undefined} alt={cat.title} class="size-full object-cover transition-transform duration-700 group-hover:scale-110">
 						<div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-surface-900/30 to-transparent"></div>
 					</div>
 					<div class="absolute right-0 bottom-0 left-0 p-6">

@@ -104,11 +104,7 @@
 	);
 </script>
 
-<svelte:head>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-</svelte:head>
+<!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
 
 <section
 	class="relative flex min-h-0 lg:min-h-[calc(100vh-var(--header-h,80px))] w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-white'}"

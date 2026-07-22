@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -23,7 +24,7 @@
 	);
 
 	const activeImage = $derived(
-		String(data?.imageV2 ?? data?.image ?? '/images/promo-happy-person.png')
+		String(data?.imageV2 ?? data?.image ?? '')
 	);
 
 	async function saveField(field: string, value: string) {
@@ -167,7 +168,7 @@
 			<!-- Правая колонка: Изображение и декоративные элементы -->
 			<div class="lg:col-span-5 relative w-full flex justify-center items-center">
 				<div class="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden border border-white/10 shadow-2xl group transition-transform duration-500 hover:scale-[1.01]">
-					<img
+					<ImageFallback
 						src={activeImage}
 						alt={String(data?.imageAlt ?? 'Промо изображение')}
 						class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -204,7 +205,7 @@
 		<BgImagePicker
 			editContext={editContext}
 			currentImage={String(data?.imageV2 ?? data?.image ?? '')}
-			defaultImage="/images/promo-happy-person.png"
+			defaultImage=""
 			aspectRatio={1}
 			onApprove={handleImageApprove}
 			onClose={() => showImagePicker = false}
@@ -213,7 +214,7 @@
 </section>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
 
 	h2 {
 		font-family: 'Outfit', sans-serif;

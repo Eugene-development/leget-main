@@ -131,11 +131,10 @@
 						class:animate-fade-up={brandVisibility[brand.id]}
 						style="animation-delay: 0.4s"
 					>
-						<img
+						<img loading="lazy"
 							src={brand.image}
 							alt={`Фурнитура ${brand.name}`}
-							class="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
-						/>
+							class="h-full w-full object-contain transition-transform duration-700 hover:scale-105">
 					</div>
 				</div>
 			{/each}

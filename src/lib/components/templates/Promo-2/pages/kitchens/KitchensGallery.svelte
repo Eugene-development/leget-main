@@ -155,11 +155,10 @@
 						class:animate-fade-up={visible}
 						style="animation-delay: {0.1 + i * 0.05}s"
 					>
-						<img
+						<img loading="lazy"
 							src={project.image}
 							alt={project.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
 						<div class="absolute inset-0 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/5"></div>
 						<div class="absolute right-0 bottom-0 left-0 translate-y-full bg-white/90 p-6 backdrop-blur-md transition-transform duration-500 group-hover:translate-y-0">
 							<h3

@@ -33,11 +33,10 @@
 			>
 				{#snippet children(displayValue)}
 					{#if displayValue}
-						<img
+						<img loading="lazy"
 							alt={String(data?.imageAlt ?? 'Акция')}
 							src={displayValue}
-							class="w-full object-cover"
-						/>
+							class="w-full object-cover">
 					{/if}
 				{/snippet}
 			</EditableField>

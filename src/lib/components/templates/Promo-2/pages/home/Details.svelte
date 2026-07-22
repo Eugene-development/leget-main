@@ -64,11 +64,10 @@
 				style="animation-delay: 0.2s"
 			>
 				<div class="relative z-40 overflow-hidden">
-					<img
+					<img loading="lazy"
 						src={String(data?.image ?? 'https://storage.yandexcloud.net/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg')}
 						alt={String(data?.imageAlt ?? '')}
-						class="h-[400px] w-full object-cover lg:h-[500px]"
-					/>
+						class="h-[400px] w-full object-cover lg:h-[500px]">
 				</div>
 				<!-- Floating Accent -->
 				<div

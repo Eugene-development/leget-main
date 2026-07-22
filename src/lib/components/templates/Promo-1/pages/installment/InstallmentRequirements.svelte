@@ -12,7 +12,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	async function saveField(field: string, value: string) {
+	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'InstallmentRequirements', updated);

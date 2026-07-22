@@ -1,5 +1,6 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -29,7 +30,7 @@
 		Array.isArray(data?.partners) && data.partners.length > 0
 			? (data.partners as { name: string; logo: string; url: string }[])
 			: [
-					{ name: 'ЗОВ',            logo: 'https://storage.zovrus/brand/logo-rus-x2.png',                                                                                                                url: 'https://zov.top/'             },
+					{ name: 'ЗОВ',            logo: 'https://zov.com.by/images/logo3.png',                                                                                                                          url: 'https://zov.top/'             },
 					{ name: 'Стильные кухни', logo: 'https://avatars.mds.yandex.net/i?id=ada48033e9cfa95f38d69fc9ae7b5bcc25b72f13-5037427-images-thumbs&n=13',                                                                     url: 'https://www.stilkuhni.ru/'     },
 					{ name: 'Мария',          logo: 'https://avatars.mds.yandex.net/i?id=b761d395235060d89bd5d574233ee6bca202edcb-2037526-images-thumbs&n=13',                                                                     url: 'https://www.marya.ru/'         },
 					{ name: 'Мистер Дорс',    logo: 'https://avatars.mds.yandex.net/i?id=cf4673eacc853d6f062852c16c8f10af8dd28ace-7909006-images-thumbs&n=13',                                                                     url: 'https://www.mrdoors.ru/'       },
@@ -86,7 +87,7 @@
 				<div class="group rounded-3xl border border-white/5 bg-slate-900/30 p-6 transition-all duration-300 hover:border-sky-500/30 hover:bg-slate-900/50 hover:shadow-2xl hover:shadow-sky-500/5">
 					<div class="flex items-center gap-4">
 						<div class="p-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-sky-500/20 group-hover:bg-white/10 transition-all duration-300">
-							<img class="h-8 w-auto filter brightness-0 invert" src={brand.logo} alt={brand.name} />
+							<ImageFallback class="h-8 w-auto filter brightness-0 invert" src={brand.logo} alt={brand.name} />
 						</div>
 						<div>
 							<h3 class="font-bold text-white group-hover:text-sky-300 transition-colors duration-300">{brand.name}</h3>
@@ -118,7 +119,7 @@
 			<div class="mt-10 grid grid-cols-3 items-center gap-8 sm:grid-cols-6">
 				{#each partners as partner}
 					<a href={partner.url} target="_blank" rel="noopener noreferrer" class="group flex items-center justify-center">
-						<img
+						<ImageFallback
 							class="h-10 w-auto opacity-40 grayscale filter brightness-0 invert transition-all duration-300 group-hover:opacity-100 group-hover:scale-105 group-hover:filter group-hover:brightness-100 group-hover:invert-0"
 							src={partner.logo}
 							alt={partner.name}
@@ -139,7 +140,7 @@
 </section>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
 
 	.font-display {
 		font-family: 'Outfit', sans-serif;

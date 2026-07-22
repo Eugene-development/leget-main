@@ -33,7 +33,7 @@
 				in:fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 			>
 				{#if brand.logo}
-					<img src={brand.logo} alt={brand.title ?? brand.value} class="max-h-10 max-w-full object-contain" />
+					<img loading="lazy" src={brand.logo} alt={brand.title ?? brand.value} class="max-h-10 max-w-full object-contain">
 				{:else}
 					<span class="text-base font-bold text-slate-500 group-hover:text-sky-600 transition-colors">
 						{brand.title ?? brand.value ?? brand.name}

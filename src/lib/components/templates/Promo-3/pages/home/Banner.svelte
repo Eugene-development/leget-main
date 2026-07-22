@@ -43,7 +43,7 @@
 			<!-- Left: image -->
 			<div class="relative">
 				<div class="relative aspect-[4/3] overflow-hidden rounded-2xl">
-					<img src={String(data?.image ?? '/images/tile-kitchen.png')} alt={String(data?.heading ?? '')} class="size-full object-cover" />
+					<img loading="lazy" src={String(data?.image ?? '')} alt={String(data?.heading ?? '')} class="size-full object-cover">
 					<div class="absolute inset-0 rounded-2xl ring-1 ring-white/10 ring-inset"></div>
 				</div>
 				<!-- Floating card -->

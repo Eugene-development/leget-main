@@ -126,11 +126,10 @@
 				<div
 					class="relative mb-6 aspect-[4/3] overflow-hidden rounded-sm bg-surface-muted transition-shadow duration-500 group-hover:shadow-elevated"
 				>
-					<img
+					<img loading="lazy"
 						src={style.image}
 						alt={style.name}
-						class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-					/>
+						class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
 					<!-- Subtle Hover Overlay -->
 					<div
 						class="absolute inset-0 bg-black/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"

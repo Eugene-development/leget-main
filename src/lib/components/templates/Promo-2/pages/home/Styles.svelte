@@ -137,11 +137,10 @@
 				>
 					<!-- Image -->
 					<div class="relative aspect-[4/3] overflow-hidden">
-						<img
+						<img loading="lazy"
 							src={style.image}
 							alt={style.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-						/>
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
 						<div
 							class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
 						></div>
