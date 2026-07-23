@@ -376,40 +376,6 @@
 	<div
 		class="relative z-10 mx-auto flex min-h-0 w-full max-w-screen-2xl flex-col justify-between px-4 pt-4 pb-8 sm:px-6 sm:py-8 md:px-8 lg:h-full lg:px-12 xl:px-16"
 	>
-		<!-- Верхняя панель (Логотип) -->
-		<div class="flex w-full items-center justify-between pb-3 sm:pb-4">
-			{#if data?.logoUrl || isEditable}
-				<div
-					class="w-24 transition-all duration-300 hover:scale-[1.03] hover:drop-shadow-[0_0_15px_rgba(56,189,248,0.2)] md:w-32"
-				>
-					<EditableField
-						fieldKey="HeroMain.logoUrl"
-						label="Логотип (URL)"
-						value={String(data?.logoUrl ?? '')}
-						{isEditable}
-						onSave={(v) => saveField('logoUrl', v)}
-						class="block"
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue}
-								<img
-									src={displayValue}
-									alt={String(data?.logoAlt ?? 'Логотип')}
-									class="relative w-full object-contain brightness-0 invert filter"
-								/>
-							{:else if isEditable}
-								<div
-									class="rounded-xl border border-dashed border-white/20 bg-white/5 p-3 text-[10px] font-bold tracking-widest text-white/50 uppercase backdrop-blur-md"
-								>
-									Логотип
-								</div>
-							{/if}
-						{/snippet}
-					</EditableField>
-				</div>
-			{/if}
-		</div>
-
 		<!-- Главный 12-колоночный грид -->
 		<div
 			class="my-auto grid grid-cols-1 items-center gap-6 py-1 lg:py-2 lg:grid-cols-12 lg:gap-10 xl:gap-12"

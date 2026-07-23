@@ -7,6 +7,7 @@
 		type ComponentVariantArticle
 	} from '$lib/utils/page-edit';
 	import { invalidateAll } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import { fly, fade } from 'svelte/transition';
 
 	let {
@@ -39,15 +40,25 @@
 
 	async function selectVersion(version: 'v1' | 'v2' | 'v3' | 'v4' | 'disabled') {
 		if (version === selectedVersion) return;
+		if (!editContext) {
+			selectedVersion = version;
+			hasManuallySelected = true;
+			return;
+		}
+		const prevVersion = selectedVersion;
+		const prevData = data;
 		selectedVersion = version;
 		hasManuallySelected = true;
-		if (!editContext) return;
-
+		// Оптимистичное обновление: компонент переключается мгновенно, не дожидаясь
+		// ответа сервера. На ошибке откатываем и свитчер, и данные (раньше
+		// расхождение «залечивалось» invalidateAll — теперь refetch убран).
 		const updated = { ...data, [actualVersionKey]: version };
+		data = updated;
 		try {
 			await saveComponentData(editContext, componentType, updated);
-			data = updated;
 		} catch (err) {
+			selectedVersion = prevVersion;
+			data = prevData;
 			console.error(`Ошибка сохранения версии для ${componentType}:`, err);
 		}
 	}
@@ -67,6 +78,18 @@
 	let articleVariants = $state<ComponentVariantArticle[]>([]);
 	let articleLoaded = $state(false);
 	let showArticleHint = $state(false);
+
+	// Десктоп (есть hover) — раскрываем по наведению. Тач-устройства — по клику:
+	// первый тап открывает, повторный — закрывает.
+	let canHover = $state(true);
+	$effect(() => {
+		if (!browser) return;
+		const mq = window.matchMedia('(hover: hover)');
+		canHover = mq.matches;
+		const update = () => (canHover = mq.matches);
+		mq.addEventListener('change', update);
+		return () => mq.removeEventListener('change', update);
+	});
 
 	// 'v1'..'v4' → 1..4; 'disabled'/unknown → null (артикул не показывается).
 	const versionNumber = (v: unknown): number | null => {
@@ -108,11 +131,18 @@
 
 	async function toggleTheme() {
 		if (!editContext) return;
+		// Оптимистичное обновление: переключаем тему мгновенно, не дожидаясь
+		// ответа сервера. Раньше data менялся только после saveComponentData
+		// (сетевой запрос + invalidateAll), из-за чего свитчер и сам блок
+		// «зависали» на 3–5 секунд. data — bindable и связан с HeroMain,
+		// поэтому и свитчер, и компонент обновляются сразу.
+		const previous = data;
 		const updated = { ...data, theme: isLight ? 'dark' : 'light' };
+		data = updated;
 		try {
 			await saveComponentData(editContext, 'HeroMain', updated);
-			data = updated;
 		} catch (err) {
+			data = previous; // откатываем тему при ошибке сохранения
 			console.error(`Ошибка сохранения темы для HeroMain:`, err);
 		}
 	}
@@ -143,15 +173,16 @@
 		{#if activeArticle}
 			<div
 				class="relative flex cursor-default items-center rounded-2xl border border-white/10 bg-slate-950 px-3 py-2.5 font-mono text-[11px] font-semibold tracking-wider text-white shadow-2xl"
-				onmouseenter={() => (showArticleHint = true)}
-				onmouseleave={() => (showArticleHint = false)}
+				onmouseenter={() => canHover && (showArticleHint = true)}
+				onmouseleave={() => canHover && (showArticleHint = false)}
+				onclick={() => !canHover && (showArticleHint = !showArticleHint)}
 				role="tooltip"
 			>
 				{activeArticle}
 				{#if showArticleHint && articleSegments}
 					<!-- Расшифровка сегментов артикула: TEMPLATE.PAGE.COMPONENT.VERSION -->
 					<div
-						class="absolute top-full right-0 z-[200] mt-2 w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
+						class="absolute top-full left-0 z-[200] mt-2 w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
 						transition:fade={{ duration: 120 }}
 					>
 						<div class="mb-2 flex items-center justify-between gap-2 border-b border-white/10 pb-2">
@@ -212,7 +243,7 @@
 			<!-- Кнопка переключения темы -->
 			<button
 				type="button"
-				class="relative flex h-[38px] w-[68px] cursor-pointer items-center rounded-full border p-[3px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 {isLight
+				class="order-first relative flex h-[38px] w-[68px] cursor-pointer items-center rounded-full border p-[3px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 {isLight
 					? 'border-slate-300/80 bg-slate-200/60 hover:border-slate-400/80'
 					: 'border-white/10 bg-slate-950/75 hover:border-white/20'}"
 				onclick={toggleTheme}

@@ -6,7 +6,6 @@
  */
 
 import { getGraphQLUrl } from '$lib/utils/config';
-import { invalidateAll } from '$app/navigation';
 
 const UPSERT_MUTATION = `
   mutation UpsertPageComponent($pageId: ID!, $licenseId: ID!, $type: String!, $data: JSON!) {
@@ -163,7 +162,7 @@ export async function saveComponentData(
 	context: EditContext,
 	type: string,
 	data: Record<string, unknown>
-): Promise<void> {
+): Promise<string | null> {
 	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
 	if (!token) {
@@ -201,11 +200,18 @@ export async function saveComponentData(
 		throw new Error(msg);
 	}
 
-	try {
-		await invalidateAll();
-	} catch (e) {
-		console.warn('Failed to invalidate all navigation data:', e);
+	// Сервер генерирует ULID `id` при первой записи компонента. Раньше он попадал
+	// в клиентское состояние только через invalidateAll() (полный refetch после
+	// каждого сохранения — причина «зависаний» 3–5 с). Refetch убран, поэтому
+	// синхронизируем id прямо в переданный blob: чинит появление кнопки «Сброс»
+	// сразу после первого сохранения нового блока (без перезагрузки) и для
+	// свитчер-, и для не-свитчер-компонентов.
+	const id = result.data?.upsertPageComponent?.id ?? null;
+	if (id && !data._componentId) {
+		data._componentId = id;
 	}
+
+	return id;
 }
 
 const DELETE_COMPONENT_MUTATION = `

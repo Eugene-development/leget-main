@@ -49,14 +49,24 @@
 
 	async function selectVersion(version: 'v1' | 'v2' | 'disabled') {
 		if (version === selectedVersion) return;
+		if (!editContext) {
+			selectedVersion = version;
+			hasManuallySelected = true;
+			return;
+		}
+		const prevVersion = selectedVersion;
+		const prevData = data;
 		selectedVersion = version;
 		hasManuallySelected = true;
-		if (!editContext) return;
+		// Оптимистично: футер переключается мгновенно, на ошибке откатываем
+		// и свитчер, и данные.
 		const updated = { ...data, footerVersion: version };
+		data = updated;
 		try {
 			await saveComponentData(editContext, 'Footer', updated);
-			data = updated;
 		} catch (err) {
+			selectedVersion = prevVersion;
+			data = prevData;
 			console.error('Ошибка сохранения версии футера:', err);
 		}
 	}
@@ -89,8 +99,9 @@
 		try {
 			// Сохраняем только версию — контентные поля исчезают (→ фолбэки ?? в компоненте).
 			await saveComponentData(editContext, 'Footer', { footerVersion: selectedVersion });
-			// Локально убираем контентные поля, чтобы UI сразу показал дефолты
-			// (saveComponentData сам вызовет invalidateAll для актуализации с сервера).
+			// Локально убираем контентные поля, чтобы UI сразу показал дефолты.
+			// invalidateAll после сохранений убран — локальный data = cleared
+			// теперь единственный источник состояния.
 			const cleared: Record<string, unknown> = { ...data };
 			for (const key of FOOTER_CONTENT_KEYS) {
 				delete cleared[key];
@@ -112,7 +123,7 @@
 		{#if isEditable && editContext}
 			<!-- Переключатель вариантов футера (виден только редактору) -->
 			<div class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
-				<ArticleBadge article={footerArticle} sectionLabel="Раздел" />
+				<ArticleBadge article={footerArticle} sectionLabel="Раздел" align="left" />
 
 				<div class="relative">
 					<button

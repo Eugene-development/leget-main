@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+	import { browser } from '$app/environment';
 
 	/**
 	 * Компактный бейдж артикула с тултипом-расшифровкой сегментов.
@@ -26,6 +27,18 @@
 
 	let showHint = $state(false);
 
+	// Десктоп (есть hover) — раскрываем по наведению. Тач-устройства — по клику:
+	// первый тап открывает, повторный — закрывает.
+	let canHover = $state(true);
+	$effect(() => {
+		if (!browser) return;
+		const mq = window.matchMedia('(hover: hover)');
+		canHover = mq.matches;
+		const update = () => (canHover = mq.matches);
+		mq.addEventListener('change', update);
+		return () => mq.removeEventListener('change', update);
+	});
+
 	const segments = $derived.by(() => {
 		if (!article) return null;
 		const parts = article.split('.');
@@ -42,8 +55,9 @@
 {#if article && segments}
 	<div
 		class="relative flex cursor-default items-center rounded-2xl border border-white/10 bg-slate-950 px-3 py-2 font-mono text-[11px] font-semibold tracking-wider text-white shadow-2xl select-none"
-		onmouseenter={() => (showHint = true)}
-		onmouseleave={() => (showHint = false)}
+		onmouseenter={() => canHover && (showHint = true)}
+		onmouseleave={() => canHover && (showHint = false)}
+		onclick={() => !canHover && (showHint = !showHint)}
 		role="tooltip"
 	>
 		{article}

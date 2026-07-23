@@ -215,18 +215,20 @@
 
 {#each pageComponents as element (element.type)}
 	{@const Component = componentMap[element.type] ?? null}
+	<!-- resetId: _componentId из blob'а как fallback к element.id, чтобы «Сброс» появился сразу после первого сохранения нового блока (без refetch) -->
+	{@const resetId = element.data?._componentId ?? element.id}
 	{#if Component}
 		<div class="group/component relative">
 			<Component bind:data={element.data} {editContext} {isEditable} />
 
-			{#if isEditable && element.id && !componentsWithSwitcher.has(element.type)}
+			{#if isEditable && resetId && !componentsWithSwitcher.has(element.type)}
 				<div
 					class="pointer-events-none absolute top-6 right-6 z-40 opacity-0 transition-opacity duration-300 group-hover/component:opacity-100"
 				>
 					<button
 						type="button"
 						class="pointer-events-auto cursor-pointer rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-red-500/30 hover:bg-red-950/80 hover:text-red-200 active:scale-95"
-						onclick={() => handleResetComponent(element.id!, element.type)}
+						onclick={() => handleResetComponent(String(resetId), element.type)}
 						disabled={isResetting}
 					>
 						<span>{isResetting ? 'Сброс...' : 'Сброс'}</span>
