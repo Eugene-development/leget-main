@@ -3,9 +3,9 @@ import type { Component } from 'svelte';
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
 // Layout components
-import Banner from './layout/Banner.svelte';
+import Banner from './layout/Banner/index.svelte';
 import Header from './layout/Header.svelte';
-import Footer from './layout/Footer.svelte';
+import Footer from './layout/Footer/index.svelte';
 export { Banner, Header, Footer };
 
 // Home page components
@@ -69,7 +69,7 @@ import ActionsHero        from './pages/actions/Hero.svelte';
 import ActionsCards       from './pages/actions/ActionsCards.svelte';
 import ActionsCardsExtra  from './pages/actions/ActionsCardsExtra.svelte';
 import ActionsBanner      from './pages/actions/ActionsBanner.svelte';
-import ActionsCTA         from './pages/actions/ActionsCTA.svelte';
+import ActionsCTA         from './pages/actions/ActionsCTA/index.svelte';
 
 // Partnership page components
 import PartnershipHero     from './pages/partnership/Hero.svelte';

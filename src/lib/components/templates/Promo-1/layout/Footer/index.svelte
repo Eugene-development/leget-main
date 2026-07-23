@@ -1,0 +1,304 @@
+<script lang="ts">
+	import FooterV1 from './v1/Footer.svelte';
+	import FooterV2 from './v2/Footer.svelte';
+	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
+	import {
+		saveComponentData,
+		getLayoutComponentArticle,
+		type EditContext
+	} from '$lib/utils/page-edit';
+	import { fly, fade } from 'svelte/transition';
+
+	let {
+		data = $bindable({}),
+		editContext = null,
+		isEditable = false
+	}: {
+		data: Record<string, unknown>;
+		editContext: EditContext | null;
+		isEditable: boolean;
+	} = $props();
+
+	// Footer (Promo-1) — page-компонент на глобальной странице '__global__':
+	// данные сохраняются через saveComponentData (апсёрт идёт на '__global__' через
+	// footerEditContext из ComponentResolver). Версия и контент живут в data компонента.
+	// Свой переключатель (вместо общего VersionSwitcher) — т.к. сброс тут контент-only
+	// (сохраняем вариант), а стандартный сброс удаляет запись и откатывает версию.
+	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>('v1');
+	let isOpen = $state(false);
+	let hasManuallySelected = $state(false);
+
+	$effect(() => {
+		const ver = (data?.footerVersion as 'v1' | 'v2' | 'disabled') ?? 'v1';
+		if (!hasManuallySelected && ver !== selectedVersion) {
+			selectedVersion = ver;
+		}
+	});
+
+	const versionNumber = (v: unknown): number | null => {
+		const m = /^v([1-4])$/.exec(typeof v === 'string' ? v : '');
+		return m ? Number(m[1]) : null;
+	};
+
+	// Артикул выбранной версии футера (формат {шаблон}.Ф.1.{версия}).
+	const footerArticle = $derived(
+		editContext?.templateId != null
+			? getLayoutComponentArticle(editContext.templateId, 'Footer', versionNumber(selectedVersion))
+			: null
+	);
+
+	async function selectVersion(version: 'v1' | 'v2' | 'disabled') {
+		if (version === selectedVersion) return;
+		selectedVersion = version;
+		hasManuallySelected = true;
+		if (!editContext) return;
+		const updated = { ...data, footerVersion: version };
+		try {
+			await saveComponentData(editContext, 'Footer', updated);
+			data = updated;
+		} catch (err) {
+			console.error('Ошибка сохранения версии футера:', err);
+		}
+	}
+
+	// ── Сброс контента футера ──
+	// Сбрасываем ТОЛЬКО контент (контакты/соцсети/копирайт), сохраняя выбранный вариант.
+	// Не удаляем запись (иначе откатилась бы версия) и не пишем bridge-поля хэдера
+	// (logoUrl/disabledRubrics/disabledServices) → пункты меню не затрагиваются.
+	const FOOTER_CONTENT_KEYS = [
+		'phone',
+		'email',
+		'address',
+		'hours',
+		'telegram',
+		'whatsapp',
+		'siteName'
+	] as const;
+
+	let isResetting = $state(false);
+	let showConfirmModal = $state(false);
+
+	function handleReset() {
+		if (!editContext) return;
+		showConfirmModal = true;
+	}
+
+	async function confirmReset() {
+		if (!editContext || isResetting) return;
+		isResetting = true;
+		try {
+			// Сохраняем только версию — контентные поля исчезают (→ фолбэки ?? в компоненте).
+			await saveComponentData(editContext, 'Footer', { footerVersion: selectedVersion });
+			// Локально убираем контентные поля, чтобы UI сразу показал дефолты
+			// (saveComponentData сам вызовет invalidateAll для актуализации с сервера).
+			const cleared: Record<string, unknown> = { ...data };
+			for (const key of FOOTER_CONTENT_KEYS) {
+				delete cleared[key];
+			}
+			cleared.footerVersion = selectedVersion;
+			data = cleared;
+			showConfirmModal = false;
+		} catch (err) {
+			console.error('Ошибка при сбросе контента футера:', err);
+			alert(err instanceof Error ? err.message : 'Не удалось сбросить контент');
+		} finally {
+			isResetting = false;
+		}
+	}
+</script>
+
+{#if selectedVersion !== 'disabled' || isEditable}
+	<div class="relative w-full {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}">
+		{#if isEditable && editContext}
+			<!-- Переключатель вариантов футера (виден только редактору) -->
+			<div class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
+				<ArticleBadge article={footerArticle} sectionLabel="Раздел" />
+
+				<div class="relative">
+					<button
+						type="button"
+						class="flex cursor-pointer items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/25 active:scale-95"
+						onclick={() => (isOpen = !isOpen)}
+					>
+						<span>Варианты футера</span>
+						<svg
+							class="h-3 w-3 transition-transform duration-300 {isOpen ? 'rotate-180' : ''}"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2.5"
+								d="M19 9l-7 7-7-7"
+							/>
+						</svg>
+					</button>
+
+					{#if isOpen}
+						<button
+							type="button"
+							tabindex="-1"
+							class="fixed inset-0 z-40 h-full w-full cursor-default bg-transparent outline-none"
+							onclick={() => (isOpen = false)}
+							aria-label="Закрыть меню"
+						></button>
+					{/if}
+
+					{#if isOpen}
+						<div
+							class="absolute top-12 left-0 z-50 flex w-48 flex-col gap-1 rounded-2xl border border-white/10 bg-slate-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
+							transition:fly={{ y: -10, duration: 200 }}
+						>
+							<button
+								type="button"
+								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+								'v1'
+									? 'scale-[1.02] border border-white/20 bg-white/15 text-white shadow-md'
+									: 'border border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
+								onclick={() => {
+									selectVersion('v1');
+									isOpen = false;
+								}}
+							>
+								Вариант 1
+							</button>
+							<button
+								type="button"
+								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+								'v2'
+									? 'scale-[1.02] border border-sky-500/30 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 text-sky-200 shadow-md'
+									: 'border border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
+								onclick={() => {
+									selectVersion('v2');
+									isOpen = false;
+								}}
+							>
+								Вариант 2
+							</button>
+							<button
+								type="button"
+								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+								'disabled'
+									? 'scale-[1.02] border border-red-500/30 bg-red-500/20 text-red-200 shadow-md'
+									: 'border border-transparent text-slate-400 hover:bg-red-500/5 hover:text-red-400'}"
+								onclick={() => {
+									selectVersion('disabled');
+									isOpen = false;
+								}}
+							>
+								Отключить
+							</button>
+						</div>
+					{/if}
+				</div>
+
+				<button
+					type="button"
+					class="cursor-pointer rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-red-500/30 hover:bg-red-950/80 hover:text-red-200 active:scale-95"
+					onclick={handleReset}
+					disabled={isResetting}
+				>
+					<span>{isResetting ? 'Сброс...' : 'Сброс'}</span>
+				</button>
+			</div>
+		{/if}
+
+		{#if selectedVersion === 'disabled'}
+			<!-- Информационная плашка «Компонент отключен» -->
+			<div
+				class="absolute inset-0 z-40 flex items-center justify-center bg-slate-950/20 backdrop-blur-[2px]"
+			>
+				<div
+					class="mx-4 flex max-w-sm flex-col items-center gap-3 rounded-2xl border border-red-500/30 bg-slate-900/90 px-6 py-4 text-center shadow-2xl select-none"
+				>
+					<div
+						class="flex items-center gap-2 text-xs font-bold tracking-wider text-red-400 uppercase"
+					>
+						<span class="h-2.5 w-2.5 animate-pulse rounded-full bg-red-500"></span>
+						Блок отключен
+					</div>
+					<p class="text-[11px] font-medium text-slate-400">
+						Этот блок не будет отображаться для обычных (не авторизованных) пользователей.
+					</p>
+				</div>
+			</div>
+		{/if}
+
+		<!-- Динамический рендер выбранного варианта с эффектом слайдера -->
+		{#if selectedVersion === 'v2'}
+			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+				<FooterV2 bind:data {editContext} {isEditable} />
+			</div>
+		{:else}
+			<div
+				class="w-full"
+				in:fly={{ x: -1200, duration: 600 }}
+				out:fly={{ x: -1200, duration: 600 }}
+			>
+				<FooterV1 bind:data {editContext} {isEditable} />
+			</div>
+		{/if}
+	</div>
+{/if}
+
+{#if showConfirmModal}
+	<div
+		class="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-md"
+		transition:fade={{ duration: 200 }}
+	>
+		<button
+			type="button"
+			class="absolute inset-0 h-full w-full cursor-default border-none bg-transparent outline-none"
+			onclick={() => (showConfirmModal = false)}
+			aria-label="Закрыть"
+		></button>
+
+		<div
+			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-white/10 bg-slate-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
+			transition:fly={{ y: 20, duration: 300 }}
+		>
+			<div
+				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+			>
+				<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
+				</svg>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<h3 class="text-lg font-extrabold tracking-tight text-white uppercase">
+					Сбросить контент футера?
+				</h3>
+				<p class="text-xs leading-relaxed font-medium text-slate-400">
+					Все изменения контактов, соцсетей и копирайта будут удалены и вернутся к значениям по
+					умолчанию. Выбранный вариант дизайна компонента сохранится.
+				</p>
+			</div>
+
+			<div class="mt-2 flex w-full items-center gap-3">
+				<button
+					type="button"
+					class="flex-1 cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-bold tracking-wider text-white uppercase transition-all duration-300 hover:bg-white/10 active:scale-98"
+					onclick={() => (showConfirmModal = false)}
+				>
+					Отмена
+				</button>
+				<button
+					type="button"
+					class="flex-1 cursor-pointer rounded-xl bg-gradient-to-r from-red-600 to-rose-600 px-4 py-3 text-xs font-bold tracking-wider text-white uppercase transition-all duration-300 hover:shadow-lg hover:shadow-red-600/20 hover:brightness-110 active:scale-98"
+					onclick={confirmReset}
+					disabled={isResetting}
+				>
+					{isResetting ? 'Сброс...' : 'Да, сбросить'}
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}

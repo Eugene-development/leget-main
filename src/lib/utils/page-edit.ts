@@ -124,6 +124,33 @@ export async function fetchComponentArticle(
 	}
 }
 
+// ── Артикулы layout-компонентов (баннер/меню/футер) ──────────────────────────
+// Эти компоненты общие для всех страниц и не привязаны к slug страницы, поэтому
+// их артикул не лежит в каталожной системе (template_pages/components). Сегмент 2 —
+// буквенный код раздела вместо номера страницы: Б — баннер, М — меню (хэдер),
+// Ф — футер. Формат: {template}.{код}.1.{version} (component_number = 1 — один
+// слот на раздел). Артикул детерминирован и стабилен (как и каталожные).
+export const LAYOUT_SECTION_CODES: Record<string, string> = {
+	Banner: 'Б',
+	Header: 'М',
+	Footer: 'Ф'
+};
+
+/**
+ * Артикул layout-компонента: 4 сегмента (с version) или 3 (без).
+ * Возвращает null для неизвестных layout-типов.
+ */
+export function getLayoutComponentArticle(
+	templateId: number,
+	type: string,
+	version?: number | null
+): string | null {
+	const code = LAYOUT_SECTION_CODES[type];
+	if (!code) return null;
+	const base = `${templateId}.${code}.1`;
+	return version ? `${base}.${version}` : base;
+}
+
 /**
  * Сохраняет обновлённые данные компонента через GraphQL мутацию.
  *

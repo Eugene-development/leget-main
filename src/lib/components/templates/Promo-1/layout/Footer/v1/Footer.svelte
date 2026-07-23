@@ -2,9 +2,9 @@
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
-	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
-	import { catalogItems } from './catalogItems';
-	import { serviceItems } from './serviceItems';
+	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { catalogItems } from '../../catalogItems';
+	import { serviceItems } from '../../serviceItems';
 
 	let {
 		data = $bindable({}),
@@ -69,7 +69,7 @@
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
-		await saveLayoutData(editContext, 'Footer', updated);
+		await saveComponentData(editContext, 'Footer', updated);
 		data = updated;
 	}
 </script>

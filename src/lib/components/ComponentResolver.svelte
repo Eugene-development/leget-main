@@ -63,6 +63,17 @@
 		editContext: EditContext | null;
 	} = $props();
 
+	// Локальное состояние-зеркало headerData. Нужно для мгновенной реактивности:
+	// Header обновляет disabledRubrics/disabledServices через handleToggleRubric и
+	// присваивает `data = updatedData`. Чтобы Footer увидел это изменение без
+	// перезагрузки, прокидываем в Header через bind:, а Footer читает из того же
+	// стейта. $effect синхронизирует зеркало с внешним пропсом на случай обновления
+	// данных с сервера (например, invalidateAll после сброса блока).
+	let headerDataState = $state<Record<string, unknown>>({});
+	$effect(() => {
+		headerDataState = headerData ?? {};
+	});
+
 	const componentsWithSwitcher = new Set([
 		'HeroMain',
 		'Message',
@@ -181,17 +192,28 @@
 	const Banner = $derived(template.Banner ?? null);
 	const Header = $derived(template.Header ?? null);
 	const Footer = $derived(template.Footer ?? null);
+
+	// Footer (Promo-1) — теперь page-компонент на глобальной странице '__global__':
+	// ищем его среди компонентов. Если есть — рендерим из него (с настоящим id/`_componentId`),
+	// иначе fallback на старый footerData (для шаблонов без компонентного футера).
+	const footerComponent = $derived(components.find((c) => c.type === 'Footer') ?? null);
+	// Апсёрт футера всегда идёт на глобальную страницу, независимо от текущей.
+	const footerEditContext = $derived(
+		editContext ? { ...editContext, pageId: 'slug:__global__', slug: '__global__' } : null
+	);
+	// Компоненты текущей страницы без футера — он рендерится отдельно (внизу).
+	const pageComponents = $derived(components.filter((c) => c.type !== 'Footer'));
 </script>
 
 {#if Banner}
-	<Banner data={headerData ?? {}} {editContext} {isEditable} />
+	<Banner data={headerDataState} {editContext} {isEditable} />
 {/if}
 
 {#if Header}
-	<Header data={headerData ?? {}} {editContext} {isEditable} />
+	<Header bind:data={headerDataState} {editContext} {isEditable} />
 {/if}
 
-{#each components as element (element.type)}
+{#each pageComponents as element (element.type)}
 	{@const Component = componentMap[element.type] ?? null}
 	{#if Component}
 		<div class="group/component relative">
@@ -217,13 +239,22 @@
 
 {#if Footer}
 	<Footer
-		data={{
-			logoUrl: headerData?.logoUrl,
-			disabledRubrics: headerData?.disabledRubrics,
-			disabledServices: headerData?.disabledServices,
-			...footerData
-		}}
-		{editContext}
+		data={footerComponent
+			? {
+					// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает
+					// возможные устаревшие копии из сохранённых данных компонента.
+					...footerComponent.data,
+					logoUrl: headerDataState.logoUrl,
+					disabledRubrics: headerDataState.disabledRubrics,
+					disabledServices: headerDataState.disabledServices
+				}
+			: {
+					logoUrl: headerDataState.logoUrl,
+					disabledRubrics: headerDataState.disabledRubrics,
+					disabledServices: headerDataState.disabledServices,
+					...footerData
+				}}
+		editContext={footerComponent ? footerEditContext : editContext}
 		{isEditable}
 	/>
 {/if}
