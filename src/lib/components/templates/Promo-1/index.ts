@@ -58,11 +58,11 @@ import AssemblyWhy from './pages/services/assembly/AssemblyWhy.svelte';
 import AssemblyCTA from './pages/services/assembly/AssemblyCTA.svelte';
 
 // Contacts page components
-import ContactsHero      from './pages/contacts/Hero.svelte';
+import ContactsHero      from './pages/contacts/Hero/index.svelte';
 import ContactChannels   from './pages/contacts/ContactChannels.svelte';
 import ContactAddress    from './pages/contacts/ContactAddress.svelte';
 import ContactMessengers from './pages/contacts/ContactMessengers.svelte';
-import ContactCTA        from './pages/contacts/ContactCTA.svelte';
+import ContactCTA        from './pages/contacts/ContactCTA/index.svelte';
 
 // Actions page components
 import ActionsHero        from './pages/actions/Hero.svelte';
