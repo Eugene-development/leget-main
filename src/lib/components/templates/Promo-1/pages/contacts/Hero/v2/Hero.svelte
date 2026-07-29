@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { ct } from '../../theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -21,34 +23,26 @@
 </script>
 
 <!--
-	Вариант 2 — светлая «editorial»-подача: тёплый бумажный фон, крупная
-	типографика по центру, тонкая рамка-паспарту и вертикальные линии-разделители.
-	Контрастирует с тёмным асимметричным вариантом 1.
+	Вариант 2 — «editorial»-подача: центральная ось, карточка-паспарту и
+	ромбовидный разделитель под заголовком. Поверхность, палитра, шкала
+	заголовков и высота секции те же, что у варианта 1 (см. ../../theme.ts),
+	поэтому переключение версий не меняет стиль страницы — только композицию.
 -->
-<section
-	class="contact-hero-v2 relative isolate flex min-h-96 items-center overflow-hidden bg-[#f7f5f2] py-12 sm:min-h-104 sm:py-14 lg:min-h-112 lg:py-16"
->
+<section class="{ct.section.shell} {ct.section.heroPad} {ct.surface.ink}">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(239,68,68,0.07),transparent_45%)]"
+			class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(239,68,68,0.13),transparent_45%)]"
 		></div>
-		<div
-			class="absolute inset-0 opacity-[0.5]"
-			style="background-image: linear-gradient(90deg, rgba(15,23,42,0.05) 1px, transparent 1px); background-size: 25% 100%;"
-		></div>
-		<div
-			class="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-[#efece7] to-transparent"
-		></div>
+		<div class="ct-grid ct-grid--fade-center"></div>
+		<div class={ct.accent.toplineOnInk}></div>
 	</div>
 
-	<div class="relative mx-auto w-full max-w-4xl px-6 lg:px-8">
+	<div class={ct.section.containerText}>
 		<div
-			class="contact-hero-v2__frame relative rounded-3xl border border-slate-900/10 bg-white/70 px-6 py-9 text-center shadow-[0_40px_90px_-60px_rgba(15,23,42,0.45)] backdrop-blur-sm sm:rounded-4xl sm:px-12 sm:py-11 lg:px-16"
+			class="ct-enter ct-card-enter {ct.card
+				.onInk} relative px-6 py-9 text-center sm:px-12 sm:py-11 lg:px-16"
 		>
-			<span
-				class="pointer-events-none absolute -top-px left-1/2 h-px w-24 -translate-x-1/2 bg-red-500/70"
-				aria-hidden="true"
-			></span>
+			<span class={ct.accent.hairlineOnCard} aria-hidden="true"></span>
 
 			<EditableField
 				fieldKey="ContactsHero.eyebrow"
@@ -56,13 +50,13 @@
 				value={String(data?.eyebrow ?? 'Связь с нами')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
-				class="contact-hero-v2__eyebrow inline-block"
+				class="ct-item inline-block"
 			>
 				{#snippet children(displayValue)}
-					<p
-						class="text-[11px] font-semibold tracking-[0.42em] text-red-600/90 uppercase sm:text-xs"
-					>
+					<p class={ct.eyebrow.onInk}>
+						<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
 						{displayValue}
+						<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
 					</p>
 				{/snippet}
 			</EditableField>
@@ -73,24 +67,17 @@
 				value={String(data?.title ?? 'Контакты')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
-				class="contact-hero-v2__title mt-5 block"
+				class="ct-item ct-d1 mt-5 block"
 			>
 				{#snippet children(displayValue)}
-					<h1
-						class="text-4xl leading-[1.04] font-light tracking-[-0.02em] text-pretty text-slate-900 sm:text-5xl lg:text-6xl"
-					>
-						{displayValue}
-					</h1>
+					<h1 class={ct.title.h1OnInk}>{displayValue}</h1>
 				{/snippet}
 			</EditableField>
 
-			<div
-				class="contact-hero-v2__rule mx-auto mt-6 flex max-w-xs items-center gap-3"
-				aria-hidden="true"
-			>
-				<span class="h-px flex-1 bg-linear-to-r from-transparent to-slate-900/20"></span>
-				<span class="size-1.5 rotate-45 border border-red-500/60"></span>
-				<span class="h-px flex-1 bg-linear-to-l from-transparent to-slate-900/20"></span>
+			<div class="ct-rule ct-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+				<span class={ct.accent.ruleOnInk}></span>
+				<span class={ct.accent.diamond}></span>
+				<span class={ct.accent.ruleOnInk}></span>
 			</div>
 
 			<EditableField
@@ -103,73 +90,12 @@
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('subtitle', v)}
-				class="contact-hero-v2__subtitle mt-6 block"
+				class="ct-item ct-d3 mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+					<p class="{ct.body.onInk} mx-auto max-w-xl">{displayValue}</p>
 				{/snippet}
 			</EditableField>
 		</div>
 	</div>
 </section>
-
-<style>
-	@keyframes contact-hero-v2-rise {
-		from {
-			opacity: 0;
-			transform: translateY(14px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@keyframes contact-hero-v2-frame {
-		from {
-			opacity: 0;
-			transform: scale(0.985);
-		}
-		to {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-
-	@keyframes contact-hero-v2-rule {
-		from {
-			opacity: 0;
-			transform: scaleX(0.4);
-		}
-		to {
-			opacity: 1;
-			transform: scaleX(1);
-		}
-	}
-
-	.contact-hero-v2__frame {
-		animation: contact-hero-v2-frame 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-	:global(.contact-hero-v2__eyebrow) {
-		animation: contact-hero-v2-rise 700ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-	:global(.contact-hero-v2__title) {
-		animation: contact-hero-v2-rise 850ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-	.contact-hero-v2__rule {
-		animation: contact-hero-v2-rule 800ms 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-	:global(.contact-hero-v2__subtitle) {
-		animation: contact-hero-v2-rise 850ms 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.contact-hero-v2__frame,
-		:global(.contact-hero-v2__eyebrow),
-		:global(.contact-hero-v2__title),
-		.contact-hero-v2__rule,
-		:global(.contact-hero-v2__subtitle) {
-			animation: none;
-		}
-	}
-</style>

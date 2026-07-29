@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { ct, revealOnScroll } from '../../theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -18,61 +20,35 @@
 		await saveComponentData(editContext, 'ContactCTA', updated);
 		data = updated;
 	}
-
-	/** Появление секции при попадании во вьюпорт. */
-	function revealOnScroll(node: HTMLElement) {
-		if (!('IntersectionObserver' in window)) {
-			node.classList.add('cta2-reveal-visible');
-			return;
-		}
-
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (!entry.isIntersecting) return;
-				node.classList.add('cta2-reveal-visible');
-				observer.unobserve(node);
-			},
-			{ threshold: 0.25 }
-		);
-
-		observer.observe(node);
-		return { destroy: () => observer.disconnect() };
-	}
 </script>
 
 <!--
-	Вариант 2 — светлая «editorial»-подача, перекликающаяся с Hero v2:
-	тёплый бумажный фон, скруглённая карточка-паспарту, красный акцентный штрих
-	сверху и ромбовидный разделитель. Композиция другая: заголовок и действия
-	разведены по двум колонкам, а не выстроены по центру.
+	Вариант 2 — карточка-паспарту в две колонки: текст слева, действия справа,
+	между ними вертикальный разделитель с ромбом. Поверхность, палитра, кнопки и
+	шкала заголовков те же, что у варианта 1 (../../theme.ts): переключение
+	версии меняет только раскладку.
 -->
-<section class="relative isolate overflow-hidden bg-[#f7f5f2] py-20 sm:py-24">
+<section class="{ct.section.shell} {ct.section.pad} {ct.surface.ink}">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div class="ct-grid ct-grid--fade-center"></div>
+		<div class="ct-glow absolute -top-24 right-1/4 size-112"></div>
+		<div class={ct.accent.toplineOnInk}></div>
 		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_82%_15%,rgba(239,68,68,0.08),transparent_42%)]"
+			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
 		></div>
-		<div
-			class="absolute inset-0 opacity-50"
-			style="background-image: linear-gradient(90deg, rgba(15,23,42,0.05) 1px, transparent 1px); background-size: 20% 100%;"
-		></div>
-		<div class="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#efece7] to-transparent"></div>
 	</div>
 
-	<div class="relative mx-auto max-w-5xl px-6 lg:px-8">
+	<div class={ct.section.containerMid}>
 		<div
 			use:revealOnScroll
-			class="cta2-card relative rounded-3xl border border-slate-900/10 bg-white/70 px-6 py-10 shadow-[0_40px_90px_-60px_rgba(15,23,42,0.45)] backdrop-blur-sm sm:rounded-4xl sm:px-12 sm:py-12 lg:px-14"
+			class="ct-reveal ct-card-enter {ct.card.onInk} relative px-6 py-10 sm:px-12 sm:py-12 lg:px-14"
 		>
-			<span
-				class="pointer-events-none absolute -top-px left-1/2 h-px w-24 -translate-x-1/2 bg-red-500/70"
-				aria-hidden="true"
-			></span>
+			<span class={ct.accent.hairlineOnCard} aria-hidden="true"></span>
 
 			<div class="grid items-center gap-10 lg:grid-cols-[1.05fr_auto_0.95fr] lg:gap-12">
 				<div class="text-center lg:text-left">
-					<p
-						class="cta2-item text-[11px] font-semibold tracking-[0.42em] text-red-600/90 uppercase sm:text-xs"
-					>
+					<p class="ct-item {ct.eyebrow.onInk}">
+						<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
 						Мы на связи
 					</p>
 
@@ -82,14 +58,10 @@
 						value={String(data?.title ?? 'Остались вопросы?')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
-						class="cta2-item mt-5 block"
+						class="ct-item ct-d1 mt-5 block"
 					>
 						{#snippet children(displayValue)}
-							<h2
-								class="text-3xl leading-[1.06] font-light tracking-[-0.02em] text-pretty text-slate-900 sm:text-4xl"
-							>
-								{displayValue}
-							</h2>
+							<h2 class={ct.title.h2OnInk}>{displayValue}</h2>
 						{/snippet}
 					</EditableField>
 
@@ -102,28 +74,22 @@
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('subtitle', v)}
-						class="cta2-item mt-5 block"
+						class="ct-item ct-d3 mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mx-auto max-w-md text-sm/6 text-slate-600 sm:text-base/7 lg:mx-0">
-								{displayValue}
-							</p>
+							<p class="{ct.body.onInkMuted} mx-auto max-w-md lg:mx-0">{displayValue}</p>
 						{/snippet}
 					</EditableField>
 				</div>
 
-				<!-- Вертикальный разделитель с ромбом — перекличка с линией-разделителем Hero v2. -->
+				<!-- Вертикальный разделитель с ромбом — тот же акцентный элемент, что и в Hero. -->
 				<div
-					class="cta2-rule flex items-center justify-center gap-3 lg:h-40 lg:flex-col"
+					class="ct-rule ct-d2 flex items-center justify-center gap-3 lg:h-40 lg:flex-col"
 					aria-hidden="true"
 				>
-					<span
-						class="h-px flex-1 bg-linear-to-r from-transparent to-slate-900/15 lg:h-auto lg:w-px lg:bg-linear-to-b"
-					></span>
-					<span class="size-1.5 rotate-45 border border-red-500/60"></span>
-					<span
-						class="h-px flex-1 bg-linear-to-l from-transparent to-slate-900/15 lg:h-auto lg:w-px lg:bg-linear-to-t"
-					></span>
+					<span class="{ct.accent.ruleOnInk} lg:h-auto lg:w-px lg:flex-1"></span>
+					<span class={ct.accent.diamond}></span>
+					<span class="{ct.accent.ruleOnInk} lg:h-auto lg:w-px lg:flex-1"></span>
 				</div>
 
 				<div class="flex flex-col gap-3">
@@ -133,17 +99,14 @@
 						value={String(data?.phone ?? '')}
 						{isEditable}
 						onSave={(v) => saveField('phone', v)}
-						class="cta2-item block"
+						class="ct-item ct-d3 block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<a
-									href="tel:{displayValue}"
-									class="group flex items-center justify-between gap-4 rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900 motion-safe:hover:-translate-y-0.5"
-								>
+								<a href="tel:{displayValue}" class="{ct.btn.primary} w-full justify-between">
 									<span class="flex items-center gap-3">
 										<svg
-											class="size-4.5 text-red-400"
+											class="size-4.5"
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
@@ -158,10 +121,7 @@
 										</svg>
 										{displayValue}
 									</span>
-									<span
-										class="transition-transform duration-300 group-hover:translate-x-1"
-										aria-hidden="true">&rarr;</span
-									>
+									<span class={ct.arrow} aria-hidden="true">&rarr;</span>
 								</a>
 							{/if}
 						{/snippet}
@@ -173,7 +133,7 @@
 						value={String(data?.telegramUrl ?? '')}
 						{isEditable}
 						onSave={(v) => saveField('telegramUrl', v)}
-						class="cta2-item block"
+						class="ct-item ct-d4 block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
@@ -181,7 +141,7 @@
 									href={displayValue}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="group flex items-center justify-between gap-4 rounded-2xl border border-slate-900/12 bg-white/80 px-6 py-4 text-sm font-semibold text-slate-900 transition duration-300 hover:border-slate-900/25 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-400 motion-safe:hover:-translate-y-0.5"
+									class="{ct.btn.ghostOnInk} w-full justify-between"
 								>
 									<span class="flex items-center gap-3">
 										<svg
@@ -196,10 +156,7 @@
 										</svg>
 										Написать в Telegram
 									</span>
-									<span
-										class="transition-transform duration-300 group-hover:translate-x-1"
-										aria-hidden="true">&rarr;</span
-									>
+									<span class={ct.arrow} aria-hidden="true">&rarr;</span>
 								</a>
 							{/if}
 						{/snippet}
@@ -209,67 +166,3 @@
 		</div>
 	</div>
 </section>
-
-<style>
-	/*
-		Селекторы глобальные: часть .cta2-item — обёртки EditableField,
-		которые Svelte не относит к разметке этого компонента.
-	*/
-	.cta2-card {
-		opacity: 0;
-		transform: scale(0.99);
-	}
-
-	:global(.cta2-reveal-visible) {
-		animation: cta2-card 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-
-	:global(.cta2-card .cta2-item),
-	:global(.cta2-card .cta2-rule) {
-		opacity: 0;
-		transform: translateY(14px);
-	}
-
-	:global(.cta2-reveal-visible .cta2-item) {
-		animation: cta2-rise 700ms 140ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-
-	:global(.cta2-reveal-visible .cta2-item:nth-child(2)) {
-		animation-delay: 220ms;
-	}
-
-	:global(.cta2-reveal-visible .cta2-item:nth-child(3)) {
-		animation-delay: 300ms;
-	}
-
-	:global(.cta2-reveal-visible .cta2-rule) {
-		animation: cta2-rise 700ms 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
-	}
-
-	@keyframes cta2-card {
-		to {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-
-	@keyframes cta2-rise {
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.cta2-card,
-		:global(.cta2-reveal-visible),
-		:global(.cta2-card .cta2-item),
-		:global(.cta2-card .cta2-rule),
-		:global(.cta2-reveal-visible .cta2-item),
-		:global(.cta2-reveal-visible .cta2-rule) {
-			animation: none;
-			opacity: 1;
-			transform: none;
-		}
-	}
-</style>
