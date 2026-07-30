@@ -18,14 +18,44 @@
 		await saveComponentData(editContext, 'PartnershipHero', updated);
 		data = updated;
 	}
+
+	const quoteName = $derived(String(data?.quoteName ?? '').trim());
+	const quoteRole = $derived(String(data?.quoteRole ?? '').trim());
+
+	/**
+	 * Подпись под цитатой — одно поле `quoteAuthor`. Но на сайтах, созданных раньше,
+	 * могут быть заполнены отдельные `quoteName` / `quoteRole`: в этом случае
+	 * показываем их, чтобы не потерять уже введённые данные.
+	 */
+	const hasLegacyAuthor = $derived(Boolean(quoteName || quoteRole));
 </script>
 
-<div class="relative overflow-hidden bg-linear-to-br from-sky-600 via-cyan-600 to-teal-600">
-	<div class="absolute inset-0 opacity-30"
-		style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+<!--
+	Hero страницы «Партнёрство».
+
+	ВНИМАНИЕ — стык секций: снизу Hero обрезан волной, её заливка обязана
+	совпадать с фоном следующего блока (WhoWeInvite, `bg-slate-50` = #f8fafc).
+	Цвет задан один раз переменной `--ph-wave` ниже: меняешь фон WhoWeInvite —
+	меняешь и её, иначе на границе появится полоса (фон body тут другой, #faf9f7).
+-->
+<section
+	class="ph-enter relative isolate overflow-hidden bg-linear-to-br from-sky-600 via-cyan-600 to-teal-600"
+>
+	<!-- Декор: техническая сетка-ромбы, световые пятна, волосяная линия сверху -->
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div
+			class="absolute inset-0 opacity-30"
+			style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
+		></div>
+		<div class="ph-glow absolute -top-32 -left-24 size-112 bg-white/15"></div>
+		<div class="ph-glow absolute top-1/3 -right-24 size-96 bg-teal-300/25"></div>
+		<div
+			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-white/50 to-transparent"
+		></div>
 	</div>
-	<div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-		<div class="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+
+	<div class="relative mx-auto max-w-7xl px-4 pt-20 pb-32 sm:px-6 sm:pt-28 sm:pb-40 lg:px-8 lg:pb-44">
+		<div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
 			<div>
 				<EditableField
 					fieldKey="PartnershipHero.badge"
@@ -33,12 +63,14 @@
 					value={String(data?.badge ?? 'Партнёрская программа')}
 					{isEditable}
 					onSave={(v) => saveField('badge', v)}
-					class="inline-block"
+					class="ph-item inline-block"
 				>
 					{#snippet children(displayValue)}
-						<div class="inline-flex items-center rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur">
-							<svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+						<div
+							class="inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/12 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] text-white uppercase sm:text-xs"
+						>
+							<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
 							</svg>
 							{displayValue}
 						</div>
@@ -51,12 +83,22 @@
 					value={String(data?.title ?? 'Растём вместе')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
-					class="mt-6 block"
+					class="ph-item ph-d1 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="mt-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">{displayValue}</h1>
+						<h1
+							class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty text-white sm:text-5xl lg:text-6xl"
+						>
+							{displayValue}
+						</h1>
 					{/snippet}
 				</EditableField>
+
+				<div class="ph-rule ph-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+					<span class="h-px flex-1 bg-white/30"></span>
+					<span class="size-1.5 rotate-45 border border-white/70"></span>
+					<span class="h-px flex-1 bg-white/30"></span>
+				</div>
 
 				<EditableField
 					fieldKey="PartnershipHero.text"
@@ -65,17 +107,17 @@
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('text', v)}
-					class="mt-6 block"
+					class="ph-item ph-d3 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-6 text-lg text-cyan-100">{displayValue}</p>
+						<p class="max-w-xl text-sm/6 text-cyan-50/90 sm:text-base/7">{displayValue}</p>
 					{/snippet}
 				</EditableField>
 
-				<div class="mt-10">
+				<div class="ph-item ph-d4 mt-10">
 					<a
 						href="/contact"
-						class="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-sky-600 shadow-lg transition-all hover:bg-sky-50 hover:shadow-xl"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-sky-700 shadow-[0_20px_50px_-20px_rgba(8,47,73,0.65)] transition duration-300 hover:bg-sky-50 hover:shadow-[0_26px_60px_-18px_rgba(8,47,73,0.75)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="PartnershipHero.buttonText"
@@ -89,62 +131,112 @@
 								{displayValue}
 							{/snippet}
 						</EditableField>
-						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-						</svg>
+						<span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
 					</a>
 				</div>
 			</div>
 
-			<!-- Цитата -->
-			<div class="mt-12 lg:mt-0">
-				<div class="relative">
-					<div class="absolute -inset-4 rounded-3xl bg-white/10 backdrop-blur"></div>
-					<div class="relative rounded-2xl bg-white/10 p-8 backdrop-blur">
-						<EditableField
-							fieldKey="PartnershipHero.quote"
-							label="Цитата"
-							value={String(data?.quote ?? 'Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.')}
-							{isEditable}
-							multiline
-							onSave={(v) => saveField('quote', v)}
-							class="block"
-						>
-							{#snippet children(displayValue)}
-								<blockquote class="text-xl font-medium text-white">"{displayValue}"</blockquote>
-							{/snippet}
-						</EditableField>
-						<div class="mt-6 flex items-center gap-4">
-							<div class="h-12 w-12 rounded-full bg-white/20"></div>
-							<div>
-								<EditableField
-									fieldKey="PartnershipHero.quoteName"
-									label="Имя автора цитаты"
-									value={String(data?.quoteName ?? '')}
-									{isEditable}
-									onSave={(v) => saveField('quoteName', v)}
-									class="block"
-								>
-									{#snippet children(displayValue)}
-										{#if displayValue}
-											<div class="font-semibold text-white">{displayValue}</div>
-										{/if}
-									{/snippet}
-								</EditableField>
-								<EditableField
-									fieldKey="PartnershipHero.quoteRole"
-									label="Должность автора"
-									value={String(data?.quoteRole ?? '')}
-									{isEditable}
-									onSave={(v) => saveField('quoteRole', v)}
-									class="block"
-								>
-									{#snippet children(displayValue)}
-										{#if displayValue}
-											<div class="text-sm text-cyan-200">{displayValue}</div>
-										{/if}
-									{/snippet}
-								</EditableField>
+			<!-- Цитата: паспарту с градиентной каймой в 1px -->
+			<div class="ph-card ph-d3 mt-12 lg:mt-0">
+				<div
+					class="rounded-4xl bg-linear-to-br from-white/50 via-white/20 to-white/40 p-px shadow-[0_50px_120px_-60px_rgba(8,47,73,0.8)]"
+				>
+					<!--
+						Без backdrop-blur: пока на карточке висит transform от анимации
+						появления, backdrop-filter сэмплит подложку внутри трансформированного
+						слоя, а после её окончания — реальный фон секции. Тон карточки скакал
+						в конце анимации. Полупрозрачного градиента здесь достаточно: под
+						карточкой только градиент секции, размывать нечего.
+					-->
+					<div
+						class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-linear-to-br from-white/20 via-white/12 to-white/8 p-8 ring-1 ring-white/10 ring-inset sm:p-10"
+					>
+						<div
+							class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-white/15 to-transparent"
+							aria-hidden="true"
+						></div>
+
+						<div class="relative">
+							<!-- Кавычка-акцент в плитке: задаёт вертикаль карточки, не наезжая на текст -->
+							<div
+								class="flex size-11 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25"
+								aria-hidden="true"
+							>
+								<svg class="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+									<path d="M9.5 5.5C6.46 5.5 4 7.96 4 11v7.5h7.5V11H7.75c0-1.24 1.01-2.25 2.25-2.25V5.5zm10 0C16.46 5.5 14 7.96 14 11v7.5h7.5V11h-3.75c0-1.24 1.01-2.25 2.25-2.25V5.5z" />
+								</svg>
+							</div>
+
+							<EditableField
+								fieldKey="PartnershipHero.quote"
+								label="Цитата"
+								value={String(data?.quote ?? 'Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.')}
+								{isEditable}
+								multiline
+								onSave={(v) => saveField('quote', v)}
+								class="mt-6 block"
+							>
+								{#snippet children(displayValue)}
+									<blockquote
+										class="text-lg leading-relaxed font-medium tracking-[-0.01em] text-pretty text-white sm:text-xl"
+									>
+										{displayValue}
+									</blockquote>
+								{/snippet}
+							</EditableField>
+
+							<!-- Линия-разделитель и подпись автора под цитатой -->
+							<div class="mt-7 border-t border-white/15 pt-5">
+								{#if hasLegacyAuthor}
+									<!--
+										Совместимость: на сайтах, где уже заполнены отдельные поля
+										quoteName / quoteRole, показываем их, чтобы не терять данные.
+										Новая подпись — единое поле quoteAuthor ниже.
+									-->
+									<EditableField
+										fieldKey="PartnershipHero.quoteName"
+										label="Имя автора цитаты"
+										value={quoteName}
+										{isEditable}
+										onSave={(v) => saveField('quoteName', v)}
+										class="block"
+									>
+										{#snippet children(displayValue)}
+											{#if displayValue}
+												<div class="text-sm font-semibold text-white">{displayValue}</div>
+											{/if}
+										{/snippet}
+									</EditableField>
+									<EditableField
+										fieldKey="PartnershipHero.quoteRole"
+										label="Должность автора"
+										value={quoteRole}
+										{isEditable}
+										onSave={(v) => saveField('quoteRole', v)}
+										class="mt-1 block"
+									>
+										{#snippet children(displayValue)}
+											{#if displayValue}
+												<div class="text-[11px] font-semibold tracking-[0.16em] text-cyan-100/80 uppercase">
+													{displayValue}
+												</div>
+											{/if}
+										{/snippet}
+									</EditableField>
+								{:else}
+									<EditableField
+										fieldKey="PartnershipHero.quoteAuthor"
+										label="Подпись автора цитаты"
+										value={String(data?.quoteAuthor ?? 'Директор компании Иванов Иван Иванович')}
+										{isEditable}
+										onSave={(v) => saveField('quoteAuthor', v)}
+										class="block"
+									>
+										{#snippet children(displayValue)}
+											<div class="text-sm font-semibold text-white sm:text-base">{displayValue}</div>
+										{/snippet}
+									</EditableField>
+								{/if}
 							</div>
 						</div>
 					</div>
@@ -152,9 +244,115 @@
 			</div>
 		</div>
 	</div>
-	<div class="absolute bottom-0 left-0 right-0 pointer-events-none">
-		<svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#f8fafc" />
+
+	<!--
+		Волна-переход в следующую секцию — РОВНО ОДИН слой в цвет фона WhoWeInvite.
+		Полупрозрачный подслой для «глубины» тут не работает: над градиентом секции
+		он читается как посторонняя голубовато-зелёная полоса вдоль волны.
+		preserveAspectRatio="none" + фиксированная высота — чтобы на широких
+		экранах не оставалось щели между волной и краем секции.
+	-->
+	<div class="pointer-events-none absolute inset-x-0 bottom-0" aria-hidden="true">
+		<svg
+			class="ph-wave block h-16 w-full sm:h-20 lg:h-28"
+			viewBox="0 0 1440 120"
+			preserveAspectRatio="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				class="ph-wave-front"
+				d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
+			/>
 		</svg>
 	</div>
-</div>
+</section>
+
+<style>
+	/*
+		Цвет волны = фон следующей секции (WhoWeInvite, bg-slate-50).
+		Держим его в одной переменной, чтобы стык правился в одном месте.
+	*/
+	.ph-wave {
+		--ph-wave: #f8fafc;
+	}
+
+	.ph-wave-front {
+		fill: var(--ph-wave);
+	}
+
+	/* Классы глобальные: часть анимируемых узлов — обёртки <EditableField>. */
+
+	:global(.ph-glow) {
+		filter: blur(80px);
+		border-radius: 9999px;
+	}
+
+	@keyframes ph-rise {
+		from {
+			opacity: 0;
+			transform: translateY(18px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes ph-rule {
+		from {
+			opacity: 0;
+			transform: scaleX(0.4);
+		}
+		to {
+			opacity: 1;
+			transform: scaleX(1);
+		}
+	}
+
+	@keyframes ph-frame {
+		from {
+			opacity: 0;
+			transform: scale(0.985) translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
+	/* Hero над сгибом — анимация стартует сразу, без IntersectionObserver. */
+	:global(.ph-enter .ph-item) {
+		animation: ph-rise 780ms cubic-bezier(0.22, 1, 0.36, 1) var(--ph-delay, 0ms) backwards;
+	}
+
+	:global(.ph-enter .ph-rule) {
+		animation: ph-rule 780ms cubic-bezier(0.22, 1, 0.36, 1) var(--ph-delay, 0ms) backwards;
+	}
+
+	:global(.ph-enter .ph-card) {
+		animation: ph-frame 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--ph-delay, 0ms) backwards;
+	}
+
+	:global(.ph-d1) {
+		--ph-delay: 80ms;
+	}
+	:global(.ph-d2) {
+		--ph-delay: 160ms;
+	}
+	:global(.ph-d3) {
+		--ph-delay: 240ms;
+	}
+	:global(.ph-d4) {
+		--ph-delay: 340ms;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.ph-enter .ph-item),
+		:global(.ph-enter .ph-rule),
+		:global(.ph-enter .ph-card) {
+			animation: none;
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
