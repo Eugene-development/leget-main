@@ -53,18 +53,21 @@
 </script>
 
 {#if article && segments}
-	<div
+	<button
+		type="button"
 		class="relative flex cursor-default items-center rounded-2xl border border-white/10 bg-slate-950 px-3 py-2 font-mono text-[11px] font-semibold tracking-wider text-white shadow-2xl select-none"
 		onmouseenter={() => canHover && (showHint = true)}
 		onmouseleave={() => canHover && (showHint = false)}
 		onclick={() => !canHover && (showHint = !showHint)}
-		role="tooltip"
+		aria-expanded={showHint}
+		aria-label="Артикул {article}"
 	>
 		{article}
 
 		{#if showHint}
 			<div
 				class="absolute top-full {align === 'right' ? 'right-0' : 'left-0'} z-[300] mt-2 w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
+				role="tooltip"
 				transition:fade={{ duration: 120 }}
 			>
 				<div class="mb-2 flex items-center justify-between gap-2 border-b border-white/10 pb-2">
@@ -97,5 +100,5 @@
 				</ul>
 			</div>
 		{/if}
-	</div>
+	</button>
 {/if}

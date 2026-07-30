@@ -171,18 +171,21 @@
 {#if isEditable && editContext}
 	<div class="font-sans-premium absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
 		{#if activeArticle}
-			<div
+			<button
+				type="button"
 				class="relative flex cursor-default items-center rounded-2xl border border-white/10 bg-slate-950 px-3 py-2.5 font-mono text-[11px] font-semibold tracking-wider text-white shadow-2xl"
 				onmouseenter={() => canHover && (showArticleHint = true)}
 				onmouseleave={() => canHover && (showArticleHint = false)}
 				onclick={() => !canHover && (showArticleHint = !showArticleHint)}
-				role="tooltip"
+				aria-expanded={showArticleHint}
+				aria-label="Артикул {activeArticle}"
 			>
 				{activeArticle}
 				{#if showArticleHint && articleSegments}
 					<!-- Расшифровка сегментов артикула: TEMPLATE.PAGE.COMPONENT.VERSION -->
 					<div
 						class="absolute top-full left-0 z-[200] mt-2 w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
+						role="tooltip"
 						transition:fade={{ duration: 120 }}
 					>
 						<div class="mb-2 flex items-center justify-between gap-2 border-b border-white/10 pb-2">
@@ -237,7 +240,7 @@
 						</ul>
 					</div>
 				{/if}
-			</div>
+			</button>
 		{/if}
 		{#if componentType === 'HeroMain' && (selectedVersion === 'v2' || selectedVersion === 'v3' || selectedVersion === 'v4')}
 			<!-- Кнопка переключения темы -->
