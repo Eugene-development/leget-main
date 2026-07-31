@@ -1,0 +1,158 @@
+/*
+	Общие текстуры и анимации страницы «О компании» (Promo-1).
+
+	Файл подключается каждым блоком (`import './theme.css'`) — Vite склеивает его
+	в один чанк, дублирования в бандле нет.
+
+	Классы намеренно глобальные: часть анимируемых узлов — это обёртки
+	<EditableField>, которые Svelte не относит к разметке компонента,
+	и scoped-стили до них не доходят.
+*/
+
+/* ─────────────────────────── Текстуры фона ─────────────────────────── */
+
+.ab-grid {
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+	background-size: 56px 56px;
+	opacity: 0.05;
+}
+
+.ab-grid--fade-center {
+	mask-image: radial-gradient(circle at 50% 40%, black, transparent 72%);
+}
+
+.ab-grid--fade-bottom {
+	mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+/*
+	Вертикальные линии-колонки для светлых секций. Маска гасит текстуру у кромок,
+	чтобы стык с волной Hero оставался ровным по цвету.
+*/
+.ab-rules {
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+	background-size: 25% 100%;
+	opacity: 0.5;
+	mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+}
+
+.ab-glow {
+	filter: blur(80px);
+	border-radius: 9999px;
+}
+
+/* ───────────────────── Появление контента (единый сценарий) ───────────────────── */
+
+@keyframes ab-rise {
+	from {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes ab-rule {
+	from {
+		opacity: 0;
+		transform: scaleX(0.4);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes ab-frame {
+	from {
+		opacity: 0;
+		transform: scale(0.985) translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+/*
+	Два триггера с одинаковой пластикой:
+	  .ab-enter  — блок над сгибом, анимация стартует сразу (Hero);
+	  .ab-reveal — блок ниже, ждёт вьюпорта (revealOnScroll добавляет .ab-visible).
+*/
+.ab-reveal .ab-item,
+.ab-reveal .ab-rule,
+.ab-reveal .ab-card,
+.ab-reveal.ab-card {
+	opacity: 0;
+}
+
+/*
+	fill-mode = backwards, а не both: при `both` финальный transform анимации
+	остаётся на элементе и перебивает hover-подъём карточек. Конечное состояние
+	задаём обычным opacity.
+*/
+.ab-enter .ab-item,
+.ab-visible .ab-item {
+	opacity: 1;
+	animation: ab-rise 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--ab-delay, 0ms) backwards;
+}
+
+.ab-enter .ab-rule,
+.ab-visible .ab-rule {
+	opacity: 1;
+	animation: ab-rule 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--ab-delay, 0ms) backwards;
+}
+
+/* Карточка как потомок триггера и как сам триггер (одиночное паспарту). */
+.ab-enter .ab-card,
+.ab-visible .ab-card,
+.ab-visible.ab-card {
+	opacity: 1;
+	animation: ab-frame 860ms cubic-bezier(0.22, 1, 0.36, 1) var(--ab-delay, 0ms) backwards;
+}
+
+/*
+	Ступени задержки через кастомное свойство, а не animation-delay:
+	shorthand выше выиграл бы по специфичности и сбросил задержку в 0.
+*/
+.ab-d1 {
+	--ab-delay: 80ms;
+}
+.ab-d2 {
+	--ab-delay: 160ms;
+}
+.ab-d3 {
+	--ab-delay: 240ms;
+}
+.ab-d4 {
+	--ab-delay: 340ms;
+}
+.ab-d5 {
+	--ab-delay: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ab-reveal .ab-item,
+	.ab-reveal .ab-rule,
+	.ab-reveal .ab-card,
+	.ab-reveal.ab-card,
+	.ab-enter .ab-item,
+	.ab-enter .ab-rule,
+	.ab-enter .ab-card,
+	.ab-visible .ab-item,
+	.ab-visible .ab-rule,
+	.ab-visible .ab-card,
+	.ab-visible.ab-card {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+}
