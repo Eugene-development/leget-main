@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { revealOnScroll } from './theme';
+	import './theme.css';
 
 	let {
 		data = $bindable(),
@@ -49,114 +51,189 @@
 	);
 </script>
 
-<div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-	<div class="text-center">
-		<EditableField
-			fieldKey="InstallmentPlans.title"
-			label="Заголовок"
-			value={String(data?.title ?? 'Программы рассрочки')}
-			{isEditable}
-			onSave={(v) => saveField('title', v)}
-			class="block"
-		>
-			{#snippet children(displayValue)}
-				<h2 class="text-4xl font-bold text-slate-900">{displayValue}</h2>
-			{/snippet}
-		</EditableField>
-		<EditableField
-			fieldKey="InstallmentPlans.subtitle"
-			label="Подзаголовок"
-			value={String(data?.subtitle ?? 'Выберите удобный срок и условия оплаты')}
-			{isEditable}
-			onSave={(v) => saveField('subtitle', v)}
-			class="mt-4 block"
-		>
-			{#snippet children(displayValue)}
-				<p class="mx-auto mt-4 max-w-2xl text-slate-600">{displayValue}</p>
-			{/snippet}
-		</EditableField>
+<!--
+	ВНИМАНИЕ — стык секций: сверху в этот блок «вливается» волна из Hero
+	(InstallmentHero). Заливка волны — переменная `--ih-wave` (#f8fafc), поэтому
+	фон секции обязан быть ровно `bg-slate-50` и БЕЗ градиента у верхней кромки.
+-->
+<section class="relative isolate overflow-hidden bg-slate-50 py-16 sm:py-20">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div class="it-rules"></div>
 	</div>
 
-	<div class="mt-12 grid gap-8 lg:grid-cols-4">
-		{#each plans as plan, i}
-			{#if plan.featured}
-				<div class="group relative overflow-hidden rounded-2xl bg-linear-to-br from-red-500 to-red-700 p-8 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-					<div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10 transition-transform duration-300 group-hover:scale-150"></div>
-					<div class="relative">
-						<div class="inline-flex items-center rounded-full bg-white/20 px-3 py-1 text-sm font-medium text-white">
-							<EditableField 
-								fieldKey="InstallmentPlans.{i}.badge" 
-								label="Бейдж" 
-								value={plan.badge} 
-								{isEditable} 
-								inline 
+	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div use:revealOnScroll class="it-reveal text-center">
+			<EditableField
+				fieldKey="InstallmentPlans.title"
+				label="Заголовок"
+				value={String(data?.title ?? 'Программы рассрочки')}
+				{isEditable}
+				onSave={(v) => saveField('title', v)}
+				class="it-item block"
+			>
+				{#snippet children(displayValue)}
+					<h2
+						class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl"
+					>
+						{displayValue}
+					</h2>
+				{/snippet}
+			</EditableField>
+			<EditableField
+				fieldKey="InstallmentPlans.subtitle"
+				label="Подзаголовок"
+				value={String(data?.subtitle ?? 'Выберите удобный срок и условия оплаты')}
+				{isEditable}
+				onSave={(v) => saveField('subtitle', v)}
+				class="it-item it-d1 mt-4 block"
+			>
+				{#snippet children(displayValue)}
+					<p class="mx-auto max-w-2xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+				{/snippet}
+			</EditableField>
+			<div class="it-rule it-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+			</div>
+		</div>
+
+		<div use:revealOnScroll class="it-reveal mt-14 grid gap-6 lg:grid-cols-4">
+			{#each plans as plan, i}
+				<!--
+					Выделенный тариф отличается только «одеждой» (красная заливка вместо
+					белой карточки) — структура и порядок полей у обоих вариантов общие.
+				-->
+				<div
+					class="it-card group relative flex flex-col overflow-hidden rounded-3xl p-8 transition duration-300 motion-safe:hover:-translate-y-1 {plan.featured
+						? 'border border-red-400/40 bg-linear-to-br from-red-500 to-red-700 shadow-[0_40px_90px_-45px_rgba(185,28,28,0.8)] hover:shadow-[0_46px_100px_-40px_rgba(185,28,28,0.9)]'
+						: 'border border-slate-900/10 bg-white shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] hover:border-red-500/40 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)]'}"
+					style="--it-delay: {i * 70}ms"
+				>
+					<div
+						class="pointer-events-none absolute inset-x-8 top-0 h-px opacity-70 transition-opacity duration-300 group-hover:opacity-100 {plan.featured
+							? 'bg-linear-to-r from-transparent via-white/80 to-transparent'
+							: 'bg-linear-to-r from-transparent via-red-500 to-transparent'}"
+						aria-hidden="true"
+					></div>
+					<div
+						class="pointer-events-none absolute -top-10 -right-10 size-36 rounded-full blur-2xl transition-opacity duration-500 {plan.featured
+							? 'bg-white/20 opacity-60 group-hover:opacity-100'
+							: 'bg-red-500/10 opacity-0 group-hover:opacity-100'}"
+						aria-hidden="true"
+					></div>
+
+					<div class="relative flex flex-1 flex-col">
+						<div
+							class="inline-flex self-start rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.16em] uppercase {plan.featured
+								? 'bg-white/20 text-white ring-1 ring-white/30'
+								: 'bg-red-50 text-red-700 ring-1 ring-red-500/20'}"
+						>
+							<EditableField
+								fieldKey="InstallmentPlans.{i}.badge"
+								label="Бейдж"
+								value={plan.badge}
+								{isEditable}
+								inline
 								onSave={(v) => updatePlan(i, 'badge', v)}
 							>
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</div>
-						<div class="mt-4">
-							<span class="text-5xl font-bold text-white">
-								<EditableField 
-									fieldKey="InstallmentPlans.{i}.months" 
-									label="Кол-во месяцев" 
-									value={plan.months} 
-									{isEditable} 
-									inline 
+
+						<div class="mt-6 flex items-baseline gap-2">
+							<span
+								class="text-5xl font-semibold tracking-[-0.04em] tabular-nums {plan.featured
+									? 'text-white'
+									: 'text-slate-900'}"
+							>
+								<EditableField
+									fieldKey="InstallmentPlans.{i}.months"
+									label="Кол-во месяцев"
+									value={plan.months}
+									{isEditable}
+									inline
 									onSave={(v) => updatePlan(i, 'months', v)}
 								>
 									{#snippet children(val)}{val}{/snippet}
 								</EditableField>
 							</span>
-							<span class="ml-2 text-xl text-red-200">
-								<EditableField 
-									fieldKey="InstallmentPlans.{i}.unit" 
-									label="Ед. измерения" 
-									value={plan.unit} 
-									{isEditable} 
-									inline 
+							<span class="text-base {plan.featured ? 'text-red-100' : 'text-slate-500'}">
+								<EditableField
+									fieldKey="InstallmentPlans.{i}.unit"
+									label="Ед. измерения"
+									value={plan.unit}
+									{isEditable}
+									inline
 									onSave={(v) => updatePlan(i, 'unit', v)}
 								>
 									{#snippet children(val)}{val}{/snippet}
 								</EditableField>
 							</span>
 						</div>
-						<div class="mt-2 text-3xl font-bold text-white">
-							<EditableField 
-								fieldKey="InstallmentPlans.{i}.rate" 
-								label="Ставка" 
-								value={plan.rate} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updatePlan(i, 'rate', v)}
+
+						<div
+							class="mt-5 flex items-baseline gap-2 border-t pt-5 {plan.featured
+								? 'border-white/20'
+								: 'border-slate-900/10'}"
+						>
+							<span
+								class="text-3xl font-semibold tracking-[-0.03em] tabular-nums {plan.featured
+									? 'text-white'
+									: 'text-red-600'}"
 							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
+								<EditableField
+									fieldKey="InstallmentPlans.{i}.rate"
+									label="Ставка"
+									value={plan.rate}
+									{isEditable}
+									inline
+									onSave={(v) => updatePlan(i, 'rate', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</span>
+							<span
+								class="text-[11px] font-semibold tracking-[0.16em] uppercase {plan.featured
+									? 'text-red-100'
+									: 'text-slate-500'}"
+							>
+								<EditableField
+									fieldKey="InstallmentPlans.{i}.rateLabel"
+									label="Метка ставки"
+									value={plan.rateLabel}
+									{isEditable}
+									inline
+									onSave={(v) => updatePlan(i, 'rateLabel', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</span>
 						</div>
-						<p class="mt-1 text-sm text-red-200">
-							<EditableField 
-								fieldKey="InstallmentPlans.{i}.rateLabel" 
-								label="Метка ставки" 
-								value={plan.rateLabel} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updatePlan(i, 'rateLabel', v)}
-							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
-						</p>
+
 						<div class="mt-6 space-y-3">
 							{#each plan.features as feature, fi}
-								<div class="flex items-center gap-2 text-sm text-red-100">
-									<svg class="h-5 w-5 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-									</svg>
-									<EditableField 
-										fieldKey="InstallmentPlans.{i}.features.{fi}" 
-										label="Преимущество" 
-										value={feature} 
-										{isEditable} 
-										inline 
+								<div
+									class="flex items-start gap-2.5 text-sm/6 {plan.featured
+										? 'text-red-50'
+										: 'text-slate-600'}"
+								>
+									<span
+										class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full {plan.featured
+											? 'bg-white/20 text-white'
+											: 'bg-red-50 text-red-600'}"
+										aria-hidden="true"
+									>
+										<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+										</svg>
+									</span>
+									<EditableField
+										fieldKey="InstallmentPlans.{i}.features.{fi}"
+										label="Преимущество"
+										value={feature}
+										{isEditable}
+										inline
 										onSave={(v) => updatePlanFeature(i, fi, v)}
 									>
 										{#snippet children(val)}{val}{/snippet}
@@ -164,98 +241,22 @@
 								</div>
 							{/each}
 						</div>
-						<a href="/contact" class="mt-6 block w-full rounded-xl bg-white py-3 text-center font-semibold text-red-600 transition-all hover:bg-red-50">Оформить</a>
+
+						<a
+							href="/contact"
+							class="group/btn mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 {plan.featured
+								? 'bg-white text-red-600 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.5)] hover:bg-red-50 focus-visible:outline-white'
+								: 'bg-red-500 text-white shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] hover:bg-red-400 focus-visible:outline-red-400'}"
+						>
+							Оформить
+							<span
+								class="transition-transform duration-300 group-hover/btn:translate-x-1"
+								aria-hidden="true">&rarr;</span
+							>
+						</a>
 					</div>
 				</div>
-			{:else}
-				<div class="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-					<div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-red-50 opacity-50 transition-transform duration-300 group-hover:scale-150"></div>
-					<div class="relative">
-						<div class="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-700">
-							<EditableField 
-								fieldKey="InstallmentPlans.{i}.badge" 
-								label="Бейдж" 
-								value={plan.badge} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updatePlan(i, 'badge', v)}
-							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
-						</div>
-						<div class="mt-4">
-							<span class="text-5xl font-bold text-slate-900">
-								<EditableField 
-									fieldKey="InstallmentPlans.{i}.months" 
-									label="Кол-во месяцев" 
-									value={plan.months} 
-									{isEditable} 
-									inline 
-									onSave={(v) => updatePlan(i, 'months', v)}
-								>
-									{#snippet children(val)}{val}{/snippet}
-								</EditableField>
-							</span>
-							<span class="ml-2 text-xl text-slate-500">
-								<EditableField 
-									fieldKey="InstallmentPlans.{i}.unit" 
-									label="Ед. измерения" 
-									value={plan.unit} 
-									{isEditable} 
-									inline 
-									onSave={(v) => updatePlan(i, 'unit', v)}
-								>
-									{#snippet children(val)}{val}{/snippet}
-								</EditableField>
-							</span>
-						</div>
-						<div class="mt-2 text-3xl font-bold text-red-600">
-							<EditableField 
-								fieldKey="InstallmentPlans.{i}.rate" 
-								label="Ставка" 
-								value={plan.rate} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updatePlan(i, 'rate', v)}
-							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
-						</div>
-						<p class="mt-1 text-sm text-slate-500">
-							<EditableField 
-								fieldKey="InstallmentPlans.{i}.rateLabel" 
-								label="Метка ставки" 
-								value={plan.rateLabel} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updatePlan(i, 'rateLabel', v)}
-							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
-						</p>
-						<div class="mt-6 space-y-3">
-							{#each plan.features as feature, fi}
-								<div class="flex items-center gap-2 text-sm text-slate-600">
-									<svg class="h-5 w-5 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-									</svg>
-									<EditableField 
-										fieldKey="InstallmentPlans.{i}.features.{fi}" 
-										label="Преимущество" 
-										value={feature} 
-										{isEditable} 
-										inline 
-										onSave={(v) => updatePlanFeature(i, fi, v)}
-									>
-										{#snippet children(val)}{val}{/snippet}
-									</EditableField>
-								</div>
-							{/each}
-						</div>
-						<a href="/contact" class="mt-6 block w-full rounded-xl bg-red-500 py-3 text-center font-semibold text-white transition-all hover:bg-red-600">Оформить</a>
-					</div>
-				</div>
-			{/if}
-		{/each}
+			{/each}
+		</div>
 	</div>
-</div>
+</section>

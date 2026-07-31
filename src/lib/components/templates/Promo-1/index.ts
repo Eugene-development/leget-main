@@ -81,6 +81,7 @@ import PartnershipCTA      from './pages/partnership/PartnershipCTA.svelte';
 
 // Testimonials page components
 import TestimonialsHero from './pages/testimonials/Hero.svelte';
+import TestimonialsSummary from './pages/testimonials/TestimonialsSummary.svelte';
 import TestimonialsGrid from './pages/testimonials/TestimonialsGrid.svelte';
 
 // Installment page components
@@ -212,6 +213,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	},
 	'/testimonials': {
 		Hero:             TestimonialsHero,
+		TestimonialsSummary,
 		TestimonialsGrid,
 	},
 	'/installment': {

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { revealOnScroll } from './theme';
+	import './theme.css';
 
 	let {
 		data = $bindable(),
@@ -40,53 +42,88 @@
 	);
 </script>
 
-<div class="bg-slate-50 py-24">
-	<div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-		<div class="text-center">
+<section class="relative isolate overflow-hidden bg-slate-50 py-24">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div class="it-rules"></div>
+	</div>
+
+	<div class="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+		<div use:revealOnScroll class="it-reveal text-center">
 			<EditableField
 				fieldKey="InstallmentFAQ.title"
 				label="Заголовок"
 				value={String(data?.title ?? 'Частые вопросы')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
-				class="block"
+				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl font-bold text-slate-900">{displayValue}</h2>
+					<h2
+						class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl"
+					>
+						{displayValue}
+					</h2>
 				{/snippet}
 			</EditableField>
+			<div class="it-rule it-d1 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+			</div>
 		</div>
 
-		<div class="mt-12 space-y-4">
+		<!--
+			Аккордеон здесь намеренно не используется: вопрос и ответ редактируются
+			прямо на странице, свёрнутый текст в режиме правки был бы недоступен.
+		-->
+		<div use:revealOnScroll class="it-reveal mt-12 space-y-4">
 			{#each items as item, i}
-				<div class="rounded-2xl bg-white p-6 shadow-sm">
-					<h3 class="text-lg font-semibold text-slate-900">
-						<EditableField 
-							fieldKey="InstallmentFAQ.{i}.question" 
-							label="Вопрос" 
-							value={item.question} 
-							{isEditable} 
-							inline 
-							onSave={(v) => updateItem(i, 'question', v)}
+				<div
+					class="it-card group relative overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-6 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.4)] transition duration-300 hover:border-red-500/40 hover:shadow-[0_30px_70px_-40px_rgba(15,23,42,0.5)] sm:p-8"
+					style="--it-delay: {i * 70}ms"
+				>
+					<div
+						class="pointer-events-none absolute inset-y-6 left-0 w-px bg-linear-to-b from-transparent via-red-500/70 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100"
+						aria-hidden="true"
+					></div>
+
+					<div class="flex gap-4">
+						<span
+							class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl bg-red-50 text-xs font-semibold tabular-nums text-red-600 ring-1 ring-red-500/20"
+							aria-hidden="true"
 						>
-							{#snippet children(val)}{val}{/snippet}
-						</EditableField>
-					</h3>
-					<p class="mt-2 text-slate-600">
-						<EditableField 
-							fieldKey="InstallmentFAQ.{i}.answer" 
-							label="Ответ" 
-							value={item.answer} 
-							{isEditable} 
-							inline 
-							multiline
-							onSave={(v) => updateItem(i, 'answer', v)}
-						>
-							{#snippet children(val)}{val}{/snippet}
-						</EditableField>
-					</p>
+							{String(i + 1).padStart(2, '0')}
+						</span>
+						<div class="min-w-0">
+							<h3 class="text-base font-semibold tracking-[-0.01em] text-slate-900 sm:text-lg">
+								<EditableField
+									fieldKey="InstallmentFAQ.{i}.question"
+									label="Вопрос"
+									value={item.question}
+									{isEditable}
+									inline
+									onSave={(v) => updateItem(i, 'question', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</h3>
+							<p class="mt-2 text-sm/6 text-slate-600">
+								<EditableField
+									fieldKey="InstallmentFAQ.{i}.answer"
+									label="Ответ"
+									value={item.answer}
+									{isEditable}
+									inline
+									multiline
+									onSave={(v) => updateItem(i, 'answer', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</p>
+						</div>
+					</div>
 				</div>
 			{/each}
 		</div>
 	</div>
-</div>
+</section>

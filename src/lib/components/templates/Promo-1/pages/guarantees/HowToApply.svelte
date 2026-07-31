@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { revealOnScroll } from './theme';
+	import './theme.css';
 
 	let {
 		data = $bindable(),
@@ -40,19 +42,27 @@
 	);
 </script>
 
-<div class="bg-slate-50 py-24">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="text-center">
+<section class="relative isolate overflow-hidden bg-slate-50 py-24">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div class="gt-rules"></div>
+	</div>
+
+	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div use:revealOnScroll class="gt-reveal text-center">
 			<EditableField
 				fieldKey="HowToApply.title"
 				label="Заголовок"
 				value={String(data?.title ?? 'Как обратиться по гарантии')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
-				class="block"
+				class="gt-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl font-bold text-slate-900">{displayValue}</h2>
+					<h2
+						class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl"
+					>
+						{displayValue}
+					</h2>
 				{/snippet}
 			</EditableField>
 			<EditableField
@@ -61,52 +71,87 @@
 				value={String(data?.subtitle ?? 'Простой процесс решения гарантийных вопросов')}
 				{isEditable}
 				onSave={(v) => saveField('subtitle', v)}
-				class="mt-4 block"
+				class="gt-item gt-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-4 max-w-2xl text-slate-600">{displayValue}</p>
+					<p class="mx-auto max-w-2xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
 				{/snippet}
 			</EditableField>
+			<div class="gt-rule gt-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+			</div>
 		</div>
 
-		<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+		<div use:revealOnScroll class="gt-reveal mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 			{#each steps as step, i}
-				<div class="relative text-center">
-					<div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white shadow-lg
-						{step.final
-							? 'bg-linear-to-br from-emerald-500 to-teal-500 shadow-emerald-500/25'
-							: 'bg-linear-to-br from-red-500 to-red-600 shadow-red-500/25'}">
-						{step.number}
+				<!--
+					Обёртка нужна, чтобы соединитель между шагами не срезался `overflow-hidden`
+					карточки: пунктир живёт снаружи, в промежутке грида.
+				-->
+				<div class="gt-card relative" style="--gt-delay: {i * 80}ms">
+					<div
+						class="group relative h-full overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-8 text-center shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 motion-safe:hover:-translate-y-1 {step.final
+							? 'hover:border-emerald-500/40'
+							: 'hover:border-red-500/40'}"
+					>
+						<div
+							class="pointer-events-none absolute inset-x-8 top-0 h-px opacity-70 transition-opacity duration-300 group-hover:opacity-100 {step.final
+								? 'bg-linear-to-r from-transparent via-emerald-500 to-transparent'
+								: 'bg-linear-to-r from-transparent via-red-500 to-transparent'}"
+							aria-hidden="true"
+						></div>
+
+						<div class="relative">
+							<div
+								class="mx-auto flex size-16 items-center justify-center rounded-2xl text-2xl font-semibold text-white ring-1 ring-white/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {step.final
+									? 'bg-linear-to-br from-emerald-500 to-teal-500 shadow-[0_16px_40px_-18px_rgba(5,150,105,0.9)]'
+									: 'bg-linear-to-br from-red-500 to-red-600 shadow-[0_16px_40px_-18px_rgba(220,38,38,0.9)]'}"
+							>
+								{step.number}
+							</div>
+
+							<h3 class="mt-6 text-lg font-semibold tracking-[-0.01em] text-slate-900">
+								<EditableField
+									fieldKey="HowToApply.{i}.title"
+									label="Заголовок шага"
+									value={step.title}
+									{isEditable}
+									inline
+									onSave={(v) => updateStep(i, 'title', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</h3>
+							<p class="mt-3 text-sm/6 text-slate-500">
+								<EditableField
+									fieldKey="HowToApply.{i}.text"
+									label="Описание шага"
+									value={step.text}
+									{isEditable}
+									inline
+									onSave={(v) => updateStep(i, 'text', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</p>
+						</div>
 					</div>
-					<h3 class="mt-6 text-lg font-semibold text-slate-900">
-						<EditableField 
-							fieldKey="HowToApply.{i}.title" 
-							label="Заголовок шага" 
-							value={step.title} 
-							{isEditable} 
-							inline 
-							onSave={(v) => updateStep(i, 'title', v)}
-						>
-							{#snippet children(val)}{val}{/snippet}
-						</EditableField>
-					</h3>
-					<p class="mt-2 text-sm text-slate-500">
-						<EditableField 
-							fieldKey="HowToApply.{i}.text" 
-							label="Описание шага" 
-							value={step.text} 
-							{isEditable} 
-							inline 
-							onSave={(v) => updateStep(i, 'text', v)}
-						>
-							{#snippet children(val)}{val}{/snippet}
-						</EditableField>
-					</p>
+
+					<!--
+						Соединитель между шагами. В прежней версии линия шла поверх карточек
+						(absolute w-full от края блока) и на части ширин налезала на текст —
+						теперь это короткий пунктир строго в промежутке грида.
+					-->
 					{#if !step.final}
-						<div class="absolute right-0 top-8 hidden h-0.5 w-full bg-linear-to-r from-red-200 to-transparent lg:block lg:w-1/2 lg:translate-x-1/2"></div>
+						<div
+							class="absolute top-16 -right-6 hidden w-6 border-t border-dashed border-red-300 lg:block"
+							aria-hidden="true"
+						></div>
 					{/if}
 				</div>
 			{/each}
 		</div>
 	</div>
-</div>
+</section>

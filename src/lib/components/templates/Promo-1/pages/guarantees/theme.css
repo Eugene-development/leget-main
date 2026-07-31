@@ -1,0 +1,160 @@
+/*
+	Общие текстуры и анимации страницы «Гарантии» (Promo-1).
+
+	Файл подключается каждым блоком (`import './theme.css'`) — Vite склеивает его
+	в один чанк, дублирования в бандле нет.
+
+	Классы намеренно глобальные: часть анимируемых узлов — это обёртки
+	<EditableField>, которые Svelte не относит к разметке компонента,
+	и scoped-стили до них не доходят.
+*/
+
+/* ─────────────────────────── Текстуры фона ─────────────────────────── */
+
+/* Архитектурная сетка для тёмных поверхностей. */
+.gt-grid {
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+	background-size: 56px 56px;
+	opacity: 0.05;
+}
+
+.gt-grid--fade-center {
+	mask-image: radial-gradient(circle at 50% 40%, black, transparent 72%);
+}
+
+.gt-grid--fade-bottom {
+	mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+/*
+	Вертикальные линии-колонки для светлых секций. Маска гасит текстуру у кромок,
+	чтобы стыки секций (в том числе с волной Hero) оставались ровными по цвету.
+*/
+.gt-rules {
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+	background-size: 25% 100%;
+	opacity: 0.5;
+	mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+}
+
+/* Свечение-акцент. Цвет и позиция задаются утилитами Tailwind на самом узле. */
+.gt-glow {
+	filter: blur(80px);
+	border-radius: 9999px;
+}
+
+/* ───────────────────── Появление контента (единый сценарий) ───────────────────── */
+
+@keyframes gt-rise {
+	from {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes gt-rule {
+	from {
+		opacity: 0;
+		transform: scaleX(0.4);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes gt-frame {
+	from {
+		opacity: 0;
+		transform: scale(0.985) translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+/*
+	Два триггера с одинаковой пластикой:
+	  .gt-enter  — блок над сгибом, анимация стартует сразу (Hero);
+	  .gt-reveal — блок ниже, ждёт вьюпорта (revealOnScroll добавляет .gt-visible).
+*/
+.gt-reveal .gt-item,
+.gt-reveal .gt-rule,
+.gt-reveal .gt-card,
+.gt-reveal.gt-card {
+	opacity: 0;
+}
+
+/*
+	fill-mode = backwards, а не both: при `both` финальный transform анимации
+	остаётся на элементе и перебивает hover-подъём карточек. Конечное состояние
+	задаём обычным opacity.
+*/
+.gt-enter .gt-item,
+.gt-visible .gt-item {
+	opacity: 1;
+	animation: gt-rise 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--gt-delay, 0ms) backwards;
+}
+
+.gt-enter .gt-rule,
+.gt-visible .gt-rule {
+	opacity: 1;
+	animation: gt-rule 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--gt-delay, 0ms) backwards;
+}
+
+/* Карточка как потомок триггера и как сам триггер (одиночное паспарту CTA). */
+.gt-enter .gt-card,
+.gt-visible .gt-card,
+.gt-visible.gt-card {
+	opacity: 1;
+	animation: gt-frame 880ms cubic-bezier(0.22, 1, 0.36, 1) var(--gt-delay, 0ms) backwards;
+}
+
+/*
+	Ступени задержки через кастомное свойство, а не animation-delay:
+	shorthand выше выиграл бы по специфичности и сбросил задержку в 0.
+*/
+.gt-d1 {
+	--gt-delay: 80ms;
+}
+.gt-d2 {
+	--gt-delay: 160ms;
+}
+.gt-d3 {
+	--gt-delay: 240ms;
+}
+.gt-d4 {
+	--gt-delay: 340ms;
+}
+.gt-d5 {
+	--gt-delay: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gt-reveal .gt-item,
+	.gt-reveal .gt-rule,
+	.gt-reveal .gt-card,
+	.gt-reveal.gt-card,
+	.gt-enter .gt-item,
+	.gt-enter .gt-rule,
+	.gt-enter .gt-card,
+	.gt-visible .gt-item,
+	.gt-visible .gt-rule,
+	.gt-visible .gt-card,
+	.gt-visible.gt-card {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+}

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { revealOnScroll } from './theme';
+	import './theme.css';
 
 	let {
 		data = $bindable(),
@@ -12,7 +14,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	async function saveField(field: string, value: any) {
+	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'TestimonialsGrid', updated);
@@ -75,53 +77,156 @@
 	function getGlobalIndex(colIndex: number, itemIndex: number): number {
 		return itemIndex * 4 + colIndex;
 	}
+
+	/** Инициалы автора для аватара-плашки. */
+	function initials(name: string): string {
+		return name
+			.trim()
+			.split(/\s+/)
+			.slice(0, 2)
+			.map((part) => part.slice(0, 1).toUpperCase())
+			.join('');
+	}
 </script>
 
-<div class="bg-surface pb-24 sm:pb-32">
-	<div class="mx-auto max-w-7xl px-6 lg:px-8">
-		<div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm/6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
+<!--
+	Разметка карточки одна для всех четырёх колонок — раньше она была скопирована
+	четыре раза, и любая правка требовала синхронного редактирования копий.
+	Задержка появления берётся из глобального индекса, порядок и ключи данных те же.
+-->
+{#snippet reviewCard(review: Review, globalIdx: number)}
+	<figure
+		class="tm-card group relative overflow-hidden rounded-3xl border border-gray-900/10 bg-white p-6 shadow-[0_26px_70px_-50px_rgba(24,24,27,0.45)] transition duration-300 hover:border-pink-500/40 hover:shadow-[0_32px_80px_-44px_rgba(24,24,27,0.5)] motion-safe:hover:-translate-y-1"
+		style="--tm-delay: {Math.min(globalIdx, 8) * 70}ms"
+	>
+		<div
+			class="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-pink-500/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+			aria-hidden="true"
+		></div>
 
+		<blockquote class="relative text-sm/6 text-gray-700">
+			<EditableField
+				fieldKey="TestimonialsGrid.reviews.{globalIdx}.text"
+				label="Текст отзыва"
+				value={review.text}
+				{isEditable}
+				inline
+				multiline
+				onSave={(v) => updateReview(globalIdx, 'text', v)}
+			>
+				{#snippet children(val)}
+					<p>{val}</p>
+				{/snippet}
+			</EditableField>
+		</blockquote>
+
+		<figcaption class="mt-6 flex items-center gap-3 border-t border-gray-900/10 pt-4">
+			<span
+				class="flex size-9 shrink-0 items-center justify-center rounded-full bg-pink-50 text-[11px] font-semibold text-pink-600 ring-1 ring-pink-500/20"
+				aria-hidden="true"
+			>
+				{initials(review.name)}
+			</span>
+			<div class="min-w-0">
+				<div class="text-sm font-semibold text-gray-900">
+					<EditableField
+						fieldKey="TestimonialsGrid.reviews.{globalIdx}.name"
+						label="Имя автора"
+						value={review.name}
+						{isEditable}
+						inline
+						onSave={(v) => updateReview(globalIdx, 'name', v)}
+					>
+						{#snippet children(val)}{val}{/snippet}
+					</EditableField>
+				</div>
+				<div class="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">
+					<EditableField
+						fieldKey="TestimonialsGrid.reviews.{globalIdx}.location"
+						label="Город"
+						value={review.location}
+						{isEditable}
+						inline
+						onSave={(v) => updateReview(globalIdx, 'location', v)}
+					>
+						{#snippet children(val)}{val}{/snippet}
+					</EditableField>
+				</div>
+			</div>
+		</figcaption>
+	</figure>
+{/snippet}
+
+<section class="bg-surface relative isolate overflow-hidden pt-12 pb-24 sm:pb-32">
+	<div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+		<div
+			class="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 gap-6 text-sm/6 text-gray-900 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4"
+		>
 			<!-- Главный отзыв -->
 			<figure
-				class="review-card rounded-2xl bg-white shadow-lg ring-1 ring-gray-900/5 sm:col-span-2 xl:col-start-2 xl:row-end-1"
-				style="animation-delay: 0ms"
+				use:revealOnScroll
+				class="tm-reveal tm-card relative overflow-hidden rounded-4xl border border-gray-900/10 bg-white shadow-[0_40px_100px_-60px_rgba(24,24,27,0.5)] sm:col-span-2 xl:col-start-2 xl:row-end-1"
 			>
-				<blockquote class="p-6 text-lg font-semibold tracking-tight text-gray-900 sm:p-12 sm:text-xl/8">
-					<EditableField 
-						fieldKey="TestimonialsGrid.featured.text" 
-						label="Текст отзыва" 
-						value={featured.text} 
-						{isEditable} 
-						inline 
-						multiline
-						onSave={(v) => updateFeatured('text', v)}
+				<div
+					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-pink-500/70 to-transparent"
+					aria-hidden="true"
+				></div>
+
+				<blockquote class="relative p-6 sm:p-12">
+					<div
+						class="flex size-11 items-center justify-center rounded-2xl bg-pink-50 text-pink-600 ring-1 ring-pink-500/20"
+						aria-hidden="true"
 					>
-						{#snippet children(val)}
-							<p>{val}</p>
-						{/snippet}
-					</EditableField>
+						<svg class="size-5" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M9.5 5.5C6.46 5.5 4 7.96 4 11v7.5h7.5V11H7.75c0-1.24 1.01-2.25 2.25-2.25V5.5zm10 0C16.46 5.5 14 7.96 14 11v7.5h7.5V11h-3.75c0-1.24 1.01-2.25 2.25-2.25V5.5z" />
+						</svg>
+					</div>
+					<div class="mt-6 text-lg font-medium tracking-[-0.01em] text-pretty text-gray-900 sm:text-xl/8">
+						<EditableField
+							fieldKey="TestimonialsGrid.featured.text"
+							label="Текст отзыва"
+							value={featured.text}
+							{isEditable}
+							inline
+							multiline
+							onSave={(v) => updateFeatured('text', v)}
+						>
+							{#snippet children(val)}
+								<p>{val}</p>
+							{/snippet}
+						</EditableField>
+					</div>
 				</blockquote>
-				<figcaption class="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-gray-900/10 px-6 py-4 sm:flex-nowrap">
+
+				<figcaption
+					class="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-gray-900/10 px-6 py-5 sm:flex-nowrap sm:px-12"
+				>
+					<span
+						class="flex size-10 shrink-0 items-center justify-center rounded-full bg-pink-50 text-xs font-semibold text-pink-600 ring-1 ring-pink-500/20"
+						aria-hidden="true"
+					>
+						{initials(featured.name)}
+					</span>
 					<div class="flex-auto">
-						<div class="font-semibold">
-							<EditableField 
-								fieldKey="TestimonialsGrid.featured.name" 
-								label="Имя автора" 
-								value={featured.name} 
-								{isEditable} 
-								inline 
+						<div class="text-sm font-semibold text-gray-900">
+							<EditableField
+								fieldKey="TestimonialsGrid.featured.name"
+								label="Имя автора"
+								value={featured.name}
+								{isEditable}
+								inline
 								onSave={(v) => updateFeatured('name', v)}
 							>
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</div>
-						<div class="text-gray-600">
-							<EditableField 
-								fieldKey="TestimonialsGrid.featured.location" 
-								label="Город" 
-								value={featured.location} 
-								{isEditable} 
-								inline 
+						<div class="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">
+							<EditableField
+								fieldKey="TestimonialsGrid.featured.location"
+								label="Город"
+								value={featured.location}
+								{isEditable}
+								inline
 								onSave={(v) => updateFeatured('location', v)}
 							>
 								{#snippet children(val)}{val}{/snippet}
@@ -131,253 +236,36 @@
 				</figcaption>
 			</figure>
 
-			<!-- Колонка 1 -->
-			<div class="space-y-8 xl:contents xl:space-y-0">
-				<div class="space-y-8 xl:row-span-2">
+			<div class="space-y-6 xl:contents xl:space-y-0">
+				<!--
+					Каждая колонка — свой триггер появления: сетка высокая, и единый
+					триггер на весь блок «проигрывал» бы анимацию нижних карточек
+					задолго до того, как они появятся на экране.
+				-->
+				<div use:revealOnScroll class="tm-reveal space-y-6 xl:row-span-2">
 					{#each col1 as review, i}
-						{@const globalIdx = getGlobalIndex(0, i)}
-						<figure
-							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {globalIdx * 80 + 100}ms"
-						>
-							<blockquote class="text-gray-900">
-								<EditableField 
-									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
-									label="Текст отзыва" 
-									value={review.text} 
-									{isEditable} 
-									inline 
-									multiline
-									onSave={(v) => updateReview(globalIdx, 'text', v)}
-								>
-									{#snippet children(val)}
-										<p>{val}</p>
-									{/snippet}
-								</EditableField>
-							</blockquote>
-							<figcaption class="mt-6 flex items-center gap-x-4">
-								<div>
-									<div class="font-semibold">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
-											label="Имя автора" 
-											value={review.name} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'name', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-									<div class="text-gray-600">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
-											label="Город" 
-											value={review.location} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'location', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-								</div>
-							</figcaption>
-						</figure>
+						{@render reviewCard(review, getGlobalIndex(0, i))}
 					{/each}
 				</div>
 
-				<!-- Колонка 2 -->
-				<div class="space-y-8 xl:row-start-1">
+				<div use:revealOnScroll class="tm-reveal space-y-6 xl:row-start-1">
 					{#each col2 as review, i}
-						{@const globalIdx = getGlobalIndex(1, i)}
-						<figure
-							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {globalIdx * 80 + 100}ms"
-						>
-							<blockquote class="text-gray-900">
-								<EditableField 
-									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
-									label="Текст отзыва" 
-									value={review.text} 
-									{isEditable} 
-									inline 
-									multiline
-									onSave={(v) => updateReview(globalIdx, 'text', v)}
-								>
-									{#snippet children(val)}
-										<p>{val}</p>
-									{/snippet}
-								</EditableField>
-							</blockquote>
-							<figcaption class="mt-6 flex items-center gap-x-4">
-								<div>
-									<div class="font-semibold">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
-											label="Имя автора" 
-											value={review.name} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'name', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-									<div class="text-gray-600">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
-											label="Город" 
-											value={review.location} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'location', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-								</div>
-							</figcaption>
-						</figure>
+						{@render reviewCard(review, getGlobalIndex(1, i))}
 					{/each}
 				</div>
 
-				<!-- Колонка 3 -->
-				<div class="space-y-8 xl:row-start-1">
+				<div use:revealOnScroll class="tm-reveal space-y-6 xl:row-start-1">
 					{#each col3 as review, i}
-						{@const globalIdx = getGlobalIndex(2, i)}
-						<figure
-							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {globalIdx * 80 + 100}ms"
-						>
-							<blockquote class="text-gray-900">
-								<EditableField 
-									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
-									label="Текст отзыва" 
-									value={review.text} 
-									{isEditable} 
-									inline 
-									multiline
-									onSave={(v) => updateReview(globalIdx, 'text', v)}
-								>
-									{#snippet children(val)}
-										<p>{val}</p>
-									{/snippet}
-								</EditableField>
-							</blockquote>
-							<figcaption class="mt-6 flex items-center gap-x-4">
-								<div>
-									<div class="font-semibold">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
-											label="Имя автора" 
-											value={review.name} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'name', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-									<div class="text-gray-600">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
-											label="Город" 
-											value={review.location} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'location', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-								</div>
-							</figcaption>
-						</figure>
+						{@render reviewCard(review, getGlobalIndex(2, i))}
 					{/each}
 				</div>
 
-				<!-- Колонка 4 -->
-				<div class="space-y-8 xl:row-span-2">
+				<div use:revealOnScroll class="tm-reveal space-y-6 xl:row-span-2">
 					{#each col4 as review, i}
-						{@const globalIdx = getGlobalIndex(3, i)}
-						<figure
-							class="review-card rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-							style="animation-delay: {globalIdx * 80 + 100}ms"
-						>
-							<blockquote class="text-gray-900">
-								<EditableField 
-									fieldKey="TestimonialsGrid.reviews.{globalIdx}.text" 
-									label="Текст отзыва" 
-									value={review.text} 
-									{isEditable} 
-									inline 
-									multiline
-									onSave={(v) => updateReview(globalIdx, 'text', v)}
-								>
-									{#snippet children(val)}
-										<p>{val}</p>
-									{/snippet}
-								</EditableField>
-							</blockquote>
-							<figcaption class="mt-6 flex items-center gap-x-4">
-								<div>
-									<div class="font-semibold">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.name" 
-											label="Имя автора" 
-											value={review.name} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'name', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-									<div class="text-gray-600">
-										<EditableField 
-											fieldKey="TestimonialsGrid.reviews.{globalIdx}.location" 
-											label="Город" 
-											value={review.location} 
-											{isEditable} 
-											inline 
-											onSave={(v) => updateReview(globalIdx, 'location', v)}
-										>
-											{#snippet children(val)}{val}{/snippet}
-										</EditableField>
-									</div>
-								</div>
-							</figcaption>
-						</figure>
+						{@render reviewCard(review, getGlobalIndex(3, i))}
 					{/each}
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
-
-<style>
-	@keyframes reviewFadeUp {
-		from {
-			opacity: 0;
-			transform: translateY(24px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.review-card {
-		animation: reviewFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-	}
-
-	.review-card:hover {
-		transform: translateY(-4px);
-		box-shadow:
-			0 20px 25px -5px rgb(0 0 0 / 0.08),
-			0 8px 10px -6px rgb(0 0 0 / 0.08);
-	}
-</style>
+</section>

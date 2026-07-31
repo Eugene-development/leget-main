@@ -1,0 +1,151 @@
+/*
+	Общие текстуры и анимации страницы «Отзывы» (Promo-1).
+
+	Файл подключается каждым блоком (`import './theme.css'`) — Vite склеивает его
+	в один чанк, дублирования в бандле нет.
+
+	Классы намеренно глобальные: часть анимируемых узлов — это обёртки
+	<EditableField>, которые Svelte не относит к разметке компонента,
+	и scoped-стили до них не доходят.
+*/
+
+/* ─────────────────────────── Текстуры фона ─────────────────────────── */
+
+.tm-grid {
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+	background-size: 56px 56px;
+	opacity: 0.05;
+}
+
+.tm-grid--fade-center {
+	mask-image: radial-gradient(circle at 50% 40%, black, transparent 72%);
+}
+
+/*
+	Вертикальные линии-колонки для светлых секций. Маска гасит текстуру у кромок,
+	чтобы стык с волной Hero оставался ровным по цвету.
+*/
+.tm-rules {
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+	background-size: 25% 100%;
+	opacity: 0.6;
+	mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+}
+
+.tm-glow {
+	filter: blur(80px);
+	border-radius: 9999px;
+}
+
+/* ───────────────────── Появление контента (единый сценарий) ───────────────────── */
+
+@keyframes tm-rise {
+	from {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes tm-rule {
+	from {
+		opacity: 0;
+		transform: scaleX(0.4);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes tm-frame {
+	from {
+		opacity: 0;
+		transform: scale(0.985) translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+/*
+	Два триггера с одинаковой пластикой:
+	  .tm-enter  — блок над сгибом, анимация стартует сразу (Hero);
+	  .tm-reveal — блок ниже, ждёт вьюпорта (revealOnScroll добавляет .tm-visible).
+*/
+.tm-reveal .tm-item,
+.tm-reveal .tm-rule,
+.tm-reveal .tm-card,
+.tm-reveal.tm-card {
+	opacity: 0;
+}
+
+/*
+	fill-mode = backwards, а не both: при `both` финальный transform анимации
+	остаётся на элементе и перебивает hover-подъём карточек (именно на этом
+	ломался hover у карточек отзывов). Конечное состояние задаём обычным opacity.
+*/
+.tm-enter .tm-item,
+.tm-visible .tm-item {
+	opacity: 1;
+	animation: tm-rise 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--tm-delay, 0ms) backwards;
+}
+
+.tm-enter .tm-rule,
+.tm-visible .tm-rule {
+	opacity: 1;
+	animation: tm-rule 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--tm-delay, 0ms) backwards;
+}
+
+/* Карточка как потомок триггера и как сам триггер. */
+.tm-enter .tm-card,
+.tm-visible .tm-card,
+.tm-visible.tm-card {
+	opacity: 1;
+	animation: tm-frame 820ms cubic-bezier(0.22, 1, 0.36, 1) var(--tm-delay, 0ms) backwards;
+}
+
+/*
+	Ступени задержки через кастомное свойство, а не animation-delay:
+	shorthand выше выиграл бы по специфичности и сбросил задержку в 0.
+*/
+.tm-d1 {
+	--tm-delay: 80ms;
+}
+.tm-d2 {
+	--tm-delay: 160ms;
+}
+.tm-d3 {
+	--tm-delay: 240ms;
+}
+.tm-d4 {
+	--tm-delay: 340ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tm-reveal .tm-item,
+	.tm-reveal .tm-rule,
+	.tm-reveal .tm-card,
+	.tm-reveal.tm-card,
+	.tm-enter .tm-item,
+	.tm-enter .tm-rule,
+	.tm-enter .tm-card,
+	.tm-visible .tm-item,
+	.tm-visible .tm-rule,
+	.tm-visible .tm-card,
+	.tm-visible.tm-card {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+}

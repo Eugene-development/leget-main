@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { revealOnScroll } from './theme';
+	import './theme.css';
 
 	let {
 		data = $bindable(),
@@ -44,96 +46,130 @@
 	);
 </script>
 
-<div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-	<div class="text-center">
-		<EditableField
-			fieldKey="GuaranteeTerms.title"
-			label="Заголовок"
-			value={String(data?.title ?? 'Сроки гарантии')}
-			{isEditable}
-			onSave={(v) => saveField('title', v)}
-			class="block"
-		>
-			{#snippet children(displayValue)}
-				<h2 class="text-4xl font-bold text-slate-900">{displayValue}</h2>
-			{/snippet}
-		</EditableField>
-		<EditableField
-			fieldKey="GuaranteeTerms.subtitle"
-			label="Подзаголовок"
-			value={String(data?.subtitle ?? 'Официальная гарантия от производителей на все категории')}
-			{isEditable}
-			onSave={(v) => saveField('subtitle', v)}
-			class="mt-4 block"
-		>
-			{#snippet children(displayValue)}
-				<p class="mx-auto mt-4 max-w-2xl text-slate-600">{displayValue}</p>
-			{/snippet}
-		</EditableField>
+<!--
+	ВНИМАНИЕ — стык секций: сверху в этот блок «вливается» волна из Hero
+	(GuaranteesHero). Заливка волны — переменная `--gh-wave` (#f8fafc), поэтому
+	фон секции обязан быть ровно `bg-slate-50` и БЕЗ градиента у верхней кромки.
+-->
+<section class="relative isolate overflow-hidden bg-slate-50 py-20 sm:py-24">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div class="gt-rules"></div>
 	</div>
 
-	<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-		{#each items as item, i}
-			<div class="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-				<div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-linear-to-br {item.dot} opacity-50 transition-transform duration-300 group-hover:scale-150"></div>
-				<div class="relative">
-					<div class="flex h-14 w-14 items-center justify-center rounded-xl bg-linear-to-br {item.color} text-white shadow-lg">
-						<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-						</svg>
-					</div>
-					<div class="mt-4">
-						<span class="text-4xl font-bold text-slate-900">
-							<EditableField 
-								fieldKey="GuaranteeTerms.{i}.years" 
-								label="Кол-во лет" 
-								value={item.years} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updateItem(i, 'years', v)}
-							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
-						</span>
-						<span class="ml-1 text-lg text-slate-500">
-							<EditableField 
-								fieldKey="GuaranteeTerms.{i}.unit" 
-								label="Ед. измерения" 
-								value={item.unit} 
-								{isEditable} 
-								inline 
-								onSave={(v) => updateItem(i, 'unit', v)}
-							>
-								{#snippet children(val)}{val}{/snippet}
-							</EditableField>
-						</span>
-					</div>
-					<h3 class="mt-2 text-lg font-semibold text-slate-900">
-						<EditableField 
-							fieldKey="GuaranteeTerms.{i}.title" 
-							label="Категория" 
-							value={item.title} 
-							{isEditable} 
-							inline 
-							onSave={(v) => updateItem(i, 'title', v)}
-						>
-							{#snippet children(val)}{val}{/snippet}
-						</EditableField>
-					</h3>
-					<p class="mt-1 text-sm text-slate-500">
-						<EditableField 
-							fieldKey="GuaranteeTerms.{i}.text" 
-							label="Описание" 
-							value={item.text} 
-							{isEditable} 
-							inline 
-							onSave={(v) => updateItem(i, 'text', v)}
-						>
-							{#snippet children(val)}{val}{/snippet}
-						</EditableField>
-					</p>
-				</div>
+	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div use:revealOnScroll class="gt-reveal text-center">
+			<EditableField
+				fieldKey="GuaranteeTerms.title"
+				label="Заголовок"
+				value={String(data?.title ?? 'Сроки гарантии')}
+				{isEditable}
+				onSave={(v) => saveField('title', v)}
+				class="gt-item block"
+			>
+				{#snippet children(displayValue)}
+					<h2
+						class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl"
+					>
+						{displayValue}
+					</h2>
+				{/snippet}
+			</EditableField>
+			<EditableField
+				fieldKey="GuaranteeTerms.subtitle"
+				label="Подзаголовок"
+				value={String(data?.subtitle ?? 'Официальная гарантия от производителей на все категории')}
+				{isEditable}
+				onSave={(v) => saveField('subtitle', v)}
+				class="gt-item gt-d1 mt-4 block"
+			>
+				{#snippet children(displayValue)}
+					<p class="mx-auto max-w-2xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+				{/snippet}
+			</EditableField>
+			<div class="gt-rule gt-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="size-1.5 rotate-45 border border-emerald-500/70"></span>
+				<span class="h-px flex-1 bg-slate-900/10"></span>
 			</div>
-		{/each}
+		</div>
+
+		<div use:revealOnScroll class="gt-reveal mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+			{#each items as item, i}
+				<div
+					class="gt-card group relative overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-6 shadow-[0_28px_70px_-50px_rgba(15,23,42,0.4)] transition duration-300 hover:border-slate-900/20 hover:shadow-[0_34px_80px_-44px_rgba(15,23,42,0.5)] motion-safe:hover:-translate-y-1"
+					style="--gt-delay: {i * 60}ms"
+				>
+					<!-- Цветное пятно и плитка иконки берут градиенты из данных (item.dot / item.color) -->
+					<div
+						class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-linear-to-br opacity-60 transition-transform duration-500 group-hover:scale-150 {item.dot}"
+						aria-hidden="true"
+					></div>
+
+					<div class="relative">
+						<div
+							class="flex size-12 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-lg ring-1 ring-white/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {item.color}"
+						>
+							<svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+							</svg>
+						</div>
+
+						<div class="mt-5 flex items-baseline gap-1.5">
+							<span class="text-4xl font-semibold tracking-[-0.04em] tabular-nums text-slate-900">
+								<EditableField
+									fieldKey="GuaranteeTerms.{i}.years"
+									label="Кол-во лет"
+									value={item.years}
+									{isEditable}
+									inline
+									onSave={(v) => updateItem(i, 'years', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</span>
+							<span class="text-[11px] font-semibold tracking-[0.16em] text-slate-500 uppercase">
+								<EditableField
+									fieldKey="GuaranteeTerms.{i}.unit"
+									label="Ед. измерения"
+									value={item.unit}
+									{isEditable}
+									inline
+									onSave={(v) => updateItem(i, 'unit', v)}
+								>
+									{#snippet children(val)}{val}{/snippet}
+								</EditableField>
+							</span>
+						</div>
+
+						<h3
+							class="mt-4 border-t border-slate-900/10 pt-4 text-base font-semibold tracking-[-0.01em] text-slate-900"
+						>
+							<EditableField
+								fieldKey="GuaranteeTerms.{i}.title"
+								label="Категория"
+								value={item.title}
+								{isEditable}
+								inline
+								onSave={(v) => updateItem(i, 'title', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</h3>
+						<p class="mt-2 text-sm/6 text-slate-500">
+							<EditableField
+								fieldKey="GuaranteeTerms.{i}.text"
+								label="Описание"
+								value={item.text}
+								{isEditable}
+								inline
+								onSave={(v) => updateItem(i, 'text', v)}
+							>
+								{#snippet children(val)}{val}{/snippet}
+							</EditableField>
+						</p>
+					</div>
+				</div>
+			{/each}
+		</div>
 	</div>
-</div>
+</section>

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { revealOnScroll } from './theme';
+	import './theme.css';
 
 	let {
 		data = $bindable(),
@@ -40,9 +42,13 @@
 	);
 </script>
 
-<div class="bg-white py-24">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+<section class="relative isolate overflow-hidden bg-white py-24">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		<div class="gt-rules"></div>
+	</div>
+
+	<div use:revealOnScroll class="gt-reveal relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
 			<div>
 				<EditableField
 					fieldKey="WhatsCovered.title"
@@ -50,12 +56,22 @@
 					value={String(data?.title ?? 'Что покрывает гарантия')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
-					class="block"
+					class="gt-item block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="text-3xl font-bold text-slate-900">{displayValue}</h2>
+						<h2
+							class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl"
+						>
+							{displayValue}
+						</h2>
 					{/snippet}
 				</EditableField>
+
+				<div class="gt-rule gt-d1 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
+					<span class="h-px flex-1 bg-slate-900/10"></span>
+					<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+					<span class="h-px flex-1 bg-slate-900/10"></span>
+				</div>
 
 				<EditableField
 					fieldKey="WhatsCovered.description"
@@ -64,41 +80,46 @@
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
-					class="mt-4 block"
+					class="gt-item gt-d2 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-4 text-slate-600">{displayValue}</p>
+						<p class="max-w-xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
 					{/snippet}
 				</EditableField>
 
-				<div class="mt-8 space-y-4">
+				<div class="gt-item gt-d3 mt-8 space-y-3">
 					{#each items as item, i}
-						<div class="flex items-start gap-4">
-							<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600">
-								<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+						<div
+							class="group flex items-start gap-4 rounded-2xl border border-slate-900/10 bg-white p-4 shadow-[0_20px_50px_-45px_rgba(15,23,42,0.5)] transition duration-300 hover:border-red-500/40 hover:shadow-[0_26px_60px_-40px_rgba(15,23,42,0.55)] sm:p-5"
+						>
+							<span
+								class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600 ring-1 ring-red-500/20 transition duration-300 group-hover:bg-red-500 group-hover:text-white"
+								aria-hidden="true"
+							>
+								<svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 								</svg>
-							</div>
-							<div>
-								<h3 class="font-semibold text-slate-900">
-									<EditableField 
-										fieldKey="WhatsCovered.{i}.title" 
-										label="Заголовок пункта" 
-										value={item.title} 
-										{isEditable} 
-										inline 
+							</span>
+							<div class="min-w-0">
+								<h3 class="font-semibold tracking-[-0.01em] text-slate-900">
+									<EditableField
+										fieldKey="WhatsCovered.{i}.title"
+										label="Заголовок пункта"
+										value={item.title}
+										{isEditable}
+										inline
 										onSave={(v) => updateItem(i, 'title', v)}
 									>
 										{#snippet children(val)}{val}{/snippet}
 									</EditableField>
 								</h3>
-								<p class="mt-1 text-sm text-slate-500">
-									<EditableField 
-										fieldKey="WhatsCovered.{i}.text" 
-										label="Описание пункта" 
-										value={item.text} 
-										{isEditable} 
-										inline 
+								<p class="mt-1 text-sm/6 text-slate-500">
+									<EditableField
+										fieldKey="WhatsCovered.{i}.text"
+										label="Описание пункта"
+										value={item.text}
+										{isEditable}
+										inline
 										onSave={(v) => updateItem(i, 'text', v)}
 									>
 										{#snippet children(val)}{val}{/snippet}
@@ -110,23 +131,32 @@
 				</div>
 			</div>
 
-			<div class="mt-12 lg:mt-0">
-				<div class="relative">
-					<div class="absolute -inset-4 rounded-3xl bg-linear-to-r from-red-50 to-red-100 opacity-50"></div>
+			<!-- Изображение в паспарту с градиентной каймой -->
+			<div class="gt-card gt-d2 mt-12 lg:mt-0">
+				<div
+					class="rounded-4xl bg-linear-to-br from-red-500/25 via-slate-900/10 to-red-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
+				>
 					<EditableField
 						fieldKey="WhatsCovered.imageUrl"
 						label="URL изображения"
 						value={String(data?.imageUrl ?? '')}
 						{isEditable}
 						onSave={(v) => saveField('imageUrl', v)}
-						class="relative block"
+						class="block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<img loading="lazy" src={displayValue} alt="Гарантия качества" class="relative rounded-2xl shadow-xl w-full object-cover">
+								<img
+									loading="lazy"
+									src={displayValue}
+									alt="Гарантия качества"
+									class="aspect-4/3 w-full rounded-[calc(var(--radius-4xl)-1px)] object-cover"
+								/>
 							{:else}
-								<div class="relative rounded-2xl bg-slate-100 shadow-xl aspect-video flex items-center justify-center">
-									<p class="text-slate-400 text-sm">Добавьте URL изображения</p>
+								<div
+									class="flex aspect-4/3 w-full items-center justify-center rounded-[calc(var(--radius-4xl)-1px)] bg-slate-50"
+								>
+									<p class="text-sm text-slate-400">Добавьте URL изображения</p>
 								</div>
 							{/if}
 						{/snippet}
@@ -135,4 +165,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</section>
