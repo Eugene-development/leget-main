@@ -122,6 +122,20 @@
 		</EditableField>
 	</div>
 
+	<!--
+		Живая волна. Слой РОВНО ОДИН: кромка — единая непрерывная кривая.
+		Второй слой той же заливки здесь не годится даже как «рябь» — его гребни
+		проступают сквозь основную волну отдельными бугорками и ломают линию.
+
+		Динамика собирается двумя вложенными трансформациями, чтобы они не
+		перебивали друг друга: дрейф по X на самом пути, покачивание по Y на
+		обёртке <g>.
+
+		Путь периодичен (период 1440) и нарисован на удвоенную ширину viewBox,
+		а дрейф равен ровно периоду — цикл замыкается бесшовно, лишнее обрезает
+		viewBox. Низ залит до y=140, с запасом за нижнюю кромку: при покачивании
+		вверх снизу не появляется щель.
+	-->
 	<div class="pointer-events-none absolute inset-x-0 bottom-0" aria-hidden="true">
 		<svg
 			class="hr-wave block h-16 w-full sm:h-20 lg:h-28"
@@ -130,10 +144,12 @@
 			style="--hr-wave: {palette.wave}"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<path
-				class="hr-wave-front"
-				d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
-			/>
+			<g class="hr-wave-bob">
+				<path
+					class="hr-wave-front"
+					d="M0 76C240 56 480 56 720 76C960 96 1200 96 1440 76C1680 56 1920 56 2160 76C2400 96 2640 96 2880 76V140H0Z"
+				/>
+			</g>
 		</svg>
 	</div>
 </section>
@@ -141,6 +157,41 @@
 <style>
 	.hr-wave-front {
 		fill: var(--hr-wave);
+		/* Анимируем только transform — слой уезжает в композитор, без перерисовок. */
+		will-change: transform;
+		/*
+			Дрейф ровно на период пути: последний кадр совпадает с первым,
+			шва на стыке циклов нет.
+		*/
+		animation: hr-wave-drift 26s linear infinite;
+	}
+
+	/*
+		Покачивание по высоте живёт на обёртке: длительность не кратна дрейфу,
+		поэтому гребень проходит мимо одной и той же точки на разной высоте
+		и движение не выглядит закольцованным.
+	*/
+	.hr-wave-bob {
+		will-change: transform;
+		animation: hr-wave-bob 9s ease-in-out infinite alternate;
+	}
+
+	@keyframes hr-wave-drift {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-1440px);
+		}
+	}
+
+	@keyframes hr-wave-bob {
+		from {
+			transform: translateY(-7px);
+		}
+		to {
+			transform: translateY(7px);
+		}
 	}
 
 	/* Классы глобальные: часть анимируемых узлов — обёртки <EditableField>. */
@@ -201,6 +252,13 @@
 			animation: none;
 			opacity: 1;
 			transform: none;
+		}
+
+		/* Волна остаётся статичной, но силуэт и стык секций не меняются. */
+		.hr-wave-front,
+		.hr-wave-bob {
+			animation: none;
+			will-change: auto;
 		}
 	}
 </style>
