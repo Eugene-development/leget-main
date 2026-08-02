@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.1.1.3 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -106,8 +107,11 @@
 
 <!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
 
+<!-- lg:h-full — ровно высота .hero-wrapper (100dvh − banner − header).
+     Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
+     контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
-	class="relative flex min-h-0 lg:min-h-[calc(100vh-var(--header-h,80px))] w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-white'}"
+	class="relative flex min-h-0 lg:h-full w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-white'}"
 >
 	<!-- Фоновое изображение с плавным переходом -->
 	<div class="absolute inset-0 z-0">
@@ -129,9 +133,9 @@
 		></div>
 	</div>
 
-	<div class="relative z-10 mx-auto flex min-h-0 lg:min-h-[calc(100vh-var(--header-h,80px)-40px)] w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:px-12 xl:px-16">
+	<div class="hero-shell relative z-10 mx-auto flex min-h-0 lg:h-full w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:px-12 xl:px-16">
 		<!-- Логотип сверху -->
-		<div class="flex w-full items-center justify-between pb-4">
+		<div class="hero-head flex w-full items-center justify-between pb-4">
 			{#if data?.logoUrl || isEditable}
 				<div class="w-24 transition-all duration-300 hover:scale-[1.03] md:w-32">
 					<EditableField
@@ -144,10 +148,12 @@
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
+								<!-- max-h обязателен: без него квадратный логотип растягивается
+								     до ширины бокса (128px) и выдавливает контент вниз. -->
 								<img
 									src={displayValue}
 									alt={String(data?.logoAlt ?? 'Логотип')}
-									class="relative w-full object-contain {isLight ? '' : 'brightness-0 invert filter'}"
+									class="relative w-full max-h-12 object-contain md:max-h-16 {isLight ? '' : 'brightness-0 invert filter'}"
 								/>
 							{:else if isEditable}
 								<div class="rounded-xl border border-dashed border-white/20 bg-white/5 p-3 text-[10px] font-bold tracking-widest text-white/50 uppercase backdrop-blur-md">
@@ -161,7 +167,7 @@
 		</div>
 
 		<!-- Главный грид -->
-		<div class="my-auto grid grid-cols-1 items-center gap-6 py-4 sm:py-6 lg:grid-cols-12 lg:gap-10 xl:gap-14">
+		<div class="hero-grid my-auto grid grid-cols-1 items-center gap-6 py-4 sm:py-6 lg:grid-cols-12 lg:gap-10 xl:gap-14">
 			<!-- Левая колонка: Описание скилла и фабрики -->
 			<div class="flex flex-col items-start select-none lg:col-span-6">
 				<!-- Заголовок страницы / Слоган -->
@@ -342,6 +348,44 @@
 </section>
 
 <style>
+	/* ── Компактный режим для невысоких десктопов ────────────────────────────
+	   Компонент живёт в боксе фиксированной высоты (.hero-wrapper в ../index.svelte,
+	   overflow-hidden), поэтому при нехватке места низ контента обрезается.
+	   Ниже 920px поджимаем вертикальные отступы каркаса.
+	   Свойства не в @layer, поэтому перекрывают Tailwind-утилиты на элементах. */
+	@media (min-width: 1024px) and (max-height: 920px) {
+		.hero-shell {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+		}
+
+		.hero-head {
+			padding-bottom: 0.5rem;
+		}
+
+		.hero-grid {
+			padding-top: 0.75rem;
+			padding-bottom: 0.75rem;
+		}
+
+		.hero-head :global(img) {
+			max-height: 2.5rem;
+		}
+	}
+
+	/* Второй уровень — совсем низкие окна (ноутбуки 1366×768 и подобные). */
+	@media (min-width: 1024px) and (max-height: 800px) {
+		.hero-shell {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+
+		.hero-grid {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+	}
+
 	/* Тонкая сетка поверх фона для технологичного стиля */
 	.bg-radial-mesh {
 		background-image: radial-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 0);

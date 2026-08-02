@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.21.5.1 — см. docs/architecture/component-articles-map.md
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {

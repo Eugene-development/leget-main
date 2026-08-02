@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';

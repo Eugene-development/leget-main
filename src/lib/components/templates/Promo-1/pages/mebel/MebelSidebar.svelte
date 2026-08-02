@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикулы: 1.16.1.1, 1.17.1.1, 1.18.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { saveComponentData, toggleCategory, type EditContext } from '$lib/utils/page-edit';

@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.1.3.2 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';

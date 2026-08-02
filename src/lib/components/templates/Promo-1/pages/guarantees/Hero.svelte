@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.9.1.1 — см. docs/architecture/component-articles-map.md
 	import PageHero from '../_shared/PageHero.svelte';
 	import type { HeroPalette } from '../_shared/hero';
 	import type { EditContext } from '$lib/utils/page-edit';

@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.18.4.1 — см. docs/architecture/component-articles-map.md
 
 	let {
 		data = {}

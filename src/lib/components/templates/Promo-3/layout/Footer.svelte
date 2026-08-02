@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 3.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	let { data }: { data: Record<string, unknown> } = $props();
 
 	const siteName    = $derived(typeof data?.siteName    === 'string' ? data.siteName    : 'PLITKA');

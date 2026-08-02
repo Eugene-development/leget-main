@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 2.2.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';

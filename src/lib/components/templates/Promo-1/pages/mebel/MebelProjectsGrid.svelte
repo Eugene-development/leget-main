@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.17.3.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 
 	let {

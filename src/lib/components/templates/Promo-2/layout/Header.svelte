@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 2.М.1.1 — см. docs/architecture/component-articles-map.md
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 

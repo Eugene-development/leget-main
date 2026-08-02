@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { invalidateAll, goto } from '$app/navigation';
 	import { cubicOut } from 'svelte/easing';

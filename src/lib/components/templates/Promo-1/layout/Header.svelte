@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.М.1.1 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/stores';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';

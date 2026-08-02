@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикулы: 3.2.6.1, 3.2.6.2 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 

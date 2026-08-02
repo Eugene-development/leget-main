@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.19.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 

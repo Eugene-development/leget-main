@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.1.1.2 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -178,8 +179,7 @@
 		{
 			id: 'scandi',
 			name: 'Сканди',
-			description:
-				'Натуральное дерево, белые матовые оттенки, максимальная практичность и обилие естественного света.',
+			description: 'Натуральное дерево, белые матовые оттенки и обилие естественного света.',
 			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
 			hotspots: [
 				{
@@ -374,11 +374,11 @@
 
 	<!-- Основной контент -->
 	<div
-		class="relative z-10 mx-auto flex min-h-0 w-full max-w-screen-2xl flex-col justify-between px-4 pt-4 pb-8 sm:px-6 sm:py-8 md:px-8 lg:h-full lg:px-12 xl:px-16"
+		class="hero-shell relative z-10 mx-auto flex min-h-0 w-full max-w-screen-2xl flex-col justify-between px-4 pt-4 pb-8 sm:px-6 sm:py-8 md:px-8 lg:h-full lg:px-12 xl:px-16"
 	>
 		<!-- Главный 12-колоночный грид -->
 		<div
-			class="my-auto grid grid-cols-1 items-center gap-6 py-1 lg:py-2 lg:grid-cols-12 lg:gap-10 xl:gap-12"
+			class="hero-grid my-auto grid grid-cols-1 items-center gap-6 py-1 lg:grid-cols-12 lg:gap-10 lg:py-2 xl:gap-12"
 		>
 			<!-- Левая колонка (Контент) -->
 			<div class="flex flex-col items-start select-none lg:col-span-6">
@@ -442,7 +442,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="font-sans-premium mb-5 max-w-2xl text-base leading-relaxed font-normal transition-colors duration-500 md:text-lg {isLight
+							class="hero-desc font-sans-premium mb-5 max-w-2xl text-base leading-relaxed font-normal transition-colors duration-500 md:text-lg {isLight
 								? 'text-slate-600'
 								: 'hero-description text-slate-300'}"
 						>
@@ -452,7 +452,7 @@
 				</EditableField>
 
 				<!-- Кнопка с градиентом и интерактивным эффектом -->
-				<div class="mb-6 flex w-full items-center sm:w-auto">
+				<div class="hero-cta mb-6 flex w-full items-center sm:w-auto">
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
@@ -506,7 +506,12 @@
 				</div>
 
 				<!-- Карточки доверия (Trust Badges - супер-компактные, 6 штук) -->
-				<div class="grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+				<!-- На lg колонка контента сужается вдвое (lg:col-span-6), и в три
+				     колонки карточкам остаётся ~90px под текст — возвращаемся к двум,
+				     три включаем обратно на xl, где ширины снова хватает. -->
+				<div
+					class="hero-features grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-2 xl:grid-cols-3"
+				>
 					<!-- Карточка 1 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
@@ -534,14 +539,14 @@
 						</div>
 						<div class="min-w-0">
 							<div
-								class="truncate text-xs font-bold transition-colors duration-500 sm:text-sm {isLight
+								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
 									? 'text-slate-800'
 									: 'text-white'}"
 							>
 								10+ лет гарантии
 							</div>
 							<div
-								class="truncate text-[10px] transition-colors duration-500 sm:text-xs {isLight
+								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
 									? 'text-slate-500'
 									: 'text-slate-400'}"
 							>
@@ -576,14 +581,14 @@
 						</div>
 						<div class="min-w-0">
 							<div
-								class="truncate text-xs font-bold transition-colors duration-500 sm:text-sm {isLight
+								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
 									? 'text-slate-800'
 									: 'text-white'}"
 							>
 								Своя фабрика
 							</div>
 							<div
-								class="truncate text-[10px] transition-colors duration-500 sm:text-xs {isLight
+								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
 									? 'text-slate-500'
 									: 'text-slate-400'}"
 							>
@@ -618,14 +623,14 @@
 						</div>
 						<div class="min-w-0">
 							<div
-								class="truncate text-xs font-bold transition-colors duration-500 sm:text-sm {isLight
+								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
 									? 'text-slate-800'
 									: 'text-white'}"
 							>
 								Проект за 2 часа
 							</div>
 							<div
-								class="truncate text-[10px] transition-colors duration-500 sm:text-xs {isLight
+								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
 									? 'text-slate-500'
 									: 'text-slate-400'}"
 							>
@@ -660,14 +665,14 @@
 						</div>
 						<div class="min-w-0">
 							<div
-								class="truncate text-xs font-bold transition-colors duration-500 sm:text-sm {isLight
+								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
 									? 'text-slate-800'
 									: 'text-white'}"
 							>
 								Рассрочка 0%
 							</div>
 							<div
-								class="truncate text-[10px] transition-colors duration-500 sm:text-xs {isLight
+								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
 									? 'text-slate-500'
 									: 'text-slate-400'}"
 							>
@@ -708,14 +713,14 @@
 						</div>
 						<div class="min-w-0">
 							<div
-								class="truncate text-xs font-bold transition-colors duration-500 sm:text-sm {isLight
+								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
 									? 'text-slate-800'
 									: 'text-white'}"
 							>
 								Бесплатный замер
 							</div>
 							<div
-								class="truncate text-[10px] transition-colors duration-500 sm:text-xs {isLight
+								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
 									? 'text-slate-500'
 									: 'text-slate-400'}"
 							>
@@ -756,14 +761,14 @@
 						</div>
 						<div class="min-w-0">
 							<div
-								class="truncate text-xs font-bold transition-colors duration-500 sm:text-sm {isLight
+								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
 									? 'text-slate-800'
 									: 'text-white'}"
 							>
 								Сборка за 1 день
 							</div>
 							<div
-								class="truncate text-[10px] transition-colors duration-500 sm:text-xs {isLight
+								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
 									? 'text-slate-500'
 									: 'text-slate-400'}"
 							>
@@ -777,7 +782,7 @@
 			<!-- Правая колонка (Интерактивный виджет выбора стиля - увеличенный размер) -->
 			<div class="flex w-full items-center justify-center lg:col-span-6">
 				<div
-					class="relative flex w-full max-w-lg flex-col gap-6 overflow-hidden rounded-3xl border p-6 shadow-2xl backdrop-blur-2xl transition-all duration-300 xl:max-w-[540px] {isLight
+					class="hero-card relative flex w-full max-w-lg flex-col gap-6 overflow-hidden rounded-3xl border p-6 shadow-2xl backdrop-blur-2xl transition-all duration-300 xl:max-w-[540px] {isLight
 						? 'border-slate-200 bg-white/90 hover:border-slate-300'
 						: 'border-white/10 bg-slate-900/60 hover:border-white/15'}"
 				>
@@ -826,7 +831,7 @@
 
 					<!-- Контейнер изображения с интерактивными точками (Большой классический формат 4:3) -->
 					<div
-						class="group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-slate-950"
+						class="hero-media group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-slate-950"
 					>
 						{#key activeStyleIndex}
 							<img
@@ -900,15 +905,13 @@
 							</div>
 						{/if}
 					</div>
-
-
 				</div>
 			</div>
 		</div>
 
 		<!-- Нижний блок (Бренды с капсульным эффектом - просторный и премиальный) -->
 		<div
-			class="mt-4 flex w-full flex-col items-center justify-between gap-5 border-t pt-4 pb-3 transition-colors duration-500 md:flex-row {isLight
+			class="hero-partners mt-4 flex w-full flex-col items-center justify-between gap-5 border-t pt-4 pb-3 transition-colors duration-500 md:flex-row {isLight
 				? 'border-slate-200'
 				: 'border-white/10'}"
 		>
@@ -920,13 +923,13 @@
 				<span class="h-3 w-0.5 rounded-full bg-sky-500"></span>
 				Наши ключевые партнеры:
 			</span>
-			<div class="flex flex-wrap items-center justify-center gap-3.5 sm:gap-4.5">
+			<div class="hero-capsules flex flex-wrap items-center justify-center gap-3.5 sm:gap-4.5">
 				{#each brands as brand}
 					<a
 						href={brand.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="brand-capsule flex items-center justify-center rounded-xl border px-5 py-2.5 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 {isLight
+						class="brand-capsule hero-capsule flex items-center justify-center rounded-xl border px-5 py-2.5 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 {isLight
 							? 'border-slate-200 bg-white/70 shadow-sm hover:border-sky-500/30 hover:bg-white'
 							: 'border-white/5 bg-white/5 opacity-60 hover:border-sky-500/20 hover:bg-white/10 hover:opacity-100'}"
 					>
@@ -945,6 +948,94 @@
 </section>
 
 <style>
+	/* ── Компактный режим для невысоких десктопов ────────────────────────────
+	   Компонент живёт в боксе фиксированной высоты (.hero-wrapper в ../index.svelte,
+	   overflow-hidden): секция уже ровно lg:h-full, но контент выше неё, и низ
+	   полосы партнёров обрезался (на 1440×900 — 39px реального контента).
+	   Поджимаем ритм каркаса и высоту медиа-блока в карточке справа —
+	   именно он главный потребитель высоты (aspect-[4/3] ≈ 368px).
+	   Свойства не в @layer, поэтому перекрывают Tailwind-утилиты на элементах. */
+	@media (min-width: 1024px) and (max-height: 920px) {
+		.hero-shell {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+		}
+
+		.hero-partners {
+			margin-top: 0.5rem;
+			padding-top: 0.5rem;
+			padding-bottom: 0.375rem;
+		}
+
+		.hero-media {
+			max-height: 18rem;
+		}
+	}
+
+	/* Второй уровень — совсем низкие окна (ноутбуки 1366×768 и подобные). */
+	@media (min-width: 1024px) and (max-height: 800px) {
+		.hero-shell {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+
+		.hero-grid {
+			padding-top: 0.25rem;
+			padding-bottom: 0.25rem;
+		}
+
+		.hero-card {
+			gap: 1rem;
+			padding: 1rem;
+		}
+
+		.hero-media {
+			max-height: 12rem;
+		}
+
+		/* Капсул брендов десять, и на узких десктопах они переносятся
+		   на две строки — поджимаем их вместе с шагом переноса. */
+		.hero-capsules {
+			gap: 0.75rem;
+		}
+
+		.hero-capsule {
+			padding: 0.375rem 1rem;
+		}
+
+		/* На этой высоте левая колонка становится выше правой карточки
+		   и начинает задавать высоту грида — поджимаем и её ритм. */
+		.hero-desc {
+			margin-bottom: 0.75rem;
+		}
+
+		.hero-cta {
+			margin-bottom: 0.625rem;
+		}
+
+		/* Подписи в карточках переносятся на две строки (вместо обрезки
+		   многоточием), поэтому сетка выше — компенсируем шагом и паддингом. */
+		.hero-features {
+			gap: 0.5rem;
+		}
+
+		.hero-features > div {
+			padding: 0.5rem;
+			gap: 0.5rem;
+		}
+
+		/* Иконка поменьше и подпись на шрифт мельче отдают ширину тексту —
+		   часть подписей укладывается обратно в одну строку. */
+		.hero-features > div > div:first-child {
+			height: 2rem;
+			width: 2rem;
+		}
+
+		.hero-feature-sub {
+			font-size: 0.6875rem;
+		}
+	}
+
 	/* Кастомные шрифты и эффекты */
 	/* Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte */
 

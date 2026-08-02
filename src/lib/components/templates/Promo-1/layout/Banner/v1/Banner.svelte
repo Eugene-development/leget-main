@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.Б.1.1 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/stores';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';

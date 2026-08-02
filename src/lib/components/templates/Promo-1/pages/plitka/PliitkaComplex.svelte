@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.23.6.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';

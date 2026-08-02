@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.1.1.4 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -51,8 +52,11 @@
 
 <!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
 
+<!-- lg:h-full — ровно высота .hero-wrapper (100dvh − banner − header).
+     Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
+     контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
-	class="relative flex min-h-0 lg:min-h-[calc(100vh-var(--header-h,80px))] w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-zinc-100 text-zinc-900' : 'bg-black text-white'}"
+	class="relative flex min-h-0 lg:h-full w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-zinc-100 text-zinc-900' : 'bg-black text-white'}"
 >
 	<!-- Задний технологичный план (Бруталистские оси координат и градиентная точка) -->
 	<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -60,9 +64,10 @@
 		<div class="absolute inset-y-0 left-1/2 w-px {isLight ? 'bg-zinc-300/40' : 'bg-zinc-800/30'}"></div>
 		<div class="absolute inset-x-0 top-1/2 h-px {isLight ? 'bg-zinc-300/40' : 'bg-zinc-800/30'}"></div>
 		
-		<!-- Координатные точки сетки -->
-		<div class="absolute left-8 top-8 text-[9px] font-mono opacity-25 tracking-widest uppercase">LEGET // GRID_SYSTEM_V4</div>
-		<div class="absolute right-8 bottom-8 text-[9px] font-mono opacity-25 tracking-widest">SCALE 1:15 | AXIS_X_Y</div>
+		<!-- Координатных меток сетки здесь больше нет: обе жили на absolute-углах
+		     (left-8/top-8 и right-8/bottom-8) и накладывались на реальный контент —
+		     верхняя на логотип, нижняя на логотипы брендов. Теперь они внутри
+		     .hero-head и .hero-partners соответственно (см. ниже). -->
 
 		<!-- Динамический блик мудборда -->
 		<div
@@ -71,10 +76,10 @@
 		></div>
 	</div>
 
-	<div class="relative z-10 mx-auto flex min-h-0 lg:min-h-[calc(100vh-var(--header-h,80px)-40px)] w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:px-12 xl:px-16">
-		
+	<div class="hero-shell relative z-10 mx-auto flex min-h-0 lg:h-full w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:px-12 xl:px-16">
+
 		<!-- Шапка / Логотип -->
-		<div class="flex w-full items-center justify-between pb-6">
+		<div class="hero-head flex w-full items-center justify-between pb-6">
 			{#if data?.logoUrl || isEditable}
 				<div class="w-24 transition-all duration-300 hover:scale-[1.02] md:w-32">
 					<EditableField
@@ -87,10 +92,12 @@
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
+								<!-- max-h обязателен: без него квадратный логотип растягивается
+								     до ширины бокса (128px) и выдавливает контент вниз. -->
 								<img
 									src={displayValue}
 									alt={String(data?.logoAlt ?? 'Логотип')}
-									class="relative w-full object-contain {isLight ? '' : 'brightness-0 invert filter'}"
+									class="relative w-full max-h-12 object-contain md:max-h-16 {isLight ? '' : 'brightness-0 invert filter'}"
 								/>
 							{:else if isEditable}
 								<div class="rounded-none border border-zinc-500 bg-zinc-800/5 p-3 text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
@@ -101,10 +108,18 @@
 					</EditableField>
 				</div>
 			{/if}
+
+			<!-- Координатная метка сетки. Вынесена из фонового слоя в шапку:
+			     правая часть строки всё равно пустая, а на left-8/top-8 метка
+			     перекрывалась логотипом. ml-auto держит её справа и тогда,
+			     когда логотип не задан (в строке остаётся один элемент). -->
+			<div class="ml-auto font-mono text-[9px] tracking-widest uppercase opacity-25 select-none pointer-events-none">
+				LEGET // GRID_SYSTEM_V4
+			</div>
 		</div>
 
 		<!-- Асимметричный Бруталистский Грид -->
-		<div class="my-auto grid grid-cols-1 items-center gap-12 py-4 sm:py-6 lg:grid-cols-12">
+		<div class="hero-grid my-auto grid grid-cols-1 items-center gap-12 py-4 sm:py-6 lg:grid-cols-12">
 			
 			<!-- Левая колонка: Архитектурная журнальная верстка -->
 			<div class="flex flex-col items-start select-none lg:col-span-5 border-l-2 pl-6 sm:pl-8 {isLight ? 'border-zinc-300' : 'border-zinc-800'}">
@@ -137,7 +152,7 @@
 					class="block w-full"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="font-display mb-6 text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight ? 'text-black' : 'text-white'}">
+						<h1 class="hero-title font-display mb-6 text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight ? 'text-black' : 'text-white'}">
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -154,14 +169,14 @@
 					class="block w-full max-w-lg"
 				>
 					{#snippet children(displayValue)}
-						<p class="font-sans-premium mb-8 text-sm leading-relaxed font-light md:text-base {isLight ? 'text-zinc-600' : 'text-zinc-300'}">
+						<p class="hero-desc font-sans-premium mb-8 text-sm leading-relaxed font-light md:text-base {isLight ? 'text-zinc-600' : 'text-zinc-300'}">
 							{displayValue}
 						</p>
 					{/snippet}
 				</EditableField>
 
 				<!-- Бруталистская кнопка с прямыми углами и резкой тенью -->
-				<div class="mb-8 flex w-full items-center sm:w-auto">
+				<div class="hero-cta mb-8 flex w-full items-center sm:w-auto">
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
@@ -206,7 +221,7 @@
 			</div>
 
 			<!-- Правая колонка: Свободный творческий мудборд (Moodboard Canvas) -->
-			<div class="relative flex w-full h-[480px] sm:h-[520px] lg:col-span-7 items-center justify-center">
+			<div class="hero-mock relative flex w-full h-[480px] sm:h-[520px] lg:col-span-7 items-center justify-center">
 				<div class="relative w-full h-full max-w-lg sm:max-w-xl">
 
 					<!-- КАРТОЧКА 1: Архитектурный план (Сзади) -->
@@ -295,7 +310,7 @@
 		</div>
 
 		<!-- Нижний бренд-бар -->
-		<div class="mt-6 flex w-full flex-col items-center justify-between gap-5 border-t pt-6 pb-2 md:flex-row {isLight ? 'border-zinc-300' : 'border-zinc-800'}">
+		<div class="hero-partners mt-6 flex w-full flex-col items-center justify-between gap-5 border-t pt-6 pb-2 md:flex-row {isLight ? 'border-zinc-300' : 'border-zinc-800'}">
 			<span class="font-mono text-[9px] uppercase tracking-[0.2em] opacity-50">LEGET PARTNERS & HARDWARE:</span>
 			<div class="flex flex-wrap items-center gap-4">
 				{#each brands as brand}
@@ -312,6 +327,13 @@
 						/>
 					</a>
 				{/each}
+
+				<!-- Координатная метка сетки. Вынесена из фонового слоя в полосу
+				     партнёров: на right-8/bottom-8 она ложилась поверх логотипов
+				     брендов. Здесь остаётся у правого края, но в потоке. -->
+				<span class="ml-2 font-mono text-[9px] tracking-widest opacity-25 select-none pointer-events-none">
+					SCALE 1:15 | AXIS_X_Y
+				</span>
 			</div>
 		</div>
 
@@ -319,6 +341,68 @@
 </section>
 
 <style>
+	/* ── Компактный режим для невысоких десктопов ────────────────────────────
+	   Компонент живёт в боксе фиксированной высоты (.hero-wrapper в ../index.svelte,
+	   overflow-hidden), поэтому при нехватке места низ контента обрезается.
+	   Ниже 920px поджимаем вертикальные отступы каркаса.
+	   Свойства не в @layer, поэтому перекрывают Tailwind-утилиты на элементах. */
+	@media (min-width: 1024px) and (max-height: 920px) {
+		.hero-shell {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+		}
+
+		.hero-head {
+			padding-bottom: 0.5rem;
+		}
+
+		.hero-grid {
+			padding-top: 0.75rem;
+			padding-bottom: 0.75rem;
+		}
+
+		.hero-head :global(img) {
+			max-height: 2.5rem;
+		}
+	}
+
+	/* Второй уровень — совсем низкие окна (ноутбуки 1366×768 и подобные).
+	   Основной потребитель высоты здесь — мокап справа с фиксированной
+	   h-[520px], поэтому его ужимаем вместе с ритмом левой колонки. */
+	@media (min-width: 1024px) and (max-height: 800px) {
+		.hero-shell {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+
+		.hero-grid {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+
+		.hero-mock {
+			height: 24rem;
+		}
+
+		.hero-title {
+			margin-bottom: 0.75rem;
+			font-size: 2.5rem;
+		}
+
+		.hero-desc {
+			margin-bottom: 1rem;
+		}
+
+		.hero-cta {
+			margin-bottom: 1rem;
+		}
+
+		.hero-partners {
+			margin-top: 0.5rem;
+			padding-top: 1rem;
+		}
+	}
+
 	:global(.font-sans-premium) {
 		font-family: 'Jost', sans-serif !important;
 	}

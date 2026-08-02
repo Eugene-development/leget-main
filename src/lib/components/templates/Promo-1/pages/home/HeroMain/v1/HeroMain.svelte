@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.1.1.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
@@ -53,7 +54,7 @@
 	}
 </script>
 
-<section class="relative w-full min-h-full flex items-start justify-center pt-8 md:pt-10 overflow-hidden text-gray-900">
+<section class="relative w-full min-h-full flex items-center justify-center py-6 md:py-8 overflow-hidden text-gray-900">
 	<!-- Фоновое изображение -->
 	<div class="absolute inset-0 z-0">
 		<ImageFallback
@@ -99,14 +100,16 @@
 	{/if}
 
 	<!-- Основной контент -->
-	<div class="relative z-10 w-full max-w-4xl px-4 py-8 md:px-8 md:py-16 xl:px-4 xl:py-16">
+	<div class="hero-shell relative z-10 w-full max-w-4xl px-4 py-6 md:px-8 md:py-10 xl:px-4 xl:py-12">
 		<!-- Стеклянная панель -->
 		<div class="glass-panel w-full rounded-3xl border border-white/40 shadow-2xl overflow-hidden flex flex-col items-center">
 			<!-- Контент -->
-			<div class="px-6 py-12 md:px-12 md:py-14 text-center max-w-3xl mx-auto flex flex-col items-center">
-				<!-- Логотип -->
+			<div class="hero-content px-6 py-8 md:px-12 md:py-10 text-center max-w-3xl mx-auto flex flex-col items-center">
+				<!-- Логотип. Габариты ограничены и по ширине, и по высоте: панель живёт
+				     в боксе фиксированной высоты (см. .hero-wrapper в ../index.svelte),
+				     поэтому квадратный логотип без max-h выдавливал контент за нижний край. -->
 				{#if data?.logoUrl || isEditable}
-					<div class="mb-8 w-32 md:w-48">
+					<div class="hero-logo mb-6 w-24 md:w-32">
 						<EditableField
 							fieldKey="HeroMain.logoUrl"
 							label="Логотип (URL)"
@@ -120,10 +123,10 @@
 									<ImageFallback
 										src={displayValue || 'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
 										alt={String(data?.logoAlt ?? 'Логотип')}
-										class="relative w-full rounded-2xl object-contain"
+										class="relative mx-auto w-full max-h-16 md:max-h-20 rounded-2xl object-contain"
 									/>
 								{:else if isEditable}
-									<div class="border-2 border-dashed border-slate-400/30 rounded-2xl p-6 text-xs font-bold uppercase tracking-widest text-slate-500/50 backdrop-blur-sm bg-white/10">
+									<div class="border-2 border-dashed border-slate-400/30 rounded-2xl p-4 text-[10px] font-bold uppercase tracking-widest text-slate-500/50 backdrop-blur-sm bg-white/10">
 										Логотип
 									</div>
 								{/if}
@@ -158,7 +161,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="text-3xl md:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-none mb-6">
+						<h1 class="hero-title text-3xl md:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-none mb-6">
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -175,7 +178,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="text-sm md:text-lg text-slate-800 max-w-2xl mx-auto mb-12 font-medium hero-description">
+						<p class="text-sm md:text-lg text-slate-800 max-w-2xl mx-auto mb-8 md:mb-10 font-medium hero-description">
 							{displayValue}
 						</p>
 					{/snippet}
@@ -210,9 +213,9 @@
 			</div>
 
 			<!-- Секция брендов -->
-			<div class="w-full flex px-6 pb-8 md:px-12 md:pb-12 pt-8 justify-center">
+			<div class="hero-brands w-full flex px-6 pb-6 md:px-12 md:pb-8 pt-6 md:pt-8 justify-center">
 				<div class="w-full flex flex-col items-center">
-					<p class="hidden md:block text-xs text-slate-700 mb-8 font-semibold uppercase tracking-widest">
+					<p class="hero-brands-label hidden md:block text-xs text-slate-700 mb-6 font-semibold uppercase tracking-widest">
 						РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:
 					</p>
 					<div class="w-full flex flex-row justify-center gap-6 md:grid md:grid-cols-4 md:gap-12 items-center">
@@ -256,6 +259,55 @@
 	@media (min-width: 768px) {
 		.hero-description {
 			line-height: 1.8;
+		}
+	}
+
+	/* ── Компактный режим для невысоких десктопов ────────────────────────────
+	   На lg+ компонент живёт в боксе фиксированной высоты
+	   (.hero-wrapper: 100dvh − баннер − хедер, overflow-hidden), поэтому панель
+	   не может «растечься» вниз — при нехватке места её низ обрезается.
+	   Порог 920px — с него панель с логотипом (≈660px) начинает помещаться
+	   в доступную высоту с симметричными полями; ниже поджимаем вертикальный
+	   ритм и потолок логотипа, иначе панель прижимается к низу и обрезается.
+	   Свойства не в @layer, поэтому перекрывают Tailwind-утилиты на элементах. */
+	@media (min-width: 1024px) and (max-height: 920px) {
+		.hero-shell {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+		}
+
+		.hero-content {
+			padding-top: 1.5rem;
+			padding-bottom: 1.5rem;
+		}
+
+		.hero-logo {
+			width: 5rem;
+			margin-bottom: 0.75rem;
+		}
+
+		.hero-logo :global(img),
+		.hero-logo :global([role='img']) {
+			max-height: 3rem;
+		}
+
+		.hero-title {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+		}
+
+		.hero-description {
+			line-height: 1.6;
+			margin-bottom: 1.5rem;
+		}
+
+		.hero-brands {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+		}
+
+		.hero-brands-label {
+			margin-bottom: 1rem;
 		}
 	}
 
