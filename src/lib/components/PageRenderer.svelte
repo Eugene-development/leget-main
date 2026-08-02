@@ -51,6 +51,19 @@
 		headerDataState = headerData ?? {};
 	});
 
+	// Зеркало списка блоков — по той же причине, что и headerDataState.
+	// `components` приходит пропсом из серверной загрузки: это обычные объекты, а не
+	// $state-прокси. Запись `data = updated` внутри блока уходит по цепочке bind: в
+	// `element.data`, но у обычного объекта нет сигнала — ни один $derived, читающий
+	// `data`, не пересчитывался, и изменение проявлялось только после invalidateAll
+	// или навигации. Из-за этого «зависал» переключатель темы у HeroMain (единственная
+	// функция, которой нужен именно write-back в data: текст рисуется из editStore,
+	// а версия — из локального selectedVersion). Через $state-зеркало запись видна сразу.
+	let componentsState = $state<PageComponent[]>([]);
+	$effect(() => {
+		componentsState = components ?? [];
+	});
+
 	const componentsWithSwitcher = new Set([
 		'HeroMain',
 		'Message',
@@ -125,13 +138,13 @@
 	// Footer (Promo-1) — теперь page-компонент на глобальной странице '__global__':
 	// ищем его среди компонентов. Если есть — рендерим из него (с настоящим id/`_componentId`),
 	// иначе fallback на старый footerData (для шаблонов без компонентного футера).
-	const footerComponent = $derived(components.find((c) => c.type === 'Footer') ?? null);
+	const footerComponent = $derived(componentsState.find((c) => c.type === 'Footer') ?? null);
 	// Апсёрт футера всегда идёт на глобальную страницу, независимо от текущей.
 	const footerEditContext = $derived(
 		editContext ? { ...editContext, pageId: 'slug:__global__', slug: '__global__' } : null
 	);
 	// Компоненты текущей страницы без футера — он рендерится отдельно (внизу).
-	const pageComponents = $derived(components.filter((c) => c.type !== 'Footer'));
+	const pageComponents = $derived(componentsState.filter((c) => c.type !== 'Footer'));
 </script>
 
 {#if Banner}

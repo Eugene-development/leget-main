@@ -6,6 +6,7 @@
 		type EditContext,
 		type ComponentVariantArticle
 	} from '$lib/utils/page-edit';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { fly, fade } from 'svelte/transition';
@@ -243,93 +244,7 @@
 			</button>
 		{/if}
 		{#if componentType === 'HeroMain' && (selectedVersion === 'v2' || selectedVersion === 'v3' || selectedVersion === 'v4')}
-			<!-- Кнопка переключения темы -->
-			<button
-				type="button"
-				class="order-first relative flex h-[38px] w-[68px] cursor-pointer items-center rounded-full border p-[3px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 {isLight
-					? 'border-slate-300/80 bg-slate-200/60 hover:border-slate-400/80'
-					: 'border-white/10 bg-slate-950/75 hover:border-white/20'}"
-				onclick={toggleTheme}
-				aria-label={isLight ? 'Включить тёмную тему' : 'Включить светлую тему'}
-				title={isLight ? 'Включить тёмную тему' : 'Включить светлую тему'}
-			>
-				<!-- Подложка иконок для наглядности (показывает куда переключать) -->
-				<span
-					class="pointer-events-none absolute left-2.5 flex items-center justify-center opacity-40"
-				>
-					<!-- Sun icon on the left (inactive state in light mode) -->
-					<svg
-						class="h-3.5 w-3.5 text-amber-500"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2.5"
-							d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"
-						/>
-					</svg>
-				</span>
-				<span
-					class="pointer-events-none absolute right-2.5 flex items-center justify-center opacity-40"
-				>
-					<!-- Moon icon on the right (inactive state in dark mode) -->
-					<svg
-						class="h-3.5 w-3.5 text-indigo-400"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2.5"
-							d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-						/>
-					</svg>
-				</span>
-
-				<!-- Подвижный переключатель (Thumb) -->
-				<span
-					class="flex h-[30px] w-[30px] items-center justify-center rounded-full shadow-lg transition-transform duration-300 ease-out {isLight
-						? 'translate-x-[30px] bg-white text-indigo-600 shadow-indigo-500/10'
-						: 'translate-x-0 bg-slate-900 text-amber-400 shadow-amber-500/20'}"
-				>
-					{#if isLight}
-						<!-- Moon icon active -->
-						<svg
-							class="h-4 w-4 text-indigo-600"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2.5"
-								d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-							/>
-						</svg>
-					{:else}
-						<!-- Sun icon active -->
-						<svg
-							class="h-4 w-4 text-amber-400"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2.5"
-								d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"
-							/>
-						</svg>
-					{/if}
-				</span>
-			</button>
+			<ThemeToggle {isLight} onToggle={toggleTheme} class="order-first" />
 		{/if}
 
 		<!-- Контейнер для кнопки Варианты и выпадающего списка -->

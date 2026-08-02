@@ -15,12 +15,15 @@
 	let {
 		article = null,
 		sectionLabel = 'Страница',
-		align = 'right'
+		align = 'right',
+		placement = 'bottom'
 	}: {
 		article?: string | null;
 		sectionLabel?: string;
 		/** Сторона выравнивания тултипа: 'right' (по умолчанию, для правого края) или 'left' (в узких панелях/дрверах). */
 		align?: 'left' | 'right';
+		/** Куда раскрывать тултип: 'bottom' (по умолчанию) или 'top' — когда бейдж стоит у нижнего края блока. */
+		placement?: 'top' | 'bottom';
 	} = $props();
 
 	const TEMPLATE_NAMES: Record<number, string> = { 1: 'Promo-1', 2: 'Promo-2', 3: 'Promo-3' };
@@ -66,7 +69,10 @@
 
 		{#if showHint}
 			<div
-				class="absolute top-full {align === 'right' ? 'right-0' : 'left-0'} z-[300] mt-2 w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
+				class="absolute {placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'} {align ===
+				'right'
+					? 'right-0'
+					: 'left-0'} z-[300] w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
 				role="tooltip"
 				transition:fade={{ duration: 120 }}
 			>
