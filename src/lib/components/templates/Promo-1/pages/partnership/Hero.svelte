@@ -2,6 +2,8 @@
 	// Артикул: 1.6.1.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
 
 	let {
 		data = $bindable(),
@@ -12,6 +14,17 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Брендовая поверхность: нейтральными токенами не описывается, поэтому
+	// светлый вариант — тот же бирюзовый род цвета, но осветлённый, с тёмным текстом.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+	const toggleTheme = createThemeToggle({
+		type: 'PartnershipHero',
+		fallback: 'dark',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -40,22 +53,34 @@
 	меняешь и её, иначе на границе появится полоса (фон body тут другой, #faf9f7).
 -->
 <section
-	class="ph-enter relative isolate overflow-hidden bg-linear-to-br from-sky-600 via-cyan-600 to-teal-600"
+	class="ph-enter relative isolate overflow-hidden {isLight
+		? 'bg-linear-to-br from-sky-50 via-cyan-50 to-teal-50'
+		: 'bg-linear-to-br from-sky-600 via-cyan-600 to-teal-600'}"
 >
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
+
 	<!-- Декор: техническая сетка-ромбы, световые пятна, волосяная линия сверху -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
-			class="absolute inset-0 opacity-30"
+			class="absolute inset-0 {isLight ? 'opacity-20' : 'opacity-30'}"
 			style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
 		></div>
-		<div class="ph-glow absolute -top-32 -left-24 size-112 bg-white/15"></div>
-		<div class="ph-glow absolute top-1/3 -right-24 size-96 bg-teal-300/25"></div>
+		<div
+			class="ph-glow absolute -top-32 -left-24 size-112 {isLight ? 'bg-sky-400/15' : 'bg-white/15'}"
+		></div>
+		<div
+			class="ph-glow absolute top-1/3 -right-24 size-96 {isLight
+				? 'bg-teal-400/15'
+				: 'bg-teal-300/25'}"
+		></div>
 		<div
 			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-white/50 to-transparent"
 		></div>
 	</div>
 
-	<div class="relative mx-auto max-w-7xl px-4 pt-20 pb-32 sm:px-6 sm:pt-28 sm:pb-40 lg:px-8 lg:pb-44">
+	<div
+		class="relative mx-auto max-w-7xl px-4 pt-20 pb-32 sm:px-6 sm:pt-28 sm:pb-40 lg:px-8 lg:pb-44"
+	>
 		<div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
 			<div>
 				<EditableField
@@ -68,10 +93,27 @@
 				>
 					{#snippet children(displayValue)}
 						<div
-							class="inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/12 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] text-white uppercase sm:text-xs"
+							class="inline-flex items-center gap-2.5 rounded-full border {isLight
+								? 'border-slate-900/15'
+								: 'border-white/25'} {isLight
+								? 'bg-white/70'
+								: 'bg-white/12'} px-4 py-2 text-[11px] font-semibold tracking-[0.2em] {isLight
+								? 'text-slate-900'
+								: 'text-white'} uppercase sm:text-xs"
 						>
-							<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+							<svg
+								class="size-4"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+								/>
 							</svg>
 							{displayValue}
 						</div>
@@ -88,7 +130,9 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty text-white sm:text-5xl lg:text-6xl"
+							class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {isLight
+								? 'text-slate-900'
+								: 'text-white'}"
 						>
 							{displayValue}
 						</h1>
@@ -96,22 +140,33 @@
 				</EditableField>
 
 				<div class="ph-rule ph-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="h-px flex-1 bg-white/30"></span>
-					<span class="size-1.5 rotate-45 border border-white/70"></span>
-					<span class="h-px flex-1 bg-white/30"></span>
+					<span class="h-px flex-1 {isLight ? 'bg-slate-900/20' : 'bg-white/30'}"></span>
+					<span
+						class="size-1.5 rotate-45 border {isLight ? 'border-slate-900/40' : 'border-white/70'}"
+					></span>
+					<span class="h-px flex-1 {isLight ? 'bg-slate-900/20' : 'bg-white/30'}"></span>
 				</div>
 
 				<EditableField
 					fieldKey="PartnershipHero.text"
 					label="Описание"
-					value={String(data?.text ?? 'Приглашаем к сотрудничеству дизайнеров интерьеров, ремонтные бригады и продавцов мебели. Выгодные условия и прозрачная система вознаграждений.')}
+					value={String(
+						data?.text ??
+							'Приглашаем к сотрудничеству дизайнеров интерьеров, ремонтные бригады и продавцов мебели. Выгодные условия и прозрачная система вознаграждений.'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('text', v)}
 					class="ph-item ph-d3 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="max-w-xl text-sm/6 text-cyan-50/90 sm:text-base/7">{displayValue}</p>
+						<p
+							class="max-w-xl text-sm/6 sm:text-base/7 {isLight
+								? 'text-slate-600'
+								: 'text-cyan-50/90'}"
+						>
+							{displayValue}
+						</p>
 					{/snippet}
 				</EditableField>
 
@@ -132,7 +187,10 @@
 								{displayValue}
 							{/snippet}
 						</EditableField>
-						<span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+						<span
+							class="transition-transform duration-300 group-hover:translate-x-1"
+							aria-hidden="true">&rarr;</span
+						>
 					</a>
 				</div>
 			</div>
@@ -150,7 +208,9 @@
 						карточкой только градиент секции, размывать нечего.
 					-->
 					<div
-						class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-linear-to-br from-white/20 via-white/12 to-white/8 p-8 ring-1 ring-white/10 ring-inset sm:p-10"
+						class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-linear-to-br {isLight
+							? 'from-white/80 via-white/70 to-white/60'
+							: 'from-white/20 via-white/12 to-white/5'} p-8 ring-1 ring-white/10 ring-inset sm:p-10"
 					>
 						<div
 							class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-white/15 to-transparent"
@@ -160,18 +220,29 @@
 						<div class="relative">
 							<!-- Кавычка-акцент в плитке: задаёт вертикаль карточки, не наезжая на текст -->
 							<div
-								class="flex size-11 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25"
+								class="flex size-11 items-center justify-center rounded-2xl {isLight
+									? 'bg-white/80'
+									: 'bg-white/15'} ring-1 {isLight ? 'ring-slate-900/10' : 'ring-white/25'}"
 								aria-hidden="true"
 							>
-								<svg class="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-									<path d="M9.5 5.5C6.46 5.5 4 7.96 4 11v7.5h7.5V11H7.75c0-1.24 1.01-2.25 2.25-2.25V5.5zm10 0C16.46 5.5 14 7.96 14 11v7.5h7.5V11h-3.75c0-1.24 1.01-2.25 2.25-2.25V5.5z" />
+								<svg
+									class="size-5 {isLight ? 'text-sky-700' : 'text-white'}"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+								>
+									<path
+										d="M9.5 5.5C6.46 5.5 4 7.96 4 11v7.5h7.5V11H7.75c0-1.24 1.01-2.25 2.25-2.25V5.5zm10 0C16.46 5.5 14 7.96 14 11v7.5h7.5V11h-3.75c0-1.24 1.01-2.25 2.25-2.25V5.5z"
+									/>
 								</svg>
 							</div>
 
 							<EditableField
 								fieldKey="PartnershipHero.quote"
 								label="Цитата"
-								value={String(data?.quote ?? 'Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.')}
+								value={String(
+									data?.quote ??
+										'Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.'
+								)}
 								{isEditable}
 								multiline
 								onSave={(v) => saveField('quote', v)}
@@ -179,7 +250,9 @@
 							>
 								{#snippet children(displayValue)}
 									<blockquote
-										class="text-lg leading-relaxed font-medium tracking-[-0.01em] text-pretty text-white sm:text-xl"
+										class="text-lg leading-relaxed font-medium tracking-[-0.01em] text-pretty sm:text-xl {isLight
+											? 'text-slate-900'
+											: 'text-white'}"
 									>
 										{displayValue}
 									</blockquote>
@@ -187,7 +260,7 @@
 							</EditableField>
 
 							<!-- Линия-разделитель и подпись автора под цитатой -->
-							<div class="mt-7 border-t border-white/15 pt-5">
+							<div class="mt-7 border-t {isLight ? 'border-slate-900/10' : 'border-white/15'} pt-5">
 								{#if hasLegacyAuthor}
 									<!--
 										Совместимость: на сайтах, где уже заполнены отдельные поля
@@ -204,7 +277,11 @@
 									>
 										{#snippet children(displayValue)}
 											{#if displayValue}
-												<div class="text-sm font-semibold text-white">{displayValue}</div>
+												<div
+													class="text-sm font-semibold {isLight ? 'text-slate-900' : 'text-white'}"
+												>
+													{displayValue}
+												</div>
 											{/if}
 										{/snippet}
 									</EditableField>
@@ -218,7 +295,11 @@
 									>
 										{#snippet children(displayValue)}
 											{#if displayValue}
-												<div class="text-[11px] font-semibold tracking-[0.16em] text-cyan-100/80 uppercase">
+												<div
+													class="text-[11px] font-semibold tracking-[0.16em] uppercase {isLight
+														? 'text-slate-500'
+														: 'text-cyan-100/80'}"
+												>
 													{displayValue}
 												</div>
 											{/if}
@@ -234,7 +315,13 @@
 										class="block"
 									>
 										{#snippet children(displayValue)}
-											<div class="text-sm font-semibold text-white sm:text-base">{displayValue}</div>
+											<div
+												class="text-sm font-semibold sm:text-base {isLight
+													? 'text-slate-900'
+													: 'text-white'}"
+											>
+												{displayValue}
+											</div>
 										{/snippet}
 									</EditableField>
 								{/if}

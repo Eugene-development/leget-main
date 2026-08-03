@@ -3,6 +3,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct } from '../../theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 	import '../../theme.css';
 
 	let {
@@ -14,6 +16,9 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Ink-блок: дефолт тёмный, тумблер живёт в панели VersionSwitcher.
+	const isLight = $derived(isLightBlock(data, 'dark'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -28,7 +33,10 @@
 	поле справа. Палитра, типографика и анимации общие для страницы (см. ../../theme.ts),
 	отличие от варианта 2 только в композиции.
 -->
-<section class="{ct.section.shell} {ct.section.heroPad} {ct.surface.ink}">
+<section
+	class="{ct.section.shell} {ct.section.heroPad} {ct.surface.ink}"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
 			class="absolute inset-0 bg-[radial-gradient(circle_at_78%_38%,rgba(239,68,68,0.11),transparent_31%),radial-gradient(circle_at_15%_8%,rgba(255,255,255,0.055),transparent_26%)]"

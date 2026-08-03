@@ -2,6 +2,9 @@
 	// Артикул: 1.6.3.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -13,6 +16,17 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
+	// акцентные плитки и кнопки остаются белым по цвету бренда.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+	const toggleTheme = createThemeToggle({
+		type: 'ForManufacturers',
+		fallback: 'dark',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
+
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -22,18 +36,18 @@
 
 	const defaultStats = [
 		{ value: '500+', label: 'агентов' },
-		{ value: '20+',  label: 'лет опыта' },
+		{ value: '20+', label: 'лет опыта' },
 		{ value: '140+', label: 'партнёров' },
-		{ value: '90%',  label: 'конверсия' },
+		{ value: '90%', label: 'конверсия' },
 		{ value: '24/7', label: 'поддержка' },
-		{ value: '100%', label: 'успех' },
+		{ value: '100%', label: 'успех' }
 	];
 
 	const defaultBenefits = [
 		'Продвижение вашей продукции',
 		'Широкая клиентская база',
 		'Профессиональные кураторы',
-		'Маркетинговая поддержка',
+		'Маркетинговая поддержка'
 	];
 
 	async function updateStat(index: number, field: string, value: string) {
@@ -84,8 +98,17 @@
 </script>
 
 <section
-	class="relative isolate overflow-hidden bg-linear-to-br from-slate-800 to-slate-900 py-24 sm:py-28"
+	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28"
+	data-p1-theme={isLight ? 'light' : 'dark'}
 >
+	<!-- Градиентная подложка — только в тёмной теме: на светлой она бы гасила контраст. -->
+	{#if !isLight}
+		<div
+			class="pointer-events-none absolute inset-0 bg-linear-to-br from-slate-800 to-slate-900"
+			aria-hidden="true"
+		></div>
+	{/if}
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<!-- Декор: сетка, красное свечение-акцент, волосяные линии по краям -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="fm-grid"></div>
@@ -112,9 +135,12 @@
 				>
 					{#snippet children(displayValue)}
 						<div
-							class="inline-flex items-center gap-2.5 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] text-red-400 uppercase sm:text-xs"
+							class="p1-accent inline-flex items-center gap-2.5 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
 						>
-							<span class="size-1.5 rounded-full bg-red-400 shadow-[0_0_12px_2px_rgba(248,113,113,0.7)]" aria-hidden="true"></span>
+							<span
+								class="size-1.5 rounded-full bg-red-400 shadow-[0_0_12px_2px_rgba(248,113,113,0.7)]"
+								aria-hidden="true"
+							></span>
 							{displayValue}
 						</div>
 					{/snippet}
@@ -130,7 +156,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-white sm:text-4xl lg:text-5xl"
+							class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -147,20 +173,26 @@
 					class="fm-item fm-d2 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="max-w-xl text-sm/6 text-slate-300 sm:text-base/7">{displayValue}</p>
+						<p class="max-w-xl text-sm/6 p1-body sm:text-base/7">{displayValue}</p>
 					{/snippet}
 				</EditableField> -->
 
 				<div class="fm-item fm-d3 mt-8 space-y-3">
 					{#each benefits as benefit, i}
 						<div
-							class="group flex items-center gap-3.5 rounded-2xl border border-white/10 bg-white/3 px-4 py-3.5 text-slate-200 backdrop-blur-sm transition duration-300 hover:border-red-500/40 hover:bg-white/6"
+							class="group p1-border p1-card p1-body hover:p1-card flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 backdrop-blur-sm transition duration-300 hover:border-red-500/40"
 						>
 							<span
-								class="flex size-8 shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-red-400 ring-1 ring-red-500/25 transition duration-300 group-hover:bg-red-500 group-hover:text-white"
+								class="p1-accent flex size-8 shrink-0 items-center justify-center rounded-xl bg-red-500/15 ring-1 ring-red-500/25 transition duration-300 group-hover:bg-red-500 group-hover:text-white"
 								aria-hidden="true"
 							>
-								<svg class="size-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+								<svg
+									class="size-4.5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2.5"
+								>
 									<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 								</svg>
 							</span>
@@ -197,7 +229,10 @@
 								{displayValue}
 							{/snippet}
 						</EditableField>
-						<span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+						<span
+							class="transition-transform duration-300 group-hover:translate-x-1"
+							aria-hidden="true">&rarr;</span
+						>
 					</a>
 				</div>
 			</div>
@@ -207,7 +242,7 @@
 				<div class="grid grid-cols-2 gap-4">
 					{#each stats as stat, i}
 						<div
-							class="fm-tile group relative overflow-hidden rounded-3xl border border-white/10 bg-white/4 p-6 backdrop-blur-sm transition duration-300 hover:border-red-500/40 hover:bg-white/8 motion-safe:hover:-translate-y-1"
+							class="fm-tile group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 backdrop-blur-sm transition duration-300 hover:border-red-500/40 motion-safe:hover:-translate-y-1"
 							style="--fm-delay: {200 + i * 70}ms"
 						>
 							<div
@@ -220,7 +255,7 @@
 							></div>
 
 							<div
-								class="relative text-4xl font-semibold tracking-[-0.03em] tabular-nums text-white sm:text-5xl"
+								class="p1-title relative text-4xl font-semibold tracking-[-0.03em] tabular-nums sm:text-5xl"
 							>
 								<EditableField
 									fieldKey="ForManufacturers.stats.{i}.value"
@@ -234,7 +269,7 @@
 								</EditableField>
 							</div>
 							<div
-								class="relative mt-2 text-[11px] font-semibold tracking-[0.16em] text-slate-400 uppercase sm:text-xs"
+								class="p1-muted relative mt-2 text-[11px] font-semibold tracking-[0.16em] uppercase sm:text-xs"
 							>
 								<EditableField
 									fieldKey="ForManufacturers.stats.{i}.label"

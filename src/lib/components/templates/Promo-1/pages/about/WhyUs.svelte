@@ -4,6 +4,9 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -15,6 +18,17 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
+	// акцентные плитки и кнопки остаются белым по цвету бренда.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+	const toggleTheme = createThemeToggle({
+		type: 'WhyUs',
+		fallback: 'dark',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
+
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -23,10 +37,26 @@
 	}
 
 	const defaultItems = [
-		{ title: 'Гарантия до 10 лет', text: 'Расширенная гарантия на все виды продукции наших партнёров', color: 'sky' },
-		{ title: 'Рассрочка 0%', text: 'Удобные условия оплаты без переплат и комиссий', color: 'emerald' },
-		{ title: 'Бесплатный проект', text: 'Дизайнерская 3D-визуализация вашей мебели', color: 'violet' },
-		{ title: 'Доставка и монтаж', text: 'Профессиональная сборка и установка "под ключ"', color: 'amber' },
+		{
+			title: 'Гарантия до 10 лет',
+			text: 'Расширенная гарантия на все виды продукции наших партнёров',
+			color: 'sky'
+		},
+		{
+			title: 'Рассрочка 0%',
+			text: 'Удобные условия оплаты без переплат и комиссий',
+			color: 'emerald'
+		},
+		{
+			title: 'Бесплатный проект',
+			text: 'Дизайнерская 3D-визуализация вашей мебели',
+			color: 'violet'
+		},
+		{
+			title: 'Доставка и монтаж',
+			text: 'Профессиональная сборка и установка "под ключ"',
+			color: 'amber'
+		}
 	];
 
 	/**
@@ -76,8 +106,17 @@
 	скачет в конце анимации появления.
 -->
 <section
-	class="relative isolate overflow-hidden bg-linear-to-br from-slate-800 to-slate-900 py-24 sm:py-28"
+	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28"
+	data-p1-theme={isLight ? 'light' : 'dark'}
 >
+	<!-- Градиентная подложка — только в тёмной теме: на светлой она бы гасила контраст. -->
+	{#if !isLight}
+		<div
+			class="pointer-events-none absolute inset-0 bg-linear-to-br from-slate-800 to-slate-900"
+			aria-hidden="true"
+		></div>
+	{/if}
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-grid"></div>
 		<div class="ab-glow absolute -top-40 -left-24 size-112 bg-red-500/15"></div>
@@ -102,7 +141,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-white sm:text-4xl lg:text-5xl"
+						class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 					>
 						{displayValue}
 					</h2>
@@ -118,14 +157,14 @@
 				class="ab-item ab-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-sm/6 text-slate-300 sm:text-base/7">{displayValue}</p>
+					<p class="p1-body mx-auto max-w-2xl text-sm/6 sm:text-base/7">{displayValue}</p>
 				{/snippet}
 			</EditableField>
 
 			<div class="ab-rule ab-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="h-px flex-1 bg-white/15"></span>
+				<span class="p1-line h-px flex-1"></span>
 				<span class="size-1.5 rotate-45 border border-red-500/80"></span>
-				<span class="h-px flex-1 bg-white/15"></span>
+				<span class="p1-line h-px flex-1"></span>
 			</div>
 		</div>
 
@@ -133,7 +172,7 @@
 			{#each items as item, i}
 				{@const c = colorMap[item.color] ?? colorMap.sky}
 				<div
-					class="ab-card group relative overflow-hidden rounded-3xl border border-white/10 bg-white/4 p-6 transition duration-300 hover:bg-white/8 motion-safe:hover:-translate-y-1 {c.border}"
+					class="ab-card group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 transition duration-300 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--ab-delay: {i * 70}ms"
 				>
 					<div
@@ -145,12 +184,23 @@
 						<div
 							class="flex size-12 items-center justify-center rounded-2xl ring-1 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.tile}"
 						>
-							<svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+							<svg
+								class="size-6"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+								/>
 							</svg>
 						</div>
 
-						<h3 class="mt-5 text-base font-semibold tracking-[-0.01em] text-white sm:text-lg">
+						<h3 class="p1-title mt-5 text-base font-semibold tracking-[-0.01em] sm:text-lg">
 							<EditableField
 								fieldKey="WhyUs.{i}.title"
 								label="Заголовок"
@@ -162,7 +212,7 @@
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</h3>
-						<p class="mt-2 border-t border-white/10 pt-3 text-sm/6 text-slate-400">
+						<p class="p1-border p1-muted mt-2 border-t pt-3 text-sm/6">
 							<EditableField
 								fieldKey="WhyUs.{i}.text"
 								label="Описание"

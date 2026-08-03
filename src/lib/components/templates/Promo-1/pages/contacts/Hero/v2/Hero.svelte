@@ -2,6 +2,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct } from '../../theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 	import '../../theme.css';
 
 	let {
@@ -13,6 +15,9 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Ink-блок: дефолт тёмный, тумблер живёт в панели VersionSwitcher.
+	const isLight = $derived(isLightBlock(data, 'dark'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -28,7 +33,10 @@
 	заголовков и высота секции те же, что у варианта 1 (см. ../../theme.ts),
 	поэтому переключение версий не меняет стиль страницы — только композицию.
 -->
-<section class="{ct.section.shell} {ct.section.heroPad} {ct.surface.ink}">
+<section
+	class="{ct.section.shell} {ct.section.heroPad} {ct.surface.ink}"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
 			class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(239,68,68,0.13),transparent_45%)]"

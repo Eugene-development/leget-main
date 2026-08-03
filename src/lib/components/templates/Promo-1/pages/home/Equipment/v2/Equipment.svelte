@@ -3,6 +3,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -14,6 +16,9 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -22,15 +27,24 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-slate-950 py-24 sm:py-32 font-sans select-none text-white">
+<section
+	class="p1-surface p1-title relative overflow-hidden py-24 font-sans select-none sm:py-32"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<!-- Вспомогательные светящиеся бэкдропы -->
-	<div class="absolute left-1/4 top-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/5 blur-[120px] pointer-events-none"></div>
-	<div class="absolute right-1/4 bottom-1/4 w-[500px] h-[500px] rounded-full bg-violet-500/5 blur-[120px] pointer-events-none"></div>
+	<div
+		class="pointer-events-none absolute top-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-sky-500/5 blur-[120px]"
+	></div>
+	<div
+		class="pointer-events-none absolute right-1/4 bottom-1/4 h-[500px] w-[500px] rounded-full bg-violet-500/5 blur-[120px]"
+	></div>
 
-	<div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
 		<!-- Заголовок -->
 		<div class="mx-auto mb-16 max-w-2xl text-center lg:max-w-none lg:text-left">
-			<span class="inline-flex items-center rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-sky-300 backdrop-blur-md">
+			<span
+				class="inline-flex items-center rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-sky-300 uppercase backdrop-blur-md"
+			>
 				<EditableField
 					fieldKey="Equipment.badge"
 					label="Метка"
@@ -51,22 +65,33 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-5xl font-display leading-tight">{displayValue}</h2>
+					<h2
+						class="p1-title font-display mt-4 text-3xl leading-tight font-extrabold tracking-tight sm:text-5xl"
+					>
+						{displayValue}
+					</h2>
 				{/snippet}
 			</EditableField>
 		</div>
 
 		<!-- Grid Bento Layout (V2 Carbon Glassmorphism) -->
 		<div class="grid gap-6 sm:gap-8 lg:grid-cols-6 lg:grid-rows-2">
-			
 			<!-- Столешницы (3 колонки) -->
-			<div class="group relative overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 hover:bg-slate-900/60 lg:col-span-3">
-				<div class="aspect-video w-full overflow-hidden relative">
-					<ImageFallback class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src={String(data?.item1Image ?? '')} alt="Столешницы" />
-					<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+			<div
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-3"
+			>
+				<div class="relative aspect-video w-full overflow-hidden">
+					<ImageFallback
+						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						src={String(data?.item1Image ?? '')}
+						alt="Столешницы"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+					></div>
 				</div>
 				<div class="p-8">
-					<h3 class="text-xl font-bold text-white transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title text-xl font-bold transition-colors group-hover:text-sky-300">
 						<EditableField
 							fieldKey="Equipment.item1Title"
 							label="Заголовок"
@@ -79,11 +104,16 @@
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-3 text-sm leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+					<p
+						class="p1-muted group-hover:p1-body mt-3 text-sm leading-relaxed transition-colors duration-300"
+					>
 						<EditableField
 							fieldKey="Equipment.item1Description"
 							label="Описание"
-							value={String(data?.item1Description ?? 'Широкий выбор дизайнов для вашей кухни. Качественные столешницы от ведущих производителей. Большой выбор материалов и цветов')}
+							value={String(
+								data?.item1Description ??
+									'Широкий выбор дизайнов для вашей кухни. Качественные столешницы от ведущих производителей. Большой выбор материалов и цветов'
+							)}
 							{isEditable}
 							multiline
 							inline
@@ -97,13 +127,21 @@
 			</div>
 
 			<!-- Системы выдвижения (3 колонки) -->
-			<div class="group relative overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 hover:bg-slate-900/60 lg:col-span-3">
-				<div class="aspect-video w-full overflow-hidden relative">
-					<ImageFallback class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src={String(data?.item2Image ?? '')} alt="Системы выдвижения" />
-					<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+			<div
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-3"
+			>
+				<div class="relative aspect-video w-full overflow-hidden">
+					<ImageFallback
+						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						src={String(data?.item2Image ?? '')}
+						alt="Системы выдвижения"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+					></div>
 				</div>
 				<div class="p-8">
-					<h3 class="text-xl font-bold text-white transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title text-xl font-bold transition-colors group-hover:text-sky-300">
 						<EditableField
 							fieldKey="Equipment.item2Title"
 							label="Заголовок"
@@ -116,11 +154,16 @@
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-3 text-sm leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+					<p
+						class="p1-muted group-hover:p1-body mt-3 text-sm leading-relaxed transition-colors duration-300"
+					>
 						<EditableField
 							fieldKey="Equipment.item2Description"
 							label="Описание"
-							value={String(data?.item2Description ?? 'Современные механизмы Hettich и BLUM, обеспечивающие плавность, надежность и бесшумность. Широкий ассортимент для комфортного хранения')}
+							value={String(
+								data?.item2Description ??
+									'Современные механизмы Hettich и BLUM, обеспечивающие плавность, надежность и бесшумность. Широкий ассортимент для комфортного хранения'
+							)}
 							{isEditable}
 							multiline
 							inline
@@ -134,13 +177,21 @@
 			</div>
 
 			<!-- Бытовая техника (2 колонки) -->
-			<div class="group relative overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 hover:bg-slate-900/60 lg:col-span-2">
-				<div class="aspect-square w-full overflow-hidden relative">
-					<ImageFallback class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src={String(data?.item3Image ?? '')} alt="Бытовая техника" />
-					<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+			<div
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-2"
+			>
+				<div class="relative aspect-square w-full overflow-hidden">
+					<ImageFallback
+						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						src={String(data?.item3Image ?? '')}
+						alt="Бытовая техника"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+					></div>
 				</div>
 				<div class="p-6">
-					<h3 class="text-lg font-bold text-white transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-300">
 						<EditableField
 							fieldKey="Equipment.item3Title"
 							label="Заголовок"
@@ -153,11 +204,16 @@
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-2 text-xs leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+					<p
+						class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300"
+					>
 						<EditableField
 							fieldKey="Equipment.item3Description"
 							label="Описание"
-							value={String(data?.item3Description ?? 'Встраиваемая и отдельностоящая техника от проверенных производителей с гарантией')}
+							value={String(
+								data?.item3Description ??
+									'Встраиваемая и отдельностоящая техника от проверенных производителей с гарантией'
+							)}
 							{isEditable}
 							multiline
 							inline
@@ -171,13 +227,21 @@
 			</div>
 
 			<!-- Мойки и смесители (2 колонки) -->
-			<div class="group relative overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 hover:bg-slate-900/60 lg:col-span-2">
-				<div class="aspect-square w-full overflow-hidden relative">
-					<ImageFallback class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src={String(data?.item4Image ?? '')} alt="Мойки и смесители" />
-					<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+			<div
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-2"
+			>
+				<div class="relative aspect-square w-full overflow-hidden">
+					<ImageFallback
+						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						src={String(data?.item4Image ?? '')}
+						alt="Мойки и смесители"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+					></div>
 				</div>
 				<div class="p-6">
-					<h3 class="text-lg font-bold text-white transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-300">
 						<EditableField
 							fieldKey="Equipment.item4Title"
 							label="Заголовок"
@@ -190,11 +254,16 @@
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-2 text-xs leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+					<p
+						class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300"
+					>
 						<EditableField
 							fieldKey="Equipment.item4Description"
 							label="Описание"
-							value={String(data?.item4Description ?? 'Качественная сантехника от ведущих мировых производителей с гарантией до 5 лет')}
+							value={String(
+								data?.item4Description ??
+									'Качественная сантехника от ведущих мировых производителей с гарантией до 5 лет'
+							)}
 							{isEditable}
 							multiline
 							inline
@@ -208,13 +277,21 @@
 			</div>
 
 			<!-- Освещение (2 колонки) -->
-			<div class="group relative overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 hover:bg-slate-900/60 lg:col-span-2">
-				<div class="aspect-square w-full overflow-hidden relative">
-					<ImageFallback class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" src={String(data?.item5Image ?? '')} alt="Освещение" />
-					<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+			<div
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-2"
+			>
+				<div class="relative aspect-square w-full overflow-hidden">
+					<ImageFallback
+						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						src={String(data?.item5Image ?? '')}
+						alt="Освещение"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+					></div>
 				</div>
 				<div class="p-6">
-					<h3 class="text-lg font-bold text-white transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-300">
 						<EditableField
 							fieldKey="Equipment.item5Title"
 							label="Заголовок"
@@ -227,11 +304,16 @@
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-2 text-xs leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+					<p
+						class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300"
+					>
 						<EditableField
 							fieldKey="Equipment.item5Description"
 							label="Описание"
-							value={String(data?.item5Description ?? 'Комфортное освещение для создания уютной атмосферы в каждом уголке вашего дома')}
+							value={String(
+								data?.item5Description ??
+									'Комфортное освещение для создания уютной атмосферы в каждом уголке вашего дома'
+							)}
 							{isEditable}
 							multiline
 							inline
@@ -243,7 +325,6 @@
 					</p>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </section>

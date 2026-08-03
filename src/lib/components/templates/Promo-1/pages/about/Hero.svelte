@@ -35,6 +35,22 @@
 		wave: '#f8fafc'
 	};
 
+	// Светлый вариант: та же композиция и тот же красный акцент, светлая поверхность.
+	const paletteLight: HeroPalette = {
+		section: 'bg-linear-to-br from-slate-100 via-white to-red-50',
+		patternOpacity: 'opacity-10',
+		patternColor: '%230f172a',
+		glowA: 'bg-red-500/10',
+		glowB: 'bg-red-400/10',
+		iconTile:
+			'bg-linear-to-br from-red-500 to-red-600 ring-1 ring-white/25 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.9)]',
+		rule: 'bg-slate-900/15',
+		diamond: 'border-red-500/80',
+		text: 'text-slate-600',
+		title: 'text-slate-900',
+		wave: '#f8fafc'
+	};
+
 	/** Стартовый текст под заголовком: в данных `lead` и `text` по умолчанию пустые. */
 	const defaultLead =
 		'Мы помогаем пройти путь от идеи до готового интерьера: подбираем материалы, считаем проект и ведём его до финальной сборки.';
@@ -70,10 +86,16 @@
 	{isEditable}
 	componentType="Hero"
 	{palette}
+	{paletteLight}
 	title={{ key: 'title', label: 'Заголовок', value: String(data?.title ?? 'О нас') }}
 	text={textField}
 >
 	{#snippet icon()}
-		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+		<path
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="1.5"
+			d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+		/>
 	{/snippet}
 </PageHero>

@@ -31,6 +31,8 @@
 			componentType="ContactsHero"
 			versionKey="contactsHeroVersion"
 			versions={['v1', 'v2']}
+			themeVersions={['v1', 'v2']}
+			themeDefault="dark"
 			bind:selectedVersion
 		/>
 

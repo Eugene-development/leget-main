@@ -2,6 +2,9 @@
 	// Артикул: 1.6.2.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -13,6 +16,16 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
+	const isLight = $derived(isLightBlock(data, 'light'));
+	const toggleTheme = createThemeToggle({
+		type: 'WhoWeInvite',
+		fallback: 'light',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
+
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -21,10 +34,26 @@
 	}
 
 	const defaultCards = [
-		{ title: 'Дизайнеры', text: 'Реализуйте ваши проекты с качественной мебелью. Получайте вознаграждение за каждый заказ.', color: 'violet' },
-		{ title: 'Ремонтные бригады', text: 'После ремонта клиенты покупают мебель и технику. Рекомендуйте нас и повышайте ваш доход.', color: 'amber' },
-		{ title: 'Продавцы мебели', text: 'Передавайте заказы на мебель, которой нет у вас в ассортименте. Расширьте ваши возможности.', color: 'emerald' },
-		{ title: 'Физ. лица', text: 'Рекомендуйте нас друзьям и знакомым. Получайте вознаграждение от суммы каждого заказа.', color: 'sky' },
+		{
+			title: 'Дизайнеры',
+			text: 'Реализуйте ваши проекты с качественной мебелью. Получайте вознаграждение за каждый заказ.',
+			color: 'violet'
+		},
+		{
+			title: 'Ремонтные бригады',
+			text: 'После ремонта клиенты покупают мебель и технику. Рекомендуйте нас и повышайте ваш доход.',
+			color: 'amber'
+		},
+		{
+			title: 'Продавцы мебели',
+			text: 'Передавайте заказы на мебель, которой нет у вас в ассортименте. Расширьте ваши возможности.',
+			color: 'emerald'
+		},
+		{
+			title: 'Физ. лица',
+			text: 'Рекомендуйте нас друзьям и знакомым. Получайте вознаграждение от суммы каждого заказа.',
+			color: 'sky'
+		}
 	];
 
 	/**
@@ -111,7 +140,12 @@
 	верхней кромки, иначе на границе появится полоса. Декор ниже намеренно
 	отодвинут от верха и приглушён маской.
 -->
-<section class="relative isolate overflow-hidden bg-slate-50 py-16 sm:py-20">
+<section
+	class="p1-surface-alt relative isolate overflow-hidden py-16 sm:py-20"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
+
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="wi-rules"></div>
 	</div>
@@ -128,7 +162,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl"
+						class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 					>
 						{displayValue}
 					</h2>
@@ -137,19 +171,21 @@
 			<EditableField
 				fieldKey="WhoWeInvite.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'Партнёрство для профессионалов в сфере интерьера и ремонта')}
+				value={String(
+					data?.subtitle ?? 'Партнёрство для профессионалов в сфере интерьера и ремонта'
+				)}
 				{isEditable}
 				onSave={(v) => saveField('subtitle', v)}
 				class="wi-item wi-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+					<p class="p1-body mx-auto max-w-2xl text-sm/6 sm:text-base/7">{displayValue}</p>
 				{/snippet}
 			</EditableField>
 			<div class="wi-rule wi-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="p1-line h-px flex-1"></span>
 				<span class="size-1.5 rotate-45 border border-sky-500/70"></span>
-				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="p1-line h-px flex-1"></span>
 			</div>
 		</div>
 
@@ -157,7 +193,7 @@
 			{#each cards as card, i}
 				{@const c = colorMap[card.color] ?? colorMap.sky}
 				<div
-					class="wi-card group relative overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
+					class="wi-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
 					style="--wi-delay: {i * 70}ms"
 				>
 					<!-- Цветное пятно в углу — прежний акцент карточки, теперь под каймой -->
@@ -180,12 +216,25 @@
 						<div
 							class="flex size-14 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-lg ring-1 ring-white/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.icon}"
 						>
-							<svg class="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+							<svg
+								class="size-7"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+								/>
 							</svg>
 						</div>
 
-						<h3 class="mt-6 flex items-center gap-2.5 text-lg font-semibold tracking-[-0.01em] text-slate-900">
+						<h3
+							class="p1-title mt-6 flex items-center gap-2.5 text-lg font-semibold tracking-[-0.01em]"
+						>
 							<span class="size-1.5 shrink-0 rounded-full {c.dot}" aria-hidden="true"></span>
 							<EditableField
 								fieldKey="WhoWeInvite.{i}.title"
@@ -198,7 +247,7 @@
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</h3>
-						<p class="mt-3 text-sm/6 text-slate-600">
+						<p class="p1-body mt-3 text-sm/6">
 							<EditableField
 								fieldKey="WhoWeInvite.{i}.text"
 								label="Описание"
@@ -218,7 +267,7 @@
 		<!-- Платформа: отдельная панель, чтобы блок не читался как продолжение карточек -->
 		<div use:revealOnScroll class="wi-reveal mt-12">
 			<div
-				class="wi-item relative overflow-hidden rounded-4xl border border-slate-900/10 bg-white px-6 py-10 text-center shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] sm:px-12 sm:py-12"
+				class="wi-item p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] sm:px-12 sm:py-12"
 			>
 				<div
 					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-red-500/70 to-transparent"
@@ -233,14 +282,17 @@
 					<EditableField
 						fieldKey="WhoWeInvite.platformText"
 						label="Текст о платформе"
-						value={String(data?.platformText ?? 'Профессиональная платформа для автоматизации партнёрских продаж: регистрируйте новые заказы, отслеживайте статус реализации проектов в реальном времени и управляйте начислениями бонусов через единую прозрачную систему.')}
+						value={String(
+							data?.platformText ??
+								'Профессиональная платформа для автоматизации партнёрских продаж: регистрируйте новые заказы, отслеживайте статус реализации проектов в реальном времени и управляйте начислениями бонусов через единую прозрачную систему.'
+						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('platformText', v)}
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mx-auto max-w-2xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+							<p class="p1-body mx-auto max-w-2xl text-sm/6 sm:text-base/7">{displayValue}</p>
 						{/snippet}
 					</EditableField>
 
@@ -280,7 +332,11 @@
 										stroke-width="2"
 										aria-hidden="true"
 									>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+										/>
 									</svg>
 								</a>
 							{/if}

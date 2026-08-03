@@ -21,7 +21,9 @@
 </script>
 
 <section class="relative overflow-hidden bg-slate-900 px-6 py-32 text-white sm:py-40">
-	<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#1e40af22,_transparent_60%)]"></div>
+	<div
+		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#1e40af22,_transparent_60%)]"
+	></div>
 	<div class="relative mx-auto max-w-4xl text-center">
 		<EditableField
 			fieldKey="Hero.title"

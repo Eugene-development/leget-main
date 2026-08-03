@@ -3,6 +3,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -13,6 +15,9 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
+	const isLight = $derived(isLightBlock(data, 'light'));
 
 	const cards = $derived(
 		Array.isArray(data?.cards) && data.cards.length > 0
@@ -63,7 +68,7 @@
 </script>
 
 <!-- О компании (Message) -->
-<section class="bg-slate-50">
+<section class="p1-surface-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div class="bg-slate-50 py-16 sm:py-28">
 		<div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 lg:px-8">
 			<!-- Логотип -->
@@ -91,7 +96,7 @@
 									/>
 								{:else if isEditable}
 									<div
-										class="relative flex aspect-[4/1] w-full items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-100/50 text-slate-400 transition-colors hover:bg-slate-100"
+										class="p1-border p1-card p1-muted hover:p1-card relative flex aspect-[4/1] w-full items-center justify-center rounded-2xl border-2 border-dashed transition-colors"
 									>
 										<div class="flex flex-col items-center gap-2">
 											<svg
@@ -123,9 +128,7 @@
 			<!-- Текст -->
 			<div class="w-full max-w-3xl text-center">
 				<figure class="relative">
-					<blockquote
-						class="relative text-lg leading-relaxed font-medium text-slate-900 sm:text-xl"
-					>
+					<blockquote class="p1-title relative text-lg leading-relaxed font-medium sm:text-xl">
 						<EditableField
 							fieldKey="Message.text"
 							label="Текст"
@@ -150,7 +153,7 @@
 			<div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
 				{#each cards as card, i}
 					<div
-						class="message-card group relative overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/80 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:ring-slate-300"
+						class="message-card group p1-card p1-border relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:ring-slate-300"
 					>
 						<div
 							class="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-sky-50/80 transition-transform duration-500 group-hover:scale-125"
@@ -159,7 +162,7 @@
 							<div class="mb-4 size-24 overflow-hidden rounded-xl">
 								<ImageFallback src={card.image} alt={card.alt} class="h-full w-full object-cover" />
 							</div>
-							<h3 class="text-sm font-bold text-slate-900 sm:text-base">
+							<h3 class="p1-title text-sm font-bold sm:text-base">
 								<EditableField
 									fieldKey={`Message.cards.${i}.title`}
 									label="Заголовок"
@@ -172,7 +175,7 @@
 									{#snippet children(displayValue)}{displayValue}{/snippet}
 								</EditableField>
 							</h3>
-							<p class="mt-1.5 text-xs leading-relaxed text-slate-500 sm:text-sm">
+							<p class="p1-muted mt-1.5 text-xs leading-relaxed sm:text-sm">
 								<EditableField
 									fieldKey={`Message.cards.${i}.description`}
 									label="Описание"

@@ -3,6 +3,9 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 	import './theme.css';
 
 	let {
@@ -15,6 +18,15 @@
 		isEditable?: boolean;
 	} = $props();
 
+	const isLight = $derived(isLightBlock(data, 'light'));
+	const toggleTheme = createThemeToggle({
+		type: 'ContactAddress',
+		fallback: 'light',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -24,7 +36,12 @@
 </script>
 
 <!-- Поверхность «paper» в ритме страницы; палитра и типографика — из ./theme.ts. -->
-<section class="{ct.section.shell} {ct.section.pad} {ct.surface.paper}">
+<section
+	class="{ct.section.shell} {ct.section.pad} {ct.surface.paper}"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
+
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ct-rules"></div>
 		<div

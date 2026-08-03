@@ -17,9 +17,9 @@
 export const ct = {
 	/** Поверхности секций. */
 	surface: {
-		ink: 'bg-[#09090b]',
-		base: 'bg-white',
-		paper: 'bg-[#f7f5f2]'
+		ink: 'p1-surface',
+		base: 'p1-surface',
+		paper: 'p1-surface-paper'
 	},
 
 	/** Каркас секции: общая обёртка, вертикальные отступы, контейнеры. */
@@ -36,30 +36,30 @@ export const ct = {
 	/** Надпись над заголовком. Один трекинг и один регистр на всей странице. */
 	eyebrow: {
 		onInk:
-			'inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-red-400 uppercase sm:text-xs',
+			'p1-accent inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase sm:text-xs',
 		onLight:
-			'inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-red-600 uppercase sm:text-xs',
-		dashOnInk: 'h-px w-8 bg-red-400/80',
-		dashOnLight: 'h-px w-8 bg-red-600/50'
+			'p1-accent inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase sm:text-xs',
+		dashOnInk: 'p1-accent-bg h-px w-8 opacity-80',
+		dashOnLight: 'p1-accent-bg h-px w-8 opacity-60'
 	},
 
 	/** Заголовки. Одна шкала и одно начертание для всех версий. */
 	title: {
 		h1OnInk:
-			'text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty text-white sm:text-5xl lg:text-6xl',
+			'text-4xl leading-[1.05] font-semibold tracking-[-0.035em] p1-title text-pretty sm:text-5xl lg:text-6xl',
 		h2OnInk:
-			'text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-white sm:text-4xl lg:text-5xl',
+			'text-3xl leading-[1.08] font-semibold tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
 		h2OnLight:
-			'text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl',
-		h3OnLight: 'text-xl font-semibold tracking-[-0.01em] text-slate-900'
+			'text-3xl leading-[1.08] font-semibold tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
+		h3OnLight: 'p1-title text-xl font-semibold tracking-[-0.01em]'
 	},
 
 	/** Основной текст. */
 	body: {
-		onInk: 'text-sm/6 text-gray-300 sm:text-base/7',
-		onInkMuted: 'text-sm/6 text-gray-400 sm:text-base/7',
-		onLight: 'text-sm/6 text-slate-600 sm:text-base/7',
-		labelOnLight: 'font-semibold text-slate-900'
+		onInk: 'p1-body text-sm/6 sm:text-base/7',
+		onInkMuted: 'p1-muted text-sm/6 sm:text-base/7',
+		onLight: 'p1-body text-sm/6 sm:text-base/7',
+		labelOnLight: 'p1-title font-semibold'
 	},
 
 	/** Декоративные акценты: волосяная линия сверху секции и ромбовидный разделитель. */
@@ -71,22 +71,20 @@ export const ct = {
 		hairlineOnCard:
 			'pointer-events-none absolute -top-px left-1/2 h-px w-24 -translate-x-1/2 bg-red-500/70',
 		diamond: 'size-1.5 rotate-45 border border-red-500/70',
-		ruleOnInk: 'h-px flex-1 bg-white/15',
-		ruleOnLight: 'h-px flex-1 bg-slate-900/15'
+		ruleOnInk: 'p1-line h-px flex-1',
+		ruleOnLight: 'p1-line h-px flex-1'
 	},
 
 	/** Карточки: единые радиусы и тени. */
 	card: {
-		onInk:
-			'rounded-3xl border border-white/10 bg-white/[0.04] shadow-[0_40px_90px_-60px_rgba(0,0,0,0.95)] backdrop-blur-sm sm:rounded-4xl',
-		onLight:
-			'rounded-3xl border border-slate-900/10 bg-white shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] sm:rounded-4xl',
+		onInk: 'p1-card rounded-3xl border backdrop-blur-sm sm:rounded-4xl',
+		onLight: 'p1-card rounded-3xl border sm:rounded-4xl',
 		/** Тёмная панель-акцент внутри светлой секции. */
 		inkPanel:
 			'rounded-3xl border border-white/10 bg-[#09090b] shadow-[0_40px_100px_-50px_rgba(15,23,42,0.7)] sm:rounded-4xl',
 		/** Небольшая карточка-плитка (каналы связи, пункты списка). */
 		tileOnLight:
-			'group relative overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:border-red-600/40 hover:shadow-[0_36px_90px_-46px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1'
+			'p1-card group relative overflow-hidden rounded-3xl border p-8 transition duration-300 hover:border-red-600/40 motion-safe:hover:-translate-y-1'
 	},
 
 	/** Иконка-плитка под акцентным цветом. */

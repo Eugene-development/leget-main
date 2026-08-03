@@ -1,0 +1,133 @@
+/**
+ * Светлая/тёмная тема блоков шаблона Promo-1.
+ *
+ * Зачем не условия в разметке: у шаблона ~2800 захардкоженных цветовых утилит,
+ * писать `{isLight ? 'bg-white' : 'bg-slate-950'}` на каждом элементе нечитаемо и
+ * неподдерживаемо. Вместо этого блок объявляет тему один раз атрибутом
+ * `data-p1-theme` на своём корне, а элементы внутри пользуются семантическими
+ * классами (`p1-surface`, `p1-title`, …), значения которых переключаются сами.
+ *
+ * Тема — это НЕЙТРАЛЬНАЯ часть палитры: поверхности, текст, границы. Акценты
+ * (красный, бренд-цвета сервисов, логотипы) от темы не зависят и остаются
+ * обычными утилитами Tailwind.
+ *
+ * Тема у каждого блока своя (`data.theme`), как у HeroMain. Блок, задуманный
+ * тёмным (ink-секции), объявляет своим дефолтом 'dark' — см. isLightBlock()
+ * в src/lib/utils/block-theme.ts, тогда переключатель просто инвертирует
+ * исходный вид, а не ломает ритм страницы.
+ */
+
+[data-p1-theme] {
+	--p1-surface: #ffffff;
+	/* gray-50 — ровно тот оттенок, что стоял в секциях до перевода на токены,
+	   чтобы светлый вид опубликованных сайтов не поехал. */
+	--p1-surface-alt: #f9fafb;
+	--p1-card: #ffffff;
+	--p1-card-hover: #fbfaf9;
+	--p1-title: #0f172a;
+	--p1-body: #475569;
+	--p1-muted: #64748b;
+	--p1-border: rgb(15 23 42 / 0.1);
+	--p1-line: rgb(15 23 42 / 0.07);
+	--p1-shadow: 0 30px 80px -50px rgb(15 23 42 / 0.35);
+	/* Тёплая «бумага» — отдельный оттенок страницы «Контакты». */
+	--p1-surface-paper: #f7f5f2;
+	/* Красный акцент: на светлом читается 600, на тёмном — 400. */
+	--p1-accent: #dc2626;
+}
+
+[data-p1-theme='dark'] {
+	--p1-surface: #09090b;
+	--p1-surface-alt: #101014;
+	--p1-card: rgb(255 255 255 / 0.04);
+	--p1-card-hover: rgb(255 255 255 / 0.07);
+	--p1-title: #ffffff;
+	--p1-body: #9ca3af;
+	--p1-muted: #6b7280;
+	--p1-border: rgb(255 255 255 / 0.1);
+	--p1-line: rgb(255 255 255 / 0.06);
+	--p1-shadow: 0 40px 90px -60px rgb(0 0 0 / 0.95);
+	--p1-surface-paper: #101014;
+	--p1-accent: #f87171;
+}
+
+@layer components {
+	/* Поверхности */
+	.p1-surface {
+		background-color: var(--p1-surface);
+	}
+	.p1-surface-alt {
+		background-color: var(--p1-surface-alt);
+	}
+	.p1-surface-paper {
+		background-color: var(--p1-surface-paper);
+	}
+	.p1-card {
+		background-color: var(--p1-card);
+		border-color: var(--p1-border);
+		box-shadow: var(--p1-shadow);
+	}
+	.p1-card-hover:hover {
+		background-color: var(--p1-card-hover);
+	}
+
+	/* Текст */
+	.p1-title {
+		color: var(--p1-title);
+	}
+	.p1-body {
+		color: var(--p1-body);
+	}
+	.p1-muted {
+		color: var(--p1-muted);
+	}
+
+	/* Акцент, зависящий от поверхности */
+	.p1-accent {
+		color: var(--p1-accent);
+	}
+	.p1-accent-bg {
+		background-color: var(--p1-accent);
+	}
+
+	/* Границы и волосяные линии */
+	.p1-border {
+		border-color: var(--p1-border);
+	}
+	.p1-line {
+		background-color: var(--p1-line);
+	}
+
+	/* Плавная смена темы. Только дешёвые свойства: анимировать цвет на
+	   размытых слоях (blur-[120px]) дорого и вызывает заметный лаг. */
+	.p1-surface,
+	.p1-surface-alt,
+	.p1-surface-paper,
+	.p1-accent,
+	.p1-card,
+	.p1-title,
+	.p1-body,
+	.p1-muted,
+	.p1-border,
+	.p1-line {
+		transition:
+			background-color 0.3s ease,
+			border-color 0.3s ease,
+			color 0.3s ease;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.p1-surface,
+		.p1-surface-alt,
+		.p1-surface-paper,
+		.p1-accent,
+		.p1-card,
+		.p1-title,
+		.p1-body,
+		.p1-muted,
+		.p1-border,
+		.p1-line {
+			transition: none;
+		}
+	}
+}

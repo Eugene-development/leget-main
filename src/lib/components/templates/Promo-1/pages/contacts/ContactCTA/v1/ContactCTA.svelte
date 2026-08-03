@@ -3,6 +3,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from '../../theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 	import '../../theme.css';
 
 	let {
@@ -14,6 +16,9 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Ink-блок: дефолт тёмный, тумблер живёт в панели VersionSwitcher.
+	const isLight = $derived(isLightBlock(data, 'dark'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -27,7 +32,10 @@
 	Вариант 1 — центральная колонка: заголовок и кнопки выстроены по оси секции.
 	Поверхность, палитра, кнопки и анимации общие для страницы (../../theme.ts).
 -->
-<section class="{ct.section.shell} {ct.section.pad} {ct.surface.ink}">
+<section
+	class="{ct.section.shell} {ct.section.pad} {ct.surface.ink}"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ct-grid ct-grid--fade-center"></div>
 		<div class="ct-glow absolute -top-24 left-1/2 size-112 -translate-x-1/2"></div>

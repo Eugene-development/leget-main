@@ -5,6 +5,7 @@
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
+	import { isLightBlock } from '$lib/utils/block-theme';
 
 	let {
 		data = $bindable(),
@@ -16,11 +17,17 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Блок нарисован тёмным; светлый вариант описан ниже в блоке стилей,
+	// оранжевый акцент и «плавающие» значки от темы не зависят.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+
 	let isVisible = $state(false);
 	let showImagePicker = $state(false);
 
 	$effect(() => {
-		const timeout = setTimeout(() => { isVisible = true; }, 200);
+		const timeout = setTimeout(() => {
+			isVisible = true;
+		}, 200);
 		return () => clearTimeout(timeout);
 	});
 
@@ -30,9 +37,7 @@
 			: ['Бесплатная сборка', 'Акции по бытовой технике', 'Каменная столешница в подарок']
 	);
 
-	const activeImage = $derived(
-		String(data?.imageV1 ?? data?.image ?? '')
-	);
+	const activeImage = $derived(String(data?.imageV1 ?? data?.image ?? ''));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -47,7 +52,7 @@
 	}
 </script>
 
-<section class="promo-alt">
+<section class="promo-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div class="promo-alt__glow promo-alt__glow--top"></div>
 	<div class="promo-alt__glow promo-alt__glow--bottom"></div>
 	<div class="promo-alt__grid-pattern"></div>
@@ -66,13 +71,24 @@
 				{#if isEditable}
 					<button
 						type="button"
-						onclick={() => showImagePicker = true}
+						onclick={() => (showImagePicker = true)}
 						class="promo-alt__edit-overlay"
 						aria-label="Изменить изображение"
 					>
 						<span class="promo-alt__edit-btn">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-								<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+							<svg
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path
+									d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+								></path>
 								<circle cx="12" cy="13" r="4"></circle>
 							</svg>
 							Изменить фото
@@ -82,12 +98,18 @@
 			</div>
 			<div class="promo-alt__float promo-alt__float--1">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-					<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor" />
+					<path
+						d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+						fill="currentColor"
+					/>
 				</svg>
 			</div>
 			<div class="promo-alt__float promo-alt__float--2">
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-					<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" />
+					<path
+						d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+						fill="currentColor"
+					/>
 				</svg>
 			</div>
 			<div class="promo-alt__float promo-alt__float--3">✓</div>
@@ -156,7 +178,14 @@
 				{#each features as feature}
 					<div class="promo-alt__feature">
 						<div class="promo-alt__feature-icon">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<svg
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+							>
 								<polyline points="20 6 9 17 4 12"></polyline>
 							</svg>
 						</div>
@@ -181,7 +210,14 @@
 					>
 						{#snippet children(displayValue)}{displayValue}{/snippet}
 					</EditableField>
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.5"
+					>
 						<line x1="5" y1="12" x2="19" y2="12"></line>
 						<polyline points="12 5 19 12 12 19"></polyline>
 					</svg>
@@ -207,12 +243,12 @@
 
 	{#if showImagePicker && editContext}
 		<BgImagePicker
-			editContext={editContext}
+			{editContext}
 			currentImage={String(data?.imageV1 ?? data?.image ?? '')}
 			defaultImage=""
 			aspectRatio={1}
 			onApprove={handleImageApprove}
-			onClose={() => showImagePicker = false}
+			onClose={() => (showImagePicker = false)}
 		/>
 	{/if}
 </section>
@@ -273,12 +309,16 @@
 		border-radius: 1.5rem;
 		padding: 2rem;
 		border: 1px solid rgba(255, 255, 255, 0.08);
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+		box-shadow:
+			0 0 0 1px rgba(255, 255, 255, 0.05),
+			0 25px 50px -12px rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(20px);
 		-webkit-backdrop-filter: blur(20px);
 		opacity: 0;
 		transform: translateY(30px);
-		transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+		transition:
+			opacity 0.8s ease-out,
+			transform 0.8s ease-out;
 	}
 
 	.promo-alt__container--visible {
@@ -317,8 +357,12 @@
 		border-radius: 1rem;
 		border: 2px solid transparent;
 		background: linear-gradient(135deg, rgba(249, 115, 22, 0.4), rgba(139, 92, 246, 0.4)) border-box;
-		-webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-		mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+		-webkit-mask:
+			linear-gradient(#fff 0 0) padding-box,
+			linear-gradient(#fff 0 0);
+		mask:
+			linear-gradient(#fff 0 0) padding-box,
+			linear-gradient(#fff 0 0);
 		-webkit-mask-composite: xor;
 		mask-composite: exclude;
 		pointer-events: none;
@@ -358,7 +402,9 @@
 		font-weight: 600;
 		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 		transform: scale(0.9);
-		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+		transition:
+			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			background 0.3s ease;
 	}
 
 	.promo-alt__edit-overlay:hover .promo-alt__edit-btn {
@@ -377,8 +423,10 @@
 	}
 
 	.promo-alt__float--1 {
-		top: -12px; right: -8px;
-		width: 48px; height: 48px;
+		top: -12px;
+		right: -8px;
+		width: 48px;
+		height: 48px;
 		background: linear-gradient(135deg, #f97316, #eab308);
 		color: white;
 		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
@@ -386,8 +434,10 @@
 	}
 
 	.promo-alt__float--2 {
-		bottom: 20px; left: -10px;
-		width: 40px; height: 40px;
+		bottom: 20px;
+		left: -10px;
+		width: 40px;
+		height: 40px;
 		background: linear-gradient(135deg, #ec4899, #f43f5e);
 		color: white;
 		box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
@@ -395,8 +445,10 @@
 	}
 
 	.promo-alt__float--3 {
-		bottom: -8px; right: 30%;
-		width: 36px; height: 36px;
+		bottom: -8px;
+		right: 30%;
+		width: 36px;
+		height: 36px;
 		background: linear-gradient(135deg, #22c55e, #10b981);
 		color: white;
 		font-weight: 800;
@@ -406,8 +458,13 @@
 	}
 
 	@keyframes promo-float {
-		0%, 100% { transform: translateY(0px); }
-		50%       { transform: translateY(-12px); }
+		0%,
+		100% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-12px);
+		}
 	}
 
 	.promo-alt__content {
@@ -430,15 +487,23 @@
 	}
 
 	.promo-alt__badge-dot {
-		width: 8px; height: 8px;
+		width: 8px;
+		height: 8px;
 		border-radius: 50%;
 		background: #f97316;
 		animation: promo-pulse 2s ease-in-out infinite;
 	}
 
 	@keyframes promo-pulse {
-		0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5); }
-		50%       { opacity: 0.7; box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+		0%,
+		100% {
+			opacity: 1;
+			box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5);
+		}
+		50% {
+			opacity: 0.7;
+			box-shadow: 0 0 0 8px rgba(249, 115, 22, 0);
+		}
 	}
 
 	.promo-alt__title {
@@ -494,7 +559,8 @@
 	}
 
 	.promo-alt__feature-icon {
-		width: 32px; height: 32px;
+		width: 32px;
+		height: 32px;
 		border-radius: 8px;
 		display: flex;
 		align-items: center;
@@ -550,7 +616,9 @@
 	}
 
 	@media (min-width: 768px) {
-		.promo-alt { padding: 5rem 1.5rem; }
+		.promo-alt {
+			padding: 5rem 1.5rem;
+		}
 
 		.promo-alt__container {
 			flex-direction: row;
@@ -559,20 +627,102 @@
 			border-radius: 2rem;
 		}
 
-		.promo-alt__image-wrapper { width: 50%; flex-shrink: 0; }
-		.promo-alt__image-frame { aspect-ratio: 1 / 1; max-height: 520px; border-radius: 1.25rem; }
-		.promo-alt__content { width: 50%; }
-		.promo-alt__title { font-size: 2.5rem; margin-bottom: 1.5rem; }
-		.promo-alt__text { gap: 1rem; margin-bottom: 2rem; }
-		.promo-alt__text-primary { font-size: 1.15rem; }
-		.promo-alt__text-secondary { font-size: 0.95rem; }
-		.promo-alt__features { flex-direction: row; flex-wrap: wrap; gap: 1rem; }
-		.promo-alt__actions { flex-direction: row; gap: 1rem; }
+		.promo-alt__image-wrapper {
+			width: 50%;
+			flex-shrink: 0;
+		}
+		.promo-alt__image-frame {
+			aspect-ratio: 1 / 1;
+			max-height: 520px;
+			border-radius: 1.25rem;
+		}
+		.promo-alt__content {
+			width: 50%;
+		}
+		.promo-alt__title {
+			font-size: 2.5rem;
+			margin-bottom: 1.5rem;
+		}
+		.promo-alt__text {
+			gap: 1rem;
+			margin-bottom: 2rem;
+		}
+		.promo-alt__text-primary {
+			font-size: 1.15rem;
+		}
+		.promo-alt__text-secondary {
+			font-size: 0.95rem;
+		}
+		.promo-alt__features {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 1rem;
+		}
+		.promo-alt__actions {
+			flex-direction: row;
+			gap: 1rem;
+		}
 	}
 
 	@media (min-width: 1024px) {
-		.promo-alt__container { padding: 3rem; }
-		.promo-alt__title { font-size: 3rem; }
-		.promo-alt__text-primary { font-size: 1.2rem; }
+		.promo-alt__container {
+			padding: 3rem;
+		}
+		.promo-alt__title {
+			font-size: 3rem;
+		}
+		.promo-alt__text-primary {
+			font-size: 1.2rem;
+		}
+	}
+
+	/* Светлая тема: меняется только нейтральная часть — поверхность, панель и текст. */
+	.promo-alt[data-p1-theme='light'] {
+		background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__grid-pattern {
+		background-image:
+			linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__container {
+		background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.96));
+		border-color: rgba(15, 23, 42, 0.08);
+		box-shadow:
+			0 0 0 1px rgba(15, 23, 42, 0.04),
+			0 25px 50px -12px rgba(15, 23, 42, 0.18);
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__title {
+		color: #0f172a;
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__text-primary {
+		color: #475569;
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__text-secondary {
+		color: #64748b;
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__feature {
+		color: #334155;
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__btn--secondary {
+		background: rgba(15, 23, 42, 0.05);
+		color: #0f172a;
+		border-color: rgba(15, 23, 42, 0.12);
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__btn--secondary:hover {
+		background: rgba(15, 23, 42, 0.09);
+		border-color: rgba(15, 23, 42, 0.2);
+	}
+
+	.promo-alt[data-p1-theme='light'] .promo-alt__edit-overlay {
+		background: rgba(255, 255, 255, 0.65);
 	}
 </style>

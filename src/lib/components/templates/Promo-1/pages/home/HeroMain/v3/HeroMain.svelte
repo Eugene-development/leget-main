@@ -32,7 +32,8 @@
 			id: 'design',
 			title: '3D Проектирование',
 			subtitle: 'Цифровое моделирование пространства',
-			description: 'Создаем интерактивную 3D-модель вашей будущей кухни в реальном масштабе. Вы увидите фотореалистичный рендер материалов, текстур и освещения еще до начала производства.',
+			description:
+				'Создаем интерактивную 3D-модель вашей будущей кухни в реальном масштабе. Вы увидите фотореалистичный рендер материалов, текстур и освещения еще до начала производства.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
 			gradient: 'from-violet-600 via-indigo-600 to-sky-500',
 			accentColor: 'text-violet-400',
@@ -47,7 +48,8 @@
 			id: 'ergonomics',
 			title: 'Инженерная эргономика',
 			subtitle: 'Умная организация пространства',
-			description: 'Индивидуальный расчет высоты рабочих зон под ваш рост. Разработка скрытых выдвижных систем, бесшумных угловых решений и идеальной последовательности рабочих треугольников.',
+			description:
+				'Индивидуальный расчет высоты рабочих зон под ваш рост. Разработка скрытых выдвижных систем, бесшумных угловых решений и идеальной последовательности рабочих треугольников.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
 			gradient: 'from-cyan-600 via-sky-600 to-indigo-500',
 			accentColor: 'text-cyan-400',
@@ -62,7 +64,8 @@
 			id: 'materials',
 			title: 'Материаловедение',
 			subtitle: 'Эстетика премиальных текстур',
-			description: 'Работаем с лучшими мировыми материалами. Натуральный шпон дуба, итальянские эмали Soft-touch, кварцевый агломерат повышенной прочности и ультрасовременные нано-покрытия Fenix.',
+			description:
+				'Работаем с лучшими мировыми материалами. Натуральный шпон дуба, итальянские эмали Soft-touch, кварцевый агломерат повышенной прочности и ультрасовременные нано-покрытия Fenix.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg',
 			gradient: 'from-emerald-600 via-teal-600 to-sky-500',
 			accentColor: 'text-emerald-400',
@@ -77,7 +80,8 @@
 			id: 'assembly',
 			title: 'Высокоточный монтаж',
 			subtitle: 'Безупречная интеграция за 1 день',
-			description: 'Монтаж выполняют сертифицированные инженеры фабрики LEGET с использованием лазерного нивелирования. Чистая установка со строительными пылесосами Festool и врезка всей бытовой техники.',
+			description:
+				'Монтаж выполняют сертифицированные инженеры фабрики LEGET с использованием лазерного нивелирования. Чистая установка со строительными пылесосами Festool и врезка всей бытовой техники.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
 			gradient: 'from-amber-600 via-rose-600 to-indigo-500',
 			accentColor: 'text-amber-400',
@@ -97,10 +101,26 @@
 		Array.isArray(data?.brands)
 			? (data.brands as { name: string; logo: string; url: string }[])
 			: [
-					{ name: 'Hettich', logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png', url: 'https://www.hettich.com' },
-					{ name: 'Egger',   logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',   url: 'https://www.egger.com'   },
-					{ name: 'Аристо',  logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',  url: 'https://www.aristo.ru'   },
-					{ name: 'Blum',    logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',    url: 'https://www.blum.com'    },
+					{
+						name: 'Hettich',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						url: 'https://www.hettich.com'
+					},
+					{
+						name: 'Egger',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						url: 'https://www.egger.com'
+					},
+					{
+						name: 'Аристо',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						url: 'https://www.aristo.ru'
+					},
+					{
+						name: 'Blum',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+						url: 'https://www.blum.com'
+					}
 				]
 	);
 </script>
@@ -111,7 +131,9 @@
      Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
-	class="relative flex min-h-0 lg:h-full w-full items-center justify-start overflow-hidden font-sans-premium transition-all duration-500 {isLight ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-white'}"
+	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
+		? 'bg-slate-50 text-slate-900'
+		: 'bg-slate-950 text-white'}"
 >
 	<!-- Фоновое изображение с плавным переходом -->
 	<div class="absolute inset-0 z-0">
@@ -119,21 +141,27 @@
 			<img
 				src={activeSkill.bgImage}
 				alt="Фоновое изображение"
-				class="absolute inset-0 w-full h-full object-cover transition-all duration-1000 scale-102 blur-[2px]"
+				class="absolute inset-0 h-full w-full scale-102 object-cover blur-[2px] transition-all duration-1000"
 				in:fade={{ duration: 800 }}
 			/>
 		{/key}
 		<!-- Динамический премиальный оверлей в зависимости от выбранного скилла и темы -->
-		<div class="absolute inset-0 transition-colors duration-700 {isLight ? 'bg-slate-50/88 backdrop-blur-md' : 'bg-slate-950/88 backdrop-blur-md'}"></div>
-		<!-- Сетка и градиентные премиальные блики -->
-		<div class="absolute inset-0 bg-radial-mesh opacity-[0.2] pointer-events-none"></div>
 		<div
-			class="absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full blur-[150px] transition-all duration-1000 z-[1] opacity-75"
+			class="absolute inset-0 transition-colors duration-700 {isLight
+				? 'bg-slate-50/88 backdrop-blur-md'
+				: 'bg-slate-950/88 backdrop-blur-md'}"
+		></div>
+		<!-- Сетка и градиентные премиальные блики -->
+		<div class="bg-radial-mesh pointer-events-none absolute inset-0 opacity-[0.2]"></div>
+		<div
+			class="absolute -top-40 -right-40 z-[1] h-[600px] w-[600px] rounded-full opacity-75 blur-[150px] transition-all duration-1000"
 			style="background-color: {activeSkill.glowColor};"
 		></div>
 	</div>
 
-	<div class="hero-shell relative z-10 mx-auto flex min-h-0 lg:h-full w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:px-12 xl:px-16">
+	<div
+		class="hero-shell relative z-10 mx-auto flex min-h-0 w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:h-full lg:px-12 xl:px-16"
+	>
 		<!-- Логотип сверху -->
 		<div class="hero-head flex w-full items-center justify-between pb-4">
 			{#if data?.logoUrl || isEditable}
@@ -153,10 +181,14 @@
 								<img
 									src={displayValue}
 									alt={String(data?.logoAlt ?? 'Логотип')}
-									class="relative w-full max-h-12 object-contain md:max-h-16 {isLight ? '' : 'brightness-0 invert filter'}"
+									class="relative max-h-12 w-full object-contain md:max-h-16 {isLight
+										? ''
+										: 'brightness-0 invert filter'}"
 								/>
 							{:else if isEditable}
-								<div class="rounded-xl border border-dashed border-white/20 bg-white/5 p-3 text-[10px] font-bold tracking-widest text-white/50 uppercase backdrop-blur-md">
+								<div
+									class="rounded-xl border border-dashed border-white/20 bg-white/5 p-3 text-[10px] font-bold tracking-widest text-white/50 uppercase backdrop-blur-md"
+								>
 									Логотип
 								</div>
 							{/if}
@@ -167,7 +199,9 @@
 		</div>
 
 		<!-- Главный грид -->
-		<div class="hero-grid my-auto grid grid-cols-1 items-center gap-6 py-4 sm:py-6 lg:grid-cols-12 lg:gap-10 xl:gap-14">
+		<div
+			class="hero-grid my-auto grid grid-cols-1 items-center gap-6 py-4 sm:py-6 lg:grid-cols-12 lg:gap-10 xl:gap-14"
+		>
 			<!-- Левая колонка: Описание скилла и фабрики -->
 			<div class="flex flex-col items-start select-none lg:col-span-6">
 				<!-- Заголовок страницы / Слоган -->
@@ -181,8 +215,12 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<span class="shadow-glow inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md md:text-sm {isLight ? 'border-indigo-200 bg-indigo-100/50 text-indigo-600' : 'border-indigo-500/20 bg-indigo-950/40 text-indigo-300'}">
-								<span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+							<span
+								class="shadow-glow inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md md:text-sm {isLight
+									? 'border-indigo-200 bg-indigo-100/50 text-indigo-600'
+									: 'border-indigo-500/20 bg-indigo-950/40 text-indigo-300'}"
+							>
+								<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-500"></span>
 								{displayValue}
 							</span>
 						{/snippet}
@@ -199,7 +237,11 @@
 					class="block w-full"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight ? 'from-slate-900 via-slate-800 to-slate-700' : 'from-white via-slate-100 to-slate-400'}">
+						<h1
+							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
+								? 'from-slate-900 via-slate-800 to-slate-700'
+								: 'from-white via-slate-100 to-slate-400'}"
+						>
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -216,7 +258,11 @@
 					class="block w-full max-w-2xl"
 				>
 					{#snippet children(displayValue)}
-						<p class="font-sans-premium mb-6 text-sm leading-relaxed font-normal md:text-base transition-colors duration-500 {isLight ? 'text-slate-600' : 'text-slate-300'}">
+						<p
+							class="font-sans-premium mb-6 text-sm leading-relaxed font-normal transition-colors duration-500 md:text-base {isLight
+								? 'text-slate-600'
+								: 'text-slate-300'}"
+						>
 							{displayValue}
 						</p>
 					{/snippet}
@@ -236,14 +282,30 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="group relative w-full overflow-hidden rounded-2xl p-[1px] transition-transform duration-300 focus:outline-none active:scale-[0.98] sm:w-auto cursor-pointer"
+								class="group relative w-full cursor-pointer overflow-hidden rounded-2xl p-[1px] transition-transform duration-300 focus:outline-none active:scale-[0.98] sm:w-auto"
 							>
 								<!-- Динамическая рамка с градиентом активного скилла -->
-								<span class="absolute inset-0 rounded-2xl bg-gradient-to-r transition-all duration-1000 group-hover:rotate-180 {activeSkill.gradient}"></span>
-								<span class="relative flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold transition-all duration-300 md:px-8 md:text-base {isLight ? 'bg-slate-100 hover:bg-white text-slate-800 border border-slate-200/85' : 'bg-slate-900/90 hover:bg-slate-950/80 hover:text-white text-white'}">
+								<span
+									class="absolute inset-0 rounded-2xl bg-gradient-to-r transition-all duration-1000 group-hover:rotate-180 {activeSkill.gradient}"
+								></span>
+								<span
+									class="relative flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold transition-all duration-300 md:px-8 md:text-base {isLight
+										? 'border border-slate-200/85 bg-slate-100 text-slate-800 hover:bg-white'
+										: 'bg-slate-900/90 text-white hover:bg-slate-950/80 hover:text-white'}"
+								>
 									{displayValue}
-									<svg class="h-4 w-4 text-indigo-400 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+									<svg
+										class="h-4 w-4 text-indigo-400 transition-transform duration-300 group-hover:translate-x-1.5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2.5"
+											d="M14 5l7 7m0 0l-7 7m7-7H3"
+										/>
 									</svg>
 								</span>
 							</button>
@@ -252,18 +314,30 @@
 				</div>
 
 				<!-- Список Брендов-партнеров -->
-				<div class="flex flex-col gap-3.5 border-t pt-5 w-full {isLight ? 'border-slate-200' : 'border-white/10'}">
-					<span class="text-[10px] font-black tracking-widest uppercase {isLight ? 'text-slate-500' : 'text-slate-400'}">Используем комплектующие лидеров рынка:</span>
+				<div
+					class="flex w-full flex-col gap-3.5 border-t pt-5 {isLight
+						? 'border-slate-200'
+						: 'border-white/10'}"
+				>
+					<span
+						class="text-[10px] font-black tracking-widest uppercase {isLight
+							? 'text-slate-500'
+							: 'text-slate-400'}">Используем комплектующие лидеров рынка:</span
+					>
 					<div class="flex flex-wrap items-center gap-4">
 						{#each brands as brand}
 							<a
 								href={brand.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="brand-capsule flex items-center justify-center rounded-xl border px-4 py-2 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 {isLight ? 'border-slate-200 bg-white/70 hover:border-indigo-500/30' : 'border-white/5 bg-white/5 hover:border-indigo-500/20 opacity-60 hover:opacity-100'}"
+								class="brand-capsule flex items-center justify-center rounded-xl border px-4 py-2 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 {isLight
+									? 'border-slate-200 bg-white/70 hover:border-indigo-500/30'
+									: 'border-white/5 bg-white/5 opacity-60 hover:border-indigo-500/20 hover:opacity-100'}"
 							>
 								<img
-									class="max-h-[16px] max-w-[64px] object-contain transition-all duration-300 {isLight ? 'brightness-0 opacity-60 hover:opacity-100' : 'brightness-0 invert filter'}"
+									class="max-h-[16px] max-w-[64px] object-contain transition-all duration-300 {isLight
+										? 'opacity-60 brightness-0 hover:opacity-100'
+										: 'brightness-0 invert filter'}"
 									src={brand.logo}
 									alt={brand.name}
 								/>
@@ -275,12 +349,27 @@
 
 			<!-- Правая колонка: Интерактивный интерактивный стенд "Скиллы" -->
 			<div class="flex w-full items-center justify-center lg:col-span-6">
-				<div class="relative flex w-full max-w-lg flex-col gap-5 overflow-hidden rounded-3xl border p-5 shadow-2xl backdrop-blur-2xl transition-all duration-300 sm:p-6 xl:max-w-[540px] {isLight ? 'border-slate-200 bg-white/80' : 'border-white/10 bg-slate-900/50'}">
-					
+				<div
+					class="relative flex w-full max-w-lg flex-col gap-5 overflow-hidden rounded-3xl border p-5 shadow-2xl backdrop-blur-2xl transition-all duration-300 sm:p-6 xl:max-w-[540px] {isLight
+						? 'border-slate-200 bg-white/80'
+						: 'border-white/10 bg-slate-900/50'}"
+				>
 					<!-- Шапка панели Скиллов -->
-					<div class="flex items-center justify-between border-b pb-3 {isLight ? 'border-slate-100' : 'border-white/5'}">
-						<span class="text-xs font-black tracking-wider uppercase {isLight ? 'text-slate-500' : 'text-slate-400'}">Профессиональные Скиллы LEGET</span>
-						<span class="rounded-full border px-2 py-0.5 text-[10px] font-bold {isLight ? 'border-indigo-400 bg-indigo-50 text-indigo-600' : 'border-indigo-500/30 bg-indigo-500/10 text-indigo-400'}">Мастерство</span>
+					<div
+						class="flex items-center justify-between border-b pb-3 {isLight
+							? 'border-slate-100'
+							: 'border-white/5'}"
+					>
+						<span
+							class="text-xs font-black tracking-wider uppercase {isLight
+								? 'text-slate-500'
+								: 'text-slate-400'}">Профессиональные Скиллы LEGET</span
+						>
+						<span
+							class="rounded-full border px-2 py-0.5 text-[10px] font-bold {isLight
+								? 'border-indigo-400 bg-indigo-50 text-indigo-600'
+								: 'border-indigo-500/30 bg-indigo-500/10 text-indigo-400'}">Мастерство</span
+						>
 					</div>
 
 					<!-- Вертикальный список-переключатель скиллов -->
@@ -288,29 +377,67 @@
 						{#each skills as skill, idx}
 							<button
 								type="button"
-								onclick={() => activeSkillIndex = idx}
-								class="group relative flex items-start gap-4 rounded-2xl border text-left p-3.5 transition-all duration-300 cursor-pointer {activeSkillIndex === idx ? (isLight ? 'bg-white border-indigo-200 shadow-md translate-x-1' : 'bg-slate-900/80 border-indigo-500/30 shadow-lg translate-x-1') : (isLight ? 'border-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-800' : 'border-transparent text-slate-400 hover:bg-white/5 hover:text-white')}"
+								onclick={() => (activeSkillIndex = idx)}
+								class="group relative flex cursor-pointer items-start gap-4 rounded-2xl border p-3.5 text-left transition-all duration-300 {activeSkillIndex ===
+								idx
+									? isLight
+										? 'translate-x-1 border-indigo-200 bg-white shadow-md'
+										: 'translate-x-1 border-indigo-500/30 bg-slate-900/80 shadow-lg'
+									: isLight
+										? 'border-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+										: 'border-transparent text-slate-400 hover:bg-white/5 hover:text-white'}"
 							>
 								<!-- Номер / Иконка скилла с динамическим градиентным кругом -->
-								<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-display text-sm font-black transition-all duration-300 {activeSkillIndex === idx ? `bg-gradient-to-br ${skill.gradient} text-white shadow-lg` : (isLight ? 'bg-slate-100 text-slate-500 group-hover:bg-slate-200' : 'bg-white/5 text-white/50 group-hover:bg-white/10')}">
+								<div
+									class="font-display flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-black transition-all duration-300 {activeSkillIndex ===
+									idx
+										? `bg-gradient-to-br ${skill.gradient} text-white shadow-lg`
+										: isLight
+											? 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
+											: 'bg-white/5 text-white/50 group-hover:bg-white/10'}"
+								>
 									0{idx + 1}
 								</div>
 
 								<!-- Текст скилла -->
 								<div class="min-w-0 flex-1">
-									<h3 class="text-sm font-bold tracking-tight transition-colors duration-300 {activeSkillIndex === idx ? (isLight ? 'text-indigo-600' : 'text-white') : (isLight ? 'text-slate-800' : 'text-slate-300')}">
+									<h3
+										class="text-sm font-bold tracking-tight transition-colors duration-300 {activeSkillIndex ===
+										idx
+											? isLight
+												? 'text-indigo-600'
+												: 'text-white'
+											: isLight
+												? 'text-slate-800'
+												: 'text-slate-300'}"
+									>
 										{skill.title}
 									</h3>
-									<p class="mt-0.5 truncate text-[11px] leading-normal font-semibold {activeSkillIndex === idx ? (isLight ? 'text-slate-500' : 'text-slate-400') : 'text-slate-500'}">
+									<p
+										class="mt-0.5 truncate text-[11px] leading-normal font-semibold {activeSkillIndex ===
+										idx
+											? isLight
+												? 'text-slate-500'
+												: 'text-slate-400'
+											: 'text-slate-500'}"
+									>
 										{skill.subtitle}
 									</p>
 								</div>
 
 								<!-- Стрелка активности -->
 								{#if activeSkillIndex === idx}
-									<div class="self-center flex items-center justify-center h-6 w-6 text-indigo-500" in:fly={{ x: -6, duration: 250 }}>
+									<div
+										class="flex h-6 w-6 items-center justify-center self-center text-indigo-500"
+										in:fly={{ x: -6, duration: 250 }}
+									>
 										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="3"
+												d="M9 5l7 7-7 7"
+											/>
 										</svg>
 									</div>
 								{/if}
@@ -319,31 +446,49 @@
 					</div>
 
 					<!-- Презентация контента выбранного скилла с плавным переходом -->
-					<div class="relative rounded-2xl border p-4.5 overflow-hidden {isLight ? 'border-slate-200/80 bg-slate-100/40' : 'border-white/5 bg-slate-950/40'}">
+					<div
+						class="relative overflow-hidden rounded-2xl border p-4.5 {isLight
+							? 'border-slate-200/80 bg-slate-100/40'
+							: 'border-white/5 bg-slate-950/40'}"
+					>
 						{#key activeSkillIndex}
 							<div class="flex flex-col gap-3" in:fade={{ duration: 300 }}>
 								<!-- Описание выбранного скилла -->
-								<p class="text-xs sm:text-[12.5px] leading-relaxed font-semibold {isLight ? 'text-slate-600' : 'text-slate-200'}">
+								<p
+									class="text-xs leading-relaxed font-semibold sm:text-[12.5px] {isLight
+										? 'text-slate-600'
+										: 'text-slate-200'}"
+								>
 									{activeSkill.description}
 								</p>
 
 								<!-- Спецификации / Важные показатели скилла -->
-								<div class="grid grid-cols-3 gap-2 border-t pt-3.5 {isLight ? 'border-slate-200' : 'border-white/5'}">
+								<div
+									class="grid grid-cols-3 gap-2 border-t pt-3.5 {isLight
+										? 'border-slate-200'
+										: 'border-white/5'}"
+								>
 									{#each activeSkill.specs as spec}
 										<div class="flex flex-col">
-											<span class="text-[9px] font-black uppercase tracking-wider {isLight ? 'text-slate-400' : 'text-slate-500'}">{spec.label}</span>
-											<span class="mt-0.5 text-[10.5px] font-bold leading-tight {isLight ? 'text-slate-800' : 'text-white'}">{spec.value}</span>
+											<span
+												class="text-[9px] font-black tracking-wider uppercase {isLight
+													? 'text-slate-400'
+													: 'text-slate-500'}">{spec.label}</span
+											>
+											<span
+												class="mt-0.5 text-[10.5px] leading-tight font-bold {isLight
+													? 'text-slate-800'
+													: 'text-white'}">{spec.value}</span
+											>
 										</div>
 									{/each}
 								</div>
 							</div>
 						{/key}
 					</div>
-
 				</div>
 			</div>
 		</div>
-
 	</div>
 </section>
 
@@ -405,7 +550,9 @@
 	}
 
 	.brand-capsule img {
-		transition: filter 0.3s, transform 0.3s;
+		transition:
+			filter 0.3s,
+			transform 0.3s;
 	}
 
 	.brand-capsule:hover img {

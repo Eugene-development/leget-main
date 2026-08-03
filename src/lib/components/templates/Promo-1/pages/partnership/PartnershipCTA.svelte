@@ -2,6 +2,9 @@
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -12,6 +15,17 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
+	// акцентные плитки и кнопки остаются белым по цвету бренда.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+	const toggleTheme = createThemeToggle({
+		type: 'PartnershipCTA',
+		fallback: 'dark',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -50,7 +64,11 @@
 	секция закрывает страницу и визуально рифмуется с тёмным блоком
 	ForManufacturers. Появление элементов — ступенями, см. <style> ниже.
 -->
-<section class="relative isolate overflow-hidden bg-slate-950 py-24 sm:py-28 lg:py-32">
+<section
+	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28 lg:py-32"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<!-- Декор: сетка, свечения, волосяные линии по краям секции -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="pca-grid"></div>
@@ -71,7 +89,9 @@
 			class="pca-reveal pca-frame rounded-4xl bg-linear-to-br from-sky-400/40 via-cyan-300/25 to-teal-400/40 p-px shadow-[0_50px_120px_-60px_rgba(6,182,212,0.55)]"
 		>
 			<div
-				class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-slate-950/85 px-6 py-14 text-center backdrop-blur-sm sm:px-12 sm:py-16 lg:px-16"
+				class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] {isLight
+					? 'bg-white/85'
+					: 'bg-slate-950/85'} px-6 py-14 text-center backdrop-blur-sm sm:px-12 sm:py-16 lg:px-16"
 			>
 				<div
 					class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-b from-white/6 to-transparent"
@@ -79,9 +99,22 @@
 				></div>
 
 				<div class="relative">
-					<div class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-sky-500 to-cyan-500 text-white ring-1 ring-white/20 shadow-[0_20px_50px_-20px_rgba(14,165,233,0.9)]">
-						<svg class="size-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+					<div
+						class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-sky-500 to-cyan-500 text-white shadow-[0_20px_50px_-20px_rgba(14,165,233,0.9)] ring-1 ring-white/20"
+					>
+						<svg
+							class="size-8"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+							/>
 						</svg>
 					</div>
 
@@ -95,7 +128,9 @@
 					>
 						{#snippet children(displayValue)}
 							<p
-								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-cyan-300 uppercase sm:text-xs"
+								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] {isLight
+									? 'text-cyan-700'
+									: 'text-cyan-300'} uppercase sm:text-xs"
 							>
 								<span class="h-px w-8 bg-cyan-400/80" aria-hidden="true"></span>
 								{displayValue}
@@ -114,17 +149,20 @@
 					>
 						{#snippet children(displayValue)}
 							<h2
-								class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-white sm:text-4xl lg:text-5xl"
+								class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 							>
 								{displayValue}
 							</h2>
 						{/snippet}
 					</EditableField>
 
-					<div class="pca-rule pca-d3 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-						<span class="h-px flex-1 bg-white/15"></span>
+					<div
+						class="pca-rule pca-d3 mx-auto mt-6 flex max-w-xs items-center gap-3"
+						aria-hidden="true"
+					>
+						<span class="p1-line h-px flex-1"></span>
 						<span class="size-1.5 rotate-45 border border-cyan-400/80"></span>
-						<span class="h-px flex-1 bg-white/15"></span>
+						<span class="p1-line h-px flex-1"></span>
 					</div>
 
 					<EditableField
@@ -137,11 +175,13 @@
 						class="pca-item pca-d3 mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mx-auto max-w-xl text-sm/6 text-slate-300 sm:text-base/7">{displayValue}</p>
+							<p class="p1-body mx-auto max-w-xl text-sm/6 sm:text-base/7">{displayValue}</p>
 						{/snippet}
 					</EditableField>
 
-					<div class="pca-item pca-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+					<div
+						class="pca-item pca-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+					>
 						<a
 							href="/contact"
 							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-sky-500 to-cyan-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(14,165,233,0.95)] transition duration-300 hover:from-sky-400 hover:to-cyan-400 hover:shadow-[0_22px_55px_-16px_rgba(6,182,212,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 motion-safe:hover:-translate-y-0.5"
@@ -158,7 +198,10 @@
 									{displayValue}
 								{/snippet}
 							</EditableField>
-							<span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+							<span
+								class="transition-transform duration-300 group-hover:translate-x-1"
+								aria-hidden="true">&rarr;</span
+							>
 						</a>
 
 						<EditableField
@@ -173,7 +216,7 @@
 								{#if displayValue}
 									<a
 										href="tel:{displayValue}"
-										class="group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 motion-safe:hover:-translate-y-0.5"
+										class="group p1-border p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border px-7 py-3.5 text-sm font-semibold backdrop-blur-sm transition duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 motion-safe:hover:-translate-y-0.5"
 									>
 										<svg
 											class="size-4.5 transition-transform duration-300 group-hover:-rotate-12"
@@ -183,7 +226,11 @@
 											stroke-width="2"
 											aria-hidden="true"
 										>
-											<path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+											/>
 										</svg>
 										{displayValue}
 									</a>

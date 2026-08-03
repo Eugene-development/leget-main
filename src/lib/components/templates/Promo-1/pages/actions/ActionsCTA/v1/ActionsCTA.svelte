@@ -2,6 +2,8 @@
 	// Артикул: 1.4.5.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -13,6 +15,8 @@
 		isEditable?: boolean;
 	} = $props();
 
+	const isLight = $derived(isLightBlock(data, 'light'));
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -21,9 +25,19 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-linear-to-br from-slate-50 via-white to-amber-50/40 py-24 sm:py-32">
+<section
+	class="p1-surface relative overflow-hidden py-24 sm:py-32"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<!-- Тёплая подложка — только в светлой теме: на ink она бы светила белым. -->
+	{#if isLight}
+		<div
+			class="pointer-events-none absolute inset-0 bg-linear-to-br from-slate-50 via-white to-amber-50/40"
+			aria-hidden="true"
+		></div>
+	{/if}
 	<!-- Светящиеся круги (в стиле Hero страницы actions) -->
-	<div class="absolute -left-32 top-1/4 size-80 rounded-full bg-red-100/40 blur-3xl"></div>
+	<div class="absolute top-1/4 -left-32 size-80 rounded-full bg-red-100/40 blur-3xl"></div>
 	<div class="absolute -right-32 bottom-1/4 size-96 rounded-full bg-amber-100/40 blur-3xl"></div>
 	<!-- Тонкая декоративная сетка -->
 	<div
@@ -34,7 +48,9 @@
 	<div class="relative mx-auto max-w-4xl px-6 lg:px-8">
 		<!-- CTA-карточка с глубоким теневым обрамлением -->
 		<div
-			class="relative overflow-hidden rounded-3xl bg-white/80 px-6 py-14 shadow-2xl shadow-slate-900/5 ring-1 ring-slate-900/5 backdrop-blur-sm sm:px-16 sm:py-20"
+			class="relative overflow-hidden rounded-3xl {isLight
+				? 'bg-white/80'
+				: 'bg-white/[0.06]'} px-6 py-14 shadow-2xl ring-1 shadow-slate-900/5 ring-slate-900/5 backdrop-blur-sm sm:px-16 sm:py-20"
 		>
 			<!-- Внутренний акцентный градиент сверху -->
 			<div
@@ -65,7 +81,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-pretty text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl"
+							class="p1-title text-3xl font-semibold tracking-tight text-pretty sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -75,15 +91,16 @@
 				<EditableField
 					fieldKey="ActionsCTA.subtitle"
 					label="Подзаголовок"
-					value={String(data?.subtitle ??
-						'Свяжитесь с нами и мы расскажем обо всех актуальных предложениях')}
+					value={String(
+						data?.subtitle ?? 'Свяжитесь с нами и мы расскажем обо всех актуальных предложениях'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('subtitle', v)}
 					class="mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mx-auto mt-6 max-w-xl text-lg/8 text-slate-600">{displayValue}</p>
+						<p class="p1-body mx-auto mt-6 max-w-xl text-lg/8">{displayValue}</p>
 					{/snippet}
 				</EditableField>
 
@@ -131,7 +148,7 @@
 							{#if displayValue}
 								<a
 									href="tel:{displayValue}"
-									class="group inline-flex items-center gap-3 rounded-xl bg-white px-6 py-4 text-sm font-semibold text-slate-700 shadow-md ring-1 ring-slate-200 transition duration-300 hover:-translate-y-0.5 hover:text-red-600 hover:shadow-lg hover:ring-red-200"
+									class="group p1-body p1-card inline-flex items-center gap-3 rounded-xl px-6 py-4 text-sm font-semibold shadow-md ring-1 ring-slate-200 transition duration-300 hover:-translate-y-0.5 hover:text-red-600 hover:shadow-lg hover:ring-red-200"
 								>
 									<span
 										class="flex size-10 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-red-100 transition-colors duration-300 group-hover:bg-red-500 group-hover:text-white"
@@ -151,7 +168,7 @@
 										</svg>
 									</span>
 									<span class="flex flex-col items-start leading-tight">
-										<span class="text-xs font-normal text-slate-400">Или позвоните нам</span>
+										<span class="p1-muted text-xs font-normal">Или позвоните нам</span>
 										<span class="text-base font-semibold tracking-tight">{displayValue}</span>
 									</span>
 								</a>
@@ -163,8 +180,6 @@
 		</div>
 
 		<!-- Тонкая подсказка под карточкой -->
-		<p class="mt-6 text-center text-sm text-slate-400">
-			Ответим в течение дня · Консультация бесплатна
-		</p>
+		<p class="p1-muted mt-6 text-center text-sm">Ответим в течение дня · Консультация бесплатна</p>
 	</div>
 </section>

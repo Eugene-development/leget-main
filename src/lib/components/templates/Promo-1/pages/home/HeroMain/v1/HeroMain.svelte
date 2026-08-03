@@ -23,7 +23,11 @@
 
 	const activeBgImage = $derived(
 		previewBgImage ??
-		String(data?.bgImageV1 ?? data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')
+			String(
+				data?.bgImageV1 ??
+					data?.bgImage ??
+					'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
+			)
 	);
 
 	async function handleImageApprove(url: string) {
@@ -39,10 +43,26 @@
 		Array.isArray(data?.brands)
 			? (data.brands as { name: string; logo: string; url: string }[])
 			: [
-					{ name: 'Hettich', logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png', url: 'https://www.hettich.com' },
-					{ name: 'Egger',   logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',   url: 'https://www.egger.com'   },
-					{ name: 'Аристо',  logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',  url: 'https://www.aristo.ru'   },
-					{ name: 'Blum',    logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',    url: 'https://www.blum.com'    },
+					{
+						name: 'Hettich',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						url: 'https://www.hettich.com'
+					},
+					{
+						name: 'Egger',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						url: 'https://www.egger.com'
+					},
+					{
+						name: 'Аристо',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						url: 'https://www.aristo.ru'
+					},
+					{
+						name: 'Blum',
+						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+						url: 'https://www.blum.com'
+					}
 				]
 	);
 
@@ -54,13 +74,15 @@
 	}
 </script>
 
-<section class="relative w-full min-h-full flex items-center justify-center py-6 md:py-8 overflow-hidden text-gray-900">
+<section
+	class="relative flex min-h-full w-full items-center justify-center overflow-hidden py-6 text-gray-900 md:py-8"
+>
 	<!-- Фоновое изображение -->
 	<div class="absolute inset-0 z-0">
 		<ImageFallback
 			src={activeBgImage}
 			alt="Фоновое изображение"
-			class="w-full h-full object-cover transition-all duration-500"
+			class="h-full w-full object-cover transition-all duration-500"
 		/>
 		<div class="absolute inset-0 bg-linear-to-b from-black/20 via-black/10 to-black/30"></div>
 
@@ -77,8 +99,12 @@
 				title="Сменить фоновое изображение"
 			>
 				<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-						d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+					/>
 				</svg>
 				<span>Сменить фото</span>
 			</button>
@@ -100,11 +126,17 @@
 	{/if}
 
 	<!-- Основной контент -->
-	<div class="hero-shell relative z-10 w-full max-w-4xl px-4 py-6 md:px-8 md:py-10 xl:px-4 xl:py-12">
+	<div
+		class="hero-shell relative z-10 w-full max-w-4xl px-4 py-6 md:px-8 md:py-10 xl:px-4 xl:py-12"
+	>
 		<!-- Стеклянная панель -->
-		<div class="glass-panel w-full rounded-3xl border border-white/40 shadow-2xl overflow-hidden flex flex-col items-center">
+		<div
+			class="glass-panel flex w-full flex-col items-center overflow-hidden rounded-3xl border border-white/40 shadow-2xl"
+		>
 			<!-- Контент -->
-			<div class="hero-content px-6 py-8 md:px-12 md:py-10 text-center max-w-3xl mx-auto flex flex-col items-center">
+			<div
+				class="hero-content mx-auto flex max-w-3xl flex-col items-center px-6 py-8 text-center md:px-12 md:py-10"
+			>
 				<!-- Логотип. Габариты ограничены и по ширине, и по высоте: панель живёт
 				     в боксе фиксированной высоты (см. .hero-wrapper в ../index.svelte),
 				     поэтому квадратный логотип без max-h выдавливал контент за нижний край. -->
@@ -121,12 +153,15 @@
 							{#snippet children(displayValue)}
 								{#if displayValue}
 									<ImageFallback
-										src={displayValue || 'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
+										src={displayValue ||
+											'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
 										alt={String(data?.logoAlt ?? 'Логотип')}
-										class="relative mx-auto w-full max-h-16 md:max-h-20 rounded-2xl object-contain"
+										class="relative mx-auto max-h-16 w-full rounded-2xl object-contain md:max-h-20"
 									/>
 								{:else if isEditable}
-									<div class="border-2 border-dashed border-slate-400/30 rounded-2xl p-4 text-[10px] font-bold uppercase tracking-widest text-slate-500/50 backdrop-blur-sm bg-white/10">
+									<div
+										class="rounded-2xl border-2 border-dashed border-slate-400/30 bg-white/10 p-4 text-[10px] font-bold tracking-widest text-slate-500/50 uppercase backdrop-blur-sm"
+									>
 										Логотип
 									</div>
 								{/if}
@@ -145,7 +180,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<span class="md:text-sm text-xs font-semibold text-slate-600 uppercase tracking-[0.5em] mb-6">
+						<span
+							class="mb-6 text-xs font-semibold tracking-[0.5em] text-slate-600 uppercase md:text-sm"
+						>
 							{displayValue}
 						</span>
 					{/snippet}
@@ -161,7 +198,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="hero-title text-3xl md:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-none mb-6">
+						<h1
+							class="hero-title mb-6 text-3xl leading-none font-extrabold text-slate-900 md:text-5xl lg:text-7xl"
+						>
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -178,14 +217,18 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="text-sm md:text-lg text-slate-800 max-w-2xl mx-auto mb-8 md:mb-10 font-medium hero-description">
+						<p
+							class="hero-description mx-auto mb-8 max-w-2xl text-sm font-medium text-slate-800 md:mb-10 md:text-lg"
+						>
 							{displayValue}
 						</p>
 					{/snippet}
 				</EditableField>
 
 				<!-- Кнопка -->
-				<div class="flex flex-col-reverse md:flex-row items-center justify-center gap-6 md:gap-16 w-full md:w-auto">
+				<div
+					class="flex w-full flex-col-reverse items-center justify-center gap-6 md:w-auto md:flex-row md:gap-16"
+				>
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
@@ -198,7 +241,7 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="bg-transparent text-slate-900 border border-slate-900/40 font-semibold text-base py-4 px-10 rounded-xl cursor-pointer shadow-sm transition-all duration-300 ease-out hover:bg-white/80 hover:border-transparent hover:shadow-xl hover:-translate-y-0.5 text-center"
+								class="cursor-pointer rounded-xl border border-slate-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-slate-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-white/80 hover:shadow-xl"
 							>
 								{displayValue}
 							</button>
@@ -208,25 +251,36 @@
 			</div>
 
 			<!-- Разделитель -->
-			<div class="w-full flex justify-center px-6 md:px-12">
-				<div class="w-full max-w-xl h-px bg-slate-300/50"></div>
+			<div class="flex w-full justify-center px-6 md:px-12">
+				<div class="h-px w-full max-w-xl bg-slate-300/50"></div>
 			</div>
 
 			<!-- Секция брендов -->
-			<div class="hero-brands w-full flex px-6 pb-6 md:px-12 md:pb-8 pt-6 md:pt-8 justify-center">
-				<div class="w-full flex flex-col items-center">
-					<p class="hero-brands-label hidden md:block text-xs text-slate-700 mb-6 font-semibold uppercase tracking-widest">
+			<div class="hero-brands flex w-full justify-center px-6 pt-6 pb-6 md:px-12 md:pt-8 md:pb-8">
+				<div class="flex w-full flex-col items-center">
+					<p
+						class="hero-brands-label mb-6 hidden text-xs font-semibold tracking-widest text-slate-700 uppercase md:block"
+					>
 						РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:
 					</p>
-					<div class="w-full flex flex-row justify-center gap-6 md:grid md:grid-cols-4 md:gap-12 items-center">
+					<div
+						class="flex w-full flex-row items-center justify-center gap-6 md:grid md:grid-cols-4 md:gap-12"
+					>
 						{#each brands as brand, i}
 							<a
 								href={brand.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="group px-2 h-10 flex items-center justify-center opacity-90 transition-all duration-300 hover:opacity-100 hover:-translate-y-0.5 {i >= 3 ? 'hidden md:flex' : ''}"
+								class="group flex h-10 items-center justify-center px-2 opacity-90 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-100 {i >=
+								3
+									? 'hidden md:flex'
+									: ''}"
 							>
-								<ImageFallback class="max-w-full max-h-full object-contain" src={brand.logo} alt={brand.name} />
+								<ImageFallback
+									class="max-h-full max-w-full object-contain"
+									src={brand.logo}
+									alt={brand.name}
+								/>
 							</a>
 						{/each}
 					</div>
@@ -240,7 +294,11 @@
 	.glass-panel {
 		/* Достаточно плотный фон — работает как самостоятельный fallback
 		   когда backdrop-filter недоступен (cross-origin изображение, старый браузер) */
-		background: linear-gradient(145deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.58) 100%);
+		background: linear-gradient(
+			145deg,
+			rgba(255, 255, 255, 0.72) 0%,
+			rgba(255, 255, 255, 0.58) 100%
+		);
 		backdrop-filter: blur(20px) saturate(180%);
 		-webkit-backdrop-filter: blur(20px) saturate(180%);
 	}
@@ -248,7 +306,11 @@
 	/* Fallback: если backdrop-filter не поддерживается — делаем фон ещё плотнее */
 	@supports not (backdrop-filter: blur(1px)) {
 		.glass-panel {
-			background: linear-gradient(145deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.80) 100%);
+			background: linear-gradient(
+				145deg,
+				rgba(255, 255, 255, 0.88) 0%,
+				rgba(255, 255, 255, 0.8) 100%
+			);
 		}
 	}
 

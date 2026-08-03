@@ -21,7 +21,7 @@
 </script>
 
 <div class="bg-white px-6 py-16">
-	<div class="prose prose-lg mx-auto max-w-3xl text-slate-700">
+	<div class="mx-auto prose prose-lg max-w-3xl text-slate-700">
 		<EditableField
 			fieldKey="Text.content"
 			label="Текст"

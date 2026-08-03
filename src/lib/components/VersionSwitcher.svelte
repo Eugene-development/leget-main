@@ -7,6 +7,7 @@
 		type ComponentVariantArticle
 	} from '$lib/utils/page-edit';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock, type BlockTheme } from '$lib/utils/block-theme';
 	import { invalidateAll } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { fly, fade } from 'svelte/transition';
@@ -18,7 +19,9 @@
 		componentType,
 		versionKey = null,
 		selectedVersion = $bindable(),
-		versions = ['v1', 'v2']
+		versions = ['v1', 'v2'],
+		themeVersions = [],
+		themeDefault = 'light'
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
@@ -27,6 +30,10 @@
 		versionKey?: string | null;
 		selectedVersion: any;
 		versions?: ('v1' | 'v2' | 'v3' | 'v4')[];
+		/** Версии, у которых есть светлая/тёмная тема. Пусто — тумблер не показывается. */
+		themeVersions?: ('v1' | 'v2' | 'v3' | 'v4')[];
+		/** Тема блока по умолчанию, когда `data.theme` не задан. */
+		themeDefault?: BlockTheme;
 	} = $props();
 
 	const actualVersionKey = $derived(
@@ -128,25 +135,17 @@
 			});
 	});
 
-	const isLight = $derived(data?.theme === 'light');
+	// Тема блока. Оптимистичное обновление с откатом живёт в общем помощнике —
+	// он же используется блоками без переключателя версий.
+	const isLight = $derived(isLightBlock(data, themeDefault));
 
-	async function toggleTheme() {
-		if (!editContext) return;
-		// Оптимистичное обновление: переключаем тему мгновенно, не дожидаясь
-		// ответа сервера. Раньше data менялся только после saveComponentData
-		// (сетевой запрос + invalidateAll), из-за чего свитчер и сам блок
-		// «зависали» на 3–5 секунд. data — bindable и связан с HeroMain,
-		// поэтому и свитчер, и компонент обновляются сразу.
-		const previous = data;
-		const updated = { ...data, theme: isLight ? 'dark' : 'light' };
-		data = updated;
-		try {
-			await saveComponentData(editContext, 'HeroMain', updated);
-		} catch (err) {
-			data = previous; // откатываем тему при ошибке сохранения
-			console.error(`Ошибка сохранения темы для HeroMain:`, err);
-		}
-	}
+	const toggleTheme = createThemeToggle({
+		type: () => componentType,
+		fallback: () => themeDefault,
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
 
 	function handleReset() {
 		if (!editContext || !data?._componentId) return;
@@ -243,7 +242,7 @@
 				{/if}
 			</button>
 		{/if}
-		{#if componentType === 'HeroMain' && (selectedVersion === 'v2' || selectedVersion === 'v3' || selectedVersion === 'v4')}
+		{#if themeVersions.includes(selectedVersion)}
 			<ThemeToggle {isLight} onToggle={toggleTheme} class="order-first" />
 		{/if}
 

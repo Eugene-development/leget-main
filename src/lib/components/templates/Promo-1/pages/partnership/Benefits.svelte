@@ -2,6 +2,9 @@
 	// Артикул: 1.6.4.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -13,6 +16,16 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
+	const isLight = $derived(isLightBlock(data, 'light'));
+	const toggleTheme = createThemeToggle({
+		type: 'Benefits',
+		fallback: 'light',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
+
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -21,12 +34,36 @@
 	}
 
 	const defaultItems = [
-		{ title: 'Прозрачные выплаты',    text: 'Фиксированный процент с каждой зарегистрированной сделки.',          color: 'sky' },
-		{ title: 'Качественный продукт',   text: 'Рекомендуйте проверенную продукцию с гарантией качества.',           color: 'emerald' },
-		{ title: 'Поддержка менеджера',    text: 'Персональный менеджер поможет с любыми вопросами.',                  color: 'violet' },
-		{ title: 'Личный кабинет',         text: 'Отслеживайте заказы и доходы в удобном интерфейсе сайта.',           color: 'amber' },
-		{ title: 'Обучение',               text: 'Бесплатные материалы по продукции и техникам продаж.',               color: 'pink' },
-		{ title: 'Рост дохода',            text: 'Бонусы за объём и повышение процента при активной работе.',          color: 'cyan' },
+		{
+			title: 'Прозрачные выплаты',
+			text: 'Фиксированный процент с каждой зарегистрированной сделки.',
+			color: 'sky'
+		},
+		{
+			title: 'Качественный продукт',
+			text: 'Рекомендуйте проверенную продукцию с гарантией качества.',
+			color: 'emerald'
+		},
+		{
+			title: 'Поддержка менеджера',
+			text: 'Персональный менеджер поможет с любыми вопросами.',
+			color: 'violet'
+		},
+		{
+			title: 'Личный кабинет',
+			text: 'Отслеживайте заказы и доходы в удобном интерфейсе сайта.',
+			color: 'amber'
+		},
+		{
+			title: 'Обучение',
+			text: 'Бесплатные материалы по продукции и техникам продаж.',
+			color: 'pink'
+		},
+		{
+			title: 'Рост дохода',
+			text: 'Бонусы за объём и повышение процента при активной работе.',
+			color: 'cyan'
+		}
 	];
 
 	/**
@@ -116,7 +153,12 @@
 	}
 </script>
 
-<section class="relative isolate overflow-hidden bg-white py-24">
+<section
+	class="p1-surface relative isolate overflow-hidden py-24"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
+
 	<!-- Вертикальные линии-колонки: лёгкая структура под светлой секцией -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="pb-rules"></div>
@@ -133,7 +175,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-4xl">
+					<h2 class="p1-title text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -147,24 +189,21 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-4 max-w-2xl text-slate-600">{displayValue}</p>
+					<p class="p1-body mx-auto mt-4 max-w-2xl">{displayValue}</p>
 				{/snippet}
 			</EditableField>
 			<div class="mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="p1-line h-px flex-1"></span>
 				<span class="size-1.5 rotate-45 border border-sky-500/70"></span>
-				<span class="h-px flex-1 bg-slate-900/10"></span>
+				<span class="p1-line h-px flex-1"></span>
 			</div>
 		</div>
 
-		<div
-			use:revealOnScroll
-			class="pb-reveal mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-		>
+		<div use:revealOnScroll class="pb-reveal mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 			{#each items as item, i}
 				{@const c = colorMap[item.color] ?? colorMap.sky}
 				<div
-					class="pb-card group relative overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
+					class="pb-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
 					style="--pb-delay: {i * 70}ms"
 				>
 					<!-- Акцентная линия сверху и цветная подсветка угла на hover -->
@@ -188,12 +227,23 @@
 						<div
 							class="flex size-14 items-center justify-center rounded-2xl text-white ring-1 ring-white/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.tile}"
 						>
-							<svg class="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+							<svg
+								class="size-7"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+								/>
 							</svg>
 						</div>
 
-						<h3 class="mt-6 text-lg font-semibold tracking-[-0.01em] text-slate-900">
+						<h3 class="p1-title mt-6 text-lg font-semibold tracking-[-0.01em]">
 							<EditableField
 								fieldKey="Benefits.{i}.title"
 								label="Заголовок"
@@ -205,7 +255,7 @@
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</h3>
-						<p class="mt-3 text-sm/6 text-slate-600">
+						<p class="p1-body mt-3 text-sm/6">
 							<EditableField
 								fieldKey="Benefits.{i}.text"
 								label="Описание"

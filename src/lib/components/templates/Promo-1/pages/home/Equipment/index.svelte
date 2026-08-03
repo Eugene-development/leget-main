@@ -18,26 +18,40 @@
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
-	<div class="relative w-full overflow-hidden {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}">
+	<div
+		class="relative w-full overflow-hidden {selectedVersion === 'disabled'
+			? 'opacity-40 grayscale'
+			: ''}"
+	>
 		<!-- Встраиваемый переключатель версий -->
-		<VersionSwitcher 
-			bind:data 
-			{editContext} 
-			{isEditable} 
-			componentType="Equipment" 
+		<VersionSwitcher
+			bind:data
+			{editContext}
+			{isEditable}
+			componentType="Equipment"
 			versionKey="equipmentVersion"
-			bind:selectedVersion 
+			themeVersions={['v1', 'v2']}
+			themeDefault={selectedVersion === 'v2' ? 'dark' : 'light'}
+			bind:selectedVersion
 		/>
 
 		{#if selectedVersion === 'disabled'}
 			<!-- Информационная плашка "Компонент отключен" -->
-			<div class="absolute inset-0 z-40 flex items-center justify-center bg-slate-950/20 backdrop-blur-[2px]">
-				<div class="flex flex-col items-center gap-3 px-6 py-4 rounded-2xl bg-slate-900/90 border border-red-500/30 shadow-2xl text-center select-none max-w-sm mx-4">
-					<div class="flex items-center gap-2 text-red-400 font-bold text-xs uppercase tracking-wider">
-						<span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+			<div
+				class="absolute inset-0 z-40 flex items-center justify-center bg-slate-950/20 backdrop-blur-[2px]"
+			>
+				<div
+					class="mx-4 flex max-w-sm flex-col items-center gap-3 rounded-2xl border border-red-500/30 bg-slate-900/90 px-6 py-4 text-center shadow-2xl select-none"
+				>
+					<div
+						class="flex items-center gap-2 text-xs font-bold tracking-wider text-red-400 uppercase"
+					>
+						<span class="h-2.5 w-2.5 animate-pulse rounded-full bg-red-500"></span>
 						Блок отключен
 					</div>
-					<p class="text-[11px] text-slate-400 font-medium">Этот блок не будет отображаться для обычных (не авторизованных) пользователей.</p>
+					<p class="text-[11px] font-medium text-slate-400">
+						Этот блок не будет отображаться для обычных (не авторизованных) пользователей.
+					</p>
 				</div>
 			</div>
 		{/if}
@@ -48,7 +62,11 @@
 				<EquipmentV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div class="w-full" in:fly={{ x: -1200, duration: 600 }} out:fly={{ x: -1200, duration: 600 }}>
+			<div
+				class="w-full"
+				in:fly={{ x: -1200, duration: 600 }}
+				out:fly={{ x: -1200, duration: 600 }}
+			>
 				<EquipmentV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

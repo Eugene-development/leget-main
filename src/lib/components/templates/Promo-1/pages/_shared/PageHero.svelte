@@ -2,6 +2,8 @@
 	import type { Snippet } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
 	import type { HeroField, HeroPalette } from './hero';
 
 	let {
@@ -10,6 +12,7 @@
 		isEditable = false,
 		componentType,
 		palette,
+		paletteLight = null,
 		icon,
 		title,
 		text
@@ -20,11 +23,29 @@
 		/** Тип компонента для saveComponentData и префикс fieldKey. */
 		componentType: string;
 		palette: HeroPalette;
+		/**
+		 * Светлый вариант палитры. Hero внутренних страниц — брендовая поверхность
+		 * (насыщенный градиент), нейтральными токенами она не описывается, поэтому
+		 * светлая тема задаётся отдельной палитрой. Не передана — тумблера нет.
+		 */
+		paletteLight?: HeroPalette | null;
 		/** Значок в плитке — путь(и) внутри 24×24 viewBox. */
 		icon: Snippet;
 		title: HeroField;
 		text: HeroField;
 	} = $props();
+
+	// Тема блока. Дефолт тёмный: Hero нарисован на тёмном градиенте.
+	const isLight = $derived(paletteLight !== null && isLightBlock(data, 'dark'));
+	const pal = $derived(isLight && paletteLight ? paletteLight : palette);
+
+	const toggleTheme = createThemeToggle({
+		type: () => componentType,
+		fallback: 'dark',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -38,7 +59,7 @@
 	 * data-URL в каждом Hero страницы.
 	 */
 	const patternUrl = $derived(
-		`url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22${palette.patternColor}%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')`
+		`url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22${pal.patternColor}%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')`
 	);
 </script>
 
@@ -50,19 +71,25 @@
 	надзаголовков, ни кнопок, ни вторых абзацев, ни дополнительных линий
 	(в том числе по кромке секции). Страницы передают только палитру и значок.
 
-	ВНИМАНИЕ — стык секций: волна снизу заливается `palette.wave`, и этот цвет
-	обязан совпадать с фоном следующего блока страницы. Слой ровно один:
+	ВНИМАНИЕ — стык секций: волна снизу заливается `palette.wave` (в светлой теме —
+	`paletteLight.wave`), и этот цвет обязан совпадать с фоном следующего блока
+	страницы. Тема у блоков независимая: если перекрасить только Hero, на стыке
+	будет видна полоса — переключайте страницу целиком. Слой ровно один:
 	полупрозрачный подслой над градиентом читается как посторонняя полоса.
 
 	Анимация появления стартует сразу (`hr-enter`) — блок находится над сгибом.
 	Никакого backdrop-blur на анимируемых узлах: при активном transform
 	backdrop-filter сэмплит другую подложку и тон элемента скачет в конце анимации.
 -->
-<section class="hr-enter relative isolate overflow-hidden {palette.section}">
+<section class="hr-enter relative isolate overflow-hidden {pal.section}">
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="absolute inset-0 {palette.patternOpacity}" style="background-image: {patternUrl};"></div>
-		<div class="hr-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 {palette.glowA}"></div>
-		<div class="hr-glow absolute top-1/3 -right-24 size-96 {palette.glowB}"></div>
+		<div
+			class="absolute inset-0 {pal.patternOpacity}"
+			style="background-image: {patternUrl};"
+		></div>
+		<div class="hr-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 {pal.glowA}"></div>
+		<div class="hr-glow absolute top-1/3 -right-24 size-96 {pal.glowB}"></div>
 	</div>
 
 	<div
@@ -70,7 +97,7 @@
 	>
 		<!-- 1. Значок -->
 		<div
-			class="hr-item mx-auto flex size-18 items-center justify-center rounded-2xl text-white {palette.iconTile}"
+			class="hr-item mx-auto flex size-18 items-center justify-center rounded-2xl text-white {pal.iconTile}"
 		>
 			<svg class="size-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 				{@render icon()}
@@ -88,7 +115,8 @@
 		>
 			{#snippet children(displayValue)}
 				<h1
-					class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty text-white sm:text-5xl lg:text-6xl"
+					class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {pal.title ??
+						'text-white'}"
 				>
 					{displayValue}
 				</h1>
@@ -97,9 +125,9 @@
 
 		<!-- 3. Линия -->
 		<div class="hr-rule hr-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-			<span class="h-px flex-1 {palette.rule}"></span>
-			<span class="size-1.5 rotate-45 border {palette.diamond}"></span>
-			<span class="h-px flex-1 {palette.rule}"></span>
+			<span class="h-px flex-1 {pal.rule}"></span>
+			<span class="size-1.5 rotate-45 border {pal.diamond}"></span>
+			<span class="h-px flex-1 {pal.rule}"></span>
 		</div>
 
 		<!-- 4. Текст -->
@@ -114,7 +142,7 @@
 		>
 			{#snippet children(displayValue)}
 				{#if displayValue}
-					<p class="mx-auto max-w-2xl text-base/7 text-pretty sm:text-lg/8 {palette.text}">
+					<p class="mx-auto max-w-2xl text-base/7 text-pretty sm:text-lg/8 {pal.text}">
 						{displayValue}
 					</p>
 				{/if}
@@ -141,7 +169,7 @@
 			class="hr-wave block h-16 w-full sm:h-20 lg:h-28"
 			viewBox="0 0 1440 120"
 			preserveAspectRatio="none"
-			style="--hr-wave: {palette.wave}"
+			style="--hr-wave: {pal.wave}"
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<g class="hr-wave-bob">

@@ -3,6 +3,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -13,6 +15,9 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
+	const isLight = $derived(isLightBlock(data, 'dark'));
 
 	const cards = $derived(
 		Array.isArray(data?.cards) && data.cards.length > 0
@@ -62,7 +67,10 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-slate-900 py-24 font-sans select-none sm:py-32">
+<section
+	class="p1-surface relative overflow-hidden py-24 font-sans select-none sm:py-32"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<!-- Декоративные фоновые круги -->
 	<div class="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-sky-500/10 blur-3xl"></div>
 	<div class="absolute -right-32 -bottom-32 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl"></div>
@@ -90,7 +98,7 @@
 									/>
 								{:else if isEditable}
 									<div
-										class="rounded-xl border border-dashed border-white/20 bg-white/5 p-4 text-[10px] font-bold tracking-widest text-white/50 uppercase backdrop-blur-md"
+										class="p1-border p1-card p1-muted rounded-xl border border-dashed p-4 text-[10px] font-bold tracking-widest uppercase backdrop-blur-md"
 									>
 										Логотип
 									</div>
@@ -101,15 +109,13 @@
 				{/if}
 
 				<!-- Премиальный блок цитаты -->
-				<div
-					class="relative rounded-3xl border border-white/10 bg-slate-950/40 p-8 shadow-2xl backdrop-blur-xl"
-				>
+				<div class="p1-border p1-card relative rounded-3xl border p-8 shadow-2xl backdrop-blur-xl">
 					<div
 						class="absolute -top-6 -left-4 font-serif text-6xl leading-none text-sky-500/20 select-none"
 					>
 						“
 					</div>
-					<blockquote class="text-base leading-relaxed font-medium text-slate-200 md:text-lg">
+					<blockquote class="p1-body text-base leading-relaxed font-medium md:text-lg">
 						<EditableField
 							fieldKey="Message.text"
 							label="Текст"
@@ -126,7 +132,7 @@
 					</blockquote>
 					<div class="mt-6 flex items-center gap-3">
 						<span class="h-px w-8 bg-gradient-to-r from-sky-400 to-indigo-400"></span>
-						<span class="text-[10px] font-bold tracking-widest text-slate-400 uppercase"
+						<span class="p1-muted text-[10px] font-bold tracking-widest uppercase"
 							>Стремление к идеалу</span
 						>
 					</div>
@@ -137,7 +143,7 @@
 			<div class="grid gap-6 sm:grid-cols-2 lg:col-span-7">
 				{#each cards as card, i}
 					<div
-						class="message-card-v2 group relative overflow-hidden rounded-3xl border border-white/5 bg-slate-950/30 p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/30 hover:bg-slate-950/60 hover:shadow-sky-500/5"
+						class="message-card-v2 group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/30 hover:shadow-sky-500/5"
 					>
 						<div
 							class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-gradient-to-br from-sky-500/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -145,7 +151,7 @@
 						<div class="relative flex h-full flex-col justify-between">
 							<div>
 								<div
-									class="mb-5 size-16 overflow-hidden rounded-2xl border border-white/10 bg-slate-900 transition-colors duration-300 group-hover:border-sky-500/30"
+									class="p1-border mb-5 size-16 overflow-hidden rounded-2xl border bg-slate-900 transition-colors duration-300 group-hover:border-sky-500/30"
 								>
 									<ImageFallback
 										src={card.image}
@@ -154,7 +160,7 @@
 									/>
 								</div>
 								<h3
-									class="text-base font-bold text-white transition-colors duration-300 group-hover:text-sky-300"
+									class="p1-title text-base font-bold transition-colors duration-300 group-hover:text-sky-300"
 								>
 									<EditableField
 										fieldKey={`Message.cards.${i}.title`}
@@ -168,7 +174,7 @@
 									</EditableField>
 								</h3>
 								<p
-									class="mt-2 text-xs leading-relaxed text-slate-400 transition-colors duration-300 group-hover:text-slate-300 md:text-sm"
+									class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300 md:text-sm"
 								>
 									<EditableField
 										fieldKey={`Message.cards.${i}.description`}
@@ -184,7 +190,7 @@
 								</p>
 							</div>
 							<div
-								class="mt-4 flex items-center gap-1.5 text-slate-500 transition-colors duration-300 group-hover:text-sky-400"
+								class="p1-muted mt-4 flex items-center gap-1.5 transition-colors duration-300 group-hover:text-sky-400"
 							>
 								<span class="text-[10px] font-bold tracking-widest uppercase">Подробнее</span>
 								<svg

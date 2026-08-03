@@ -16,24 +16,31 @@
 
 	const directions = $derived(
 		Array.isArray(data?.directions) && data.directions.length > 0
-			? (data.directions as { image: string; alt: string; badge: string; title: string; buttonText: string; buttonHref: string }[])
+			? (data.directions as {
+					image: string;
+					alt: string;
+					badge: string;
+					title: string;
+					buttonText: string;
+					buttonHref: string;
+				}[])
 			: [
 					{
-						image:      'https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg',
-						alt:        'Кухонные гарнитуры',
-						badge:      'Основное направление',
-						title:      'Кухонные гарнитуры',
+						image: 'https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg',
+						alt: 'Кухонные гарнитуры',
+						badge: 'Основное направление',
+						title: 'Кухонные гарнитуры',
 						buttonText: 'Просчитать ваш проект',
-						buttonHref: '/contact',
+						buttonHref: '/contact'
 					},
 					{
-						image:      'https://storage.yandexcloud.net/novostroy/bg/prih.jpg',
-						alt:        'Шкафы и гардеробы',
-						badge:      'Основное направление',
-						title:      'Шкафы и гардеробы',
+						image: 'https://storage.yandexcloud.net/novostroy/bg/prih.jpg',
+						alt: 'Шкафы и гардеробы',
+						badge: 'Основное направление',
+						title: 'Шкафы и гардеробы',
 						buttonText: 'Просчитать ваш проект',
-						buttonHref: '/contact',
-					},
+						buttonHref: '/contact'
+					}
 				]
 	);
 
@@ -56,7 +63,9 @@
 			/>
 			<div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent"></div>
 			<div class="relative flex w-full flex-col items-start justify-end p-8 sm:p-12">
-				<span class="rounded-full bg-white/20 px-3 py-1 text-sm font-medium text-white/90 backdrop-blur-sm">
+				<span
+					class="rounded-full bg-white/20 px-3 py-1 text-sm font-medium text-white/90 backdrop-blur-sm"
+				>
 					{dir.badge}
 				</span>
 				<h3 class="mt-3 text-3xl font-bold text-white">{dir.title}</h3>
@@ -66,7 +75,12 @@
 				>
 					{dir.buttonText}
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 5l7 7-7 7"
+						/>
 					</svg>
 				</a>
 			</div>

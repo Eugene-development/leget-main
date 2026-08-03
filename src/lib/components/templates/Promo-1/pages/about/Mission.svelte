@@ -4,6 +4,9 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -14,6 +17,16 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
+	const isLight = $derived(isLightBlock(data, 'light'));
+	const toggleTheme = createThemeToggle({
+		type: 'Mission',
+		fallback: 'light',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -32,7 +45,12 @@
 	const imageUrl = $derived(String(data?.imageUrl ?? '').trim());
 </script>
 
-<section class="relative isolate overflow-hidden bg-white py-24">
+<section
+	class="p1-surface relative isolate overflow-hidden py-24"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
+
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-rules"></div>
 	</div>
@@ -50,7 +68,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl"
+							class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -58,9 +76,9 @@
 				</EditableField>
 
 				<div class="ab-rule ab-d1 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="h-px flex-1 bg-slate-900/10"></span>
+					<span class="p1-line h-px flex-1"></span>
 					<span class="size-1.5 rotate-45 border border-red-500/70"></span>
-					<span class="h-px flex-1 bg-slate-900/10"></span>
+					<span class="p1-line h-px flex-1"></span>
 				</div>
 
 				<!--
@@ -81,7 +99,7 @@
 						>
 							{#snippet children(displayValue)}
 								{#if displayValue}
-									<p class="max-w-xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+									<p class="p1-body max-w-xl text-sm/6 sm:text-base/7">{displayValue}</p>
 								{/if}
 							{/snippet}
 						</EditableField>
@@ -115,7 +133,7 @@
 									<div
 										class="flex aspect-4/3 w-full items-center justify-center rounded-[calc(var(--radius-4xl)-1px)] bg-slate-50"
 									>
-										<p class="text-sm text-slate-400">Добавьте URL изображения</p>
+										<p class="p1-muted text-sm">Добавьте URL изображения</p>
 									</div>
 								{/if}
 							{/snippet}

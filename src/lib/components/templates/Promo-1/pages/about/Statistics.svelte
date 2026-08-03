@@ -4,6 +4,9 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
+	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -14,6 +17,16 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
+	const isLight = $derived(isLightBlock(data, 'light'));
+	const toggleTheme = createThemeToggle({
+		type: 'Statistics',
+		fallback: 'light',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext
+	});
 
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
@@ -31,9 +44,9 @@
 
 	const defaultStats = [
 		{ value: '300+', label: 'Партнёрских салонов', color: 'sky' },
-		{ value: '20+',  label: 'Лет опыта',           color: 'emerald' },
-		{ value: '17',   label: 'Городов России',      color: 'violet' },
-		{ value: '4000+', label: 'Реализованных проектов', color: 'amber' },
+		{ value: '20+', label: 'Лет опыта', color: 'emerald' },
+		{ value: '17', label: 'Городов России', color: 'violet' },
+		{ value: '4000+', label: 'Реализованных проектов', color: 'amber' }
 	];
 
 	/**
@@ -87,7 +100,12 @@
 	и не рендериться. Раньше секция была вообще без фона и показывала тёплый
 	`--color-surface` (#faf9f7) — на границе с волной был виден шов.
 -->
-<section class="relative isolate overflow-hidden bg-slate-50 py-20 sm:py-24">
+<section
+	class="p1-surface-alt relative isolate overflow-hidden py-20 sm:py-24"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
+	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
+
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-rules"></div>
 	</div>
@@ -97,7 +115,7 @@
 			{#each stats as stat, i}
 				{@const c = colorMap[stat.color] ?? colorMap.sky}
 				<div
-					class="ab-card group relative overflow-hidden rounded-3xl border border-slate-900/10 bg-white p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
+					class="ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
 					style="--ab-delay: {i * 70}ms"
 				>
 					<!-- Цветное пятно в углу — прежний акцент плитки, теперь под каймой -->
@@ -115,7 +133,7 @@
 					></div>
 
 					<div class="relative">
-						<div class="text-5xl font-semibold tracking-[-0.04em] tabular-nums text-slate-900">
+						<div class="p1-title text-5xl font-semibold tracking-[-0.04em] tabular-nums">
 							<EditableField
 								fieldKey="Statistics.{i}.value"
 								label="Значение"
@@ -127,7 +145,9 @@
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</div>
-						<div class="mt-3 text-[11px] font-semibold tracking-[0.16em] text-slate-500 uppercase sm:text-xs">
+						<div
+							class="p1-muted mt-3 text-[11px] font-semibold tracking-[0.16em] uppercase sm:text-xs"
+						>
 							<EditableField
 								fieldKey="Statistics.{i}.label"
 								label="Метка"
@@ -139,7 +159,10 @@
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</div>
-						<div class="mt-5 h-1 w-12 rounded-full bg-linear-to-r {c.line}" aria-hidden="true"></div>
+						<div
+							class="mt-5 h-1 w-12 rounded-full bg-linear-to-r {c.line}"
+							aria-hidden="true"
+						></div>
 					</div>
 				</div>
 			{/each}

@@ -3,6 +3,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -14,22 +16,47 @@
 		isEditable?: boolean;
 	} = $props();
 
+	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
+	const isLight = $derived(isLightBlock(data, 'dark'));
+
 	const steps = $derived(
 		Array.isArray(data?.steps) && data.steps.length > 0
 			? (data.steps as { title: string; description: string }[])
 			: [
-					{ title: 'Консультация', description: 'Наш менеджер даст консультацию по материалам и возможным решениям в проектировании мебели' },
-					{ title: 'Замер',        description: 'Организуем проектный замер помещения с обозначением углов, коммуникаций и розеток' },
-					{ title: 'Проект',       description: 'Дизайнер составит проект мебели с учётом всех ваших пожеланий и размеров помещения' },
-					{ title: 'Договор',      description: 'Поможем комфортно заключить договор с указанием всех условий выполнения вашего проекта' },
-					{ title: 'Изготовление', description: 'Фабрика изготовит заказ на высокотехнологичном оборудовании под контролем технологов' },
-					{ title: 'Сборка',       description: 'Профессиональные сборщики компании качественно выполнят монтаж и установку мебели' },
+					{
+						title: 'Консультация',
+						description:
+							'Наш менеджер даст консультацию по материалам и возможным решениям в проектировании мебели'
+					},
+					{
+						title: 'Замер',
+						description:
+							'Организуем проектный замер помещения с обозначением углов, коммуникаций и розеток'
+					},
+					{
+						title: 'Проект',
+						description:
+							'Дизайнер составит проект мебели с учётом всех ваших пожеланий и размеров помещения'
+					},
+					{
+						title: 'Договор',
+						description:
+							'Поможем комфортно заключить договор с указанием всех условий выполнения вашего проекта'
+					},
+					{
+						title: 'Изготовление',
+						description:
+							'Фабрика изготовит заказ на высокотехнологичном оборудовании под контролем технологов'
+					},
+					{
+						title: 'Сборка',
+						description:
+							'Профессиональные сборщики компании качественно выполнят монтаж и установку мебели'
+					}
 				]
 	);
 
-	const activeBgImage = $derived(
-		String(data?.bgImageV2 ?? data?.bgImage ?? '')
-	);
+	const activeBgImage = $derived(String(data?.bgImageV2 ?? data?.bgImage ?? ''));
 
 	// SVG иконки для каждого шага
 	const icons = [
@@ -38,7 +65,7 @@
 		'M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2',
 		'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
 		'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z',
-		'M5 13l4 4L19 7',
+		'M5 13l4 4L19 7'
 	];
 
 	async function saveField(field: string, value: string) {
@@ -58,21 +85,29 @@
 	}
 </script>
 
-<section class="relative isolate overflow-hidden py-24 sm:py-32 font-sans select-none text-white bg-slate-950">
+<section
+	class="p1-surface p1-title relative isolate overflow-hidden py-24 font-sans select-none sm:py-32"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<!-- Фоновая картинка с глубоким оверлеем -->
 	<ImageFallback
 		src={activeBgImage}
 		alt="Интерьер с мебелью"
-		class="absolute inset-0 -z-20 h-full w-full object-cover scale-105"
+		class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover"
 	/>
-	<div class="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/40"></div>
+	<div
+		class="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/40"
+	></div>
 
-	<div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-		<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-			
+	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+		<div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
 			<!-- Левая колонка: Прогресс и заголовок -->
-			<div class="lg:col-span-4 sticky top-8 flex flex-col items-start text-left bg-slate-950/50 p-8 rounded-3xl border border-white/10 backdrop-blur-md shadow-2xl">
-				<span class="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-sky-300">
+			<div
+				class="p1-card p1-border sticky top-8 flex flex-col items-start rounded-3xl border p-8 text-left shadow-2xl backdrop-blur-md lg:col-span-4"
+			>
+				<span
+					class="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-sky-300 uppercase"
+				>
 					<EditableField
 						fieldKey="Stage.badge"
 						label="Метка"
@@ -94,45 +129,67 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-white font-display leading-tight">{displayValue}</h2>
+						<h2
+							class="p1-title font-display mt-4 text-3xl leading-tight font-extrabold tracking-tight md:text-4xl"
+						>
+							{displayValue}
+						</h2>
 					{/snippet}
 				</EditableField>
 
 				<EditableField
 					fieldKey="Stage.description"
 					label="Описание"
-					value={String(data?.description ?? 'Мы поддержим вас на всех этапах работы над мебельным проектом: от первой консультации до дня финальной сборки.')}
+					value={String(
+						data?.description ??
+							'Мы поддержим вас на всех этапах работы над мебельным проектом: от первой консультации до дня финальной сборки.'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-6 text-sm md:text-base leading-relaxed text-slate-300">{displayValue}</p>
+						<p class="p1-body mt-6 text-sm leading-relaxed md:text-base">{displayValue}</p>
 					{/snippet}
 				</EditableField>
 			</div>
 
 			<!-- Правая колонка: Staggered Timeline (Второй вариант) -->
-			<div class="lg:col-span-8 relative pl-6 border-l-2 border-dashed border-white/10 flex flex-col gap-8">
+			<div
+				class="p1-border relative flex flex-col gap-8 border-l-2 border-dashed pl-6 lg:col-span-8"
+			>
 				{#each steps as step, i}
-					<div class="stage-card group relative rounded-3xl border border-white/5 bg-slate-900/30 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-sky-500/30 hover:bg-slate-900/50 hover:translate-x-1">
+					<div
+						class="stage-card group p1-border p1-card hover:p1-card relative rounded-3xl border p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:translate-x-1 hover:border-sky-500/30"
+					>
 						<!-- Светящийся контур-маркер на временной линии -->
-						<div class="absolute -left-[35px] top-6 w-4 h-4 rounded-full bg-slate-950 border-4 border-slate-700 group-hover:border-sky-400 group-hover:scale-125 transition-all duration-300 shadow-[0_0_10px_rgba(56,189,248,0.2)]"></div>
-						
+						<div
+							class="absolute top-6 -left-[35px] h-4 w-4 rounded-full border-4 border-slate-700 bg-slate-950 shadow-[0_0_10px_rgba(56,189,248,0.2)] transition-all duration-300 group-hover:scale-125 group-hover:border-sky-400"
+						></div>
+
 						<div class="flex items-start gap-5">
 							<!-- Анимированная иконка шага -->
-							<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 text-white shadow-lg group-hover:scale-105 transition-transform duration-300">
+							<div
+								class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 text-white shadow-lg transition-transform duration-300 group-hover:scale-105"
+							>
 								<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icons[i % icons.length]} />
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d={icons[i % icons.length]}
+									/>
 								</svg>
 							</div>
-							
+
 							<div>
 								<div class="flex items-center gap-3">
-									<span class="text-xs font-black text-sky-400 font-display">Шаг {i + 1}</span>
+									<span class="font-display text-xs font-black text-sky-400">Шаг {i + 1}</span>
 									<span class="h-1.5 w-1.5 rounded-full bg-slate-600"></span>
-									<h3 class="text-lg font-bold text-white group-hover:text-sky-300 transition-colors duration-300">
+									<h3
+										class="p1-title text-lg font-bold transition-colors duration-300 group-hover:text-sky-300"
+									>
 										<EditableField
 											fieldKey={`Stage.steps.${i}.title`}
 											label="Заголовок"
@@ -146,7 +203,9 @@
 										</EditableField>
 									</h3>
 								</div>
-								<p class="mt-2 text-xs md:text-sm leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
+								<p
+									class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300 md:text-sm"
+								>
 									<EditableField
 										fieldKey={`Stage.steps.${i}.description`}
 										label="Описание"
@@ -165,7 +224,6 @@
 					</div>
 				{/each}
 			</div>
-
 		</div>
 	</div>
 </section>
@@ -180,15 +238,33 @@
 	.stage-card {
 		animation: stage-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 	}
-	.stage-card:nth-child(1) { animation-delay: 0.1s; }
-	.stage-card:nth-child(2) { animation-delay: 0.2s; }
-	.stage-card:nth-child(3) { animation-delay: 0.3s; }
-	.stage-card:nth-child(4) { animation-delay: 0.4s; }
-	.stage-card:nth-child(5) { animation-delay: 0.5s; }
-	.stage-card:nth-child(6) { animation-delay: 0.6s; }
+	.stage-card:nth-child(1) {
+		animation-delay: 0.1s;
+	}
+	.stage-card:nth-child(2) {
+		animation-delay: 0.2s;
+	}
+	.stage-card:nth-child(3) {
+		animation-delay: 0.3s;
+	}
+	.stage-card:nth-child(4) {
+		animation-delay: 0.4s;
+	}
+	.stage-card:nth-child(5) {
+		animation-delay: 0.5s;
+	}
+	.stage-card:nth-child(6) {
+		animation-delay: 0.6s;
+	}
 
 	@keyframes stage-fade-in {
-		from { opacity: 0; transform: translateY(16px); }
-		to   { opacity: 1; transform: translateY(0);    }
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 </style>
