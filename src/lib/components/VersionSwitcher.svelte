@@ -7,6 +7,8 @@
 		type ComponentVariantArticle
 	} from '$lib/utils/page-edit';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import SideDrawer from '$lib/components/SideDrawer.svelte';
+	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import { createThemeToggle, isLightBlock, type BlockTheme } from '$lib/utils/block-theme';
 	import { invalidateAll } from '$app/navigation';
 	import { browser } from '$app/environment';
@@ -21,7 +23,10 @@
 		selectedVersion = $bindable(),
 		versions = ['v1', 'v2'],
 		themeVersions = [],
-		themeDefault = 'light'
+		themeDefault = 'light',
+		useSettingsDrawer = false,
+		drawerTitle = '',
+		drawerEyebrow = 'Компонент'
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
@@ -34,6 +39,16 @@
 		themeVersions?: ('v1' | 'v2' | 'v3' | 'v4')[];
 		/** Тема блока по умолчанию, когда `data.theme` не задан. */
 		themeDefault?: BlockTheme;
+		/**
+		 * Вынести артикул, анимации, сброс контента и отключение блока в боковую
+		 * панель настроек (как у баннера Promo-1). Снаружи остаются только выбор
+		 * варианта и тумблер темы; из списка вариантов уходит пункт «Отключить».
+		 */
+		useSettingsDrawer?: boolean;
+		/** Заголовок панели настроек. По умолчанию — тип компонента. */
+		drawerTitle?: string;
+		/** Надзаголовок панели настроек. */
+		drawerEyebrow?: string;
 	} = $props();
 
 	const actualVersionKey = $derived(
@@ -45,6 +60,16 @@
 
 	let hasManuallySelected = $state(false);
 	let isOpen = $state(false);
+	let drawerOpen = $state(false);
+
+	// Последний включённый вариант — чтобы кнопка в панели настроек работала как
+	// переключатель: «Отключить» → 'disabled', «Включить» → вернуть этот вариант.
+	let lastEnabledVersion = $state<'v1' | 'v2' | 'v3' | 'v4'>('v1');
+	$effect(() => {
+		if (selectedVersion && selectedVersion !== 'disabled') {
+			lastEnabledVersion = selectedVersion;
+		}
+	});
 
 	async function selectVersion(version: 'v1' | 'v2' | 'v3' | 'v4' | 'disabled') {
 		if (version === selectedVersion) return;
@@ -84,7 +109,9 @@
 
 	// Артикул компонента из глобального каталога (template.page.component.version).
 	let articleVariants = $state<ComponentVariantArticle[]>([]);
-	let articleLoaded = $state(false);
+	// Сознательно не $state: флаг читается внутри эффекта-загрузчика, и реактивная
+	// запись перезапускала бы его же (при сбросе флага после неудачи — бесконечно).
+	let articleLoaded = false;
 	let showArticleHint = $state(false);
 
 	// Десктоп (есть hover) — раскрываем по наведению. Тач-устройства — по клику:
@@ -121,17 +148,25 @@
 		return { template: p[0], page: p[1], component: p[2], version: p[3] };
 	});
 
+	// Артикул тянем только для авторизованного пользователя: запрос идёт под @guard и
+	// без токена всегда возвращает null. Гость монтирует свитчер наравне со всеми
+	// (разметка скрыта, но скрипт работает), и раньше единственная попытка сгорала
+	// именно на нём: после логина без перезагрузки блоки не пересоздаются
+	// (`{#each ... (element.type)}` + invalidateAll), флаг оставался взведён — и бейдж
+	// не появлялся до F5. Зависимость от isEditable даёт повтор ровно в момент входа.
 	$effect(() => {
 		const tid = editContext?.templateId ?? null;
 		const slug = editContext?.slug ?? null;
-		if (!editContext || tid === null || !slug || articleLoaded) return;
+		if (!isEditable || !editContext || tid === null || !slug || articleLoaded) return;
 		articleLoaded = true;
 		fetchComponentArticle(tid, slug, componentType)
 			.then((res) => {
-				articleVariants = res?.variants ?? [];
+				if (res) articleVariants = res.variants ?? [];
+				// Не получилось — снимаем флаг, чтобы попробовать снова при смене контекста.
+				else articleLoaded = false;
 			})
 			.catch(() => {
-				articleVariants = [];
+				articleLoaded = false;
 			});
 	});
 
@@ -152,12 +187,18 @@
 		showConfirmModal = true;
 	}
 
+	/** Кнопка отключения блока в панели настроек: 'disabled' ⇄ последний вариант. */
+	function toggleDisabled() {
+		selectVersion(selectedVersion === 'disabled' ? lastEnabledVersion : 'disabled');
+	}
+
 	async function confirmReset() {
 		if (!editContext || !data?._componentId || isResetting) return;
 		isResetting = true;
 		try {
 			await deleteComponentData(editContext, data._componentId as string);
 			showConfirmModal = false;
+			drawerOpen = false;
 			await invalidateAll();
 		} catch (err) {
 			console.error(`Ошибка при сбросе контента блока:`, err);
@@ -170,7 +211,7 @@
 
 {#if isEditable && editContext}
 	<div class="font-sans-premium absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
-		{#if activeArticle}
+		{#if activeArticle && !useSettingsDrawer}
 			<button
 				type="button"
 				class="relative flex cursor-default items-center rounded-2xl border border-white/10 bg-slate-950 px-3 py-2.5 font-mono text-[11px] font-semibold tracking-wider text-white shadow-2xl"
@@ -347,26 +388,28 @@
 						{/if}
 					{/each}
 
-					<!-- Кнопка отключения блока -->
-					<button
-						type="button"
-						class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-						'disabled'
-							? 'scale-[1.02] border border-red-500/30 bg-red-500/20 text-red-200 shadow-md'
-							: 'border border-transparent text-slate-400 hover:bg-red-500/5 hover:text-red-400'}"
-						onclick={() => {
-							selectVersion('disabled');
-							isOpen = false;
-						}}
-					>
-						Отключить
-					</button>
+					<!-- Кнопка отключения блока (в режиме панели настроек живёт в панели) -->
+					{#if !useSettingsDrawer}
+						<button
+							type="button"
+							class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+							'disabled'
+								? 'scale-[1.02] border border-red-500/30 bg-red-500/20 text-red-200 shadow-md'
+								: 'border border-transparent text-slate-400 hover:bg-red-500/5 hover:text-red-400'}"
+							onclick={() => {
+								selectVersion('disabled');
+								isOpen = false;
+							}}
+						>
+							Отключить
+						</button>
+					{/if}
 				</div>
 			{/if}
 		</div>
 
 		<!-- Кнопка сброса контента (только если компонент изменен) -->
-		{#if data?._componentId}
+		{#if data?._componentId && !useSettingsDrawer}
 			<button
 				type="button"
 				class="cursor-pointer rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-red-500/30 hover:bg-red-950/80 hover:text-red-200 active:scale-95"
@@ -376,7 +419,127 @@
 				<span>{isResetting ? 'Сброс...' : 'Сброс'}</span>
 			</button>
 		{/if}
+
+		<!-- Триггер панели настроек: артикул, анимации, сброс, отключение -->
+		{#if useSettingsDrawer}
+			<button
+				type="button"
+				class="flex cursor-pointer items-center justify-center rounded-2xl border border-white/10 bg-slate-950/75 p-2.5 text-white shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/25 active:scale-95"
+				onclick={() => (drawerOpen = true)}
+				title="Настройки компонента"
+				aria-label="Настройки компонента"
+			>
+				<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+					<circle cx="9" cy="6" r="2" fill="currentColor" />
+					<circle cx="15" cy="12" r="2" fill="currentColor" />
+					<circle cx="8" cy="18" r="2" fill="currentColor" />
+				</svg>
+			</button>
+		{/if}
 	</div>
+{/if}
+
+{#if isEditable && editContext && useSettingsDrawer}
+	<SideDrawer bind:open={drawerOpen} title={drawerTitle || componentType} eyebrow={drawerEyebrow}>
+		<div class="flex flex-col gap-6">
+			<!-- Артикул выбранной версии -->
+			{#if activeArticle}
+				<div class="flex items-center gap-2">
+					<span class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+						Артикул
+					</span>
+					<ArticleBadge article={activeArticle} sectionLabel="Страница" align="left" />
+				</div>
+			{/if}
+
+			<!-- Анимации (заглушка: функциональность в разработке) -->
+			<section class="border-white/10 pt-5 {activeArticle ? 'border-t' : ''}">
+				<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Анимации</h4>
+				<p class="mt-2 text-xs leading-relaxed text-slate-400">
+					Включение и отключение анимаций блока. Функция появится в одном из ближайших обновлений.
+				</p>
+				<button
+					type="button"
+					class="mt-4 flex w-full cursor-not-allowed items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-xs font-bold tracking-wider text-slate-500 uppercase"
+					disabled
+					aria-disabled="true"
+				>
+					<span>Отключить анимации</span>
+					<span
+						class="rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-1 text-[9px] font-bold tracking-wider text-amber-300/80 uppercase"
+					>
+						В разработке
+					</span>
+				</button>
+			</section>
+
+			<!-- Сброс контента -->
+			<section class="border-t border-white/10 pt-5">
+				<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Контент</h4>
+				<p class="mt-2 text-xs leading-relaxed text-slate-400">
+					{#if data?._componentId}
+						Сброс вернёт тексты и изображения блока к значениям по умолчанию. Выбранный вариант и
+						тема не изменятся.
+					{:else}
+						Контент блока не изменялся — сбрасывать нечего.
+					{/if}
+				</p>
+				<button
+					type="button"
+					class="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs font-bold tracking-wider text-red-300 uppercase transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/3 disabled:text-slate-500 disabled:hover:bg-white/3 {data?._componentId
+						? 'cursor-pointer'
+						: ''}"
+					onclick={handleReset}
+					disabled={isResetting || !data?._componentId}
+				>
+					<svg
+						class="h-3.5 w-3.5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M4 4v6h6M20 20v-6h-6M5 14a7.5 7.5 0 0 0 12.32 2.5M19 10A7.5 7.5 0 0 0 6.68 7.5"
+						/>
+					</svg>
+					{isResetting ? 'Сброс...' : 'Сбросить контент'}
+				</button>
+			</section>
+
+			<!-- Отключение блока -->
+			<section class="border-t border-white/10 pt-5">
+				<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Блок</h4>
+				<p class="mt-2 text-xs leading-relaxed text-slate-400">
+					{#if selectedVersion === 'disabled'}
+						Блок отключён и не отображается обычным посетителям. Включение вернёт вариант
+						{lastEnabledVersion.replace('v', '')}.
+					{:else}
+						Отключённый блок остаётся виден вам в режиме редактирования, но не показывается обычным
+						посетителям.
+					{/if}
+				</p>
+				<button
+					type="button"
+					class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-xs font-bold tracking-wider uppercase transition-all duration-300 active:scale-[0.98] {selectedVersion ===
+					'disabled'
+						? 'border-emerald-500/25 bg-emerald-500/10 text-emerald-200 hover:border-emerald-500/45 hover:bg-emerald-500/20'
+						: 'border-red-500/20 bg-red-500/5 text-red-300 hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-200'}"
+					onclick={toggleDisabled}
+				>
+					<span
+						class="h-2 w-2 rounded-full {selectedVersion === 'disabled'
+							? 'bg-emerald-400'
+							: 'bg-red-500'}"
+					></span>
+					{selectedVersion === 'disabled' ? 'Включить блок' : 'Отключить блок'}
+				</button>
+			</section>
+		</div>
+	</SideDrawer>
 {/if}
 
 {#if showConfirmModal}

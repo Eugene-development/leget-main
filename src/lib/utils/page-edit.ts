@@ -98,14 +98,15 @@ export async function fetchComponentArticle(
 			})
 		});
 
+		// Сбои (сеть, 5xx, Unauthenticated от @guard) не кэшируем: иначе одна неудачная
+		// попытка — например, до того как подхватился токен — навсегда гасила бы бейдж
+		// артикула для этого компонента до перезагрузки страницы.
 		if (!response.ok) {
-			componentArticleCache.set(cacheKey, null);
 			return null;
 		}
 
 		const result = await response.json();
 		if (result.errors?.length) {
-			componentArticleCache.set(cacheKey, null);
 			return null;
 		}
 
@@ -346,10 +347,7 @@ export interface BucketFile {
  * @param folder  - папка внутри бакета (например «bg»). По умолчанию «bg».
  * @param maxKeys - максимальное количество файлов (до 200). По умолчанию 100.
  */
-export async function listBucketFiles(
-	folder = 'bg',
-	maxKeys = 100
-): Promise<BucketFile[]> {
+export async function listBucketFiles(folder = 'bg', maxKeys = 100): Promise<BucketFile[]> {
 	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
 	if (!token) {
@@ -421,4 +419,3 @@ export async function toggleCategory(id: string, isEnabled: boolean): Promise<vo
 		throw new Error(msg);
 	}
 }
-
