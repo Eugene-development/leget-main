@@ -35,9 +35,7 @@
 			versions={['v1', 'v2', 'v3', 'v4']}
 			themeVersions={['v2', 'v3', 'v4']}
 			themeDefault="dark"
-			useSettingsDrawer
-			drawerTitle="Главный экран"
-			drawerEyebrow="Главная · Promo-1"
+			title="Главный экран"
 			bind:selectedVersion
 		/>
 

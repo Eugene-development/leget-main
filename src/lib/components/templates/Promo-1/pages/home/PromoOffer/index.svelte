@@ -32,6 +32,7 @@
 			versionKey="promoOfferVersion"
 			themeVersions={['v1', 'v2']}
 			themeDefault="dark"
+			title="Специальное предложение"
 			bind:selectedVersion
 		/>
 

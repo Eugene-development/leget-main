@@ -32,6 +32,7 @@
 			versionKey="incentivesVersion"
 			themeVersions={['v1', 'v2']}
 			themeDefault="light"
+			title="Выгоды"
 			bind:selectedVersion
 		/>
 

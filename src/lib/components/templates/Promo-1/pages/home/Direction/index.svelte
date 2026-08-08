@@ -32,6 +32,7 @@
 			versionKey="directionVersion"
 			themeVersions={['v2']}
 			themeDefault="dark"
+			title="Направления"
 			bind:selectedVersion
 		/>
 

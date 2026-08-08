@@ -8,6 +8,9 @@ import Header from './layout/Header.svelte';
 import Footer from './layout/Footer/index.svelte';
 export { Banner, Header, Footer };
 
+// 404 page components
+import NotFound from './pages/404/NotFound.svelte';
+
 // Home page components
 import HomeHeroMain   from './pages/home/HeroMain/index.svelte';
 import HomeMessage    from './pages/home/Message/index.svelte';
@@ -167,6 +170,11 @@ import PliitkaCTA        from './pages/plitka/PliitkaCTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	// Страница 404. Рендерится и по прямому адресу /404, и как тело ошибки
+	// в src/routes/+error.svelte — см. loadRenderPage().
+	'/404': {
+		NotFound,
+	},
 	'/': {
 		HeroMain:   HomeHeroMain,
 		Message:    HomeMessage,

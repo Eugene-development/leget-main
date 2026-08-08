@@ -32,6 +32,7 @@
 			versionKey="messageVersion"
 			themeVersions={['v1', 'v2']}
 			themeDefault={selectedVersion === 'v2' ? 'dark' : 'light'}
+			title="Сообщение"
 			bind:selectedVersion
 		/>
 

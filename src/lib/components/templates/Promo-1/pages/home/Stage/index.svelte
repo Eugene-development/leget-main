@@ -32,6 +32,7 @@
 			versionKey="stageVersion"
 			themeVersions={['v2']}
 			themeDefault="dark"
+			title="Этапы работы"
 			bind:selectedVersion
 		/>
 

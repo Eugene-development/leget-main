@@ -32,6 +32,7 @@
 			versionKey="actionsCTAVersion"
 			themeVersions={['v1', 'v2']}
 			themeDefault={selectedVersion === 'v2' ? 'dark' : 'light'}
+			title="Призыв к действию"
 			bind:selectedVersion
 		/>
 

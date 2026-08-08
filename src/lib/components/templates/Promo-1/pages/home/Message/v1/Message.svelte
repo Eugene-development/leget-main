@@ -69,7 +69,7 @@
 
 <!-- О компании (Message) -->
 <section class="p1-surface-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
-	<div class="bg-slate-50 py-16 sm:py-28">
+	<div class="py-16 sm:py-28">
 		<div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 lg:px-8">
 			<!-- Логотип -->
 			{#if data?.logoUrl || isEditable}
@@ -156,7 +156,9 @@
 						class="message-card group p1-card p1-border relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:ring-slate-300"
 					>
 						<div
-							class="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-sky-50/80 transition-transform duration-500 group-hover:scale-125"
+							class="absolute -top-4 -right-4 h-24 w-24 rounded-full transition-transform duration-500 group-hover:scale-125 {isLight
+								? 'bg-sky-50/80'
+								: 'bg-sky-500/10'}"
 						></div>
 						<div class="relative">
 							<div class="mb-4 size-24 overflow-hidden rounded-xl">

@@ -33,6 +33,7 @@
 			versions={['v1', 'v2']}
 			themeVersions={['v1', 'v2']}
 			themeDefault="dark"
+			title="Шапка страницы"
 			bind:selectedVersion
 		/>
 

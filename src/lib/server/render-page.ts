@@ -1,6 +1,9 @@
 import { error } from '@sveltejs/kit';
-import { ClientError } from 'graphql-request';
+import { ClientError, type GraphQLClient } from 'graphql-request';
 import { createGraphQLClient } from '$lib/utils/graphql-client';
+
+/** Слаг страницы 404 в шаблоне — см. config/templates.php в leget-api. */
+const NOT_FOUND_SLUG = '/404';
 
 const RENDER_PAGE_QUERY = `
 	query RenderPage($slug: String!) {
@@ -61,7 +64,13 @@ export async function loadRenderPage(request: Request, slug: string) {
 		if (err instanceof ClientError) {
 			const code = err.response.errors?.[0]?.extensions?.['code'] as string | undefined;
 
-			if (code === 'SITE_NOT_FOUND' || code === 'PAGE_NOT_FOUND') {
+			if (code === 'PAGE_NOT_FOUND') {
+				error(404, { message: 'Not found', pageData: await loadNotFoundPage(client, slug) });
+			}
+
+			if (code === 'SITE_NOT_FOUND') {
+				// Сайт не резолвится по домену — шаблона нет, показать нечего,
+				// кроме нейтральной заглушки из +error.svelte.
 				error(404, 'Not found');
 			}
 
@@ -75,5 +84,32 @@ export async function loadRenderPage(request: Request, slug: string) {
 		const message = err instanceof Error ? err.message : 'Bad gateway';
 		console.error('[leget-main] Failed to reach leget-api:', message);
 		error(502, 'Bad gateway');
+	}
+}
+
+/**
+ * Данные страницы 404 сайта — тем же запросом renderPage по слагу '/404'.
+ *
+ * Зачем отдельный запрос, а не рендер ошибки «как есть»: страница 404 обязана
+ * выглядеть страницей шаблона (свой хэдер, футер, палитра), а +error.svelte о
+ * сайте не знает ничего — layout его не загружает. Ответ уходит в теле ошибки,
+ * поэтому статус остаётся честным 404, а не soft-404 с кодом 200.
+ *
+ * Шаблон без страницы '/404' (и любой сбой при её загрузке) — не повод падать:
+ * возвращаем null, +error.svelte покажет нейтральную заглушку.
+ */
+async function loadNotFoundPage(client: GraphQLClient, slug: string) {
+	// Сам '/404' не существует в шаблоне — второй такой же запрос вернёт ту же
+	// ошибку, поэтому за ним не идём.
+	if (slug === NOT_FOUND_SLUG) return null;
+
+	try {
+		const data = await client.request<RenderPageResponse>(RENDER_PAGE_QUERY, {
+			slug: NOT_FOUND_SLUG
+		});
+
+		return { site: data.renderPage.site, page: data.renderPage.page };
+	} catch {
+		return null;
 	}
 }
