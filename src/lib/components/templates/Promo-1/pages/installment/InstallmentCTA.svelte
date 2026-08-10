@@ -46,7 +46,7 @@
 		<!-- Паспарту с градиентной каймой в 1px -->
 		<div
 			use:revealOnScroll
-			class="it-reveal it-card rounded-4xl bg-linear-to-br from-cat-3-400/40 via-cat-10-300/25 to-cat-4-400/40 p-px shadow-[0_50px_120px_-60px_rgba(139,92,246,0.55)]"
+			class="it-reveal it-card rounded-4xl bg-linear-to-br from-cat-3-400/40 via-cat-10-300/25 to-cat-4-400/40 p-px shadow-[0_50px_120px_-60px] shadow-cat-3-500/55"
 		>
 			<div
 				class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-ink-950/85 px-6 py-14 text-center sm:px-12 sm:py-16 lg:px-16"
@@ -58,7 +58,7 @@
 
 				<div class="relative">
 					<div
-						class="it-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-cat-3-500 to-cat-4-500 text-on-accent shadow-[0_20px_50px_-20px_rgba(139,92,246,0.9)] ring-1 ring-on-accent/20"
+						class="it-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-cat-3-500 to-cat-4-500 text-on-accent shadow-[0_20px_50px_-20px] ring-1 shadow-cat-3-500/90 ring-on-accent/20"
 					>
 						<svg
 							class="size-8"
@@ -104,9 +104,7 @@
 						class="it-item it-d2 mt-5 block"
 					>
 						{#snippet children(displayValue)}
-							<h2
-								class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-on-dark sm:text-4xl lg:text-5xl"
-							>
+							<h2 class="text-3xl text-pretty text-on-dark sm:text-4xl lg:text-5xl">
 								{displayValue}
 							</h2>
 						{/snippet}
@@ -143,7 +141,7 @@
 					>
 						<a
 							href="/contact"
-							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-cat-3-500 to-cat-4-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(139,92,246,0.95)] transition duration-300 hover:from-cat-3-400 hover:to-cat-4-400 hover:shadow-[0_22px_55px_-16px_rgba(139,92,246,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-3-300 motion-safe:hover:-translate-y-0.5"
+							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-cat-3-500 to-cat-4-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-cat-3-500/95 transition duration-300 hover:from-cat-3-400 hover:to-cat-4-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-3-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-3-300 motion-safe:hover:-translate-y-0.5"
 						>
 							<EditableField
 								fieldKey="InstallmentCTA.buttonText"

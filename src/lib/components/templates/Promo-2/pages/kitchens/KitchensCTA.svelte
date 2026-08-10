@@ -38,8 +38,14 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="bg-primary px-6 py-section-sm text-center text-white xl:px-1 lg:py-section">
-	<div class="mx-auto max-w-4xl opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+<section
+	bind:this={sectionEl}
+	class="bg-primary px-6 py-section-sm text-center text-white lg:py-section xl:px-1"
+>
+	<div
+		class="mx-auto max-w-4xl opacity-0 transition-all duration-700"
+		class:animate-fade-up={visible}
+	>
 		<EditableField
 			fieldKey="KitchensCTA.heading"
 			label="Заголовок"
@@ -49,10 +55,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2
-					class="mb-8 text-3xl font-light tracking-wide uppercase lg:text-4xl"
-					style="font-family: var(--font-heading);"
-				>
+				<h2 class="mb-8 text-3xl uppercase lg:text-4xl" style="font-family: var(--font-heading);">
 					{displayValue}
 				</h2>
 			{/snippet}
@@ -61,7 +64,9 @@
 		<EditableField
 			fieldKey="KitchensCTA.description"
 			label="Описание"
-			value={String(data?.description ?? 'Запишитесь в наши салоны для бесплатной консультации с дизайнером.')}
+			value={String(
+				data?.description ?? 'Запишитесь в наши салоны для бесплатной консультации с дизайнером.'
+			)}
 			{isEditable}
 			multiline
 			onSave={(v) => saveField('description', v)}
@@ -89,7 +94,13 @@
 					{displayValue}
 				{/snippet}
 			</EditableField>
-			<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+			<svg
+				class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="1.5"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
 			</svg>
 		</a>

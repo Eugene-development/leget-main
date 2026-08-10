@@ -68,7 +68,7 @@
 
 	<div use:revealOnScroll class="tm-reveal relative mx-auto max-w-7xl px-6 lg:px-8">
 		<div
-			class="tm-card overflow-hidden rounded-4xl border border-ink-900/10 bg-surface-raised shadow-[0_40px_100px_-60px_rgba(24,24,27,0.45)]"
+			class="tm-card overflow-hidden rounded-4xl border border-ink-900/10 bg-surface-raised shadow-[0_40px_100px_-60px] shadow-ink-900/45"
 		>
 			<div
 				class="pointer-events-none h-px w-full bg-linear-to-r from-transparent via-cat-7-500/70 to-transparent"
@@ -158,9 +158,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<h2
-								class="text-2xl leading-[1.1] tracking-[-0.02em] text-pretty text-ink-900 sm:text-3xl"
-							>
+							<h2 class="text-2xl text-pretty text-ink-900 sm:text-3xl">
 								{displayValue}
 							</h2>
 						{/snippet}

@@ -38,7 +38,11 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="relative min-h-[90vh] overflow-hidden bg-surface" id="showrooms-hero">
+<section
+	bind:this={sectionEl}
+	class="relative min-h-[90vh] overflow-hidden bg-surface"
+	id="showrooms-hero"
+>
 	<!-- Background Image -->
 	<div class="absolute inset-0">
 		<img
@@ -46,7 +50,9 @@
 			class="h-full w-full object-cover transition-transform duration-[2s]"
 			class:scale-105={visible}
 		/>
-		<div class="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/60 to-transparent"></div>
+		<div
+			class="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/60 to-transparent"
+		></div>
 	</div>
 
 	<!-- Content -->
@@ -62,7 +68,9 @@
 						onSave={(v) => saveField('label', v)}
 					>
 						{#snippet children(displayValue)}
-							<span class="text-[11px] tracking-[0.3em] text-white/70 uppercase">{displayValue}</span>
+							<span class="text-[11px] tracking-[0.3em] text-white/70 uppercase"
+								>{displayValue}</span
+							>
 						{/snippet}
 					</EditableField>
 				</div>
@@ -78,7 +86,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-5xl leading-[1.1] font-light text-white md:text-6xl lg:text-7xl"
+								class="text-5xl text-white md:text-6xl lg:text-7xl"
 								style="font-family: var(--font-heading);"
 							>
 								{displayValue}
@@ -91,7 +99,10 @@
 					<EditableField
 						fieldKey="Hero.description"
 						label="Описание"
-						value={String(data?.description ?? 'Посетите один из наших фирменных салонов. Оцените качество материалов вживую.')}
+						value={String(
+							data?.description ??
+								'Посетите один из наших фирменных салонов. Оцените качество материалов вживую.'
+						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('description', v)}
@@ -128,7 +139,11 @@
 							stroke="currentColor"
 							stroke-width="1.5"
 						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+							/>
 						</svg>
 					</a>
 				</div>

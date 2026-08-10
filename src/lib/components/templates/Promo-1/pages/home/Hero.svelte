@@ -22,7 +22,7 @@
 
 <section class="relative overflow-hidden bg-ink-900 px-6 py-32 text-on-dark sm:py-40">
 	<div
-		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#1e40af22,_transparent_60%)]"
+		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--color-cat-11-800)_13.3%,transparent),_transparent_60%)]"
 	></div>
 	<div class="relative mx-auto max-w-4xl text-center">
 		<EditableField
@@ -34,7 +34,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="text-5xl tracking-tight sm:text-6xl lg:text-7xl">
+				<h1 class="text-5xl sm:text-6xl lg:text-7xl">
 					{displayValue}
 				</h1>
 			{/snippet}

@@ -1,9 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.4.1.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
-	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
-	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
-	import { fetchComponentArticle, saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
 		data = $bindable(),
@@ -27,20 +25,6 @@
 	// меняются только поверхность и цвет текста.
 	const isLight = $derived(data?.theme === 'light');
 
-	async function toggleTheme() {
-		if (!editContext) return;
-		// Оптимистичное обновление: тема применяется сразу, откат только при ошибке.
-		const previous = data;
-		const updated = { ...data, theme: isLight ? 'dark' : 'light' };
-		data = updated;
-		try {
-			await saveComponentData(editContext, 'Hero', updated);
-		} catch (err) {
-			data = previous;
-			console.error('Ошибка сохранения темы для Hero:', err);
-		}
-	}
-
 	// Бегущая строка внизу блока: перечисление выгод страницы одной строкой.
 	// Разделитель при вводе — «·», «,» или «•».
 	const DEFAULT_HIGHLIGHTS =
@@ -52,30 +36,6 @@
 			.map((item) => item.trim())
 			.filter(Boolean);
 	}
-
-	// ── Артикул компонента ───────────────────────────────────────────────────
-	// Показывается авторизованному пользователю (isEditable = browser + auth,
-	// см. PageRenderer). У блока нет переключателя версий, поэтому собственного
-	// бейджа из VersionSwitcher он не получает — берём общий ArticleBadge.
-	let article = $state<string | null>(null);
-	let articleRequested = false;
-
-	$effect(() => {
-		const templateId = editContext?.templateId ?? null;
-		const slug = editContext?.slug ?? null;
-		if (!isEditable || !templateId || !slug || articleRequested) return;
-		articleRequested = true;
-		fetchComponentArticle(templateId, slug, 'Hero')
-			.then((res) => {
-				if (!res) return;
-				// У блока одна версия (v1) — берём её артикул, иначе групповой.
-				article =
-					res.variants.find((v) => v.version === 1)?.article ??
-					res.variants[0]?.article ??
-					res.article;
-			})
-			.catch(() => {});
-	});
 </script>
 
 <!--
@@ -106,17 +66,6 @@
 			: 'via-brand-500/60'}"
 		aria-hidden="true"
 	></div>
-
-	{#if isEditable && editContext}
-		<!-- Правый нижний угол блока: отступ снизу поднимает панель над лентой,
-		     тултип артикула раскрывается вверх — секция обрезает всё, что вылезает вниз. -->
-		<div class="absolute right-6 bottom-16 z-40 flex items-center gap-2">
-			<ThemeToggle {isLight} onToggle={toggleTheme} />
-			{#if article}
-				<ArticleBadge {article} placement="top" />
-			{/if}
-		</div>
-	{/if}
 
 	<div
 		class="relative mx-auto max-w-7xl px-6 pt-24 pb-20 sm:pt-28 sm:pb-24 lg:px-8 lg:pt-32 lg:pb-28"
@@ -160,7 +109,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-4xl leading-[1.03] tracking-[-0.035em] text-balance transition-colors duration-300 sm:text-6xl lg:text-7xl {isLight
+								class="text-4xl text-balance transition-colors duration-300 sm:text-6xl lg:text-7xl {isLight
 									? 'text-ink-900'
 									: 'text-on-dark'}"
 							>

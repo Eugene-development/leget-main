@@ -66,10 +66,7 @@
 	<div class="mx-auto max-w-screen-xl">
 		<!-- Section Header -->
 		<div class="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-			<div
-				class="opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
-			>
+			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 				<EditableField
 					fieldKey="HomeStyles.label"
 					label="Лейбл"
@@ -78,7 +75,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -92,7 +90,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -123,7 +121,11 @@
 					stroke="currentColor"
 					stroke-width="1.5"
 				>
-					<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+					/>
 				</svg>
 			</a>
 		</div>
@@ -138,10 +140,12 @@
 				>
 					<!-- Image -->
 					<div class="relative aspect-[4/3] overflow-hidden">
-						<img loading="lazy"
+						<img
+							loading="lazy"
 							src={style.image}
 							alt={style.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						/>
 						<div
 							class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
 						></div>
@@ -149,10 +153,7 @@
 
 					<!-- Content -->
 					<div class="p-6 lg:p-8">
-						<h3
-							class="text-2xl font-light text-primary lg:text-3xl"
-							style="font-family: var(--font-heading);"
-						>
+						<h3 class="text-2xl text-primary lg:text-3xl" style="font-family: var(--font-heading);">
 							{style.title}
 						</h3>
 						<p class="mt-2 text-sm leading-relaxed text-secondary">

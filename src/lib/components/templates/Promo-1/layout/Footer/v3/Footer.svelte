@@ -108,9 +108,7 @@
 					Мебель и интерьер на заказ
 				</div>
 
-				<h2
-					class="font-footer-display mt-8 max-w-5xl text-[clamp(3.6rem,10vw,9rem)] leading-[0.78] tracking-[-0.075em]"
-				>
+				<h2 class="font-footer-display mt-8 max-w-5xl text-[clamp(3.6rem,10vw,9rem)]">
 					<EditableField
 						fieldKey="Footer.siteName"
 						label="Название компании"
@@ -317,9 +315,7 @@
 
 			<div class="grid grid-cols-2 gap-x-6 gap-y-10 md:col-span-9 md:grid-cols-4 md:pl-8">
 				<div>
-					<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-alt-warm-accent uppercase">
-						Компания
-					</h3>
+					<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Компания</h3>
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
 							<a href="/about" class="transition-colors hover:text-alt-warm-accent">О компании</a>
@@ -339,9 +335,7 @@
 
 				<div>
 					{#if visibleServiceItems.length > 0}
-						<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-alt-warm-accent uppercase">
-							Услуги
-						</h3>
+						<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Услуги</h3>
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleServiceItems as service}
 								<li>
@@ -356,9 +350,7 @@
 
 				<div>
 					{#if visibleCatalogItems.length > 0}
-						<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-alt-warm-accent uppercase">
-							Каталог
-						</h3>
+						<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Каталог</h3>
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleCatalogItems as item}
 								<li>
@@ -372,9 +364,7 @@
 				</div>
 
 				<div>
-					<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-alt-warm-accent uppercase">
-						Ещё
-					</h3>
+					<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Ещё</h3>
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
 							<a href="/vacancy" class="transition-colors hover:text-alt-warm-accent">Вакансии</a>

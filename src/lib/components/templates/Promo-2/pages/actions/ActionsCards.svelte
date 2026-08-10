@@ -114,7 +114,7 @@
 	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
 		<!-- Section Header -->
 		<div
-			class="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end opacity-0 transition-all duration-700"
+			class="mb-12 flex flex-col items-start justify-between gap-6 opacity-0 transition-all duration-700 md:flex-row md:items-end"
 			class:animate-fade-up={visible}
 		>
 			<div>
@@ -131,7 +131,8 @@
 					}}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -150,7 +151,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -183,17 +184,21 @@
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each filteredCards as card, i (card.id)}
 				<div
-					class="group relative flex flex-col overflow-hidden bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated opacity-0"
+					class="group relative flex flex-col overflow-hidden bg-white opacity-0 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated"
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.15 + i * 0.1}s"
 				>
 					<!-- Image -->
 					<div class="relative aspect-[3/2] overflow-hidden">
-						<img loading="lazy"
+						<img
+							loading="lazy"
 							src={card.image || undefined}
 							alt={card.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
-						<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						/>
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"
+						></div>
 
 						<!-- Tag badge -->
 						<div class="absolute top-4 left-4">
@@ -222,7 +227,7 @@
 					<!-- Content -->
 					<div class="flex flex-1 flex-col p-6 lg:p-8">
 						<h3
-							class="text-xl font-medium text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
+							class="text-xl text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
 							style="font-family: var(--font-heading);"
 						>
 							{card.title}
@@ -264,7 +269,11 @@
 										stroke="currentColor"
 										stroke-width="2"
 									>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+										/>
 									</svg>
 								</a>
 							</div>

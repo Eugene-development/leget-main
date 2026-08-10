@@ -79,9 +79,7 @@
 				class="gt-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl"
-					>
+					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -113,7 +111,7 @@
 				-->
 				<div class="gt-card relative" style="--gt-delay: {i * 80}ms">
 					<div
-						class="group relative h-full overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-8 text-center shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 motion-safe:hover:-translate-y-1 {step.final
+						class="group relative h-full overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-8 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 motion-safe:hover:-translate-y-1 {step.final
 							? 'hover:border-cat-2-500/40'
 							: 'hover:border-brand-500/40'}"
 					>
@@ -127,13 +125,13 @@
 						<div class="relative">
 							<div
 								class="mx-auto flex size-16 items-center justify-center rounded-2xl text-2xl font-semibold text-on-dark ring-1 ring-on-dark/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {step.final
-									? 'bg-linear-to-br from-cat-2-500 to-cat-9-500 shadow-[0_16px_40px_-18px_rgba(5,150,105,0.9)]'
-									: 'bg-linear-to-br from-brand-500 to-brand-600 shadow-[0_16px_40px_-18px_rgba(220,38,38,0.9)]'}"
+									? 'bg-linear-to-br from-cat-2-500 to-cat-9-500 shadow-[0_16px_40px_-18px] shadow-cat-2-600/90'
+									: 'bg-linear-to-br from-brand-500 to-brand-600 shadow-[0_16px_40px_-18px] shadow-brand-600/90'}"
 							>
 								{step.number}
 							</div>
 
-							<h3 class="p1-title-sub mt-6 text-lg tracking-[-0.01em] text-ink-900">
+							<h3 class="p1-title-sub mt-6 text-lg text-ink-900">
 								<EditableField
 									fieldKey="HowToApply.{i}.title"
 									label="Заголовок шага"

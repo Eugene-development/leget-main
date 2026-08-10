@@ -39,7 +39,7 @@
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_78%_38%,rgba(239,68,68,0.11),transparent_31%),radial-gradient(circle_at_15%_8%,rgba(255,255,255,0.055),transparent_26%)]"
+			class="absolute inset-0 bg-[radial-gradient(circle_at_78%_38%,color-mix(in_oklab,var(--color-brand-500)_11%,transparent),transparent_31%),radial-gradient(circle_at_15%_8%,color-mix(in_oklab,var(--color-on-dark)_5.5%,transparent),transparent_26%)]"
 		></div>
 		<div class="ct-grid ct-grid--fade-bottom"></div>
 		<div class={ct.accent.toplineOnInk}></div>

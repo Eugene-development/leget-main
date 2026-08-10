@@ -92,7 +92,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+						class="mt-3 text-4xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -119,7 +119,7 @@
 							<div class="hidden h-px flex-1 bg-border-light lg:block"></div>
 						{/if}
 					</div>
-					<h3 class="text-lg font-medium text-primary" style="font-family: var(--font-heading);">
+					<h3 class="text-lg text-primary" style="font-family: var(--font-heading);">
 						{step.title}
 					</h3>
 					<p class="mt-3 text-sm leading-relaxed text-secondary">{step.text}</p>

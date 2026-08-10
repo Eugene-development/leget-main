@@ -6,7 +6,9 @@
 
 	// Cast data fields
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : null);
-	const links = $derived(Array.isArray(data?.links) ? (data.links as { href: string; label: string }[]) : []);
+	const links = $derived(
+		Array.isArray(data?.links) ? (data.links as { href: string; label: string }[]) : []
+	);
 	const copyright = $derived(typeof data?.copyright === 'string' ? data.copyright : null);
 
 	let showLoginModal = $state(false);
@@ -21,7 +23,9 @@
 </script>
 
 <footer class="w-full border-t border-gray-200 bg-gray-50">
-	<div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row">
+	<div
+		class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 sm:flex-row"
+	>
 		{#if siteName}
 			<span class="text-sm text-gray-500">{siteName}</span>
 		{/if}
@@ -29,10 +33,7 @@
 		{#if links.length}
 			<nav class="flex flex-wrap items-center gap-4">
 				{#each links as link}
-					<a
-						href={link.href}
-						class="text-sm text-gray-500 transition-colors hover:text-gray-900"
-					>
+					<a href={link.href} class="text-sm text-gray-500 transition-colors hover:text-gray-900">
 						{link.label}
 					</a>
 				{/each}

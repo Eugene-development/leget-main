@@ -110,8 +110,12 @@
 	class="editable-field-wrapper relative {inline ? 'inline-block' : 'block'} {className}"
 	bind:this={wrapperEl}
 	role="group"
-	onmouseenter={() => { hovered = true; }}
-	onmouseleave={() => { hovered = false; }}
+	onmouseenter={() => {
+		hovered = true;
+	}}
+	onmouseleave={() => {
+		hovered = false;
+	}}
 >
 	<!-- Иконка карандаша — скрыта когда любая модалка открыта -->
 	{#if isEditable && !anyActive}
@@ -122,7 +126,9 @@
 			class:ring-indigo-400={isActive}
 			class:bg-indigo-50={isActive}
 			class:ring-gray-200={!isActive}
-			style="opacity: {hovered || isActive ? 1 : 0}; pointer-events: {hovered || isActive ? 'auto' : 'none'};"
+			style="opacity: {hovered || isActive ? 1 : 0}; pointer-events: {hovered || isActive
+				? 'auto'
+				: 'none'};"
 			title="Редактировать: {label}"
 			aria-label="Редактировать: {label}"
 			aria-pressed={isActive}
@@ -136,7 +142,9 @@
 				fill="currentColor"
 				aria-hidden="true"
 			>
-				<path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+				<path
+					d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+				/>
 			</svg>
 		</button>
 	{/if}

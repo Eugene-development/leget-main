@@ -38,13 +38,14 @@
 	});
 </script>
 
-<section
-	class="relative z-10 overflow-hidden bg-surface py-20 lg:py-32"
-	bind:this={sectionEl}
->
+<section class="relative z-10 overflow-hidden bg-surface py-20 lg:py-32" bind:this={sectionEl}>
 	<!-- Decorative lines -->
-	<div class="absolute top-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border-light to-transparent"></div>
-	<div class="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border-light to-transparent"></div>
+	<div
+		class="absolute top-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border-light to-transparent"
+	></div>
+	<div
+		class="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border-light to-transparent"
+	></div>
 
 	<!-- Subtle Background Pattern -->
 	<div
@@ -53,7 +54,9 @@
 	></div>
 
 	<!-- Abstract shape -->
-	<div class="absolute -top-32 -right-32 h-96 w-96 rounded-full border border-accent/10 lg:h-[36rem] lg:w-[36rem]"></div>
+	<div
+		class="absolute -top-32 -right-32 h-96 w-96 rounded-full border border-accent/10 lg:h-[36rem] lg:w-[36rem]"
+	></div>
 
 	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="flex flex-col items-center justify-between gap-16 lg:flex-row lg:gap-32">
@@ -64,13 +67,24 @@
 				style="animation-delay: 0.2s"
 			>
 				<div class="relative">
-					<div class="absolute inset-0 -m-8 scale-110 rounded-full bg-primary/[0.03] blur-3xl"></div>
-					<div class="absolute -top-6 -left-6 h-12 w-12 border-t border-l border-accent/40 lg:h-16 lg:w-16"></div>
-					<div class="absolute -right-6 -bottom-6 h-12 w-12 border-r border-b border-accent/40 lg:h-16 lg:w-16"></div>
-					<img loading="lazy"
-						src={String(data?.image ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/zovdir.png')}
+					<div
+						class="absolute inset-0 -m-8 scale-110 rounded-full bg-primary/[0.03] blur-3xl"
+					></div>
+					<div
+						class="absolute -top-6 -left-6 h-12 w-12 border-t border-l border-accent/40 lg:h-16 lg:w-16"
+					></div>
+					<div
+						class="absolute -right-6 -bottom-6 h-12 w-12 border-r border-b border-accent/40 lg:h-16 lg:w-16"
+					></div>
+					<img
+						loading="lazy"
+						src={String(
+							data?.image ??
+								'https://storage.yandexcloud.net/leget-main/templates/promo-2/zovdir.png'
+						)}
 						alt={String(data?.name ?? 'Руководитель фабрики')}
-						class="relative z-10 w-64 object-cover transition-transform duration-1000 hover:scale-105 md:w-80 lg:w-[22rem]">
+						class="relative z-10 w-64 object-cover transition-transform duration-1000 hover:scale-105 md:w-80 lg:w-[22rem]"
+					/>
 				</div>
 			</div>
 
@@ -86,7 +100,9 @@
 					fill="currentColor"
 					viewBox="0 0 24 24"
 				>
-					<path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+					<path
+						d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"
+					/>
 				</svg>
 
 				<EditableField
@@ -100,10 +116,10 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-3xl font-light text-primary md:text-4xl lg:text-[2.5rem] lg:leading-tight"
+							class="text-3xl text-primary md:text-4xl lg:text-[2.5rem]"
 							style="font-family: var(--font-heading);"
 						>
-							<span class="italic text-secondary">{displayValue}</span>
+							<span class="text-secondary italic">{displayValue}</span>
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -118,7 +134,9 @@
 					</p>
 				</div>
 
-				<div class="mt-10 flex w-full flex-col items-center gap-6 border-t border-border-light pt-8 lg:flex-row lg:items-center lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+				<div
+					class="mt-10 flex w-full flex-col items-center gap-6 border-t border-border-light pt-8 lg:flex-row lg:items-center lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8"
+				>
 					<div class="flex flex-col items-center lg:items-start">
 						<EditableField
 							fieldKey="LeaderSection.name"

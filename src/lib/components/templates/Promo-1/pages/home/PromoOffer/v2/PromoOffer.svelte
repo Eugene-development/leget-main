@@ -60,7 +60,7 @@
 					<span
 						class="inline-flex items-center gap-2 border border-cat-8-500/30 bg-cat-8-500/10 {isLight
 							? 'text-cat-8-600'
-							: 'text-cat-8-400'} rounded-full px-4 py-1.5 text-xs font-bold tracking-wider uppercase shadow-[0_0_15px_rgba(249,115,22,0.1)] backdrop-blur-md md:text-sm"
+							: 'text-cat-8-400'} rounded-full px-4 py-1.5 text-xs font-bold tracking-wider uppercase shadow-[0_0_15px] shadow-cat-8-500/10 backdrop-blur-md md:text-sm"
 					>
 						<span class="h-1.5 w-1.5 animate-ping rounded-full bg-cat-8-400"></span>
 						<EditableField
@@ -76,7 +76,7 @@
 					</span>
 				</div>
 
-				<h2 class="mb-6 text-3xl leading-none tracking-tight md:text-5xl lg:text-6xl">
+				<h2 class="mb-6 text-3xl md:text-5xl lg:text-6xl">
 					<EditableField
 						fieldKey="PromoOffer.title"
 						label="Заголовок"

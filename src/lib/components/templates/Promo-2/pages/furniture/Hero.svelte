@@ -36,9 +36,7 @@
 			class="h-full w-full object-cover transition-transform duration-[2.5s]"
 			class:scale-105={visible}
 		/>
-		<div
-			class="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/70 to-primary/40"
-		></div>
+		<div class="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/70 to-primary/40"></div>
 	</div>
 
 	<!-- Content -->
@@ -65,11 +63,7 @@
 				</div>
 
 				<!-- Heading -->
-				<div
-					class="opacity-0"
-					class:animate-fade-up={visible}
-					style="animation-delay: 0.5s"
-				>
+				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.5s">
 					<EditableField
 						fieldKey="Hero.title"
 						label="Заголовок"
@@ -80,7 +74,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-5xl leading-[1.1] font-light text-white md:text-6xl lg:text-7xl"
+								class="text-5xl text-white md:text-6xl lg:text-7xl"
 								style="font-family: var(--font-heading);"
 							>
 								{displayValue}
@@ -90,15 +84,14 @@
 				</div>
 
 				<!-- Description -->
-				<div
-					class="opacity-0"
-					class:animate-fade-up={visible}
-					style="animation-delay: 0.7s"
-				>
+				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.7s">
 					<EditableField
 						fieldKey="Hero.description"
 						label="Описание"
-						value={String(data?.description ?? 'Мебель премиум-класса требует фурнитуры соответствующего уровня.')}
+						value={String(
+							data?.description ??
+								'Мебель премиум-класса требует фурнитуры соответствующего уровня.'
+						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('description', v)}
@@ -112,11 +105,7 @@
 					</EditableField>
 				</div>
 
-				<div
-					class="mt-10 opacity-0"
-					class:animate-fade-up={visible}
-					style="animation-delay: 0.9s"
-				>
+				<div class="mt-10 opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.9s">
 					<a
 						href="#intro-section"
 						class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-secondary bg-secondary px-8 py-4 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:bg-transparent"
@@ -129,7 +118,11 @@
 							stroke="currentColor"
 							stroke-width="1.5"
 						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+							/>
 						</svg>
 					</a>
 				</div>

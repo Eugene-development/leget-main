@@ -28,7 +28,8 @@
 		{
 			number: '01',
 			title: 'Собственное производство',
-			description: 'Полный цикл производства на современном оборудовании ведущих европейских брендов'
+			description:
+				'Полный цикл производства на современном оборудовании ведущих европейских брендов'
 		},
 		{
 			number: '02',
@@ -43,7 +44,8 @@
 		{
 			number: '04',
 			title: 'Гарантия качества',
-			description: 'Многоступенчатый фабричный контроль качества и гарантия до 5 лет на всю продукцию'
+			description:
+				'Многоступенчатый фабричный контроль качества и гарантия до 5 лет на всю продукцию'
 		}
 	];
 
@@ -63,9 +65,7 @@
 	);
 
 	const stats = $derived(
-		Array.isArray(data?.stats)
-			? (data.stats as { value: string; label: string }[])
-			: defaultStats
+		Array.isArray(data?.stats) ? (data.stats as { value: string; label: string }[]) : defaultStats
 	);
 
 	onMount(() => {
@@ -82,10 +82,7 @@
 	});
 </script>
 
-<section
-	class="relative overflow-hidden py-section-sm lg:py-section"
-	bind:this={sectionEl}
->
+<section class="relative overflow-hidden py-section-sm lg:py-section" bind:this={sectionEl}>
 	<!-- Subtle Background Pattern -->
 	<div
 		class="absolute inset-0 opacity-[0.03]"
@@ -95,10 +92,7 @@
 	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: Header + Stats -->
-			<div
-				class="opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
-			>
+			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 				<EditableField
 					fieldKey="HomeAdvantages.label"
 					label="Лейбл"
@@ -107,7 +101,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -121,7 +116,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -176,7 +171,7 @@
 						<span class="mt-0.5 text-xs font-medium text-accent">{adv.number}</span>
 						<div>
 							<h3
-								class="text-lg font-medium text-primary transition-colors duration-300 group-hover:text-secondary"
+								class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
 							>
 								{adv.title}
 							</h3>

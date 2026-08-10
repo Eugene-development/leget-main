@@ -93,7 +93,7 @@
 
 				<!-- Заголовок -->
 				<h3
-					class="p1-title p1-title-sub font-display mt-4 text-3xl leading-none tracking-tight transition-colors duration-300 text-shadow-lg group-hover:text-link-300 sm:text-4xl"
+					class="p1-title p1-title-sub font-display mt-4 text-3xl transition-colors duration-300 text-shadow-lg group-hover:text-link-300 sm:text-4xl"
 				>
 					{dir.title}
 				</h3>

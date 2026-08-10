@@ -32,11 +32,7 @@
 		'Конкурентные цены'
 	];
 
-	const items = $derived(
-		Array.isArray(data?.items)
-			? (data.items as string[])
-			: defaultItems
-	);
+	const items = $derived(Array.isArray(data?.items) ? (data.items as string[]) : defaultItems);
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -59,16 +55,16 @@
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
 			<!-- Image -->
-			<div
-				class="relative opacity-0"
-				class:animate-fade-up={visible}
-				style="animation-delay: 0.2s"
-			>
+			<div class="relative opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
 				<div class="relative z-40 overflow-hidden">
-					<img loading="lazy"
-						src={String(data?.image ?? 'https://storage.yandexcloud.net/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg')}
+					<img
+						loading="lazy"
+						src={String(
+							data?.image ?? 'https://storage.yandexcloud.net/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg'
+						)}
 						alt={String(data?.imageAlt ?? '')}
-						class="h-[400px] w-full object-cover lg:h-[500px]">
+						class="h-[400px] w-full object-cover lg:h-[500px]"
+					/>
 				</div>
 				<!-- Floating Accent -->
 				<div
@@ -77,11 +73,7 @@
 			</div>
 
 			<!-- Content -->
-			<div
-				class="opacity-0"
-				class:animate-fade-up={visible}
-				style="animation-delay: 0.4s"
-			>
+			<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.4s">
 				<EditableField
 					fieldKey="HomeDetails.label"
 					label="Лейбл"
@@ -90,7 +82,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -104,7 +97,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}

@@ -67,7 +67,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mx-auto mt-6 max-w-3xl text-3xl leading-snug font-light text-primary lg:text-5xl"
+						class="mx-auto mt-6 max-w-3xl text-3xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -78,7 +78,10 @@
 			<EditableField
 				fieldKey="FurnitureIntro.description"
 				label="Описание"
-				value={String(data?.description ?? 'Фурнитура — это невидимое сердце любой мебели. От нее зависит, насколько плавно будут открываться дверцы, как тихо будут закрываться ящики и сколько лет мебель прослужит без единого скрипа.')}
+				value={String(
+					data?.description ??
+						'Фурнитура — это невидимое сердце любой мебели. От нее зависит, насколько плавно будут открываться дверцы, как тихо будут закрываться ящики и сколько лет мебель прослужит без единого скрипа.'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}

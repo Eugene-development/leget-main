@@ -4,8 +4,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -21,14 +20,6 @@
 	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
 	// акцентные плитки и кнопки остаются белым по цвету бренда.
 	const isLight = $derived(isLightBlock(data, 'dark'));
-	const toggleTheme = createThemeToggle({
-		type: 'WhyUs',
-		fallback: 'dark',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -116,7 +107,6 @@
 			aria-hidden="true"
 		></div>
 	{/if}
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-grid"></div>
 		<div class="ab-glow absolute -top-40 -left-24 size-112 bg-brand-500/15"></div>
@@ -140,9 +130,7 @@
 				class="ab-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
-					>
+					<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -200,7 +188,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title p1-title-sub mt-5 text-base tracking-[-0.01em] sm:text-lg">
+						<h3 class="p1-title p1-title-sub mt-5 text-base sm:text-lg">
 							<EditableField
 								fieldKey="WhyUs.{i}.title"
 								label="Заголовок"

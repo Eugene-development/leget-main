@@ -126,7 +126,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-5xl leading-[1.1] font-light text-primary opacity-0 md:text-6xl lg:text-7xl"
+							class="text-5xl text-primary opacity-0 md:text-6xl lg:text-7xl"
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>
@@ -142,21 +142,29 @@
 					style="animation-delay: 0.65s"
 				>
 					<div class="flex flex-col gap-1">
-						<span class="text-2xl font-light text-primary" style="font-family: var(--font-heading);">
+						<span
+							class="text-2xl font-light text-primary"
+							style="font-family: var(--font-heading);"
+						>
 							{String(data?.statCount ?? '6+')}
 						</span>
 						<span class="text-xs tracking-[0.15em] text-secondary uppercase">акций сейчас</span>
 					</div>
 					<div class="h-8 w-px bg-border-medium"></div>
 					<div class="flex flex-col gap-1">
-						<span class="text-2xl font-light text-primary" style="font-family: var(--font-heading);">
+						<span
+							class="text-2xl font-light text-primary"
+							style="font-family: var(--font-heading);"
+						>
 							{String(data?.statDiscount ?? '−30%')}
 						</span>
 						<span class="text-xs tracking-[0.15em] text-secondary uppercase">макс. скидка</span>
 					</div>
 					<div class="hidden h-8 w-px bg-border-medium sm:block"></div>
 					<div class="hidden flex-col gap-1 sm:flex">
-						<span class="text-2xl font-light text-primary" style="font-family: var(--font-heading);">0 ₽</span>
+						<span class="text-2xl font-light text-primary" style="font-family: var(--font-heading);"
+							>0 ₽</span
+						>
 						<span class="text-xs tracking-[0.15em] text-secondary uppercase">за доставку</span>
 					</div>
 				</div>
@@ -208,7 +216,11 @@
 									stroke="currentColor"
 									stroke-width="1.5"
 								>
-									<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+									/>
 								</svg>
 							</a>
 						{/snippet}

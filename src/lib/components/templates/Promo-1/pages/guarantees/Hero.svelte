@@ -27,7 +27,7 @@
 		glowA: 'bg-cat-2-500/20',
 		glowB: 'bg-cat-5-400/15',
 		iconTile:
-			'bg-linear-to-br from-cat-2-400 to-cat-5-500 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px_rgba(16,185,129,0.9)]',
+			'bg-linear-to-br from-cat-2-400 to-cat-5-500 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px] shadow-cat-2-500/90',
 		rule: 'bg-on-dark/15',
 		diamond: 'border-cat-2-400/80',
 		text: 'text-ink-300',

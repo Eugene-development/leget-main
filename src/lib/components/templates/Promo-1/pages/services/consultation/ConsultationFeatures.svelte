@@ -80,7 +80,7 @@
 				class="mt-2 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl tracking-tight text-pretty text-ink-900 sm:text-4xl">
+					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}

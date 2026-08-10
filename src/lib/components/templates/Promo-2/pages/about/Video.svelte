@@ -32,17 +32,16 @@
 
 <section class="relative z-10 -mt-12" bind:this={sectionEl}>
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
-		<div
-			class="relative overflow-hidden opacity-0"
-			class:animate-scale-in={visible}
-		>
+		<div class="relative overflow-hidden opacity-0" class:animate-scale-in={visible}>
 			<video
 				class="h-[400px] w-full bg-black object-cover lg:h-[640px]"
 				controls
 				preload="metadata"
 			>
 				<source
-					src="{String(data?.src ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4')}#t=3"
+					src="{String(
+						data?.src ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4'
+					)}#t=3"
 					type="video/mp4"
 				/>
 			</video>

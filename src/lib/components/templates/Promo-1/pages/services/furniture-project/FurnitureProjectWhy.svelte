@@ -87,7 +87,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="text-4xl leading-tight tracking-tight text-pretty text-ink-900 sm:text-5xl">
+						<h2 class="text-4xl text-pretty text-ink-900 sm:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}

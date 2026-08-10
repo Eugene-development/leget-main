@@ -123,7 +123,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-3xl leading-[1.1] font-light text-primary opacity-0 md:text-5xl lg:text-6xl"
+							class="text-3xl text-primary opacity-0 md:text-5xl lg:text-6xl"
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>

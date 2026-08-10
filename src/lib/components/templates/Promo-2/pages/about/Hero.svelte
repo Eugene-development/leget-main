@@ -64,11 +64,7 @@
 				</div>
 
 				<!-- Heading -->
-				<div
-					class="opacity-0"
-					class:animate-fade-up={visible}
-					style="animation-delay: 0.5s"
-				>
+				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.5s">
 					<EditableField
 						fieldKey="Hero.title"
 						label="Заголовок"
@@ -79,7 +75,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-5xl leading-[1.1] font-light text-primary md:text-6xl lg:text-7xl"
+								class="text-5xl text-primary md:text-6xl lg:text-7xl"
 								style="font-family: var(--font-heading);"
 							>
 								{displayValue}
@@ -89,15 +85,14 @@
 				</div>
 
 				<!-- Description -->
-				<div
-					class="opacity-0"
-					class:animate-fade-up={visible}
-					style="animation-delay: 0.7s"
-				>
+				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.7s">
 					<EditableField
 						fieldKey="Hero.description"
 						label="Описание"
-						value={String(data?.description ?? 'Наша фабрика располагает самой крупной сетью мебельных салонов. Предлагаем отличный сервис и доступные цены на мебель премиального качества.')}
+						value={String(
+							data?.description ??
+								'Наша фабрика располагает самой крупной сетью мебельных салонов. Предлагаем отличный сервис и доступные цены на мебель премиального качества.'
+						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('description', v)}
@@ -139,7 +134,11 @@
 							stroke="currentColor"
 							stroke-width="1.5"
 						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+							/>
 						</svg>
 					</a>
 				</div>

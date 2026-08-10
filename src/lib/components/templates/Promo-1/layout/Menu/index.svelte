@@ -161,9 +161,7 @@
 
 			<!-- Варианты -->
 			<section>
-				<h4 class="p1-title-sub mb-3 text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
-					Вариант дизайна
-				</h4>
+				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Вариант дизайна</h4>
 				<div class="flex flex-col gap-2">
 					<button
 						type="button"

@@ -316,10 +316,10 @@
 					<!-- Двойная оправа: внешняя «алюминиевая» подложка + внутренняя белая карта -->
 					<div
 						transition:fly={{ y: 14, duration: 460, easing: expoOut }}
-						class="absolute top-full left-1/2 z-50 mt-4 w-88 -translate-x-1/2 rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px_rgba(15,23,42,0.45)] ring-1 ring-ink-900/5 backdrop-blur-2xl"
+						class="absolute top-full left-1/2 z-50 mt-4 w-88 -translate-x-1/2 rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px] ring-1 shadow-ink-900/45 ring-ink-900/5 backdrop-blur-2xl"
 					>
 						<div
-							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] ring-1 ring-ink-900/3"
+							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 						>
 							<div class="mb-1 flex items-center justify-between px-3 pt-2 pb-1">
 								<span class="text-[10px] font-bold tracking-[0.22em] text-ink-400 uppercase"
@@ -364,10 +364,10 @@
 					<div class="absolute top-full left-1/2 h-4 w-full -translate-x-1/2"></div>
 					<div
 						transition:fly={{ y: 14, duration: 460, easing: expoOut }}
-						class="absolute top-full left-1/2 z-50 mt-4 w-88 -translate-x-1/2 rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px_rgba(15,23,42,0.45)] ring-1 ring-ink-900/5 backdrop-blur-2xl"
+						class="absolute top-full left-1/2 z-50 mt-4 w-88 -translate-x-1/2 rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px] ring-1 shadow-ink-900/45 ring-ink-900/5 backdrop-blur-2xl"
 					>
 						<div
-							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] ring-1 ring-ink-900/3"
+							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 						>
 							<div class="mb-1 flex items-center justify-between px-3 pt-2 pb-1">
 								<span class="text-[10px] font-bold tracking-[0.22em] text-ink-400 uppercase"

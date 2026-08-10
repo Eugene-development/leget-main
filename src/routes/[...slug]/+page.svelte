@@ -20,10 +20,10 @@
 
 	const site = $derived(data.pageData?.site as SiteData | undefined);
 	const templateId = $derived(site?.templateId ?? null);
-	
+
 	const page = $derived(data.pageData?.page);
 	const pageSlug = $derived(page?.slug ?? null);
-	
+
 	// Try both camelCase and snake_case for licenseId to be resilient to GraphQL mapping
 	const pageId = $derived(page?.id ?? null);
 	const licenseId = $derived(page?.licenseId ?? (page as any)?.license_id ?? null);
@@ -46,6 +46,6 @@
 	slug={pageSlug}
 	headerData={site?.header?.data ?? null}
 	footerData={site?.footer?.data ?? null}
-	components={data.pageData?.page?.componentsData as PageComponent[] ?? []}
+	components={(data.pageData?.page?.componentsData as PageComponent[]) ?? []}
 	editContext={pageId && licenseId ? { pageId, licenseId, templateId, slug: pageSlug } : null}
 />

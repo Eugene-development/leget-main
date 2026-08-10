@@ -2,8 +2,7 @@
 	// Артикул: 1.6.3.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -19,14 +18,6 @@
 	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
 	// акцентные плитки и кнопки остаются белым по цвету бренда.
 	const isLight = $derived(isLightBlock(data, 'dark'));
-	const toggleTheme = createThemeToggle({
-		type: 'ForManufacturers',
-		fallback: 'dark',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -108,7 +99,6 @@
 			aria-hidden="true"
 		></div>
 	{/if}
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<!-- Декор: сетка, красное свечение-акцент, волосяные линии по краям -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="fm-grid"></div>
@@ -138,7 +128,7 @@
 							class="p1-accent inline-flex items-center gap-2.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
 						>
 							<span
-								class="size-1.5 rounded-full bg-brand-400 shadow-[0_0_12px_2px_rgba(248,113,113,0.7)]"
+								class="size-1.5 rounded-full bg-brand-400 shadow-[0_0_12px_2px] shadow-brand-400/70"
 								aria-hidden="true"
 							></span>
 							{displayValue}
@@ -155,9 +145,7 @@
 					class="fm-item fm-d1 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
-						>
+						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -215,7 +203,7 @@
 				<div class="fm-item fm-d4 mt-9 flex flex-wrap gap-4">
 					<a
 						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.95)] transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/95 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="ForManufacturers.buttonText"

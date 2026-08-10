@@ -70,7 +70,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mx-auto mt-6 max-w-2xl text-3xl font-light text-white lg:text-5xl"
+						class="mx-auto mt-6 max-w-2xl text-3xl text-white lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -106,7 +106,11 @@
 						stroke="currentColor"
 						stroke-width="1.5"
 					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+						/>
 					</svg>
 				</a>
 			</div>

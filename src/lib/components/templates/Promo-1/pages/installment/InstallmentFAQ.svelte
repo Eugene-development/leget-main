@@ -71,9 +71,7 @@
 				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl"
-					>
+					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -92,7 +90,7 @@
 		<div use:revealOnScroll class="it-reveal mt-12 space-y-4">
 			{#each items as item, i}
 				<div
-					class="it-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.4)] transition duration-300 hover:border-brand-500/40 hover:shadow-[0_30px_70px_-40px_rgba(15,23,42,0.5)] sm:p-8"
+					class="it-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_24px_60px_-45px] shadow-ink-900/40 transition duration-300 hover:border-brand-500/40 hover:shadow-[0_30px_70px_-40px] hover:shadow-ink-900/50 sm:p-8"
 					style="--it-delay: {i * 70}ms"
 				>
 					<div
@@ -108,7 +106,7 @@
 							{String(i + 1).padStart(2, '0')}
 						</span>
 						<div class="min-w-0">
-							<h3 class="p1-title-sub text-base tracking-[-0.01em] text-ink-900 sm:text-lg">
+							<h3 class="p1-title-sub text-base text-ink-900 sm:text-lg">
 								<EditableField
 									fieldKey="InstallmentFAQ.{i}.question"
 									label="Вопрос"

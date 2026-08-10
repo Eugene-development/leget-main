@@ -94,12 +94,4 @@
 	});
 </script>
 
-<PageRenderer
-	{layout}
-	{componentMap}
-	{slug}
-	{components}
-	{headerData}
-	{footerData}
-	{editContext}
-/>
+<PageRenderer {layout} {componentMap} {slug} {components} {headerData} {footerData} {editContext} />

@@ -2,8 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import type { HeroField, HeroPalette } from './hero';
 
 	let {
@@ -38,14 +37,6 @@
 	// Тема блока. Дефолт тёмный: Hero нарисован на тёмном градиенте.
 	const isLight = $derived(paletteLight !== null && isLightBlock(data, 'dark'));
 	const pal = $derived(isLight && paletteLight ? paletteLight : palette);
-
-	const toggleTheme = createThemeToggle({
-		type: () => componentType,
-		fallback: 'dark',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -82,7 +73,6 @@
 	backdrop-filter сэмплит другую подложку и тон элемента скачет в конце анимации.
 -->
 <section class="hr-enter relative isolate overflow-hidden {pal.section}">
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
 			class="absolute inset-0 {pal.patternOpacity}"
@@ -114,10 +104,7 @@
 			class="hr-item hr-d1 mt-8 block"
 		>
 			{#snippet children(displayValue)}
-				<h1
-					class="text-4xl leading-[1.05] tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {pal.title ??
-						'text-on-dark'}"
-				>
+				<h1 class="text-4xl text-pretty sm:text-5xl lg:text-6xl {pal.title ?? 'text-on-dark'}">
 					{displayValue}
 				</h1>
 			{/snippet}

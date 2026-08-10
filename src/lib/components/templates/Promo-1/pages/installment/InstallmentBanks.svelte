@@ -47,9 +47,7 @@
 				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl"
-					>
+					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -76,7 +74,7 @@
 		<div use:revealOnScroll class="it-reveal mt-14 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
 			{#each banks as bank, i}
 				<div
-					class="it-card group relative flex h-28 items-center justify-center overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised px-6 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.4)] transition duration-300 hover:border-brand-500/40 hover:shadow-[0_30px_70px_-40px_rgba(15,23,42,0.5)] motion-safe:hover:-translate-y-1"
+					class="it-card group relative flex h-28 items-center justify-center overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised px-6 shadow-[0_24px_60px_-45px] shadow-ink-900/40 transition duration-300 hover:border-brand-500/40 hover:shadow-[0_30px_70px_-40px] hover:shadow-ink-900/50 motion-safe:hover:-translate-y-1"
 					style="--it-delay: {i * 70}ms"
 				>
 					<div

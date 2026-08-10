@@ -26,7 +26,8 @@
 			id: 'studio',
 			label: 'Дизайн-студиям',
 			title: 'Программа для студий',
-			description: 'Подходит для дизайн-бюро и архитектурных студий с регулярным потоком проектов. Предусматривает корпоративный договор, сводные счета и персональные условия сотрудничества.',
+			description:
+				'Подходит для дизайн-бюро и архитектурных студий с регулярным потоком проектов. Предусматривает корпоративный договор, сводные счета и персональные условия сотрудничества.',
 			points: [
 				'Скидка от 15% до 22% в зависимости от объёма',
 				'Сводные акты и единый счёт раз в месяц',
@@ -39,7 +40,8 @@
 			id: 'freelance',
 			label: 'Фрилансерам',
 			title: 'Программа для независимых дизайнеров',
-			description: 'Идеально для частных дизайнеров интерьеров: гибкие условия без минимального объёма, быстрая регистрация через онлайн-заявку и поддержка на каждом этапе проекта.',
+			description:
+				'Идеально для частных дизайнеров интерьеров: гибкие условия без минимального объёма, быстрая регистрация через онлайн-заявку и поддержка на каждом этапе проекта.',
 			points: [
 				'Фиксированная скидка 12% с первого заказа',
 				'Без минимального объёма и ежемесячных обязательств',
@@ -75,7 +77,11 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="bg-surface-warm py-section-sm lg:py-section" id="how-it-works">
+<section
+	bind:this={sectionEl}
+	class="bg-surface-warm py-section-sm lg:py-section"
+	id="how-it-works"
+>
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="mb-10 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 			<EditableField
@@ -100,7 +106,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+						class="mt-3 text-4xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -117,7 +123,10 @@
 		>
 			{#each tracks as track}
 				<button
-					class="relative pb-4 text-sm tracking-wide transition-colors duration-300 {activeTrack === track.id ? 'text-primary' : 'text-muted hover:text-secondary'}"
+					class="relative pb-4 text-sm tracking-wide transition-colors duration-300 {activeTrack ===
+					track.id
+						? 'text-primary'
+						: 'text-muted hover:text-secondary'}"
 					onclick={() => (activeTrack = track.id)}
 				>
 					{track.label}
@@ -132,11 +141,12 @@
 		{#each tracks as track}
 			{#if activeTrack === track.id}
 				<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
-					<div class="opacity-0 transition-all duration-500" class:animate-fade-up={visible} style="animation-delay: 0.25s">
-						<h3
-							class="text-3xl font-light text-primary lg:text-4xl"
-							style="font-family: var(--font-heading);"
-						>
+					<div
+						class="opacity-0 transition-all duration-500"
+						class:animate-fade-up={visible}
+						style="animation-delay: 0.25s"
+					>
+						<h3 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
 							{track.title}
 						</h3>
 						<p class="mt-5 text-base leading-relaxed text-secondary">{track.description}</p>
@@ -145,17 +155,33 @@
 							class="group mt-8 inline-flex items-center gap-3 rounded-sm border border-primary bg-primary px-7 py-3.5 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 						>
 							Оставить заявку
-							<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+							<svg
+								class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="1.5"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+								/>
 							</svg>
 						</a>
 					</div>
 
-					<div class="opacity-0 transition-all duration-500" class:animate-fade-up={visible} style="animation-delay: 0.35s">
+					<div
+						class="opacity-0 transition-all duration-500"
+						class:animate-fade-up={visible}
+						style="animation-delay: 0.35s"
+					>
 						<ul class="divide-y divide-border-light">
 							{#each track.points as point, j}
 								<li class="flex items-start gap-4 py-4">
-									<span class="mt-0.5 shrink-0 text-xs font-medium text-accent tabular-nums">0{j + 1}</span>
+									<span class="mt-0.5 shrink-0 text-xs font-medium text-accent tabular-nums"
+										>0{j + 1}</span
+									>
 									<span class="text-sm leading-relaxed text-primary">{point}</span>
 								</li>
 							{/each}

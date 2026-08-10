@@ -113,7 +113,7 @@
 
 <section
 	id="styles-grid"
-	class="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-20 sm:px-6 xl:px-1 lg:scroll-mt-32"
+	class="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-20 sm:px-6 lg:scroll-mt-32 xl:px-1"
 	bind:this={sectionEl}
 >
 	<div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
@@ -127,10 +127,12 @@
 				<div
 					class="relative mb-6 aspect-[4/3] overflow-hidden rounded-sm bg-surface-muted transition-shadow duration-500 group-hover:shadow-elevated"
 				>
-					<img loading="lazy"
+					<img
+						loading="lazy"
 						src={style.image}
 						alt={style.name}
-						class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+						class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+					/>
 					<!-- Subtle Hover Overlay -->
 					<div
 						class="absolute inset-0 bg-black/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -140,7 +142,7 @@
 				<!-- Content -->
 				<div class="flex flex-grow flex-col text-center">
 					<h2
-						class="mb-3 text-3xl font-light text-primary transition-colors group-hover:text-secondary"
+						class="mb-3 text-3xl text-primary transition-colors group-hover:text-secondary"
 						style="font-family: var(--font-heading);"
 					>
 						{style.name}

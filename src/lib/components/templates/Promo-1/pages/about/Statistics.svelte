@@ -4,8 +4,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -20,14 +19,6 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'Statistics',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -104,8 +95,6 @@
 	class="p1-surface-alt relative isolate overflow-hidden py-20 sm:py-24"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-rules"></div>
 	</div>
@@ -115,7 +104,7 @@
 			{#each stats as stat, i}
 				{@const c = colorMap[stat.color] ?? colorMap.sky}
 				<div
-					class="ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
+					class="ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--ab-delay: {i * 70}ms"
 				>
 					<!-- Цветное пятно в углу — прежний акцент плитки, теперь под каймой -->

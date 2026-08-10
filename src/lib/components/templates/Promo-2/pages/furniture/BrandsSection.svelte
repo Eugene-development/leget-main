@@ -88,27 +88,25 @@
 </script>
 
 <section class="relative bg-surface-warm pb-section-sm lg:pb-section">
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1 pt-20">
+	<div class="mx-auto max-w-screen-xl px-6 pt-20 xl:px-1">
 		<div class="flex flex-col gap-24 lg:gap-32">
 			{#each brands as brand (brand.id)}
-				<div
-					class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16"
-					data-brand-id={brand.id}
-				>
+				<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16" data-brand-id={brand.id}>
 					<!-- Content Box -->
 					<div
 						class="flex flex-col justify-center opacity-0 {brand.reverse ? 'lg:order-last' : ''}"
 						class:animate-fade-up={brandVisibility[brand.id]}
 						style="animation-delay: 0.2s"
 					>
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{brand.origin}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{brand.origin}</span
+						>
 						<h3
-							class="mt-3 text-4xl font-light tracking-wide text-primary lg:text-6xl"
+							class="mt-3 text-4xl text-primary lg:text-6xl"
 							style="font-family: var(--font-heading);"
 						>
 							{brand.name}
 						</h3>
-						<div class="mt-4 mb-8 h-px w-12 bg-border-strong"></div>
+						<div class="bg-border-strong mt-4 mb-8 h-px w-12"></div>
 						<p class="text-base leading-relaxed text-secondary">
 							{brand.description}
 						</p>
@@ -132,10 +130,12 @@
 						class:animate-fade-up={brandVisibility[brand.id]}
 						style="animation-delay: 0.4s"
 					>
-						<img loading="lazy"
+						<img
+							loading="lazy"
 							src={brand.image}
 							alt={`Фурнитура ${brand.name}`}
-							class="h-full w-full object-contain transition-transform duration-700 hover:scale-105">
+							class="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
+						/>
 					</div>
 				</div>
 			{/each}

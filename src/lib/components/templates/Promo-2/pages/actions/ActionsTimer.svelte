@@ -70,7 +70,7 @@
 <section class="relative bg-surface pt-16 pb-24 lg:pt-24 lg:pb-32" bind:this={sectionEl}>
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div
-			class="relative flex flex-col items-center gap-16 lg:flex-row lg:justify-between lg:gap-24 opacity-0 transition-all duration-700"
+			class="relative flex flex-col items-center gap-16 opacity-0 transition-all duration-700 lg:flex-row lg:justify-between lg:gap-24"
 			class:animate-fade-up={visible}
 		>
 			<!-- Text content -->
@@ -102,7 +102,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-4xl leading-[1.1] font-light text-primary md:text-5xl lg:text-6xl"
+							class="text-4xl text-primary md:text-5xl lg:text-6xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -147,7 +147,11 @@
 									stroke="currentColor"
 									stroke-width="1.5"
 								>
-									<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+									/>
 								</svg>
 							</a>
 						{/snippet}

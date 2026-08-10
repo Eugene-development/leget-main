@@ -120,34 +120,29 @@
 	bind:this={sectionEl}
 >
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
-		<div
-			class="mb-16 opacity-0 lg:mb-24"
-			class:animate-fade-up={true}
-		>
-			<h2
-				class="text-4xl font-light text-primary lg:text-5xl"
-				style="font-family: var(--font-heading);"
-			>
+		<div class="mb-16 opacity-0 lg:mb-24" class:animate-fade-up={true}>
+			<h2 class="text-4xl text-primary lg:text-5xl" style="font-family: var(--font-heading);">
 				Коллекция <span class="text-secondary">фасадов</span>
 			</h2>
 		</div>
 
 		<div class="flex flex-col gap-20 lg:gap-32">
 			{#each facades as facade, index}
-				<div
-					class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20"
-					data-facade-id={facade.id}
-				>
+				<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20" data-facade-id={facade.id}>
 					<!-- Image Side -->
 					<div
-						class="relative aspect-[16/9] overflow-hidden opacity-0 lg:aspect-[4/3] {index % 2 !== 0 ? 'lg:order-last' : ''}"
+						class="relative aspect-[16/9] overflow-hidden opacity-0 lg:aspect-[4/3] {index % 2 !== 0
+							? 'lg:order-last'
+							: ''}"
 						class:animate-fade-up={itemVisibility[facade.id]}
 						style="animation-delay: 0.2s"
 					>
-						<img loading="lazy"
+						<img
+							loading="lazy"
 							src={facade.image || undefined}
 							alt={facade.title}
-							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105">
+							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+						/>
 						<div
 							class="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent lg:hidden"
 						></div>
@@ -159,10 +154,7 @@
 						class:animate-fade-up={itemVisibility[facade.id]}
 						style="animation-delay: 0.4s"
 					>
-						<h3
-							class="text-3xl font-light text-primary lg:text-4xl"
-							style="font-family: var(--font-heading);"
-						>
+						<h3 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
 							{facade.title}
 						</h3>
 						<p class="mt-6 text-base leading-relaxed text-secondary">
@@ -178,11 +170,15 @@
 								</div>
 								<div class="flex items-center justify-between border-b border-border-light/50 pb-4">
 									<dt class="text-xs tracking-wider text-muted uppercase">Покрытие</dt>
-									<dd class="text-right text-sm font-medium text-primary">{facade.details.coating}</dd>
+									<dd class="text-right text-sm font-medium text-primary">
+										{facade.details.coating}
+									</dd>
 								</div>
 								<div class="flex items-center justify-between border-b border-border-light/50 pb-4">
 									<dt class="text-xs tracking-wider text-muted uppercase">Толщина</dt>
-									<dd class="text-right text-sm font-medium text-primary">{facade.details.thickness}</dd>
+									<dd class="text-right text-sm font-medium text-primary">
+										{facade.details.thickness}
+									</dd>
 								</div>
 								<div class="flex items-start justify-between pb-2">
 									<dt class="mt-0.5 text-xs tracking-wider text-muted uppercase">

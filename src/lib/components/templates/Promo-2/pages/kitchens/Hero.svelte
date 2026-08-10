@@ -43,11 +43,10 @@
 	class="relative flex min-h-[calc(100vh-64px)] items-center justify-center overflow-hidden bg-primary text-white lg:min-h-[calc(100vh-120px)]"
 >
 	<div class="absolute inset-0 z-0">
-		<img
-			alt="Премиальные кухни"
-			class="h-full w-full object-cover opacity-30 mix-blend-overlay"
-		/>
-		<div class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/95"></div>
+		<img alt="Премиальные кухни" class="h-full w-full object-cover opacity-30 mix-blend-overlay" />
+		<div
+			class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/95"
+		></div>
 	</div>
 
 	<div class="relative z-10 mx-auto max-w-screen-xl px-6 text-center xl:px-1">
@@ -76,7 +75,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h1
-						class="mb-6 text-4xl font-light tracking-[0.1em] text-white uppercase lg:text-6xl"
+						class="mb-6 text-4xl text-white uppercase lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -89,7 +88,10 @@
 			<EditableField
 				fieldKey="Hero.description"
 				label="Описание"
-				value={String(data?.description ?? 'От детального проектирования до бережной сборки — каждый этап контролируется нашими специалистами')}
+				value={String(
+					data?.description ??
+						'От детального проектирования до бережной сборки — каждый этап контролируется нашими специалистами'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}

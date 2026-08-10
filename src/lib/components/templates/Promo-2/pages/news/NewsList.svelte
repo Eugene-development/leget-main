@@ -123,7 +123,7 @@
 					<!-- Content -->
 					<div class="min-w-0 flex-1">
 						<h2
-							class="text-lg leading-snug font-normal text-primary transition-colors duration-300 group-hover:text-secondary md:text-xl"
+							class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary md:text-xl"
 							style="font-family: var(--font-heading);"
 						>
 							{item.title}

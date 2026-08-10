@@ -3,8 +3,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 	import './theme.css';
 
@@ -19,14 +18,6 @@
 	} = $props();
 
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'ContactAddress',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -40,12 +31,10 @@
 	class="{ct.section.shell} {ct.section.pad} {ct.surface.paper}"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ct-rules"></div>
 		<div
-			class="absolute inset-0 bg-[radial-gradient(circle_at_82%_15%,rgba(239,68,68,0.08),transparent_42%)]"
+			class="absolute inset-0 bg-[radial-gradient(circle_at_82%_15%,color-mix(in_oklab,var(--color-brand-500)_8%,transparent),transparent_42%)]"
 		></div>
 		<div class={ct.accent.toplineOnLight}></div>
 	</div>

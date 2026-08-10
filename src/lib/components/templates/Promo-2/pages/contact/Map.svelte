@@ -44,7 +44,9 @@
 		<div class="overflow-hidden rounded-2xl bg-stone-100" style="height: 320px;">
 			<iframe
 				title="Карта"
-				src="https://yandex.ru/map-widget/v1/?text={encodeURIComponent(String(data?.address ?? 'Москва'))}&z=14"
+				src="https://yandex.ru/map-widget/v1/?text={encodeURIComponent(
+					String(data?.address ?? 'Москва')
+				)}&z=14"
 				width="100%"
 				height="100%"
 				frameborder="0"

@@ -4,8 +4,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -20,14 +19,6 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'Values',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -78,37 +69,37 @@
 		{ tile: string; hairline: string; border: string; index: string }
 	> = {
 		red: {
-			tile: 'bg-linear-to-br from-brand-500 to-brand-600 shadow-[0_16px_40px_-18px_rgba(220,38,38,0.85)]',
+			tile: 'bg-linear-to-br from-brand-500 to-brand-600 shadow-[0_16px_40px_-18px] shadow-brand-600/85',
 			hairline: 'bg-linear-to-r from-transparent via-brand-500 to-transparent',
 			border: 'group-hover:border-brand-500/40',
 			index: 'text-brand-500/25'
 		},
 		emerald: {
-			tile: 'bg-linear-to-br from-cat-2-500 to-cat-2-600 shadow-[0_16px_40px_-18px_rgba(5,150,105,0.85)]',
+			tile: 'bg-linear-to-br from-cat-2-500 to-cat-2-600 shadow-[0_16px_40px_-18px] shadow-cat-2-600/85',
 			hairline: 'bg-linear-to-r from-transparent via-cat-2-500 to-transparent',
 			border: 'group-hover:border-cat-2-500/40',
 			index: 'text-cat-2-500/25'
 		},
 		violet: {
-			tile: 'bg-linear-to-br from-cat-3-500 to-cat-3-600 shadow-[0_16px_40px_-18px_rgba(124,58,237,0.85)]',
+			tile: 'bg-linear-to-br from-cat-3-500 to-cat-3-600 shadow-[0_16px_40px_-18px] shadow-cat-3-600/85',
 			hairline: 'bg-linear-to-r from-transparent via-cat-3-500 to-transparent',
 			border: 'group-hover:border-cat-3-500/40',
 			index: 'text-cat-3-500/25'
 		},
 		amber: {
-			tile: 'bg-linear-to-br from-cat-1-400 to-cat-1-500 shadow-[0_16px_40px_-18px_rgba(217,119,6,0.85)]',
+			tile: 'bg-linear-to-br from-cat-1-400 to-cat-1-500 shadow-[0_16px_40px_-18px] shadow-cat-1-600/85',
 			hairline: 'bg-linear-to-r from-transparent via-cat-1-500 to-transparent',
 			border: 'group-hover:border-cat-1-500/40',
 			index: 'text-cat-1-500/25'
 		},
 		pink: {
-			tile: 'bg-linear-to-br from-cat-7-500 to-cat-7-600 shadow-[0_16px_40px_-18px_rgba(219,39,119,0.85)]',
+			tile: 'bg-linear-to-br from-cat-7-500 to-cat-7-600 shadow-[0_16px_40px_-18px] shadow-cat-7-600/85',
 			hairline: 'bg-linear-to-r from-transparent via-cat-7-500 to-transparent',
 			border: 'group-hover:border-cat-7-500/40',
 			index: 'text-cat-7-500/25'
 		},
 		cyan: {
-			tile: 'bg-linear-to-br from-cat-5-500 to-cat-5-600 shadow-[0_16px_40px_-18px_rgba(8,145,178,0.85)]',
+			tile: 'bg-linear-to-br from-cat-5-500 to-cat-5-600 shadow-[0_16px_40px_-18px] shadow-cat-5-600/85',
 			hairline: 'bg-linear-to-r from-transparent via-cat-5-500 to-transparent',
 			border: 'group-hover:border-cat-5-500/40',
 			index: 'text-cat-5-500/25'
@@ -133,8 +124,6 @@
 	class="p1-surface-alt relative isolate overflow-hidden py-24"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-rules"></div>
 	</div>
@@ -150,7 +139,7 @@
 				class="ab-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl">
+					<h2 class="p1-title text-3xl text-pretty sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -180,7 +169,7 @@
 			{#each items as item, i}
 				{@const c = colorMap[item.color] ?? colorMap.red}
 				<div
-					class="ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
+					class="ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--ab-delay: {i * 70}ms"
 				>
 					<div
@@ -214,7 +203,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title p1-title-sub mt-6 text-lg tracking-[-0.01em]">
+						<h3 class="p1-title p1-title-sub mt-6 text-lg">
 							<EditableField
 								fieldKey="Values.{i}.title"
 								label="Заголовок"

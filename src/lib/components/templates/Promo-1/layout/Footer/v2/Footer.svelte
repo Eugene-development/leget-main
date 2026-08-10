@@ -128,9 +128,7 @@
 					Связаться с нами
 				</span>
 
-				<h2
-					class="font-display mt-7 text-5xl leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl"
-				>
+				<h2 class="font-display mt-7 text-5xl sm:text-6xl lg:text-7xl">
 					<EditableField
 						fieldKey="Footer.siteName"
 						label="Название компании"
@@ -155,7 +153,7 @@
 				<!-- CTA: «кнопка в кнопке» -->
 				<a
 					href={phoneHref}
-					class="group/cta mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-cat-6-500 to-cat-7-600 px-6 py-3 text-sm font-semibold text-on-accent shadow-[0_8px_30px_rgba(244,63,94,0.25)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[0_10px_40px_rgba(244,63,94,0.35)] active:scale-[0.98]"
+					class="group/cta mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-cat-6-500 to-cat-7-600 px-6 py-3 text-sm font-semibold text-on-accent shadow-[0_8px_30px] shadow-cat-6-500/25 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[0_10px_40px] hover:shadow-cat-6-500/35 active:scale-[0.98]"
 				>
 					Позвонить
 					<span
@@ -232,10 +230,10 @@
 			<!-- ПРАВО: контактная капсула (double-bezel) + колонки навигации -->
 			<div class="lg:col-span-7" use:reveal data-reveal-delay="120">
 				<div
-					class="rounded-[1.75rem] border border-on-dark/10 bg-surface-raised/[0.025] p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+					class="rounded-[1.75rem] border border-on-dark/10 bg-surface-raised/[0.025] p-1.5 shadow-[0_20px_60px] shadow-scrim/45"
 				>
 					<div
-						class="rounded-[calc(1.75rem-0.375rem)] bg-surface-inverse/80 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-8"
+						class="rounded-[calc(1.75rem-0.375rem)] bg-surface-inverse/80 p-6 shadow-[inset_0_1px_0] shadow-on-dark/6 sm:p-8"
 					>
 						<div class="grid gap-5 sm:grid-cols-2">
 							<!-- Телефон -->
@@ -406,9 +404,7 @@
 				<!-- Колонки навигации -->
 				<div class="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
 					<div>
-						<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
-							Информация
-						</h3>
+						<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Информация</h3>
 						<ul class="mt-5 space-y-3.5">
 							<li>
 								<a
@@ -459,9 +455,7 @@
 
 					<div>
 						{#if visibleServiceItems.length > 0}
-							<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
-								Услуги
-							</h3>
+							<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Услуги</h3>
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleServiceItems as service}
 									<li>
@@ -482,9 +476,7 @@
 
 					<div>
 						{#if visibleCatalogItems.length > 0}
-							<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
-								Каталог
-							</h3>
+							<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Каталог</h3>
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleCatalogItems as item}
 									<li>
@@ -504,9 +496,7 @@
 					</div>
 
 					<div>
-						<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
-							Прочее
-						</h3>
+						<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Прочее</h3>
 						<ul class="mt-5 space-y-3.5">
 							<li>
 								<a

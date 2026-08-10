@@ -2,8 +2,7 @@
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -19,14 +18,6 @@
 	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
 	// акцентные плитки и кнопки остаются белым по цвету бренда.
 	const isLight = $derived(isLightBlock(data, 'dark'));
-	const toggleTheme = createThemeToggle({
-		type: 'PartnershipCTA',
-		fallback: 'dark',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -68,7 +59,6 @@
 	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28 lg:py-32"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<!-- Декор: сетка, свечения, волосяные линии по краям секции -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="pca-grid"></div>
@@ -86,7 +76,7 @@
 		<!-- Паспарту с градиентной каймой в 1px -->
 		<div
 			use:revealOnScroll
-			class="pca-reveal pca-frame rounded-4xl bg-linear-to-br from-link-400/40 via-cat-5-300/25 to-cat-9-400/40 p-px shadow-[0_50px_120px_-60px_rgba(6,182,212,0.55)]"
+			class="pca-reveal pca-frame rounded-4xl bg-linear-to-br from-link-400/40 via-cat-5-300/25 to-cat-9-400/40 p-px shadow-[0_50px_120px_-60px] shadow-cat-5-500/55"
 		>
 			<div
 				class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] {isLight
@@ -100,7 +90,7 @@
 
 				<div class="relative">
 					<div
-						class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-link-500 to-cat-5-500 text-on-accent shadow-[0_20px_50px_-20px_rgba(14,165,233,0.9)] ring-1 ring-on-accent/20"
+						class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-link-500 to-cat-5-500 text-on-accent shadow-[0_20px_50px_-20px] ring-1 shadow-link-500/90 ring-on-accent/20"
 					>
 						<svg
 							class="size-8"
@@ -148,9 +138,7 @@
 						class="pca-item pca-d2 mt-5 block"
 					>
 						{#snippet children(displayValue)}
-							<h2
-								class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
-							>
+							<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
 								{displayValue}
 							</h2>
 						{/snippet}
@@ -184,7 +172,7 @@
 					>
 						<a
 							href="/contact"
-							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(14,165,233,0.95)] transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px_rgba(6,182,212,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
+							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-link-500/95 transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-5-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
 						>
 							<EditableField
 								fieldKey="PartnershipCTA.buttonText"

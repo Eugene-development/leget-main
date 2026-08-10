@@ -22,10 +22,26 @@
 	}
 
 	const defaultFeatures = [
-		{ title: 'Точные замеры', desc: 'Лазерное 3D-сканирование помещения для идеального встраивания', colSpan: 'md:col-span-2' },
-		{ title: 'Премиум фурнитура', desc: 'Бесшумное скольжение и доводчики от ведущих брендов', colSpan: 'md:col-span-1' },
-		{ title: 'Надежные материалы', desc: 'Экологичные плиты европейского стандарта высокой плотности', colSpan: 'md:col-span-1' },
-		{ title: 'Сложная архитектура', desc: 'Проектируем наполнение, учитывая ваш гардероб и обувь до мелочей', colSpan: 'md:col-span-2' }
+		{
+			title: 'Точные замеры',
+			desc: 'Лазерное 3D-сканирование помещения для идеального встраивания',
+			colSpan: 'md:col-span-2'
+		},
+		{
+			title: 'Премиум фурнитура',
+			desc: 'Бесшумное скольжение и доводчики от ведущих брендов',
+			colSpan: 'md:col-span-1'
+		},
+		{
+			title: 'Надежные материалы',
+			desc: 'Экологичные плиты европейского стандарта высокой плотности',
+			colSpan: 'md:col-span-1'
+		},
+		{
+			title: 'Сложная архитектура',
+			desc: 'Проектируем наполнение, учитывая ваш гардероб и обувь до мелочей',
+			colSpan: 'md:col-span-2'
+		}
 	];
 
 	const features = $derived(
@@ -51,8 +67,14 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="mx-auto max-w-screen-xl px-6 py-section-sm xl:px-1 lg:py-section">
-	<div class="mb-16 text-center opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+<section
+	bind:this={sectionEl}
+	class="mx-auto max-w-screen-xl px-6 py-section-sm lg:py-section xl:px-1"
+>
+	<div
+		class="mb-16 text-center opacity-0 transition-all duration-700"
+		class:animate-fade-up={visible}
+	>
 		<EditableField
 			fieldKey="WardrobeFeatures.heading"
 			label="Заголовок"
@@ -62,10 +84,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2
-					class="text-3xl font-light tracking-wide text-primary lg:text-4xl"
-					style="font-family: var(--font-heading);"
-				>
+				<h2 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
 					{displayValue}
 				</h2>
 			{/snippet}
@@ -75,7 +94,7 @@
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 		{#each features as feature, i}
 			<div
-				class="relative flex min-h-[250px] flex-col justify-end overflow-hidden rounded-3xl bg-white p-10 shadow-soft transition-shadow duration-300 hover:shadow-elevated opacity-0 {feature.colSpan}"
+				class="relative flex min-h-[250px] flex-col justify-end overflow-hidden rounded-3xl bg-white p-10 opacity-0 shadow-soft transition-shadow duration-300 hover:shadow-elevated {feature.colSpan}"
 				class:animate-fade-up={visible}
 				style="animation-delay: {0.1 + i * 0.1}s"
 			>
@@ -85,10 +104,7 @@
 				>
 					0{i + 1}
 				</div>
-				<h3
-					class="mb-3 text-2xl font-light text-primary"
-					style="font-family: var(--font-heading);"
-				>
+				<h3 class="mb-3 text-2xl text-primary" style="font-family: var(--font-heading);">
 					{feature.title}
 				</h3>
 				<p class="leading-relaxed text-secondary">{feature.desc}</p>

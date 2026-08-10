@@ -38,13 +38,16 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="relative overflow-hidden bg-primary py-section-sm lg:py-section">
+<section
+	bind:this={sectionEl}
+	class="relative overflow-hidden bg-primary py-section-sm lg:py-section"
+>
 	<div
 		class="absolute inset-0 opacity-[0.03]"
 		style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
 	></div>
 
-	<div class="relative mx-auto max-w-4xl px-6 xl:px-1 text-center">
+	<div class="relative mx-auto max-w-4xl px-6 text-center xl:px-1">
 		<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 			<EditableField
 				fieldKey="ShowroomsCTA.heading"
@@ -55,10 +58,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="text-3xl font-light text-white lg:text-5xl"
-						style="font-family: var(--font-heading);"
-					>
+					<h2 class="text-3xl text-white lg:text-5xl" style="font-family: var(--font-heading);">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -96,8 +96,18 @@
 							{displayValue}
 						{/snippet}
 					</EditableField>
-					<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+					<svg
+						class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="1.5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+						/>
 					</svg>
 				</a>
 			</div>

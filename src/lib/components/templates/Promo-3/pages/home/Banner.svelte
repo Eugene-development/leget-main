@@ -24,7 +24,7 @@
 		'Профессиональная 3D-раскладка',
 		'Расчёт количества материалов',
 		'Подбор затирки и аксессуаров',
-		'Консультация дизайнера',
+		'Консультация дизайнера'
 	];
 
 	const features = $derived(
@@ -44,18 +44,29 @@
 			<!-- Left: image -->
 			<div class="relative">
 				<div class="relative aspect-[4/3] overflow-hidden rounded-2xl">
-					<img loading="lazy" src={String(data?.image ?? '')} alt={String(data?.heading ?? '')} class="size-full object-cover">
+					<img
+						loading="lazy"
+						src={String(data?.image ?? '')}
+						alt={String(data?.heading ?? '')}
+						class="size-full object-cover"
+					/>
 					<div class="absolute inset-0 rounded-2xl ring-1 ring-white/10 ring-inset"></div>
 				</div>
 				<!-- Floating card -->
-				<div class="absolute -right-4 -bottom-6 rounded-xl border border-surface-600 bg-surface-800/90 p-5 shadow-2xl backdrop-blur-xl lg:-right-8">
+				<div
+					class="absolute -right-4 -bottom-6 rounded-xl border border-surface-600 bg-surface-800/90 p-5 shadow-2xl backdrop-blur-xl lg:-right-8"
+				>
 					<div class="flex items-center gap-3">
 						<div class="flex size-12 items-center justify-center rounded-lg bg-accent-500/10">
 							<span class="text-2xl">✨</span>
 						</div>
 						<div>
-							<div class="text-sm font-bold text-white">{String(data?.floatingTitle ?? '3D-визуализация')}</div>
-							<div class="text-xs text-surface-300">{String(data?.floatingSubtitle ?? 'Бесплатно для заказов')}</div>
+							<div class="text-sm font-bold text-white">
+								{String(data?.floatingTitle ?? '3D-визуализация')}
+							</div>
+							<div class="text-xs text-surface-300">
+								{String(data?.floatingSubtitle ?? 'Бесплатно для заказов')}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -63,17 +74,43 @@
 
 			<!-- Right: content -->
 			<div>
-				<EditableField fieldKey="Banner.label" label="Лейбл" value={String(data?.label ?? 'Для дизайнеров')} {isEditable} onSave={(v) => saveField('label', v)}>
+				<EditableField
+					fieldKey="Banner.label"
+					label="Лейбл"
+					value={String(data?.label ?? 'Для дизайнеров')}
+					{isEditable}
+					onSave={(v) => saveField('label', v)}
+				>
 					{#snippet children(displayValue)}
-						<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase">{displayValue}</span>
+						<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase"
+							>{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
-				<EditableField fieldKey="Banner.heading" label="Заголовок" value={String(data?.heading ?? 'Визуализируйте пространство до покупки')} {isEditable} onSave={(v) => saveField('heading', v)} class="mt-4 block">
+				<EditableField
+					fieldKey="Banner.heading"
+					label="Заголовок"
+					value={String(data?.heading ?? 'Визуализируйте пространство до покупки')}
+					{isEditable}
+					onSave={(v) => saveField('heading', v)}
+					class="mt-4 block"
+				>
 					{#snippet children(displayValue)}
-						<h2 class="mt-4 font-display text-4xl leading-tight font-bold tracking-wide text-white lg:text-5xl">{displayValue}</h2>
+						<h2 class="font-display mt-4 text-4xl text-white lg:text-5xl">{displayValue}</h2>
 					{/snippet}
 				</EditableField>
-				<EditableField fieldKey="Banner.description" label="Описание" value={String(data?.description ?? 'Наши специалисты создадут 3D-раскладку плитки в вашем интерьере. Увидьте результат до начала ремонта и будьте уверены в выборе.')} {isEditable} multiline onSave={(v) => saveField('description', v)} class="block">
+				<EditableField
+					fieldKey="Banner.description"
+					label="Описание"
+					value={String(
+						data?.description ??
+							'Наши специалисты создадут 3D-раскладку плитки в вашем интерьере. Увидьте результат до начала ремонта и будьте уверены в выборе.'
+					)}
+					{isEditable}
+					multiline
+					onSave={(v) => saveField('description', v)}
+					class="block"
+				>
 					{#snippet children(displayValue)}
 						<p class="mt-6 text-lg leading-relaxed text-surface-300">{displayValue}</p>
 					{/snippet}
@@ -83,16 +120,29 @@
 					{#each features as feature}
 						<li class="flex items-center gap-3">
 							<div class="flex size-6 items-center justify-center rounded-full bg-accent-500/10">
-								<svg viewBox="0 0 12 12" class="size-3 fill-accent-500"><path d="M10.28 2.28L3.989 8.575 1.695 6.28A.751.751 0 00.633 7.345l2.83 2.83a.75.75 0 001.06 0l6.88-6.83a.751.751 0 00-1.123-1.065z" /></svg>
+								<svg viewBox="0 0 12 12" class="size-3 fill-accent-500"
+									><path
+										d="M10.28 2.28L3.989 8.575 1.695 6.28A.751.751 0 00.633 7.345l2.83 2.83a.75.75 0 001.06 0l6.88-6.83a.751.751 0 00-1.123-1.065z"
+									/></svg
+								>
 							</div>
 							<span class="text-sm text-surface-200">{feature}</span>
 						</li>
 					{/each}
 				</ul>
 
-				<EditableField fieldKey="Banner.ctaText" label="Кнопка" value={String(data?.ctaText ?? 'Заказать визуализацию')} {isEditable} onSave={(v) => saveField('ctaText', v)}>
+				<EditableField
+					fieldKey="Banner.ctaText"
+					label="Кнопка"
+					value={String(data?.ctaText ?? 'Заказать визуализацию')}
+					{isEditable}
+					onSave={(v) => saveField('ctaText', v)}
+				>
 					{#snippet children(displayValue)}
-						<a href={String(data?.ctaLink ?? '/contacts')} class="mt-10 inline-flex items-center gap-3 rounded-xl bg-accent-500 px-8 py-4 text-sm font-bold tracking-wide text-surface-900 uppercase transition-all duration-300 hover:bg-accent-400 hover:shadow-2xl hover:shadow-accent-500/30">
+						<a
+							href={String(data?.ctaLink ?? '/contacts')}
+							class="mt-10 inline-flex items-center gap-3 rounded-xl bg-accent-500 px-8 py-4 text-sm font-bold tracking-wide text-surface-900 uppercase transition-all duration-300 hover:bg-accent-400 hover:shadow-2xl hover:shadow-accent-500/30"
+						>
 							{displayValue}
 						</a>
 					{/snippet}

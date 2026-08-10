@@ -2,8 +2,7 @@
 	// Артикул: 1.6.5.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -18,14 +17,6 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'HowToStart',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -65,8 +56,6 @@
 </script>
 
 <div class="p1-surface-alt relative py-24" data-p1-theme={isLight ? 'light' : 'dark'}>
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<div class="text-center">
 			<EditableField

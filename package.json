@@ -10,7 +10,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check .",
+		"check:typography": "node ../../scripts/check-heading-typography.mjs",
+		"lint": "npm run check:typography && prettier --check .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {

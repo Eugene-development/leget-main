@@ -40,7 +40,11 @@
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
-			(entries) => { entries.forEach((e) => { if (e.isIntersecting) visible = true; }); },
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) visible = true;
+				});
+			},
 			{ threshold: 0.2, rootMargin: '0px 0px -80px 0px' }
 		);
 		if (sectionEl) observer.observe(sectionEl);
@@ -50,11 +54,12 @@
 
 <section class="relative overflow-hidden py-section-sm lg:py-section" bind:this={sectionEl}>
 	<!-- Decorative border lines -->
-	<div class="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-border-medium to-transparent"></div>
+	<div
+		class="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-border-medium to-transparent"
+	></div>
 
 	<div class="mx-auto max-w-7xl px-6 xl:px-1">
 		<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
-
 			<!-- Left: offer info -->
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 				<EditableField
@@ -65,7 +70,9 @@
 					onSave={(v) => saveField('badge', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="inline-flex items-center gap-2 text-[11px] tracking-[0.3em] text-accent uppercase">
+						<span
+							class="inline-flex items-center gap-2 text-[11px] tracking-[0.3em] text-accent uppercase"
+						>
 							<span class="inline-block h-1.5 w-1.5 rounded-full bg-accent"></span>
 							{displayValue}
 						</span>
@@ -82,7 +89,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-4 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-4 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -93,7 +100,10 @@
 				<EditableField
 					fieldKey="Offer.subtitle"
 					label="Подзаголовок"
-					value={String(data?.subtitle ?? 'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ')}
+					value={String(
+						data?.subtitle ??
+							'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('subtitle', v)}
@@ -118,8 +128,18 @@
 						>
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
-						<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+						<svg
+							class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="1.5"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+							/>
 						</svg>
 					</a>
 					<p class="mt-4 text-xs text-muted">Перезвоним в течение 15 минут</p>
@@ -136,12 +156,18 @@
 				<div class="flex flex-col gap-0">
 					{#each includes as item, i}
 						<div
-							class="flex items-center gap-4 border-b border-border-light py-5 first:border-t opacity-0"
+							class="flex items-center gap-4 border-b border-border-light py-5 opacity-0 first:border-t"
 							class:animate-fade-up={visible}
 							style="animation-delay: {0.3 + i * 0.08}s"
 						>
-							<svg class="h-4 w-4 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-								<polyline points="20 6 9 17 4 12"/>
+							<svg
+								class="h-4 w-4 shrink-0 text-accent"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
+								<polyline points="20 6 9 17 4 12" />
 							</svg>
 							<span class="text-sm text-primary">{item}</span>
 						</div>

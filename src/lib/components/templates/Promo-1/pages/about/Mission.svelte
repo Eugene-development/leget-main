@@ -4,8 +4,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -20,14 +19,6 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'Mission',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -49,8 +40,6 @@
 	class="p1-surface relative isolate overflow-hidden py-24"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-rules"></div>
 	</div>
@@ -67,9 +56,7 @@
 					class="ab-item block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
-						>
+						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -111,7 +98,7 @@
 			{#if imageUrl || isEditable}
 				<div class="ab-card ab-d2 mt-12 lg:mt-0">
 					<div
-						class="rounded-4xl bg-linear-to-br from-brand-500/25 via-ink-900/10 to-brand-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
+						class="rounded-4xl bg-linear-to-br from-brand-500/25 via-ink-900/10 to-brand-500/25 p-px shadow-[0_40px_100px_-60px] shadow-ink-900/55"
 					>
 						<EditableField
 							fieldKey="Mission.imageUrl"

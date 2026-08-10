@@ -2,15 +2,21 @@
  * Глобальный store для управления формой заказа услуг
  */
 
-export type ServiceType = 'consultation' | 'design-project' | 'furniture-project' | 'assembly' | 'measurement' | 'partnership';
+export type ServiceType =
+	| 'consultation'
+	| 'design-project'
+	| 'furniture-project'
+	| 'assembly'
+	| 'measurement'
+	| 'partnership';
 
 export const SERVICE_TITLES: Record<ServiceType, string> = {
-	'consultation': 'Консультация дизайнера',
+	consultation: 'Консультация дизайнера',
 	'design-project': 'Заказать дизайн-проект',
 	'furniture-project': 'Проектирование мебели',
-	'assembly': 'Сборка и монтаж',
-	'measurement': 'Замер помещения',
-	'partnership': 'Заявка на сотрудничество'
+	assembly: 'Сборка и монтаж',
+	measurement: 'Замер помещения',
+	partnership: 'Заявка на сотрудничество'
 };
 
 let _isOpen = $state(false);

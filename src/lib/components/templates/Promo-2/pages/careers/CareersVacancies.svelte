@@ -31,7 +31,8 @@
 			city: 'Гродно',
 			type: 'Полная занятость',
 			experience: 'от 3 лет',
-			description: 'Разработка и оптимизация технологических процессов производства корпусной мебели. Контроль качества на всех этапах.',
+			description:
+				'Разработка и оптимизация технологических процессов производства корпусной мебели. Контроль качества на всех этапах.',
 			tags: ['Производство', 'Технология', 'Контроль качества']
 		},
 		{
@@ -41,7 +42,8 @@
 			city: 'Москва',
 			type: 'Полная занятость',
 			experience: 'от 1 года',
-			description: 'Создание дизайн-проектов кухонь по запросам клиентов. Работа с 3D-редакторами, визуализация, презентация решений.',
+			description:
+				'Создание дизайн-проектов кухонь по запросам клиентов. Работа с 3D-редакторами, визуализация, презентация решений.',
 			tags: ['2020']
 		},
 		{
@@ -51,7 +53,8 @@
 			city: 'Минск',
 			type: 'Полная занятость',
 			experience: 'от 1 года',
-			description: 'Развитие дилерской сети в регионах. Ведение переговоров, заключение договоров, сопровождение партнёров.',
+			description:
+				'Развитие дилерской сети в регионах. Ведение переговоров, заключение договоров, сопровождение партнёров.',
 			tags: ['B2B', 'Переговоры', 'CRM']
 		},
 		{
@@ -61,7 +64,8 @@
 			city: 'Гродно',
 			type: 'Полная занятость',
 			experience: 'от 1 года',
-			description: 'Управление оборудованием с ЧПУ на производстве МДФ-фасадов. Программирование, наладка, текущее обслуживание.',
+			description:
+				'Управление оборудованием с ЧПУ на производстве МДФ-фасадов. Программирование, наладка, текущее обслуживание.',
 			tags: ['ЧПУ', 'МДФ', 'Наладка']
 		}
 	];
@@ -118,7 +122,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -132,7 +137,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -142,7 +147,11 @@
 			</div>
 			<p class="text-sm text-muted">
 				{filteredVacancies.length}
-				{filteredVacancies.length === 1 ? 'вакансия' : filteredVacancies.length < 5 ? 'вакансии' : 'вакансий'}
+				{filteredVacancies.length === 1
+					? 'вакансия'
+					: filteredVacancies.length < 5
+						? 'вакансии'
+						: 'вакансий'}
 			</p>
 		</div>
 
@@ -154,10 +163,14 @@
 		>
 			{#each departments as dept}
 				<button
-					class="rounded-sm border px-4 py-2 text-xs tracking-wider uppercase transition-all duration-300 {activeDept === dept
+					class="rounded-sm border px-4 py-2 text-xs tracking-wider uppercase transition-all duration-300 {activeDept ===
+					dept
 						? 'border-primary bg-primary text-white'
 						: 'border-border-medium bg-white text-secondary hover:border-primary hover:text-primary'}"
-					onclick={() => { activeDept = dept; expandedId = null; }}
+					onclick={() => {
+						activeDept = dept;
+						expandedId = null;
+					}}
 				>
 					{dept}
 				</button>
@@ -176,11 +189,13 @@
 						class="group w-full text-left"
 						onclick={() => (expandedId = expandedId === vac.id ? null : vac.id)}
 					>
-						<div class="flex items-start gap-6 rounded-sm px-6 py-6 transition-colors duration-300 hover:bg-surface-warm sm:items-center sm:px-8">
+						<div
+							class="flex items-start gap-6 rounded-sm px-6 py-6 transition-colors duration-300 hover:bg-surface-warm sm:items-center sm:px-8"
+						>
 							<div class="flex flex-1 flex-col gap-1 sm:flex-row sm:items-center sm:gap-8">
 								<div class="min-w-0 flex-1">
 									<h3
-										class="text-base font-medium text-primary transition-colors duration-300 group-hover:text-secondary"
+										class="text-base text-primary transition-colors duration-300 group-hover:text-secondary"
 										style="font-family: var(--font-heading);"
 									>
 										{vac.title}
@@ -194,17 +209,27 @@
 									</div>
 								</div>
 								<div class="flex shrink-0 flex-col items-start gap-1.5 sm:items-end">
-									<span class="inline-block border border-border-medium px-2.5 py-0.5 text-[10px] tracking-wider text-muted uppercase">{vac.dept}</span>
+									<span
+										class="inline-block border border-border-medium px-2.5 py-0.5 text-[10px] tracking-wider text-muted uppercase"
+										>{vac.dept}</span
+									>
 								</div>
 							</div>
 							<svg
-								class="h-5 w-5 shrink-0 text-muted transition-all duration-300 {expandedId === vac.id ? 'rotate-180 text-secondary' : 'group-hover:text-secondary'}"
+								class="h-5 w-5 shrink-0 text-muted transition-all duration-300 {expandedId ===
+								vac.id
+									? 'rotate-180 text-secondary'
+									: 'group-hover:text-secondary'}"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
 								stroke-width="1.5"
 							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+								/>
 							</svg>
 						</div>
 					</button>
@@ -214,7 +239,10 @@
 							<p class="max-w-2xl text-sm leading-relaxed text-secondary">{vac.description}</p>
 							<div class="mt-5 flex flex-wrap gap-2">
 								{#each vac.tags as tag}
-									<span class="border border-border-medium bg-white px-3 py-1 text-[11px] tracking-wider text-muted uppercase">{tag}</span>
+									<span
+										class="border border-border-medium bg-white px-3 py-1 text-[11px] tracking-wider text-muted uppercase"
+										>{tag}</span
+									>
 								{/each}
 							</div>
 							<div class="mt-6 flex flex-wrap items-center gap-4">
@@ -223,8 +251,18 @@
 									class="group inline-flex items-center gap-3 rounded-sm border border-primary bg-primary px-6 py-3 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 								>
 									Откликнуться
-									<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+									<svg
+										class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="1.5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+										/>
 									</svg>
 								</a>
 							</div>

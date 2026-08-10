@@ -229,6 +229,11 @@
 	--color-alt-night-bar: var(--ds-alt-night-bar);
 	--color-alt-night-bar-alt: var(--ds-alt-night-bar-alt);
 
+	--color-alt-sepia-200: var(--ds-alt-sepia-200);
+	--color-alt-sepia-500: var(--ds-alt-sepia-500);
+	--color-alt-sepia-800: var(--ds-alt-sepia-800);
+	--color-alt-sepia-950: var(--ds-alt-sepia-950);
+
 	/**
 	 * Шкалы Promo-1: нейтраль, два акцента и категориальная палитра.
 	 *

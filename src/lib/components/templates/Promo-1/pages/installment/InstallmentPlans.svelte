@@ -113,9 +113,7 @@
 				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl lg:text-5xl"
-					>
+					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -147,8 +145,8 @@
 				-->
 				<div
 					class="it-card group relative flex flex-col overflow-hidden rounded-3xl p-8 transition duration-300 motion-safe:hover:-translate-y-1 {plan.featured
-						? 'border border-brand-400/40 bg-linear-to-br from-brand-500 to-brand-700 shadow-[0_40px_90px_-45px_rgba(185,28,28,0.8)] hover:shadow-[0_46px_100px_-40px_rgba(185,28,28,0.9)]'
-						: 'border border-ink-900/10 bg-surface-raised shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] hover:border-brand-500/40 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)]'}"
+						? 'border border-brand-400/40 bg-linear-to-br from-brand-500 to-brand-700 shadow-[0_40px_90px_-45px] shadow-brand-700/80 hover:shadow-[0_46px_100px_-40px] hover:shadow-brand-700/90'
+						: 'border border-ink-900/10 bg-surface-raised shadow-[0_30px_80px_-50px] shadow-ink-900/35 hover:border-brand-500/40 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45'}"
 					style="--it-delay: {i * 70}ms"
 				>
 					<div
@@ -292,8 +290,8 @@
 						<a
 							href="/contact"
 							class="group/btn mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 {plan.featured
-								? 'bg-surface-raised text-brand-600 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.5)] hover:bg-brand-50 focus-visible:outline-on-dark'
-								: 'bg-brand-500 text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] hover:bg-brand-400 focus-visible:outline-brand-400'}"
+								? 'bg-surface-raised text-brand-600 shadow-[0_18px_40px_-18px] shadow-scrim/50 hover:bg-brand-50 focus-visible:outline-on-dark'
+								: 'bg-brand-500 text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 hover:bg-brand-400 focus-visible:outline-brand-400'}"
 						>
 							Оформить
 							<span

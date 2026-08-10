@@ -24,7 +24,8 @@
 		{
 			number: '01',
 			title: 'Индивидуальный проект',
-			description: 'Каждое изделие проектируется под ваши размеры и пожелания. Никаких стандартных решений'
+			description:
+				'Каждое изделие проектируется под ваши размеры и пожелания. Никаких стандартных решений'
 		},
 		{
 			number: '02',
@@ -68,7 +69,9 @@
 				onSave={(v) => saveField('label', v)}
 			>
 				{#snippet children(displayValue)}
-					<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase">{displayValue}</span>
+					<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase"
+						>{displayValue}</span
+					>
 				{/snippet}
 			</EditableField>
 
@@ -81,7 +84,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="mt-3 font-display text-4xl font-bold tracking-wide text-white lg:text-5xl">
+					<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -90,7 +93,10 @@
 			<EditableField
 				fieldKey="USP.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас')}
+				value={String(
+					data?.subtitle ??
+						'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('subtitle', v)}
@@ -105,14 +111,20 @@
 		<!-- Items grid -->
 		<div class="grid grid-cols-1 gap-px bg-surface-700/30 sm:grid-cols-2 lg:grid-cols-4">
 			{#each items as item, i}
-				<div class="group relative bg-surface-900 p-8 transition-all duration-500 hover:bg-surface-800/60">
+				<div
+					class="group relative bg-surface-900 p-8 transition-all duration-500 hover:bg-surface-800/60"
+				>
 					<!-- Top accent line on hover -->
-					<div class="absolute top-0 left-0 h-px w-0 bg-linear-to-r from-accent-500 to-transparent transition-all duration-500 group-hover:w-full"></div>
+					<div
+						class="absolute top-0 left-0 h-px w-0 bg-linear-to-r from-accent-500 to-transparent transition-all duration-500 group-hover:w-full"
+					></div>
 
-					<div class="mb-6 font-display text-5xl font-bold text-accent-500/20 transition-colors duration-300 group-hover:text-accent-500/40">
+					<div
+						class="font-display mb-6 text-5xl font-bold text-accent-500/20 transition-colors duration-300 group-hover:text-accent-500/40"
+					>
 						{item.number}
 					</div>
-					<h3 class="text-lg font-bold text-white">{item.title}</h3>
+					<h3 class="text-lg text-white">{item.title}</h3>
 					<p class="mt-3 text-sm leading-relaxed text-surface-300">{item.description}</p>
 				</div>
 			{/each}

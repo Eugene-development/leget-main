@@ -51,7 +51,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mb-6 text-4xl font-light text-primary md:text-5xl"
+						class="mb-6 text-4xl text-primary md:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -62,7 +62,10 @@
 			<EditableField
 				fieldKey="StylesCTA.description"
 				label="Описание"
-				value={String(data?.description ?? 'Запишитесь на встречу с нашим дизайнером. Мы подберем идеальный стиль, материалы и фурнитуру, учитывая архитектуру вашего пространства.')}
+				value={String(
+					data?.description ??
+						'Запишитесь на встречу с нашим дизайнером. Мы подберем идеальный стиль, материалы и фурнитуру, учитывая архитектуру вашего пространства.'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}

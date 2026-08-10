@@ -32,10 +32,7 @@
 	class="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden border-b border-border-light px-4 py-20 text-center sm:px-6 xl:px-1"
 >
 	<!-- Background Image with fixed attachment -->
-	<div
-		class="absolute inset-0 bg-cover bg-fixed bg-center"
-		style=""
-	></div>
+	<div class="absolute inset-0 bg-cover bg-fixed bg-center" style=""></div>
 
 	<!-- Light Overlay -->
 	<div class="absolute inset-0 bg-surface-warm/90 backdrop-blur-[2px]"></div>
@@ -69,7 +66,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h1
-					class="mb-8 text-6xl font-light text-primary md:text-8xl"
+					class="mb-8 text-6xl text-primary md:text-8xl"
 					style="font-family: var(--font-heading);"
 				>
 					{displayValue}
@@ -80,14 +77,18 @@
 		<EditableField
 			fieldKey="Hero.description"
 			label="Описание"
-			value={String(data?.description ?? 'Откройте для себя наше портфолио. От строгой классики до минимализма.')}
+			value={String(
+				data?.description ?? 'Откройте для себя наше портфолио. От строгой классики до минимализма.'
+			)}
 			{isEditable}
 			multiline
 			onSave={(v) => saveField('description', v)}
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed font-light text-secondary md:text-xl">
+				<p
+					class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed font-light text-secondary md:text-xl"
+				>
 					{displayValue}
 				</p>
 			{/snippet}

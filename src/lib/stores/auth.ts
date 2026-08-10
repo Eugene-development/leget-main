@@ -58,7 +58,11 @@ function createAuthStore() {
 		},
 
 		/** Login with email/password, store token on success */
-		async login(email: string, password: string, captchaToken: string | null = null): Promise<void> {
+		async login(
+			email: string,
+			password: string,
+			captchaToken: string | null = null
+		): Promise<void> {
 			const authApiUrl = getAuthApiUrl();
 			const response = await fetch(`${authApiUrl}/auth/login`, {
 				method: 'POST',

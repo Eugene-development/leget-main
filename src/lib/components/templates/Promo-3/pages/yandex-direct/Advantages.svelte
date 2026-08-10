@@ -22,9 +22,9 @@
 
 	const defaultStats = [
 		{ value: '500+', label: 'Выполненных проектов' },
-		{ value: '14',   label: 'Дней — средний срок'  },
-		{ value: '5',    label: 'Лет гарантии'          },
-		{ value: '0%',   label: 'Переплата по рассрочке'}
+		{ value: '14', label: 'Дней — средний срок' },
+		{ value: '5', label: 'Лет гарантии' },
+		{ value: '0%', label: 'Переплата по рассрочке' }
 	];
 
 	const defaultFeatures = [
@@ -52,7 +52,6 @@
 <section class="relative py-24 lg:py-32">
 	<div class="px-10 lg:px-24 xl:px-32">
 		<div class="grid items-start gap-16 lg:grid-cols-2 lg:gap-24">
-
 			<!-- Left: stats -->
 			<div>
 				<EditableField
@@ -63,7 +62,9 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase">{displayValue}</span>
+						<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase"
+							>{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -76,7 +77,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="mt-3 font-display text-4xl font-bold tracking-wide text-white lg:text-5xl">
+						<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -96,16 +97,28 @@
 			<!-- Right: features -->
 			<div class="relative rounded-3xl border border-surface-700/50 bg-surface-800/30 p-8 lg:p-10">
 				<!-- Accent line top -->
-				<div class="absolute -top-px left-10 h-px w-20 bg-linear-to-r from-transparent via-accent-500 to-transparent"></div>
+				<div
+					class="absolute -top-px left-10 h-px w-20 bg-linear-to-r from-transparent via-accent-500 to-transparent"
+				></div>
 
-				<p class="mb-8 text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase">Что вы получаете</p>
+				<p class="mb-8 text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase">
+					Что вы получаете
+				</p>
 
 				<div class="flex flex-col gap-0">
 					{#each features as feature}
 						<div class="flex items-center gap-4 border-b border-surface-700/40 py-4 first:border-t">
-							<div class="flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-500/10">
-								<svg class="size-3 text-accent-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-									<polyline points="20 6 9 17 4 12"/>
+							<div
+								class="flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-500/10"
+							>
+								<svg
+									class="size-3 text-accent-500"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="3"
+								>
+									<polyline points="20 6 9 17 4 12" />
 								</svg>
 							</div>
 							<span class="text-sm text-surface-200">{feature}</span>

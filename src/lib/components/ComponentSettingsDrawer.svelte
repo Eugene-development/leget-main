@@ -87,7 +87,7 @@
 
 		<!-- Анимации (заглушка: функциональность в разработке) -->
 		<section class="border-white/10 pt-5 {article ? 'border-t' : ''}">
-			<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Анимации</h4>
+			<h4 class="text-[10px] text-white/40 uppercase">Анимации</h4>
 			<p class="mt-2 text-xs leading-relaxed text-slate-400">
 				Включение и отключение анимаций блока. Функция появится в одном из ближайших обновлений.
 			</p>
@@ -108,7 +108,7 @@
 
 		<!-- Сброс контента -->
 		<section class="border-t border-white/10 pt-5">
-			<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Контент</h4>
+			<h4 class="text-[10px] text-white/40 uppercase">Контент</h4>
 			<p class="mt-2 text-xs leading-relaxed text-slate-400">
 				{#if canReset}
 					Сброс вернёт тексты и изображения блока к значениям по умолчанию. Выбранный вариант и тема
@@ -144,7 +144,7 @@
 
 		<!-- Отключение блока -->
 		<section class="border-t border-white/10 pt-5">
-			<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Блок</h4>
+			<h4 class="text-[10px] text-white/40 uppercase">Блок</h4>
 			<p class="mt-2 text-xs leading-relaxed text-slate-400">
 				{#if isDisabled}
 					Блок отключён и не отображается обычным посетителям.

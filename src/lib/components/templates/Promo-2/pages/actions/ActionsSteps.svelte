@@ -104,7 +104,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+						class="mt-3 text-4xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -115,7 +115,10 @@
 			<EditableField
 				fieldKey="ActionsSteps.description"
 				label="Описание"
-				value={String(data?.description ?? 'Воспользоваться акцией легко — всего 3 шага до вашей новой мебели по выгодной цене')}
+				value={String(
+					data?.description ??
+						'Воспользоваться акцией легко — всего 3 шага до вашей новой мебели по выгодной цене'
+				)}
 				{isEditable}
 				multiline
 				onSave={async (v) => {
@@ -138,7 +141,7 @@
 		<div class="grid gap-8 md:grid-cols-3">
 			{#each steps as step, i}
 				<div
-					class="group relative flex flex-col gap-6 border border-border-light bg-white p-8 shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-elevated lg:p-10 opacity-0"
+					class="group relative flex flex-col gap-6 border border-border-light bg-white p-8 opacity-0 shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-elevated lg:p-10"
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.15 + i * 0.15}s"
 				>
@@ -151,7 +154,7 @@
 					</span>
 					<div>
 						<h3
-							class="text-xl font-medium text-primary transition-colors duration-300 group-hover:text-secondary"
+							class="text-xl text-primary transition-colors duration-300 group-hover:text-secondary"
 							style="font-family: var(--font-heading);"
 						>
 							{step.title}
@@ -170,7 +173,11 @@
 								stroke="currentColor"
 								stroke-width="1"
 							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+								/>
 							</svg>
 						</div>
 					{/if}

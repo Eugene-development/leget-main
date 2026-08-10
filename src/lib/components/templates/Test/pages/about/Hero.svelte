@@ -21,8 +21,10 @@
 </script>
 
 <section
-	class="relative flex min-h-[70vh] items-center justify-center px-6 py-32 text-center bg-linear-to-br from-indigo-900 to-purple-800"
-	style={data?.backgroundImage ? `background-image: url('${data.backgroundImage}'); background-size: cover; background-position: center;` : ''}
+	class="relative flex min-h-[70vh] items-center justify-center bg-linear-to-br from-indigo-900 to-purple-800 px-6 py-32 text-center"
+	style={data?.backgroundImage
+		? `background-image: url('${data.backgroundImage}'); background-size: cover; background-position: center;`
+		: ''}
 >
 	{#if data?.backgroundImage}
 		<div class="absolute inset-0 bg-indigo-900/60"></div>
@@ -39,7 +41,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h1 class="text-5xl font-extrabold text-white tracking-tight sm:text-6xl md:text-7xl drop-shadow-lg">
+					<h1 class="text-5xl text-white drop-shadow-lg sm:text-6xl md:text-7xl">
 						{displayValue}
 					</h1>
 				{/snippet}
@@ -76,7 +78,7 @@
 				{#snippet children(displayValue)}
 					<a
 						href={String(data?.ctaUrl ?? '#')}
-						class="mt-10 inline-block rounded-full bg-white px-8 py-3 text-lg font-semibold text-indigo-900 shadow-lg hover:bg-indigo-50 transition"
+						class="mt-10 inline-block rounded-full bg-white px-8 py-3 text-lg font-semibold text-indigo-900 shadow-lg transition hover:bg-indigo-50"
 					>
 						{displayValue}
 					</a>

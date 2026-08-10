@@ -86,7 +86,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-3xl tracking-tight sm:text-5xl">{displayValue}</h2>
+						<h2 class="p1-title text-3xl sm:text-5xl">{displayValue}</h2>
 					{/snippet}
 				</EditableField>
 

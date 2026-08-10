@@ -42,7 +42,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl font-light text-stone-900">{displayValue}</h2>
+				<h2 class="text-3xl text-stone-900">{displayValue}</h2>
 			{/snippet}
 		</EditableField>
 

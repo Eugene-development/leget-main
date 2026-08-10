@@ -27,7 +27,7 @@
 <section class="relative flex h-[calc(100vh-88px)] items-center overflow-hidden bg-ink-950">
 	<div class="absolute inset-0 z-0">
 		<div
-			class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:4rem_4rem] opacity-20"
+			class="absolute inset-0 bg-[linear-gradient(to_right,var(--color-ink-800)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-ink-800)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:4rem_4rem] opacity-20"
 		></div>
 		<div
 			class="absolute top-0 left-1/2 h-full w-full -translate-x-1/2 bg-gradient-to-b from-cat-2-500/10 via-transparent to-transparent blur-[120px]"
@@ -54,7 +54,7 @@
 					{/snippet}
 				</EditableField>
 
-				<h1 class="text-5xl leading-[1.05] tracking-tight text-on-dark sm:text-7xl">
+				<h1 class="text-5xl text-on-dark sm:text-7xl">
 					<EditableField
 						fieldKey="DesignProjectHero.title_part1"
 						label="Заголовок часть 1"

@@ -24,17 +24,20 @@
 	const defaultStyles = [
 		{
 			title: 'Современный стиль',
-			description: 'Минимализм в каждой детали. Гладкие матовые фасады, скрытая фурнитура, отсутствие лишних визуальных шумов. Идеально для функционального и чистого пространства.',
+			description:
+				'Минимализм в каждой детали. Гладкие матовые фасады, скрытая фурнитура, отсутствие лишних визуальных шумов. Идеально для функционального и чистого пространства.',
 			image: null
 		},
 		{
 			title: 'Неоклассика',
-			description: 'Утонченное сочетание традиций и современных тенденций. Изящная неглубокая фрезеровка фасадов, пастельная цветовая палитра и премиальные материалы.',
+			description:
+				'Утонченное сочетание традиций и современных тенденций. Изящная неглубокая фрезеровка фасадов, пастельная цветовая палитра и премиальные материалы.',
 			image: null
 		},
 		{
 			title: 'Лофт',
-			description: 'Выразительная фактура натурального дерева, бетона и металла. Брутальные формы, индустриальный шик и максимальный акцент на естественные покрытия.',
+			description:
+				'Выразительная фактура натурального дерева, бетона и металла. Брутальные формы, индустриальный шик и максимальный акцент на естественные покрытия.',
 			image: null
 		}
 	];
@@ -62,9 +65,12 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="bg-surface-warm px-6 py-section-sm xl:px-1 lg:py-section">
+<section bind:this={sectionEl} class="bg-surface-warm px-6 py-section-sm lg:py-section xl:px-1">
 	<div class="mx-auto max-w-screen-xl">
-		<div class="mb-16 text-center opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div
+			class="mb-16 text-center opacity-0 transition-all duration-700"
+			class:animate-fade-up={visible}
+		>
 			<EditableField
 				fieldKey="KitchenStyles.heading"
 				label="Заголовок"
@@ -75,7 +81,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mb-6 text-3xl font-light tracking-wide text-primary uppercase lg:text-4xl"
+						class="mb-6 text-3xl text-primary uppercase lg:text-4xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -103,21 +109,20 @@
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
 			{#each styles as style, i}
 				<div
-					class="group overflow-hidden rounded-2xl bg-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:shadow-elevated opacity-0"
+					class="group overflow-hidden rounded-2xl bg-white opacity-0 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:shadow-elevated"
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.1 + i * 0.1}s"
 				>
 					<div class="aspect-[4/3] w-full overflow-hidden">
-						<img loading="lazy"
+						<img
+							loading="lazy"
 							src={style.image || undefined}
 							alt={style.title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						/>
 					</div>
 					<div class="p-8">
-						<h3
-							class="mb-3 text-xl font-light tracking-wide text-primary"
-							style="font-family: var(--font-heading);"
-						>
+						<h3 class="mb-3 text-xl text-primary" style="font-family: var(--font-heading);">
 							{style.title}
 						</h3>
 						<p class="text-sm leading-relaxed text-secondary">{style.description}</p>

@@ -96,9 +96,7 @@
 							class="mt-6 block"
 						>
 							{#snippet children(displayValue)}
-								<h2
-									class="text-3xl tracking-tight text-balance text-on-dark sm:text-4xl lg:text-5xl"
-								>
+								<h2 class="text-3xl text-balance text-on-dark sm:text-4xl lg:text-5xl">
 									{displayValue}
 								</h2>
 							{/snippet}

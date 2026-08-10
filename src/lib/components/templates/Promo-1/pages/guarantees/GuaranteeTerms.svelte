@@ -124,9 +124,7 @@
 				class="gt-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl lg:text-5xl"
-					>
+					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -153,7 +151,7 @@
 		<div use:revealOnScroll class="gt-reveal mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 			{#each items as item, i}
 				<div
-					class="gt-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_28px_70px_-50px_rgba(15,23,42,0.4)] transition duration-300 hover:border-ink-900/20 hover:shadow-[0_34px_80px_-44px_rgba(15,23,42,0.5)] motion-safe:hover:-translate-y-1"
+					class="gt-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_28px_70px_-50px] shadow-ink-900/40 transition duration-300 hover:border-ink-900/20 hover:shadow-[0_34px_80px_-44px] hover:shadow-ink-900/50 motion-safe:hover:-translate-y-1"
 					style="--gt-delay: {i * 60}ms"
 				>
 					<!-- Цветное пятно и плитка иконки берут градиенты из данных (item.dot / item.color) -->
@@ -209,9 +207,7 @@
 							</span>
 						</div>
 
-						<h3
-							class="p1-title-sub mt-4 border-t border-ink-900/10 pt-4 text-base tracking-[-0.01em] text-ink-900"
-						>
+						<h3 class="p1-title-sub mt-4 border-t border-ink-900/10 pt-4 text-base text-ink-900">
 							<EditableField
 								fieldKey="GuaranteeTerms.{i}.title"
 								label="Категория"

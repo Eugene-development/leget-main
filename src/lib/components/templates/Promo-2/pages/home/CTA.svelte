@@ -69,7 +69,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-4 text-4xl font-light text-white lg:text-6xl"
+						class="mt-4 text-4xl text-white lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}

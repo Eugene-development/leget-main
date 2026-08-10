@@ -24,11 +24,11 @@
 <section class="relative overflow-hidden bg-ink-950 py-32 sm:py-48">
 	<div class="absolute inset-0 opacity-10">
 		<div
-			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px]"
+			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(var(--color-cat-2-500)_1px,transparent_1px)] [background-size:24px_24px]"
 		></div>
 	</div>
 	<div class="relative z-10 mx-auto max-w-4xl px-6 text-center lg:px-8">
-		<h2 class="text-4xl leading-tight tracking-tight text-on-dark sm:text-7xl">
+		<h2 class="text-4xl text-on-dark sm:text-7xl">
 			<EditableField
 				fieldKey="DesignProjectCTA.title_part1"
 				label="Заголовок часть 1"

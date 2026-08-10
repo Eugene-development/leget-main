@@ -101,7 +101,7 @@
 	<button
 		type="button"
 		class="group relative flex items-center gap-1 rounded-full px-2 py-2 text-[10px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 lg:text-xs xl:px-4 xl:text-[13px] {active
-			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px_rgba(28,55,60,0.55)]'
+			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
 			: 'text-alt-petrol-800 hover:bg-surface-raised/65 hover:text-alt-petrol-950'}"
 		aria-expanded={openMenu === kind}
 		aria-haspopup="true"
@@ -201,7 +201,7 @@
 					{/if}
 				</div>
 				<span
-					class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-raised text-alt-petrol-700 shadow-[0_6px_18px_-12px_rgba(31,61,67,0.65)] ring-1 ring-alt-petrol-950/8 transition-[color,transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:translate-x-1 group-hover/item:text-alt-petrol-accent-600 group-hover/item:shadow-[0_10px_24px_-14px_rgba(43,129,150,0.7)]"
+					class="item:shadow-alt-petrol-accent-600/70 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-raised text-alt-petrol-700 shadow-[0_6px_18px_-12px] ring-1 shadow-alt-petrol-950/65 ring-alt-petrol-950/8 transition-[color,transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:translate-x-1 group-hover/item:text-alt-petrol-accent-600 group-hover/item:shadow-[0_10px_24px_-14px]"
 				>
 					{@render arrowIcon('h-3.5 w-3.5')}
 				</span>
@@ -253,12 +253,12 @@
 )}
 	<div
 		transition:fly={{ y: 14, duration: 440, easing: quintOut }}
-		class="absolute top-full left-1/2 z-50 mt-4 w-[min(64.5rem,calc(100vw-2rem))] -translate-x-1/2 rounded-[2.15rem] bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px_rgba(25,54,60,0.55)] ring-1 ring-alt-petrol-950/8 backdrop-blur-2xl"
+		class="absolute top-full left-1/2 z-50 mt-4 w-[min(64.5rem,calc(100vw-2rem))] -translate-x-1/2 rounded-[2.15rem] bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
 		role="region"
 		aria-label="{title} — разделы"
 	>
 		<div
-			class="max-h-[min(34rem,calc(100dvh-7rem))] overflow-y-auto rounded-[calc(2.15rem-0.375rem)] bg-surface-raised shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]"
+			class="max-h-[min(34rem,calc(100dvh-7rem))] overflow-y-auto rounded-[calc(2.15rem-0.375rem)] bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95"
 		>
 			<div class="grid min-h-[22rem] grid-cols-[10.5rem_1fr] lg:grid-cols-[15rem_1fr]">
 				<aside
@@ -281,7 +281,7 @@
 							{eyebrow}
 						</p>
 						<h3
-							class="p1-title-sub mt-5 text-[2rem] leading-[0.94] tracking-[-0.045em] lg:text-[2.7rem]"
+							class="p1-title-sub mt-5 text-[2rem] lg:text-[2.7rem]"
 							style="font-family: 'Playfair Display', serif;"
 						>
 							{title}
@@ -361,10 +361,10 @@
 	onfocusout={handleFocusOut}
 >
 	<div
-		class="rounded-[1.45rem] bg-alt-petrol-100/80 p-1 shadow-[0_16px_46px_-30px_rgba(28,55,60,0.48)] ring-1 ring-alt-petrol-950/7 backdrop-blur-xl"
+		class="rounded-[1.45rem] bg-alt-petrol-100/80 p-1 shadow-[0_16px_46px_-30px] ring-1 shadow-alt-petrol-950/48 ring-alt-petrol-950/7 backdrop-blur-xl"
 	>
 		<nav
-			class="flex items-center rounded-[calc(1.45rem-0.25rem)] bg-alt-petrol-50/92 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]"
+			class="flex items-center rounded-[calc(1.45rem-0.25rem)] bg-alt-petrol-50/92 p-0.5 shadow-[inset_0_1px_0] shadow-on-dark/95"
 			aria-label="Основная навигация"
 		>
 			{#each links as link}
@@ -382,7 +382,7 @@
 						class="relative flex items-center rounded-full px-2 py-2.5 text-[10px] font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none hover:bg-surface-raised/65 hover:text-alt-petrol-950 active:scale-[0.98] lg:px-3 lg:text-xs xl:px-4 xl:text-[13px] {isLinkActive(
 							link.href
 						)
-							? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px_rgba(28,55,60,0.55)]'
+							? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
 							: ''}"
 						onmouseenter={() => hoverLink(link.href)}
 						onfocus={() => hoverLink(link.href)}

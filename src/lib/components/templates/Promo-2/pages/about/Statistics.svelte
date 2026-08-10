@@ -41,7 +41,9 @@
 </script>
 
 <section class="relative overflow-hidden bg-stone-900 px-6 py-20 text-white lg:py-32">
-	<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,#78350f22,transparent_60%)]"></div>
+	<div
+		class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,#78350f22,transparent_60%)]"
+	></div>
 	<div class="relative mx-auto max-w-6xl">
 		<div class="mb-16 text-center">
 			<EditableField
@@ -53,7 +55,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-4xl font-light tracking-tight sm:text-5xl">{displayValue}</h2>
+					<h2 class="text-4xl sm:text-5xl">{displayValue}</h2>
 				{/snippet}
 			</EditableField>
 
@@ -68,7 +70,7 @@
 			>
 				{#snippet children(displayValue)}
 					{#if displayValue}
-						<p class="mt-4 max-w-2xl mx-auto text-xl text-stone-300">{displayValue}</p>
+						<p class="mx-auto mt-4 max-w-2xl text-xl text-stone-300">{displayValue}</p>
 					{/if}
 				{/snippet}
 			</EditableField>
@@ -76,9 +78,13 @@
 
 		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
 			{#each stats as stat, index}
-				<div class="relative group">
-					<div class="absolute inset-0 bg-gradient-to-br from-amber-900/20 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-					<div class="relative rounded-lg border border-stone-700 bg-stone-800/50 p-8 text-center backdrop-blur-sm transition-all duration-300 group-hover:border-amber-700/50 group-hover:bg-stone-800/80">
+				<div class="group relative">
+					<div
+						class="absolute inset-0 rounded-lg bg-gradient-to-br from-amber-900/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					></div>
+					<div
+						class="relative rounded-lg border border-stone-700 bg-stone-800/50 p-8 text-center backdrop-blur-sm transition-all duration-300 group-hover:border-amber-700/50 group-hover:bg-stone-800/80"
+					>
 						<EditableField
 							fieldKey={`Statistics.stat${index + 1}_value`}
 							label={`Значение ${index + 1}`}
@@ -101,7 +107,7 @@
 							class="mt-3 block"
 						>
 							{#snippet children(displayValue)}
-								<p class="text-sm text-stone-300 uppercase tracking-wide">{displayValue}</p>
+								<p class="text-sm tracking-wide text-stone-300 uppercase">{displayValue}</p>
 							{/snippet}
 						</EditableField>
 					</div>

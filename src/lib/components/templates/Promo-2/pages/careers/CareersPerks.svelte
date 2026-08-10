@@ -102,7 +102,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+						class="mt-3 text-4xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -118,13 +118,21 @@
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.08 + i * 0.07}s"
 				>
-					<div class="mb-5 flex h-10 w-10 items-center justify-center border border-secondary/20 text-secondary transition-colors duration-300 group-hover:border-secondary group-hover:bg-secondary group-hover:text-white">
-						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+					<div
+						class="mb-5 flex h-10 w-10 items-center justify-center border border-secondary/20 text-secondary transition-colors duration-300 group-hover:border-secondary group-hover:bg-secondary group-hover:text-white"
+					>
+						<svg
+							class="h-5 w-5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="1.5"
+						>
 							{@html perk.icon}
 						</svg>
 					</div>
 					<h3
-						class="text-lg font-medium text-primary transition-colors duration-300 group-hover:text-secondary"
+						class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
 						style="font-family: var(--font-heading);"
 					>
 						{perk.title}

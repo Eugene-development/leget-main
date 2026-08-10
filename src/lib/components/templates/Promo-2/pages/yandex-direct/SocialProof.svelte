@@ -53,7 +53,11 @@
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
-			(entries) => { entries.forEach((e) => { if (e.isIntersecting) visible = true; }); },
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) visible = true;
+				});
+			},
 			{ threshold: 0.2, rootMargin: '0px 0px -80px 0px' }
 		);
 		if (sectionEl) observer.observe(sectionEl);
@@ -61,10 +65,16 @@
 	});
 </script>
 
-<section class="relative overflow-hidden bg-surface-warm py-section-sm lg:py-section" bind:this={sectionEl}>
+<section
+	class="relative overflow-hidden bg-surface-warm py-section-sm lg:py-section"
+	bind:this={sectionEl}
+>
 	<div class="mx-auto max-w-7xl px-6 xl:px-1">
 		<!-- Header -->
-		<div class="mb-16 flex flex-col gap-4 opacity-0 transition-all duration-700 lg:flex-row lg:items-end lg:justify-between" class:animate-fade-up={visible}>
+		<div
+			class="mb-16 flex flex-col gap-4 opacity-0 transition-all duration-700 lg:flex-row lg:items-end lg:justify-between"
+			class:animate-fade-up={visible}
+		>
 			<div>
 				<EditableField
 					fieldKey="SocialProof.label"
@@ -74,7 +84,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -88,7 +99,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -102,7 +113,9 @@
 				<div class="flex gap-0.5">
 					{#each Array(5) as _}
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-accent">
-							<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+							<path
+								d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+							/>
 						</svg>
 					{/each}
 				</div>
@@ -124,8 +137,16 @@
 					<!-- Stars -->
 					<div class="flex gap-0.5">
 						{#each Array(review.rating) as _}
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-accent">
-								<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+							<svg
+								width="14"
+								height="14"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								class="text-accent"
+							>
+								<path
+									d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+								/>
 							</svg>
 						{/each}
 					</div>
@@ -139,7 +160,9 @@
 
 					<!-- Author -->
 					<div class="flex items-center gap-3">
-						<div class="flex h-9 w-9 items-center justify-center border border-border-medium text-xs font-medium text-secondary">
+						<div
+							class="flex h-9 w-9 items-center justify-center border border-border-medium text-xs font-medium text-secondary"
+						>
 							{review.initials}
 						</div>
 						<span class="text-sm font-medium text-primary">{review.name}</span>

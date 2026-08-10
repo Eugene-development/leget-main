@@ -238,7 +238,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
+							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
 								? 'from-ink-900 via-ink-800 to-ink-700'
 								: 'from-surface-raised via-ink-100 to-ink-400'}"
 						>
@@ -402,7 +402,7 @@
 								<!-- Текст скилла -->
 								<div class="min-w-0 flex-1">
 									<h3
-										class="p1-title-sub text-sm tracking-tight transition-colors duration-300 {activeSkillIndex ===
+										class="p1-title-sub text-sm transition-colors duration-300 {activeSkillIndex ===
 										idx
 											? isLight
 												? 'text-cat-4-600'

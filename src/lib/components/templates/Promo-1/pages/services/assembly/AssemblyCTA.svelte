@@ -24,7 +24,7 @@
 <section class="relative overflow-hidden bg-ink-950 py-24 sm:py-32">
 	<div class="absolute inset-0 opacity-20">
 		<div
-			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(#f43f5e_1px,transparent_1px)] [background-size:32px_32px]"
+			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(var(--color-cat-6-500)_1px,transparent_1px)] [background-size:32px_32px]"
 		></div>
 	</div>
 	<div class="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
@@ -37,7 +37,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl tracking-tight text-on-dark sm:text-5xl lg:text-6xl">
+				<h2 class="text-3xl text-on-dark sm:text-5xl lg:text-6xl">
 					{displayValue}
 				</h2>
 			{/snippet}

@@ -2,8 +2,7 @@
 	// Артикул: 1.6.1.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 
 	let {
 		data = $bindable(),
@@ -18,14 +17,6 @@
 	// Брендовая поверхность: нейтральными токенами не описывается, поэтому
 	// светлый вариант — тот же бирюзовый род цвета, но осветлённый, с тёмным текстом.
 	const isLight = $derived(isLightBlock(data, 'dark'));
-	const toggleTheme = createThemeToggle({
-		type: 'PartnershipHero',
-		fallback: 'dark',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -57,8 +48,6 @@
 		? 'bg-linear-to-br from-link-50 via-cat-5-50 to-cat-9-50'
 		: 'bg-linear-to-br from-link-600 via-cat-5-600 to-cat-9-600'}"
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<!-- Декор: техническая сетка-ромбы, световые пятна, волосяная линия сверху -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
@@ -132,7 +121,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-4xl leading-[1.05] tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {isLight
+							class="text-4xl text-pretty sm:text-5xl lg:text-6xl {isLight
 								? 'text-ink-900'
 								: 'text-on-dark'}"
 						>
@@ -175,7 +164,7 @@
 				<div class="ph-item ph-d4 mt-10">
 					<a
 						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-surface-raised px-7 py-3.5 text-sm font-semibold text-link-700 shadow-[0_20px_50px_-20px_rgba(8,47,73,0.65)] transition duration-300 hover:bg-link-50 hover:shadow-[0_26px_60px_-18px_rgba(8,47,73,0.75)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-surface-raised px-7 py-3.5 text-sm font-semibold text-link-700 shadow-[0_20px_50px_-20px] shadow-link-950/65 transition duration-300 hover:bg-link-50 hover:shadow-[0_26px_60px_-18px] hover:shadow-link-950/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="PartnershipHero.buttonText"
@@ -200,7 +189,7 @@
 			<!-- Цитата: паспарту с градиентной каймой в 1px -->
 			<div class="ph-card ph-d3 mt-12 lg:mt-0">
 				<div
-					class="rounded-4xl bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40 p-px shadow-[0_50px_120px_-60px_rgba(8,47,73,0.8)]"
+					class="rounded-4xl bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40 p-px shadow-[0_50px_120px_-60px] shadow-link-950/80"
 				>
 					<!--
 						Без backdrop-blur: пока на карточке висит transform от анимации

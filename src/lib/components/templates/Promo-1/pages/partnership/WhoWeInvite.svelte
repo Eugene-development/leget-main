@@ -2,8 +2,7 @@
 	// Артикул: 1.6.2.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	let {
@@ -18,14 +17,6 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'WhoWeInvite',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -144,8 +135,6 @@
 	class="p1-surface-alt relative isolate overflow-hidden py-16 sm:py-20"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="wi-rules"></div>
 	</div>
@@ -161,9 +150,7 @@
 				class="wi-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
-					>
+					<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -193,7 +180,7 @@
 			{#each cards as card, i}
 				{@const c = colorMap[card.color] ?? colorMap.sky}
 				<div
-					class="wi-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] transition duration-300 hover:shadow-[0_36px_90px_-44px_rgba(15,23,42,0.45)] motion-safe:hover:-translate-y-1 {c.border}"
+					class="wi-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--wi-delay: {i * 70}ms"
 				>
 					<!-- Цветное пятно в углу — прежний акцент карточки, теперь под каймой -->
@@ -232,9 +219,7 @@
 							</svg>
 						</div>
 
-						<h3
-							class="p1-title p1-title-sub mt-6 flex items-center gap-2.5 text-lg tracking-[-0.01em]"
-						>
+						<h3 class="p1-title p1-title-sub mt-6 flex items-center gap-2.5 text-lg">
 							<span class="size-1.5 shrink-0 rounded-full {c.dot}" aria-hidden="true"></span>
 							<EditableField
 								fieldKey="WhoWeInvite.{i}.title"
@@ -267,7 +252,7 @@
 		<!-- Платформа: отдельная панель, чтобы блок не читался как продолжение карточек -->
 		<div use:revealOnScroll class="wi-reveal mt-12">
 			<div
-				class="wi-item p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] sm:px-12 sm:py-12"
+				class="wi-item p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 sm:px-12 sm:py-12"
 			>
 				<div
 					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent"
@@ -310,7 +295,7 @@
 									href={displayValue}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-500 to-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] transition duration-300 hover:from-brand-400 hover:to-brand-500 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
+									class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-500 to-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 transition duration-300 hover:from-brand-400 hover:to-brand-500 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 								>
 									<EditableField
 										fieldKey="WhoWeInvite.platformButtonText"

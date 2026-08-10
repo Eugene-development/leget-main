@@ -64,7 +64,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h1
-						class="mt-4 text-5xl font-light text-primary lg:text-6xl"
+						class="mt-4 text-5xl text-primary lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}

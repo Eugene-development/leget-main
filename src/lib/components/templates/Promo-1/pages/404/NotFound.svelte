@@ -99,9 +99,7 @@
 			class="nf-item nf-d1 mt-4 block"
 		>
 			{#snippet children(displayValue)}
-				<h1
-					class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-on-dark sm:text-4xl lg:text-5xl"
-				>
+				<h1 class="text-3xl text-pretty text-on-dark sm:text-4xl lg:text-5xl">
 					{displayValue}
 				</h1>
 			{/snippet}
@@ -133,7 +131,7 @@
 		<div class="nf-item nf-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
 			<a
 				href={String(data?.homeHref ?? '/')}
-				class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-600 to-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.95)] transition duration-300 hover:from-brand-500 hover:to-brand-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
+				class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-600 to-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/95 transition duration-300 hover:from-brand-500 hover:to-brand-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 			>
 				<svg
 					class="size-4.5 transition-transform duration-300 group-hover:-translate-x-0.5"

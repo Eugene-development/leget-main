@@ -70,7 +70,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-4 text-4xl font-light text-white lg:text-6xl"
+						class="mt-4 text-4xl text-white lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -81,7 +81,10 @@
 			<EditableField
 				fieldKey="AboutCTA.description"
 				label="Описание"
-				value={String(data?.description ?? 'Запишитесь на бесплатную консультацию. Наш дизайнер поможет подобрать идеальное решение.')}
+				value={String(
+					data?.description ??
+						'Запишитесь на бесплатную консультацию. Наш дизайнер поможет подобрать идеальное решение.'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}
@@ -117,7 +120,11 @@
 						stroke="currentColor"
 						stroke-width="1.5"
 					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+						/>
 					</svg>
 				</a>
 			</div>

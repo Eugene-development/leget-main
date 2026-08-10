@@ -78,10 +78,7 @@
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
 		<!-- Header -->
 		<div class="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-			<div
-				class="opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
-			>
+			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 				<EditableField
 					fieldKey="Principles.label"
 					label="Лейбл"
@@ -90,7 +87,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -104,7 +102,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}
@@ -129,7 +127,7 @@
 				>
 					<span class="text-xs font-medium text-accent">0{i + 1}</span>
 					<h3
-						class="mt-4 text-xl font-medium text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
+						class="mt-4 text-xl text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
 						style="font-family: var(--font-heading);"
 					>
 						{principle.title}

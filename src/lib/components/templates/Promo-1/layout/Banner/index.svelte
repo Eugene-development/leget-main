@@ -168,9 +168,7 @@
 
 			<!-- Варианты -->
 			<section>
-				<h4 class="p1-title-sub mb-3 text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
-					Вариант дизайна
-				</h4>
+				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Вариант дизайна</h4>
 				<div class="flex flex-col gap-2">
 					<button
 						type="button"
@@ -207,7 +205,7 @@
 
 			<!-- Сброс контента -->
 			<section class="border-t border-on-dark/10 pt-5">
-				<h4 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">Контент</h4>
+				<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Контент</h4>
 				<p class="mt-2 text-xs leading-relaxed text-ink-400">
 					Сброс вернёт контакты и ссылки баннера к значениям по умолчанию. Выбранный вариант и меню
 					хэдера не изменятся.

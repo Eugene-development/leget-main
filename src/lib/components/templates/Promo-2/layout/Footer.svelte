@@ -1,53 +1,77 @@
 <script lang="ts">
 	// Артикул: 2.Ф.1.1 — см. docs/architecture/component-articles-map.md
-	let { data }: { data: Record<string, unknown> } = $props();
+	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
+	import type { EditContext } from '$lib/utils/page-edit';
 
-	const siteName    = $derived(typeof data?.siteName    === 'string' ? data.siteName    : 'Фабрика');
-	const description = $derived(typeof data?.description === 'string' ? data.description : 'Более 25 лет создаём мебель премиального качества.');
-	const phone       = $derived(typeof data?.phone       === 'string' ? data.phone       : '');
-	const email       = $derived(typeof data?.email       === 'string' ? data.email       : '');
-	const address     = $derived(typeof data?.address     === 'string' ? data.address     : '');
-	const hours       = $derived(typeof data?.hours       === 'string' ? data.hours       : 'Пн–Пт: 9:00 — 18:00');
-	const copyright   = $derived(typeof data?.copyright   === 'string' ? data.copyright   : `© ${new Date().getFullYear()} Все права защищены.`);
-	const privacyLink = $derived(typeof data?.privacyLink === 'string' ? data.privacyLink : '/privacy');
-	const termsLink   = $derived(typeof data?.termsLink   === 'string' ? data.termsLink   : '/terms');
+	let {
+		data,
+		editContext = null,
+		isEditable = false
+	}: {
+		data: Record<string, unknown>;
+		editContext?: EditContext | null;
+		isEditable?: boolean;
+	} = $props();
+
+	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Фабрика');
+	const description = $derived(
+		typeof data?.description === 'string'
+			? data.description
+			: 'Более 25 лет создаём мебель премиального качества.'
+	);
+	const phone = $derived(typeof data?.phone === 'string' ? data.phone : '');
+	const email = $derived(typeof data?.email === 'string' ? data.email : '');
+	const address = $derived(typeof data?.address === 'string' ? data.address : '');
+	const hours = $derived(typeof data?.hours === 'string' ? data.hours : 'Пн–Пт: 9:00 — 18:00');
+	const copyright = $derived(
+		typeof data?.copyright === 'string'
+			? data.copyright
+			: `© ${new Date().getFullYear()} Все права защищены.`
+	);
+	const privacyLink = $derived(
+		typeof data?.privacyLink === 'string' ? data.privacyLink : '/privacy'
+	);
+	const termsLink = $derived(typeof data?.termsLink === 'string' ? data.termsLink : '/terms');
 
 	const navColumns = $derived(
 		Array.isArray(data?.navColumns)
 			? (data.navColumns as { title: string; links: { label: string; href: string }[] }[])
 			: [
-				{
-					title: 'Каталог',
-					links: [
-						{ label: 'Фурнитура', href: '/furniture' },
-						{ label: 'Фасады',    href: '/facades'   },
-						{ label: 'Шкафы',     href: '/wardrobes' },
-						{ label: 'Кухни',     href: '/kitchens'  },
-					]
-				},
-				{
-					title: 'Компания',
-					links: [
-						{ label: 'О фабрике',   href: '/about'     },
-						{ label: 'Новости',      href: '/news'      },
-						{ label: 'Вакансии',     href: '/careers'   },
-						{ label: 'Дизайнерам',   href: '/designers' },
-					]
-				},
-				{
-					title: 'Покупателям',
-					links: [
-						{ label: 'Стили',   href: '/styles'    },
-						{ label: 'Акции',   href: '/actions'   },
-						{ label: 'Салоны',  href: '/showrooms' },
-						{ label: 'Контакты', href: '/contact'  },
-					]
-				},
-			]
+					{
+						title: 'Каталог',
+						links: [
+							{ label: 'Фурнитура', href: '/furniture' },
+							{ label: 'Фасады', href: '/facades' },
+							{ label: 'Шкафы', href: '/wardrobes' },
+							{ label: 'Кухни', href: '/kitchens' }
+						]
+					},
+					{
+						title: 'Компания',
+						links: [
+							{ label: 'О фабрике', href: '/about' },
+							{ label: 'Новости', href: '/news' },
+							{ label: 'Вакансии', href: '/careers' },
+							{ label: 'Дизайнерам', href: '/designers' }
+						]
+					},
+					{
+						title: 'Покупателям',
+						links: [
+							{ label: 'Стили', href: '/styles' },
+							{ label: 'Акции', href: '/actions' },
+							{ label: 'Салоны', href: '/showrooms' },
+							{ label: 'Контакты', href: '/contact' }
+						]
+					}
+				]
 	);
 </script>
 
 <footer class="relative bg-primary text-inverse">
+	<div class="absolute top-6 right-6 z-[100]">
+		<LayoutArticleSettings {editContext} {isEditable} type="Footer" title="Футер" />
+	</div>
 	<!-- Decorative Top Line -->
 	<div class="h-px w-full bg-linear-to-r from-transparent via-accent to-transparent"></div>
 
@@ -72,7 +96,7 @@
 			<!-- Navigation Columns -->
 			{#each navColumns as column}
 				<div class="col-span-1 lg:col-span-2">
-					<h4 class="text-xs font-medium tracking-[0.2em] text-white/40 uppercase">
+					<h4 class="text-xs text-white/40 uppercase">
 						{column.title}
 					</h4>
 					<ul class="mt-5 flex flex-col gap-3">
@@ -92,7 +116,7 @@
 
 			<!-- Contact Column -->
 			<div class="col-span-1 lg:col-span-2">
-				<h4 class="text-xs font-medium tracking-[0.2em] text-white/40 uppercase">Контакты</h4>
+				<h4 class="text-xs text-white/40 uppercase">Контакты</h4>
 				<div class="mt-1 flex flex-col gap-1">
 					{#if phone}
 						<a

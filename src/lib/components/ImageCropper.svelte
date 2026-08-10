@@ -204,7 +204,7 @@
 	>
 		<!-- Header -->
 		<div class="flex items-center justify-between border-b bg-gray-50 px-6 py-4">
-			<h3 id="cropper-title" class="text-lg font-semibold text-gray-900">Обрезка изображения</h3>
+			<h3 id="cropper-title" class="text-lg text-gray-900">Обрезка изображения</h3>
 
 			<button
 				type="button"

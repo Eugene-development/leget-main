@@ -93,9 +93,7 @@
 		aria-labelledby="login-modal-title"
 	>
 		<div class="mb-6 flex items-center justify-between">
-			<h2 id="login-modal-title" class="text-xl font-semibold text-neutral-950">
-				Вход в систему
-			</h2>
+			<h2 id="login-modal-title" class="text-xl text-neutral-950">Вход в систему</h2>
 			<button
 				type="button"
 				onclick={onClose}

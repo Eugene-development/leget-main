@@ -28,7 +28,8 @@
 		{
 			number: '01',
 			title: 'Индивидуальный проект',
-			description: 'Каждое изделие проектируется под ваши размеры и пожелания. Никаких стандартных решений'
+			description:
+				'Каждое изделие проектируется под ваши размеры и пожелания. Никаких стандартных решений'
 		},
 		{
 			number: '02',
@@ -55,7 +56,11 @@
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
-			(entries) => { entries.forEach((e) => { if (e.isIntersecting) visible = true; }); },
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) visible = true;
+				});
+			},
 			{ threshold: 0.2, rootMargin: '0px 0px -80px 0px' }
 		);
 		if (sectionEl) observer.observe(sectionEl);
@@ -95,7 +100,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 max-w-xl text-4xl font-light text-primary lg:text-5xl"
+						class="mt-3 max-w-xl text-4xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -106,7 +111,10 @@
 			<EditableField
 				fieldKey="USP.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас')}
+				value={String(
+					data?.subtitle ??
+						'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('subtitle', v)}
@@ -128,7 +136,9 @@
 				>
 					<span class="mt-0.5 shrink-0 text-xs font-medium text-accent">{item.number}</span>
 					<div>
-						<h3 class="text-lg font-medium text-primary transition-colors duration-300 group-hover:text-secondary">
+						<h3
+							class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
+						>
 							{item.title}
 						</h3>
 						<p class="mt-2 text-sm leading-relaxed text-secondary">{item.description}</p>

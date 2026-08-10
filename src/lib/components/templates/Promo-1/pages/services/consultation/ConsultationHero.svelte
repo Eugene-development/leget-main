@@ -63,7 +63,7 @@
 					{/snippet}
 				</EditableField>
 
-				<h1 class="text-4xl leading-[1.1] tracking-tight text-on-dark sm:text-6xl lg:text-7xl">
+				<h1 class="text-4xl text-on-dark sm:text-6xl lg:text-7xl">
 					<EditableField
 						fieldKey="ConsultationHero.title_part1"
 						label="Заголовок часть 1"

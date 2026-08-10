@@ -64,26 +64,34 @@
 			class="font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-sm flex-col border-l border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ x: 420, duration: 350, opacity: 1 }}
 		>
-		<header class="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
-			<div class="flex min-w-0 flex-col">
-				<span class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase">{eyebrow}</span>
-				<h3 class="truncate text-base font-bold tracking-tight text-white">{title}</h3>
-			</div>
-			<button
-				type="button"
-				class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/3 text-white/60 transition-all duration-300 hover:bg-white/10 hover:text-white active:scale-95"
-				onclick={close}
-				aria-label="Закрыть"
-			>
-				<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-				</svg>
-			</button>
-		</header>
+			<header class="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
+				<div class="flex min-w-0 flex-col">
+					<span class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase"
+						>{eyebrow}</span
+					>
+					<h3 class="truncate text-base text-white">{title}</h3>
+				</div>
+				<button
+					type="button"
+					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/3 text-white/60 transition-all duration-300 hover:bg-white/10 hover:text-white active:scale-95"
+					onclick={close}
+					aria-label="Закрыть"
+				>
+					<svg
+						class="h-4 w-4"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+					</svg>
+				</button>
+			</header>
 
-		<div class="flex-1 overflow-y-auto px-5 py-5">
-			{@render children?.()}
-		</div>
-	</aside>
+			<div class="flex-1 overflow-y-auto px-5 py-5">
+				{@render children?.()}
+			</div>
+		</aside>
 	</div>
 {/if}

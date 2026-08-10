@@ -129,9 +129,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="p1-title font-display mt-4 text-3xl leading-tight tracking-tight md:text-4xl"
-						>
+						<h2 class="p1-title font-display mt-4 text-3xl md:text-4xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -165,7 +163,7 @@
 					>
 						<!-- Светящийся контур-маркер на временной линии -->
 						<div
-							class="absolute top-6 -left-[35px] h-4 w-4 rounded-full border-4 border-ink-700 bg-ink-950 shadow-[0_0_10px_rgba(56,189,248,0.2)] transition-all duration-300 group-hover:scale-125 group-hover:border-link-400"
+							class="absolute top-6 -left-[35px] h-4 w-4 rounded-full border-4 border-ink-700 bg-ink-950 shadow-[0_0_10px] shadow-link-400/20 transition-all duration-300 group-hover:scale-125 group-hover:border-link-400"
 						></div>
 
 						<div class="flex items-start gap-5">

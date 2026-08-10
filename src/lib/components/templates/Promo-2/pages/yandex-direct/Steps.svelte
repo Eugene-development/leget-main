@@ -28,17 +28,20 @@
 		{
 			number: '01',
 			title: 'Заявка и консультация',
-			description: 'Оставьте заявку — мы перезвоним в течение 15 минут. Обсудим ваши пожелания и бюджет'
+			description:
+				'Оставьте заявку — мы перезвоним в течение 15 минут. Обсудим ваши пожелания и бюджет'
 		},
 		{
 			number: '02',
 			title: 'Бесплатный замер',
-			description: 'Наш специалист приедет в удобное время, снимет точные размеры и предложит решения'
+			description:
+				'Наш специалист приедет в удобное время, снимет точные размеры и предложит решения'
 		},
 		{
 			number: '03',
 			title: '3D дизайн-проект',
-			description: 'Создадим реалистичную визуализацию вашей мебели. Вы увидите результат до начала производства'
+			description:
+				'Создадим реалистичную визуализацию вашей мебели. Вы увидите результат до начала производства'
 		},
 		{
 			number: '04',
@@ -55,7 +58,11 @@
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
-			(entries) => { entries.forEach((e) => { if (e.isIntersecting) visible = true; }); },
+			(entries) => {
+				entries.forEach((e) => {
+					if (e.isIntersecting) visible = true;
+				});
+			},
 			{ threshold: 0.2, rootMargin: '0px 0px -80px 0px' }
 		);
 		if (sectionEl) observer.observe(sectionEl);
@@ -89,7 +96,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 max-w-xl text-4xl font-light text-primary lg:text-5xl"
+						class="mt-3 max-w-xl text-4xl text-primary lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -117,7 +124,9 @@
 					<!-- Accent line -->
 					<div class="mb-4 h-px w-8 bg-accent"></div>
 
-					<h3 class="text-base font-medium text-primary transition-colors duration-300 group-hover:text-secondary">
+					<h3
+						class="text-base text-primary transition-colors duration-300 group-hover:text-secondary"
+					>
 						{step.title}
 					</h3>
 					<p class="mt-3 text-sm leading-relaxed text-secondary">

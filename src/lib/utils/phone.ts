@@ -7,7 +7,7 @@ export function formatPhone(value: string): string {
 	if (!numbers) return '';
 
 	let formatted = '';
-	
+
 	// Если первая цифра 7 или 8, отсекаем ее для форматирования части с кодом города
 	let startIdx = 0;
 	if (numbers[0] === '7' || numbers[0] === '8') {

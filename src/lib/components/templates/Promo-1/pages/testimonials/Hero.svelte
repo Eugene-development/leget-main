@@ -28,7 +28,7 @@
 		glowA: 'bg-on-dark/15',
 		glowB: 'bg-cat-14-300/25',
 		iconTile:
-			'bg-on-dark/15 ring-1 ring-on-dark/25 shadow-[0_20px_50px_-20px_rgba(112,26,117,0.8)]',
+			'bg-on-dark/15 ring-1 ring-on-dark/25 shadow-[0_20px_50px_-20px] shadow-cat-14-900/80',
 		rule: 'bg-on-dark/30',
 		diamond: 'border-on-dark/70',
 		text: 'text-cat-7-50/90',

@@ -44,7 +44,11 @@
 >
 	<!-- Left: text -->
 	<div class="flex shrink-0 flex-col justify-center bg-white px-8 py-16 lg:px-20">
-		<div class="opacity-0 transition-all duration-700" class:animate-slide-right={visible} style="animation-delay: 0.1s">
+		<div
+			class="opacity-0 transition-all duration-700"
+			class:animate-slide-right={visible}
+			style="animation-delay: 0.1s"
+		>
 			<EditableField
 				fieldKey="Hero.label"
 				label="Лейбл"
@@ -69,7 +73,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h1
-						class="mb-8 text-4xl leading-tight font-light tracking-wide text-primary lg:text-6xl"
+						class="mb-8 text-4xl text-primary lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
 						{displayValue}
@@ -80,7 +84,10 @@
 			<EditableField
 				fieldKey="Hero.description"
 				label="Описание"
-				value={String(data?.description ?? 'Мы создаем уникальные встроенные и корпусные шкафы, которые становятся органичным продолжением вашей квартиры.')}
+				value={String(
+					data?.description ??
+						'Мы создаем уникальные встроенные и корпусные шкафы, которые становятся органичным продолжением вашей квартиры.'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}
@@ -127,6 +134,8 @@
 			alt="Премиальная гардеробная"
 			class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 		/>
-		<div class="absolute inset-0 bg-primary/0 transition-colors duration-500 hover:bg-primary/10"></div>
+		<div
+			class="absolute inset-0 bg-primary/0 transition-colors duration-500 hover:bg-primary/10"
+		></div>
 	</div>
 </section>

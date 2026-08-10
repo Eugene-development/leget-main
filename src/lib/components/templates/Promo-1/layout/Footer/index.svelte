@@ -295,7 +295,7 @@
 			transition:fly={{ y: 20, duration: 300 }}
 		>
 			<div
-				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-brand-500/20 bg-brand-500/10 text-brand-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-brand-500/20 bg-brand-500/10 text-brand-400 shadow-[0_0_20px] shadow-brand-500/15"
 			>
 				<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
@@ -308,9 +308,7 @@
 			</div>
 
 			<div class="flex flex-col gap-2">
-				<h3 class="p1-title-sub text-lg tracking-tight text-on-dark uppercase">
-					Сбросить контент футера?
-				</h3>
+				<h3 class="p1-title-sub text-lg text-on-dark uppercase">Сбросить контент футера?</h3>
 				<p class="text-xs leading-relaxed font-medium text-ink-400">
 					Все изменения контактов, соцсетей и копирайта будут удалены и вернутся к значениям по
 					умолчанию. Выбранный вариант дизайна компонента сохранится.

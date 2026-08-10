@@ -361,8 +361,8 @@
 		></div>
 		<div
 			class="absolute inset-0 transition-all duration-500 {isLight
-				? 'bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(248,250,252,0.4)_80%)]'
-				: 'bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(8,11,22,0.5)_80%)]'} pointer-events-none z-[1]"
+				? 'bg-[radial-gradient(ellipse_at_center,transparent_30%,color-mix(in_oklab,var(--color-ink-50)_40%,transparent)_80%)]'
+				: 'bg-[radial-gradient(ellipse_at_center,transparent_30%,color-mix(in_oklab,var(--color-alt-night-bar)_50%,transparent)_80%)]'} pointer-events-none z-[1]"
 		></div>
 		<!-- Фоновая мелкая сетка -->
 		<div
@@ -421,7 +421,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
+							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
 								? 'via-slate-850 from-ink-900 to-ink-700'
 								: 'hero-title from-surface-raised via-ink-100 to-ink-400'}"
 						>
@@ -875,7 +875,7 @@
 								></span>
 								<!-- Центральная точка -->
 								<span
-									class="relative h-3.5 w-3.5 rounded-full border-2 border-on-accent bg-link-400 shadow-[0_0_15px_rgba(56,189,248,0.8)] transition-transform duration-300 group-hover/hs:scale-125 group-hover/hs:bg-surface-raised"
+									class="relative h-3.5 w-3.5 rounded-full border-2 border-on-accent bg-link-400 shadow-[0_0_15px] shadow-link-400/80 transition-transform duration-300 group-hover/hs:scale-125 group-hover/hs:bg-surface-raised"
 								></span>
 							</button>
 						{/each}
@@ -888,7 +888,7 @@
 									: 'border-on-dark/10 bg-ink-950/90 text-on-dark'}"
 							>
 								<h4
-									class="p1-title-sub mb-1.5 flex items-center gap-1.5 text-xs tracking-wider uppercase sm:text-sm {isLight
+									class="p1-title-sub mb-1.5 flex items-center gap-1.5 text-xs uppercase sm:text-sm {isLight
 										? 'text-indigo-650'
 										: 'text-link-300'}"
 								>

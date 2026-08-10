@@ -63,9 +63,7 @@
 					class="gt-item block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl lg:text-5xl"
-						>
+						<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -97,7 +95,7 @@
 				<div class="gt-item gt-d3 mt-8 space-y-3">
 					{#each items as item, i}
 						<div
-							class="group flex items-start gap-4 rounded-2xl border border-ink-900/10 bg-surface-raised p-4 shadow-[0_20px_50px_-45px_rgba(15,23,42,0.5)] transition duration-300 hover:border-brand-500/40 hover:shadow-[0_26px_60px_-40px_rgba(15,23,42,0.55)] sm:p-5"
+							class="group flex items-start gap-4 rounded-2xl border border-ink-900/10 bg-surface-raised p-4 shadow-[0_20px_50px_-45px] shadow-ink-900/50 transition duration-300 hover:border-brand-500/40 hover:shadow-[0_26px_60px_-40px] hover:shadow-ink-900/55 sm:p-5"
 						>
 							<span
 								class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-500/20 transition duration-300 group-hover:bg-brand-500 group-hover:text-on-accent"
@@ -114,7 +112,7 @@
 								</svg>
 							</span>
 							<div class="min-w-0">
-								<h3 class="p1-title-sub tracking-[-0.01em] text-ink-900">
+								<h3 class="p1-title-sub text-ink-900">
 									<EditableField
 										fieldKey="WhatsCovered.{i}.title"
 										label="Заголовок пункта"
@@ -147,7 +145,7 @@
 			<!-- Изображение в паспарту с градиентной каймой -->
 			<div class="gt-card gt-d2 mt-12 lg:mt-0">
 				<div
-					class="rounded-4xl bg-linear-to-br from-brand-500/25 via-ink-900/10 to-brand-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
+					class="rounded-4xl bg-linear-to-br from-brand-500/25 via-ink-900/10 to-brand-500/25 p-px shadow-[0_40px_100px_-60px] shadow-ink-900/55"
 				>
 					<EditableField
 						fieldKey="WhatsCovered.imageUrl"

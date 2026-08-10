@@ -45,12 +45,9 @@ export const ct = {
 
 	/** Заголовки. Одна шкала для всех версий; начертание — за дизайн-системой. */
 	title: {
-		h1OnInk:
-			'text-4xl leading-[1.05] tracking-[-0.035em] p1-title text-pretty sm:text-5xl lg:text-6xl',
-		h2OnInk:
-			'text-3xl leading-[1.08] tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
-		h2OnLight:
-			'text-3xl leading-[1.08] tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
+		h1OnInk: 'text-4xl p1-title text-pretty sm:text-5xl lg:text-6xl',
+		h2OnInk: 'text-3xl p1-title text-pretty sm:text-4xl lg:text-5xl',
+		h2OnLight: 'text-3xl p1-title text-pretty sm:text-4xl lg:text-5xl',
 		h3OnLight: 'p1-title p1-title-sub text-xl'
 	},
 
@@ -81,7 +78,7 @@ export const ct = {
 		onLight: 'p1-card rounded-3xl border sm:rounded-4xl',
 		/** Тёмная панель-акцент внутри светлой секции. */
 		inkPanel:
-			'rounded-3xl border border-on-dark/10 bg-surface-inverse shadow-[0_40px_100px_-50px_rgba(15,23,42,0.7)] sm:rounded-4xl',
+			'rounded-3xl border border-on-dark/10 bg-surface-inverse shadow-[0_40px_100px_-50px] shadow-ink-900/70 sm:rounded-4xl',
 		/** Небольшая карточка-плитка (каналы связи, пункты списка). */
 		tileOnLight:
 			'p1-card group relative overflow-hidden rounded-3xl border p-8 transition duration-300 hover:border-brand-600/40 motion-safe:hover:-translate-y-1'
@@ -89,12 +86,12 @@ export const ct = {
 
 	/** Иконка-плитка под акцентным цветом. */
 	iconTile:
-		'flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-600 text-on-accent shadow-[0_16px_40px_-18px_rgba(220,38,38,0.85)]',
+		'flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-600 text-on-accent shadow-[0_16px_40px_-18px] shadow-brand-600/85',
 
 	/** Кнопки. Основная — красная «пилюля», вспомогательная — контурная. */
 	btn: {
 		primary:
-			'group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(220,38,38,0.9)] transition duration-300 hover:bg-brand-500 hover:shadow-[0_22px_55px_-16px_rgba(220,38,38,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5',
+			'group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-600/90 transition duration-300 hover:bg-brand-500 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5',
 		ghostOnInk:
 			'group inline-flex items-center justify-center gap-2.5 rounded-full border border-on-dark/15 bg-on-dark/5 px-7 py-3.5 text-sm font-semibold text-on-dark backdrop-blur-sm transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5',
 		ghostOnLight:

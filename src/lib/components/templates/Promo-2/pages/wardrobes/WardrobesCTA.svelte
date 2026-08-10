@@ -38,8 +38,14 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="border-t border-border-light bg-surface-warm px-6 py-section-sm xl:px-1 lg:py-section">
-	<div class="mx-auto max-w-4xl text-center opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+<section
+	bind:this={sectionEl}
+	class="border-t border-border-light bg-surface-warm px-6 py-section-sm lg:py-section xl:px-1"
+>
+	<div
+		class="mx-auto max-w-4xl text-center opacity-0 transition-all duration-700"
+		class:animate-fade-up={visible}
+	>
 		<EditableField
 			fieldKey="WardrobesCTA.heading"
 			label="Заголовок"
@@ -50,7 +56,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h2
-					class="mb-8 text-3xl font-light tracking-wide text-primary lg:text-5xl"
+					class="mb-8 text-3xl text-primary lg:text-5xl"
 					style="font-family: var(--font-heading);"
 				>
 					{displayValue}

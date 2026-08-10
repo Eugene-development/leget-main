@@ -2,7 +2,12 @@
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
-	import { listBucketFiles, saveComponentData, type BucketFile, type EditContext } from '$lib/utils/page-edit';
+	import {
+		listBucketFiles,
+		saveComponentData,
+		type BucketFile,
+		type EditContext
+	} from '$lib/utils/page-edit';
 	import { getGraphQLUrl } from '$lib/utils/config';
 
 	let {
@@ -188,7 +193,8 @@
 						uploadProgress = Math.round((ev.loaded / ev.total) * 100);
 					}
 				};
-				xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(`Upload failed: ${xhr.status}`)));
+				xhr.onload = () =>
+					xhr.status < 300 ? resolve() : reject(new Error(`Upload failed: ${xhr.status}`));
 				xhr.onerror = () => reject(new Error('Upload error'));
 				xhr.send(croppedFile);
 			});
@@ -230,7 +236,7 @@
 	<div style="position:fixed;inset:0;z-index:300;">
 		<ImageCropper
 			imageFile={cropFile}
-			aspectRatio={aspectRatio}
+			{aspectRatio}
 			onCrop={handleCropDone}
 			onCancel={handleCropCancel}
 		/>
@@ -248,13 +254,16 @@
 >
 	<!-- Modal -->
 	<div class="picker-modal" transition:fly={{ y: 24, duration: 250 }}>
-
 		<!-- Header -->
 		<div class="picker-header">
 			<div class="picker-header-left">
 				<svg class="picker-header-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-						d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+					/>
 				</svg>
 				<div>
 					<h2 class="picker-title">Фоновое изображение</h2>
@@ -278,8 +287,12 @@
 						{uploadProgress}%
 					{:else}
 						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-								d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+							/>
 						</svg>
 						Загрузить
 					{/if}
@@ -296,7 +309,12 @@
 				<!-- Close -->
 				<button type="button" class="btn-close" onclick={onClose} aria-label="Закрыть">
 					<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					</svg>
 				</button>
 			</div>
@@ -324,17 +342,30 @@
 			{:else if loadError}
 				<div class="state-center state-error">
 					<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="state-icon">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-							d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+						/>
 					</svg>
 					<p>{loadError}</p>
 					<button type="button" class="btn-retry" onclick={loadImages}>Повторить</button>
 				</div>
 			{:else if images.length === 0}
 				<div class="state-center">
-					<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="state-icon state-empty-icon">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-							d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+					<svg
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						class="state-icon state-empty-icon"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1"
+							d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+						/>
 					</svg>
 					<p class="state-empty-text">Изображений пока нет</p>
 					<p class="state-empty-hint">Нажмите «Загрузить» чтобы добавить первое фото</p>
@@ -351,7 +382,12 @@
 						disabled={images.length <= 1}
 					>
 						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M15 19l-7-7 7-7"
+							/>
 						</svg>
 					</button>
 
@@ -374,7 +410,12 @@
 						disabled={images.length <= 1}
 					>
 						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 5l7 7-7 7"
+							/>
 						</svg>
 					</button>
 
@@ -417,9 +458,7 @@
 				<p class="footer-error">{saveError}</p>
 			{/if}
 			<div class="footer-actions">
-				<button type="button" class="btn-cancel" onclick={onClose}>
-					Отмена
-				</button>
+				<button type="button" class="btn-cancel" onclick={onClose}> Отмена </button>
 				<button
 					type="button"
 					class="btn-approve"
@@ -430,7 +469,12 @@
 						<div class="spinner-sm"></div>
 					{:else}
 						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M5 13l4 4L19 7"
+							/>
 						</svg>
 					{/if}
 					Утвердить
@@ -465,7 +509,9 @@
 		border-radius: 1.25rem;
 		overflow: hidden;
 		background: #0f172a;
-		box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.06);
+		box-shadow:
+			0 32px 80px rgba(0, 0, 0, 0.6),
+			0 0 0 1px rgba(255, 255, 255, 0.06);
 	}
 
 	/* ── Header ── */
@@ -476,7 +522,7 @@
 		gap: 1rem;
 		padding: 1rem 1.25rem;
 		background: #1e293b;
-		border-bottom: 1px solid rgba(255,255,255,0.07);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 		flex-shrink: 0;
 	}
 
@@ -522,15 +568,15 @@
 		font-size: 0.8125rem;
 		font-weight: 600;
 		color: #bae6fd;
-		border: 1px solid rgba(56,189,248,0.3);
-		background: rgba(56,189,248,0.08);
+		border: 1px solid rgba(56, 189, 248, 0.3);
+		background: rgba(56, 189, 248, 0.08);
 		cursor: pointer;
 		transition: all 0.2s;
 	}
 
 	.btn-upload:hover {
-		background: rgba(56,189,248,0.16);
-		border-color: rgba(56,189,248,0.5);
+		background: rgba(56, 189, 248, 0.16);
+		border-color: rgba(56, 189, 248, 0.5);
 	}
 
 	.btn-upload svg {
@@ -554,17 +600,20 @@
 	}
 
 	.btn-close:hover {
-		background: rgba(255,255,255,0.08);
+		background: rgba(255, 255, 255, 0.08);
 		color: #f1f5f9;
 	}
 
-	.btn-close svg { width: 1.125rem; height: 1.125rem; }
+	.btn-close svg {
+		width: 1.125rem;
+		height: 1.125rem;
+	}
 
 	/* ── Error / progress bars ── */
 	.error-bar {
 		padding: 0.5rem 1.25rem;
-		background: rgba(239,68,68,0.15);
-		border-bottom: 1px solid rgba(239,68,68,0.3);
+		background: rgba(239, 68, 68, 0.15);
+		border-bottom: 1px solid rgba(239, 68, 68, 0.3);
 		font-size: 0.8125rem;
 		color: #fca5a5;
 		flex-shrink: 0;
@@ -572,7 +621,7 @@
 
 	.progress-bar-track {
 		height: 3px;
-		background: rgba(255,255,255,0.06);
+		background: rgba(255, 255, 255, 0.06);
 		flex-shrink: 0;
 	}
 
@@ -604,7 +653,9 @@
 		font-size: 0.9375rem;
 	}
 
-	.state-error { color: #fca5a5; }
+	.state-error {
+		color: #fca5a5;
+	}
 
 	.state-icon {
 		width: 3rem;
@@ -636,14 +687,16 @@
 		border-radius: 0.5rem;
 		font-size: 0.8125rem;
 		font-weight: 600;
-		background: rgba(239,68,68,0.15);
-		border: 1px solid rgba(239,68,68,0.3);
+		background: rgba(239, 68, 68, 0.15);
+		border: 1px solid rgba(239, 68, 68, 0.3);
 		color: #fca5a5;
 		cursor: pointer;
 		transition: all 0.2s;
 	}
 
-	.btn-retry:hover { background: rgba(239,68,68,0.25); }
+	.btn-retry:hover {
+		background: rgba(239, 68, 68, 0.25);
+	}
 
 	/* ── Slide area ── */
 	.slide-area {
@@ -685,17 +738,27 @@
 	}
 
 	.nav-arrow:hover:not(:disabled) {
-		background: rgba(56,189,248,0.25);
+		background: rgba(56, 189, 248, 0.25);
 		color: #38bdf8;
 		transform: translateY(-50%) scale(1.1);
 	}
 
-	.nav-arrow:disabled { opacity: 0.3; cursor: default; }
+	.nav-arrow:disabled {
+		opacity: 0.3;
+		cursor: default;
+	}
 
-	.nav-arrow svg { width: 1.25rem; height: 1.25rem; }
+	.nav-arrow svg {
+		width: 1.25rem;
+		height: 1.25rem;
+	}
 
-	.nav-arrow-left { left: 0.75rem; }
-	.nav-arrow-right { right: 0.75rem; }
+	.nav-arrow-left {
+		left: 0.75rem;
+	}
+	.nav-arrow-right {
+		right: 0.75rem;
+	}
 
 	/* ── Slide badge ── */
 	.slide-badge {
@@ -707,14 +770,17 @@
 		gap: 0.5rem;
 		padding: 0.25rem 0.625rem;
 		border-radius: 999px;
-		background: rgba(15,23,42,0.75);
+		background: rgba(15, 23, 42, 0.75);
 		backdrop-filter: blur(6px);
 		font-size: 0.75rem;
 		color: #94a3b8;
 		pointer-events: none;
 	}
 
-	.badge-active { color: #34d399; font-weight: 700; }
+	.badge-active {
+		color: #34d399;
+		font-weight: 700;
+	}
 
 	/* ── Thumbnail strip ── */
 	.thumb-strip {
@@ -742,8 +808,12 @@
 		padding: 0;
 	}
 
-	.thumb:hover { border-color: rgba(56,189,248,0.5); }
-	.thumb-active { border-color: #38bdf8 !important; }
+	.thumb:hover {
+		border-color: rgba(56, 189, 248, 0.5);
+	}
+	.thumb-active {
+		border-color: #38bdf8 !important;
+	}
 
 	.thumb-img {
 		width: 100%;
@@ -760,7 +830,7 @@
 		height: 6px;
 		border-radius: 50%;
 		background: #34d399;
-		border: 1px solid rgba(0,0,0,0.4);
+		border: 1px solid rgba(0, 0, 0, 0.4);
 	}
 
 	/* ── Footer ── */
@@ -771,7 +841,7 @@
 		gap: 0.75rem;
 		padding: 0.875rem 1.25rem;
 		background: #1e293b;
-		border-top: 1px solid rgba(255,255,255,0.07);
+		border-top: 1px solid rgba(255, 255, 255, 0.07);
 		flex-shrink: 0;
 		flex-wrap: wrap;
 	}
@@ -794,7 +864,7 @@
 		border-radius: 0.625rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		border: 1px solid rgba(255,255,255,0.12);
+		border: 1px solid rgba(255, 255, 255, 0.12);
 		background: transparent;
 		color: #94a3b8;
 		cursor: pointer;
@@ -802,7 +872,7 @@
 	}
 
 	.btn-cancel:hover {
-		background: rgba(255,255,255,0.06);
+		background: rgba(255, 255, 255, 0.06);
 		color: #f1f5f9;
 	}
 
@@ -819,12 +889,12 @@
 		color: #fff;
 		cursor: pointer;
 		transition: all 0.2s;
-		box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+		box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
 	}
 
 	.btn-approve:hover:not(:disabled) {
 		transform: translateY(-1px);
-		box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+		box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 	}
 
 	.btn-approve:disabled {
@@ -843,7 +913,7 @@
 		width: 2.5rem;
 		height: 2.5rem;
 		border-radius: 50%;
-		border: 3px solid rgba(56,189,248,0.2);
+		border: 3px solid rgba(56, 189, 248, 0.2);
 		border-top-color: #38bdf8;
 		animation: spin 0.7s linear infinite;
 	}
@@ -852,13 +922,15 @@
 		width: 1rem;
 		height: 1rem;
 		border-radius: 50%;
-		border: 2px solid rgba(255,255,255,0.2);
+		border: 2px solid rgba(255, 255, 255, 0.2);
 		border-top-color: #fff;
 		animation: spin 0.7s linear infinite;
 	}
 
 	@keyframes spin {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.sr-only {
@@ -868,7 +940,7 @@
 		padding: 0;
 		margin: -1px;
 		overflow: hidden;
-		clip: rect(0,0,0,0);
+		clip: rect(0, 0, 0, 0);
 		white-space: nowrap;
 		border: 0;
 	}

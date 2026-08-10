@@ -82,7 +82,7 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-4xl leading-tight tracking-tight text-pretty text-ink-900 sm:text-5xl">
+					<h2 class="text-4xl text-pretty text-ink-900 sm:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -122,7 +122,7 @@
 							class="mt-10 block"
 						>
 							{#snippet children(displayValue)}
-								<h3 class="p1-title-sub text-2xl leading-tight text-ink-900">{displayValue}</h3>
+								<h3 class="p1-title-sub text-2xl text-ink-900">{displayValue}</h3>
 							{/snippet}
 						</EditableField>
 

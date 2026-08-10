@@ -2,8 +2,7 @@
 	// Артикул: 1.4.2.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../theme.css';
 
 	interface Card {
@@ -28,12 +27,6 @@
 	// Тема блока: нейтральная палитра идёт из семантических классов p1-*,
 	// акценты (красный/янтарный) от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'ActionsCards',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
 
 	const defaultCards: Card[] = [
 		{
@@ -175,8 +168,6 @@
 
 {#if hasVisibleCards}
 	<section class="p1-surface relative py-24 sm:py-24" data-p1-theme={isLight ? 'light' : 'dark'}>
-		<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
-
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
 			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{#each localCards as card, i}

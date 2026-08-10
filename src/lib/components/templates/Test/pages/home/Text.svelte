@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="prose prose-lg mx-auto max-w-3xl px-6 py-12">
+<div class="mx-auto prose prose-lg max-w-3xl px-6 py-12">
 	{#if data?.content || isEditable}
 		<EditableField
 			fieldKey="Text.content"

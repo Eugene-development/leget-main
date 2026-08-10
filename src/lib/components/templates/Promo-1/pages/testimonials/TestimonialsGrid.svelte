@@ -149,7 +149,7 @@
 -->
 {#snippet reviewCard(review: Review, globalIdx: number)}
 	<figure
-		class="tm-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_26px_70px_-50px_rgba(24,24,27,0.45)] transition duration-300 hover:border-cat-7-500/40 hover:shadow-[0_32px_80px_-44px_rgba(24,24,27,0.5)] motion-safe:hover:-translate-y-1"
+		class="tm-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_26px_70px_-50px] shadow-ink-900/45 transition duration-300 hover:border-cat-7-500/40 hover:shadow-[0_32px_80px_-44px] hover:shadow-ink-900/50 motion-safe:hover:-translate-y-1"
 		style="--tm-delay: {Math.min(globalIdx, 8) * 70}ms"
 	>
 		<div
@@ -218,7 +218,7 @@
 			<!-- Главный отзыв -->
 			<figure
 				use:revealOnScroll
-				class="tm-reveal tm-card relative overflow-hidden rounded-4xl border border-ink-900/10 bg-surface-raised shadow-[0_40px_100px_-60px_rgba(24,24,27,0.5)] sm:col-span-2 xl:col-start-2 xl:row-end-1"
+				class="tm-reveal tm-card relative overflow-hidden rounded-4xl border border-ink-900/10 bg-surface-raised shadow-[0_40px_100px_-60px] shadow-ink-900/50 sm:col-span-2 xl:col-start-2 xl:row-end-1"
 			>
 				<div
 					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-cat-7-500/70 to-transparent"

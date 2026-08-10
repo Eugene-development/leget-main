@@ -46,7 +46,7 @@
 			>
 				<div class="bg-primary px-7 py-8 text-text-inverse sm:px-9">
 					<p class="text-[10px] font-bold tracking-[0.22em] text-white/55 uppercase">LEGET</p>
-					<h1 class="mt-3 text-3xl font-light">Панель конверсий</h1>
+					<h1 class="mt-3 text-3xl">Панель конверсий</h1>
 					<p class="mt-2 text-sm leading-relaxed text-white/65">
 						Доступ разрешён только администраторам платформы.
 					</p>
@@ -113,9 +113,7 @@
 					<p class="text-[10px] font-bold tracking-[0.22em] text-secondary uppercase">
 						Администрирование
 					</p>
-					<h1 class="mt-2 text-4xl font-light tracking-tight text-text-primary sm:text-5xl">
-						Конверсии
-					</h1>
+					<h1 class="mt-2 text-4xl text-text-primary sm:text-5xl">Конверсии</h1>
 					<p class="mt-2 max-w-2xl text-sm text-text-secondary">
 						Онлайн-заявки с сайтов и офлайн-обращения, добавленные менеджером.
 					</p>
@@ -163,7 +161,7 @@
 				class="mb-8 rounded-2xl border border-border-light bg-surface-card p-5 shadow-card md:p-6"
 			>
 				<div class="mb-5">
-					<h2 class="text-2xl font-light text-text-primary">Добавить офлайн-конверсию</h2>
+					<h2 class="text-2xl text-text-primary">Добавить офлайн-конверсию</h2>
 					<p class="mt-1 text-sm text-text-secondary">
 						Зафиксируйте обращение из звонка или почты; идентификатор визита нужен для связки с
 						рекламой.
@@ -238,7 +236,7 @@
 			>
 				<div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
 					<div class="max-w-3xl">
-						<h2 class="text-2xl font-light text-text-primary">Выгрузка офлайн-конверсий</h2>
+						<h2 class="text-2xl text-text-primary">Выгрузка офлайн-конверсий</h2>
 						<p class="mt-1 text-sm leading-relaxed text-text-secondary">
 							CSV для Центра конверсий Яндекс Директа: UTF-8, разделитель — точка с запятой. В файл
 							попадут только корректные номера и email.

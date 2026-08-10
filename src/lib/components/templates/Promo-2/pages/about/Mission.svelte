@@ -51,10 +51,7 @@
 	});
 </script>
 
-<section
-	class="relative overflow-hidden py-section-sm lg:py-section"
-	bind:this={sectionEl}
->
+<section class="relative overflow-hidden py-section-sm lg:py-section" bind:this={sectionEl}>
 	<!-- Subtle Background Pattern -->
 	<div
 		class="absolute inset-0 opacity-[0.03]"
@@ -64,10 +61,7 @@
 	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: Mission -->
-			<div
-				class="opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
-			>
+			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 				<EditableField
 					fieldKey="Mission.label"
 					label="Лейбл"
@@ -76,7 +70,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -90,7 +85,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl font-light text-primary lg:text-5xl"
+							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							{displayValue}

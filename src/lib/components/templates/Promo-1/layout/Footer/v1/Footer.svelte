@@ -75,7 +75,7 @@
 	<div class="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
 		<div class="xl:grid xl:grid-cols-3 xl:gap-8">
 			<div class="flex flex-col items-start gap-4">
-				<h3 class="p1-title-sub text-sm tracking-wider text-on-dark uppercase">Контакты</h3>
+				<h3 class="p1-title-sub text-sm text-on-dark uppercase">Контакты</h3>
 				<ul class="space-y-3.5 text-sm text-ink-400">
 					<!-- Phone -->
 					<li class="flex items-center gap-3">
