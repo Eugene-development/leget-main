@@ -40,7 +40,7 @@
 <!--
 	ВНИМАНИЕ — стык секций: сверху в этот блок «вливается» волна из Hero,
 	её заливка (`--ah-wave`, #f8fafc) должна совпадать с фоном секции, поэтому
-	здесь `bg-slate-50` без градиента у верхней кромки. Тот же фон у Statistics —
+	здесь `bg-ink-50` без градиента у верхней кромки. Тот же фон у Statistics —
 	стык остаётся ровным, даже если этот блок пуст и не рисуется.
 
 	Пустой контент больше не даёт полосу пустого фона: на публичном сайте секция
@@ -63,7 +63,7 @@
 				class="ab-card p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-10 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.4)] sm:px-12 sm:py-12"
 			>
 				<div
-					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-red-500/70 to-transparent"
+					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent"
 					aria-hidden="true"
 				></div>
 

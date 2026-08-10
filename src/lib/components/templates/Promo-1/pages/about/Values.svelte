@@ -78,40 +78,40 @@
 		{ tile: string; hairline: string; border: string; index: string }
 	> = {
 		red: {
-			tile: 'bg-linear-to-br from-red-500 to-red-600 shadow-[0_16px_40px_-18px_rgba(220,38,38,0.85)]',
-			hairline: 'bg-linear-to-r from-transparent via-red-500 to-transparent',
-			border: 'group-hover:border-red-500/40',
-			index: 'text-red-500/25'
+			tile: 'bg-linear-to-br from-brand-500 to-brand-600 shadow-[0_16px_40px_-18px_rgba(220,38,38,0.85)]',
+			hairline: 'bg-linear-to-r from-transparent via-brand-500 to-transparent',
+			border: 'group-hover:border-brand-500/40',
+			index: 'text-brand-500/25'
 		},
 		emerald: {
-			tile: 'bg-linear-to-br from-emerald-500 to-emerald-600 shadow-[0_16px_40px_-18px_rgba(5,150,105,0.85)]',
-			hairline: 'bg-linear-to-r from-transparent via-emerald-500 to-transparent',
-			border: 'group-hover:border-emerald-500/40',
-			index: 'text-emerald-500/25'
+			tile: 'bg-linear-to-br from-cat-2-500 to-cat-2-600 shadow-[0_16px_40px_-18px_rgba(5,150,105,0.85)]',
+			hairline: 'bg-linear-to-r from-transparent via-cat-2-500 to-transparent',
+			border: 'group-hover:border-cat-2-500/40',
+			index: 'text-cat-2-500/25'
 		},
 		violet: {
-			tile: 'bg-linear-to-br from-violet-500 to-violet-600 shadow-[0_16px_40px_-18px_rgba(124,58,237,0.85)]',
-			hairline: 'bg-linear-to-r from-transparent via-violet-500 to-transparent',
-			border: 'group-hover:border-violet-500/40',
-			index: 'text-violet-500/25'
+			tile: 'bg-linear-to-br from-cat-3-500 to-cat-3-600 shadow-[0_16px_40px_-18px_rgba(124,58,237,0.85)]',
+			hairline: 'bg-linear-to-r from-transparent via-cat-3-500 to-transparent',
+			border: 'group-hover:border-cat-3-500/40',
+			index: 'text-cat-3-500/25'
 		},
 		amber: {
-			tile: 'bg-linear-to-br from-amber-400 to-amber-500 shadow-[0_16px_40px_-18px_rgba(217,119,6,0.85)]',
-			hairline: 'bg-linear-to-r from-transparent via-amber-500 to-transparent',
-			border: 'group-hover:border-amber-500/40',
-			index: 'text-amber-500/25'
+			tile: 'bg-linear-to-br from-cat-1-400 to-cat-1-500 shadow-[0_16px_40px_-18px_rgba(217,119,6,0.85)]',
+			hairline: 'bg-linear-to-r from-transparent via-cat-1-500 to-transparent',
+			border: 'group-hover:border-cat-1-500/40',
+			index: 'text-cat-1-500/25'
 		},
 		pink: {
-			tile: 'bg-linear-to-br from-pink-500 to-pink-600 shadow-[0_16px_40px_-18px_rgba(219,39,119,0.85)]',
-			hairline: 'bg-linear-to-r from-transparent via-pink-500 to-transparent',
-			border: 'group-hover:border-pink-500/40',
-			index: 'text-pink-500/25'
+			tile: 'bg-linear-to-br from-cat-7-500 to-cat-7-600 shadow-[0_16px_40px_-18px_rgba(219,39,119,0.85)]',
+			hairline: 'bg-linear-to-r from-transparent via-cat-7-500 to-transparent',
+			border: 'group-hover:border-cat-7-500/40',
+			index: 'text-cat-7-500/25'
 		},
 		cyan: {
-			tile: 'bg-linear-to-br from-cyan-500 to-cyan-600 shadow-[0_16px_40px_-18px_rgba(8,145,178,0.85)]',
-			hairline: 'bg-linear-to-r from-transparent via-cyan-500 to-transparent',
-			border: 'group-hover:border-cyan-500/40',
-			index: 'text-cyan-500/25'
+			tile: 'bg-linear-to-br from-cat-5-500 to-cat-5-600 shadow-[0_16px_40px_-18px_rgba(8,145,178,0.85)]',
+			hairline: 'bg-linear-to-r from-transparent via-cat-5-500 to-transparent',
+			border: 'group-hover:border-cat-5-500/40',
+			index: 'text-cat-5-500/25'
 		}
 	};
 
@@ -150,9 +150,7 @@
 				class="ab-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl"
-					>
+					<h2 class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -173,7 +171,7 @@
 
 			<div class="ab-rule ab-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
 				<span class="p1-line h-px flex-1"></span>
-				<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+				<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
 				<span class="p1-line h-px flex-1"></span>
 			</div>
 		</div>
@@ -198,7 +196,7 @@
 
 					<div class="relative">
 						<div
-							class="flex size-14 items-center justify-center rounded-2xl text-white ring-1 ring-white/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.tile}"
+							class="flex size-14 items-center justify-center rounded-2xl text-on-dark ring-1 ring-on-dark/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.tile}"
 						>
 							<svg
 								class="size-7"
@@ -216,7 +214,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title mt-6 text-lg font-semibold tracking-[-0.01em]">
+						<h3 class="p1-title p1-title-sub mt-6 text-lg tracking-[-0.01em]">
 							<EditableField
 								fieldKey="Values.{i}.title"
 								label="Заголовок"

@@ -1,54 +1,95 @@
 /**
  * Светлая/тёмная тема блоков шаблона Promo-1.
  *
- * Зачем не условия в разметке: у шаблона ~2800 захардкоженных цветовых утилит,
- * писать `{isLight ? 'bg-white' : 'bg-slate-950'}` на каждом элементе нечитаемо и
- * неподдерживаемо. Вместо этого блок объявляет тему один раз атрибутом
- * `data-p1-theme` на своём корне, а элементы внутри пользуются семантическими
- * классами (`p1-surface`, `p1-title`, …), значения которых переключаются сами.
+ * **Значений здесь больше нет.** Шаблон задаёт структуру, а не дизайн, поэтому
+ * палитра переехала в дизайн-систему: `$lib/design-systems/*.css`. Этот файл —
+ * то, что шаблону и положено иметь: имена классов, которыми пользуются блоки,
+ * и правило, какая половина палитры системы применяется к какому блоку.
  *
- * Тема — это НЕЙТРАЛЬНАЯ часть палитры: поверхности, текст, границы. Акценты
- * (красный, бренд-цвета сервисов, логотипы) от темы не зависят и остаются
- * обычными утилитами Tailwind.
+ * Читать так: `--ds-light-*` / `--ds-dark-*` — что даёт система;
+ * `--p1-*` — как шаблон это называет у себя. Смена системы меняет первое,
+ * второе не трогает, и потому ни один из 162 компонентов Promo-1 не правится.
+ *
+ * Зачем не условия в разметке: писать `{isLight ? 'bg-surface-raised' : 'bg-ink-950'}`
+ * на каждом из тысяч элементов нечитаемо и неподдерживаемо. Вместо этого блок
+ * объявляет тему один раз атрибутом `data-p1-theme` на своём корне, а элементы
+ * внутри пользуются семантическими классами (`p1-surface`, `p1-title`, …),
+ * значения которых переключаются сами.
+ *
+ * Здесь — только НЕЙТРАЛЬНАЯ часть палитры, зависящая от темы блока: поверхности,
+ * текст, границы. Акценты от темы не зависят и живут шкалами дизайн-системы
+ * (`bg-brand-500`, `text-link-600`, `bg-cat-3-500`) — они объявлены ключами
+ * в `routes/layout.css`, а значения приходят оттуда же, откуда и эти:
+ * из `$lib/design-systems/`. Разбор хардкода — 10.08.2026, см.
+ * docs/architecture/design-system-tokens.md#текущее-состояние-шаблонов.
  *
  * Тема у каждого блока своя (`data.theme`), как у HeroMain. Блок, задуманный
  * тёмным (ink-секции), объявляет своим дефолтом 'dark' — см. isLightBlock()
  * в src/lib/utils/block-theme.ts, тогда переключатель просто инвертирует
  * исходный вид, а не ломает ритм страницы.
+ *
+ * Отсюда же требование к дизайн-системе: она обязана давать **обе** половины
+ * нейтрали сразу. Какую применить, решает не система, а блок.
  */
 
+/**
+ * Подчинённый заголовок: название карточки, пункта списка, поля формы.
+ *
+ * Модификатор к `p1-title`, как `p1-card-hover` к `p1-card`: цвет остаётся за
+ * базовым классом, здесь только гарнитура. Ставится там, где заголовок мелкий
+ * (16–20px) и обязан просто читаться, а не нести характер системы: Cormorant
+ * рассчитан на 40px+, на 16px его контраст штрихов рядом с телом на Inter
+ * читается как чужая гарнитура. Значения — за системой (`--ds-font-heading-sub-*`),
+ * здесь только имя роли.
+ *
+ * Роль объявляет блок, а не уровень тега. Правила `h3–h6` в layout.css не
+ * годится: в Promo-1 `h3` почти всегда мелкий (lg/xl), а в Promo-2 доходит до
+ * 4xl — там это полноценный заголовок секции, и антикву он терять не должен.
+ *
+ * ⚠️ Вне `@layer components`, в отличие от остальных `p1-*`. Правило `h1–h6` в
+ * routes/layout.css объявлено без слоя, а нелойеренный CSS выигрывает у любого
+ * `@layer` независимо от специфичности — из-под слоя эта роль не применилась бы.
+ * Здесь специфичность класса (0,1,0) бьёт селектор тега (0,0,1), и порядок
+ * импортов значения не имеет. Лечится это переносом типографики layout.css в
+ * `@layer base`, но тем же движением оживут ~200 сейчас мёртвых `font-*` на
+ * заголовках Promo-2/Promo-3 — отдельная задача, см. design-system-tokens.md.
+ */
+.p1-title-sub {
+	font-family: var(--ds-font-heading-sub);
+	font-weight: var(--ds-font-heading-sub-weight);
+	letter-spacing: var(--ds-font-heading-sub-tracking);
+	line-height: var(--ds-font-heading-sub-leading);
+}
+
 [data-p1-theme] {
-	--p1-surface: #ffffff;
-	/* gray-50 — ровно тот оттенок, что стоял в секциях до перевода на токены,
-	   чтобы светлый вид опубликованных сайтов не поехал. */
-	--p1-surface-alt: #f9fafb;
-	--p1-card: #ffffff;
-	--p1-card-hover: #fbfaf9;
-	--p1-title: #0f172a;
-	--p1-body: #475569;
-	--p1-muted: #64748b;
-	--p1-border: rgb(15 23 42 / 0.1);
-	--p1-line: rgb(15 23 42 / 0.07);
-	--p1-shadow: 0 30px 80px -50px rgb(15 23 42 / 0.35);
+	--p1-surface: var(--ds-light-surface);
+	--p1-surface-alt: var(--ds-light-surface-alt);
+	--p1-card: var(--ds-light-card);
+	--p1-card-hover: var(--ds-light-card-hover);
+	--p1-title: var(--ds-light-title);
+	--p1-body: var(--ds-light-body);
+	--p1-muted: var(--ds-light-muted);
+	--p1-border: var(--ds-light-border);
+	--p1-line: var(--ds-light-line);
+	--p1-shadow: var(--ds-light-shadow);
 	/* Тёплая «бумага» — отдельный оттенок страницы «Контакты». */
-	--p1-surface-paper: #f7f5f2;
-	/* Красный акцент: на светлом читается 600, на тёмном — 400. */
-	--p1-accent: #dc2626;
+	--p1-surface-paper: var(--ds-light-surface-paper);
+	--p1-accent: var(--ds-light-accent);
 }
 
 [data-p1-theme='dark'] {
-	--p1-surface: #09090b;
-	--p1-surface-alt: #101014;
-	--p1-card: rgb(255 255 255 / 0.04);
-	--p1-card-hover: rgb(255 255 255 / 0.07);
-	--p1-title: #ffffff;
-	--p1-body: #9ca3af;
-	--p1-muted: #6b7280;
-	--p1-border: rgb(255 255 255 / 0.1);
-	--p1-line: rgb(255 255 255 / 0.06);
-	--p1-shadow: 0 40px 90px -60px rgb(0 0 0 / 0.95);
-	--p1-surface-paper: #101014;
-	--p1-accent: #f87171;
+	--p1-surface: var(--ds-dark-surface);
+	--p1-surface-alt: var(--ds-dark-surface-alt);
+	--p1-card: var(--ds-dark-card);
+	--p1-card-hover: var(--ds-dark-card-hover);
+	--p1-title: var(--ds-dark-title);
+	--p1-body: var(--ds-dark-body);
+	--p1-muted: var(--ds-dark-muted);
+	--p1-border: var(--ds-dark-border);
+	--p1-line: var(--ds-dark-line);
+	--p1-shadow: var(--ds-dark-shadow);
+	--p1-surface-paper: var(--ds-dark-surface-paper);
+	--p1-accent: var(--ds-dark-accent);
 }
 
 @layer components {
@@ -99,7 +140,8 @@
 	}
 
 	/* Плавная смена темы. Только дешёвые свойства: анимировать цвет на
-	   размытых слоях (blur-[120px]) дорого и вызывает заметный лаг. */
+	   размытых слоях (blur-[120px]) дорого и вызывает заметный лаг.
+	   Длительность принадлежит системе — это пластика, а не структура. */
 	.p1-surface,
 	.p1-surface-alt,
 	.p1-surface-paper,
@@ -111,9 +153,9 @@
 	.p1-border,
 	.p1-line {
 		transition:
-			background-color 0.3s ease,
-			border-color 0.3s ease,
-			color 0.3s ease;
+			background-color var(--ds-motion-theme-swap) ease,
+			border-color var(--ds-motion-theme-swap) ease,
+			color var(--ds-motion-theme-swap) ease;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

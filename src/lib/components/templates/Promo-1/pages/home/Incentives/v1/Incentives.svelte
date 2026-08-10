@@ -49,7 +49,7 @@
 			<div class="flex flex-col justify-center lg:py-8">
 				<div class="mb-6">
 					<span
-						class="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold tracking-wider text-sky-700 uppercase"
+						class="inline-flex items-center gap-2 rounded-full bg-link-50 px-3 py-1 text-xs font-semibold tracking-wider text-link-700 uppercase"
 					>
 						<svg
 							class="h-4 w-4"
@@ -86,7 +86,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-3xl font-bold tracking-tight sm:text-5xl">{displayValue}</h2>
+						<h2 class="p1-title text-3xl tracking-tight sm:text-5xl">{displayValue}</h2>
 					{/snippet}
 				</EditableField>
 
@@ -106,7 +106,7 @@
 					</EditableField>
 				</div>
 
-				<div class="mt-8 h-px w-24 bg-linear-to-r from-sky-300 to-cyan-300"></div>
+				<div class="mt-8 h-px w-24 bg-linear-to-r from-link-300 to-cat-5-300"></div>
 			</div>
 
 			<!-- Галерея -->
@@ -114,7 +114,7 @@
 				<div class="space-y-4 sm:space-y-6 lg:space-y-8">
 					{#each gallery.slice(0, 2) as item}
 						<div
-							class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-lg transition-all duration-500 hover:shadow-xl hover:ring-slate-300"
+							class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-lg transition-all duration-500 hover:shadow-xl hover:ring-ink-300"
 						>
 							<div class="aspect-4/3 w-full overflow-hidden">
 								<ImageFallback
@@ -124,9 +124,9 @@
 								/>
 							</div>
 							<div
-								class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"
+								class="absolute inset-0 bg-linear-to-t from-scrim/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"
 							></div>
-							<div class="absolute bottom-6 left-6 text-white">
+							<div class="absolute bottom-6 left-6 text-on-dark">
 								<p class="text-lg font-bold">{item.label}</p>
 							</div>
 						</div>
@@ -136,7 +136,7 @@
 				<div class="space-y-4 pt-8 sm:space-y-6 sm:pt-12 lg:space-y-8">
 					{#each gallery.slice(2, 4) as item}
 						<div
-							class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-lg transition-all duration-500 hover:shadow-xl hover:ring-slate-300"
+							class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-lg transition-all duration-500 hover:shadow-xl hover:ring-ink-300"
 						>
 							<div class="aspect-4/3 w-full overflow-hidden">
 								<ImageFallback
@@ -146,9 +146,9 @@
 								/>
 							</div>
 							<div
-								class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"
+								class="absolute inset-0 bg-linear-to-t from-scrim/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"
 							></div>
-							<div class="absolute bottom-6 left-6 text-white">
+							<div class="absolute bottom-6 left-6 text-on-dark">
 								<p class="text-lg font-bold">{item.label}</p>
 							</div>
 						</div>

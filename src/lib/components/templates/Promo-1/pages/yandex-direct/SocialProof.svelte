@@ -80,7 +80,9 @@
 			<div class="yd-social__rating-stars">
 				{#each Array(5) as _}
 					<svg width="20" height="20" viewBox="0 0 24 24" fill="#f97316">
-						<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+						<path
+							d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+						/>
 					</svg>
 				{/each}
 			</div>
@@ -94,7 +96,9 @@
 					<div class="yd-social__card-stars">
 						{#each Array(review.rating) as _}
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="#f97316">
-								<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+								<path
+									d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+								/>
 							</svg>
 						{/each}
 					</div>

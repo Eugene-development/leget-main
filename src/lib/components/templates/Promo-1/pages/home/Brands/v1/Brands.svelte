@@ -113,7 +113,7 @@
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="mx-auto max-w-2xl text-center">
 			<span
-				class="inline-flex items-center gap-2 rounded-full bg-sky-100 px-4 py-1.5 text-sm font-medium text-sky-700"
+				class="inline-flex items-center gap-2 rounded-full bg-link-100 px-4 py-1.5 text-sm font-medium text-link-700"
 			>
 				<EditableField
 					fieldKey="Brands.badge"
@@ -135,7 +135,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+					<h2 class="p1-title mt-4 text-3xl tracking-tight sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -146,12 +146,12 @@
 		<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 			{#each brands as brand}
 				<div
-					class="group p1-border p1-card rounded-2xl border p-6 transition-all duration-300 hover:border-sky-200 hover:shadow-lg"
+					class="group p1-border p1-card rounded-2xl border p-6 transition-all duration-300 hover:border-link-200 hover:shadow-lg"
 				>
 					<div class="flex items-center gap-4">
 						<ImageFallback class="h-8 w-auto" src={brand.logo} alt={brand.name} />
 						<div>
-							<h3 class="p1-title font-semibold">{brand.name}</h3>
+							<h3 class="p1-title p1-title-sub">{brand.name}</h3>
 							<p class="p1-muted text-sm">{brand.country}</p>
 						</div>
 					</div>

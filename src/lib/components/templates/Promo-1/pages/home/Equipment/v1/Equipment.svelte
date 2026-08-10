@@ -57,7 +57,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-4 text-3xl font-bold tracking-tight sm:text-5xl">
+					<h2 class="p1-title mt-4 text-3xl tracking-tight sm:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -67,7 +67,7 @@
 		<div class="grid gap-8 lg:grid-cols-6 lg:grid-rows-2">
 			<!-- Столешницы -->
 			<div
-				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-slate-300 lg:col-span-3"
+				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-ink-300 lg:col-span-3"
 			>
 				<div class="aspect-video w-full overflow-hidden">
 					<ImageFallback
@@ -77,7 +77,7 @@
 					/>
 				</div>
 				<div class="p-8">
-					<h3 class="p1-title text-xl font-bold transition-colors group-hover:text-sky-600">
+					<h3 class="p1-title p1-title-sub text-xl transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item1Title"
 							label="Заголовок"
@@ -112,7 +112,7 @@
 
 			<!-- Системы выдвижения -->
 			<div
-				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-slate-300 lg:col-span-3"
+				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-ink-300 lg:col-span-3"
 			>
 				<div class="aspect-video w-full overflow-hidden">
 					<ImageFallback
@@ -122,7 +122,7 @@
 					/>
 				</div>
 				<div class="p-8">
-					<h3 class="p1-title text-xl font-bold transition-colors group-hover:text-sky-600">
+					<h3 class="p1-title p1-title-sub text-xl transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item2Title"
 							label="Заголовок"
@@ -157,7 +157,7 @@
 
 			<!-- Бытовая техника -->
 			<div
-				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-slate-300 lg:col-span-2"
+				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-ink-300 lg:col-span-2"
 			>
 				<div class="aspect-4/4 w-full overflow-hidden">
 					<ImageFallback
@@ -167,7 +167,7 @@
 					/>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-600">
+					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item3Title"
 							label="Заголовок"
@@ -202,7 +202,7 @@
 
 			<!-- Мойки и смесители -->
 			<div
-				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-slate-300 lg:col-span-2"
+				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-ink-300 lg:col-span-2"
 			>
 				<div class="aspect-4/4 w-full overflow-hidden">
 					<ImageFallback
@@ -212,7 +212,7 @@
 					/>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-600">
+					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item4Title"
 							label="Заголовок"
@@ -247,7 +247,7 @@
 
 			<!-- Освещение -->
 			<div
-				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-slate-300 lg:col-span-2"
+				class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-sm transition-all duration-500 hover:shadow-xl hover:ring-ink-300 lg:col-span-2"
 			>
 				<div class="aspect-4/4 w-full overflow-hidden">
 					<ImageFallback
@@ -257,7 +257,7 @@
 					/>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-600">
+					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item5Title"
 							label="Заголовок"

@@ -44,24 +44,24 @@
 
 <div>
 	<!-- Desktop Banner -->
-	<div class="relative z-50 hidden items-center bg-[#070710] px-4 sm:px-8 md:flex">
+	<div class="relative z-50 hidden items-center bg-alt-night-bar px-4 sm:px-8 md:flex">
 		<!-- Световая акцентная линия сверху -->
 		<div
 			aria-hidden="true"
-			class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent"
+			class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-link-400/60 to-transparent"
 		></div>
 
 		<!-- Левая часть: навигационные ссылки с вертикальными разделителями -->
 		<nav class="hidden flex-1 items-center justify-start gap-3 lg:flex">
 			{#each links as link, i (link.href)}
 				{#if i > 0}
-					<span class="h-3 w-px bg-white/15" aria-hidden="true"></span>
+					<span class="h-3 w-px bg-on-dark/15" aria-hidden="true"></span>
 				{/if}
 				<a
 					href={link.href}
 					class={$page.url.pathname === link.href
-						? 'whitespace-nowrap text-xs font-medium text-sky-300'
-						: 'whitespace-nowrap text-xs text-white/70 transition-colors duration-300 hover:text-white'}
+						? 'text-xs font-medium whitespace-nowrap text-link-300'
+						: 'text-xs whitespace-nowrap text-on-dark/70 transition-colors duration-300 hover:text-on-dark'}
 				>
 					{link.label}
 				</a>
@@ -81,9 +81,15 @@
 					{#snippet children(displayValue)}
 						<a
 							href="tel:{displayValue}"
-							class="flex items-center gap-1.5 rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold tracking-wide text-white ring-1 ring-white/10 transition-all duration-300 hover:ring-sky-400/40"
+							class="flex items-center gap-1.5 rounded-full bg-surface-raised/[0.06] px-3 py-1 text-xs font-semibold tracking-wide text-on-dark ring-1 ring-on-dark/10 transition-all duration-300 hover:ring-link-400/40"
 						>
-							<svg class="h-3 w-3 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<svg
+								class="h-3 w-3 text-link-300"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="2"
+							>
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -107,7 +113,7 @@
 					{#snippet children(displayValue)}
 						<a
 							href="mailto:{displayValue}"
-							class="whitespace-nowrap text-xs text-white/55 transition-colors duration-300 hover:text-white"
+							class="text-xs whitespace-nowrap text-on-dark/55 transition-colors duration-300 hover:text-on-dark"
 						>
 							{displayValue}
 						</a>
@@ -115,7 +121,7 @@
 				</EditableField>
 			{/if}
 
-			<span class="h-3 w-px bg-white/15" aria-hidden="true"></span>
+			<span class="h-3 w-px bg-on-dark/15" aria-hidden="true"></span>
 
 			<!-- Избранное -->
 			<a
@@ -131,20 +137,23 @@
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					class="size-[18px] text-white/80 transition-colors duration-300 hover:text-rose-400"
+					class="size-[18px] text-on-dark/80 transition-colors duration-300 hover:text-cat-6-400"
 				>
 					<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+					></path>
 				</svg>
 			</a>
 		</div>
 	</div>
 
 	<!-- Mobile Banner -->
-	<div class="relative z-50 flex items-center justify-between bg-[#0b0b14] px-4 py-2.5 lg:hidden">
+	<div
+		class="relative z-50 flex items-center justify-between bg-alt-night-bar-alt px-4 py-2.5 lg:hidden"
+	>
 		<div
 			aria-hidden="true"
-			class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent"
+			class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-link-400/60 to-transparent"
 		></div>
 
 		<a href="/" class="flex items-center gap-2">
@@ -152,7 +161,7 @@
 			{#if data?.logoUrl}
 				<img class="h-6 w-auto" src={String(data.logoUrl)} alt="Логотип" />
 			{:else}
-				<div class="size-6 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 shadow-sm"></div>
+				<div class="size-6 rounded-full bg-linear-to-tr from-link-400 to-cat-4-500 shadow-sm"></div>
 			{/if}
 		</a>
 
@@ -160,9 +169,15 @@
 			{#if phone}
 				<a
 					href="tel:{phone}"
-					class="flex items-center gap-1.5 rounded-full bg-white/[0.06] px-3 py-1 text-xs font-semibold tracking-wide text-white ring-1 ring-white/10"
+					class="flex items-center gap-1.5 rounded-full bg-surface-raised/[0.06] px-3 py-1 text-xs font-semibold tracking-wide text-on-dark ring-1 ring-on-dark/10"
 				>
-					<svg class="h-3 w-3 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<svg
+						class="h-3 w-3 text-link-300"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -186,10 +201,11 @@
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					class="size-5 text-white/80"
+					class="size-5 text-on-dark/80"
 				>
 					<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+					></path>
 				</svg>
 			</a>
 
@@ -197,14 +213,24 @@
 			<button
 				type="button"
 				onclick={() => uiStore.toggleMenu()}
-				class="relative z-20 flex items-center p-2 text-white"
+				class="relative z-20 flex items-center p-2 text-on-dark"
 				aria-label="Меню"
 			>
 				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					{#if uiStore.menuOpen}
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					{:else}
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h16M4 18h16"
+						/>
 					{/if}
 				</svg>
 			</button>

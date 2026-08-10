@@ -271,11 +271,11 @@
 			<!-- Карта / Изображение -->
 			<div class="ct-item ct-d2 relative">
 				<div
-					class="pointer-events-none absolute -right-6 -bottom-6 size-48 rounded-3xl bg-red-600/90 sm:rounded-4xl lg:size-64"
+					class="pointer-events-none absolute -right-6 -bottom-6 size-48 rounded-3xl bg-brand-600/90 sm:rounded-4xl lg:size-64"
 					aria-hidden="true"
 				></div>
 				<div
-					class="pointer-events-none absolute -top-4 -left-4 size-32 rounded-full bg-red-600/25 blur-2xl"
+					class="pointer-events-none absolute -top-4 -left-4 size-32 rounded-full bg-brand-600/25 blur-2xl"
 					aria-hidden="true"
 				></div>
 				<div class="{ct.card.onLight} relative overflow-hidden">
@@ -291,10 +291,10 @@
 							{#if displayValue}
 								<img loading="lazy" src={displayValue} alt="Карта" class="w-full object-cover" />
 							{:else}
-								<div class="flex aspect-square items-center justify-center bg-[#f7f5f2]">
+								<div class="flex aspect-square items-center justify-center bg-surface-paper">
 									<div class="text-center">
 										<svg
-											class="mx-auto size-16 text-slate-300"
+											class="mx-auto size-16 text-ink-300"
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
@@ -307,8 +307,8 @@
 												d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
 											/>
 										</svg>
-										<p class="mt-4 text-lg font-semibold text-slate-500">Карта</p>
-										<p class="mt-1 text-sm text-slate-400">Добавьте URL изображения карты</p>
+										<p class="mt-4 text-lg font-semibold text-ink-500">Карта</p>
+										<p class="mt-1 text-sm text-ink-400">Добавьте URL изображения карты</p>
 									</div>
 								</div>
 							{/if}

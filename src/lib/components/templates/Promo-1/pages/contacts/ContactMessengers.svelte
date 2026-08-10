@@ -101,9 +101,9 @@
 				<p class="ct-item ct-d3 mt-6 flex items-center gap-3 {ct.body.onInkMuted}">
 					<span class="relative flex size-2.5" aria-hidden="true">
 						<span
-							class="absolute inline-flex size-full animate-ping rounded-full bg-red-500 opacity-50 motion-reduce:animate-none"
+							class="absolute inline-flex size-full animate-ping rounded-full bg-brand-500 opacity-50 motion-reduce:animate-none"
 						></span>
-						<span class="relative inline-flex size-2.5 rounded-full bg-red-600"></span>
+						<span class="relative inline-flex size-2.5 rounded-full bg-brand-600"></span>
 					</span>
 					Обычно отвечаем в течение нескольких минут
 				</p>
@@ -124,18 +124,18 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Открыть Telegram в новой вкладке"
-							class="telegram-button group relative flex size-40 items-center justify-center rounded-full text-white ring-1 ring-[#229ED9]/50 transition duration-500 focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-[#229ED9] motion-safe:hover:scale-105 sm:size-48"
+							class="telegram-button group relative flex size-40 items-center justify-center rounded-full text-on-dark ring-1 ring-telegram/50 transition duration-500 focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-telegram motion-safe:hover:scale-105 sm:size-48"
 						>
 							<span
-								class="pointer-events-none absolute -inset-6 rounded-full border border-[#229ED9]/35"
+								class="pointer-events-none absolute -inset-6 rounded-full border border-telegram/35"
 								aria-hidden="true"
 							></span>
 							<span
-								class="pointer-events-none absolute -inset-12 animate-ping rounded-full border border-[#229ED9]/20 motion-reduce:animate-none"
+								class="pointer-events-none absolute -inset-12 animate-ping rounded-full border border-telegram/20 motion-reduce:animate-none"
 								aria-hidden="true"
 							></span>
 							<span
-								class="pointer-events-none absolute inset-3 rounded-full border border-white/20"
+								class="pointer-events-none absolute inset-3 rounded-full border border-on-dark/20"
 								aria-hidden="true"
 							></span>
 

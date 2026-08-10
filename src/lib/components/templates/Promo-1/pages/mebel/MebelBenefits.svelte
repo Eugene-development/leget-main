@@ -28,33 +28,35 @@
 		await saveField('items', newItems);
 	}
 
-	const items = $derived(data.items || [
-		{
-			title: 'Гарантия качества',
-			desc: 'Используются только сертифицированные материалы от надёжных производителей',
-			icon: 'shield'
-		},
-		{
-			title: 'Точные сроки',
-			desc: 'Соблюдаем оговорённые сроки изготовления, доставки и сборки мебели',
-			icon: 'clock'
-		},
-		{
-			title: 'Индивидуальный дизайн',
-			desc: 'Разрабатываем проект под ваши размеры и пожелания и с учётом нашего опыта',
-			icon: 'design'
-		}
-	]);
+	const items = $derived(
+		data.items || [
+			{
+				title: 'Гарантия качества',
+				desc: 'Используются только сертифицированные материалы от надёжных производителей',
+				icon: 'shield'
+			},
+			{
+				title: 'Точные сроки',
+				desc: 'Соблюдаем оговорённые сроки изготовления, доставки и сборки мебели',
+				icon: 'clock'
+			},
+			{
+				title: 'Индивидуальный дизайн',
+				desc: 'Разрабатываем проект под ваши размеры и пожелания и с учётом нашего опыта',
+				icon: 'design'
+			}
+		]
+	);
 
 	const iconColors: Record<string, string> = {
-		shield: 'bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white',
-		clock: 'bg-emerald-100 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white',
-		design: 'bg-amber-100 text-amber-600 group-hover:bg-amber-500 group-hover:text-white'
+		shield: 'bg-link-100 text-link-600 group-hover:bg-link-500 group-hover:text-on-accent',
+		clock: 'bg-cat-2-100 text-cat-2-600 group-hover:bg-cat-2-500 group-hover:text-on-accent',
+		design: 'bg-cat-1-100 text-cat-1-600 group-hover:bg-cat-1-500 group-hover:text-on-accent'
 	};
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="mb-8 text-2xl font-bold text-slate-900">
+	<h2 class="mb-8 text-2xl text-ink-900">
 		<EditableField
 			fieldKey="MebelBenefits.title"
 			label="Заголовок блока"
@@ -72,13 +74,13 @@
 	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 		{#each items as item, i}
 			<div
-				class="group rounded-2xl border border-slate-50 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50"
+				class="group rounded-2xl border border-ink-50 bg-surface-raised p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink-200/50"
 				in:fly={{ y: 20, duration: 600, delay: i * 100, easing: cubicOut }}
 			>
 				<div
 					class="flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 {iconColors[
 						item.icon
-					] || 'bg-slate-100'}"
+					] || 'bg-ink-100'}"
 				>
 					{#if item.icon === 'shield'}
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,8 +112,10 @@
 						</svg>
 					{/if}
 				</div>
-				
-				<h3 class="mt-4 text-lg font-semibold text-slate-900 transition-colors group-hover:text-sky-600">
+
+				<h3
+					class="p1-title-sub mt-4 text-lg text-ink-900 transition-colors group-hover:text-link-600"
+				>
 					<EditableField
 						fieldKey="MebelBenefits.item.{i}.title"
 						label="Заголовок карточки"
@@ -126,7 +130,7 @@
 					</EditableField>
 				</h3>
 
-				<div class="mt-2 text-sm text-slate-600 leading-relaxed">
+				<div class="mt-2 text-sm leading-relaxed text-ink-600">
 					<EditableField
 						fieldKey="MebelBenefits.item.{i}.desc"
 						label="Описание карточки"

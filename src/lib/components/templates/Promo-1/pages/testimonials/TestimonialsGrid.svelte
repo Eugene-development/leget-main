@@ -36,23 +36,75 @@
 	const defaultFeatured = {
 		text: 'Ваша работа — это лучший знак качества. Убедились в этом снова. Наш новый гарнитур на кухне стал очень хорошим дополнением к интерьеру. Большое спасибо за вашу работу!',
 		name: 'Тамара Фёдоровна Лукьянова',
-		location: 'Москва',
+		location: 'Москва'
 	};
 
 	const defaultReviews = [
-		{ text: 'Купили гардероб. Каждая деталь хорошо продумана. Мы остались довольны своей покупкой. Закажем ещё.', name: 'Сергей Александров', location: 'Балашиха' },
-		{ text: 'Советую всем дизайнера Евгения. Подобрал вариант с техникой по нашему бюджету и уложились в сроки. Благодарю!', name: 'LazyRich99', location: 'Реутов' },
-		{ text: 'Спасибо! С вашей помощью мы удачно обновили кухню и теперь там больше времени проводим вместе с семьёй. Обновка моя удалась! Спасибочки)', name: 'Серафима', location: 'Казань' },
-		{ text: 'Мы довольны результатом выполненных работ этой компании. Новый шкаф в прихожую — это просто красота! Сборщики тоже хорошие.', name: 'Лена', location: 'Московская область' },
-		{ text: 'Наш новый шкаф купе — это радость для меня! Получилось стильно и удобно. Теперь наши вещи будут в порядке) Будем вас советовать.', name: 'Лана и Лёша', location: 'Мытищи' },
-		{ text: 'Хороший шкаф. Купили в мае. Покупка, которая оправдала все ожидания. Пришлось взять в рассрочку, так как не уложились в свой бюджет.', name: 'Лекс', location: 'Москва' },
-		{ text: 'Купил кухонный гарнитур через этих ребят. Работают профессионалы. Все идеально подходит, ничего не смущает даже.', name: 'Таймураз', location: 'Нижний Новгород' },
-		{ text: 'У нас самый крутой кухонный гарнитур среди друзей. Не можем налюбоваться! Спасибо за работу. Мы рады!', name: 'Танечка', location: 'Нижний Новгород' },
-		{ text: 'Мне очень нужен был вместительный шкаф. Мы довольны своим выбором дизайнера! Так же хочу сказать спасибо за скидку.', name: 'Анатолий', location: 'Владимир' },
-		{ text: 'Юрий! Большое спасибо за оперативность и дружелюбие. Мебель была мне в подарок и хорошо что вы успели к моему Дню рождения!', name: 'Марина', location: 'Санкт-Петербург' },
-		{ text: 'Знаком с вами очень давно. Не подвели. Меня порадовал адекватный выбор материалов для нашей спальни.', name: 'Георгий Феликсович', location: 'Санкт-Петербург' },
-		{ text: 'Начали переезд с обновления мебели. Заказали гардероб и гарнитур. Получилось функциональное украшение нашей спальни и кухни. Все удобно и лаконично! Рекомендуем вас друзьям.', name: 'Дина', location: 'Казань' },
-		{ text: 'Заказали дорогой кухонный гарнитур в загородный дом с подсветкой, мойкой и бытовой техникой. Очень боялись ошибиться. В итоге получили то что хотели. Мы счастливы, что сделали выбор с вашей помощью. Однозначно будем рекомендовать.', name: 'Счастливая семья Зиминых', location: 'Москва' },
+		{
+			text: 'Купили гардероб. Каждая деталь хорошо продумана. Мы остались довольны своей покупкой. Закажем ещё.',
+			name: 'Сергей Александров',
+			location: 'Балашиха'
+		},
+		{
+			text: 'Советую всем дизайнера Евгения. Подобрал вариант с техникой по нашему бюджету и уложились в сроки. Благодарю!',
+			name: 'LazyRich99',
+			location: 'Реутов'
+		},
+		{
+			text: 'Спасибо! С вашей помощью мы удачно обновили кухню и теперь там больше времени проводим вместе с семьёй. Обновка моя удалась! Спасибочки)',
+			name: 'Серафима',
+			location: 'Казань'
+		},
+		{
+			text: 'Мы довольны результатом выполненных работ этой компании. Новый шкаф в прихожую — это просто красота! Сборщики тоже хорошие.',
+			name: 'Лена',
+			location: 'Московская область'
+		},
+		{
+			text: 'Наш новый шкаф купе — это радость для меня! Получилось стильно и удобно. Теперь наши вещи будут в порядке) Будем вас советовать.',
+			name: 'Лана и Лёша',
+			location: 'Мытищи'
+		},
+		{
+			text: 'Хороший шкаф. Купили в мае. Покупка, которая оправдала все ожидания. Пришлось взять в рассрочку, так как не уложились в свой бюджет.',
+			name: 'Лекс',
+			location: 'Москва'
+		},
+		{
+			text: 'Купил кухонный гарнитур через этих ребят. Работают профессионалы. Все идеально подходит, ничего не смущает даже.',
+			name: 'Таймураз',
+			location: 'Нижний Новгород'
+		},
+		{
+			text: 'У нас самый крутой кухонный гарнитур среди друзей. Не можем налюбоваться! Спасибо за работу. Мы рады!',
+			name: 'Танечка',
+			location: 'Нижний Новгород'
+		},
+		{
+			text: 'Мне очень нужен был вместительный шкаф. Мы довольны своим выбором дизайнера! Так же хочу сказать спасибо за скидку.',
+			name: 'Анатолий',
+			location: 'Владимир'
+		},
+		{
+			text: 'Юрий! Большое спасибо за оперативность и дружелюбие. Мебель была мне в подарок и хорошо что вы успели к моему Дню рождения!',
+			name: 'Марина',
+			location: 'Санкт-Петербург'
+		},
+		{
+			text: 'Знаком с вами очень давно. Не подвели. Меня порадовал адекватный выбор материалов для нашей спальни.',
+			name: 'Георгий Феликсович',
+			location: 'Санкт-Петербург'
+		},
+		{
+			text: 'Начали переезд с обновления мебели. Заказали гардероб и гарнитур. Получилось функциональное украшение нашей спальни и кухни. Все удобно и лаконично! Рекомендуем вас друзьям.',
+			name: 'Дина',
+			location: 'Казань'
+		},
+		{
+			text: 'Заказали дорогой кухонный гарнитур в загородный дом с подсветкой, мойкой и бытовой техникой. Очень боялись ошибиться. В итоге получили то что хотели. Мы счастливы, что сделали выбор с вашей помощью. Однозначно будем рекомендовать.',
+			name: 'Счастливая семья Зиминых',
+			location: 'Москва'
+		}
 	];
 
 	type Review = { text: string; name: string; location: string };
@@ -97,15 +149,15 @@
 -->
 {#snippet reviewCard(review: Review, globalIdx: number)}
 	<figure
-		class="tm-card group relative overflow-hidden rounded-3xl border border-gray-900/10 bg-white p-6 shadow-[0_26px_70px_-50px_rgba(24,24,27,0.45)] transition duration-300 hover:border-pink-500/40 hover:shadow-[0_32px_80px_-44px_rgba(24,24,27,0.5)] motion-safe:hover:-translate-y-1"
+		class="tm-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_26px_70px_-50px_rgba(24,24,27,0.45)] transition duration-300 hover:border-cat-7-500/40 hover:shadow-[0_32px_80px_-44px_rgba(24,24,27,0.5)] motion-safe:hover:-translate-y-1"
 		style="--tm-delay: {Math.min(globalIdx, 8) * 70}ms"
 	>
 		<div
-			class="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-pink-500/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+			class="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-cat-7-500/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 			aria-hidden="true"
 		></div>
 
-		<blockquote class="relative text-sm/6 text-gray-700">
+		<blockquote class="relative text-sm/6 text-ink-700">
 			<EditableField
 				fieldKey="TestimonialsGrid.reviews.{globalIdx}.text"
 				label="Текст отзыва"
@@ -121,15 +173,15 @@
 			</EditableField>
 		</blockquote>
 
-		<figcaption class="mt-6 flex items-center gap-3 border-t border-gray-900/10 pt-4">
+		<figcaption class="mt-6 flex items-center gap-3 border-t border-ink-900/10 pt-4">
 			<span
-				class="flex size-9 shrink-0 items-center justify-center rounded-full bg-pink-50 text-[11px] font-semibold text-pink-600 ring-1 ring-pink-500/20"
+				class="flex size-9 shrink-0 items-center justify-center rounded-full bg-cat-7-50 text-[11px] font-semibold text-cat-7-600 ring-1 ring-cat-7-500/20"
 				aria-hidden="true"
 			>
 				{initials(review.name)}
 			</span>
 			<div class="min-w-0">
-				<div class="text-sm font-semibold text-gray-900">
+				<div class="text-sm font-semibold text-ink-900">
 					<EditableField
 						fieldKey="TestimonialsGrid.reviews.{globalIdx}.name"
 						label="Имя автора"
@@ -141,7 +193,7 @@
 						{#snippet children(val)}{val}{/snippet}
 					</EditableField>
 				</div>
-				<div class="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">
+				<div class="text-[11px] font-semibold tracking-[0.16em] text-ink-500 uppercase">
 					<EditableField
 						fieldKey="TestimonialsGrid.reviews.{globalIdx}.location"
 						label="Город"
@@ -158,31 +210,35 @@
 	</figure>
 {/snippet}
 
-<section class="bg-surface relative isolate overflow-hidden pt-12 pb-24 sm:pb-32">
+<section class="relative isolate overflow-hidden bg-surface pt-12 pb-24 sm:pb-32">
 	<div class="relative mx-auto max-w-7xl px-6 lg:px-8">
 		<div
-			class="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 gap-6 text-sm/6 text-gray-900 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4"
+			class="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 gap-6 text-sm/6 text-ink-900 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4"
 		>
 			<!-- Главный отзыв -->
 			<figure
 				use:revealOnScroll
-				class="tm-reveal tm-card relative overflow-hidden rounded-4xl border border-gray-900/10 bg-white shadow-[0_40px_100px_-60px_rgba(24,24,27,0.5)] sm:col-span-2 xl:col-start-2 xl:row-end-1"
+				class="tm-reveal tm-card relative overflow-hidden rounded-4xl border border-ink-900/10 bg-surface-raised shadow-[0_40px_100px_-60px_rgba(24,24,27,0.5)] sm:col-span-2 xl:col-start-2 xl:row-end-1"
 			>
 				<div
-					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-pink-500/70 to-transparent"
+					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-cat-7-500/70 to-transparent"
 					aria-hidden="true"
 				></div>
 
 				<blockquote class="relative p-6 sm:p-12">
 					<div
-						class="flex size-11 items-center justify-center rounded-2xl bg-pink-50 text-pink-600 ring-1 ring-pink-500/20"
+						class="flex size-11 items-center justify-center rounded-2xl bg-cat-7-50 text-cat-7-600 ring-1 ring-cat-7-500/20"
 						aria-hidden="true"
 					>
 						<svg class="size-5" viewBox="0 0 24 24" fill="currentColor">
-							<path d="M9.5 5.5C6.46 5.5 4 7.96 4 11v7.5h7.5V11H7.75c0-1.24 1.01-2.25 2.25-2.25V5.5zm10 0C16.46 5.5 14 7.96 14 11v7.5h7.5V11h-3.75c0-1.24 1.01-2.25 2.25-2.25V5.5z" />
+							<path
+								d="M9.5 5.5C6.46 5.5 4 7.96 4 11v7.5h7.5V11H7.75c0-1.24 1.01-2.25 2.25-2.25V5.5zm10 0C16.46 5.5 14 7.96 14 11v7.5h7.5V11h-3.75c0-1.24 1.01-2.25 2.25-2.25V5.5z"
+							/>
 						</svg>
 					</div>
-					<div class="mt-6 text-lg font-medium tracking-[-0.01em] text-pretty text-gray-900 sm:text-xl/8">
+					<div
+						class="mt-6 text-lg font-medium tracking-[-0.01em] text-pretty text-ink-900 sm:text-xl/8"
+					>
 						<EditableField
 							fieldKey="TestimonialsGrid.featured.text"
 							label="Текст отзыва"
@@ -200,16 +256,16 @@
 				</blockquote>
 
 				<figcaption
-					class="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-gray-900/10 px-6 py-5 sm:flex-nowrap sm:px-12"
+					class="flex flex-wrap items-center gap-x-4 gap-y-4 border-t border-ink-900/10 px-6 py-5 sm:flex-nowrap sm:px-12"
 				>
 					<span
-						class="flex size-10 shrink-0 items-center justify-center rounded-full bg-pink-50 text-xs font-semibold text-pink-600 ring-1 ring-pink-500/20"
+						class="flex size-10 shrink-0 items-center justify-center rounded-full bg-cat-7-50 text-xs font-semibold text-cat-7-600 ring-1 ring-cat-7-500/20"
 						aria-hidden="true"
 					>
 						{initials(featured.name)}
 					</span>
 					<div class="flex-auto">
-						<div class="text-sm font-semibold text-gray-900">
+						<div class="text-sm font-semibold text-ink-900">
 							<EditableField
 								fieldKey="TestimonialsGrid.featured.name"
 								label="Имя автора"
@@ -221,7 +277,7 @@
 								{#snippet children(val)}{val}{/snippet}
 							</EditableField>
 						</div>
-						<div class="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">
+						<div class="text-[11px] font-semibold tracking-[0.16em] text-ink-500 uppercase">
 							<EditableField
 								fieldKey="TestimonialsGrid.featured.location"
 								label="Город"

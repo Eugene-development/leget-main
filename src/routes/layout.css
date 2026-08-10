@@ -1,51 +1,363 @@
 @import 'tailwindcss';
+/**
+ * Значения токенов принадлежат дизайн-системе, а не приложению и не шаблону.
+ * Здесь — только объявление ключей для Tailwind (иначе он не сгенерирует утилиты)
+ * и ссылки на `--ds-*`. Сами значения — в $lib/design-systems/.
+ * Контракт: docs/architecture/design-system-tokens.md
+ */
+@import '../lib/design-systems/tokens.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/**
+ * Шрифты --font-heading / --font-body. Self-host, как Mona Sans в leget-front:
+ * клиентские сайты не должны зависеть от fonts.gstatic.com.
+ *
+ * Оба файла вариативные — один woff2 на весь диапазон насыщенностей, поэтому
+ * font-weight здесь диапазон, а не число.
+ *
+ * Сабсеты только latin/latin-ext/cyrillic/cyrillic-ext: сайты русскоязычные,
+ * greek и vietnamese из Google Fonts не берём. Браузер по unicode-range тянет
+ * только те файлы, которые реально нужны странице.
+ *
+ * Курсива нет: font-heading живёт на h1–h6, а три `italic` в Promo-2/Promo-3
+ * стоят на мелком тексте — там достаточно синтетического наклона.
+ */
+
+/* cyrillic-ext */
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: normal;
+	font-weight: 300 700;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-cyrillic-ext.woff2') format('woff2');
+	unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: normal;
+	font-weight: 300 700;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-cyrillic.woff2') format('woff2');
+	unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: normal;
+	font-weight: 300 700;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-latin-ext.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+/* latin */
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: normal;
+	font-weight: 300 700;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-latin.woff2') format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* cyrillic-ext */
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url('/fonts/inter-cyrillic-ext.woff2') format('woff2');
+	unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url('/fonts/inter-cyrillic.woff2') format('woff2');
+	unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url('/fonts/inter-latin-ext.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+/* latin */
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url('/fonts/inter-latin.woff2') format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/**
+ * Ключи темы Tailwind. Значения — не здесь.
+ *
+ * Каждый ключ ссылается на токен дизайн-системы. Tailwind v4 кладёт `@theme`
+ * в `:root` и генерирует утилиты вида `background-color: var(--color-accent)`,
+ * поэтому цепочка `bg-accent → var(--color-accent) → var(--ds-color-accent)`
+ * разрешается в рантайме — смена `data-ds` на <html> перекрашивает утилиты
+ * без пересборки CSS. Ради этого `@theme`, а не `@theme inline`: inline
+ * подставил бы значение на билде и заморозил бы систему намертво.
+ *
+ * Модификаторы прозрачности (`bg-accent/40`) через var-косвенность работают:
+ * v4 разворачивает их в color-mix(), а он вычисляется на computed-value.
+ *
+ * Ключ, которого здесь нет, утилитой не станет, даже если токен объявлен
+ * в дизайн-системе. Добавляете токен — добавьте и строку сюда.
+ */
 @theme {
-	/* Color Palette */
-	--color-primary: #2c2c2c;
-	--color-primary-light: #4a4a4a;
-	--color-secondary: #8b7355;
-	--color-secondary-light: #a89070;
-	--color-accent: #c4a87c;
-	--color-accent-light: #d4be9a;
+	/* Палитра бренда */
+	--color-primary: var(--ds-color-primary);
+	--color-primary-light: var(--ds-color-primary-light);
+	--color-secondary: var(--ds-color-secondary);
+	--color-secondary-light: var(--ds-color-secondary-light);
+	--color-accent: var(--ds-color-accent);
+	--color-accent-light: var(--ds-color-accent-light);
 
-	--color-surface: #faf9f7;
-	--color-surface-warm: #f5f0eb;
-	--color-surface-card: #ffffff;
-	--color-surface-muted: #ede8e2;
+	--color-surface: var(--ds-color-surface);
+	--color-surface-warm: var(--ds-color-surface-warm);
+	--color-surface-card: var(--ds-color-surface-card);
+	--color-surface-muted: var(--ds-color-surface-muted);
 
-	--color-text-primary: #1a1a1a;
-	--color-text-secondary: #5c5c5c;
-	--color-text-muted: #9a9a9a;
-	--color-text-inverse: #ffffff;
+	--color-text-primary: var(--ds-color-text-primary);
+	--color-text-secondary: var(--ds-color-text-secondary);
+	--color-text-muted: var(--ds-color-text-muted);
+	--color-text-inverse: var(--ds-color-text-inverse);
 
-	--color-muted: var(--color-text-muted);
-	--color-inverse: var(--color-text-inverse);
+	--color-muted: var(--ds-color-text-muted);
+	--color-inverse: var(--ds-color-text-inverse);
 
-	--color-border-light: #e8e4de;
-	--color-border-medium: #d4cfc7;
+	--color-border-light: var(--ds-color-border-light);
+	--color-border-medium: var(--ds-color-border-medium);
 
-	/* Typography */
-	--font-heading: 'Cormorant Garamond', 'Georgia', serif;
-	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	/**
+	 * Числовые шкалы surface/accent — ими пользуется Promo-3.
+	 *
+	 * Promo-3 писался под тейлвиндовскую шкалу (`bg-surface-900`, `text-accent-500`),
+	 * которой в @theme никогда не было: 740 утилит в шаблоне не давали никакого CSS,
+	 * и цвета не применялись вообще. Ключи объявлены здесь, а не в theme.css шаблона
+	 * (как у Promo-1), потому что Promo-3 пользуется обычными утилитами Tailwind,
+	 * а не семантическими классами — генератору нужны токены.
+	 *
+	 * Несуффиксные ключи выше (--color-surface, --color-accent) — независимые
+	 * токены: в Tailwind v4 `surface` и `surface-900` друг с другом не связаны.
+	 */
+	--color-surface-50: var(--ds-color-surface-50);
+	--color-surface-100: var(--ds-color-surface-100);
+	--color-surface-200: var(--ds-color-surface-200);
+	--color-surface-300: var(--ds-color-surface-300);
+	--color-surface-400: var(--ds-color-surface-400);
+	--color-surface-500: var(--ds-color-surface-500);
+	--color-surface-600: var(--ds-color-surface-600);
+	--color-surface-700: var(--ds-color-surface-700);
+	--color-surface-800: var(--ds-color-surface-800);
+	--color-surface-900: var(--ds-color-surface-900);
 
-	/* Spacing */
-	--spacing-section: 120px;
-	--spacing-section-sm: 100px;
+	--color-accent-300: var(--ds-color-accent-300);
+	--color-accent-400: var(--ds-color-accent-400);
+	--color-accent-500: var(--ds-color-accent-500);
+	--color-accent-600: var(--ds-color-accent-600);
 
-	/* Animations */
-	--animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	--animate-fade-in: fade-in 0.6s ease forwards;
-	--animate-slide-right: slide-right 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-	--animate-scale-in: scale-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	/* Типографика */
+	--font-heading: var(--ds-font-heading);
+	--font-body: var(--ds-font-body);
 
-	/* Shadows */
-	--shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.06);
-	--shadow-medium: 0 8px 40px rgba(0, 0, 0, 0.08);
-	--shadow-card: 0 2px 16px rgba(0, 0, 0, 0.04);
-	--shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.1);
+	/* Вертикальный ритм */
+	--spacing-section: var(--ds-spacing-section);
+	--spacing-section-sm: var(--ds-spacing-section-sm);
+
+	/**
+	 * Анимации. Траектория (@keyframes ниже) — структура и общая для всех систем;
+	 * длительность и кривая — характер системы, поэтому приходят токенами.
+	 */
+	--animate-fade-up: fade-up var(--ds-motion-duration) var(--ds-motion-ease) forwards;
+	--animate-fade-in: fade-in var(--ds-motion-duration-fast) var(--ds-motion-ease-soft) forwards;
+	--animate-slide-right: slide-right var(--ds-motion-duration) var(--ds-motion-ease) forwards;
+	--animate-scale-in: scale-in var(--ds-motion-duration-fast) var(--ds-motion-ease) forwards;
+
+	/* Контент поверх поверхностей: бывшие white/black. */
+	--color-on-dark: var(--ds-on-dark);
+	--color-on-accent: var(--ds-on-accent);
+	--color-surface-raised: var(--ds-surface-raised);
+	--color-scrim: var(--ds-scrim);
+
+	/* Роли из разбора произвольных hex. */
+	--color-surface-inverse: var(--ds-dark-surface);
+	--color-surface-paper: var(--ds-light-surface-paper);
+	/* Бренд стороннего сервиса. Дизайн-системе НЕ принадлежит: Telegram
+	   синий во всех системах, менять его нельзя. Поэтому литерал, а не --ds-*. */
+	--color-telegram: #229ed9;
+
+	/* Карантинные палитры версий, см. design-systems/*.css */
+	--color-alt-petrol-50: var(--ds-alt-petrol-50);
+	--color-alt-petrol-100: var(--ds-alt-petrol-100);
+	--color-alt-petrol-200: var(--ds-alt-petrol-200);
+	--color-alt-petrol-300: var(--ds-alt-petrol-300);
+	--color-alt-petrol-400: var(--ds-alt-petrol-400);
+	--color-alt-petrol-500: var(--ds-alt-petrol-500);
+	--color-alt-petrol-600: var(--ds-alt-petrol-600);
+	--color-alt-petrol-700: var(--ds-alt-petrol-700);
+	--color-alt-petrol-800: var(--ds-alt-petrol-800);
+	--color-alt-petrol-900: var(--ds-alt-petrol-900);
+	--color-alt-petrol-950: var(--ds-alt-petrol-950);
+	--color-alt-petrol-accent-300: var(--ds-alt-petrol-accent-300);
+	--color-alt-petrol-accent-400: var(--ds-alt-petrol-accent-400);
+	--color-alt-petrol-accent-600: var(--ds-alt-petrol-accent-600);
+	--color-alt-warm-ink: var(--ds-alt-warm-ink);
+	--color-alt-warm-accent: var(--ds-alt-warm-accent);
+	--color-alt-warm-surface: var(--ds-alt-warm-surface);
+	--color-alt-warm-paper: var(--ds-alt-warm-paper);
+	--color-alt-night-bar: var(--ds-alt-night-bar);
+	--color-alt-night-bar-alt: var(--ds-alt-night-bar-alt);
+
+	/**
+	 * Шкалы Promo-1: нейтраль, два акцента и категориальная палитра.
+	 *
+	 * Заведены 10.08.2026, когда шаблон переводили с захардкоженной палитры
+	 * Tailwind на токены. Роли выведены из того, как шаблон цвет применял:
+	 *   ink   — нейтраль (был slate/gray/zinc)
+	 *   brand — акцент страницы: кнопки, eyebrow, ромбы (был red)
+	 *   link  — интерактив шапки: ссылки, hover, focus-кольца (был sky)
+	 *   cat-N — пер-карточные акценты (была радуга из 14 хью)
+	 *
+	 * Имена не пересекаются с палитрой Tailwind намеренно: `neutral` там занят.
+	 */
+	/* Нейтральная шкала, акценты и категориальная палитра Promo-1. */
+	--color-ink-50: var(--ds-ink-50);
+	--color-ink-100: var(--ds-ink-100);
+	--color-ink-200: var(--ds-ink-200);
+	--color-ink-300: var(--ds-ink-300);
+	--color-ink-400: var(--ds-ink-400);
+	--color-ink-500: var(--ds-ink-500);
+	--color-ink-600: var(--ds-ink-600);
+	--color-ink-700: var(--ds-ink-700);
+	--color-ink-800: var(--ds-ink-800);
+	--color-ink-900: var(--ds-ink-900);
+	--color-ink-950: var(--ds-ink-950);
+	--color-brand-50: var(--ds-brand-50);
+	--color-brand-100: var(--ds-brand-100);
+	--color-brand-200: var(--ds-brand-200);
+	--color-brand-300: var(--ds-brand-300);
+	--color-brand-400: var(--ds-brand-400);
+	--color-brand-500: var(--ds-brand-500);
+	--color-brand-600: var(--ds-brand-600);
+	--color-brand-700: var(--ds-brand-700);
+	--color-brand-800: var(--ds-brand-800);
+	--color-brand-900: var(--ds-brand-900);
+	--color-brand-950: var(--ds-brand-950);
+	--color-link-50: var(--ds-link-50);
+	--color-link-100: var(--ds-link-100);
+	--color-link-200: var(--ds-link-200);
+	--color-link-300: var(--ds-link-300);
+	--color-link-400: var(--ds-link-400);
+	--color-link-500: var(--ds-link-500);
+	--color-link-600: var(--ds-link-600);
+	--color-link-700: var(--ds-link-700);
+	--color-link-800: var(--ds-link-800);
+	--color-link-900: var(--ds-link-900);
+	--color-link-950: var(--ds-link-950);
+	--color-cat-1-50: var(--ds-cat-1-50);
+	--color-cat-1-100: var(--ds-cat-1-100);
+	--color-cat-1-200: var(--ds-cat-1-200);
+	--color-cat-1-300: var(--ds-cat-1-300);
+	--color-cat-1-400: var(--ds-cat-1-400);
+	--color-cat-1-500: var(--ds-cat-1-500);
+	--color-cat-1-600: var(--ds-cat-1-600);
+	--color-cat-1-700: var(--ds-cat-1-700);
+	--color-cat-1-900: var(--ds-cat-1-900);
+	--color-cat-2-50: var(--ds-cat-2-50);
+	--color-cat-2-100: var(--ds-cat-2-100);
+	--color-cat-2-200: var(--ds-cat-2-200);
+	--color-cat-2-300: var(--ds-cat-2-300);
+	--color-cat-2-400: var(--ds-cat-2-400);
+	--color-cat-2-500: var(--ds-cat-2-500);
+	--color-cat-2-600: var(--ds-cat-2-600);
+	--color-cat-2-700: var(--ds-cat-2-700);
+	--color-cat-3-50: var(--ds-cat-3-50);
+	--color-cat-3-100: var(--ds-cat-3-100);
+	--color-cat-3-300: var(--ds-cat-3-300);
+	--color-cat-3-400: var(--ds-cat-3-400);
+	--color-cat-3-500: var(--ds-cat-3-500);
+	--color-cat-3-600: var(--ds-cat-3-600);
+	--color-cat-4-50: var(--ds-cat-4-50);
+	--color-cat-4-100: var(--ds-cat-4-100);
+	--color-cat-4-200: var(--ds-cat-4-200);
+	--color-cat-4-300: var(--ds-cat-4-300);
+	--color-cat-4-400: var(--ds-cat-4-400);
+	--color-cat-4-500: var(--ds-cat-4-500);
+	--color-cat-4-600: var(--ds-cat-4-600);
+	--color-cat-4-700: var(--ds-cat-4-700);
+	--color-cat-4-950: var(--ds-cat-4-950);
+	--color-cat-5-50: var(--ds-cat-5-50);
+	--color-cat-5-100: var(--ds-cat-5-100);
+	--color-cat-5-300: var(--ds-cat-5-300);
+	--color-cat-5-400: var(--ds-cat-5-400);
+	--color-cat-5-500: var(--ds-cat-5-500);
+	--color-cat-5-600: var(--ds-cat-5-600);
+	--color-cat-5-700: var(--ds-cat-5-700);
+	--color-cat-6-50: var(--ds-cat-6-50);
+	--color-cat-6-100: var(--ds-cat-6-100);
+	--color-cat-6-300: var(--ds-cat-6-300);
+	--color-cat-6-400: var(--ds-cat-6-400);
+	--color-cat-6-500: var(--ds-cat-6-500);
+	--color-cat-6-600: var(--ds-cat-6-600);
+	--color-cat-7-50: var(--ds-cat-7-50);
+	--color-cat-7-100: var(--ds-cat-7-100);
+	--color-cat-7-400: var(--ds-cat-7-400);
+	--color-cat-7-500: var(--ds-cat-7-500);
+	--color-cat-7-600: var(--ds-cat-7-600);
+	--color-cat-8-50: var(--ds-cat-8-50);
+	--color-cat-8-100: var(--ds-cat-8-100);
+	--color-cat-8-400: var(--ds-cat-8-400);
+	--color-cat-8-500: var(--ds-cat-8-500);
+	--color-cat-8-600: var(--ds-cat-8-600);
+	--color-cat-9-50: var(--ds-cat-9-50);
+	--color-cat-9-100: var(--ds-cat-9-100);
+	--color-cat-9-300: var(--ds-cat-9-300);
+	--color-cat-9-400: var(--ds-cat-9-400);
+	--color-cat-9-500: var(--ds-cat-9-500);
+	--color-cat-9-600: var(--ds-cat-9-600);
+	--color-cat-10-50: var(--ds-cat-10-50);
+	--color-cat-10-100: var(--ds-cat-10-100);
+	--color-cat-10-300: var(--ds-cat-10-300);
+	--color-cat-10-500: var(--ds-cat-10-500);
+	--color-cat-10-600: var(--ds-cat-10-600);
+	--color-cat-11-50: var(--ds-cat-11-50);
+	--color-cat-11-100: var(--ds-cat-11-100);
+	--color-cat-11-500: var(--ds-cat-11-500);
+	--color-cat-11-600: var(--ds-cat-11-600);
+	--color-cat-12-50: var(--ds-cat-12-50);
+	--color-cat-12-400: var(--ds-cat-12-400);
+	--color-cat-12-700: var(--ds-cat-12-700);
+	--color-cat-13-400: var(--ds-cat-13-400);
+	--color-cat-13-500: var(--ds-cat-13-500);
+	--color-cat-14-300: var(--ds-cat-14-300);
+	--color-cat-14-600: var(--ds-cat-14-600);
+
+	/* Тени */
+	--shadow-soft: var(--ds-shadow-soft);
+	--shadow-medium: var(--ds-shadow-medium);
+	--shadow-card: var(--ds-shadow-card);
+	--shadow-elevated: var(--ds-shadow-elevated);
 }
 
 @keyframes fade-up {
@@ -60,8 +372,12 @@
 }
 
 @keyframes fade-in {
-	from { opacity: 0; }
-	to   { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes slide-right {
@@ -99,7 +415,6 @@ html {
 	--header-h: 72px; /* примерно: десктоп ~72px, мобайл — хедер скрыт */
 }
 
-
 body {
 	font-family: var(--font-body);
 	color: var(--color-text-primary);
@@ -108,18 +423,35 @@ body {
 	overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-family: var(--font-heading);
-	font-weight: 400;
-	line-height: 1.15;
-	letter-spacing: -0.01em;
+	/* Начертание, интерлиньяж и трекинг заголовков — характер системы, не приложения:
+	   у Базовой это лёгкий антиквенный Cormorant (400), у гротескной системы
+	   заголовок обязан быть плотнее, иначе развалится. */
+	font-weight: var(--ds-font-heading-weight);
+	line-height: var(--ds-font-heading-leading);
+	letter-spacing: var(--ds-font-heading-tracking);
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-surface); }
-::-webkit-scrollbar-thumb { background: var(--color-border-medium); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-secondary); }
+::-webkit-scrollbar {
+	width: 6px;
+}
+::-webkit-scrollbar-track {
+	background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--color-border-medium);
+	border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-secondary);
+}
 
 /* Selection */
 ::selection {

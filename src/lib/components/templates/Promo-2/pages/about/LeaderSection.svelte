@@ -68,7 +68,7 @@
 					<div class="absolute -top-6 -left-6 h-12 w-12 border-t border-l border-accent/40 lg:h-16 lg:w-16"></div>
 					<div class="absolute -right-6 -bottom-6 h-12 w-12 border-r border-b border-accent/40 lg:h-16 lg:w-16"></div>
 					<img loading="lazy"
-						src={String(data?.image ?? 'https://storage.yandexcloud.net/zovtop/foto/zovdir.png')}
+						src={String(data?.image ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/zovdir.png')}
 						alt={String(data?.name ?? 'Руководитель фабрики')}
 						class="relative z-10 w-64 object-cover transition-transform duration-1000 hover:scale-105 md:w-80 lg:w-[22rem]">
 				</div>

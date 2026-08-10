@@ -22,9 +22,11 @@
 
 	// Fallback images for categories (only files that actually exist in static/)
 	const categoryImages: Record<string, string> = {
-		kitchens: '/kuhni_hero.png',
-		wardrobes: '/wardrobe_project_no_text.png',
-		'dressing-rooms': '/dressing_room_hero.png',
+		kitchens: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/kuhni_hero.png',
+		wardrobes:
+			'https://storage.yandexcloud.net/leget-main/templates/promo-1/wardrobe_project_no_text.png',
+		'dressing-rooms':
+			'https://storage.yandexcloud.net/leget-main/templates/promo-1/dressing_room_hero.png',
 		hallways: '',
 		'kids-furniture': '',
 		'office-furniture': ''
@@ -38,7 +40,7 @@
 </script>
 
 <div class="mebel-container">
-	<div class="relative overflow-hidden rounded-2xl bg-slate-900">
+	<div class="relative overflow-hidden rounded-2xl bg-ink-900">
 		<img
 			src={getHeroImage(data.categorySlug)}
 			alt={data.title}
@@ -46,15 +48,15 @@
 		/>
 		<div class="relative px-8 py-12 sm:px-12 sm:py-16">
 			<!-- Breadcrumb -->
-			<nav class="mb-6 flex items-center gap-2 text-sm text-slate-400">
-				<a href="/" class="transition-colors hover:text-white">Главная</a>
+			<nav class="mb-6 flex items-center gap-2 text-sm text-ink-400">
+				<a href="/" class="transition-colors hover:text-on-dark">Главная</a>
 				<span>/</span>
-				<a href="/mebel" class="transition-colors hover:text-white">Мебель</a>
+				<a href="/mebel" class="transition-colors hover:text-on-dark">Мебель</a>
 				<span>/</span>
-				<span class="text-white">{data.title}</span>
+				<span class="text-on-dark">{data.title}</span>
 			</nav>
 
-			<h1 class="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+			<h1 class="text-3xl text-on-dark sm:text-4xl lg:text-5xl">
 				<EditableField
 					fieldKey="MebelCategoryHero.title"
 					label="Заголовок"
@@ -70,7 +72,7 @@
 			</h1>
 
 			{#if data.description}
-				<div class="mt-4 max-w-xl text-lg text-slate-300">
+				<div class="mt-4 max-w-xl text-lg text-ink-300">
 					<EditableField
 						fieldKey="MebelCategoryHero.description"
 						label="Описание"
@@ -89,7 +91,7 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
-					class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-6 py-3 font-medium text-white transition-all hover:bg-sky-600"
+					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					<EditableField
 						fieldKey="MebelCategoryHero.buttonText"

@@ -182,19 +182,19 @@
 				{#each localCards as card, i}
 					{#if isEditable || card.enabled !== false}
 						<div
-							class="p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-red-500 {isEditable &&
+							class="p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-brand-500 {isEditable &&
 							card.enabled === false
 								? 'opacity-60 brightness-95 contrast-75 grayscale'
 								: ''}"
 						>
 							<div
-								class="absolute -top-4 -right-4 size-24 rounded-full bg-red-500/10 transition duration-300 group-hover:scale-150"
+								class="absolute -top-4 -right-4 size-24 rounded-full bg-brand-500/10 transition duration-300 group-hover:scale-150"
 							></div>
 							<div class="relative">
 								{#if isEditable}
 									<div class="absolute top-0 right-0 z-10 flex items-center">
 										<label
-											class="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-gray-100 bg-gray-50/95 px-2.5 py-1 shadow-sm backdrop-blur transition duration-200 hover:bg-gray-100"
+											class="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-ink-100 bg-ink-50/95 px-2.5 py-1 shadow-sm backdrop-blur transition duration-200 hover:bg-ink-100"
 										>
 											<input
 												type="checkbox"
@@ -203,7 +203,7 @@
 												class="peer sr-only"
 											/>
 											<div
-												class="peer relative h-4 w-7 rounded-full bg-gray-200 peer-checked:bg-red-500 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"
+												class="peer relative h-4 w-7 rounded-full bg-ink-200 peer-checked:bg-brand-500 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-ink-300 after:bg-surface-raised after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-on-dark"
 											></div>
 											<span
 												class="p1-muted text-[10px] font-bold tracking-wider uppercase select-none"
@@ -215,7 +215,7 @@
 								{/if}
 
 								<div
-									class="flex size-14 items-center justify-center rounded-2xl bg-red-500 text-white shadow-lg shadow-red-500/30"
+									class="flex size-14 items-center justify-center rounded-2xl bg-brand-500 text-on-accent shadow-lg shadow-brand-500/30"
 								>
 									<svg
 										class="size-7"
@@ -239,7 +239,7 @@
 									class="mt-6 block"
 								>
 									{#snippet children(displayValue)}
-										<h3 class="p1-title mt-6 text-xl font-semibold">{displayValue}</h3>
+										<h3 class="p1-title p1-title-sub mt-6 text-xl">{displayValue}</h3>
 									{/snippet}
 								</EditableField>
 
@@ -272,7 +272,7 @@
 									>
 										{#snippet children(displayValue)}
 											<span
-												class="inline-flex items-center rounded-full bg-red-50 px-3 py-1 text-sm font-medium text-red-700"
+												class="inline-flex items-center rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700"
 											>
 												{displayValue}
 											</span>

@@ -21,12 +21,14 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-slate-950 py-32 sm:py-48">
+<section class="relative overflow-hidden bg-ink-950 py-32 sm:py-48">
 	<div class="absolute inset-0 opacity-10">
-		<div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px]"></div>
+		<div
+			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px]"
+		></div>
 	</div>
 	<div class="relative z-10 mx-auto max-w-4xl px-6 text-center lg:px-8">
-		<h2 class="text-4xl font-black tracking-tight text-white sm:text-7xl leading-tight">
+		<h2 class="text-4xl leading-tight tracking-tight text-on-dark sm:text-7xl">
 			<EditableField
 				fieldKey="DesignProjectCTA.title_part1"
 				label="Заголовок часть 1"
@@ -39,7 +41,7 @@
 					{displayValue}
 				{/snippet}
 			</EditableField>
-			<br/>
+			<br />
 			<EditableField
 				fieldKey="DesignProjectCTA.title_part2"
 				label="Заголовок часть 2"
@@ -49,7 +51,9 @@
 				class="inline-block"
 			>
 				{#snippet children(displayValue)}
-					<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">{displayValue}</span>
+					<span class="bg-gradient-to-r from-cat-2-400 to-cat-9-300 bg-clip-text text-transparent"
+						>{displayValue}</span
+					>
 				{/snippet}
 			</EditableField>
 		</h2>
@@ -65,7 +69,7 @@
 				{#snippet children(displayValue)}
 					<button
 						type="button"
-						class="inline-flex items-center gap-4 rounded-full bg-emerald-500 px-12 py-6 text-lg font-black text-white shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-emerald-400 active:scale-95"
+						class="inline-flex items-center gap-4 rounded-full bg-cat-2-500 px-12 py-6 text-lg font-black text-on-accent shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-cat-2-400 active:scale-95"
 					>
 						{displayValue}
 					</button>

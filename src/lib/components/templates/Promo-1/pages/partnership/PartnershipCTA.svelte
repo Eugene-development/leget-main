@@ -72,13 +72,13 @@
 	<!-- Декор: сетка, свечения, волосяные линии по краям секции -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="pca-grid"></div>
-		<div class="pca-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-cyan-500/20"></div>
-		<div class="pca-glow absolute -right-24 -bottom-40 size-112 bg-teal-400/15"></div>
+		<div class="pca-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-cat-5-500/20"></div>
+		<div class="pca-glow absolute -right-24 -bottom-40 size-112 bg-cat-9-400/15"></div>
 		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-cyan-400/60 to-transparent"
+			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-cat-5-400/60 to-transparent"
 		></div>
 		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
+			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
 		></div>
 	</div>
 
@@ -86,21 +86,21 @@
 		<!-- Паспарту с градиентной каймой в 1px -->
 		<div
 			use:revealOnScroll
-			class="pca-reveal pca-frame rounded-4xl bg-linear-to-br from-sky-400/40 via-cyan-300/25 to-teal-400/40 p-px shadow-[0_50px_120px_-60px_rgba(6,182,212,0.55)]"
+			class="pca-reveal pca-frame rounded-4xl bg-linear-to-br from-link-400/40 via-cat-5-300/25 to-cat-9-400/40 p-px shadow-[0_50px_120px_-60px_rgba(6,182,212,0.55)]"
 		>
 			<div
 				class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] {isLight
-					? 'bg-white/85'
-					: 'bg-slate-950/85'} px-6 py-14 text-center backdrop-blur-sm sm:px-12 sm:py-16 lg:px-16"
+					? 'bg-surface-raised/85'
+					: 'bg-ink-950/85'} px-6 py-14 text-center backdrop-blur-sm sm:px-12 sm:py-16 lg:px-16"
 			>
 				<div
-					class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-b from-white/6 to-transparent"
+					class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-b from-on-dark/6 to-transparent"
 					aria-hidden="true"
 				></div>
 
 				<div class="relative">
 					<div
-						class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-sky-500 to-cyan-500 text-white shadow-[0_20px_50px_-20px_rgba(14,165,233,0.9)] ring-1 ring-white/20"
+						class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-link-500 to-cat-5-500 text-on-accent shadow-[0_20px_50px_-20px_rgba(14,165,233,0.9)] ring-1 ring-on-accent/20"
 					>
 						<svg
 							class="size-8"
@@ -129,12 +129,12 @@
 						{#snippet children(displayValue)}
 							<p
 								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] {isLight
-									? 'text-cyan-700'
-									: 'text-cyan-300'} uppercase sm:text-xs"
+									? 'text-cat-5-700'
+									: 'text-cat-5-300'} uppercase sm:text-xs"
 							>
-								<span class="h-px w-8 bg-cyan-400/80" aria-hidden="true"></span>
+								<span class="h-px w-8 bg-cat-5-400/80" aria-hidden="true"></span>
 								{displayValue}
-								<span class="h-px w-8 bg-cyan-400/80" aria-hidden="true"></span>
+								<span class="h-px w-8 bg-cat-5-400/80" aria-hidden="true"></span>
 							</p>
 						{/snippet}
 					</EditableField>
@@ -149,7 +149,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h2
-								class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
+								class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 							>
 								{displayValue}
 							</h2>
@@ -161,7 +161,7 @@
 						aria-hidden="true"
 					>
 						<span class="p1-line h-px flex-1"></span>
-						<span class="size-1.5 rotate-45 border border-cyan-400/80"></span>
+						<span class="size-1.5 rotate-45 border border-cat-5-400/80"></span>
 						<span class="p1-line h-px flex-1"></span>
 					</div>
 
@@ -184,7 +184,7 @@
 					>
 						<a
 							href="/contact"
-							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-sky-500 to-cyan-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(14,165,233,0.95)] transition duration-300 hover:from-sky-400 hover:to-cyan-400 hover:shadow-[0_22px_55px_-16px_rgba(6,182,212,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 motion-safe:hover:-translate-y-0.5"
+							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(14,165,233,0.95)] transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px_rgba(6,182,212,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
 						>
 							<EditableField
 								fieldKey="PartnershipCTA.buttonText"
@@ -216,7 +216,7 @@
 								{#if displayValue}
 									<a
 										href="tel:{displayValue}"
-										class="group p1-border p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border px-7 py-3.5 text-sm font-semibold backdrop-blur-sm transition duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 motion-safe:hover:-translate-y-0.5"
+										class="group p1-border p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border px-7 py-3.5 text-sm font-semibold backdrop-blur-sm transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5"
 									>
 										<svg
 											class="size-4.5 transition-transform duration-300 group-hover:-rotate-12"

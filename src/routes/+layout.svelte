@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/state';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import ServiceOrderIsland from '$lib/components/ServiceOrderIsland.svelte';
@@ -10,5 +11,10 @@
 
 {@render children()}
 
-<ServiceOrderIsland />
-
+<!--
+	/_ds — каталог дизайн-системы: карточка должна содержать блок и ничего кроме блока,
+	иначе плавающая кнопка заказа попадёт в каждое превью.
+-->
+{#if !page.url.pathname.startsWith('/admin') && !page.url.pathname.startsWith('/_ds')}
+	<ServiceOrderIsland />
+{/if}

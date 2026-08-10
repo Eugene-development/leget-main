@@ -40,7 +40,10 @@
 			<EditableField
 				fieldKey="CTA.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы')}
+				value={String(
+					data?.subtitle ??
+						'Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('subtitle', v)}
@@ -64,9 +67,21 @@
 						{#snippet children(displayValue)}{displayValue}{/snippet}
 					</EditableField>
 				</a>
-				<a href={String(data?.phoneHref ?? 'tel:+70000000000')} class="yd-cta__btn yd-cta__btn--secondary">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+				<a
+					href={String(data?.phoneHref ?? 'tel:+70000000000')}
+					class="yd-cta__btn yd-cta__btn--secondary"
+				>
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path
+							d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+						/>
 					</svg>
 					<EditableField
 						fieldKey="CTA.phoneButton"
@@ -83,21 +98,42 @@
 
 			<div class="yd-cta__trust">
 				<div class="yd-cta__trust-item">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
 					</svg>
 					<span>Безопасная сделка</span>
 				</div>
 				<div class="yd-cta__trust-item">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-						<path d="M7 11V7a5 5 0 0110 0v4"/>
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+						<path d="M7 11V7a5 5 0 0110 0v4" />
 					</svg>
 					<span>Данные защищены</span>
 				</div>
 				<div class="yd-cta__trust-item">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<polyline points="20 6 9 17 4 12"/>
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<polyline points="20 6 9 17 4 12" />
 					</svg>
 					<span>Без спама</span>
 				</div>
@@ -118,7 +154,11 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background-image: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+		background-image: radial-gradient(
+			circle at 30% 20%,
+			rgba(255, 255, 255, 0.1) 0%,
+			transparent 50%
+		);
 		pointer-events: none;
 	}
 

@@ -20,22 +20,25 @@
 		data = updated;
 	}
 
-	const bgImage = $derived(data.bgImage || '/furniture_hero.png');
+	const bgImage = $derived(
+		data.bgImage ||
+			'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png'
+	);
 </script>
 
 <div class="mebel-container">
-	<section class="mebel-hero relative overflow-hidden rounded-2xl bg-slate-900">
+	<section class="mebel-hero relative overflow-hidden rounded-2xl bg-ink-900">
 		<img src={bgImage} alt="Hero" class="absolute inset-0 h-full w-full object-cover opacity-40" />
 
 		<div class="relative px-8 py-12 sm:px-12 sm:py-16">
 			<!-- Хлебные крошки -->
-			<nav class="mb-6 flex items-center gap-2 text-sm text-slate-400">
-				<a href="/" class="transition-colors hover:text-white">Главная</a>
+			<nav class="mb-6 flex items-center gap-2 text-sm text-ink-400">
+				<a href="/" class="transition-colors hover:text-on-dark">Главная</a>
 				<span>/</span>
-				<span class="text-white">Мебель</span>
+				<span class="text-on-dark">Мебель</span>
 			</nav>
 
-			<h1 class="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+			<h1 class="text-3xl text-on-dark sm:text-4xl lg:text-5xl">
 				<EditableField
 					fieldKey="MebelHero.title"
 					label="Заголовок"
@@ -50,7 +53,7 @@
 				</EditableField>
 			</h1>
 
-			<p class="mt-4 max-w-xl text-lg text-slate-300">
+			<p class="mt-4 max-w-xl text-lg text-ink-300">
 				<EditableField
 					fieldKey="MebelHero.description"
 					label="Описание"
@@ -71,7 +74,7 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
-					class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-6 py-3 font-medium text-white transition-all hover:bg-sky-600"
+					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					<EditableField
 						fieldKey="MebelHero.primaryButton"
@@ -96,7 +99,7 @@
 				</button>
 
 				<button
-					class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-6 py-3 font-medium text-white backdrop-blur transition-all hover:bg-white/20"
+					class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
 				>
 					<EditableField
 						fieldKey="MebelHero.secondaryButton"

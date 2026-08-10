@@ -72,8 +72,8 @@
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Декоративные фоновые круги -->
-	<div class="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-sky-500/10 blur-3xl"></div>
-	<div class="absolute -right-32 -bottom-32 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl"></div>
+	<div class="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-link-500/10 blur-3xl"></div>
+	<div class="absolute -right-32 -bottom-32 h-96 w-96 rounded-full bg-cat-4-500/10 blur-3xl"></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
@@ -111,7 +111,7 @@
 				<!-- Премиальный блок цитаты -->
 				<div class="p1-border p1-card relative rounded-3xl border p-8 shadow-2xl backdrop-blur-xl">
 					<div
-						class="absolute -top-6 -left-4 font-serif text-6xl leading-none text-sky-500/20 select-none"
+						class="absolute -top-6 -left-4 font-serif text-6xl leading-none text-link-500/20 select-none"
 					>
 						“
 					</div>
@@ -131,7 +131,7 @@
 						</EditableField>
 					</blockquote>
 					<div class="mt-6 flex items-center gap-3">
-						<span class="h-px w-8 bg-gradient-to-r from-sky-400 to-indigo-400"></span>
+						<span class="h-px w-8 bg-gradient-to-r from-link-400 to-cat-4-400"></span>
 						<span class="p1-muted text-[10px] font-bold tracking-widest uppercase"
 							>Стремление к идеалу</span
 						>
@@ -143,15 +143,15 @@
 			<div class="grid gap-6 sm:grid-cols-2 lg:col-span-7">
 				{#each cards as card, i}
 					<div
-						class="message-card-v2 group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/30 hover:shadow-sky-500/5"
+						class="message-card-v2 group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-link-500/30 hover:shadow-link-500/5"
 					>
 						<div
-							class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-gradient-to-br from-sky-500/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+							class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-gradient-to-br from-link-500/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						></div>
 						<div class="relative flex h-full flex-col justify-between">
 							<div>
 								<div
-									class="p1-border mb-5 size-16 overflow-hidden rounded-2xl border bg-slate-900 transition-colors duration-300 group-hover:border-sky-500/30"
+									class="p1-border mb-5 size-16 overflow-hidden rounded-2xl border bg-ink-900 transition-colors duration-300 group-hover:border-link-500/30"
 								>
 									<ImageFallback
 										src={card.image}
@@ -160,7 +160,7 @@
 									/>
 								</div>
 								<h3
-									class="p1-title text-base font-bold transition-colors duration-300 group-hover:text-sky-300"
+									class="p1-title p1-title-sub text-base transition-colors duration-300 group-hover:text-link-300"
 								>
 									<EditableField
 										fieldKey={`Message.cards.${i}.title`}
@@ -190,7 +190,7 @@
 								</p>
 							</div>
 							<div
-								class="p1-muted mt-4 flex items-center gap-1.5 transition-colors duration-300 group-hover:text-sky-400"
+								class="p1-muted mt-4 flex items-center gap-1.5 transition-colors duration-300 group-hover:text-link-400"
 							>
 								<span class="text-[10px] font-bold tracking-widest uppercase">Подробнее</span>
 								<svg

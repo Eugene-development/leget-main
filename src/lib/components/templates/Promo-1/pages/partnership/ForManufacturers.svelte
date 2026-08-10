@@ -104,7 +104,7 @@
 	<!-- Градиентная подложка — только в тёмной теме: на светлой она бы гасила контраст. -->
 	{#if !isLight}
 		<div
-			class="pointer-events-none absolute inset-0 bg-linear-to-br from-slate-800 to-slate-900"
+			class="pointer-events-none absolute inset-0 bg-linear-to-br from-ink-800 to-ink-900"
 			aria-hidden="true"
 		></div>
 	{/if}
@@ -112,13 +112,13 @@
 	<!-- Декор: сетка, красное свечение-акцент, волосяные линии по краям -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="fm-grid"></div>
-		<div class="fm-glow absolute -top-40 -left-24 size-112 bg-red-500/15"></div>
-		<div class="fm-glow absolute -right-32 bottom-0 size-96 bg-slate-400/10"></div>
+		<div class="fm-glow absolute -top-40 -left-24 size-112 bg-brand-500/15"></div>
+		<div class="fm-glow absolute -right-32 bottom-0 size-96 bg-ink-400/10"></div>
 		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-red-500/60 to-transparent"
+			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-brand-500/60 to-transparent"
 		></div>
 		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
+			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
 		></div>
 	</div>
 
@@ -135,10 +135,10 @@
 				>
 					{#snippet children(displayValue)}
 						<div
-							class="p1-accent inline-flex items-center gap-2.5 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
+							class="p1-accent inline-flex items-center gap-2.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
 						>
 							<span
-								class="size-1.5 rounded-full bg-red-400 shadow-[0_0_12px_2px_rgba(248,113,113,0.7)]"
+								class="size-1.5 rounded-full bg-brand-400 shadow-[0_0_12px_2px_rgba(248,113,113,0.7)]"
 								aria-hidden="true"
 							></span>
 							{displayValue}
@@ -156,7 +156,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
+							class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -180,10 +180,10 @@
 				<div class="fm-item fm-d3 mt-8 space-y-3">
 					{#each benefits as benefit, i}
 						<div
-							class="group p1-border p1-card p1-body hover:p1-card flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 backdrop-blur-sm transition duration-300 hover:border-red-500/40"
+							class="group p1-border p1-card p1-body hover:p1-card flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 backdrop-blur-sm transition duration-300 hover:border-brand-500/40"
 						>
 							<span
-								class="p1-accent flex size-8 shrink-0 items-center justify-center rounded-xl bg-red-500/15 ring-1 ring-red-500/25 transition duration-300 group-hover:bg-red-500 group-hover:text-white"
+								class="p1-accent flex size-8 shrink-0 items-center justify-center rounded-xl bg-brand-500/15 ring-1 ring-brand-500/25 transition duration-300 group-hover:bg-brand-500 group-hover:text-on-accent"
 								aria-hidden="true"
 							>
 								<svg
@@ -215,7 +215,7 @@
 				<div class="fm-item fm-d4 mt-9 flex flex-wrap gap-4">
 					<a
 						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(239,68,68,0.95)] transition duration-300 hover:bg-red-400 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-400 motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.95)] transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="ForManufacturers.buttonText"
@@ -242,15 +242,15 @@
 				<div class="grid grid-cols-2 gap-4">
 					{#each stats as stat, i}
 						<div
-							class="fm-tile group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 backdrop-blur-sm transition duration-300 hover:border-red-500/40 motion-safe:hover:-translate-y-1"
+							class="fm-tile group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 backdrop-blur-sm transition duration-300 hover:border-brand-500/40 motion-safe:hover:-translate-y-1"
 							style="--fm-delay: {200 + i * 70}ms"
 						>
 							<div
-								class="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-red-500/70 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+								class="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-100"
 								aria-hidden="true"
 							></div>
 							<div
-								class="pointer-events-none absolute -top-12 -right-12 size-32 rounded-full bg-red-500/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+								class="pointer-events-none absolute -top-12 -right-12 size-32 rounded-full bg-brand-500/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
 								aria-hidden="true"
 							></div>
 

@@ -49,7 +49,7 @@
 
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-rules"></div>
-		<div class="ab-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-red-500/8"></div>
+		<div class="ab-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-brand-500/8"></div>
 	</div>
 
 	<div class="relative mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -58,17 +58,17 @@
 			class="ab-reveal ab-card p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-14 text-center shadow-[0_40px_100px_-60px_rgba(15,23,42,0.45)] sm:px-12 sm:py-16 lg:px-16"
 		>
 			<div
-				class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-red-500/70 to-transparent"
+				class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent"
 				aria-hidden="true"
 			></div>
 			<div
-				class="pointer-events-none absolute -top-24 left-1/2 size-64 -translate-x-1/2 rounded-full bg-red-500/5 blur-3xl"
+				class="pointer-events-none absolute -top-24 left-1/2 size-64 -translate-x-1/2 rounded-full bg-brand-500/5 blur-3xl"
 				aria-hidden="true"
 			></div>
 
 			<div class="relative">
 				<div
-					class="ab-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-red-500 to-red-600 text-white shadow-[0_20px_50px_-20px_rgba(220,38,38,0.85)] ring-1 ring-white/25"
+					class="ab-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-brand-500 to-brand-600 text-on-accent shadow-[0_20px_50px_-20px_rgba(220,38,38,0.85)] ring-1 ring-on-accent/25"
 				>
 					<svg
 						class="size-8"
@@ -96,11 +96,11 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-red-600 uppercase sm:text-xs"
+							class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-brand-600 uppercase sm:text-xs"
 						>
-							<span class="h-px w-8 bg-red-500/60" aria-hidden="true"></span>
+							<span class="h-px w-8 bg-brand-500/60" aria-hidden="true"></span>
 							{displayValue}
-							<span class="h-px w-8 bg-red-500/60" aria-hidden="true"></span>
+							<span class="h-px w-8 bg-brand-500/60" aria-hidden="true"></span>
 						</p>
 					{/snippet}
 				</EditableField>
@@ -115,7 +115,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
+							class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -124,7 +124,7 @@
 
 				<div class="ab-rule ab-d3 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
 					<span class="p1-line h-px flex-1"></span>
-					<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+					<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
 					<span class="p1-line h-px flex-1"></span>
 				</div>
 
@@ -145,7 +145,7 @@
 				<div class="ab-item ab-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
 					<a
 						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] transition duration-300 hover:bg-red-400 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-400 motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="AboutCTA.buttonText"
@@ -177,10 +177,10 @@
 							{#if displayValue}
 								<a
 									href="tel:{displayValue}"
-									class="group p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border border-slate-900/15 px-7 py-3.5 text-sm font-semibold transition duration-300 hover:border-slate-900/30 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-400 motion-safe:hover:-translate-y-0.5"
+									class="group p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border border-ink-900/15 px-7 py-3.5 text-sm font-semibold transition duration-300 hover:border-ink-900/30 hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink-400 motion-safe:hover:-translate-y-0.5"
 								>
 									<svg
-										class="size-4.5 text-red-500 transition-transform duration-300 group-hover:-rotate-12"
+										class="size-4.5 text-brand-500 transition-transform duration-300 group-hover:-rotate-12"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"

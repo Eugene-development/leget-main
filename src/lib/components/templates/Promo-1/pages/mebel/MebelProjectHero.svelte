@@ -116,10 +116,15 @@
 			saveSuccess = true;
 			// Если изменилась категория или slug — перенаправляем
 			const saved = result.data?.upsertMebelProject;
-			if (saved && (saved.slug !== project.slug || categoryId !== (project.category_id || category.id))) {
+			if (
+				saved &&
+				(saved.slug !== project.slug || categoryId !== (project.category_id || category.id))
+			) {
 				const newCat = categories.find((c: any) => c.id === categoryId);
 				const catSlug = newCat?.slug || category.slug;
-				setTimeout(() => { goto(`/mebel/${catSlug}/${saved.slug}`); }, 800);
+				setTimeout(() => {
+					goto(`/mebel/${catSlug}/${saved.slug}`);
+				}, 800);
 			} else {
 				setTimeout(() => invalidateAll(), 800);
 			}
@@ -175,7 +180,7 @@
 		<!-- Галерея -->
 		<div>
 			<div
-				class="relative aspect-4/3 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm"
+				class="relative aspect-4/3 overflow-hidden rounded-2xl border border-ink-100 bg-surface-raised shadow-sm"
 			>
 				{#if images.length > 0 && images[selectedImageIndex]?.url}
 					<img
@@ -190,7 +195,7 @@
 						onclick={() => (isLightboxOpen = true)}
 						aria-label="Открыть галерею"
 						title="Открыть галерею"
-						class="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-white"
+						class="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised/90 text-ink-700 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-surface-raised"
 					>
 						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
@@ -202,9 +207,9 @@
 						</svg>
 					</button>
 				{:else}
-					<div class="flex h-full w-full items-center justify-center bg-slate-50">
+					<div class="flex h-full w-full items-center justify-center bg-ink-50">
 						<svg
-							class="h-20 w-20 text-slate-200"
+							class="h-20 w-20 text-ink-200"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -223,12 +228,13 @@
 				<div class="absolute top-4 left-4 flex gap-2">
 					{#if project.is_new}
 						<span
-							class="rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white shadow-md"
+							class="rounded-full bg-cat-2-500 px-3 py-1 text-xs font-bold text-on-accent shadow-md"
 							>Новинка</span
 						>
 					{/if}
 					{#if project.is_featured}
-						<span class="rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white shadow-md"
+						<span
+							class="rounded-full bg-cat-1-500 px-3 py-1 text-xs font-bold text-on-accent shadow-md"
 							>Хит</span
 						>
 					{/if}
@@ -245,8 +251,8 @@
 							aria-label={`Выбрать изображение ${index + 1}`}
 							class="relative aspect-4/3 overflow-hidden rounded-xl border-2 transition-all {selectedImageIndex ===
 							index
-								? 'border-sky-500'
-								: 'border-transparent hover:border-slate-200'}"
+								? 'border-link-500'
+								: 'border-transparent hover:border-ink-200'}"
 						>
 							<img src={image.url} alt="" class="h-full w-full object-cover" />
 						</button>
@@ -258,18 +264,18 @@
 		<!-- Информация -->
 		<div class="mt-8 lg:mt-0">
 			<!-- Хлебные крошки -->
-			<nav class="mb-6 flex items-center gap-2 text-sm text-slate-400">
-				<a href="/" class="hover:text-slate-600">Главная</a>
+			<nav class="mb-6 flex items-center gap-2 text-sm text-ink-400">
+				<a href="/" class="hover:text-ink-600">Главная</a>
 				<span>/</span>
-				<a href="/mebel" class="hover:text-slate-600">Мебель</a>
+				<a href="/mebel" class="hover:text-ink-600">Мебель</a>
 				{#if category.slug}
 					<span>/</span>
-					<a href="/mebel/{category.slug}" class="hover:text-slate-600">{category.value}</a>
+					<a href="/mebel/{category.slug}" class="hover:text-ink-600">{category.value}</a>
 				{/if}
 			</nav>
 
 			<div class="flex items-start justify-between gap-4">
-				<h1 class="text-3xl font-bold text-slate-900 sm:text-4xl">
+				<h1 class="text-3xl text-ink-900 sm:text-4xl">
 					{project.value}
 				</h1>
 				{#if isAdmin}
@@ -278,10 +284,15 @@
 						onclick={openEditPanel}
 						title="Редактировать проект"
 						aria-label="Редактировать проект"
-						class="shrink-0 mt-1 flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 ring-1 ring-amber-200 transition-all hover:bg-amber-100 hover:ring-amber-300"
+						class="mt-1 flex shrink-0 items-center gap-1.5 rounded-lg bg-cat-1-50 px-3 py-2 text-xs font-semibold text-cat-1-700 ring-1 ring-cat-1-200 transition-all hover:bg-cat-1-100 hover:ring-cat-1-300"
 					>
 						<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+							/>
 						</svg>
 						Редактировать
 					</button>
@@ -291,13 +302,13 @@
 			<!-- Кнопки -->
 			<div class="mt-8 flex flex-col gap-4 sm:flex-row">
 				<button
-					class="flex-1 rounded-xl bg-sky-500 px-8 py-4 font-bold text-white shadow-lg shadow-sky-200 transition-all hover:bg-sky-600 hover:shadow-xl"
+					class="flex-1 rounded-xl bg-link-500 px-8 py-4 font-bold text-on-accent shadow-lg shadow-link-200 transition-all hover:bg-link-600 hover:shadow-xl"
 				>
 					Создать проект и узнать цену
 				</button>
 				<a
 					href="tel:+79154000020"
-					class="flex items-center justify-center gap-2 rounded-xl border-2 border-slate-100 px-8 py-4 font-bold text-slate-700 transition-all hover:border-sky-500 hover:text-sky-600"
+					class="flex items-center justify-center gap-2 rounded-xl border-2 border-ink-100 px-8 py-4 font-bold text-ink-700 transition-all hover:border-link-500 hover:text-link-600"
 				>
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -314,10 +325,10 @@
 			<!-- Особенности -->
 			<div class="mt-10 grid grid-cols-2 gap-4">
 				<div
-					class="flex items-center gap-3 rounded-2xl border border-slate-50 bg-white p-4 shadow-sm"
+					class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
 				>
 					<div
-						class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-cat-2-50 text-cat-2-600"
 					>
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
@@ -329,14 +340,16 @@
 						</svg>
 					</div>
 					<div class="text-sm">
-						<div class="font-bold text-slate-900">Бесплатный замер</div>
-						<div class="text-slate-500">Выезд специалиста</div>
+						<div class="font-bold text-ink-900">Бесплатный замер</div>
+						<div class="text-ink-500">Выезд специалиста</div>
 					</div>
 				</div>
 				<div
-					class="flex items-center gap-3 rounded-2xl border border-slate-50 bg-white p-4 shadow-sm"
+					class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
 				>
-					<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-link-50 text-link-600"
+					>
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
 								stroke-linecap="round"
@@ -347,15 +360,15 @@
 						</svg>
 					</div>
 					<div class="text-sm">
-						<div class="font-bold text-slate-900">Гарантия 5 лет</div>
-						<div class="text-slate-500">На все изделия</div>
+						<div class="font-bold text-ink-900">Гарантия 5 лет</div>
+						<div class="text-ink-500">На все изделия</div>
 					</div>
 				</div>
 				<div
-					class="flex items-center gap-3 rounded-2xl border border-slate-50 bg-white p-4 shadow-sm"
+					class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
 				>
 					<div
-						class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600"
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-cat-1-50 text-cat-1-600"
 					>
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
@@ -367,15 +380,15 @@
 						</svg>
 					</div>
 					<div class="text-sm">
-						<div class="font-bold text-slate-900">Доставка и монтаж</div>
-						<div class="text-slate-500">Установка под ключ</div>
+						<div class="font-bold text-ink-900">Доставка и монтаж</div>
+						<div class="text-ink-500">Установка под ключ</div>
 					</div>
 				</div>
 				<div
-					class="flex items-center gap-3 rounded-2xl border border-slate-50 bg-white p-4 shadow-sm"
+					class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
 				>
 					<div
-						class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600"
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-cat-10-50 text-cat-10-600"
 					>
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
@@ -387,8 +400,8 @@
 						</svg>
 					</div>
 					<div class="text-sm">
-						<div class="font-bold text-slate-900">Рассрочка 0%</div>
-						<div class="text-slate-500">До 12 месяцев</div>
+						<div class="font-bold text-ink-900">Рассрочка 0%</div>
+						<div class="text-ink-500">До 12 месяцев</div>
 					</div>
 				</div>
 			</div>
@@ -399,50 +412,59 @@
 <!-- Edit Panel -->
 {#if isEditPanelOpen}
 	<div
-		class="fixed inset-0 z-[90] bg-slate-950/40 backdrop-blur-sm"
+		class="fixed inset-0 z-[90] bg-ink-950/40 backdrop-blur-sm"
 		onclick={() => (isEditPanelOpen = false)}
 		role="presentation"
 	></div>
 	<aside
-		class="fixed right-0 top-0 z-[91] flex h-full w-full max-w-md flex-col bg-white shadow-2xl"
+		class="fixed top-0 right-0 z-[91] flex h-full w-full max-w-md flex-col bg-surface-raised shadow-2xl"
 		in:fly={{ x: 420, duration: 350, easing: cubicOut }}
 	>
 		<!-- Header -->
-		<div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-			<h2 class="text-lg font-bold text-slate-900">Редактировать проект</h2>
+		<div class="flex items-center justify-between border-b border-ink-100 px-6 py-4">
+			<h2 class="text-lg text-ink-900">Редактировать проект</h2>
 			<button
 				type="button"
 				onclick={() => (isEditPanelOpen = false)}
 				aria-label="Закрыть"
-				class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+				class="flex h-8 w-8 items-center justify-center rounded-full text-ink-400 transition-colors hover:bg-ink-100 hover:text-ink-600"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
 				</svg>
 			</button>
 		</div>
 
 		<!-- Form -->
-		<div class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+		<div class="flex-1 space-y-5 overflow-y-auto px-6 py-5">
 			<!-- Название -->
 			<div>
-				<label for="ep-value" class="mb-1.5 block text-sm font-semibold text-slate-700">Название проекта *</label>
+				<label for="ep-value" class="mb-1.5 block text-sm font-semibold text-ink-700"
+					>Название проекта *</label
+				>
 				<input
 					id="ep-value"
 					type="text"
 					bind:value={editForm.value}
 					placeholder="Название проекта"
-					class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
+					class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 				/>
 			</div>
 
 			<!-- Категория -->
 			<div>
-				<label for="ep-category" class="mb-1.5 block text-sm font-semibold text-slate-700">Категория *</label>
+				<label for="ep-category" class="mb-1.5 block text-sm font-semibold text-ink-700"
+					>Категория *</label
+				>
 				<select
 					id="ep-category"
 					bind:value={editForm.category_id}
-					class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all bg-white"
+					class="w-full rounded-xl border border-ink-200 bg-surface-raised px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 				>
 					{#each categories as cat}
 						<option value={cat.id}>{cat.value}</option>
@@ -452,90 +474,110 @@
 
 			<!-- Краткое описание -->
 			<div>
-				<label for="ep-short-desc" class="mb-1.5 block text-sm font-semibold text-slate-700">Краткое описание</label>
+				<label for="ep-short-desc" class="mb-1.5 block text-sm font-semibold text-ink-700"
+					>Краткое описание</label
+				>
 				<input
 					id="ep-short-desc"
 					type="text"
 					bind:value={editForm.short_description}
 					placeholder="Краткое описание для карточки"
-					class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
+					class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 				/>
 			</div>
 
 			<!-- Полное описание -->
 			<div>
-				<label for="ep-desc" class="mb-1.5 block text-sm font-semibold text-slate-700">Полное описание</label>
+				<label for="ep-desc" class="mb-1.5 block text-sm font-semibold text-ink-700"
+					>Полное описание</label
+				>
 				<textarea
 					id="ep-desc"
 					bind:value={editForm.description}
 					rows="5"
 					placeholder="Подробное описание проекта"
-					class="w-full resize-none rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
+					class="w-full resize-none rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 				></textarea>
 			</div>
 
 			<!-- Цены -->
 			<div class="grid grid-cols-2 gap-4">
 				<div>
-					<label for="ep-price" class="mb-1.5 block text-sm font-semibold text-slate-700">Цена, ₽</label>
+					<label for="ep-price" class="mb-1.5 block text-sm font-semibold text-ink-700"
+						>Цена, ₽</label
+					>
 					<input
 						id="ep-price"
 						type="number"
 						bind:value={editForm.price}
 						min="0"
 						placeholder="0"
-						class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
+						class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 					/>
 				</div>
 				<div>
-					<label for="ep-old-price" class="mb-1.5 block text-sm font-semibold text-slate-700">Старая цена, ₽</label>
+					<label for="ep-old-price" class="mb-1.5 block text-sm font-semibold text-ink-700"
+						>Старая цена, ₽</label
+					>
 					<input
 						id="ep-old-price"
 						type="number"
 						bind:value={editForm.old_price}
 						min="0"
 						placeholder="0"
-						class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition-all"
+						class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 					/>
 				</div>
 			</div>
 
 			<!-- Флаги -->
-			<div class="rounded-xl border border-slate-100 bg-slate-50 p-4 space-y-3">
-				<p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Параметры</p>
-				<label class="flex items-center gap-3 cursor-pointer">
-					<input type="checkbox" bind:checked={editForm.is_active} class="h-4 w-4 rounded text-sky-500" />
-					<span class="text-sm font-medium text-slate-700">Активен</span>
+			<div class="space-y-3 rounded-xl border border-ink-100 bg-ink-50 p-4">
+				<p class="text-xs font-semibold tracking-wide text-ink-400 uppercase">Параметры</p>
+				<label class="flex cursor-pointer items-center gap-3">
+					<input
+						type="checkbox"
+						bind:checked={editForm.is_active}
+						class="h-4 w-4 rounded text-link-500"
+					/>
+					<span class="text-sm font-medium text-ink-700">Активен</span>
 				</label>
-				<label class="flex items-center gap-3 cursor-pointer">
-					<input type="checkbox" bind:checked={editForm.is_new} class="h-4 w-4 rounded text-sky-500" />
-					<span class="text-sm font-medium text-slate-700">Новинка</span>
+				<label class="flex cursor-pointer items-center gap-3">
+					<input
+						type="checkbox"
+						bind:checked={editForm.is_new}
+						class="h-4 w-4 rounded text-link-500"
+					/>
+					<span class="text-sm font-medium text-ink-700">Новинка</span>
 				</label>
-				<label class="flex items-center gap-3 cursor-pointer">
-					<input type="checkbox" bind:checked={editForm.is_featured} class="h-4 w-4 rounded text-sky-500" />
-					<span class="text-sm font-medium text-slate-700">Хит (избранный)</span>
+				<label class="flex cursor-pointer items-center gap-3">
+					<input
+						type="checkbox"
+						bind:checked={editForm.is_featured}
+						class="h-4 w-4 rounded text-link-500"
+					/>
+					<span class="text-sm font-medium text-ink-700">Хит (избранный)</span>
 				</label>
 			</div>
 
 			<!-- Ошибка / успех -->
 			{#if saveError}
-				<div class="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
+				<div class="rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-700 ring-1 ring-brand-200">
 					⚠️ {saveError}
 				</div>
 			{/if}
 			{#if saveSuccess}
-				<div class="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700 ring-1 ring-emerald-200">
+				<div class="rounded-xl bg-cat-2-50 px-4 py-3 text-sm text-cat-2-700 ring-1 ring-cat-2-200">
 					✅ Сохранено! Обновляем страницу…
 				</div>
 			{/if}
 		</div>
 
 		<!-- Footer buttons -->
-		<div class="flex gap-3 border-t border-slate-100 px-6 py-4">
+		<div class="flex gap-3 border-t border-ink-100 px-6 py-4">
 			<button
 				type="button"
 				onclick={() => (isEditPanelOpen = false)}
-				class="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-600 transition-all hover:bg-slate-50"
+				class="flex-1 rounded-xl border border-ink-200 py-3 text-sm font-semibold text-ink-600 transition-all hover:bg-ink-50"
 			>
 				Отмена
 			</button>
@@ -543,7 +585,7 @@
 				type="button"
 				onclick={saveProject}
 				disabled={isSaving || !editForm.value}
-				class="flex-1 rounded-xl bg-sky-500 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-200 transition-all hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed"
+				class="flex-1 rounded-xl bg-link-500 py-3 text-sm font-semibold text-on-accent shadow-lg shadow-link-200 transition-all hover:bg-link-600 disabled:cursor-not-allowed disabled:opacity-50"
 			>
 				{isSaving ? 'Сохраняем…' : 'Сохранить'}
 			</button>
@@ -554,7 +596,7 @@
 <!-- Lightbox -->
 {#if isLightboxOpen}
 	<div
-		class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl"
+		class="fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/95 backdrop-blur-xl"
 		onclick={(e) => {
 			if (e.target === e.currentTarget) isLightboxOpen = false;
 		}}
@@ -568,7 +610,9 @@
 		tabindex="-1"
 	>
 		<div class="relative max-h-screen max-w-screen-xl p-4">
-			<div class="relative flex items-center justify-center w-[90vw] h-[85vh] max-w-5xl overflow-hidden rounded-xl bg-slate-900/50 shadow-2xl">
+			<div
+				class="relative flex h-[85vh] w-[90vw] max-w-5xl items-center justify-center overflow-hidden rounded-xl bg-ink-900/50 shadow-2xl"
+			>
 				<img
 					src={images[selectedImageIndex].url}
 					alt=""
@@ -584,7 +628,7 @@
 					onclick={() => selectedImageIndex--}
 					aria-label="Предыдущее изображение"
 					title="Назад"
-					class="absolute top-1/2 left-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
+					class="absolute top-1/2 left-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-on-dark/10 text-on-dark backdrop-blur hover:bg-on-dark/20"
 				>
 					<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -603,7 +647,7 @@
 					onclick={() => selectedImageIndex++}
 					aria-label="Следующее изображение"
 					title="Вперёд"
-					class="absolute top-1/2 right-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
+					class="absolute top-1/2 right-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-on-dark/10 text-on-dark backdrop-blur hover:bg-on-dark/20"
 				>
 					<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -622,7 +666,7 @@
 				onclick={() => (isLightboxOpen = false)}
 				aria-label="Закрыть галерею"
 				title="Закрыть"
-				class="absolute top-8 right-8 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur hover:bg-white/20"
+				class="absolute top-8 right-8 flex h-12 w-12 items-center justify-center rounded-full bg-on-dark/10 text-on-dark backdrop-blur hover:bg-on-dark/20"
 			>
 				<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path

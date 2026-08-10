@@ -20,7 +20,7 @@
 	}
 </script>
 
-<section class="bg-slate-900 px-6 py-20 text-center text-white">
+<section class="bg-ink-900 px-6 py-20 text-center text-on-dark">
 	<div class="mx-auto max-w-2xl">
 		<EditableField
 			fieldKey="CTA.title"
@@ -31,7 +31,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl font-bold sm:text-4xl">{displayValue}</h2>
+				<h2 class="text-3xl sm:text-4xl">{displayValue}</h2>
 			{/snippet}
 		</EditableField>
 
@@ -46,7 +46,7 @@
 			{#snippet children(displayValue)}
 				<a
 					href="/contact"
-					class="mt-8 inline-block rounded-xl bg-white px-8 py-4 text-base font-semibold text-slate-900 shadow-lg transition hover:bg-slate-100"
+					class="mt-8 inline-block rounded-xl bg-surface-raised px-8 py-4 text-base font-semibold text-ink-900 shadow-lg transition hover:bg-ink-100"
 				>
 					{displayValue}
 				</a>

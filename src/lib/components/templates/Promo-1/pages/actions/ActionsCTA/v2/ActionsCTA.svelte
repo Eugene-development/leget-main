@@ -32,15 +32,15 @@
 >
 	<!-- Глубокий фоновый градиент -->
 	{#if !isLight}
-		<div class="absolute inset-0 bg-linear-to-br from-slate-950 via-slate-900 to-slate-950"></div>
+		<div class="absolute inset-0 bg-linear-to-br from-ink-950 via-ink-900 to-ink-950"></div>
 	{/if}
 	<!-- Тёплые световые пятна -->
 	<div
-		class="absolute -top-24 -left-24 size-96 rounded-full bg-amber-500/15 blur-[120px]"
+		class="absolute -top-24 -left-24 size-96 rounded-full bg-cat-1-500/15 blur-[120px]"
 		aria-hidden="true"
 	></div>
 	<div
-		class="absolute -right-24 -bottom-24 size-112 rounded-full bg-rose-500/10 blur-[130px]"
+		class="absolute -right-24 -bottom-24 size-112 rounded-full bg-cat-6-500/10 blur-[130px]"
 		aria-hidden="true"
 	></div>
 	<!-- Тонкая декоративная сетка -->
@@ -53,20 +53,20 @@
 	<div class="relative mx-auto max-w-6xl px-6 lg:px-8">
 		<!-- Стеклянная панель с градиентной рамкой -->
 		<div
-			class="relative rounded-4xl bg-linear-to-br from-amber-400/40 via-white/10 to-rose-500/30 p-px shadow-2xl shadow-black/40"
+			class="relative rounded-4xl bg-linear-to-br from-cat-1-400/40 via-on-accent/10 to-cat-6-500/30 p-px shadow-2xl shadow-scrim/40"
 		>
 			<div
 				class="relative overflow-hidden rounded-[calc(2rem-1px)] {isLight
-					? 'bg-white/80'
-					: 'bg-slate-900/80'} px-6 py-14 backdrop-blur-xl sm:px-12 sm:py-16 lg:px-16"
+					? 'bg-surface-raised/80'
+					: 'bg-ink-900/80'} px-6 py-14 backdrop-blur-xl sm:px-12 sm:py-16 lg:px-16"
 			>
 				<!-- Внутреннее золотое свечение сверху -->
 				<div
-					class="absolute inset-x-0 -top-px h-px bg-linear-to-r from-transparent via-amber-300/70 to-transparent"
+					class="absolute inset-x-0 -top-px h-px bg-linear-to-r from-transparent via-cat-1-300/70 to-transparent"
 					aria-hidden="true"
 				></div>
 				<div
-					class="absolute -top-16 left-1/2 h-32 w-2/3 -translate-x-1/2 rounded-full bg-amber-400/20 blur-3xl"
+					class="absolute -top-16 left-1/2 h-32 w-2/3 -translate-x-1/2 rounded-full bg-cat-1-400/20 blur-3xl"
 					aria-hidden="true"
 				></div>
 
@@ -75,9 +75,9 @@
 					<div class="text-center lg:text-left">
 						<!-- Бейдж-надголовок -->
 						<span
-							class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-sm font-semibold {isLight
-								? 'text-amber-600'
-								: 'text-amber-300'} backdrop-blur-sm"
+							class="inline-flex items-center gap-2 rounded-full border border-cat-1-400/30 bg-cat-1-400/10 px-4 py-1.5 text-sm font-semibold {isLight
+								? 'text-cat-1-600'
+								: 'text-cat-1-300'} backdrop-blur-sm"
 						>
 							<svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 								<path
@@ -97,7 +97,7 @@
 						>
 							{#snippet children(displayValue)}
 								<h2
-									class="text-3xl font-semibold tracking-tight text-balance text-white sm:text-4xl lg:text-5xl"
+									class="text-3xl tracking-tight text-balance text-on-dark sm:text-4xl lg:text-5xl"
 								>
 									{displayValue}
 								</h2>
@@ -134,11 +134,11 @@
 							{#snippet children(displayValue)}
 								<a
 									href="/contact"
-									class="group p1-title relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-linear-to-r from-amber-400 to-amber-500 px-8 py-5 text-base font-semibold shadow-lg shadow-amber-500/25 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+									class="group p1-title relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-linear-to-r from-cat-1-400 to-cat-1-500 px-8 py-5 text-base font-semibold shadow-lg shadow-cat-1-500/25 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cat-1-500/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cat-1-300"
 								>
 									<!-- Блик при наведении -->
 									<span
-										class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full"
+										class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-on-dark/40 to-transparent transition-transform duration-700 group-hover:translate-x-full"
 										aria-hidden="true"
 									></span>
 									<span class="relative">{displayValue}</span>
@@ -172,12 +172,12 @@
 								{#if displayValue}
 									<a
 										href="tel:{displayValue}"
-										class="group inline-flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-amber-400/40 hover:bg-white/10"
+										class="group inline-flex items-center gap-4 rounded-2xl border border-on-dark/10 bg-on-dark/5 px-6 py-4 text-on-dark backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-cat-1-400/40 hover:bg-on-dark/10"
 									>
 										<span
-											class="group-hover:p1-title flex size-11 items-center justify-center rounded-full bg-amber-400/15 {isLight
-												? 'text-amber-600'
-												: 'text-amber-300'} ring-1 ring-amber-400/20 transition-colors duration-300 group-hover:bg-amber-400"
+											class="group-hover:p1-title flex size-11 items-center justify-center rounded-full bg-cat-1-400/15 {isLight
+												? 'text-cat-1-600'
+												: 'text-cat-1-300'} ring-1 ring-cat-1-400/20 transition-colors duration-300 group-hover:bg-cat-1-400"
 										>
 											<svg
 												class="size-5"
@@ -209,9 +209,9 @@
 						>
 							<span class="relative flex size-2">
 								<span
-									class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75"
+									class="absolute inline-flex size-full animate-ping rounded-full bg-cat-2-400 opacity-75"
 								></span>
-								<span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
+								<span class="relative inline-flex size-2 rounded-full bg-cat-2-500"></span>
 							</span>
 							Ответим в течение дня · Консультация бесплатна
 						</p>

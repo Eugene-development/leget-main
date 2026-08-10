@@ -43,15 +43,15 @@ export const ct = {
 		dashOnLight: 'p1-accent-bg h-px w-8 opacity-60'
 	},
 
-	/** Заголовки. Одна шкала и одно начертание для всех версий. */
+	/** Заголовки. Одна шкала для всех версий; начертание — за дизайн-системой. */
 	title: {
 		h1OnInk:
-			'text-4xl leading-[1.05] font-semibold tracking-[-0.035em] p1-title text-pretty sm:text-5xl lg:text-6xl',
+			'text-4xl leading-[1.05] tracking-[-0.035em] p1-title text-pretty sm:text-5xl lg:text-6xl',
 		h2OnInk:
-			'text-3xl leading-[1.08] font-semibold tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
+			'text-3xl leading-[1.08] tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
 		h2OnLight:
-			'text-3xl leading-[1.08] font-semibold tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
-		h3OnLight: 'p1-title text-xl font-semibold tracking-[-0.01em]'
+			'text-3xl leading-[1.08] tracking-[-0.03em] p1-title text-pretty sm:text-4xl lg:text-5xl',
+		h3OnLight: 'p1-title p1-title-sub text-xl'
 	},
 
 	/** Основной текст. */
@@ -65,12 +65,12 @@ export const ct = {
 	/** Декоративные акценты: волосяная линия сверху секции и ромбовидный разделитель. */
 	accent: {
 		toplineOnInk:
-			'absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent via-red-400/70 to-transparent',
+			'absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent via-brand-400/70 to-transparent',
 		toplineOnLight:
-			'absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent via-red-500/40 to-transparent',
+			'absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent via-brand-500/40 to-transparent',
 		hairlineOnCard:
-			'pointer-events-none absolute -top-px left-1/2 h-px w-24 -translate-x-1/2 bg-red-500/70',
-		diamond: 'size-1.5 rotate-45 border border-red-500/70',
+			'pointer-events-none absolute -top-px left-1/2 h-px w-24 -translate-x-1/2 bg-brand-500/70',
+		diamond: 'size-1.5 rotate-45 border border-brand-500/70',
 		ruleOnInk: 'p1-line h-px flex-1',
 		ruleOnLight: 'p1-line h-px flex-1'
 	},
@@ -81,26 +81,26 @@ export const ct = {
 		onLight: 'p1-card rounded-3xl border sm:rounded-4xl',
 		/** Тёмная панель-акцент внутри светлой секции. */
 		inkPanel:
-			'rounded-3xl border border-white/10 bg-[#09090b] shadow-[0_40px_100px_-50px_rgba(15,23,42,0.7)] sm:rounded-4xl',
+			'rounded-3xl border border-on-dark/10 bg-surface-inverse shadow-[0_40px_100px_-50px_rgba(15,23,42,0.7)] sm:rounded-4xl',
 		/** Небольшая карточка-плитка (каналы связи, пункты списка). */
 		tileOnLight:
-			'p1-card group relative overflow-hidden rounded-3xl border p-8 transition duration-300 hover:border-red-600/40 motion-safe:hover:-translate-y-1'
+			'p1-card group relative overflow-hidden rounded-3xl border p-8 transition duration-300 hover:border-brand-600/40 motion-safe:hover:-translate-y-1'
 	},
 
 	/** Иконка-плитка под акцентным цветом. */
 	iconTile:
-		'flex size-14 shrink-0 items-center justify-center rounded-2xl bg-red-600 text-white shadow-[0_16px_40px_-18px_rgba(220,38,38,0.85)]',
+		'flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-600 text-on-accent shadow-[0_16px_40px_-18px_rgba(220,38,38,0.85)]',
 
 	/** Кнопки. Основная — красная «пилюля», вспомогательная — контурная. */
 	btn: {
 		primary:
-			'group inline-flex items-center justify-center gap-2.5 rounded-full bg-red-600 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(220,38,38,0.9)] transition duration-300 hover:bg-red-500 hover:shadow-[0_22px_55px_-16px_rgba(220,38,38,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-400 motion-safe:hover:-translate-y-0.5',
+			'group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(220,38,38,0.9)] transition duration-300 hover:bg-brand-500 hover:shadow-[0_22px_55px_-16px_rgba(220,38,38,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5',
 		ghostOnInk:
-			'group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 motion-safe:hover:-translate-y-0.5',
+			'group inline-flex items-center justify-center gap-2.5 rounded-full border border-on-dark/15 bg-on-dark/5 px-7 py-3.5 text-sm font-semibold text-on-dark backdrop-blur-sm transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5',
 		ghostOnLight:
-			'group inline-flex items-center justify-center gap-2.5 rounded-full border border-slate-900/15 bg-white px-7 py-3.5 text-sm font-semibold text-slate-900 transition duration-300 hover:border-slate-900/30 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-400 motion-safe:hover:-translate-y-0.5',
+			'group inline-flex items-center justify-center gap-2.5 rounded-full border border-ink-900/15 bg-surface-raised px-7 py-3.5 text-sm font-semibold text-ink-900 transition duration-300 hover:border-ink-900/30 hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink-400 motion-safe:hover:-translate-y-0.5',
 		/** Текстовая ссылка-действие внутри карточки. */
-		link: 'inline-flex items-center gap-2 text-lg font-semibold text-red-600 transition hover:text-red-500'
+		link: 'inline-flex items-center gap-2 text-lg font-semibold text-brand-600 transition hover:text-brand-500'
 	},
 
 	/** Стрелка «→» с общим hover-сдвигом. */

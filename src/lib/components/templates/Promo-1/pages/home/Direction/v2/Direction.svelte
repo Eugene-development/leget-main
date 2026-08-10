@@ -73,12 +73,12 @@
 			/>
 			<!-- Кинематографичный оверлей с мягким цветным градиентом при ховере -->
 			<div
-				class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 transition-colors duration-500 group-hover:from-indigo-950/80"
+				class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-transparent opacity-90 transition-colors duration-500 group-hover:from-cat-4-950/80"
 			></div>
 
 			<!-- Декоративная контурная рамка сзади -->
 			<div
-				class="p1-border pointer-events-none absolute inset-4 rounded-2xl border transition-colors duration-500 group-hover:border-sky-500/20"
+				class="p1-border pointer-events-none absolute inset-4 rounded-2xl border transition-colors duration-500 group-hover:border-link-500/20"
 			></div>
 
 			<!-- Текстовое наполнение -->
@@ -87,13 +87,13 @@
 				<span
 					class="p1-border p1-card p1-body inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md"
 				>
-					<span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+					<span class="h-1.5 w-1.5 rounded-full bg-link-400"></span>
 					{dir.badge}
 				</span>
 
 				<!-- Заголовок -->
 				<h3
-					class="p1-title font-display mt-4 text-3xl leading-none font-extrabold tracking-tight transition-colors duration-300 text-shadow-lg group-hover:text-sky-300 sm:text-4xl"
+					class="p1-title p1-title-sub font-display mt-4 text-3xl leading-none tracking-tight transition-colors duration-300 text-shadow-lg group-hover:text-link-300 sm:text-4xl"
 				>
 					{dir.title}
 				</h3>
@@ -101,7 +101,7 @@
 				<!-- Кнопка -->
 				<a
 					href={dir.buttonHref}
-					class="mt-8 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 px-6 py-4.5 text-sm font-bold tracking-wider text-white uppercase shadow-xl transition-all duration-300 hover:scale-[1.03] hover:shadow-sky-500/20 active:scale-[0.98]"
+					class="mt-8 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-link-500 to-cat-4-600 px-6 py-4.5 text-sm font-bold tracking-wider text-on-accent uppercase shadow-xl transition-all duration-300 hover:scale-[1.03] hover:shadow-link-500/20 active:scale-[0.98]"
 				>
 					<span>{dir.buttonText}</span>
 					<svg

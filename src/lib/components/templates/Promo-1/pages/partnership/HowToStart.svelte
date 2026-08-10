@@ -78,7 +78,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl font-bold">{displayValue}</h2>
+					<h2 class="p1-title text-3xl">{displayValue}</h2>
 				{/snippet}
 			</EditableField>
 			<EditableField
@@ -99,14 +99,14 @@
 			{#each steps as step, i}
 				<div class="relative text-center">
 					<div
-						class="mx-auto flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white shadow-lg
+						class="mx-auto flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-on-dark shadow-lg
 						{step.final
-							? 'bg-linear-to-br from-emerald-500 to-teal-600 shadow-emerald-500/25'
-							: 'bg-linear-to-br from-red-500 to-red-600 shadow-red-500/25'}"
+							? 'bg-linear-to-br from-cat-2-500 to-cat-9-600 shadow-cat-2-500/25'
+							: 'bg-linear-to-br from-brand-500 to-brand-600 shadow-brand-500/25'}"
 					>
 						{step.number}
 					</div>
-					<h3 class="p1-title mt-6 text-lg font-semibold">
+					<h3 class="p1-title p1-title-sub mt-6 text-lg">
 						<EditableField
 							fieldKey="HowToStart.{i}.title"
 							label="Заголовок"
@@ -132,7 +132,7 @@
 					</p>
 					{#if !step.final}
 						<div
-							class="absolute top-8 right-0 hidden h-0.5 w-full bg-linear-to-r from-red-200 to-transparent lg:block lg:w-1/2 lg:translate-x-1/2"
+							class="absolute top-8 right-0 hidden h-0.5 w-full bg-linear-to-r from-brand-200 to-transparent lg:block lg:w-1/2 lg:translate-x-1/2"
 						></div>
 					{/if}
 				</div>

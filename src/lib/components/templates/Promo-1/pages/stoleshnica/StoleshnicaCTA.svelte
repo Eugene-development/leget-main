@@ -21,9 +21,11 @@
 	}
 </script>
 
-<div class="mebel-container mb-16 mt-12">
-	<div class="rounded-2xl bg-linear-to-r from-amber-500 to-orange-600 p-8 text-center text-white sm:p-12">
-		<h2 class="text-2xl font-bold sm:text-3xl">
+<div class="mebel-container mt-12 mb-16">
+	<div
+		class="rounded-2xl bg-linear-to-r from-cat-1-500 to-cat-8-600 p-8 text-center text-on-accent sm:p-12"
+	>
+		<h2 class="text-2xl sm:text-3xl">
 			<EditableField
 				fieldKey="StoleshnicaCTA.title"
 				label="Заголовок CTA"
@@ -36,11 +38,14 @@
 			</EditableField>
 		</h2>
 
-		<p class="mx-auto mt-3 max-w-md text-amber-100">
+		<p class="mx-auto mt-3 max-w-md text-cat-1-100">
 			<EditableField
 				fieldKey="StoleshnicaCTA.description"
 				label="Описание CTA"
-				value={String(data.description || 'Оставьте заявку и получите расчёт стоимости с учётом всех вырезов и монтажа')}
+				value={String(
+					data.description ||
+						'Оставьте заявку и получите расчёт стоимости с учётом всех вырезов и монтажа'
+				)}
 				{isEditable}
 				inline
 				multiline
@@ -51,7 +56,9 @@
 		</p>
 
 		<div class="mt-6 flex flex-wrap justify-center gap-4">
-			<button class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-medium text-amber-600 transition-all hover:bg-amber-50">
+			<button
+				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-cat-1-600 transition-all hover:bg-cat-1-50"
+			>
 				<EditableField
 					fieldKey="StoleshnicaCTA.buttonText"
 					label="Текст кнопки"
@@ -66,10 +73,15 @@
 
 			<a
 				href={data.phone ? `tel:${data.phone}` : 'tel:+79999000000'}
-				class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-6 py-3 font-medium text-white backdrop-blur transition-all hover:bg-white/20"
+				class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+					/>
 				</svg>
 				Позвонить
 			</a>

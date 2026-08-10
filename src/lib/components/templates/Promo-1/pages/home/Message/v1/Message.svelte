@@ -86,7 +86,7 @@
 							<div class="relative">
 								{#if displayValue}
 									<div
-										class="absolute -inset-4 rounded-3xl bg-linear-to-r from-sky-100 to-cyan-100 opacity-50 blur-xl"
+										class="absolute -inset-4 rounded-3xl bg-linear-to-r from-link-100 to-cat-5-100 opacity-50 blur-xl"
 									></div>
 									<ImageFallback
 										src={displayValue ||
@@ -143,7 +143,7 @@
 							{/snippet}
 						</EditableField>
 					</blockquote>
-					<div class="mx-auto mt-8 h-px w-24 bg-linear-to-r from-sky-300 to-cyan-300"></div>
+					<div class="mx-auto mt-8 h-px w-24 bg-linear-to-r from-link-300 to-cat-5-300"></div>
 				</figure>
 			</div>
 		</div>
@@ -153,18 +153,18 @@
 			<div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
 				{#each cards as card, i}
 					<div
-						class="message-card group p1-card p1-border relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:ring-slate-300"
+						class="message-card group p1-card p1-border relative overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:ring-ink-300"
 					>
 						<div
 							class="absolute -top-4 -right-4 h-24 w-24 rounded-full transition-transform duration-500 group-hover:scale-125 {isLight
-								? 'bg-sky-50/80'
-								: 'bg-sky-500/10'}"
+								? 'bg-link-50/80'
+								: 'bg-link-500/10'}"
 						></div>
 						<div class="relative">
 							<div class="mb-4 size-24 overflow-hidden rounded-xl">
 								<ImageFallback src={card.image} alt={card.alt} class="h-full w-full object-cover" />
 							</div>
-							<h3 class="p1-title text-sm font-bold sm:text-base">
+							<h3 class="p1-title p1-title-sub text-sm sm:text-base">
 								<EditableField
 									fieldKey={`Message.cards.${i}.title`}
 									label="Заголовок"

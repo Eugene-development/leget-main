@@ -71,7 +71,10 @@
 				<EditableField
 					fieldKey="Offer.subtitle"
 					label="Подзаголовок"
-					value={String(data?.subtitle ?? 'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ')}
+					value={String(
+						data?.subtitle ??
+							'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('subtitle', v)}
@@ -86,8 +89,15 @@
 				<div class="yd-offer__includes">
 					{#each includes as item}
 						<div class="yd-offer__includes-item">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-								<polyline points="20 6 9 17 4 12"/>
+							<svg
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.5"
+							>
+								<polyline points="20 6 9 17 4 12" />
 							</svg>
 							<span>{item}</span>
 						</div>
@@ -107,9 +117,16 @@
 					>
 						{#snippet children(displayValue)}{displayValue}{/snippet}
 					</EditableField>
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-						<line x1="5" y1="12" x2="19" y2="12"/>
-						<polyline points="12 5 19 12 12 19"/>
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.5"
+					>
+						<line x1="5" y1="12" x2="19" y2="12" />
+						<polyline points="12 5 19 12 12 19" />
 					</svg>
 				</a>
 				<p class="yd-offer__note">Перезвоним в течение 15 минут</p>
@@ -180,8 +197,15 @@
 	}
 
 	@keyframes offer-pulse {
-		0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5); }
-		50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+		0%,
+		100% {
+			opacity: 1;
+			box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5);
+		}
+		50% {
+			opacity: 0.7;
+			box-shadow: 0 0 0 8px rgba(249, 115, 22, 0);
+		}
 	}
 
 	.yd-offer__title {

@@ -61,7 +61,10 @@
 		<EditableField
 			fieldKey="Hero.subtitle"
 			label="Подзаголовок"
-			value={String(data?.subtitle ?? 'Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект')}
+			value={String(
+				data?.subtitle ??
+					'Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект'
+			)}
 			{isEditable}
 			multiline
 			onSave={(v) => saveField('subtitle', v)}
@@ -86,9 +89,22 @@
 					{#snippet children(displayValue)}{displayValue}{/snippet}
 				</EditableField>
 			</a>
-			<a href={String(data?.secondaryHref ?? 'tel:+70000000000')} class="yd-hero__btn yd-hero__btn--secondary">
-				<svg class="yd-hero__phone-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-					<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+			<a
+				href={String(data?.secondaryHref ?? 'tel:+70000000000')}
+				class="yd-hero__btn yd-hero__btn--secondary"
+			>
+				<svg
+					class="yd-hero__phone-icon"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path
+						d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+					/>
 				</svg>
 				<EditableField
 					fieldKey="Hero.secondaryButton"
@@ -106,15 +122,36 @@
 		<!-- Мини-преимущества -->
 		<div class="yd-hero__mini-features">
 			<div class="yd-hero__mini-feature">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"><polyline points="20 6 9 17 4 12" /></svg
+				>
 				<span>Замер бесплатно</span>
 			</div>
 			<div class="yd-hero__mini-feature">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"><polyline points="20 6 9 17 4 12" /></svg
+				>
 				<span>Гарантия 5 лет</span>
 			</div>
 			<div class="yd-hero__mini-feature">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"><polyline points="20 6 9 17 4 12" /></svg
+				>
 				<span>Рассрочка 0%</span>
 			</div>
 		</div>
@@ -146,7 +183,8 @@
 	.yd-hero__pattern {
 		position: absolute;
 		inset: 0;
-		background-image: radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+		background-image:
+			radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
 			radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 40%),
 			radial-gradient(circle at 60% 80%, rgba(234, 179, 8, 0.05) 0%, transparent 40%);
 	}

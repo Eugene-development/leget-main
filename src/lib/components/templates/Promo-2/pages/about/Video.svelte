@@ -42,7 +42,7 @@
 				preload="metadata"
 			>
 				<source
-					src="{String(data?.src ?? 'https://storage.yandexcloud.net/zovrus/zov.mp4')}#t=3"
+					src="{String(data?.src ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4')}#t=3"
 					type="video/mp4"
 				/>
 			</video>

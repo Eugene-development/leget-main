@@ -53,7 +53,7 @@
 			<!-- Телефон -->
 			<div class="ct-item {ct.card.tileOnLight}">
 				<div
-					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-red-600/8 transition duration-300 group-hover:scale-150"
+					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-brand-600/8 transition duration-300 group-hover:scale-150"
 				></div>
 				<div class="relative">
 					<div class={ct.iconTile}>
@@ -134,7 +134,7 @@
 			<!-- Почта -->
 			<div class="ct-item ct-d1 {ct.card.tileOnLight}">
 				<div
-					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-red-600/8 transition duration-300 group-hover:scale-150"
+					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-brand-600/8 transition duration-300 group-hover:scale-150"
 				></div>
 				<div class="relative">
 					<div class={ct.iconTile}>
@@ -215,7 +215,7 @@
 			<!-- Онлайн-чат -->
 			<div class="ct-item ct-d2 {ct.card.tileOnLight}">
 				<div
-					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-red-600/8 transition duration-300 group-hover:scale-150"
+					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-brand-600/8 transition duration-300 group-hover:scale-150"
 				></div>
 				<div class="relative">
 					<div class={ct.iconTile}>
@@ -277,9 +277,9 @@
 								{displayValue}
 								<span class="relative flex size-2.5" aria-hidden="true">
 									<span
-										class="absolute inline-flex size-full animate-ping rounded-full bg-red-500 opacity-60 motion-reduce:animate-none"
+										class="absolute inline-flex size-full animate-ping rounded-full bg-brand-500 opacity-60 motion-reduce:animate-none"
 									></span>
-									<span class="relative inline-flex size-2.5 rounded-full bg-red-600"></span>
+									<span class="relative inline-flex size-2.5 rounded-full bg-brand-600"></span>
 								</span>
 							</p>
 						{/snippet}

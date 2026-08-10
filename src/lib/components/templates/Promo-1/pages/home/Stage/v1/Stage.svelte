@@ -85,12 +85,12 @@
 		alt="Интерьер с мебелью"
 		class="absolute inset-0 -z-20 h-full w-full object-cover"
 	/>
-	<div class="absolute inset-0 -z-10 bg-black/50"></div>
+	<div class="absolute inset-0 -z-10 bg-scrim/50"></div>
 
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
-		<div class="mx-auto max-w-2xl rounded-2xl bg-black/30 p-8 backdrop-blur-sm lg:mx-0">
+		<div class="mx-auto max-w-2xl rounded-2xl bg-scrim/30 p-8 backdrop-blur-sm lg:mx-0">
 			<span
-				class="inline-flex items-center gap-2 rounded-full bg-sky-500/20 px-4 py-1.5 text-sm font-medium text-sky-300"
+				class="inline-flex items-center gap-2 rounded-full bg-link-500/20 px-4 py-1.5 text-sm font-medium text-link-300"
 			>
 				<EditableField
 					fieldKey="Stage.badge"
@@ -113,7 +113,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="mt-4 text-4xl font-bold text-white sm:text-5xl">{displayValue}</h2>
+					<h2 class="mt-4 text-4xl text-on-dark sm:text-5xl">{displayValue}</h2>
 				{/snippet}
 			</EditableField>
 
@@ -130,7 +130,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mt-6 text-lg leading-relaxed text-slate-200">{displayValue}</p>
+					<p class="mt-6 text-lg leading-relaxed text-ink-200">{displayValue}</p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -140,11 +140,11 @@
 		>
 			{#each steps as step, i}
 				<div
-					class="group rounded-2xl bg-white/10 p-6 ring-1 ring-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
+					class="group rounded-2xl bg-on-dark/10 p-6 ring-1 ring-on-dark/20 backdrop-blur-sm transition-all duration-300 hover:bg-on-dark/15"
 				>
 					<div class="flex items-start gap-4">
 						<div
-							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-500 to-cyan-500 text-white"
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-link-500 to-cat-5-500 text-on-accent"
 						>
 							<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
@@ -156,7 +156,7 @@
 							</svg>
 						</div>
 						<div>
-							<h3 class="text-lg font-semibold text-white">
+							<h3 class="p1-title-sub text-lg text-on-dark">
 								<EditableField
 									fieldKey={`Stage.steps.${i}.title`}
 									label="Заголовок"
@@ -169,7 +169,7 @@
 									{#snippet children(displayValue)}{displayValue}{/snippet}
 								</EditableField>
 							</h3>
-							<p class="mt-2 text-sm text-slate-300">
+							<p class="mt-2 text-sm text-ink-300">
 								<EditableField
 									fieldKey={`Stage.steps.${i}.description`}
 									label="Описание"

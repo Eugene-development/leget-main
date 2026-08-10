@@ -71,13 +71,13 @@
 	Палитра — базовая тёмная шаблона (slate-950 + красный акцент), как у HeroMain.
 -->
 <section
-	class="nf-enter relative isolate flex min-h-screen items-center overflow-hidden bg-slate-950 py-24 sm:py-28"
+	class="nf-enter relative isolate flex min-h-screen items-center overflow-hidden bg-ink-950 py-24 sm:py-28"
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="nf-glow absolute -top-40 left-1/2 size-144 -translate-x-1/2 bg-red-500/20"></div>
-		<div class="nf-glow absolute -right-32 bottom-0 size-112 bg-red-500/10"></div>
+		<div class="nf-glow absolute -top-40 left-1/2 size-144 -translate-x-1/2 bg-brand-500/20"></div>
+		<div class="nf-glow absolute -right-32 bottom-0 size-112 bg-brand-500/10"></div>
 		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-red-500/50 to-transparent"
+			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-brand-500/50 to-transparent"
 		></div>
 	</div>
 
@@ -100,7 +100,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h1
-					class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-white sm:text-4xl lg:text-5xl"
+					class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-on-dark sm:text-4xl lg:text-5xl"
 				>
 					{displayValue}
 				</h1>
@@ -108,9 +108,9 @@
 		</EditableField>
 
 		<div class="nf-rule nf-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-			<span class="h-px flex-1 bg-white/15"></span>
-			<span class="size-1.5 rotate-45 border border-red-500/80"></span>
-			<span class="h-px flex-1 bg-white/15"></span>
+			<span class="h-px flex-1 bg-on-dark/15"></span>
+			<span class="size-1.5 rotate-45 border border-brand-500/80"></span>
+			<span class="h-px flex-1 bg-on-dark/15"></span>
 		</div>
 
 		<EditableField
@@ -126,14 +126,14 @@
 			class="nf-item nf-d3 mt-6 block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto max-w-xl text-sm/6 text-slate-300 sm:text-base/7">{displayValue}</p>
+				<p class="mx-auto max-w-xl text-sm/6 text-ink-300 sm:text-base/7">{displayValue}</p>
 			{/snippet}
 		</EditableField>
 
 		<div class="nf-item nf-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
 			<a
 				href={String(data?.homeHref ?? '/')}
-				class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-red-600 to-red-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(239,68,68,0.95)] transition duration-300 hover:from-red-500 hover:to-red-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-400 motion-safe:hover:-translate-y-0.5"
+				class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-600 to-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.95)] transition duration-300 hover:from-brand-500 hover:to-brand-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 			>
 				<svg
 					class="size-4.5 transition-transform duration-300 group-hover:-translate-x-0.5"
@@ -173,7 +173,7 @@
 				{#if backHref}
 					<a
 						href={backHref}
-						class="nf-back group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 motion-safe:hover:-translate-y-0.5"
+						class="nf-back group inline-flex items-center justify-center gap-2.5 rounded-full border border-on-dark/15 bg-on-dark/5 px-7 py-3.5 text-sm font-semibold text-on-dark transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5"
 					>
 						<svg
 							class="size-4.5 transition-transform duration-300 group-hover:-translate-x-1"
@@ -191,7 +191,7 @@
 					<button
 						type="button"
 						onclick={() => window.history.back()}
-						class="nf-back group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 motion-safe:hover:-translate-y-0.5"
+						class="nf-back group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full border border-on-dark/15 bg-on-dark/5 px-7 py-3.5 text-sm font-semibold text-on-dark transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5"
 					>
 						<svg
 							class="size-4.5 transition-transform duration-300 group-hover:-translate-x-1"

@@ -3,7 +3,11 @@
 	import BannerV2 from './v2/Banner.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
-	import { saveLayoutData, getLayoutComponentArticle, type EditContext } from '$lib/utils/page-edit';
+	import {
+		saveLayoutData,
+		getLayoutComponentArticle,
+		type EditContext
+	} from '$lib/utils/page-edit';
 	import { fly } from 'svelte/transition';
 
 	let {
@@ -20,7 +24,13 @@
 	// (сохраняется через saveLayoutData('Header')). Версия — bannerVersion в том же blob'е.
 	// Баннер узкий, поэтому плавающий переключатель не подходит: компактная кнопка-триггер
 	// открывает SideDrawer (справа) с выбором варианта и сбросом.
-	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>('v1');
+	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
+	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
+	// на живых сайтах это давало подмену версии после гидратации, а каталог
+	// /_ds (пререндер) вообще не смог бы показать ничего, кроме v1.
+	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
+		(data?.bannerVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
+	);
 	let drawerOpen = $state(false);
 	let isResetting = $state(false);
 	let hasManuallySelected = $state(false);
@@ -102,9 +112,9 @@
 		{#if isEditable}
 			<!-- Редактор: тонкая индикация, что баннер отключён -->
 			<div
-				class="flex h-9 items-center justify-center gap-2 bg-slate-900 text-[11px] font-medium tracking-wider text-slate-400 uppercase"
+				class="flex h-9 items-center justify-center gap-2 bg-ink-900 text-[11px] font-medium tracking-wider text-ink-400 uppercase"
 			>
-				<span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+				<span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
 				Баннер отключён
 			</div>
 		{/if}
@@ -123,11 +133,17 @@
 		<button
 			type="button"
 			onclick={() => (drawerOpen = true)}
-			class="absolute top-1/2 right-1.5 z-[100] flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-slate-950/80 text-white/80 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-sky-400/40 hover:bg-slate-900 hover:text-white active:scale-95"
+			class="absolute top-1/2 right-1.5 z-[100] flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/10 bg-ink-950/80 text-on-dark/80 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-link-400/40 hover:bg-ink-900 hover:text-on-dark active:scale-95"
 			title="Варианты и сброс"
 			aria-label="Варианты и сброс баннера"
 		>
-			<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+			<svg
+				class="h-3.5 w-3.5"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
 				<circle cx="9" cy="6" r="2" fill="currentColor" />
 				<circle cx="15" cy="12" r="2" fill="currentColor" />
@@ -143,14 +159,16 @@
 			<!-- Артикул выбранной версии -->
 			{#if bannerArticle}
 				<div class="flex items-center gap-2">
-					<span class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Артикул</span>
+					<span class="text-[10px] font-semibold tracking-[0.2em] text-on-dark/40 uppercase"
+						>Артикул</span
+					>
 					<ArticleBadge article={bannerArticle} sectionLabel="Раздел" align="left" />
 				</div>
 			{/if}
 
 			<!-- Варианты -->
 			<section>
-				<h4 class="mb-3 text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+				<h4 class="p1-title-sub mb-3 text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
 					Вариант дизайна
 				</h4>
 				<div class="flex flex-col gap-2">
@@ -158,8 +176,8 @@
 						type="button"
 						class="w-full cursor-pointer rounded-2xl border px-4 py-3 text-left text-xs font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
 						'v1'
-							? 'scale-[1.01] border-white/20 bg-white/10 text-white shadow-md'
-							: 'border-white/10 text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
+							? 'scale-[1.01] border-on-dark/20 bg-on-dark/10 text-on-dark shadow-md'
+							: 'border-on-dark/10 text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
 						onclick={() => selectVersion('v1')}
 					>
 						Вариант 1
@@ -168,8 +186,8 @@
 						type="button"
 						class="w-full cursor-pointer rounded-2xl border px-4 py-3 text-left text-xs font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
 						'v2'
-							? 'scale-[1.01] border-sky-500/40 bg-gradient-to-r from-sky-500/15 to-indigo-500/15 text-sky-200 shadow-md'
-							: 'border-white/10 text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
+							? 'scale-[1.01] border-link-500/40 bg-gradient-to-r from-link-500/15 to-cat-4-500/15 text-link-200 shadow-md'
+							: 'border-on-dark/10 text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
 						onclick={() => selectVersion('v2')}
 					>
 						Вариант 2
@@ -178,8 +196,8 @@
 						type="button"
 						class="w-full cursor-pointer rounded-2xl border px-4 py-3 text-left text-xs font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
 						'disabled'
-							? 'scale-[1.01] border-red-500/40 bg-red-500/15 text-red-200 shadow-md'
-							: 'border-white/10 text-slate-400 hover:bg-red-500/5 hover:text-red-400'}"
+							? 'scale-[1.01] border-brand-500/40 bg-brand-500/15 text-brand-200 shadow-md'
+							: 'border-on-dark/10 text-ink-400 hover:bg-brand-500/5 hover:text-brand-400'}"
 						onclick={() => selectVersion('disabled')}
 					>
 						Отключить
@@ -188,19 +206,25 @@
 			</section>
 
 			<!-- Сброс контента -->
-			<section class="border-t border-white/10 pt-5">
-				<h4 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">Контент</h4>
-				<p class="mt-2 text-xs leading-relaxed text-slate-400">
+			<section class="border-t border-on-dark/10 pt-5">
+				<h4 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">Контент</h4>
+				<p class="mt-2 text-xs leading-relaxed text-ink-400">
 					Сброс вернёт контакты и ссылки баннера к значениям по умолчанию. Выбранный вариант и меню
 					хэдера не изменятся.
 				</p>
 				<button
 					type="button"
-					class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs font-bold tracking-wider text-red-300 uppercase transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-200 active:scale-[0.98]"
+					class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-brand-500/20 bg-brand-500/5 px-4 py-3 text-xs font-bold tracking-wider text-brand-300 uppercase transition-all duration-300 hover:border-brand-500/40 hover:bg-brand-500/15 hover:text-brand-200 active:scale-[0.98]"
 					onclick={confirmReset}
 					disabled={isResetting}
 				>
-					<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<svg
+						class="h-3.5 w-3.5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"

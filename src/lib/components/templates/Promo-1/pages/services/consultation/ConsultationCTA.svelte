@@ -21,9 +21,11 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-slate-950 py-24 sm:py-32">
+<section class="relative overflow-hidden bg-ink-950 py-24 sm:py-32">
 	<div class="absolute inset-0 opacity-20">
-		<div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px]"></div>
+		<div
+			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px]"
+		></div>
 	</div>
 	<div class="relative mx-auto max-w-4xl px-6 text-center lg:px-8">
 		<EditableField
@@ -35,7 +37,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+				<h2 class="text-3xl tracking-tight text-on-dark sm:text-5xl lg:text-6xl">
 					{displayValue}
 				</h2>
 			{/snippet}
@@ -44,14 +46,17 @@
 		<EditableField
 			fieldKey="ConsultationCTA.description"
 			label="Описание"
-			value={String(data?.description ?? 'Запишитесь на консультацию сегодня и сделайте первый уверенный шаг к созданию интерьера вашей мечты.')}
+			value={String(
+				data?.description ??
+					'Запишитесь на консультацию сегодня и сделайте первый уверенный шаг к созданию интерьера вашей мечты.'
+			)}
 			{isEditable}
 			multiline
 			onSave={(v) => saveField('description', v)}
 			class="mt-8 block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto max-w-2xl text-lg sm:text-xl text-slate-400 leading-relaxed">
+				<p class="mx-auto max-w-2xl text-lg leading-relaxed text-ink-400 sm:text-xl">
 					{displayValue}
 				</p>
 			{/snippet}
@@ -69,7 +74,7 @@
 				{#snippet children(displayValue)}
 					<button
 						type="button"
-						class="inline-flex items-center gap-3 rounded-full bg-white px-10 py-5 text-base font-bold text-slate-950 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-sky-400 hover:text-white active:scale-95"
+						class="inline-flex items-center gap-3 rounded-full bg-surface-raised px-10 py-5 text-base font-bold text-ink-950 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-link-400 hover:text-on-accent active:scale-95"
 					>
 						{displayValue}
 					</button>

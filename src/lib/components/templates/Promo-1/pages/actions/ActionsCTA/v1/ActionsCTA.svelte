@@ -32,13 +32,13 @@
 	<!-- Тёплая подложка — только в светлой теме: на ink она бы светила белым. -->
 	{#if isLight}
 		<div
-			class="pointer-events-none absolute inset-0 bg-linear-to-br from-slate-50 via-white to-amber-50/40"
+			class="pointer-events-none absolute inset-0 bg-linear-to-br from-ink-50 via-on-accent to-cat-1-50/40"
 			aria-hidden="true"
 		></div>
 	{/if}
 	<!-- Светящиеся круги (в стиле Hero страницы actions) -->
-	<div class="absolute top-1/4 -left-32 size-80 rounded-full bg-red-100/40 blur-3xl"></div>
-	<div class="absolute -right-32 bottom-1/4 size-96 rounded-full bg-amber-100/40 blur-3xl"></div>
+	<div class="absolute top-1/4 -left-32 size-80 rounded-full bg-brand-100/40 blur-3xl"></div>
+	<div class="absolute -right-32 bottom-1/4 size-96 rounded-full bg-cat-1-100/40 blur-3xl"></div>
 	<!-- Тонкая декоративная сетка -->
 	<div
 		class="absolute inset-0 opacity-[0.04]"
@@ -49,24 +49,24 @@
 		<!-- CTA-карточка с глубоким теневым обрамлением -->
 		<div
 			class="relative overflow-hidden rounded-3xl {isLight
-				? 'bg-white/80'
-				: 'bg-white/[0.06]'} px-6 py-14 shadow-2xl ring-1 shadow-slate-900/5 ring-slate-900/5 backdrop-blur-sm sm:px-16 sm:py-20"
+				? 'bg-surface-raised/80'
+				: 'bg-surface-raised/[0.06]'} px-6 py-14 shadow-2xl ring-1 shadow-ink-900/5 ring-ink-900/5 backdrop-blur-sm sm:px-16 sm:py-20"
 		>
 			<!-- Внутренний акцентный градиент сверху -->
 			<div
-				class="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-red-500 via-rose-500 to-amber-500"
+				class="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-brand-500 via-cat-6-500 to-cat-1-500"
 			></div>
 
 			<div class="mx-auto max-w-2xl text-center">
 				<!-- Бейдж-надголовок -->
 				<span
-					class="inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-1.5 text-sm font-semibold text-red-600 ring-1 ring-red-100"
+					class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-600 ring-1 ring-brand-100"
 				>
 					<span class="relative flex size-2">
 						<span
-							class="absolute inline-flex size-full animate-ping rounded-full bg-red-400 opacity-75"
+							class="absolute inline-flex size-full animate-ping rounded-full bg-brand-400 opacity-75"
 						></span>
-						<span class="relative inline-flex size-2 rounded-full bg-red-500"></span>
+						<span class="relative inline-flex size-2 rounded-full bg-brand-500"></span>
 					</span>
 					Акции и спецпредложения
 				</span>
@@ -80,9 +80,7 @@
 					class="mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="p1-title text-3xl font-semibold tracking-tight text-pretty sm:text-4xl lg:text-5xl"
-						>
+						<h2 class="p1-title text-3xl tracking-tight text-pretty sm:text-4xl lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -116,7 +114,7 @@
 						{#snippet children(displayValue)}
 							<a
 								href="/contact"
-								class="group inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-red-500 to-rose-500 px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-red-500/30 transition duration-300 hover:-translate-y-0.5 hover:from-red-600 hover:to-rose-600 hover:shadow-xl hover:shadow-red-500/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
+								class="group inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-brand-500 to-cat-6-500 px-8 py-4 text-sm font-semibold text-on-accent shadow-lg shadow-brand-500/30 transition duration-300 hover:-translate-y-0.5 hover:from-brand-600 hover:to-cat-6-600 hover:shadow-xl hover:shadow-brand-500/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
 							>
 								{displayValue}
 								<svg
@@ -148,10 +146,10 @@
 							{#if displayValue}
 								<a
 									href="tel:{displayValue}"
-									class="group p1-body p1-card inline-flex items-center gap-3 rounded-xl px-6 py-4 text-sm font-semibold shadow-md ring-1 ring-slate-200 transition duration-300 hover:-translate-y-0.5 hover:text-red-600 hover:shadow-lg hover:ring-red-200"
+									class="group p1-body p1-card inline-flex items-center gap-3 rounded-xl px-6 py-4 text-sm font-semibold shadow-md ring-1 ring-ink-200 transition duration-300 hover:-translate-y-0.5 hover:text-brand-600 hover:shadow-lg hover:ring-brand-200"
 								>
 									<span
-										class="flex size-10 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-red-100 transition-colors duration-300 group-hover:bg-red-500 group-hover:text-white"
+										class="flex size-10 items-center justify-center rounded-full bg-brand-50 text-brand-500 ring-1 ring-brand-100 transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-accent"
 									>
 										<svg
 											class="size-5"

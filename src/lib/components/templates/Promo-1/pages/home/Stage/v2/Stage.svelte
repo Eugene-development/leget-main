@@ -96,7 +96,7 @@
 		class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover"
 	/>
 	<div
-		class="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/40"
+		class="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950 via-ink-950/80 to-ink-950/40"
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -106,7 +106,7 @@
 				class="p1-card p1-border sticky top-8 flex flex-col items-start rounded-3xl border p-8 text-left shadow-2xl backdrop-blur-md lg:col-span-4"
 			>
 				<span
-					class="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-sky-300 uppercase"
+					class="inline-flex items-center gap-2 rounded-full border border-link-500/30 bg-link-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-link-300 uppercase"
 				>
 					<EditableField
 						fieldKey="Stage.badge"
@@ -130,7 +130,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="p1-title font-display mt-4 text-3xl leading-tight font-extrabold tracking-tight md:text-4xl"
+							class="p1-title font-display mt-4 text-3xl leading-tight tracking-tight md:text-4xl"
 						>
 							{displayValue}
 						</h2>
@@ -161,17 +161,17 @@
 			>
 				{#each steps as step, i}
 					<div
-						class="stage-card group p1-border p1-card hover:p1-card relative rounded-3xl border p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:translate-x-1 hover:border-sky-500/30"
+						class="stage-card group p1-border p1-card hover:p1-card relative rounded-3xl border p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:translate-x-1 hover:border-link-500/30"
 					>
 						<!-- Светящийся контур-маркер на временной линии -->
 						<div
-							class="absolute top-6 -left-[35px] h-4 w-4 rounded-full border-4 border-slate-700 bg-slate-950 shadow-[0_0_10px_rgba(56,189,248,0.2)] transition-all duration-300 group-hover:scale-125 group-hover:border-sky-400"
+							class="absolute top-6 -left-[35px] h-4 w-4 rounded-full border-4 border-ink-700 bg-ink-950 shadow-[0_0_10px_rgba(56,189,248,0.2)] transition-all duration-300 group-hover:scale-125 group-hover:border-link-400"
 						></div>
 
 						<div class="flex items-start gap-5">
 							<!-- Анимированная иконка шага -->
 							<div
-								class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 text-white shadow-lg transition-transform duration-300 group-hover:scale-105"
+								class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-link-500 to-cat-4-600 text-on-accent shadow-lg transition-transform duration-300 group-hover:scale-105"
 							>
 								<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path
@@ -185,10 +185,10 @@
 
 							<div>
 								<div class="flex items-center gap-3">
-									<span class="font-display text-xs font-black text-sky-400">Шаг {i + 1}</span>
-									<span class="h-1.5 w-1.5 rounded-full bg-slate-600"></span>
+									<span class="font-display text-xs font-black text-link-400">Шаг {i + 1}</span>
+									<span class="h-1.5 w-1.5 rounded-full bg-ink-600"></span>
 									<h3
-										class="p1-title text-lg font-bold transition-colors duration-300 group-hover:text-sky-300"
+										class="p1-title p1-title-sub text-lg transition-colors duration-300 group-hover:text-link-300"
 									>
 										<EditableField
 											fieldKey={`Stage.steps.${i}.title`}

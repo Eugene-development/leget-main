@@ -1,5 +1,4 @@
 <script lang="ts">
-	// Артикул: 1.М.1.1 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/stores';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -64,19 +63,13 @@
 
 	const visibleCatalogItems = $derived(
 		catalogItems.filter(
-			(item) =>
-				item.comingSoon === true ||
-				isEditable ||
-				!disabledRubrics.includes(item.href)
+			(item) => item.comingSoon === true || isEditable || !disabledRubrics.includes(item.href)
 		)
 	);
 
 	const visibleServiceItems = $derived(
 		serviceItems.filter(
-			(item) =>
-				item.comingSoon === true ||
-				isEditable ||
-				!disabledServices.includes(item.href)
+			(item) => item.comingSoon === true || isEditable || !disabledServices.includes(item.href)
 		)
 	);
 
@@ -147,11 +140,10 @@
 		return () => ro.disconnect();
 	});
 	// Активность пункта мобильного меню — по текущему пути (hover в мобильном меню нет).
-	// Десктопная навигация вынесена в компонент Menu (v1/v2) со своим hover-состоянием.
+	// Десктопная навигация вынесена в компонент Menu (v1/v2/v3) со своим hover-состоянием.
 	function isLinkActive(href: string) {
 		return $page.url.pathname === href;
 	}
-
 
 	const defaultCities = [
 		'Москва и МО',
@@ -197,7 +189,7 @@
 {#snippet comingSoonIndicator(paddingClass = 'pr-3')}
 	<div class="flex shrink-0 items-center {paddingClass}" title="В разработке">
 		<span
-			class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-200/80"
+			class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-cat-1-50 text-cat-1-600 ring-1 ring-cat-1-200/80"
 			aria-hidden="true"
 		>
 			<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -212,13 +204,16 @@
 	</div>
 {/snippet}
 
-<header bind:this={headerEl} class="sticky top-0 z-[150] w-full sm:bg-white/95 sm:shadow-lg sm:backdrop-blur">
+<header
+	bind:this={headerEl}
+	class="sticky top-0 z-[150] w-full sm:bg-surface-raised/95 sm:shadow-lg sm:backdrop-blur"
+>
 	<div class="max-w-9xl mx-auto hidden items-center justify-between px-4 py-4 sm:flex sm:px-8">
 		<!-- Левая часть: Логотип -->
 		<div class="flex flex-1 justify-start">
 			<a
 				href="/"
-				class="group relative z-30 -m-1.5 -mb-10 hidden min-w-[140px] flex-col items-center justify-center rounded-b-2xl bg-white px-6 py-4 shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl sm:flex"
+				class="group relative z-30 -m-1.5 -mb-10 hidden min-w-[140px] flex-col items-center justify-center rounded-b-2xl bg-surface-raised px-6 py-4 shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl sm:flex"
 			>
 				<span class="sr-only">{siteName}</span>
 				{#if data?.logoUrl}
@@ -230,7 +225,7 @@
 				{:else}
 					<div class="flex flex-col items-center">
 						<div
-							class="mb-1 size-8 rounded-full bg-linear-to-tr from-sky-400 to-indigo-500 shadow-sm transition-transform duration-300 group-hover:scale-110"
+							class="mb-1 size-8 rounded-full bg-linear-to-tr from-link-400 to-cat-4-500 shadow-sm transition-transform duration-300 group-hover:scale-110"
 						></div>
 						<EditableField
 							fieldKey="Header.siteName"
@@ -243,7 +238,7 @@
 						>
 							{#snippet children(displayValue)}
 								<span
-									class="text-[10px] font-black tracking-[0.2em] text-sky-900 uppercase transition-transform duration-300 group-hover:scale-105"
+									class="text-[10px] font-black tracking-[0.2em] text-link-900 uppercase transition-transform duration-300 group-hover:scale-105"
 								>
 									{displayValue}
 								</span>
@@ -252,12 +247,12 @@
 					</div>
 				{/if}
 				<div
-					class="absolute inset-0 rounded-b-2xl bg-linear-to-t from-sky-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					class="absolute inset-0 rounded-b-2xl bg-linear-to-t from-link-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 				></div>
 			</a>
 		</div>
 
-		<!-- Центральная часть: Навигация (компонент Menu с переключением вариантов v1/v2) -->
+		<!-- Центральная часть: Навигация (компонент Menu с переключением вариантов v1/v2/v3) -->
 		<Menu
 			bind:data
 			{editContext}
@@ -282,16 +277,16 @@
 			>
 				<button
 					type="button"
-					class="city-selector group relative flex items-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-slate-100/20 to-slate-50/80 px-5 py-2.5 text-base font-medium text-slate-700 ring-1 ring-slate-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/10 hover:ring-sky-200"
+					class="city-selector group relative flex items-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-ink-100/20 to-ink-50/80 px-5 py-2.5 text-base font-medium text-ink-700 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200"
 					aria-expanded={visibleCityMenu}
 				>
 					<span
-						class="absolute inset-0 -z-10 bg-linear-to-r from-sky-500 to-cyan-500 opacity-0 transition-opacity duration-300 group-hover:opacity-10"
+						class="absolute inset-0 -z-10 bg-linear-to-r from-link-500 to-cat-5-500 opacity-0 transition-opacity duration-300 group-hover:opacity-10"
 					></span>
 
 					<span class="flex items-center justify-center">
 						<svg
-							class="h-4 w-4 text-sky-500 transition-transform duration-300 group-hover:scale-110"
+							class="h-4 w-4 text-link-500 transition-transform duration-300 group-hover:scale-110"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -311,12 +306,12 @@
 						</svg>
 					</span>
 
-					<span class="transition-colors duration-300 group-hover:text-sky-600"
+					<span class="transition-colors duration-300 group-hover:text-link-600"
 						>{cityStore.city}</span
 					>
 
 					<svg
-						class="h-4 w-4 text-slate-400 transition-all duration-300 group-hover:text-sky-500 {visibleCityMenu
+						class="h-4 w-4 text-ink-400 transition-all duration-300 group-hover:text-link-500 {visibleCityMenu
 							? 'rotate-180'
 							: ''}"
 						fill="none"
@@ -336,10 +331,10 @@
 					<div class="absolute top-full right-0 left-0 h-3"></div>
 					<div
 						transition:fly={{ y: -10, duration: 200, easing: cubicOut }}
-						class="absolute top-full right-0 z-50 mt-3 w-48 overflow-hidden rounded-2xl bg-white p-2 shadow-xl ring-1 ring-slate-900/5"
+						class="absolute top-full right-0 z-50 mt-3 w-48 overflow-hidden rounded-2xl bg-surface-raised p-2 shadow-xl ring-1 ring-ink-900/5"
 					>
 						<div
-							class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-sky-500 to-transparent"
+							class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-link-500 to-transparent"
 						></div>
 
 						{#each cities as city, idx}
@@ -349,18 +344,18 @@
 									cityStore.set(city.label);
 									visibleCityMenu = false;
 								}}
-								class="group flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left transition-all duration-200 hover:bg-linear-to-r hover:from-sky-50 hover:to-cyan-50"
-								class:bg-sky-50={cityStore.city === city.label}
+								class="group flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left transition-all duration-200 hover:bg-linear-to-r hover:from-link-50 hover:to-cat-5-50"
+								class:bg-link-50={cityStore.city === city.label}
 								transition:fly={{ y: -5, duration: 150, delay: idx * 30 }}
 							>
 								<span
 									class="text-sm font-medium transition-colors {cityStore.city === city.label
-										? 'text-sky-600'
-										: 'text-slate-700'} group-hover:text-sky-600">{city.label}</span
+										? 'text-link-600'
+										: 'text-ink-700'} group-hover:text-link-600">{city.label}</span
 								>
 								{#if cityStore.city === city.label}
 									<svg
-										class="h-4 w-4 text-sky-500"
+										class="h-4 w-4 text-link-500"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -377,7 +372,7 @@
 						{/each}
 
 						{#if isEditable}
-							<div class="mt-2 border-t border-slate-100 pt-2">
+							<div class="mt-2 border-t border-ink-100 pt-2">
 								<button
 									type="button"
 									onclick={() => {
@@ -389,7 +384,7 @@
 											onSave: (val) => saveField('cities', val)
 										});
 									}}
-									class="flex w-full items-center justify-center rounded-lg border border-dashed border-slate-300 py-2 text-[10px] font-medium text-slate-400 transition-colors hover:border-sky-300 hover:text-sky-500 cursor-pointer"
+									class="flex w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-ink-300 py-2 text-[10px] font-medium text-ink-400 transition-colors hover:border-link-300 hover:text-link-500"
 								>
 									Редактировать список
 								</button>
@@ -404,131 +399,138 @@
 	<!-- Mobile nav -->
 	{#if uiStore.menuOpen}
 		<nav
-			class="max-h-[70vh] overflow-y-auto border-t border-slate-100 bg-white px-6 py-4 shadow-2xl sm:hidden"
+			class="max-h-[70vh] overflow-y-auto border-t border-ink-100 bg-surface-raised px-6 py-4 shadow-2xl sm:hidden"
 		>
 			{#each links as link}
 				{#if link.label === 'Услуги'}
 					<div class="py-2">
-						<div class="mb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
+						<div class="mb-2 text-xs font-bold tracking-wider text-ink-400 uppercase">
 							{link.label}
 						</div>
-							<div class="grid gap-1 pl-2">
-								{#each visibleServiceItems as service}
-									{@const isComingSoon = service.comingSoon === true}
-									{@const isEnabled = !isComingSoon && !disabledServices.includes(service.href)}
-									<div
-										class="group flex w-full items-center justify-between rounded-lg transition-all duration-300 {isComingSoon
-											? 'cursor-not-allowed opacity-60'
-											: ''}"
-										class:opacity-60={!isComingSoon && isEditable && !isEnabled}
-										class:bg-slate-50={!isComingSoon && isEditable && !isEnabled}
-										title={isComingSoon ? 'В разработке' : undefined}
+						<div class="grid gap-1 pl-2">
+							{#each visibleServiceItems as service}
+								{@const isComingSoon = service.comingSoon === true}
+								{@const isEnabled = !isComingSoon && !disabledServices.includes(service.href)}
+								<div
+									class="group flex w-full items-center justify-between rounded-lg transition-all duration-300 {isComingSoon
+										? 'cursor-not-allowed opacity-60'
+										: ''}"
+									class:opacity-60={!isComingSoon && isEditable && !isEnabled}
+									class:bg-ink-50={!isComingSoon && isEditable && !isEnabled}
+									title={isComingSoon ? 'В разработке' : undefined}
+								>
+									<a
+										href={service.href}
+										onclick={(e) => {
+											if (isComingSoon) {
+												e.preventDefault();
+												return;
+											}
+											uiStore.closeMenu();
+										}}
+										tabindex={isComingSoon ? -1 : undefined}
+										aria-disabled={isComingSoon}
+										class="flex flex-1 items-center gap-3 py-2 text-sm font-medium text-ink-700 transition-colors {isComingSoon
+											? 'pointer-events-none'
+											: 'hover:text-link-600'}"
+										class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 									>
-										<a
-											href={service.href}
-											onclick={(e) => {
-												if (isComingSoon) {
-													e.preventDefault();
-													return;
-												}
-												uiStore.closeMenu();
-											}}
-											tabindex={isComingSoon ? -1 : undefined}
-											aria-disabled={isComingSoon}
-											class="flex flex-1 items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors {isComingSoon
-												? 'pointer-events-none'
-												: 'hover:text-sky-600'}"
-											class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
+										<div
+											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-ink-100 text-link-600"
 										>
-											<div
-												class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
-											>
-												{#if service.icon === 'chat'}
-													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="1.5"
-															d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-														/>
-													</svg>
-												{:else if service.icon === 'design'}
-													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="1.5"
-															d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-														/>
-													</svg>
-												{:else if service.icon === 'ruler'}
-													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="1.5"
-															d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-														/>
-													</svg>
-												{:else if service.icon === 'project'}
-													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="1.5"
-															d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
-														/>
-													</svg>
-												{:else}
-													<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="1.5"
-															d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-														/>
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="1.5"
-															d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-														/>
-													</svg>
-												{/if}
-											</div>
-											<span class="flex items-center gap-2">
-												{service.label}
-												{#if isEditable && !isEnabled && !isComingSoon}
-													<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
-												{/if}
-											</span>
-										</a>
-										{#if isEditable}
-											{#if isComingSoon}
-												{@render comingSoonIndicator('pr-2')}
+											{#if service.icon === 'chat'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+													/>
+												</svg>
+											{:else if service.icon === 'design'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+													/>
+												</svg>
+											{:else if service.icon === 'ruler'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+													/>
+												</svg>
+											{:else if service.icon === 'project'}
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+													/>
+												</svg>
 											{:else}
-												<div class="pr-2 flex items-center">
-													<button
-														type="button"
-														onclick={(e) => handleToggleService(service.href, isEnabled, e)}
-														class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
-														title={isEnabled ? 'Скрыть услугу' : 'Показать услугу'}
-													>
-														<span
-															class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
-														>
-														</span>
-													</button>
-												</div>
+												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+													/>
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+													/>
+												</svg>
 											{/if}
+										</div>
+										<span class="flex items-center gap-2">
+											{service.label}
+											{#if isEditable && !isEnabled && !isComingSoon}
+												<span
+													class="rounded bg-ink-200 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-ink-600 uppercase"
+													>Откл.</span
+												>
+											{/if}
+										</span>
+									</a>
+									{#if isEditable}
+										{#if isComingSoon}
+											{@render comingSoonIndicator('pr-2')}
+										{:else}
+											<div class="flex items-center pr-2">
+												<button
+													type="button"
+													onclick={(e) => handleToggleService(service.href, isEnabled, e)}
+													class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-link-500 focus:ring-offset-2 focus:outline-none {isEnabled
+														? 'bg-link-500'
+														: 'bg-ink-300'}"
+													title={isEnabled ? 'Скрыть услугу' : 'Показать услугу'}
+												>
+													<span
+														class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-surface-raised shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled
+															? 'translate-x-4'
+															: 'translate-x-0'}"
+													>
+													</span>
+												</button>
+											</div>
 										{/if}
-									</div>
-								{/each}
-							</div>
+									{/if}
+								</div>
+							{/each}
+						</div>
 					</div>
 				{:else if link.label === 'Каталог'}
 					<div class="py-2">
-						<div class="mb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
+						<div class="mb-2 text-xs font-bold tracking-wider text-ink-400 uppercase">
 							{link.label}
 						</div>
 						<div class="grid gap-1 pl-2">
@@ -540,7 +542,7 @@
 										? 'cursor-not-allowed opacity-60'
 										: ''}"
 									class:opacity-60={!isComingSoon && isEditable && !isEnabled}
-									class:bg-slate-50={!isComingSoon && isEditable && !isEnabled}
+									class:bg-ink-50={!isComingSoon && isEditable && !isEnabled}
 									title={isComingSoon ? 'В разработке' : undefined}
 								>
 									<a
@@ -554,13 +556,13 @@
 										}}
 										tabindex={isComingSoon ? -1 : undefined}
 										aria-disabled={isComingSoon}
-										class="flex flex-1 items-center gap-3 py-2 text-sm font-medium text-slate-700 transition-colors {isComingSoon
+										class="flex flex-1 items-center gap-3 py-2 text-sm font-medium text-ink-700 transition-colors {isComingSoon
 											? 'pointer-events-none'
-											: 'hover:text-sky-600'}"
+											: 'hover:text-link-600'}"
 										class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 									>
 										<div
-											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sky-600"
+											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-ink-100 text-link-600"
 										>
 											{#if item.icon === 'sofa'}
 												<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -630,7 +632,10 @@
 										<span class="flex items-center gap-2">
 											{item.label}
 											{#if isEditable && !isEnabled && !isComingSoon}
-												<span class="text-[9px] bg-slate-200 text-slate-600 rounded px-1.5 py-0.5 font-bold uppercase tracking-wider">Откл.</span>
+												<span
+													class="rounded bg-ink-200 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-ink-600 uppercase"
+													>Откл.</span
+												>
 											{/if}
 										</span>
 									</a>
@@ -638,15 +643,19 @@
 										{#if isComingSoon}
 											{@render comingSoonIndicator('pr-2')}
 										{:else}
-											<div class="pr-2 flex items-center">
+											<div class="flex items-center pr-2">
 												<button
 													type="button"
 													onclick={(e) => handleToggleRubric(item.href, isEnabled, e)}
-													class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 {isEnabled ? 'bg-sky-500' : 'bg-slate-300'}"
+													class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-link-500 focus:ring-offset-2 focus:outline-none {isEnabled
+														? 'bg-link-500'
+														: 'bg-ink-300'}"
 													title={isEnabled ? 'Скрыть рубрику' : 'Показать рубрику'}
 												>
 													<span
-														class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled ? 'translate-x-4' : 'translate-x-0'}"
+														class="pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-surface-raised shadow-sm ring-0 transition duration-200 ease-in-out {isEnabled
+															? 'translate-x-4'
+															: 'translate-x-0'}"
 													>
 													</span>
 												</button>
@@ -661,26 +670,26 @@
 					<a
 						href={link.href}
 						onclick={() => uiStore.closeMenu()}
-						class="block border-b border-slate-50 py-3 text-sm font-bold tracking-wider uppercase transition-colors last:border-0 {isLinkActive(
+						class="block border-b border-ink-50 py-3 text-sm font-bold tracking-wider uppercase transition-colors last:border-0 {isLinkActive(
 							link.href
 						)
-							? 'text-sky-600'
-							: 'text-slate-700'} hover:text-sky-600"
+							? 'text-link-600'
+							: 'text-ink-700'} hover:text-link-600"
 					>
 						{link.label}
 					</a>
 				{/if}
 			{/each}
-			<div class="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
-				<span class="text-sm font-medium text-slate-500">{cityStore.city}</span>
+			<div class="mt-4 flex items-center justify-between border-t border-ink-100 pt-4">
+				<span class="text-sm font-medium text-ink-500">{cityStore.city}</span>
 				<div class="flex gap-2 overflow-x-auto pb-2">
 					{#each cities.slice(0, 3) as city}
 						<button
 							type="button"
 							onclick={() => cityStore.set(city.label)}
-							class="rounded-lg bg-slate-100 px-3 py-1 text-xs font-medium whitespace-nowrap text-slate-700"
-							class:bg-sky-100={cityStore.city === city.label}
-							class:text-sky-700={cityStore.city === city.label}
+							class="rounded-lg bg-ink-100 px-3 py-1 text-xs font-medium whitespace-nowrap text-ink-700"
+							class:bg-link-100={cityStore.city === city.label}
+							class:text-link-700={cityStore.city === city.label}
 						>
 							{city.label}
 						</button>

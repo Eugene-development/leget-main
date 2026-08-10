@@ -23,10 +23,13 @@
 	}
 
 	const defaultItems = [
-		{ title: 'Дефекты материалов', text: 'Сколы, трещины, отслоение покрытия при нормальной эксплуатации' },
-		{ title: 'Качество сборки',    text: 'Неплотное прилегание, перекосы, скрипы механизмов' },
-		{ title: 'Работа фурнитуры',   text: 'Поломка петель, направляющих, подъёмных механизмов' },
-		{ title: 'Монтажные работы',   text: 'Качество установки и подключения техники' },
+		{
+			title: 'Дефекты материалов',
+			text: 'Сколы, трещины, отслоение покрытия при нормальной эксплуатации'
+		},
+		{ title: 'Качество сборки', text: 'Неплотное прилегание, перекосы, скрипы механизмов' },
+		{ title: 'Работа фурнитуры', text: 'Поломка петель, направляющих, подъёмных механизмов' },
+		{ title: 'Монтажные работы', text: 'Качество установки и подключения техники' }
 	];
 
 	async function updateItem(index: number, field: string, value: string) {
@@ -43,7 +46,7 @@
 	);
 </script>
 
-<section class="relative isolate overflow-hidden bg-white py-24">
+<section class="relative isolate overflow-hidden bg-surface-raised py-24">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="gt-rules"></div>
 	</div>
@@ -61,7 +64,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty text-slate-900 sm:text-4xl lg:text-5xl"
+							class="text-3xl leading-[1.08] tracking-[-0.03em] text-pretty text-ink-900 sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -69,40 +72,49 @@
 				</EditableField>
 
 				<div class="gt-rule gt-d1 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="h-px flex-1 bg-slate-900/10"></span>
-					<span class="size-1.5 rotate-45 border border-red-500/70"></span>
-					<span class="h-px flex-1 bg-slate-900/10"></span>
+					<span class="h-px flex-1 bg-ink-900/10"></span>
+					<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
+					<span class="h-px flex-1 bg-ink-900/10"></span>
 				</div>
 
 				<EditableField
 					fieldKey="WhatsCovered.description"
 					label="Описание"
-					value={String(data?.description ?? 'Наша гарантия распространяется на производственные дефекты материалов и качество сборки. Мы несём ответственность за каждый элемент вашей мебели.')}
+					value={String(
+						data?.description ??
+							'Наша гарантия распространяется на производственные дефекты материалов и качество сборки. Мы несём ответственность за каждый элемент вашей мебели.'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
 					class="gt-item gt-d2 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="max-w-xl text-sm/6 text-slate-600 sm:text-base/7">{displayValue}</p>
+						<p class="max-w-xl text-sm/6 text-ink-600 sm:text-base/7">{displayValue}</p>
 					{/snippet}
 				</EditableField>
 
 				<div class="gt-item gt-d3 mt-8 space-y-3">
 					{#each items as item, i}
 						<div
-							class="group flex items-start gap-4 rounded-2xl border border-slate-900/10 bg-white p-4 shadow-[0_20px_50px_-45px_rgba(15,23,42,0.5)] transition duration-300 hover:border-red-500/40 hover:shadow-[0_26px_60px_-40px_rgba(15,23,42,0.55)] sm:p-5"
+							class="group flex items-start gap-4 rounded-2xl border border-ink-900/10 bg-surface-raised p-4 shadow-[0_20px_50px_-45px_rgba(15,23,42,0.5)] transition duration-300 hover:border-brand-500/40 hover:shadow-[0_26px_60px_-40px_rgba(15,23,42,0.55)] sm:p-5"
 						>
 							<span
-								class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600 ring-1 ring-red-500/20 transition duration-300 group-hover:bg-red-500 group-hover:text-white"
+								class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-500/20 transition duration-300 group-hover:bg-brand-500 group-hover:text-on-accent"
 								aria-hidden="true"
 							>
-								<svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+								<svg
+									class="size-5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2.5"
+								>
 									<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 								</svg>
 							</span>
 							<div class="min-w-0">
-								<h3 class="font-semibold tracking-[-0.01em] text-slate-900">
+								<h3 class="p1-title-sub tracking-[-0.01em] text-ink-900">
 									<EditableField
 										fieldKey="WhatsCovered.{i}.title"
 										label="Заголовок пункта"
@@ -114,7 +126,7 @@
 										{#snippet children(val)}{val}{/snippet}
 									</EditableField>
 								</h3>
-								<p class="mt-1 text-sm/6 text-slate-500">
+								<p class="mt-1 text-sm/6 text-ink-500">
 									<EditableField
 										fieldKey="WhatsCovered.{i}.text"
 										label="Описание пункта"
@@ -135,7 +147,7 @@
 			<!-- Изображение в паспарту с градиентной каймой -->
 			<div class="gt-card gt-d2 mt-12 lg:mt-0">
 				<div
-					class="rounded-4xl bg-linear-to-br from-red-500/25 via-slate-900/10 to-red-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
+					class="rounded-4xl bg-linear-to-br from-brand-500/25 via-ink-900/10 to-brand-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
 				>
 					<EditableField
 						fieldKey="WhatsCovered.imageUrl"
@@ -155,9 +167,9 @@
 								/>
 							{:else}
 								<div
-									class="flex aspect-4/3 w-full items-center justify-center rounded-[calc(var(--radius-4xl)-1px)] bg-slate-50"
+									class="flex aspect-4/3 w-full items-center justify-center rounded-[calc(var(--radius-4xl)-1px)] bg-ink-50"
 								>
-									<p class="text-sm text-slate-400">Добавьте URL изображения</p>
+									<p class="text-sm text-ink-400">Добавьте URL изображения</p>
 								</div>
 							{/if}
 						{/snippet}

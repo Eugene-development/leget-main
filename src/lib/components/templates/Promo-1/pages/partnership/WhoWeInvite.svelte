@@ -66,36 +66,36 @@
 		{ bg: string; icon: string; dot: string; hairline: string; border: string; index: string }
 	> = {
 		violet: {
-			bg: 'from-violet-100 to-purple-100',
-			icon: 'from-violet-500 to-purple-600 shadow-violet-500/25',
-			dot: 'bg-violet-500',
-			hairline: 'bg-linear-to-r from-transparent via-violet-500 to-transparent',
-			border: 'group-hover:border-violet-500/40',
-			index: 'text-violet-500/25'
+			bg: 'from-cat-3-100 to-cat-10-100',
+			icon: 'from-cat-3-500 to-cat-10-600 shadow-cat-3-500/25',
+			dot: 'bg-cat-3-500',
+			hairline: 'bg-linear-to-r from-transparent via-cat-3-500 to-transparent',
+			border: 'group-hover:border-cat-3-500/40',
+			index: 'text-cat-3-500/25'
 		},
 		amber: {
-			bg: 'from-amber-100 to-orange-100',
-			icon: 'from-amber-500 to-orange-600 shadow-amber-500/25',
-			dot: 'bg-amber-500',
-			hairline: 'bg-linear-to-r from-transparent via-amber-500 to-transparent',
-			border: 'group-hover:border-amber-500/40',
-			index: 'text-amber-500/25'
+			bg: 'from-cat-1-100 to-cat-8-100',
+			icon: 'from-cat-1-500 to-cat-8-600 shadow-cat-1-500/25',
+			dot: 'bg-cat-1-500',
+			hairline: 'bg-linear-to-r from-transparent via-cat-1-500 to-transparent',
+			border: 'group-hover:border-cat-1-500/40',
+			index: 'text-cat-1-500/25'
 		},
 		emerald: {
-			bg: 'from-emerald-100 to-teal-100',
-			icon: 'from-emerald-500 to-teal-600 shadow-emerald-500/25',
-			dot: 'bg-emerald-500',
-			hairline: 'bg-linear-to-r from-transparent via-emerald-500 to-transparent',
-			border: 'group-hover:border-emerald-500/40',
-			index: 'text-emerald-500/25'
+			bg: 'from-cat-2-100 to-cat-9-100',
+			icon: 'from-cat-2-500 to-cat-9-600 shadow-cat-2-500/25',
+			dot: 'bg-cat-2-500',
+			hairline: 'bg-linear-to-r from-transparent via-cat-2-500 to-transparent',
+			border: 'group-hover:border-cat-2-500/40',
+			index: 'text-cat-2-500/25'
 		},
 		sky: {
-			bg: 'from-sky-100 to-blue-100',
-			icon: 'from-sky-500 to-blue-600 shadow-sky-500/25',
-			dot: 'bg-sky-500',
-			hairline: 'bg-linear-to-r from-transparent via-sky-500 to-transparent',
-			border: 'group-hover:border-sky-500/40',
-			index: 'text-sky-500/25'
+			bg: 'from-link-100 to-cat-11-100',
+			icon: 'from-link-500 to-cat-11-600 shadow-link-500/25',
+			dot: 'bg-link-500',
+			hairline: 'bg-linear-to-r from-transparent via-link-500 to-transparent',
+			border: 'group-hover:border-link-500/40',
+			index: 'text-link-500/25'
 		}
 	};
 
@@ -136,7 +136,7 @@
 <!--
 	ВНИМАНИЕ — стык секций: сверху в этот блок «вливается» волна из Hero
 	(PartnershipHero). Заливка волны — переменная `--ph-wave` (#f8fafc), поэтому
-	фон секции обязан быть ровно `bg-slate-50` и БЕЗ градиента/подсветки у самой
+	фон секции обязан быть ровно `bg-ink-50` и БЕЗ градиента/подсветки у самой
 	верхней кромки, иначе на границе появится полоса. Декор ниже намеренно
 	отодвинут от верха и приглушён маской.
 -->
@@ -162,7 +162,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
+						class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 					>
 						{displayValue}
 					</h2>
@@ -184,7 +184,7 @@
 			</EditableField>
 			<div class="wi-rule wi-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
 				<span class="p1-line h-px flex-1"></span>
-				<span class="size-1.5 rotate-45 border border-sky-500/70"></span>
+				<span class="size-1.5 rotate-45 border border-link-500/70"></span>
 				<span class="p1-line h-px flex-1"></span>
 			</div>
 		</div>
@@ -214,7 +214,7 @@
 
 					<div class="relative">
 						<div
-							class="flex size-14 items-center justify-center rounded-2xl bg-linear-to-br text-white shadow-lg ring-1 ring-white/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.icon}"
+							class="flex size-14 items-center justify-center rounded-2xl bg-linear-to-br text-on-dark shadow-lg ring-1 ring-on-dark/25 transition-transform duration-300 motion-safe:group-hover:-rotate-6 {c.icon}"
 						>
 							<svg
 								class="size-7"
@@ -233,7 +233,7 @@
 						</div>
 
 						<h3
-							class="p1-title mt-6 flex items-center gap-2.5 text-lg font-semibold tracking-[-0.01em]"
+							class="p1-title p1-title-sub mt-6 flex items-center gap-2.5 text-lg tracking-[-0.01em]"
 						>
 							<span class="size-1.5 shrink-0 rounded-full {c.dot}" aria-hidden="true"></span>
 							<EditableField
@@ -270,11 +270,11 @@
 				class="wi-item p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px_rgba(15,23,42,0.35)] sm:px-12 sm:py-12"
 			>
 				<div
-					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-red-500/70 to-transparent"
+					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent"
 					aria-hidden="true"
 				></div>
 				<div
-					class="pointer-events-none absolute -top-20 left-1/2 size-64 -translate-x-1/2 rounded-full bg-red-500/5 blur-3xl"
+					class="pointer-events-none absolute -top-20 left-1/2 size-64 -translate-x-1/2 rounded-full bg-brand-500/5 blur-3xl"
 					aria-hidden="true"
 				></div>
 
@@ -310,7 +310,7 @@
 									href={displayValue}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-red-500 to-red-600 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] transition duration-300 hover:from-red-400 hover:to-red-500 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-400 motion-safe:hover:-translate-y-0.5"
+									class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-500 to-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px_rgba(239,68,68,0.9)] transition duration-300 hover:from-brand-400 hover:to-brand-500 hover:shadow-[0_22px_55px_-16px_rgba(239,68,68,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 								>
 									<EditableField
 										fieldKey="WhoWeInvite.platformButtonText"

@@ -48,10 +48,10 @@
 			<div class="flex flex-col justify-center text-left lg:col-span-5">
 				<div class="mb-6">
 					<span
-						class="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-sky-600 uppercase backdrop-blur-md"
+						class="inline-flex items-center gap-2 rounded-full border border-link-400/30 bg-link-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-link-600 uppercase backdrop-blur-md"
 					>
 						<svg
-							class="h-4 w-4 text-sky-500"
+							class="h-4 w-4 text-link-500"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -85,9 +85,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="p1-title font-display text-3xl leading-tight font-extrabold tracking-tight md:text-5xl"
-						>
+						<h2 class="p1-title font-display text-3xl leading-tight tracking-tight md:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -110,7 +108,7 @@
 				</div>
 
 				<div class="mt-10 flex items-center gap-3">
-					<span class="h-1 w-12 rounded-full bg-gradient-to-r from-sky-500 to-indigo-500"></span>
+					<span class="h-1 w-12 rounded-full bg-gradient-to-r from-link-500 to-cat-4-500"></span>
 					<span class="p1-muted font-display text-xs font-bold tracking-widest uppercase"
 						>Ваш умный выбор</span
 					>
@@ -133,11 +131,11 @@
 								/>
 							</div>
 							<div
-								class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"
+								class="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/20 to-transparent"
 							></div>
 							<!-- Стеклянный шильдик названия на V2 -->
 							<div
-								class="absolute right-4 bottom-4 left-4 rounded-2xl border border-white/10 bg-slate-950/40 p-3 text-white backdrop-blur-md"
+								class="absolute right-4 bottom-4 left-4 rounded-2xl border border-on-dark/10 bg-ink-950/40 p-3 text-on-dark backdrop-blur-md"
 							>
 								<p class="font-display text-xs font-bold tracking-wide uppercase md:text-sm">
 									{item.label}
@@ -161,11 +159,11 @@
 								/>
 							</div>
 							<div
-								class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"
+								class="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/20 to-transparent"
 							></div>
 							<!-- Стеклянный шильдик названия на V2 -->
 							<div
-								class="absolute right-4 bottom-4 left-4 rounded-2xl border border-white/10 bg-slate-950/40 p-3 text-white backdrop-blur-md"
+								class="absolute right-4 bottom-4 left-4 rounded-2xl border border-on-dark/10 bg-ink-950/40 p-3 text-on-dark backdrop-blur-md"
 							>
 								<p class="font-display text-xs font-bold tracking-wide uppercase md:text-sm">
 									{item.label}

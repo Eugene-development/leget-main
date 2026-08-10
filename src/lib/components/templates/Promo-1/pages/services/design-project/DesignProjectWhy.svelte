@@ -17,9 +17,21 @@
 		Array.isArray(data?.reasons) && data.reasons.length > 0
 			? (data.reasons as { num: string; title: string; desc: string }[])
 			: [
-					{ num: '01', title: 'Точный бюджет', desc: 'Знаете стоимость ремонта до его начала, без неприятных сюрпризов' },
-					{ num: '02', title: 'Экономия времени', desc: 'Строители работают по готовым чертежам без простоев и переделок' },
-					{ num: '03', title: 'Гарантия результата', desc: 'Видите итоговый интерьер на 3D-визуализациях до начала работ' }
+					{
+						num: '01',
+						title: 'Точный бюджет',
+						desc: 'Знаете стоимость ремонта до его начала, без неприятных сюрпризов'
+					},
+					{
+						num: '02',
+						title: 'Экономия времени',
+						desc: 'Строители работают по готовым чертежам без простоев и переделок'
+					},
+					{
+						num: '03',
+						title: 'Гарантия результата',
+						desc: 'Видите итоговый интерьер на 3D-визуализациях до начала работ'
+					}
 				]
 	);
 
@@ -40,18 +52,27 @@
 	}
 </script>
 
-<section class="bg-slate-50 py-24 sm:py-32">
+<section class="bg-ink-50 py-24 sm:py-32">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid items-center gap-16 lg:grid-cols-2">
 			<!-- Изображение с геометрией -->
 			<div class="relative">
-				<div class="absolute -bottom-6 -right-6 size-48 rounded-[2.5rem] bg-emerald-500 lg:size-64"></div>
-				<div class="absolute -left-4 -top-4 size-32 rounded-full bg-sky-500/30 blur-2xl"></div>
-				<div class="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition duration-500 hover:scale-105 border border-white/20">
-					<img loading="lazy"
-						src={String(data?.imageUrl ?? "/design_process_review.png")}
+				<div
+					class="absolute -right-6 -bottom-6 size-48 rounded-[2.5rem] bg-cat-2-500 lg:size-64"
+				></div>
+				<div class="absolute -top-4 -left-4 size-32 rounded-full bg-link-500/30 blur-2xl"></div>
+				<div
+					class="relative overflow-hidden rounded-[2.5rem] border border-on-dark/20 shadow-2xl transition duration-500 hover:scale-105"
+				>
+					<img
+						loading="lazy"
+						src={String(
+							data?.imageUrl ??
+								'https://storage.yandexcloud.net/leget-main/templates/promo-1/design_process_review.png'
+						)}
 						alt="Дизайн интерьера"
-						class="aspect-square w-full object-cover">
+						class="aspect-square w-full object-cover"
+					/>
 				</div>
 			</div>
 
@@ -66,7 +87,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="text-pretty text-4xl font-black tracking-tight text-slate-900 sm:text-5xl leading-tight">
+						<h2 class="text-4xl leading-tight tracking-tight text-pretty text-ink-900 sm:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -74,8 +95,12 @@
 
 				<dl class="mt-12 space-y-10">
 					{#each reasons as item, i}
-						<div class="flex gap-8 group">
-							<dt class="text-5xl font-black text-emerald-500/20 group-hover:text-emerald-500 transition-colors duration-300">{item.num}</dt>
+						<div class="group flex gap-8">
+							<dt
+								class="text-5xl font-black text-cat-2-500/20 transition-colors duration-300 group-hover:text-cat-2-500"
+							>
+								{item.num}
+							</dt>
 							<dd class="pt-1">
 								<EditableField
 									fieldKey={`DesignProjectWhy.reason_${i}_title`}
@@ -86,7 +111,7 @@
 									class="block"
 								>
 									{#snippet children(displayValue)}
-										<p class="text-xl font-bold text-slate-900">{displayValue}</p>
+										<p class="text-xl font-bold text-ink-900">{displayValue}</p>
 									{/snippet}
 								</EditableField>
 
@@ -100,7 +125,7 @@
 									class="mt-2 block"
 								>
 									{#snippet children(displayValue)}
-										<p class="text-base/7 text-slate-600 font-medium">
+										<p class="text-base/7 font-medium text-ink-600">
 											{displayValue}
 										</p>
 									{/snippet}

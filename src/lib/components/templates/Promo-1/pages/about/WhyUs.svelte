@@ -65,24 +65,24 @@
 	 */
 	const colorMap: Record<string, { tile: string; hairline: string; border: string }> = {
 		sky: {
-			tile: 'bg-sky-500/20 text-sky-400 ring-sky-500/25',
-			hairline: 'bg-linear-to-r from-transparent via-sky-400 to-transparent',
-			border: 'hover:border-sky-500/40'
+			tile: 'bg-link-500/20 text-link-400 ring-link-500/25',
+			hairline: 'bg-linear-to-r from-transparent via-link-400 to-transparent',
+			border: 'hover:border-link-500/40'
 		},
 		emerald: {
-			tile: 'bg-emerald-500/20 text-emerald-400 ring-emerald-500/25',
-			hairline: 'bg-linear-to-r from-transparent via-emerald-400 to-transparent',
-			border: 'hover:border-emerald-500/40'
+			tile: 'bg-cat-2-500/20 text-cat-2-400 ring-cat-2-500/25',
+			hairline: 'bg-linear-to-r from-transparent via-cat-2-400 to-transparent',
+			border: 'hover:border-cat-2-500/40'
 		},
 		violet: {
-			tile: 'bg-violet-500/20 text-violet-400 ring-violet-500/25',
-			hairline: 'bg-linear-to-r from-transparent via-violet-400 to-transparent',
-			border: 'hover:border-violet-500/40'
+			tile: 'bg-cat-3-500/20 text-cat-3-400 ring-cat-3-500/25',
+			hairline: 'bg-linear-to-r from-transparent via-cat-3-400 to-transparent',
+			border: 'hover:border-cat-3-500/40'
 		},
 		amber: {
-			tile: 'bg-amber-500/20 text-amber-400 ring-amber-500/25',
-			hairline: 'bg-linear-to-r from-transparent via-amber-400 to-transparent',
-			border: 'hover:border-amber-500/40'
+			tile: 'bg-cat-1-500/20 text-cat-1-400 ring-cat-1-500/25',
+			hairline: 'bg-linear-to-r from-transparent via-cat-1-400 to-transparent',
+			border: 'hover:border-cat-1-500/40'
 		}
 	};
 
@@ -112,20 +112,20 @@
 	<!-- Градиентная подложка — только в тёмной теме: на светлой она бы гасила контраст. -->
 	{#if !isLight}
 		<div
-			class="pointer-events-none absolute inset-0 bg-linear-to-br from-slate-800 to-slate-900"
+			class="pointer-events-none absolute inset-0 bg-linear-to-br from-ink-800 to-ink-900"
 			aria-hidden="true"
 		></div>
 	{/if}
 	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="ab-grid"></div>
-		<div class="ab-glow absolute -top-40 -left-24 size-112 bg-red-500/15"></div>
-		<div class="ab-glow absolute -right-32 bottom-0 size-96 bg-slate-400/10"></div>
+		<div class="ab-glow absolute -top-40 -left-24 size-112 bg-brand-500/15"></div>
+		<div class="ab-glow absolute -right-32 bottom-0 size-96 bg-ink-400/10"></div>
 		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-red-500/60 to-transparent"
+			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-brand-500/60 to-transparent"
 		></div>
 		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
+			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
 		></div>
 	</div>
 
@@ -141,7 +141,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
+						class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 					>
 						{displayValue}
 					</h2>
@@ -163,7 +163,7 @@
 
 			<div class="ab-rule ab-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
 				<span class="p1-line h-px flex-1"></span>
-				<span class="size-1.5 rotate-45 border border-red-500/80"></span>
+				<span class="size-1.5 rotate-45 border border-brand-500/80"></span>
 				<span class="p1-line h-px flex-1"></span>
 			</div>
 		</div>
@@ -200,7 +200,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title mt-5 text-base font-semibold tracking-[-0.01em] sm:text-lg">
+						<h3 class="p1-title p1-title-sub mt-5 text-base tracking-[-0.01em] sm:text-lg">
 							<EditableField
 								fieldKey="WhyUs.{i}.title"
 								label="Заголовок"

@@ -48,14 +48,14 @@
 	Hero страницы «Партнёрство».
 
 	ВНИМАНИЕ — стык секций: снизу Hero обрезан волной, её заливка обязана
-	совпадать с фоном следующего блока (WhoWeInvite, `bg-slate-50` = #f8fafc).
+	совпадать с фоном следующего блока (WhoWeInvite, `bg-ink-50` = #f8fafc).
 	Цвет задан один раз переменной `--ph-wave` ниже: меняешь фон WhoWeInvite —
 	меняешь и её, иначе на границе появится полоса (фон body тут другой, #faf9f7).
 -->
 <section
 	class="ph-enter relative isolate overflow-hidden {isLight
-		? 'bg-linear-to-br from-sky-50 via-cyan-50 to-teal-50'
-		: 'bg-linear-to-br from-sky-600 via-cyan-600 to-teal-600'}"
+		? 'bg-linear-to-br from-link-50 via-cat-5-50 to-cat-9-50'
+		: 'bg-linear-to-br from-link-600 via-cat-5-600 to-cat-9-600'}"
 >
 	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 
@@ -66,15 +66,17 @@
 			style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
 		></div>
 		<div
-			class="ph-glow absolute -top-32 -left-24 size-112 {isLight ? 'bg-sky-400/15' : 'bg-white/15'}"
+			class="ph-glow absolute -top-32 -left-24 size-112 {isLight
+				? 'bg-link-400/15'
+				: 'bg-on-dark/15'}"
 		></div>
 		<div
 			class="ph-glow absolute top-1/3 -right-24 size-96 {isLight
-				? 'bg-teal-400/15'
-				: 'bg-teal-300/25'}"
+				? 'bg-cat-9-400/15'
+				: 'bg-cat-9-300/25'}"
 		></div>
 		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-white/50 to-transparent"
+			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-on-dark/50 to-transparent"
 		></div>
 	</div>
 
@@ -94,12 +96,12 @@
 					{#snippet children(displayValue)}
 						<div
 							class="inline-flex items-center gap-2.5 rounded-full border {isLight
-								? 'border-slate-900/15'
-								: 'border-white/25'} {isLight
-								? 'bg-white/70'
-								: 'bg-white/12'} px-4 py-2 text-[11px] font-semibold tracking-[0.2em] {isLight
-								? 'text-slate-900'
-								: 'text-white'} uppercase sm:text-xs"
+								? 'border-ink-900/15'
+								: 'border-on-dark/25'} {isLight
+								? 'bg-surface-raised/70'
+								: 'bg-on-dark/12'} px-4 py-2 text-[11px] font-semibold tracking-[0.2em] {isLight
+								? 'text-ink-900'
+								: 'text-on-dark'} uppercase sm:text-xs"
 						>
 							<svg
 								class="size-4"
@@ -130,9 +132,9 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {isLight
-								? 'text-slate-900'
-								: 'text-white'}"
+							class="text-4xl leading-[1.05] tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {isLight
+								? 'text-ink-900'
+								: 'text-on-dark'}"
 						>
 							{displayValue}
 						</h1>
@@ -140,11 +142,11 @@
 				</EditableField>
 
 				<div class="ph-rule ph-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="h-px flex-1 {isLight ? 'bg-slate-900/20' : 'bg-white/30'}"></span>
+					<span class="h-px flex-1 {isLight ? 'bg-ink-900/20' : 'bg-on-dark/30'}"></span>
 					<span
-						class="size-1.5 rotate-45 border {isLight ? 'border-slate-900/40' : 'border-white/70'}"
+						class="size-1.5 rotate-45 border {isLight ? 'border-ink-900/40' : 'border-on-dark/70'}"
 					></span>
-					<span class="h-px flex-1 {isLight ? 'bg-slate-900/20' : 'bg-white/30'}"></span>
+					<span class="h-px flex-1 {isLight ? 'bg-ink-900/20' : 'bg-on-dark/30'}"></span>
 				</div>
 
 				<EditableField
@@ -162,8 +164,8 @@
 					{#snippet children(displayValue)}
 						<p
 							class="max-w-xl text-sm/6 sm:text-base/7 {isLight
-								? 'text-slate-600'
-								: 'text-cyan-50/90'}"
+								? 'text-ink-600'
+								: 'text-cat-5-50/90'}"
 						>
 							{displayValue}
 						</p>
@@ -173,7 +175,7 @@
 				<div class="ph-item ph-d4 mt-10">
 					<a
 						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-sky-700 shadow-[0_20px_50px_-20px_rgba(8,47,73,0.65)] transition duration-300 hover:bg-sky-50 hover:shadow-[0_26px_60px_-18px_rgba(8,47,73,0.75)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-surface-raised px-7 py-3.5 text-sm font-semibold text-link-700 shadow-[0_20px_50px_-20px_rgba(8,47,73,0.65)] transition duration-300 hover:bg-link-50 hover:shadow-[0_26px_60px_-18px_rgba(8,47,73,0.75)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="PartnershipHero.buttonText"
@@ -198,7 +200,7 @@
 			<!-- Цитата: паспарту с градиентной каймой в 1px -->
 			<div class="ph-card ph-d3 mt-12 lg:mt-0">
 				<div
-					class="rounded-4xl bg-linear-to-br from-white/50 via-white/20 to-white/40 p-px shadow-[0_50px_120px_-60px_rgba(8,47,73,0.8)]"
+					class="rounded-4xl bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40 p-px shadow-[0_50px_120px_-60px_rgba(8,47,73,0.8)]"
 				>
 					<!--
 						Без backdrop-blur: пока на карточке висит transform от анимации
@@ -209,11 +211,11 @@
 					-->
 					<div
 						class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-linear-to-br {isLight
-							? 'from-white/80 via-white/70 to-white/60'
-							: 'from-white/20 via-white/12 to-white/5'} p-8 ring-1 ring-white/10 ring-inset sm:p-10"
+							? 'from-surface-raised/80 via-surface-raised/70 to-surface-raised/60'
+							: 'from-on-dark/20 via-on-dark/12 to-on-dark/5'} p-8 ring-1 ring-on-dark/10 ring-inset sm:p-10"
 					>
 						<div
-							class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-white/15 to-transparent"
+							class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-on-dark/15 to-transparent"
 							aria-hidden="true"
 						></div>
 
@@ -221,12 +223,12 @@
 							<!-- Кавычка-акцент в плитке: задаёт вертикаль карточки, не наезжая на текст -->
 							<div
 								class="flex size-11 items-center justify-center rounded-2xl {isLight
-									? 'bg-white/80'
-									: 'bg-white/15'} ring-1 {isLight ? 'ring-slate-900/10' : 'ring-white/25'}"
+									? 'bg-surface-raised/80'
+									: 'bg-on-dark/15'} ring-1 {isLight ? 'ring-ink-900/10' : 'ring-on-dark/25'}"
 								aria-hidden="true"
 							>
 								<svg
-									class="size-5 {isLight ? 'text-sky-700' : 'text-white'}"
+									class="size-5 {isLight ? 'text-link-700' : 'text-on-dark'}"
 									viewBox="0 0 24 24"
 									fill="currentColor"
 								>
@@ -251,8 +253,8 @@
 								{#snippet children(displayValue)}
 									<blockquote
 										class="text-lg leading-relaxed font-medium tracking-[-0.01em] text-pretty sm:text-xl {isLight
-											? 'text-slate-900'
-											: 'text-white'}"
+											? 'text-ink-900'
+											: 'text-on-dark'}"
 									>
 										{displayValue}
 									</blockquote>
@@ -260,7 +262,7 @@
 							</EditableField>
 
 							<!-- Линия-разделитель и подпись автора под цитатой -->
-							<div class="mt-7 border-t {isLight ? 'border-slate-900/10' : 'border-white/15'} pt-5">
+							<div class="mt-7 border-t {isLight ? 'border-ink-900/10' : 'border-on-dark/15'} pt-5">
 								{#if hasLegacyAuthor}
 									<!--
 										Совместимость: на сайтах, где уже заполнены отдельные поля
@@ -278,7 +280,7 @@
 										{#snippet children(displayValue)}
 											{#if displayValue}
 												<div
-													class="text-sm font-semibold {isLight ? 'text-slate-900' : 'text-white'}"
+													class="text-sm font-semibold {isLight ? 'text-ink-900' : 'text-on-dark'}"
 												>
 													{displayValue}
 												</div>
@@ -297,8 +299,8 @@
 											{#if displayValue}
 												<div
 													class="text-[11px] font-semibold tracking-[0.16em] uppercase {isLight
-														? 'text-slate-500'
-														: 'text-cyan-100/80'}"
+														? 'text-ink-500'
+														: 'text-cat-5-100/80'}"
 												>
 													{displayValue}
 												</div>
@@ -317,8 +319,8 @@
 										{#snippet children(displayValue)}
 											<div
 												class="text-sm font-semibold sm:text-base {isLight
-													? 'text-slate-900'
-													: 'text-white'}"
+													? 'text-ink-900'
+													: 'text-on-dark'}"
 											>
 												{displayValue}
 											</div>
@@ -368,7 +370,7 @@
 
 <style>
 	/*
-		Цвет волны = фон следующей секции (WhoWeInvite, bg-slate-50).
+		Цвет волны = фон следующей секции (WhoWeInvite, bg-ink-50).
 		Держим его в одной переменной, чтобы стык правился в одном месте.
 	*/
 	.ph-wave {

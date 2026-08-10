@@ -24,10 +24,10 @@
 </script>
 
 <div class="mebel-container mt-16">
-	<div class="rounded-2xl bg-white p-8 shadow-sm border border-slate-50 sm:p-12">
-		<h2 class="text-2xl font-bold text-slate-900">Описание проекта</h2>
-		
-		<div class="mt-8 prose prose-slate max-w-none text-slate-600 leading-relaxed">
+	<div class="rounded-2xl border border-ink-50 bg-surface-raised p-8 shadow-sm sm:p-12">
+		<h2 class="text-2xl text-ink-900">Описание проекта</h2>
+
+		<div class="prose mt-8 max-w-none leading-relaxed text-ink-600 prose-slate">
 			{#if isEditable}
 				<EditableField
 					fieldKey="MebelProjectDescription.description"

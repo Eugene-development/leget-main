@@ -1,5 +1,18 @@
 <!doctype html>
-<html lang="ru">
+<!--
+	data-ds — выбранная дизайн-система (slug из таблицы `design_systems`).
+	Значения токенов приходят из $lib/design-systems/<slug>.css; смена атрибута
+	перекрашивает весь сайт без пересборки CSS.
+
+	Пока захардкожено `base`: где хранится выбор пользователя — открытый вопрос
+	(docs/architecture/design-systems.md). Атрибут стоит здесь заранее и намеренно:
+	он и точка подключения будущего выбора, и способ проверить систему руками
+	(поменять на `graphite` в DevTools).
+
+	Базовая объявлена и на голом `:root`, поэтому потеря атрибута оставляет сайт
+	с рабочей палитрой, а не без токенов.
+-->
+<html lang="ru" data-ds="base">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -41,7 +41,7 @@
 		<div class="ct-glow absolute -top-24 left-1/2 size-112 -translate-x-1/2"></div>
 		<div class={ct.accent.toplineOnInk}></div>
 		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"
+			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
 		></div>
 	</div>
 
@@ -136,7 +136,7 @@
 							class={ct.btn.ghostOnInk}
 						>
 							<svg
-								class="size-4.5 text-[#229ED9]"
+								class="size-4.5 text-telegram"
 								fill="currentColor"
 								viewBox="0 0 24 24"
 								aria-hidden="true"

@@ -91,13 +91,20 @@
 
 		<div class="yd-adv__right">
 			<div class="yd-adv__features-card">
-				<h3 class="yd-adv__features-title">Что вы получаете</h3>
+				<h3 class="p1-title-sub yd-adv__features-title">Что вы получаете</h3>
 				<ul class="yd-adv__features-list">
 					{#each features as feature}
 						<li class="yd-adv__features-item">
 							<div class="yd-adv__features-check">
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-									<polyline points="20 6 9 17 4 12"/>
+								<svg
+									width="14"
+									height="14"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="3"
+								>
+									<polyline points="20 6 9 17 4 12" />
 								</svg>
 							</div>
 							<span>{feature}</span>

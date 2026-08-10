@@ -35,8 +35,8 @@
 			description:
 				'Создаем интерактивную 3D-модель вашей будущей кухни в реальном масштабе. Вы увидите фотореалистичный рендер материалов, текстур и освещения еще до начала производства.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
-			gradient: 'from-violet-600 via-indigo-600 to-sky-500',
-			accentColor: 'text-violet-400',
+			gradient: 'from-cat-3-600 via-cat-4-600 to-link-500',
+			accentColor: 'text-cat-3-400',
 			glowColor: 'rgba(139, 92, 246, 0.15)',
 			specs: [
 				{ label: 'Точность модели', value: '100% совпадение' },
@@ -51,8 +51,8 @@
 			description:
 				'Индивидуальный расчет высоты рабочих зон под ваш рост. Разработка скрытых выдвижных систем, бесшумных угловых решений и идеальной последовательности рабочих треугольников.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
-			gradient: 'from-cyan-600 via-sky-600 to-indigo-500',
-			accentColor: 'text-cyan-400',
+			gradient: 'from-cat-5-600 via-link-600 to-cat-4-500',
+			accentColor: 'text-cat-5-400',
 			glowColor: 'rgba(6, 182, 212, 0.15)',
 			specs: [
 				{ label: 'Оптимизация зон', value: '+45% полезной площади' },
@@ -67,8 +67,8 @@
 			description:
 				'Работаем с лучшими мировыми материалами. Натуральный шпон дуба, итальянские эмали Soft-touch, кварцевый агломерат повышенной прочности и ультрасовременные нано-покрытия Fenix.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg',
-			gradient: 'from-emerald-600 via-teal-600 to-sky-500',
-			accentColor: 'text-emerald-400',
+			gradient: 'from-cat-2-600 via-cat-9-600 to-link-500',
+			accentColor: 'text-cat-2-400',
 			glowColor: 'rgba(16, 185, 129, 0.15)',
 			specs: [
 				{ label: 'Столешницы', value: 'Кварц / Керамогранит' },
@@ -83,8 +83,8 @@
 			description:
 				'Монтаж выполняют сертифицированные инженеры фабрики LEGET с использованием лазерного нивелирования. Чистая установка со строительными пылесосами Festool и врезка всей бытовой техники.',
 			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
-			gradient: 'from-amber-600 via-rose-600 to-indigo-500',
-			accentColor: 'text-amber-400',
+			gradient: 'from-cat-1-600 via-cat-6-600 to-cat-4-500',
+			accentColor: 'text-cat-1-400',
 			glowColor: 'rgba(245, 158, 11, 0.15)',
 			specs: [
 				{ label: 'Скорость сборки', value: '1 рабочий день' },
@@ -132,8 +132,8 @@
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
 	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
-		? 'bg-slate-50 text-slate-900'
-		: 'bg-slate-950 text-white'}"
+		? 'bg-ink-50 text-ink-900'
+		: 'bg-ink-950 text-on-dark'}"
 >
 	<!-- Фоновое изображение с плавным переходом -->
 	<div class="absolute inset-0 z-0">
@@ -148,8 +148,8 @@
 		<!-- Динамический премиальный оверлей в зависимости от выбранного скилла и темы -->
 		<div
 			class="absolute inset-0 transition-colors duration-700 {isLight
-				? 'bg-slate-50/88 backdrop-blur-md'
-				: 'bg-slate-950/88 backdrop-blur-md'}"
+				? 'bg-ink-50/88 backdrop-blur-md'
+				: 'bg-ink-950/88 backdrop-blur-md'}"
 		></div>
 		<!-- Сетка и градиентные премиальные блики -->
 		<div class="bg-radial-mesh pointer-events-none absolute inset-0 opacity-[0.2]"></div>
@@ -187,7 +187,7 @@
 								/>
 							{:else if isEditable}
 								<div
-									class="rounded-xl border border-dashed border-white/20 bg-white/5 p-3 text-[10px] font-bold tracking-widest text-white/50 uppercase backdrop-blur-md"
+									class="rounded-xl border border-dashed border-on-dark/20 bg-on-dark/5 p-3 text-[10px] font-bold tracking-widest text-on-dark/50 uppercase backdrop-blur-md"
 								>
 									Логотип
 								</div>
@@ -217,10 +217,10 @@
 						{#snippet children(displayValue)}
 							<span
 								class="shadow-glow inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md md:text-sm {isLight
-									? 'border-indigo-200 bg-indigo-100/50 text-indigo-600'
-									: 'border-indigo-500/20 bg-indigo-950/40 text-indigo-300'}"
+									? 'border-cat-4-200 bg-cat-4-100/50 text-cat-4-600'
+									: 'border-cat-4-500/20 bg-cat-4-950/40 text-cat-4-300'}"
 							>
-								<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-500"></span>
+								<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-cat-4-500"></span>
 								{displayValue}
 							</span>
 						{/snippet}
@@ -238,9 +238,9 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
-								? 'from-slate-900 via-slate-800 to-slate-700'
-								: 'from-white via-slate-100 to-slate-400'}"
+							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
+								? 'from-ink-900 via-ink-800 to-ink-700'
+								: 'from-surface-raised via-ink-100 to-ink-400'}"
 						>
 							{displayValue}
 						</h1>
@@ -260,8 +260,8 @@
 					{#snippet children(displayValue)}
 						<p
 							class="font-sans-premium mb-6 text-sm leading-relaxed font-normal transition-colors duration-500 md:text-base {isLight
-								? 'text-slate-600'
-								: 'text-slate-300'}"
+								? 'text-ink-600'
+								: 'text-ink-300'}"
 						>
 							{displayValue}
 						</p>
@@ -290,12 +290,12 @@
 								></span>
 								<span
 									class="relative flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold transition-all duration-300 md:px-8 md:text-base {isLight
-										? 'border border-slate-200/85 bg-slate-100 text-slate-800 hover:bg-white'
-										: 'bg-slate-900/90 text-white hover:bg-slate-950/80 hover:text-white'}"
+										? 'border border-ink-200/85 bg-ink-100 text-ink-800 hover:bg-surface-raised'
+										: 'bg-ink-900/90 text-on-dark hover:bg-ink-950/80 hover:text-on-dark'}"
 								>
 									{displayValue}
 									<svg
-										class="h-4 w-4 text-indigo-400 transition-transform duration-300 group-hover:translate-x-1.5"
+										class="h-4 w-4 text-cat-4-400 transition-transform duration-300 group-hover:translate-x-1.5"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -316,13 +316,13 @@
 				<!-- Список Брендов-партнеров -->
 				<div
 					class="flex w-full flex-col gap-3.5 border-t pt-5 {isLight
-						? 'border-slate-200'
-						: 'border-white/10'}"
+						? 'border-ink-200'
+						: 'border-on-dark/10'}"
 				>
 					<span
 						class="text-[10px] font-black tracking-widest uppercase {isLight
-							? 'text-slate-500'
-							: 'text-slate-400'}">Используем комплектующие лидеров рынка:</span
+							? 'text-ink-500'
+							: 'text-ink-400'}">Используем комплектующие лидеров рынка:</span
 					>
 					<div class="flex flex-wrap items-center gap-4">
 						{#each brands as brand}
@@ -331,8 +331,8 @@
 								target="_blank"
 								rel="noopener noreferrer"
 								class="brand-capsule flex items-center justify-center rounded-xl border px-4 py-2 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 {isLight
-									? 'border-slate-200 bg-white/70 hover:border-indigo-500/30'
-									: 'border-white/5 bg-white/5 opacity-60 hover:border-indigo-500/20 hover:opacity-100'}"
+									? 'border-ink-200 bg-surface-raised/70 hover:border-cat-4-500/30'
+									: 'border-on-dark/5 bg-on-dark/5 opacity-60 hover:border-cat-4-500/20 hover:opacity-100'}"
 							>
 								<img
 									class="max-h-[16px] max-w-[64px] object-contain transition-all duration-300 {isLight
@@ -351,24 +351,24 @@
 			<div class="flex w-full items-center justify-center lg:col-span-6">
 				<div
 					class="relative flex w-full max-w-lg flex-col gap-5 overflow-hidden rounded-3xl border p-5 shadow-2xl backdrop-blur-2xl transition-all duration-300 sm:p-6 xl:max-w-[540px] {isLight
-						? 'border-slate-200 bg-white/80'
-						: 'border-white/10 bg-slate-900/50'}"
+						? 'border-ink-200 bg-surface-raised/80'
+						: 'border-on-dark/10 bg-ink-900/50'}"
 				>
 					<!-- Шапка панели Скиллов -->
 					<div
 						class="flex items-center justify-between border-b pb-3 {isLight
-							? 'border-slate-100'
-							: 'border-white/5'}"
+							? 'border-ink-100'
+							: 'border-on-dark/5'}"
 					>
 						<span
 							class="text-xs font-black tracking-wider uppercase {isLight
-								? 'text-slate-500'
-								: 'text-slate-400'}">Профессиональные Скиллы LEGET</span
+								? 'text-ink-500'
+								: 'text-ink-400'}">Профессиональные Скиллы LEGET</span
 						>
 						<span
 							class="rounded-full border px-2 py-0.5 text-[10px] font-bold {isLight
-								? 'border-indigo-400 bg-indigo-50 text-indigo-600'
-								: 'border-indigo-500/30 bg-indigo-500/10 text-indigo-400'}">Мастерство</span
+								? 'border-cat-4-400 bg-cat-4-50 text-cat-4-600'
+								: 'border-cat-4-500/30 bg-cat-4-500/10 text-cat-4-400'}">Мастерство</span
 						>
 					</div>
 
@@ -381,20 +381,20 @@
 								class="group relative flex cursor-pointer items-start gap-4 rounded-2xl border p-3.5 text-left transition-all duration-300 {activeSkillIndex ===
 								idx
 									? isLight
-										? 'translate-x-1 border-indigo-200 bg-white shadow-md'
-										: 'translate-x-1 border-indigo-500/30 bg-slate-900/80 shadow-lg'
+										? 'translate-x-1 border-cat-4-200 bg-surface-raised shadow-md'
+										: 'translate-x-1 border-cat-4-500/30 bg-ink-900/80 shadow-lg'
 									: isLight
-										? 'border-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-800'
-										: 'border-transparent text-slate-400 hover:bg-white/5 hover:text-white'}"
+										? 'border-transparent text-ink-500 hover:bg-ink-100 hover:text-ink-800'
+										: 'border-transparent text-ink-400 hover:bg-on-dark/5 hover:text-on-dark'}"
 							>
 								<!-- Номер / Иконка скилла с динамическим градиентным кругом -->
 								<div
 									class="font-display flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-black transition-all duration-300 {activeSkillIndex ===
 									idx
-										? `bg-gradient-to-br ${skill.gradient} text-white shadow-lg`
+										? `bg-gradient-to-br ${skill.gradient} text-on-dark shadow-lg`
 										: isLight
-											? 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
-											: 'bg-white/5 text-white/50 group-hover:bg-white/10'}"
+											? 'bg-ink-100 text-ink-500 group-hover:bg-ink-200'
+											: 'bg-on-dark/5 text-on-dark/50 group-hover:bg-on-dark/10'}"
 								>
 									0{idx + 1}
 								</div>
@@ -402,14 +402,14 @@
 								<!-- Текст скилла -->
 								<div class="min-w-0 flex-1">
 									<h3
-										class="text-sm font-bold tracking-tight transition-colors duration-300 {activeSkillIndex ===
+										class="p1-title-sub text-sm tracking-tight transition-colors duration-300 {activeSkillIndex ===
 										idx
 											? isLight
-												? 'text-indigo-600'
-												: 'text-white'
+												? 'text-cat-4-600'
+												: 'text-on-dark'
 											: isLight
-												? 'text-slate-800'
-												: 'text-slate-300'}"
+												? 'text-ink-800'
+												: 'text-ink-300'}"
 									>
 										{skill.title}
 									</h3>
@@ -417,9 +417,9 @@
 										class="mt-0.5 truncate text-[11px] leading-normal font-semibold {activeSkillIndex ===
 										idx
 											? isLight
-												? 'text-slate-500'
-												: 'text-slate-400'
-											: 'text-slate-500'}"
+												? 'text-ink-500'
+												: 'text-ink-400'
+											: 'text-ink-500'}"
 									>
 										{skill.subtitle}
 									</p>
@@ -428,7 +428,7 @@
 								<!-- Стрелка активности -->
 								{#if activeSkillIndex === idx}
 									<div
-										class="flex h-6 w-6 items-center justify-center self-center text-indigo-500"
+										class="flex h-6 w-6 items-center justify-center self-center text-cat-4-500"
 										in:fly={{ x: -6, duration: 250 }}
 									>
 										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -448,16 +448,16 @@
 					<!-- Презентация контента выбранного скилла с плавным переходом -->
 					<div
 						class="relative overflow-hidden rounded-2xl border p-4.5 {isLight
-							? 'border-slate-200/80 bg-slate-100/40'
-							: 'border-white/5 bg-slate-950/40'}"
+							? 'border-ink-200/80 bg-ink-100/40'
+							: 'border-on-dark/5 bg-ink-950/40'}"
 					>
 						{#key activeSkillIndex}
 							<div class="flex flex-col gap-3" in:fade={{ duration: 300 }}>
 								<!-- Описание выбранного скилла -->
 								<p
 									class="text-xs leading-relaxed font-semibold sm:text-[12.5px] {isLight
-										? 'text-slate-600'
-										: 'text-slate-200'}"
+										? 'text-ink-600'
+										: 'text-ink-200'}"
 								>
 									{activeSkill.description}
 								</p>
@@ -465,20 +465,20 @@
 								<!-- Спецификации / Важные показатели скилла -->
 								<div
 									class="grid grid-cols-3 gap-2 border-t pt-3.5 {isLight
-										? 'border-slate-200'
-										: 'border-white/5'}"
+										? 'border-ink-200'
+										: 'border-on-dark/5'}"
 								>
 									{#each activeSkill.specs as spec}
 										<div class="flex flex-col">
 											<span
 												class="text-[9px] font-black tracking-wider uppercase {isLight
-													? 'text-slate-400'
-													: 'text-slate-500'}">{spec.label}</span
+													? 'text-ink-400'
+													: 'text-ink-500'}">{spec.label}</span
 											>
 											<span
 												class="mt-0.5 text-[10.5px] leading-tight font-bold {isLight
-													? 'text-slate-800'
-													: 'text-white'}">{spec.value}</span
+													? 'text-ink-800'
+													: 'text-on-dark'}">{spec.value}</span
 											>
 										</div>
 									{/each}

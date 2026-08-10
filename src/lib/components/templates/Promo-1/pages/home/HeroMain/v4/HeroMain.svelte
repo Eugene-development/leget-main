@@ -32,25 +32,25 @@
 		{
 			name: 'Warm Oak',
 			colors: ['#D6C5B3', '#8C7A6B', '#4A3E3D', '#1C1917'],
-			accent: 'text-amber-500',
+			accent: 'text-cat-1-500',
 			bgGlow: 'rgba(217, 119, 6, 0.12)'
 		},
 		{
 			name: 'Nordic Slate',
 			colors: ['#E2E8F0', '#94A3B8', '#475569', '#0F172A'],
-			accent: 'text-sky-400',
+			accent: 'text-link-400',
 			bgGlow: 'rgba(56, 189, 248, 0.12)'
 		},
 		{
 			name: 'Forest Emerald',
 			colors: ['#D1FAE5', '#34D399', '#065F46', '#022C22'],
-			accent: 'text-emerald-400',
+			accent: 'text-cat-2-400',
 			bgGlow: 'rgba(52, 211, 153, 0.12)'
 		},
 		{
 			name: 'Luxury Obsidian',
 			colors: ['#F3F4F6', '#9CA3AF', '#374151', '#030712'],
-			accent: 'text-rose-400',
+			accent: 'text-cat-6-400',
 			bgGlow: 'rgba(251, 113, 133, 0.12)'
 		}
 	];
@@ -93,22 +93,22 @@
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
 	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
-		? 'bg-zinc-100 text-zinc-900'
-		: 'bg-black text-white'}"
+		? 'bg-ink-100 text-ink-900'
+		: 'bg-scrim text-on-dark'}"
 >
 	<!-- Задний технологичный план (Бруталистские оси координат и градиентная точка) -->
 	<div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 		<!-- Осевая разметка -->
 		<div
-			class="absolute inset-y-0 left-1/2 w-px {isLight ? 'bg-zinc-300/40' : 'bg-zinc-800/30'}"
+			class="absolute inset-y-0 left-1/2 w-px {isLight ? 'bg-ink-300/40' : 'bg-ink-800/30'}"
 		></div>
 		<div
-			class="absolute inset-x-0 top-1/2 h-px {isLight ? 'bg-zinc-300/40' : 'bg-zinc-800/30'}"
+			class="absolute inset-x-0 top-1/2 h-px {isLight ? 'bg-ink-300/40' : 'bg-ink-800/30'}"
 		></div>
 
 		<!-- Координатных меток сетки здесь больше нет: обе жили на absolute-углах
 		     (left-8/top-8 и right-8/bottom-8) и накладывались на реальный контент —
-		     верхняя на логотип, нижняя на логотипы брендов. Теперь они внутри
+		     верхняя на шапку, нижняя на логотипы брендов. Теперь они внутри
 		     .hero-head и .hero-partners соответственно (см. ниже). -->
 
 		<!-- Динамический блик мудборда -->
@@ -121,45 +121,10 @@
 	<div
 		class="hero-shell relative z-10 mx-auto flex min-h-0 w-full max-w-screen-2xl flex-col justify-between px-4 pt-6 pb-24 sm:px-6 sm:py-8 md:px-8 lg:h-full lg:px-12 xl:px-16"
 	>
-		<!-- Шапка / Логотип -->
+		<!-- Шапка -->
 		<div class="hero-head flex w-full items-center justify-between pb-6">
-			{#if data?.logoUrl || isEditable}
-				<div class="w-24 transition-all duration-300 hover:scale-[1.02] md:w-32">
-					<EditableField
-						fieldKey="HeroMain.logoUrl"
-						label="Логотип (URL)"
-						value={String(data?.logoUrl ?? '')}
-						{isEditable}
-						onSave={(v) => saveField('logoUrl', v)}
-						class="block"
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue}
-								<!-- max-h обязателен: без него квадратный логотип растягивается
-								     до ширины бокса (128px) и выдавливает контент вниз. -->
-								<img
-									src={displayValue}
-									alt={String(data?.logoAlt ?? 'Логотип')}
-									class="relative max-h-12 w-full object-contain md:max-h-16 {isLight
-										? ''
-										: 'brightness-0 invert filter'}"
-								/>
-							{:else if isEditable}
-								<div
-									class="rounded-none border border-zinc-500 bg-zinc-800/5 p-3 font-mono text-[10px] tracking-widest text-zinc-500 uppercase"
-								>
-									LOGO_V4
-								</div>
-							{/if}
-						{/snippet}
-					</EditableField>
-				</div>
-			{/if}
-
 			<!-- Координатная метка сетки. Вынесена из фонового слоя в шапку:
-			     правая часть строки всё равно пустая, а на left-8/top-8 метка
-			     перекрывалась логотипом. ml-auto держит её справа и тогда,
-			     когда логотип не задан (в строке остаётся один элемент). -->
+			     правая часть строки остаётся свободной, а ml-auto держит её справа. -->
 			<div
 				class="pointer-events-none ml-auto font-mono text-[9px] tracking-widest uppercase opacity-25 select-none"
 			>
@@ -174,8 +139,8 @@
 			<!-- Левая колонка: Архитектурная журнальная верстка -->
 			<div
 				class="flex flex-col items-start border-l-2 pl-6 select-none sm:pl-8 lg:col-span-5 {isLight
-					? 'border-zinc-300'
-					: 'border-zinc-800'}"
+					? 'border-ink-300'
+					: 'border-ink-800'}"
 			>
 				<!-- Хэдер компании с кодом ревизии -->
 				<div class="mb-4">
@@ -190,8 +155,8 @@
 						{#snippet children(displayValue)}
 							<div
 								class="font-mono text-xs tracking-[0.3em] uppercase {isLight
-									? 'text-zinc-500'
-									: 'text-zinc-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								{displayValue} // EDIT.04
 							</div>
@@ -210,9 +175,9 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="hero-title font-display mb-6 text-4xl leading-[1.05] font-black tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight
-								? 'text-black'
-								: 'text-white'}"
+							class="hero-title font-display mb-6 text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight
+								? 'text-scrim'
+								: 'text-on-dark'}"
 						>
 							{displayValue}
 						</h1>
@@ -232,8 +197,8 @@
 					{#snippet children(displayValue)}
 						<p
 							class="hero-desc font-sans-premium mb-8 text-sm leading-relaxed font-light md:text-base {isLight
-								? 'text-zinc-600'
-								: 'text-zinc-300'}"
+								? 'text-ink-600'
+								: 'text-ink-300'}"
 						>
 							{displayValue}
 						</p>
@@ -255,8 +220,8 @@
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
 								class="relative w-full cursor-pointer rounded-none border-2 px-8 py-4 font-mono text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 sm:w-auto {isLight
-									? 'border-black bg-black text-white shadow-[4px_4px_0px_#9CA3AF]'
-									: 'border-white bg-white text-black shadow-[4px_4px_0px_rgba(255,255,255,0.15)]'}"
+									? 'border-scrim bg-scrim text-on-dark shadow-[4px_4px_0px_#9CA3AF]'
+									: 'border-on-dark bg-surface-raised text-scrim shadow-[4px_4px_0px_rgba(255,255,255,0.15)]'}"
 							>
 								{displayValue}
 							</button>
@@ -279,8 +244,8 @@
 								class="flex cursor-pointer items-center justify-center rounded-full border p-[2px] transition-all duration-200 {activeSwatchIndex ===
 								idx
 									? isLight
-										? 'border-black'
-										: 'border-white'
+										? 'border-scrim'
+										: 'border-on-dark'
 									: 'border-transparent hover:scale-105'}"
 							>
 								<div class="flex h-5 w-5 overflow-hidden rounded-full">
@@ -303,21 +268,21 @@
 					<div
 						class="absolute top-[8%] left-[6%] aspect-[4/3] w-[68%] origin-top-left scale-95 rounded-xl border p-4 font-mono shadow-2xl backdrop-blur-md transition-all duration-500 select-none {hoveredCardId ===
 						'blueprint'
-							? 'z-40 border-indigo-500'
+							? 'z-40 border-cat-4-500'
 							: 'z-10'} {isLight
-							? 'border-zinc-200 bg-white/70 text-zinc-500'
-							: 'border-zinc-800 bg-zinc-950/70 text-zinc-400'}"
+							? 'border-ink-200 bg-surface-raised/70 text-ink-500'
+							: 'border-ink-800 bg-ink-950/70 text-ink-400'}"
 						style="transform: rotate(-6deg) {hoveredCardId === 'blueprint' ? 'scale(1.02)' : ''};"
 						onmouseenter={() => (hoveredCardId = 'blueprint')}
 						onmouseleave={() => (hoveredCardId = null)}
 					>
-						<div class="mb-3 flex justify-between border-b border-zinc-700/20 pb-1 text-[8px]">
+						<div class="mb-3 flex justify-between border-b border-ink-700/20 pb-1 text-[8px]">
 							<span>DWG_LAYOUT_REVISION_1</span>
 							<span>SCALE 1:20</span>
 						</div>
 						<!-- Стилизованный чертеж мебели -->
 						<div
-							class="relative flex h-[80%] flex-1 items-center justify-center overflow-hidden rounded-lg border border-dashed border-zinc-700/20"
+							class="relative flex h-[80%] flex-1 items-center justify-center overflow-hidden rounded-lg border border-dashed border-ink-700/20"
 						>
 							<svg class="h-full w-full opacity-35" viewBox="0 0 100 100" fill="none">
 								<rect
@@ -344,13 +309,15 @@
 					<div
 						class="absolute top-[18%] right-[8%] aspect-[4/3] w-[58%] overflow-hidden rounded-xl border p-1.5 shadow-2xl transition-all duration-500 {hoveredCardId ===
 						'render'
-							? 'z-40 scale-[1.03] border-sky-400'
-							: 'z-20'} {isLight ? 'border-zinc-200 bg-white' : 'border-zinc-800 bg-zinc-900'}"
+							? 'z-40 scale-[1.03] border-link-400'
+							: 'z-20'} {isLight
+							? 'border-ink-200 bg-surface-raised'
+							: 'border-ink-800 bg-ink-900'}"
 						style="transform: rotate(3deg);"
 						onmouseenter={() => (hoveredCardId = 'render')}
 						onmouseleave={() => (hoveredCardId = null)}
 					>
-						<div class="relative h-full w-full overflow-hidden rounded-lg bg-zinc-950">
+						<div class="relative h-full w-full overflow-hidden rounded-lg bg-ink-950">
 							<img
 								src="https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg"
 								alt="LEGET Premium Kitchen"
@@ -358,7 +325,7 @@
 							/>
 							<!-- Тег поверх изображения -->
 							<div
-								class="absolute bottom-2.5 left-2.5 rounded bg-black/60 px-2 py-1 font-mono text-[8px] tracking-wider text-white backdrop-blur-md"
+								class="absolute bottom-2.5 left-2.5 rounded bg-scrim/60 px-2 py-1 font-mono text-[8px] tracking-wider text-on-dark backdrop-blur-md"
 							>
 								CONCEPT_04_SLATE
 							</div>
@@ -370,16 +337,16 @@
 					<div
 						class="absolute bottom-[8%] left-[10%] aspect-square w-[42%] rounded-xl border p-2.5 shadow-2xl transition-all duration-500 {hoveredCardId ===
 						'material'
-							? 'z-40 scale-[1.03] border-emerald-400'
-							: 'z-30'} {isLight ? 'border-zinc-200 bg-white' : 'border-zinc-850 bg-zinc-950'}"
+							? 'z-40 scale-[1.03] border-cat-2-400'
+							: 'z-30'} {isLight
+							? 'border-ink-200 bg-surface-raised'
+							: 'border-zinc-850 bg-ink-950'}"
 						style="transform: rotate(-10deg);"
 						onmouseenter={() => (hoveredCardId = 'material')}
 						onmouseleave={() => (hoveredCardId = null)}
 					>
 						<!-- Премиум текстура дуба -->
-						<div
-							class="h-[78%] w-full overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900"
-						>
+						<div class="h-[78%] w-full overflow-hidden rounded-lg border border-ink-800 bg-ink-900">
 							<div
 								class="h-full w-full bg-cover"
 								style="background-image: url('https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg');"
@@ -397,14 +364,16 @@
 					<div
 						class="absolute right-[10%] bottom-[16%] w-[38%] rounded-xl border p-3.5 shadow-2xl transition-all duration-500 {hoveredCardId ===
 						'colors'
-							? 'z-40 scale-[1.03] border-amber-400'
-							: 'z-35'} {isLight ? 'border-zinc-200 bg-white' : 'border-zinc-850 bg-zinc-950'}"
+							? 'z-40 scale-[1.03] border-cat-1-400'
+							: 'z-35'} {isLight
+							? 'border-ink-200 bg-surface-raised'
+							: 'border-zinc-850 bg-ink-950'}"
 						style="transform: rotate(8deg);"
 						onmouseenter={() => (hoveredCardId = 'colors')}
 						onmouseleave={() => (hoveredCardId = null)}
 					>
 						<div
-							class="mb-2.5 flex items-center justify-between border-b border-zinc-700/20 pb-1.5 font-mono text-[8px]"
+							class="mb-2.5 flex items-center justify-between border-b border-ink-700/20 pb-1.5 font-mono text-[8px]"
 						>
 							<span>SWATCHES</span>
 							<span class="text-[7px]">VER_4</span>
@@ -413,7 +382,7 @@
 							{#each activePalette.colors as color, cIdx}
 								<div class="flex items-center gap-2">
 									<div
-										class="h-3 w-6 shrink-0 rounded border border-zinc-700/20"
+										class="h-3 w-6 shrink-0 rounded border border-ink-700/20"
 										style="background-color: {color}"
 									></div>
 									<span class="font-mono text-[7px] tracking-wider uppercase opacity-60"
@@ -430,8 +399,8 @@
 		<!-- Нижний бренд-бар -->
 		<div
 			class="hero-partners mt-6 flex w-full flex-col items-center justify-between gap-5 border-t pt-6 pb-2 md:flex-row {isLight
-				? 'border-zinc-300'
-				: 'border-zinc-800'}"
+				? 'border-ink-300'
+				: 'border-ink-800'}"
 		>
 			<span class="font-mono text-[9px] tracking-[0.2em] uppercase opacity-50"
 				>LEGET PARTNERS & HARDWARE:</span

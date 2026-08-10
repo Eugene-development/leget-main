@@ -18,36 +18,36 @@
 	 * Палитра Hero «О компании»: тёмный slate с красным акцентом.
 	 *
 	 * ВНИМАНИЕ — `wave` обязан совпадать с фоном следующих секций
-	 * (Text и Statistics стоят на `bg-slate-50` = #f8fafc; фон одинаковый,
+	 * (Text и Statistics стоят на `bg-ink-50` = #f8fafc; фон одинаковый,
 	 * чтобы стык держался, даже когда блок Text пуст и не рендерится).
 	 */
 	const palette: HeroPalette = {
-		section: 'bg-linear-to-br from-slate-900 via-slate-800 to-red-900',
+		section: 'bg-linear-to-br from-ink-900 via-ink-800 to-brand-900',
 		patternOpacity: 'opacity-20',
 		patternColor: '%239C92AC',
-		glowA: 'bg-red-500/20',
-		glowB: 'bg-red-400/15',
+		glowA: 'bg-brand-500/20',
+		glowB: 'bg-brand-400/15',
 		iconTile:
-			'bg-linear-to-br from-red-500 to-red-600 ring-1 ring-white/25 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.9)]',
-		rule: 'bg-white/15',
-		diamond: 'border-red-500/80',
-		text: 'text-slate-300',
+			'bg-linear-to-br from-brand-500 to-brand-600 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.9)]',
+		rule: 'bg-on-dark/15',
+		diamond: 'border-brand-500/80',
+		text: 'text-ink-300',
 		wave: '#f8fafc'
 	};
 
 	// Светлый вариант: та же композиция и тот же красный акцент, светлая поверхность.
 	const paletteLight: HeroPalette = {
-		section: 'bg-linear-to-br from-slate-100 via-white to-red-50',
+		section: 'bg-linear-to-br from-ink-100 via-on-accent to-brand-50',
 		patternOpacity: 'opacity-10',
 		patternColor: '%230f172a',
-		glowA: 'bg-red-500/10',
-		glowB: 'bg-red-400/10',
+		glowA: 'bg-brand-500/10',
+		glowB: 'bg-brand-400/10',
 		iconTile:
-			'bg-linear-to-br from-red-500 to-red-600 ring-1 ring-white/25 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.9)]',
-		rule: 'bg-slate-900/15',
-		diamond: 'border-red-500/80',
-		text: 'text-slate-600',
-		title: 'text-slate-900',
+			'bg-linear-to-br from-brand-500 to-brand-600 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.9)]',
+		rule: 'bg-ink-900/15',
+		diamond: 'border-brand-500/80',
+		text: 'text-ink-600',
+		title: 'text-ink-900',
 		wave: '#f8fafc'
 	};
 

@@ -85,8 +85,8 @@
 -->
 <section
 	class="relative isolate overflow-hidden transition-colors duration-300 {isLight
-		? 'bg-[#f7f5f2]'
-		: 'bg-[#09090b]'}"
+		? 'bg-surface-paper'
+		: 'bg-surface-inverse'}"
 >
 	<!-- Фактура: сетка с радиальным затуханием + мягкое красное свечение -->
 	<div
@@ -96,14 +96,14 @@
 	></div>
 	<div
 		class="pointer-events-none absolute -top-24 -left-32 size-[34rem] rounded-full blur-[120px] {isLight
-			? 'bg-red-500/12'
-			: 'bg-red-600/20'}"
+			? 'bg-brand-500/12'
+			: 'bg-brand-600/20'}"
 		aria-hidden="true"
 	></div>
 	<div
 		class="pointer-events-none absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent to-transparent {isLight
-			? 'via-red-600/40'
-			: 'via-red-500/60'}"
+			? 'via-brand-600/40'
+			: 'via-brand-500/60'}"
 		aria-hidden="true"
 	></div>
 
@@ -136,11 +136,11 @@
 						{#snippet children(displayValue)}
 							<p
 								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase transition-colors duration-300 sm:text-xs {isLight
-									? 'text-red-600'
-									: 'text-red-400'}"
+									? 'text-brand-600'
+									: 'text-brand-400'}"
 							>
 								<span
-									class="h-px w-8 {isLight ? 'bg-red-600/60' : 'bg-red-500/80'}"
+									class="h-px w-8 {isLight ? 'bg-brand-600/60' : 'bg-brand-500/80'}"
 									aria-hidden="true"
 								></span>
 								{displayValue}
@@ -160,16 +160,16 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-4xl leading-[1.03] font-semibold tracking-[-0.035em] text-balance transition-colors duration-300 sm:text-6xl lg:text-7xl {isLight
-									? 'text-slate-900'
-									: 'text-white'}"
+								class="text-4xl leading-[1.03] tracking-[-0.035em] text-balance transition-colors duration-300 sm:text-6xl lg:text-7xl {isLight
+									? 'text-ink-900'
+									: 'text-on-dark'}"
 							>
 								{displayValue}
 							</h1>
 						{/snippet}
 					</EditableField>
 					<span
-						class="mt-8 block h-px w-24 {isLight ? 'bg-red-600' : 'bg-red-500'}"
+						class="mt-8 block h-px w-24 {isLight ? 'bg-brand-600' : 'bg-brand-500'}"
 						aria-hidden="true"
 					></span>
 				</div>
@@ -178,7 +178,7 @@
 			<!-- Правая колонка: подзаголовок, посаженный на общую базовую линию -->
 			<div class="ah-in ah-d3 lg:col-span-5 lg:self-end lg:pb-1">
 				<span
-					class="mb-6 hidden h-px w-full lg:block {isLight ? 'bg-slate-900/10' : 'bg-white/10'}"
+					class="mb-6 hidden h-px w-full lg:block {isLight ? 'bg-ink-900/10' : 'bg-on-dark/10'}"
 					aria-hidden="true"
 				></span>
 				<EditableField
@@ -196,8 +196,8 @@
 					{#snippet children(displayValue)}
 						<p
 							class="max-w-md text-base/7 transition-colors duration-300 sm:text-lg/8 {isLight
-								? 'text-slate-600'
-								: 'text-gray-400'}"
+								? 'text-ink-600'
+								: 'text-ink-400'}"
 						>
 							{displayValue}
 						</p>
@@ -223,15 +223,15 @@
 			{#if items.length}
 				<!-- Классы анимации — на собственном узле: в `class` дочернего
 				     компонента scoped-стили Svelte не попадают. -->
-				<div class="ah-ribbon ah-in ah-d4 overflow-hidden bg-red-600">
+				<div class="ah-ribbon ah-in ah-d4 overflow-hidden bg-brand-600">
 					<div class="ah-marquee flex w-max">
 						{#each [0, 1] as copy (copy)}
 							<ul class="flex shrink-0 items-center" aria-hidden={copy === 1 ? 'true' : undefined}>
 								{#each items as item, i (i)}
 									<li
-										class="flex items-center gap-4 py-3 pr-8 text-[11px] font-semibold tracking-[0.28em] whitespace-nowrap text-white uppercase sm:text-xs"
+										class="flex items-center gap-4 py-3 pr-8 text-[11px] font-semibold tracking-[0.28em] whitespace-nowrap text-on-dark uppercase sm:text-xs"
 									>
-										<span class="size-1.5 rotate-45 border border-white/70" aria-hidden="true"
+										<span class="size-1.5 rotate-45 border border-on-dark/70" aria-hidden="true"
 										></span>
 										{item}
 									</li>

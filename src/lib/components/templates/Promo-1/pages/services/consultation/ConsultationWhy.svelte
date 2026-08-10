@@ -52,22 +52,27 @@
 	}
 </script>
 
-<section class="bg-slate-50 py-24 sm:py-32">
+<section class="bg-ink-50 py-24 sm:py-32">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid items-center gap-16 lg:grid-cols-2">
 			<!-- Изображение с геометрией -->
 			<div class="relative">
 				<div
-					class="absolute -right-6 -bottom-6 size-48 rounded-[2.5rem] bg-sky-500 lg:size-64"
+					class="absolute -right-6 -bottom-6 size-48 rounded-[2.5rem] bg-link-500 lg:size-64"
 				></div>
-				<div class="absolute -top-4 -left-4 size-32 rounded-full bg-sky-500/30 blur-2xl"></div>
+				<div class="absolute -top-4 -left-4 size-32 rounded-full bg-link-500/30 blur-2xl"></div>
 				<div
-					class="relative overflow-hidden rounded-[2.5rem] border border-white/20 shadow-2xl transition duration-500 hover:scale-105"
+					class="relative overflow-hidden rounded-[2.5rem] border border-on-dark/20 shadow-2xl transition duration-500 hover:scale-105"
 				>
-					<img loading="lazy"
-						src={String(data?.imageUrl ?? '/consultation_process.png')}
+					<img
+						loading="lazy"
+						src={String(
+							data?.imageUrl ??
+								'https://storage.yandexcloud.net/leget-main/templates/promo-1/consultation_process.png'
+						)}
 						alt="Дизайн интерьера"
-						class="aspect-square w-full object-cover">
+						class="aspect-square w-full object-cover"
+					/>
 				</div>
 			</div>
 
@@ -82,9 +87,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2
-							class="text-4xl leading-tight font-black tracking-tight text-pretty text-slate-900 sm:text-5xl"
-						>
+						<h2 class="text-4xl leading-tight tracking-tight text-pretty text-ink-900 sm:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -94,7 +97,7 @@
 					{#each reasons as item, i}
 						<div class="group flex gap-8">
 							<dt
-								class="text-5xl font-black text-sky-500/20 transition-colors duration-300 group-hover:text-sky-500"
+								class="text-5xl font-black text-link-500/20 transition-colors duration-300 group-hover:text-link-500"
 							>
 								{item.num}
 							</dt>
@@ -108,7 +111,7 @@
 									class="block"
 								>
 									{#snippet children(displayValue)}
-										<p class="text-xl font-bold text-slate-900">{displayValue}</p>
+										<p class="text-xl font-bold text-ink-900">{displayValue}</p>
 									{/snippet}
 								</EditableField>
 
@@ -122,7 +125,7 @@
 									class="mt-2 block"
 								>
 									{#snippet children(displayValue)}
-										<p class="text-base/7 font-medium text-slate-600">
+										<p class="text-base/7 font-medium text-ink-600">
 											{displayValue}
 										</p>
 									{/snippet}

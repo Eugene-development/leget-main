@@ -58,32 +58,32 @@
 		{ bg: string; line: string; hairline: string; border: string; glow: string }
 	> = {
 		sky: {
-			bg: 'from-sky-100 to-cyan-100',
-			line: 'from-sky-500 to-cyan-500',
-			hairline: 'bg-linear-to-r from-transparent via-sky-500 to-transparent',
-			border: 'group-hover:border-sky-500/40',
-			glow: 'bg-sky-500/10'
+			bg: 'from-link-100 to-cat-5-100',
+			line: 'from-link-500 to-cat-5-500',
+			hairline: 'bg-linear-to-r from-transparent via-link-500 to-transparent',
+			border: 'group-hover:border-link-500/40',
+			glow: 'bg-link-500/10'
 		},
 		emerald: {
-			bg: 'from-emerald-100 to-teal-100',
-			line: 'from-emerald-500 to-teal-500',
-			hairline: 'bg-linear-to-r from-transparent via-emerald-500 to-transparent',
-			border: 'group-hover:border-emerald-500/40',
-			glow: 'bg-emerald-500/10'
+			bg: 'from-cat-2-100 to-cat-9-100',
+			line: 'from-cat-2-500 to-cat-9-500',
+			hairline: 'bg-linear-to-r from-transparent via-cat-2-500 to-transparent',
+			border: 'group-hover:border-cat-2-500/40',
+			glow: 'bg-cat-2-500/10'
 		},
 		violet: {
-			bg: 'from-violet-100 to-purple-100',
-			line: 'from-violet-500 to-purple-500',
-			hairline: 'bg-linear-to-r from-transparent via-violet-500 to-transparent',
-			border: 'group-hover:border-violet-500/40',
-			glow: 'bg-violet-500/10'
+			bg: 'from-cat-3-100 to-cat-10-100',
+			line: 'from-cat-3-500 to-cat-10-500',
+			hairline: 'bg-linear-to-r from-transparent via-cat-3-500 to-transparent',
+			border: 'group-hover:border-cat-3-500/40',
+			glow: 'bg-cat-3-500/10'
 		},
 		amber: {
-			bg: 'from-amber-100 to-orange-100',
-			line: 'from-amber-500 to-orange-500',
-			hairline: 'bg-linear-to-r from-transparent via-amber-500 to-transparent',
-			border: 'group-hover:border-amber-500/40',
-			glow: 'bg-amber-400/10'
+			bg: 'from-cat-1-100 to-cat-8-100',
+			line: 'from-cat-1-500 to-cat-8-500',
+			hairline: 'bg-linear-to-r from-transparent via-cat-1-500 to-transparent',
+			border: 'group-hover:border-cat-1-500/40',
+			glow: 'bg-cat-1-400/10'
 		}
 	};
 

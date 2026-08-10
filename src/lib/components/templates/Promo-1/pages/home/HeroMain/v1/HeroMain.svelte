@@ -75,7 +75,7 @@
 </script>
 
 <section
-	class="relative flex min-h-full w-full items-center justify-center overflow-hidden py-6 text-gray-900 md:py-8"
+	class="relative flex min-h-full w-full items-center justify-center overflow-hidden py-6 text-ink-900 md:py-8"
 >
 	<!-- Фоновое изображение -->
 	<div class="absolute inset-0 z-0">
@@ -84,7 +84,7 @@
 			alt="Фоновое изображение"
 			class="h-full w-full object-cover transition-all duration-500"
 		/>
-		<div class="absolute inset-0 bg-linear-to-b from-black/20 via-black/10 to-black/30"></div>
+		<div class="absolute inset-0 bg-linear-to-b from-scrim/20 via-scrim/10 to-scrim/30"></div>
 
 		<!-- Кнопка смены фото (только в режиме редактирования) -->
 		{#if isEditable && editContext}
@@ -131,7 +131,7 @@
 	>
 		<!-- Стеклянная панель -->
 		<div
-			class="glass-panel flex w-full flex-col items-center overflow-hidden rounded-3xl border border-white/40 shadow-2xl"
+			class="glass-panel flex w-full flex-col items-center overflow-hidden rounded-3xl border border-on-dark/40 shadow-2xl"
 		>
 			<!-- Контент -->
 			<div
@@ -160,7 +160,7 @@
 									/>
 								{:else if isEditable}
 									<div
-										class="rounded-2xl border-2 border-dashed border-slate-400/30 bg-white/10 p-4 text-[10px] font-bold tracking-widest text-slate-500/50 uppercase backdrop-blur-sm"
+										class="rounded-2xl border-2 border-dashed border-ink-400/30 bg-on-dark/10 p-4 text-[10px] font-bold tracking-widest text-ink-500/50 uppercase backdrop-blur-sm"
 									>
 										Логотип
 									</div>
@@ -181,7 +181,7 @@
 				>
 					{#snippet children(displayValue)}
 						<span
-							class="mb-6 text-xs font-semibold tracking-[0.5em] text-slate-600 uppercase md:text-sm"
+							class="mb-6 text-xs font-semibold tracking-[0.5em] text-ink-600 uppercase md:text-sm"
 						>
 							{displayValue}
 						</span>
@@ -198,9 +198,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1
-							class="hero-title mb-6 text-3xl leading-none font-extrabold text-slate-900 md:text-5xl lg:text-7xl"
-						>
+						<h1 class="hero-title mb-6 text-3xl leading-none text-ink-900 md:text-5xl lg:text-7xl">
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -218,7 +216,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="hero-description mx-auto mb-8 max-w-2xl text-sm font-medium text-slate-800 md:mb-10 md:text-lg"
+							class="hero-description mx-auto mb-8 max-w-2xl text-sm font-medium text-ink-800 md:mb-10 md:text-lg"
 						>
 							{displayValue}
 						</p>
@@ -241,7 +239,7 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="cursor-pointer rounded-xl border border-slate-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-slate-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-white/80 hover:shadow-xl"
+								class="cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-surface-raised/80 hover:shadow-xl"
 							>
 								{displayValue}
 							</button>
@@ -252,14 +250,14 @@
 
 			<!-- Разделитель -->
 			<div class="flex w-full justify-center px-6 md:px-12">
-				<div class="h-px w-full max-w-xl bg-slate-300/50"></div>
+				<div class="h-px w-full max-w-xl bg-ink-300/50"></div>
 			</div>
 
 			<!-- Секция брендов -->
 			<div class="hero-brands flex w-full justify-center px-6 pt-6 pb-6 md:px-12 md:pt-8 md:pb-8">
 				<div class="flex w-full flex-col items-center">
 					<p
-						class="hero-brands-label mb-6 hidden text-xs font-semibold tracking-widest text-slate-700 uppercase md:block"
+						class="hero-brands-label mb-6 hidden text-xs font-semibold tracking-widest text-ink-700 uppercase md:block"
 					>
 						РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:
 					</p>

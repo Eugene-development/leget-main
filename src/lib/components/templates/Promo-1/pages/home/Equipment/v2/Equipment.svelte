@@ -33,17 +33,17 @@
 >
 	<!-- Вспомогательные светящиеся бэкдропы -->
 	<div
-		class="pointer-events-none absolute top-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-sky-500/5 blur-[120px]"
+		class="pointer-events-none absolute top-1/4 left-1/4 h-[500px] w-[500px] rounded-full bg-link-500/5 blur-[120px]"
 	></div>
 	<div
-		class="pointer-events-none absolute right-1/4 bottom-1/4 h-[500px] w-[500px] rounded-full bg-violet-500/5 blur-[120px]"
+		class="pointer-events-none absolute right-1/4 bottom-1/4 h-[500px] w-[500px] rounded-full bg-cat-3-500/5 blur-[120px]"
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
 		<!-- Заголовок -->
 		<div class="mx-auto mb-16 max-w-2xl text-center lg:max-w-none lg:text-left">
 			<span
-				class="inline-flex items-center rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-sky-300 uppercase backdrop-blur-md"
+				class="inline-flex items-center rounded-full border border-link-500/30 bg-link-500/10 px-3 py-1 text-xs font-semibold tracking-wider text-link-300 uppercase backdrop-blur-md"
 			>
 				<EditableField
 					fieldKey="Equipment.badge"
@@ -65,9 +65,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="p1-title font-display mt-4 text-3xl leading-tight font-extrabold tracking-tight sm:text-5xl"
-					>
+					<h2 class="p1-title font-display mt-4 text-3xl leading-tight tracking-tight sm:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -78,7 +76,7 @@
 		<div class="grid gap-6 sm:gap-8 lg:grid-cols-6 lg:grid-rows-2">
 			<!-- Столешницы (3 колонки) -->
 			<div
-				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-3"
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-link-500/30 lg:col-span-3"
 			>
 				<div class="relative aspect-video w-full overflow-hidden">
 					<ImageFallback
@@ -87,11 +85,11 @@
 						alt="Столешницы"
 					/>
 					<div
-						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+						class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent"
 					></div>
 				</div>
 				<div class="p-8">
-					<h3 class="p1-title text-xl font-bold transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title p1-title-sub text-xl transition-colors group-hover:text-link-300">
 						<EditableField
 							fieldKey="Equipment.item1Title"
 							label="Заголовок"
@@ -128,7 +126,7 @@
 
 			<!-- Системы выдвижения (3 колонки) -->
 			<div
-				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-3"
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-link-500/30 lg:col-span-3"
 			>
 				<div class="relative aspect-video w-full overflow-hidden">
 					<ImageFallback
@@ -137,11 +135,11 @@
 						alt="Системы выдвижения"
 					/>
 					<div
-						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+						class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent"
 					></div>
 				</div>
 				<div class="p-8">
-					<h3 class="p1-title text-xl font-bold transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title p1-title-sub text-xl transition-colors group-hover:text-link-300">
 						<EditableField
 							fieldKey="Equipment.item2Title"
 							label="Заголовок"
@@ -178,7 +176,7 @@
 
 			<!-- Бытовая техника (2 колонки) -->
 			<div
-				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-2"
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-link-500/30 lg:col-span-2"
 			>
 				<div class="relative aspect-square w-full overflow-hidden">
 					<ImageFallback
@@ -187,11 +185,11 @@
 						alt="Бытовая техника"
 					/>
 					<div
-						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+						class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent"
 					></div>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-300">
 						<EditableField
 							fieldKey="Equipment.item3Title"
 							label="Заголовок"
@@ -228,7 +226,7 @@
 
 			<!-- Мойки и смесители (2 колонки) -->
 			<div
-				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-2"
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-link-500/30 lg:col-span-2"
 			>
 				<div class="relative aspect-square w-full overflow-hidden">
 					<ImageFallback
@@ -237,11 +235,11 @@
 						alt="Мойки и смесители"
 					/>
 					<div
-						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+						class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent"
 					></div>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-300">
 						<EditableField
 							fieldKey="Equipment.item4Title"
 							label="Заголовок"
@@ -278,7 +276,7 @@
 
 			<!-- Освещение (2 колонки) -->
 			<div
-				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-sky-500/30 lg:col-span-2"
+				class="group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-all duration-500 hover:border-link-500/30 lg:col-span-2"
 			>
 				<div class="relative aspect-square w-full overflow-hidden">
 					<ImageFallback
@@ -287,11 +285,11 @@
 						alt="Освещение"
 					/>
 					<div
-						class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"
+						class="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-transparent"
 					></div>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title text-lg font-bold transition-colors group-hover:text-sky-300">
+					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-300">
 						<EditableField
 							fieldKey="Equipment.item5Title"
 							label="Заголовок"

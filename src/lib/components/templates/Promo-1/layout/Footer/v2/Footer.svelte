@@ -92,24 +92,28 @@
 			{ threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
 		);
 		io.observe(node);
-		return { destroy() { io.disconnect(); } };
+		return {
+			destroy() {
+				io.disconnect();
+			}
+		};
 	};
 </script>
 
-<footer class="font-sans-premium relative overflow-hidden bg-[#060607] text-white">
+<footer class="font-sans-premium relative overflow-hidden bg-surface-inverse text-on-dark">
 	<!-- Декоративный фон: точечная сетка + мягкие световые орбы -->
 	<div class="footer-mesh-v2 pointer-events-none absolute inset-0"></div>
 	<div
 		aria-hidden="true"
-		class="pointer-events-none absolute -top-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-rose-500/10 blur-[120px]"
+		class="pointer-events-none absolute -top-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-cat-6-500/10 blur-[120px]"
 	></div>
 	<div
 		aria-hidden="true"
-		class="pointer-events-none absolute top-1/3 -right-32 h-[32rem] w-[32rem] rounded-full bg-sky-500/[0.07] blur-[140px]"
+		class="pointer-events-none absolute top-1/3 -right-32 h-[32rem] w-[32rem] rounded-full bg-link-500/[0.07] blur-[140px]"
 	></div>
 	<div
 		aria-hidden="true"
-		class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
+		class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-on-dark/15 to-transparent"
 	></div>
 
 	<div class="relative mx-auto max-w-7xl px-6 py-24 sm:px-8 lg:py-32">
@@ -118,14 +122,14 @@
 			<!-- ЛЕВО: wordmark + CTA + соцсети -->
 			<div class="lg:col-span-5" use:reveal>
 				<span
-					class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10px] font-medium tracking-[0.25em] text-white/55 uppercase"
+					class="inline-flex items-center gap-2 rounded-full border border-on-dark/10 bg-surface-raised/[0.03] px-3 py-1 text-[10px] font-medium tracking-[0.25em] text-on-dark/55 uppercase"
 				>
-					<span class="h-1 w-1 rounded-full bg-rose-400"></span>
+					<span class="h-1 w-1 rounded-full bg-cat-6-400"></span>
 					Связаться с нами
 				</span>
 
 				<h2
-					class="font-display mt-7 text-5xl leading-[0.95] font-medium tracking-tight sm:text-6xl lg:text-7xl"
+					class="font-display mt-7 text-5xl leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl"
 				>
 					<EditableField
 						fieldKey="Footer.siteName"
@@ -135,14 +139,15 @@
 						{isEditable}
 					>
 						{#snippet children(displayValue)}
-							<span class="bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent"
+							<span
+								class="bg-gradient-to-b from-surface-raised to-surface-raised/70 bg-clip-text text-transparent"
 								>{displayValue}</span
 							>
 						{/snippet}
 					</EditableField>
 				</h2>
 
-				<p class="mt-6 max-w-md text-sm leading-relaxed text-white/55">
+				<p class="mt-6 max-w-md text-sm leading-relaxed text-on-dark/55">
 					Изготовление и монтаж мебели под ключ. Проектируем, производим и собираем — с гарантией и
 					по фиксированной цене.
 				</p>
@@ -150,13 +155,19 @@
 				<!-- CTA: «кнопка в кнопке» -->
 				<a
 					href={phoneHref}
-					class="group/cta mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(244,63,94,0.25)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[0_10px_40px_rgba(244,63,94,0.35)] active:scale-[0.98]"
+					class="group/cta mt-9 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-cat-6-500 to-cat-7-600 px-6 py-3 text-sm font-semibold text-on-accent shadow-[0_8px_30px_rgba(244,63,94,0.25)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[0_10px_40px_rgba(244,63,94,0.35)] active:scale-[0.98]"
 				>
 					Позвонить
 					<span
-						class="flex h-7 w-7 items-center justify-center rounded-full bg-black/15 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
+						class="flex h-7 w-7 items-center justify-center rounded-full bg-scrim/15 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
 					>
-						<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<svg
+							class="h-3.5 w-3.5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+						>
 							<path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8" />
 						</svg>
 					</span>
@@ -178,7 +189,7 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									title="Telegram"
-									class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-white/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-rose-400/40 hover:bg-rose-500/10 hover:text-white active:scale-[0.95]"
+									class="flex h-11 w-11 items-center justify-center rounded-2xl border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-cat-6-400/40 hover:bg-cat-6-500/10 hover:text-on-accent active:scale-[0.95]"
 								>
 									<svg class="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
 										<path
@@ -204,7 +215,7 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									title="WhatsApp"
-									class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-white/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-rose-400/40 hover:bg-rose-500/10 hover:text-white active:scale-[0.95]"
+									class="flex h-11 w-11 items-center justify-center rounded-2xl border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-cat-6-400/40 hover:bg-cat-6-500/10 hover:text-on-accent active:scale-[0.95]"
 								>
 									<svg class="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
 										<path
@@ -221,18 +232,24 @@
 			<!-- ПРАВО: контактная капсула (double-bezel) + колонки навигации -->
 			<div class="lg:col-span-7" use:reveal data-reveal-delay="120">
 				<div
-					class="rounded-[1.75rem] border border-white/10 bg-white/[0.025] p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+					class="rounded-[1.75rem] border border-on-dark/10 bg-surface-raised/[0.025] p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
 				>
 					<div
-						class="rounded-[calc(1.75rem-0.375rem)] bg-[#0a0a0c]/80 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-8"
+						class="rounded-[calc(1.75rem-0.375rem)] bg-surface-inverse/80 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:p-8"
 					>
 						<div class="grid gap-5 sm:grid-cols-2">
 							<!-- Телефон -->
 							<div class="flex items-center gap-4">
 								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-rose-300"
+									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
 								>
-									<svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4">
+									<svg
+										class="h-[18px] w-[18px]"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="1.4"
+									>
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -241,7 +258,7 @@
 									</svg>
 								</span>
 								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase">
+									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
 										Телефон
 									</div>
 									<EditableField
@@ -254,7 +271,7 @@
 										{#snippet children(displayValue)}
 											<a
 												href={phoneHref}
-												class="text-sm text-white/85 transition-colors duration-300 hover:text-white"
+												class="text-sm text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
 												>{displayValue}</a
 											>
 										{/snippet}
@@ -265,9 +282,15 @@
 							<!-- Email -->
 							<div class="flex items-center gap-4">
 								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-rose-300"
+									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
 								>
-									<svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4">
+									<svg
+										class="h-[18px] w-[18px]"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="1.4"
+									>
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -276,7 +299,7 @@
 									</svg>
 								</span>
 								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase">
+									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
 										Почта
 									</div>
 									<EditableField
@@ -289,7 +312,7 @@
 										{#snippet children(displayValue)}
 											<a
 												href="mailto:{displayValue}"
-												class="break-all text-sm text-white/85 transition-colors duration-300 hover:text-white"
+												class="text-sm break-all text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
 												>{displayValue}</a
 											>
 										{/snippet}
@@ -300,9 +323,15 @@
 							<!-- Адрес -->
 							<div class="flex items-start gap-4 sm:col-span-2">
 								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-rose-300"
+									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
 								>
-									<svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4">
+									<svg
+										class="h-[18px] w-[18px]"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="1.4"
+									>
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -316,7 +345,7 @@
 									</svg>
 								</span>
 								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase">
+									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
 										Адрес
 									</div>
 									<EditableField
@@ -328,7 +357,7 @@
 										multiline
 									>
 										{#snippet children(displayValue)}
-											<span class="text-sm leading-snug text-white/85">{displayValue}</span>
+											<span class="text-sm leading-snug text-on-dark/85">{displayValue}</span>
 										{/snippet}
 									</EditableField>
 								</div>
@@ -337,9 +366,15 @@
 							<!-- Режим работы -->
 							<div class="flex items-center gap-4 sm:col-span-2">
 								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-rose-300"
+									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
 								>
-									<svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4">
+									<svg
+										class="h-[18px] w-[18px]"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="1.4"
+									>
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -348,7 +383,7 @@
 									</svg>
 								</span>
 								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase">
+									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
 										Режим работы
 									</div>
 									<EditableField
@@ -359,7 +394,7 @@
 										{isEditable}
 									>
 										{#snippet children(displayValue)}
-											<span class="text-sm text-white/85">{displayValue}</span>
+											<span class="text-sm text-on-dark/85">{displayValue}</span>
 										{/snippet}
 									</EditableField>
 								</div>
@@ -371,32 +406,52 @@
 				<!-- Колонки навигации -->
 				<div class="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
 					<div>
-						<h3 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+						<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
 							Информация
 						</h3>
 						<ul class="mt-5 space-y-3.5">
 							<li>
-								<a href="/actions" class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+								<a
+									href="/actions"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
 									Акции
-									<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
 								</a>
 							</li>
 							<li>
-								<a href="/testimonials" class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+								<a
+									href="/testimonials"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
 									Отзывы
-									<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
 								</a>
 							</li>
 							<li>
-								<a href="/about" class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+								<a
+									href="/about"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
 									О компании
-									<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
 								</a>
 							</li>
 							<li>
-								<a href="/contacts" class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+								<a
+									href="/contacts"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
 									Контакты
-									<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
 								</a>
 							</li>
 						</ul>
@@ -404,15 +459,20 @@
 
 					<div>
 						{#if visibleServiceItems.length > 0}
-							<h3 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+							<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
 								Услуги
 							</h3>
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleServiceItems as service}
 									<li>
-										<a href={service.href} class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+										<a
+											href={service.href}
+											class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+										>
 											{service.label}
-											<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+											<span
+												class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+											></span>
 										</a>
 									</li>
 								{/each}
@@ -422,15 +482,20 @@
 
 					<div>
 						{#if visibleCatalogItems.length > 0}
-							<h3 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+							<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
 								Каталог
 							</h3>
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleCatalogItems as item}
 									<li>
-										<a href={item.href} class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+										<a
+											href={item.href}
+											class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+										>
 											{item.label}
-											<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+											<span
+												class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+											></span>
 										</a>
 									</li>
 								{/each}
@@ -439,20 +504,30 @@
 					</div>
 
 					<div>
-						<h3 class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+						<h3 class="p1-title-sub text-[10px] tracking-[0.2em] text-on-dark/40 uppercase">
 							Прочее
 						</h3>
 						<ul class="mt-5 space-y-3.5">
 							<li>
-								<a href="/vacancy" class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+								<a
+									href="/vacancy"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
 									Вакансии
-									<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
 								</a>
 							</li>
 							<li>
-								<a href="/partnership" class="group/link relative inline-block text-sm text-white/60 transition-colors duration-500 hover:text-white">
+								<a
+									href="/partnership"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
 									Партнёрство
-									<span class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"></span>
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
 								</a>
 							</li>
 						</ul>
@@ -463,24 +538,26 @@
 
 		<!-- Низ: копирайт + авторизация -->
 		<div
-			class="mt-20 flex flex-col gap-5 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between"
+			class="mt-20 flex flex-col gap-5 border-t border-on-dark/10 pt-8 md:flex-row md:items-center md:justify-between"
 		>
-			<p class="text-sm text-white/45">
-				&copy; {new Date().getFullYear()} {siteName}. Все права защищены.
+			<p class="text-sm text-on-dark/45">
+				&copy; {new Date().getFullYear()}
+				{siteName}. Все права защищены.
 			</p>
 			<div class="flex items-center gap-6">
-				<p class="text-xs text-white/35">
+				<p class="text-xs text-on-dark/35">
 					Разработка — <a
 						href="https://leget.ru/"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-medium text-white/55 transition-colors duration-300 hover:text-white">Leget</a
+						class="font-medium text-on-dark/55 transition-colors duration-300 hover:text-on-dark"
+						>Leget</a
 					>
 				</p>
 				<button
 					type="button"
 					onclick={handleAuthClick}
-					class="rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-semibold tracking-wider text-white/70 uppercase transition-all duration-300 hover:border-white/25 hover:bg-white/[0.07] hover:text-white"
+					class="rounded-full border border-on-dark/10 bg-surface-raised/[0.03] px-4 py-1.5 text-xs font-semibold tracking-wider text-on-dark/70 uppercase transition-all duration-300 hover:border-on-dark/25 hover:bg-surface-raised/[0.07] hover:text-on-dark"
 				>
 					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
 				</button>

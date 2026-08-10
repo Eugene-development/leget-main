@@ -18,19 +18,19 @@
 	 * Палитра Hero «Гарантий»: тёмный slate + emerald/cyan.
 	 *
 	 * ВНИМАНИЕ — `wave` обязан совпадать с фоном следующей секции
-	 * (GuaranteeTerms, `bg-slate-50` = #f8fafc).
+	 * (GuaranteeTerms, `bg-ink-50` = #f8fafc).
 	 */
 	const palette: HeroPalette = {
-		section: 'bg-linear-to-br from-slate-900 via-slate-800 to-slate-900',
+		section: 'bg-linear-to-br from-ink-900 via-ink-800 to-ink-900',
 		patternOpacity: 'opacity-20',
 		patternColor: '%239C92AC',
-		glowA: 'bg-emerald-500/20',
-		glowB: 'bg-cyan-400/15',
+		glowA: 'bg-cat-2-500/20',
+		glowB: 'bg-cat-5-400/15',
 		iconTile:
-			'bg-linear-to-br from-emerald-400 to-cyan-500 ring-1 ring-white/25 shadow-[0_20px_50px_-20px_rgba(16,185,129,0.9)]',
-		rule: 'bg-white/15',
-		diamond: 'border-emerald-400/80',
-		text: 'text-slate-300',
+			'bg-linear-to-br from-cat-2-400 to-cat-5-500 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px_rgba(16,185,129,0.9)]',
+		rule: 'bg-on-dark/15',
+		diamond: 'border-cat-2-400/80',
+		text: 'text-ink-300',
 		wave: '#f8fafc'
 	};
 </script>
@@ -52,6 +52,11 @@
 	}}
 >
 	{#snippet icon()}
-		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+		<path
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="1.5"
+			d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+		/>
 	{/snippet}
 </PageHero>

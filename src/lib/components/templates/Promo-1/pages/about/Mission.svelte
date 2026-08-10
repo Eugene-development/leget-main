@@ -68,7 +68,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="p1-title text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
+							class="p1-title text-3xl leading-[1.08] tracking-[-0.03em] text-pretty sm:text-4xl lg:text-5xl"
 						>
 							{displayValue}
 						</h2>
@@ -77,7 +77,7 @@
 
 				<div class="ab-rule ab-d1 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
 					<span class="p1-line h-px flex-1"></span>
-					<span class="size-1.5 rotate-45 border border-red-500/70"></span>
+					<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
 					<span class="p1-line h-px flex-1"></span>
 				</div>
 
@@ -111,7 +111,7 @@
 			{#if imageUrl || isEditable}
 				<div class="ab-card ab-d2 mt-12 lg:mt-0">
 					<div
-						class="rounded-4xl bg-linear-to-br from-red-500/25 via-slate-900/10 to-red-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
+						class="rounded-4xl bg-linear-to-br from-brand-500/25 via-ink-900/10 to-brand-500/25 p-px shadow-[0_40px_100px_-60px_rgba(15,23,42,0.55)]"
 					>
 						<EditableField
 							fieldKey="Mission.imageUrl"
@@ -131,7 +131,7 @@
 									/>
 								{:else}
 									<div
-										class="flex aspect-4/3 w-full items-center justify-center rounded-[calc(var(--radius-4xl)-1px)] bg-slate-50"
+										class="flex aspect-4/3 w-full items-center justify-center rounded-[calc(var(--radius-4xl)-1px)] bg-ink-50"
 									>
 										<p class="p1-muted text-sm">Добавьте URL изображения</p>
 									</div>

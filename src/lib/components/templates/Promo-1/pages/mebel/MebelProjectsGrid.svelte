@@ -31,9 +31,9 @@
 <div class="mebel-container">
 	<section class="mt-12">
 		{#if projects.length === 0}
-			<div class="rounded-2xl bg-white p-12 text-center shadow-sm">
+			<div class="rounded-2xl bg-surface-raised p-12 text-center shadow-sm">
 				<svg
-					class="mx-auto h-16 w-16 text-slate-300"
+					class="mx-auto h-16 w-16 text-ink-300"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -45,10 +45,10 @@
 						d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
 					/>
 				</svg>
-				<h3 class="mt-4 text-lg font-semibold text-slate-900">Проектов не найдено</h3>
-				<p class="mt-2 text-slate-600">В данной категории пока нет проектов</p>
+				<h3 class="p1-title-sub mt-4 text-lg text-ink-900">Проектов не найдено</h3>
+				<p class="mt-2 text-ink-600">В данной категории пока нет проектов</p>
 				<button
-					class="mt-6 inline-flex items-center gap-2 rounded-lg bg-sky-500 px-6 py-3 font-medium text-white transition-all hover:bg-sky-600"
+					class="mt-6 inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					Заказать индивидуальный проект
 				</button>
@@ -57,28 +57,28 @@
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{#each paginatedProjects as project (project.id)}
 					<article
-						class="group relative overflow-hidden rounded-2xl bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+						class="group relative overflow-hidden rounded-2xl bg-surface-raised shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 					>
 						<a href="/mebel/{categorySlug}/{project.slug}" class="block h-full">
 							<!-- Метки -->
 							<div class="absolute top-3 left-3 z-10 flex gap-1.5">
 								{#if project.is_new}
 									<span
-										class="rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md"
+										class="rounded-full bg-cat-2-500 px-2.5 py-1 text-xs font-semibold text-on-accent shadow-md"
 									>
 										Новинка
 									</span>
 								{/if}
 								{#if project.is_featured}
 									<span
-										class="rounded-full bg-amber-500 px-2.5 py-1 text-xs font-semibold text-white shadow-md"
+										class="rounded-full bg-cat-1-500 px-2.5 py-1 text-xs font-semibold text-on-accent shadow-md"
 									>
 										⭐ Хит
 									</span>
 								{/if}
 							</div>
 
-							<div class="relative block aspect-4/3 overflow-hidden bg-slate-100">
+							<div class="relative block aspect-4/3 overflow-hidden bg-ink-100">
 								{#if project.images && project.images.length > 0 && project.images[0].url}
 									<img
 										src={project.images[0].url}
@@ -88,10 +88,10 @@
 									/>
 								{:else}
 									<div
-										class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-100 to-slate-200"
+										class="flex h-full w-full items-center justify-center bg-linear-to-br from-ink-100 to-ink-200"
 									>
 										<svg
-											class="h-16 w-16 text-slate-300"
+											class="h-16 w-16 text-ink-300"
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
@@ -106,22 +106,22 @@
 									</div>
 								{/if}
 								<div
-									class="absolute inset-0 bg-linear-to-t from-slate-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+									class="absolute inset-0 bg-linear-to-t from-ink-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 								></div>
 							</div>
 
 							<div class="p-5">
 								{#if project.short_description}
-									<p class="line-clamp-1 text-xs text-slate-500">{project.short_description}</p>
+									<p class="line-clamp-1 text-xs text-ink-500">{project.short_description}</p>
 								{/if}
 								<div class="mt-3 flex items-start justify-between gap-4">
 									<h3
-										class="line-clamp-2 text-lg font-semibold text-slate-900 transition-colors group-hover:text-sky-600"
+										class="p1-title-sub line-clamp-2 text-lg text-ink-900 transition-colors group-hover:text-link-600"
 									>
 										{project.value}
 									</h3>
 									<svg
-										class="mt-1 h-5 w-5 shrink-0 text-slate-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-sky-500"
+										class="mt-1 h-5 w-5 shrink-0 text-ink-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-link-500"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -144,7 +144,7 @@
 			{#if totalPages > 1}
 				<div class="mt-10 flex items-center justify-center gap-2">
 					<button
-						class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-all hover:bg-slate-50 disabled:opacity-30"
+						class="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-200 bg-surface-raised text-ink-600 transition-all hover:bg-ink-50 disabled:opacity-30"
 						disabled={currentPage === 1}
 						onclick={() => currentPage--}
 						aria-label="Предыдущая страница"
@@ -164,8 +164,8 @@
 							<button
 								class="flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition-all {currentPage ===
 								i + 1
-									? 'bg-sky-500 text-white shadow-sm'
-									: 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}"
+									? 'bg-link-500 text-on-accent shadow-sm'
+									: 'border border-ink-200 bg-surface-raised text-ink-600 hover:bg-ink-50'}"
 								onclick={() => (currentPage = i + 1)}
 							>
 								{i + 1}
@@ -174,7 +174,7 @@
 					</div>
 
 					<button
-						class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-all hover:bg-slate-50 disabled:opacity-30"
+						class="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-200 bg-surface-raised text-ink-600 transition-all hover:bg-ink-50 disabled:opacity-30"
 						disabled={currentPage === totalPages}
 						onclick={() => currentPage++}
 						aria-label="Следующая страница"

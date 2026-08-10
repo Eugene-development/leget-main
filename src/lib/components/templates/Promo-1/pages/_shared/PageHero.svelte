@@ -97,7 +97,7 @@
 	>
 		<!-- 1. Значок -->
 		<div
-			class="hr-item mx-auto flex size-18 items-center justify-center rounded-2xl text-white {pal.iconTile}"
+			class="hr-item mx-auto flex size-18 items-center justify-center rounded-2xl text-on-dark {pal.iconTile}"
 		>
 			<svg class="size-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 				{@render icon()}
@@ -115,8 +115,8 @@
 		>
 			{#snippet children(displayValue)}
 				<h1
-					class="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {pal.title ??
-						'text-white'}"
+					class="text-4xl leading-[1.05] tracking-[-0.035em] text-pretty sm:text-5xl lg:text-6xl {pal.title ??
+						'text-on-dark'}"
 				>
 					{displayValue}
 				</h1>

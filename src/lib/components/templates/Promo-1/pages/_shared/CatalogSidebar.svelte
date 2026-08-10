@@ -285,7 +285,7 @@
 	<div class="ms-cta" class:ms-cta--sheet={context === 'sheet'}>
 		<span class="ms-cta-glow" aria-hidden="true"></span>
 		<div class="relative">
-			<h4 class="ms-cta-title">{ctaContent.title}</h4>
+			<h4 class="p1-title-sub ms-cta-title">{ctaContent.title}</h4>
 			<p class="ms-cta-text">{ctaContent.text}</p>
 			<button type="button" class="ms-cta-btn" onclick={openCta}>
 				<span>{ctaContent.button}</span>
@@ -295,7 +295,7 @@
 {/snippet}
 
 {#snippet heading()}
-	<h3 class="ms-title">
+	<h3 class="p1-title-sub ms-title">
 		<EditableField
 			fieldKey="{componentType}.title"
 			label="Заголовок сайдбара"

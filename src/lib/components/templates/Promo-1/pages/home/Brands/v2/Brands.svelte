@@ -114,17 +114,17 @@
 >
 	<!-- Вспомогательные светящиеся бэкдропы -->
 	<div
-		class="pointer-events-none absolute top-10 left-10 h-96 w-96 rounded-full bg-sky-500/5 blur-3xl"
+		class="pointer-events-none absolute top-10 left-10 h-96 w-96 rounded-full bg-link-500/5 blur-3xl"
 	></div>
 	<div
-		class="pointer-events-none absolute right-10 bottom-10 h-96 w-96 rounded-full bg-violet-600/5 blur-3xl"
+		class="pointer-events-none absolute right-10 bottom-10 h-96 w-96 rounded-full bg-cat-3-600/5 blur-3xl"
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
 		<!-- Заголовок -->
 		<div class="mx-auto max-w-2xl text-center">
 			<span
-				class="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-sky-300 uppercase"
+				class="inline-flex items-center gap-2 rounded-full border border-link-500/30 bg-link-500/10 px-4 py-1.5 text-xs font-bold tracking-wider text-link-300 uppercase"
 			>
 				<EditableField
 					fieldKey="Brands.badge"
@@ -146,9 +146,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2
-						class="p1-title font-display mt-4 text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl"
-					>
+					<h2 class="p1-title font-display mt-4 text-3xl leading-tight tracking-tight sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -159,11 +157,11 @@
 		<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 			{#each brands as brand}
 				<div
-					class="group p1-border p1-card hover:p1-card rounded-3xl border p-6 transition-all duration-300 hover:border-sky-500/30 hover:shadow-2xl hover:shadow-sky-500/5"
+					class="group p1-border p1-card hover:p1-card rounded-3xl border p-6 transition-all duration-300 hover:border-link-500/30 hover:shadow-2xl hover:shadow-link-500/5"
 				>
 					<div class="flex items-center gap-4">
 						<div
-							class="p1-card p1-border group-hover:p1-card rounded-2xl border p-2.5 transition-all duration-300 group-hover:border-sky-500/20"
+							class="p1-card p1-border group-hover:p1-card rounded-2xl border p-2.5 transition-all duration-300 group-hover:border-link-500/20"
 						>
 							<ImageFallback
 								class="h-8 w-auto brightness-0 invert filter"
@@ -173,7 +171,7 @@
 						</div>
 						<div>
 							<h3
-								class="p1-title font-bold transition-colors duration-300 group-hover:text-sky-300"
+								class="p1-title p1-title-sub transition-colors duration-300 group-hover:text-link-300"
 							>
 								{brand.name}
 							</h3>

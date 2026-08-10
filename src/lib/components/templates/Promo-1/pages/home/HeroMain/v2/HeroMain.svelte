@@ -262,25 +262,25 @@
 
 <section
 	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-x-hidden transition-colors duration-500 lg:h-full {isLight
-		? 'bg-slate-50 text-slate-900'
-		: 'bg-slate-950 text-white'}"
+		? 'bg-ink-50 text-ink-900'
+		: 'bg-ink-950 text-on-dark'}"
 >
 	<!-- Абстрактные линии и фоновые градиенты (взамен фонового изображения) -->
 	<div
 		class="absolute inset-0 z-0 overflow-hidden transition-colors duration-500 {isLight
-			? 'bg-slate-50'
-			: 'bg-slate-950'}"
+			? 'bg-ink-50'
+			: 'bg-ink-950'}"
 	>
 		<!-- Световые премиальные блики -->
 		<div
 			class="absolute top-1/4 left-1/4 z-[1] h-[500px] w-[500px] rounded-full blur-[120px] transition-colors duration-500 {isLight
-				? 'bg-sky-400/20'
-				: 'bg-sky-500/12'}"
+				? 'bg-link-400/20'
+				: 'bg-link-500/12'}"
 		></div>
 		<div
 			class="absolute right-1/4 bottom-1/4 z-[1] h-[600px] w-[600px] rounded-full blur-[130px] transition-colors duration-500 {isLight
-				? 'bg-indigo-400/20'
-				: 'bg-indigo-500/12'}"
+				? 'bg-cat-4-400/20'
+				: 'bg-cat-4-500/12'}"
 		></div>
 
 		<!-- Абстрактная векторная геометрия -->
@@ -356,8 +356,8 @@
 		<!-- Затемнение краев и фокуса (теперь мягкие полупрозрачные переходы вместо глухой 90% заливки) -->
 		<div
 			class="absolute inset-0 bg-gradient-to-b transition-all duration-500 {isLight
-				? 'from-slate-50/15 via-transparent to-slate-50/35'
-				: 'from-slate-950/40 via-transparent to-slate-950/75'} pointer-events-none z-[1]"
+				? 'from-ink-50/15 via-transparent to-ink-50/35'
+				: 'from-ink-950/40 via-transparent to-ink-950/75'} pointer-events-none z-[1]"
 		></div>
 		<div
 			class="absolute inset-0 transition-all duration-500 {isLight
@@ -395,14 +395,14 @@
 						{#snippet children(displayValue)}
 							<span
 								class="shadow-glow inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md transition-all duration-300 md:text-sm {isLight
-									? 'border-sky-200 bg-sky-100/50 text-sky-600 hover:border-sky-300 hover:bg-sky-100/70'
-									: 'border-sky-400/20 bg-sky-950/40 text-sky-300 hover:border-sky-400/40'}"
+									? 'border-link-200 bg-link-100/50 text-link-600 hover:border-link-300 hover:bg-link-100/70'
+									: 'border-link-400/20 bg-link-950/40 text-link-300 hover:border-link-400/40'}"
 							>
 								<span class="relative flex h-2 w-2">
 									<span
-										class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"
+										class="absolute inline-flex h-full w-full animate-ping rounded-full bg-link-400 opacity-75"
 									></span>
-									<span class="relative inline-flex h-2 w-2 rounded-full bg-sky-400"></span>
+									<span class="relative inline-flex h-2 w-2 rounded-full bg-link-400"></span>
 								</span>
 								{displayValue}
 							</span>
@@ -421,9 +421,9 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
-								? 'via-slate-850 from-slate-900 to-slate-700'
-								: 'hero-title from-white via-slate-100 to-slate-400'}"
+							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl leading-[1.1] tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
+								? 'via-slate-850 from-ink-900 to-ink-700'
+								: 'hero-title from-surface-raised via-ink-100 to-ink-400'}"
 						>
 							{displayValue}
 						</h1>
@@ -443,8 +443,8 @@
 					{#snippet children(displayValue)}
 						<p
 							class="hero-desc font-sans-premium mb-5 max-w-2xl text-base leading-relaxed font-normal transition-colors duration-500 md:text-lg {isLight
-								? 'text-slate-600'
-								: 'hero-description text-slate-300'}"
+								? 'text-ink-600'
+								: 'hero-description text-ink-300'}"
 						>
 							{displayValue}
 						</p>
@@ -469,18 +469,18 @@
 							>
 								<!-- Анимированная рамка с подсветкой -->
 								<span
-									class="absolute inset-0 rounded-2xl bg-gradient-to-r from-sky-400 via-indigo-500 to-sky-400 transition-all duration-500 group-hover:rotate-180"
+									class="absolute inset-0 rounded-2xl bg-gradient-to-r from-link-400 via-cat-4-500 to-link-400 transition-all duration-500 group-hover:rotate-180"
 								></span>
 
 								<!-- Кнопка сверху -->
 								<span
 									class="relative flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold transition-all duration-300 md:px-8 md:text-base {isLight
-										? 'border border-slate-200/85 bg-slate-100 text-slate-800 hover:bg-white'
-										: 'bg-slate-900/90 text-white hover:bg-slate-950/80 hover:text-sky-300'}"
+										? 'border border-ink-200/85 bg-ink-100 text-ink-800 hover:bg-surface-raised'
+										: 'bg-ink-900/90 text-on-dark hover:bg-ink-950/80 hover:text-link-300'}"
 								>
 									{displayValue}
 									<svg
-										class="h-4 w-4 text-sky-400 transition-transform duration-300 group-hover:translate-x-1.5"
+										class="h-4 w-4 text-link-400 transition-transform duration-300 group-hover:translate-x-1.5"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -497,8 +497,8 @@
 								<!-- Свечение снизу -->
 								<div
 									class="absolute -inset-1 rounded-2xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100 {isLight
-										? 'bg-sky-400/10'
-										: 'bg-sky-500/20'}"
+										? 'bg-link-400/10'
+										: 'bg-link-500/20'}"
 								></div>
 							</button>
 						{/snippet}
@@ -515,13 +515,13 @@
 					<!-- Карточка 1 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-slate-300 hover:bg-white'
-							: 'border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-ink-300 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 hover:border-on-dark/10 hover:bg-on-dark/10'}"
 					>
 						<div
 							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border sm:h-10 sm:w-10 {isLight
-								? 'border-sky-400/20 bg-sky-50 text-sky-600'
-								: 'border-sky-500/20 bg-sky-500/10 text-sky-400'}"
+								? 'border-link-400/20 bg-link-50 text-link-600'
+								: 'border-link-500/20 bg-link-500/10 text-link-400'}"
 						>
 							<svg
 								class="h-4 w-4 sm:h-5 sm:w-5"
@@ -540,15 +540,15 @@
 						<div class="min-w-0">
 							<div
 								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
-									? 'text-slate-800'
-									: 'text-white'}"
+									? 'text-ink-800'
+									: 'text-on-dark'}"
 							>
 								10+ лет гарантии
 							</div>
 							<div
 								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
-									? 'text-slate-500'
-									: 'text-slate-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								Официальный договор
 							</div>
@@ -557,13 +557,13 @@
 					<!-- Карточка 2 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-slate-300 hover:bg-white'
-							: 'border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-ink-300 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 hover:border-on-dark/10 hover:bg-on-dark/10'}"
 					>
 						<div
 							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border sm:h-10 sm:w-10 {isLight
-								? 'border-sky-400/20 bg-sky-50 text-sky-600'
-								: 'border-sky-500/20 bg-sky-500/10 text-sky-400'}"
+								? 'border-link-400/20 bg-link-50 text-link-600'
+								: 'border-link-500/20 bg-link-500/10 text-link-400'}"
 						>
 							<svg
 								class="h-4 w-4 sm:h-5 sm:w-5"
@@ -582,15 +582,15 @@
 						<div class="min-w-0">
 							<div
 								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
-									? 'text-slate-800'
-									: 'text-white'}"
+									? 'text-ink-800'
+									: 'text-on-dark'}"
 							>
 								Своя фабрика
 							</div>
 							<div
 								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
-									? 'text-slate-500'
-									: 'text-slate-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								Без наценки салонов
 							</div>
@@ -599,13 +599,13 @@
 					<!-- Карточка 3 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-slate-300 hover:bg-white'
-							: 'border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-ink-300 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 hover:border-on-dark/10 hover:bg-on-dark/10'}"
 					>
 						<div
 							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border sm:h-10 sm:w-10 {isLight
-								? 'border-sky-400/20 bg-sky-50 text-sky-600'
-								: 'border-sky-500/20 bg-sky-500/10 text-sky-400'}"
+								? 'border-link-400/20 bg-link-50 text-link-600'
+								: 'border-link-500/20 bg-link-500/10 text-link-400'}"
 						>
 							<svg
 								class="h-4 w-4 sm:h-5 sm:w-5"
@@ -624,15 +624,15 @@
 						<div class="min-w-0">
 							<div
 								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
-									? 'text-slate-800'
-									: 'text-white'}"
+									? 'text-ink-800'
+									: 'text-on-dark'}"
 							>
 								Проект за 2 часа
 							</div>
 							<div
 								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
-									? 'text-slate-500'
-									: 'text-slate-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								Спецификация и 3D
 							</div>
@@ -641,13 +641,13 @@
 					<!-- Карточка 4 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-slate-300 hover:bg-white'
-							: 'border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-ink-300 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 hover:border-on-dark/10 hover:bg-on-dark/10'}"
 					>
 						<div
 							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border sm:h-10 sm:w-10 {isLight
-								? 'border-sky-400/20 bg-sky-50 text-sky-600'
-								: 'border-sky-500/20 bg-sky-500/10 text-sky-400'}"
+								? 'border-link-400/20 bg-link-50 text-link-600'
+								: 'border-link-500/20 bg-link-500/10 text-link-400'}"
 						>
 							<svg
 								class="h-4 w-4 sm:h-5 sm:w-5"
@@ -666,15 +666,15 @@
 						<div class="min-w-0">
 							<div
 								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
-									? 'text-slate-800'
-									: 'text-white'}"
+									? 'text-ink-800'
+									: 'text-on-dark'}"
 							>
 								Рассрочка 0%
 							</div>
 							<div
 								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
-									? 'text-slate-500'
-									: 'text-slate-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								До 12 месяцев
 							</div>
@@ -683,13 +683,13 @@
 					<!-- Карточка 5 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-slate-300 hover:bg-white'
-							: 'border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-ink-300 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 hover:border-on-dark/10 hover:bg-on-dark/10'}"
 					>
 						<div
 							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border sm:h-10 sm:w-10 {isLight
-								? 'border-sky-400/20 bg-sky-50 text-sky-600'
-								: 'border-sky-500/20 bg-sky-500/10 text-sky-400'}"
+								? 'border-link-400/20 bg-link-50 text-link-600'
+								: 'border-link-500/20 bg-link-500/10 text-link-400'}"
 						>
 							<svg
 								class="h-4 w-4 sm:h-5 sm:w-5"
@@ -714,15 +714,15 @@
 						<div class="min-w-0">
 							<div
 								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
-									? 'text-slate-800'
-									: 'text-white'}"
+									? 'text-ink-800'
+									: 'text-on-dark'}"
 							>
 								Бесплатный замер
 							</div>
 							<div
 								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
-									? 'text-slate-500'
-									: 'text-slate-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								Выезд с образцами
 							</div>
@@ -731,13 +731,13 @@
 					<!-- Карточка 6 -->
 					<div
 						class="flex items-center gap-2.5 rounded-xl border p-2.5 backdrop-blur-md transition-all duration-300 sm:p-3 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-slate-300 hover:bg-white'
-							: 'border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-ink-300 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 hover:border-on-dark/10 hover:bg-on-dark/10'}"
 					>
 						<div
 							class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border sm:h-10 sm:w-10 {isLight
-								? 'border-sky-400/20 bg-sky-50 text-sky-600'
-								: 'border-sky-500/20 bg-sky-500/10 text-sky-400'}"
+								? 'border-link-400/20 bg-link-50 text-link-600'
+								: 'border-link-500/20 bg-link-500/10 text-link-400'}"
 						>
 							<svg
 								class="h-4 w-4 sm:h-5 sm:w-5"
@@ -762,15 +762,15 @@
 						<div class="min-w-0">
 							<div
 								class="text-xs leading-tight font-bold transition-colors duration-500 sm:text-sm {isLight
-									? 'text-slate-800'
-									: 'text-white'}"
+									? 'text-ink-800'
+									: 'text-on-dark'}"
 							>
 								Сборка за 1 день
 							</div>
 							<div
 								class="hero-feature-sub mt-0.5 text-[10px] leading-tight transition-colors duration-500 sm:text-xs {isLight
-									? 'text-slate-500'
-									: 'text-slate-400'}"
+									? 'text-ink-500'
+									: 'text-ink-400'}"
 							>
 								Под ключ с техникой
 							</div>
@@ -783,14 +783,14 @@
 			<div class="flex w-full items-center justify-center lg:col-span-6">
 				<div
 					class="hero-card relative flex w-full max-w-lg flex-col gap-6 overflow-hidden rounded-3xl border p-6 shadow-2xl backdrop-blur-2xl transition-all duration-300 xl:max-w-[540px] {isLight
-						? 'border-slate-200 bg-white/90 hover:border-slate-300'
-						: 'border-white/10 bg-slate-900/60 hover:border-white/15'}"
+						? 'border-ink-200 bg-surface-raised/90 hover:border-ink-300'
+						: 'border-on-dark/10 bg-ink-900/60 hover:border-on-dark/15'}"
 				>
 					<!-- Световой блик/градиент на карточке -->
 					<div
 						class="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full blur-3xl transition-colors duration-500 {isLight
-							? 'bg-sky-400/15'
-							: 'bg-sky-500/10'}"
+							? 'bg-link-400/15'
+							: 'bg-link-500/10'}"
 					></div>
 
 					<!-- Заголовок карточки -->
@@ -798,8 +798,8 @@
 					<!-- Переключатель вкладок (2 ряда по 3 элемента) -->
 					<div
 						class="style-tabs-grid rounded-2xl border p-2 transition-all duration-500 {isLight
-							? 'border-slate-200/60 bg-slate-100/60'
-							: 'border-white/5 bg-white/5'}"
+							? 'border-ink-200/60 bg-ink-100/60'
+							: 'border-on-dark/5 bg-on-dark/5'}"
 					>
 						{#each styleOptions as opt, idx}
 							<button
@@ -810,10 +810,10 @@
 								}}
 								class="cursor-pointer rounded-xl px-3 py-3 text-center text-sm font-bold transition-all duration-300 sm:text-base {activeStyleIndex ===
 								idx
-									? 'bg-sky-500 text-white shadow-md'
+									? 'bg-link-500 text-on-accent shadow-md'
 									: isLight
-										? 'hover:bg-slate-250/80 bg-white/50 text-slate-700 hover:text-slate-950'
-										: 'bg-white/10 text-slate-300 hover:bg-white/10 hover:text-white'}"
+										? 'hover:bg-slate-250/80 bg-on-dark/50 text-ink-700 hover:text-ink-950'
+										: 'bg-on-dark/10 text-ink-300 hover:bg-on-dark/10 hover:text-on-dark'}"
 							>
 								{opt.name}
 							</button>
@@ -823,15 +823,15 @@
 					<!-- Описание выбранного стиля -->
 					<p
 						class="text-base leading-relaxed transition-colors duration-500 sm:text-lg {isLight
-							? 'text-slate-700'
-							: 'text-slate-200'} min-h-[38px] border-l-3 border-sky-500/50 pl-3.5 font-semibold"
+							? 'text-ink-700'
+							: 'text-ink-200'} min-h-[38px] border-l-3 border-link-500/50 pl-3.5 font-semibold"
 					>
 						{activeStyle.description}
 					</p>
 
 					<!-- Контейнер изображения с интерактивными точками (Большой классический формат 4:3) -->
 					<div
-						class="hero-media group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-slate-950"
+						class="hero-media group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-on-dark/10 bg-ink-950"
 					>
 						{#key activeStyleIndex}
 							<img
@@ -844,8 +844,8 @@
 
 						<!-- Наложение затемнения при активном хотспоте -->
 						<div
-							class="pointer-events-none absolute inset-0 bg-slate-950/20 transition-all duration-300 {activeHotspot
-								? 'bg-slate-950/30 backdrop-blur-[1px]'
+							class="pointer-events-none absolute inset-0 bg-ink-950/20 transition-all duration-300 {activeHotspot
+								? 'bg-ink-950/30 backdrop-blur-[1px]'
 								: ''}"
 						></div>
 
@@ -871,11 +871,11 @@
 								aria-label={hs.label}
 							>
 								<!-- Пульсация -->
-								<span class="absolute inset-0 animate-ping rounded-full bg-sky-400/80 opacity-75"
+								<span class="absolute inset-0 animate-ping rounded-full bg-link-400/80 opacity-75"
 								></span>
 								<!-- Центральная точка -->
 								<span
-									class="relative h-3.5 w-3.5 rounded-full border-2 border-white bg-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.8)] transition-transform duration-300 group-hover/hs:scale-125 group-hover/hs:bg-white"
+									class="relative h-3.5 w-3.5 rounded-full border-2 border-on-accent bg-link-400 shadow-[0_0_15px_rgba(56,189,248,0.8)] transition-transform duration-300 group-hover/hs:scale-125 group-hover/hs:bg-surface-raised"
 								></span>
 							</button>
 						{/each}
@@ -884,21 +884,21 @@
 						{#if activeHotspot}
 							<div
 								class="animate-slide-up absolute right-3 bottom-3 left-3 z-20 rounded-xl border p-4 shadow-2xl backdrop-blur-2xl transition-all duration-300 {isLight
-									? 'border-indigo-100 bg-white/95 text-slate-800'
-									: 'border-white/10 bg-slate-950/90 text-white'}"
+									? 'border-cat-4-100 bg-surface-raised/95 text-ink-800'
+									: 'border-on-dark/10 bg-ink-950/90 text-on-dark'}"
 							>
 								<h4
-									class="mb-1.5 flex items-center gap-1.5 text-xs font-black tracking-wider uppercase sm:text-sm {isLight
+									class="p1-title-sub mb-1.5 flex items-center gap-1.5 text-xs tracking-wider uppercase sm:text-sm {isLight
 										? 'text-indigo-650'
-										: 'text-sky-300'}"
+										: 'text-link-300'}"
 								>
-									<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-400"></span>
+									<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-link-400"></span>
 									{activeHotspot.label}
 								</h4>
 								<p
 									class="text-xs leading-normal font-semibold sm:text-[13px] {isLight
-										? 'text-slate-700'
-										: 'text-slate-300'}"
+										? 'text-ink-700'
+										: 'text-ink-300'}"
 								>
 									{activeHotspot.desc}
 								</p>
@@ -912,15 +912,15 @@
 		<!-- Нижний блок (Бренды с капсульным эффектом - просторный и премиальный) -->
 		<div
 			class="hero-partners mt-4 flex w-full flex-col items-center justify-between gap-5 border-t pt-4 pb-3 transition-colors duration-500 md:flex-row {isLight
-				? 'border-slate-200'
-				: 'border-white/10'}"
+				? 'border-ink-200'
+				: 'border-on-dark/10'}"
 		>
 			<span
 				class="flex items-center gap-2.5 text-[10px] font-black tracking-widest uppercase transition-colors duration-500 md:text-[11px] {isLight
-					? 'text-slate-500'
-					: 'text-slate-400'}"
+					? 'text-ink-500'
+					: 'text-ink-400'}"
 			>
-				<span class="h-3 w-0.5 rounded-full bg-sky-500"></span>
+				<span class="h-3 w-0.5 rounded-full bg-link-500"></span>
 				Наши ключевые партнеры:
 			</span>
 			<div class="hero-capsules flex flex-wrap items-center justify-center gap-3.5 sm:gap-4.5">
@@ -930,8 +930,8 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						class="brand-capsule hero-capsule flex items-center justify-center rounded-xl border px-5 py-2.5 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 {isLight
-							? 'border-slate-200 bg-white/70 shadow-sm hover:border-sky-500/30 hover:bg-white'
-							: 'border-white/5 bg-white/5 opacity-60 hover:border-sky-500/20 hover:bg-white/10 hover:opacity-100'}"
+							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-link-500/30 hover:bg-surface-raised'
+							: 'border-on-dark/5 bg-on-dark/5 opacity-60 hover:border-link-500/20 hover:bg-on-dark/10 hover:opacity-100'}"
 					>
 						<img
 							class="max-h-[22px] max-w-[72px] object-contain transition-all duration-300 {isLight

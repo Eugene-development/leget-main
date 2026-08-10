@@ -24,13 +24,13 @@
 	}
 </script>
 
-<section class="relative flex h-[calc(100vh-88px)] items-center overflow-hidden bg-slate-950">
+<section class="relative flex h-[calc(100vh-88px)] items-center overflow-hidden bg-ink-950">
 	<div class="absolute inset-0 z-0">
 		<div
 			class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:4rem_4rem] opacity-20"
 		></div>
 		<div
-			class="absolute top-0 left-1/2 h-full w-full -translate-x-1/2 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent blur-[120px]"
+			class="absolute top-0 left-1/2 h-full w-full -translate-x-1/2 bg-gradient-to-b from-cat-2-500/10 via-transparent to-transparent blur-[120px]"
 		></div>
 	</div>
 
@@ -47,14 +47,14 @@
 				>
 					{#snippet children(displayValue)}
 						<div
-							class="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold tracking-widest text-emerald-400 uppercase"
+							class="inline-flex items-center gap-2 rounded-full border border-cat-2-500/20 bg-cat-2-500/10 px-4 py-1.5 text-xs font-bold tracking-widest text-cat-2-400 uppercase"
 						>
 							{displayValue}
 						</div>
 					{/snippet}
 				</EditableField>
 
-				<h1 class="text-5xl leading-[1.05] font-black tracking-tight text-white sm:text-7xl">
+				<h1 class="text-5xl leading-[1.05] tracking-tight text-on-dark sm:text-7xl">
 					<EditableField
 						fieldKey="DesignProjectHero.title_part1"
 						label="Заголовок часть 1"
@@ -78,7 +78,7 @@
 					>
 						{#snippet children(displayValue)}
 							<span
-								class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent"
+								class="bg-gradient-to-r from-cat-2-400 to-cat-9-300 bg-clip-text text-transparent"
 								>{displayValue}</span
 							>
 						{/snippet}
@@ -98,7 +98,7 @@
 					class="mt-8 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="max-w-xl text-xl leading-relaxed text-slate-400">
+						<p class="max-w-xl text-xl leading-relaxed text-ink-400">
 							{displayValue}
 						</p>
 					{/snippet}
@@ -117,7 +117,7 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="group relative inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-10 py-5 text-base font-black text-white shadow-2xl shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-emerald-400 hover:shadow-emerald-500/40 active:scale-95 cursor-pointer"
+								class="group relative inline-flex cursor-pointer items-center gap-3 rounded-2xl bg-cat-2-500 px-10 py-5 text-base font-black text-on-accent shadow-2xl shadow-cat-2-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-cat-2-400 hover:shadow-cat-2-500/40 active:scale-95"
 							>
 								<span>{displayValue}</span>
 							</button>
@@ -127,20 +127,20 @@
 			</div>
 
 			<div
-				class="relative hidden w-full lg:col-span-7 lg:justify-self-end lg:block"
+				class="relative hidden w-full lg:col-span-7 lg:block lg:justify-self-end"
 				in:fly={{ x: 60, duration: 1200, delay: 200, easing: cubicOut }}
 			>
 				<div
-					class="absolute -inset-10 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 opacity-50 blur-[80px]"
+					class="absolute -inset-10 bg-gradient-to-tr from-cat-2-500/20 to-cat-9-500/20 opacity-50 blur-[80px]"
 				></div>
 				<div class="group relative">
 					<div
-						class="relative z-10 overflow-hidden rounded-[3rem] border border-white/10 bg-white/5 p-4 shadow-2xl backdrop-blur-3xl transition-transform duration-500 group-hover:scale-[1.02]"
+						class="relative z-10 overflow-hidden rounded-[3rem] border border-on-dark/10 bg-on-dark/5 p-4 shadow-2xl backdrop-blur-3xl transition-transform duration-500 group-hover:scale-[1.02]"
 					>
 						<img
 							src={String(
 								data?.hero_image ??
-									'/design_project_hero.png'
+									'https://storage.yandexcloud.net/leget-main/templates/promo-1/design_project_hero.png'
 							)}
 							alt="Interior Design Visualization"
 							class="aspect-[4/3] w-full rounded-[2.5rem] object-cover"
@@ -159,7 +159,7 @@
 			aria-label="Скролл вниз"
 		>
 			<svg
-				class="h-10 w-10 text-white/20 transition-colors group-hover:text-emerald-400"
+				class="h-10 w-10 text-on-dark/20 transition-colors group-hover:text-cat-2-400"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"

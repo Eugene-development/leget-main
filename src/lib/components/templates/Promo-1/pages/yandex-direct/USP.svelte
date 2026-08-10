@@ -24,7 +24,8 @@
 		{
 			icon: 'ruler',
 			title: 'Индивидуальный проект',
-			description: 'Каждое изделие проектируется под ваши размеры и пожелания. Никаких стандартных решений'
+			description:
+				'Каждое изделие проектируется под ваши размеры и пожелания. Никаких стандартных решений'
 		},
 		{
 			icon: 'shield',
@@ -50,8 +51,10 @@
 	);
 
 	const iconPaths: Record<string, string> = {
-		ruler: 'M3 5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm4 0v4m4-4v2m4-2v4m4-4v2',
-		shield: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+		ruler:
+			'M3 5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm4 0v4m4-4v2m4-2v4m4-4v2',
+		shield:
+			'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
 		clock: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
 		wallet: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z'
 	};
@@ -89,7 +92,10 @@
 			<EditableField
 				fieldKey="USP.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас')}
+				value={String(
+					data?.subtitle ??
+						'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('subtitle', v)}
@@ -105,11 +111,20 @@
 			{#each items as item, i}
 				<div class="yd-usp__card" style="animation-delay: {i * 100}ms">
 					<div class="yd-usp__card-icon">
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<svg
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
 							<path d={iconPaths[item.icon] ?? iconPaths.shield} />
 						</svg>
 					</div>
-					<h3 class="yd-usp__card-title">{item.title}</h3>
+					<h3 class="p1-title-sub yd-usp__card-title">{item.title}</h3>
 					<p class="yd-usp__card-text">{item.description}</p>
 				</div>
 			{/each}
