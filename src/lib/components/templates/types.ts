@@ -6,6 +6,8 @@ export type PageComponentProps = {
 	data: Record<string, unknown>;
 	editContext?: EditContext | null;
 	isEditable?: boolean;
+	/** Идентификатор строки page_components для встроенных контролов настройки. */
+	componentId?: string | null;
 };
 
 /** Карта «тип компонента из БД» → Svelte-компонент. */

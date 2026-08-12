@@ -80,9 +80,19 @@
 		'ContactsHero',
 		'Direction'
 	]);
+	// У сайдбара контрол одноверсионных настроек находится в его собственной шапке:
+	// внешний overlay здесь дал бы кнопку вне fixed-карточки.
+	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set(['MebelSidebar']);
 
 	function componentHasOwnSwitcher(type: string): boolean {
 		return Number(editContext?.templateId) === 1 && promo1ComponentsWithSwitcher.has(type);
+	}
+
+	function componentHasEmbeddedSingleVersionSettings(type: string): boolean {
+		return (
+			Number(editContext?.templateId) === 1 &&
+			promo1ComponentsWithEmbeddedSingleVersionSettings.has(type)
+		);
 	}
 
 	function singleVersionKey(type: string): string {
@@ -177,9 +187,14 @@
 				? 'opacity-40 grayscale'
 				: ''}"
 		>
-			<Component bind:data={element.data} {editContext} {isEditable} />
+			<Component
+				bind:data={element.data}
+				{editContext}
+				{isEditable}
+				componentId={String(element.data?._componentId ?? element.id ?? '') || null}
+			/>
 
-			{#if !componentHasOwnSwitcher(element.type)}
+			{#if !componentHasOwnSwitcher(element.type) && !componentHasEmbeddedSingleVersionSettings(element.type)}
 				<SingleVersionSettings
 					bind:data={element.data}
 					{editContext}

@@ -10,7 +10,8 @@
 		resetId = null,
 		themeToggle = false,
 		themeDefault = 'light',
-		title = ''
+		title = '',
+		placement = 'overlay'
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
@@ -20,6 +21,7 @@
 		themeToggle?: boolean;
 		themeDefault?: 'light' | 'dark';
 		title?: string;
+		placement?: 'overlay' | 'inline';
 	} = $props();
 
 	const versionKey = $derived(
@@ -43,4 +45,5 @@
 	themeVersions={themeToggle ? ['v1'] : []}
 	{themeDefault}
 	title={title || componentType}
+	{placement}
 />

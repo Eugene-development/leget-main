@@ -16,7 +16,6 @@
 	let {
 		open = $bindable(false),
 		title,
-		eyebrow = 'Компонент',
 		article = null,
 		articleSectionHint = null,
 		articleComponentHint = null,
@@ -31,8 +30,6 @@
 		open?: boolean;
 		/** Заголовок панели — человекочитаемое имя блока («Главный экран»). */
 		title: string;
-		/** Надзаголовок: шаблон и страница («Promo-1 · Главная»). */
-		eyebrow?: string;
 		/** Артикул активной версии; null — строка артикула не показывается. */
 		article?: string | null;
 		/** Подпись к сегменту страницы в тултипе артикула (slug). */
@@ -67,7 +64,7 @@
 	</svg>
 </button>
 
-<SideDrawer bind:open {title} {eyebrow}>
+<SideDrawer bind:open {title} eyebrow={null}>
 	<div class="flex flex-col gap-6">
 		<!-- Артикул выбранной версии -->
 		{#if article}

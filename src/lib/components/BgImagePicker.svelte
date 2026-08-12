@@ -15,6 +15,11 @@
 		currentImage = '',
 		defaultImage = '',
 		aspectRatio = 16 / 9,
+		folder = 'bg',
+		title = 'Фоновое изображение',
+		cropUploads = true,
+		previewFit = 'cover',
+		maxUploadBytes = 10 * 1024 * 1024,
 		onApprove,
 		onClose
 	}: {
@@ -22,9 +27,23 @@
 		currentImage?: string;
 		defaultImage?: string;
 		aspectRatio?: number;
-		onApprove: (url: string) => void;
+		folder?: 'bg' | 'logos';
+		title?: string;
+		cropUploads?: boolean;
+		previewFit?: 'cover' | 'contain';
+		maxUploadBytes?: number;
+		onApprove: (url: string) => void | Promise<void>;
 		onClose: () => void;
 	} = $props();
+
+	const allowedUploadTypes = [
+		'image/jpeg',
+		'image/png',
+		'image/webp',
+		'image/svg+xml',
+		'image/gif',
+		'image/avif'
+	];
 
 	// ─── State ──────────────────────────────────────────────────────────────────
 	let images = $state<BucketFile[]>([]);
@@ -59,7 +78,7 @@
 		isLoading = true;
 		loadError = '';
 		try {
-			const files = await listBucketFiles('bg', 100);
+			const files = await listBucketFiles(folder, 100);
 			let allImages = [...files];
 			if (defaultImage) {
 				const hasDefault = files.some((f) => f.url === defaultImage);
@@ -123,9 +142,10 @@
 		isSaving = true;
 		saveError = '';
 		try {
-			onApprove(selectedImage.url);
+			await onApprove(selectedImage.url);
 		} catch (err) {
 			saveError = err instanceof Error ? err.message : 'Ошибка сохранения';
+		} finally {
 			isSaving = false;
 		}
 	}
@@ -137,14 +157,34 @@
 		const file = (e.target as HTMLInputElement).files?.[0];
 		if (!file) return;
 		uploadError = '';
-		// Передаём файл кропперу вместо немедленной загрузки
-		cropFile = file;
+
+		if (!allowedUploadTypes.includes(file.type)) {
+			uploadError = 'Неподдерживаемый формат изображения';
+			if (fileInput) fileInput.value = '';
+			return;
+		}
+
+		if (file.size > maxUploadBytes) {
+			uploadError = `Файл больше ${formatSize(maxUploadBytes)}`;
+			if (fileInput) fileInput.value = '';
+			return;
+		}
+
+		if (cropUploads) {
+			cropFile = file;
+		} else {
+			void uploadFile(file);
+		}
 		if (fileInput) fileInput.value = '';
 	}
 
 	/** Шаг 2: пользователь обрезал изображение → загружаем результат */
 	async function handleCropDone(croppedFile: File) {
 		cropFile = null;
+		await uploadFile(croppedFile);
+	}
+
+	async function uploadFile(file: File) {
 		uploadError = '';
 		isUploading = true;
 		uploadProgress = 0;
@@ -171,9 +211,9 @@
 						}
 					`,
 					variables: {
-						filename: croppedFile.name,
-						mimeType: 'image/jpeg',
-						folder: 'bg'
+						filename: file.name,
+						mimeType: file.type,
+						folder
 					}
 				})
 			});
@@ -187,7 +227,7 @@
 			await new Promise<void>((resolve, reject) => {
 				const xhr = new XMLHttpRequest();
 				xhr.open('PUT', uploadUrl);
-				xhr.setRequestHeader('Content-Type', 'image/jpeg');
+				xhr.setRequestHeader('Content-Type', file.type);
 				xhr.upload.onprogress = (ev) => {
 					if (ev.lengthComputable) {
 						uploadProgress = Math.round((ev.loaded / ev.total) * 100);
@@ -196,14 +236,14 @@
 				xhr.onload = () =>
 					xhr.status < 300 ? resolve() : reject(new Error(`Upload failed: ${xhr.status}`));
 				xhr.onerror = () => reject(new Error('Upload error'));
-				xhr.send(croppedFile);
+				xhr.send(file);
 			});
 
 			// 3. Добавляем новое изображение в начало списка и выбираем его
 			const newFile: BucketFile = {
 				key: objectUrl.split('/').slice(-2).join('/'),
 				url: objectUrl,
-				size: croppedFile.size,
+				size: file.size,
 				lastModified: new Date().toISOString()
 			};
 			images = [newFile, ...images];
@@ -248,7 +288,7 @@
 	class="picker-backdrop"
 	role="dialog"
 	aria-modal="true"
-	aria-label="Выбор фонового изображения"
+	aria-label={`Выбор: ${title.toLocaleLowerCase('ru-RU')}`}
 	tabindex="-1"
 	transition:fade={{ duration: 200 }}
 >
@@ -266,7 +306,7 @@
 					/>
 				</svg>
 				<div>
-					<h2 class="picker-title">Фоновое изображение</h2>
+					<h2 class="picker-title">{title}</h2>
 					<p class="picker-subtitle">
 						{#if images.length > 0}
 							{selectedIndex + 1} из {images.length}
@@ -299,7 +339,7 @@
 					<input
 						bind:this={fileInput}
 						type="file"
-						accept="image/*"
+						accept={allowedUploadTypes.join(',')}
 						class="sr-only"
 						disabled={isUploading}
 						onchange={handleUpload}
@@ -328,7 +368,7 @@
 		<!-- Upload progress bar -->
 		{#if isUploading}
 			<div class="progress-bar-track">
-				<div class="progress-bar-fill" style="width:{uploadProgress}%"></div>
+				<div class="progress-bar-fill" style={`transform: scaleX(${uploadProgress / 100})`}></div>
 			</div>
 		{/if}
 
@@ -395,8 +435,8 @@
 					{#key selectedIndex}
 						<img
 							src={previewUrl}
-							alt="Предпросмотр фона"
-							class="slide-image"
+							alt={`Предпросмотр: ${title.toLocaleLowerCase('ru-RU')}`}
+							class="slide-image {previewFit === 'contain' ? 'slide-image-contain' : ''}"
 							transition:fade={{ duration: 150 }}
 						/>
 					{/key}
@@ -626,9 +666,11 @@
 	}
 
 	.progress-bar-fill {
+		width: 100%;
 		height: 100%;
 		background: linear-gradient(90deg, #38bdf8, #818cf8);
-		transition: width 0.2s;
+		transform-origin: left center;
+		transition: transform 0.2s;
 	}
 
 	/* ── Viewer ── */
@@ -715,6 +757,11 @@
 		height: 100%;
 		object-fit: cover;
 		display: block;
+	}
+
+	.slide-image-contain {
+		object-fit: contain;
+		padding: 2rem;
 	}
 
 	/* ── Nav arrows ── */

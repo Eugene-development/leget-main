@@ -49,8 +49,10 @@
 		fabLabel = 'Разделы',
 		emptyText = 'Разделы появятся здесь',
 		accent = 'sky',
+		showDisabledBadge = true,
 		cta,
-		itemActions
+		itemActions,
+		settings
 	}: {
 		data: any;
 		editContext?: EditContext | null;
@@ -68,9 +70,12 @@
 		fabLabel?: string;
 		emptyText?: string;
 		accent?: 'sky' | 'amber';
+		showDisabledBadge?: boolean;
 		cta?: Partial<SidebarCta>;
 		/** Админ-кнопки у пункта списка (сейчас только у мебели). */
 		itemActions?: Snippet<[SidebarItem]>;
+		/** Контрол настроек блока, встроенный в шапку сайдбара. */
+		settings?: Snippet;
 	} = $props();
 
 	const title = $derived(String(data?.title || defaultTitle));
@@ -81,7 +86,7 @@
 		return Array.isArray(fromDb) && fromDb.length > 0 ? fromDb : defaultItems;
 	});
 
-	/* В режиме редактирования показываем и отключённые пункты — их видно по бейджу. */
+	/* В режиме редактирования показываем и отключённые пункты, чтобы их можно было включить обратно. */
 	const visibleItems = $derived(
 		isEditable ? items : items.filter((item) => item.is_enabled !== false)
 	);
@@ -253,7 +258,7 @@
 					onclick={() => (isSheetOpen = false)}
 				>
 					<span class="ms-label">{label}</span>
-					{#if isEditable && !isEnabled}
+					{#if showDisabledBadge && isEditable && !isEnabled}
 						<span class="ms-badge">Откл.</span>
 					{/if}
 					{#if !isEditable}
@@ -325,7 +330,12 @@
 			style={maxHeight ? `max-height: ${maxHeight}px` : ''}
 		>
 			<div class="ms-head">
-				{@render heading()}
+				<div class="ms-head-row">
+					{@render heading()}
+					{#if isEditable && editContext && settings}
+						<div class="ms-settings">{@render settings()}</div>
+					{/if}
+				</div>
 				<span class="ms-rule" aria-hidden="true"></span>
 			</div>
 
@@ -375,21 +385,26 @@
 					<div>
 						{@render heading()}
 					</div>
-					<button
-						type="button"
-						class="ms-close"
-						onclick={() => (isSheetOpen = false)}
-						aria-label="Закрыть"
-					>
-						<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-							<path
-								d="M6 6l12 12M18 6L6 18"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-							/>
-						</svg>
-					</button>
+					<div class="ms-sheet-actions">
+						{#if isEditable && editContext && settings}
+							<div class="ms-settings">{@render settings()}</div>
+						{/if}
+						<button
+							type="button"
+							class="ms-close"
+							onclick={() => (isSheetOpen = false)}
+							aria-label="Закрыть"
+						>
+							<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+								<path
+									d="M6 6l12 12M18 6L6 18"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+								/>
+							</svg>
+						</button>
+					</div>
 				</div>
 
 				<div class="ms-sheet-body">
@@ -484,6 +499,20 @@
 	}
 
 	.ms-head {
+		flex: none;
+	}
+
+	.ms-head-row,
+	.ms-sheet-actions {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+
+	.ms-settings {
+		position: relative;
+		z-index: 2;
 		flex: none;
 	}
 

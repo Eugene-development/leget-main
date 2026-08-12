@@ -6,6 +6,12 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
+	type PartnerBrand = {
+		name: string;
+		logo: string;
+		url: string;
+	};
+
 	let {
 		data = $bindable(),
 		editContext = null,
@@ -39,32 +45,49 @@
 		showImagePicker = false;
 	}
 
-	const brands = $derived(
-		Array.isArray(data?.brands)
-			? (data.brands as { name: string; logo: string; url: string }[])
-			: [
-					{
-						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
-						url: 'https://www.hettich.com'
-					},
-					{
-						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
-						url: 'https://www.egger.com'
-					},
-					{
-						name: 'Аристо',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
-						url: 'https://www.aristo.ru'
-					},
-					{
-						name: 'Blum',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
-						url: 'https://www.blum.com'
-					}
-				]
+	const defaultBrands: PartnerBrand[] = [
+		{
+			name: 'Hettich',
+			logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+			url: 'https://www.hettich.com'
+		},
+		{
+			name: 'Egger',
+			logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+			url: 'https://www.egger.com'
+		},
+		{
+			name: 'Аристо',
+			logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+			url: 'https://www.aristo.ru'
+		},
+		{
+			name: 'Blum',
+			logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+			url: 'https://www.blum.com'
+		}
+	];
+
+	const brands = $derived<PartnerBrand[]>(
+		Array.isArray(data?.brands) ? (data.brands as PartnerBrand[]) : defaultBrands
 	);
+
+	let editingBrandIndex = $state<number | null>(null);
+	const editingBrand = $derived(
+		editingBrandIndex === null ? null : (brands[editingBrandIndex] ?? null)
+	);
+
+	async function handleBrandLogoApprove(url: string) {
+		if (!editContext || editingBrandIndex === null || !brands[editingBrandIndex]) return;
+
+		const updatedBrands = brands.map((brand, index) =>
+			index === editingBrandIndex ? { ...brand, logo: url } : brand
+		);
+		const updated = { ...data, brands: updatedBrands };
+		await saveComponentData(editContext, 'HeroMain', updated);
+		data = updated;
+		editingBrandIndex = null;
+	}
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -122,6 +145,20 @@
 				previewBgImage = null;
 				showImagePicker = false;
 			}}
+		/>
+	{/if}
+
+	{#if editingBrand && editContext}
+		<BgImagePicker
+			{editContext}
+			currentImage={editingBrand.logo}
+			folder="logos"
+			title={`Логотип партнёра «${editingBrand.name}»`}
+			cropUploads={false}
+			previewFit="contain"
+			maxUploadBytes={2 * 1024 * 1024}
+			onApprove={handleBrandLogoApprove}
+			onClose={() => (editingBrandIndex = null)}
 		/>
 	{/if}
 
@@ -265,21 +302,53 @@
 						class="flex w-full flex-row items-center justify-center gap-6 md:grid md:grid-cols-4 md:gap-12"
 					>
 						{#each brands as brand, i}
-							<a
-								href={brand.url}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="group flex h-10 items-center justify-center px-2 opacity-90 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-100 {i >=
-								3
-									? 'hidden md:flex'
-									: ''}"
-							>
-								<ImageFallback
-									class="max-h-full max-w-full object-contain"
-									src={brand.logo}
-									alt={brand.name}
-								/>
-							</a>
+							{#if isEditable && editContext}
+								<button
+									type="button"
+									onclick={() => (editingBrandIndex = i)}
+									class="group relative flex h-12 cursor-pointer items-center justify-center rounded-lg border border-transparent px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-400/40 hover:bg-surface-raised/40 hover:opacity-100 focus-visible:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none {i >=
+									3
+										? 'hidden md:flex'
+										: ''}"
+									aria-label={`Заменить логотип «${brand.name}»`}
+									title={`Заменить логотип «${brand.name}»`}
+								>
+									<ImageFallback
+										class="max-h-full max-w-full object-contain"
+										src={brand.logo}
+										alt={brand.name}
+									/>
+									<span
+										class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 opacity-80 shadow-sm transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:opacity-100 group-focus-visible:opacity-100"
+										aria-hidden="true"
+									>
+										<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="1.75"
+												d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
+											/>
+										</svg>
+									</span>
+								</button>
+							{:else}
+								<a
+									href={brand.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="group flex h-10 items-center justify-center px-2 opacity-90 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-100 {i >=
+									3
+										? 'hidden md:flex'
+										: ''}"
+								>
+									<ImageFallback
+										class="max-h-full max-w-full object-contain"
+										src={brand.logo}
+										alt={brand.name}
+									/>
+								</a>
+							{/if}
 						{/each}
 					</div>
 				</div>

@@ -5,6 +5,7 @@
 	// что есть у мебели и нет у других рубрик: категории — настоящий справочник в
 	// БД, их можно включать/выключать и добавлять в них проекты.
 	import { invalidateAll } from '$app/navigation';
+	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { toggleCategory, type EditContext } from '$lib/utils/page-edit';
 	import CatalogSidebar from '../_shared/CatalogSidebar.svelte';
 	import MebelProjectModal from './MebelProjectModal.svelte';
@@ -12,11 +13,13 @@
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		componentId = null
 	}: {
 		data: any;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		componentId?: string | null;
 	} = $props();
 
 	const categories = $derived(data.categories || []);
@@ -85,8 +88,21 @@
 	fabLabel="Категории"
 	emptyText="Категории появятся здесь"
 	accent="sky"
+	showDisabledBadge={false}
 	itemActions={categoryActions}
+	settings={componentSettings}
 />
+
+{#snippet componentSettings()}
+	<SingleVersionSettings
+		bind:data
+		{editContext}
+		{isEditable}
+		componentType="MebelSidebar"
+		resetId={componentId}
+		placement="inline"
+	/>
+{/snippet}
 
 {#snippet categoryActions(category: any)}
 	{@const isEnabled = category.is_enabled !== false}

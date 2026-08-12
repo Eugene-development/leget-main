@@ -24,7 +24,8 @@
 		showVersionMenu = true,
 		themeVersions = [],
 		themeDefault = 'light',
-		title = ''
+		title = '',
+		placement = 'overlay'
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
@@ -43,6 +44,8 @@
 		themeDefault?: BlockTheme;
 		/** Человекочитаемое имя блока для панели настроек. По умолчанию — тип компонента. */
 		title?: string;
+		/** Overlay поверх секции либо inline внутри собственного тулбара компонента. */
+		placement?: 'overlay' | 'inline';
 	} = $props();
 
 	const actualVersionKey = $derived(
@@ -123,16 +126,6 @@
 		return articleVariants.find((v) => v.version === vn)?.article ?? componentArticle;
 	});
 
-	const TEMPLATE_NAMES: Record<number, string> = { 1: 'Promo-1', 2: 'Promo-2', 3: 'Promo-3' };
-
-	// Надзаголовок панели настроек: «Promo-1 · Главная».
-	const drawerEyebrow = $derived.by(() => {
-		const tpl = TEMPLATE_NAMES[Number(editContext?.templateId)] ?? 'Шаблон';
-		const slug = editContext?.slug ?? null;
-		if (!slug) return tpl;
-		return `${tpl} · ${slug === '/' ? 'Главная' : slug}`;
-	});
-
 	// Артикул тянем только для авторизованного пользователя: запрос идёт под @guard и
 	// без токена всегда возвращает null. Гость монтирует свитчер наравне со всеми
 	// (разметка скрыта, но скрипт работает), и раньше единственная попытка сгорала
@@ -198,7 +191,11 @@
 </script>
 
 {#if isEditable && editContext}
-	<div class="font-sans-premium absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
+	<div
+		class="font-sans-premium z-[100] flex items-center gap-2 select-none {placement === 'overlay'
+			? 'absolute top-6 right-6'
+			: 'relative'}"
+	>
 		{#if themeVersions.includes(selectedVersion)}
 			<ThemeToggle {isLight} onToggle={toggleTheme} class="order-first" />
 		{/if}
@@ -313,7 +310,6 @@
 		<ComponentSettingsDrawer
 			bind:open={drawerOpen}
 			title={title || componentType}
-			eyebrow={drawerEyebrow}
 			article={activeArticle}
 			articleSectionHint={editContext.slug}
 			articleComponentHint={componentType}
