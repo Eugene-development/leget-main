@@ -31,7 +31,7 @@
 	}
 </script>
 
-<section class="bg-surface-raised px-6 py-20">
+<section class="bg-surface-raised px-6 py-section-xs">
 	<div class="mx-auto max-w-2xl">
 		<EditableField
 			fieldKey="ContactForm.title"
@@ -65,7 +65,7 @@
 						type="text"
 						bind:value={name}
 						required
-						class="mt-1 block w-full rounded-xl border border-ink-200 px-4 py-3 text-ink-900 shadow-sm focus:border-ink-400 focus:outline-none"
+						class="mt-1 block w-full rounded-xl border border-ink-200 px-4 py-3 text-ink-900 shadow-sm focus:border-link-600 focus:ring-2 focus:ring-link-600 focus:outline-none"
 					/>
 				</div>
 				<div>
@@ -75,7 +75,7 @@
 						type="tel"
 						bind:value={phone}
 						required
-						class="mt-1 block w-full rounded-xl border border-ink-200 px-4 py-3 text-ink-900 shadow-sm focus:border-ink-400 focus:outline-none"
+						class="mt-1 block w-full rounded-xl border border-ink-200 px-4 py-3 text-ink-900 shadow-sm focus:border-link-600 focus:ring-2 focus:ring-link-600 focus:outline-none"
 					/>
 				</div>
 				<div>
@@ -84,12 +84,12 @@
 						id="message"
 						bind:value={message}
 						rows="4"
-						class="mt-1 block w-full rounded-xl border border-ink-200 px-4 py-3 text-ink-900 shadow-sm focus:border-ink-400 focus:outline-none"
+						class="mt-1 block w-full rounded-xl border border-ink-200 px-4 py-3 text-ink-900 shadow-sm focus:border-link-600 focus:ring-2 focus:ring-link-600 focus:outline-none"
 					></textarea>
 				</div>
 				<button
 					type="submit"
-					class="w-full rounded-xl bg-ink-900 px-6 py-4 text-base font-semibold text-on-dark shadow-sm transition hover:bg-ink-700"
+					class="w-full rounded-xl bg-ink-900 px-6 py-4 text-base font-semibold text-on-dark shadow-sm transition hover:bg-ink-700 focus:ring-2 focus:ring-link-600 focus:ring-offset-2 focus:outline-none"
 				>
 					Отправить
 				</button>

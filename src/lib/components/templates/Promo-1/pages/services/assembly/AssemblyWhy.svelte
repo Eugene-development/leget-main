@@ -52,7 +52,7 @@
 	}
 </script>
 
-<section class="bg-ink-50 py-24 sm:py-32">
+<section class="bg-ink-50 py-section-sm sm:py-section">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid items-center gap-16 lg:grid-cols-2">
 			<!-- Изображение с геометрией -->

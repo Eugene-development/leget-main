@@ -55,7 +55,7 @@
 	);
 </script>
 
-<section class="relative isolate overflow-hidden bg-ink-50 py-24">
+<section class="relative isolate overflow-hidden bg-ink-50 py-section-sm">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="it-rules"></div>
 	</div>

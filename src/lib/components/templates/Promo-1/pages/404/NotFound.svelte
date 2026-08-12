@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.25.1.1 — см. docs/architecture/component-articles-map.md
 	import { browser } from '$app/environment';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -71,7 +72,7 @@
 	Палитра — базовая тёмная шаблона (slate-950 + красный акцент), как у HeroMain.
 -->
 <section
-	class="nf-enter relative isolate flex min-h-screen items-center overflow-hidden bg-ink-950 py-24 sm:py-28"
+	class="nf-enter relative isolate flex min-h-screen items-center overflow-hidden bg-ink-950 py-section-sm sm:py-section"
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="nf-glow absolute -top-40 left-1/2 size-144 -translate-x-1/2 bg-brand-500/20"></div>

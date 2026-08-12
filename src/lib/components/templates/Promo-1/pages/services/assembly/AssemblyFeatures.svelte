@@ -73,7 +73,7 @@
 	}
 </script>
 
-<section class="bg-surface-raised py-24 sm:py-32">
+<section class="bg-surface-raised py-section-sm sm:py-section">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="max-w-2xl">
 			<EditableField

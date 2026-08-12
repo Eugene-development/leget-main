@@ -27,7 +27,10 @@
 	}
 </script>
 
-<section class="p1-surface-alt relative py-24 sm:py-32" data-p1-theme={isLight ? 'light' : 'dark'}>
+<section
+	class="p1-surface-alt relative py-section-sm sm:py-section"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<div class="mx-auto max-w-5xl px-6 lg:px-8">
 		<div class="overflow-hidden rounded-3xl">
 			<EditableField

@@ -70,6 +70,9 @@
 	--ds-light-muted: #64748b;
 	--ds-light-border: rgb(15 23 42 / 0.12);
 	--ds-light-line: rgb(15 23 42 / 0.08);
+	/* Связка. Плотнее базовой, как и весь штрих Графита: 2,05:1 против 1,85:1.
+	   Графит чертит схему — линия связи у него полноправный элемент, а не намёк. */
+	--ds-light-rail: rgb(15 23 42 / 0.32);
 	--ds-light-shadow: 0 18px 40px -28px rgb(15 23 42 / 0.45);
 	--ds-light-accent: #2563eb;
 
@@ -84,6 +87,8 @@
 	--ds-dark-muted: #94a3b8;
 	--ds-dark-border: rgb(255 255 255 / 0.12);
 	--ds-dark-line: rgb(255 255 255 / 0.08);
+	/* Связка, тёмная половина. 2,04:1 к `--ds-dark-surface-alt`. */
+	--ds-dark-rail: rgb(255 255 255 / 0.22);
 	--ds-dark-shadow: 0 24px 50px -34px rgb(0 0 0 / 0.9);
 	--ds-dark-accent: #60a5fa;
 
@@ -101,9 +106,45 @@
 	--ds-font-heading-sub-tracking: -0.011em;
 	--ds-font-heading-sub-leading: 1.35;
 
-	/* ─── Вертикальный ритм ─────────────────────────────────────────────────── */
-	--ds-spacing-section: 96px;
+	/* Метка. Разрежение вдвое теснее базового: у Графита прописная работает
+	   как ярлык приборной панели, а не как разрядка на титуле. */
+	--ds-font-label: var(--ds-font-body);
+	--ds-font-label-size: 0.6875rem;
+	--ds-font-label-weight: 700;
+	--ds-font-label-tracking: 0.1em;
+
+	/* Цифра. У Графита это показание прибора: разряды выровнены, трекинг нулевой,
+	   начертание тяжелее базового — колонка чисел должна читаться как шкала. */
+	--ds-font-numeric: var(--ds-font-body);
+	--ds-font-numeric-weight: 600;
+	--ds-font-numeric-tracking: 0;
+	--ds-font-numeric-variant: tabular-nums;
+
+	/* Штрих иконки. Тоньше базового: Графит рисует чертёж, а не пиктограмму. */
+	--ds-icon-stroke: 1.25;
+	--ds-icon-stroke-bold: 1.75;
+
+	/* ─── Вертикальный ритм ───────────────────────────────────────────────────
+	   Плотнее базового по всей шкале, шаг сохраняется. */
+	--ds-spacing-section-2xs: 32px;
+	--ds-spacing-section-xs: 56px;
 	--ds-spacing-section-sm: 72px;
+	--ds-spacing-section: 96px;
+	--ds-spacing-section-lg: 128px;
+
+	/* ─── Радиусы ─────────────────────────────────────────────────────────────
+	   Угол вдвое резче базового по всей шкале: Графит — инструмент, а не салон.
+	   `full` неприкосновенен: пилюля, аватар и ручка тумблера круглые в любой
+	   системе, это форма элемента, а не характер. */
+	--ds-radius-xs: 1px;
+	--ds-radius-sm: 2px;
+	--ds-radius-md: 3px;
+	--ds-radius-lg: 4px;
+	--ds-radius-xl: 6px;
+	--ds-radius-2xl: 8px;
+	--ds-radius-3xl: 12px;
+	--ds-radius-4xl: 16px;
+	--ds-radius-full: 9999px;
 
 	/* ─── Тени ──────────────────────────────────────────────────────────────── */
 	--ds-shadow-soft: 0 2px 8px rgba(15, 23, 42, 0.08);
@@ -111,12 +152,33 @@
 	--ds-shadow-card: 0 1px 4px rgba(15, 23, 42, 0.06);
 	--ds-shadow-elevated: 0 12px 32px rgba(15, 23, 42, 0.14);
 
+	/* Числовая шкала: короче и жёстче базовой, нейтраль холодная, как и всё
+	   остальное здесь. Именно она достаётся 221 применению `shadow-sm…2xl`
+	   в Promo-1, до которых характер системы раньше не доходил. */
+	--ds-shadow-2xs: 0 1px rgb(15 23 42 / 0.06);
+	--ds-shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.07);
+	--ds-shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.1), 0 1px 1px -1px rgb(15 23 42 / 0.1);
+	--ds-shadow-md: 0 3px 5px -2px rgb(15 23 42 / 0.12), 0 1px 3px -2px rgb(15 23 42 / 0.1);
+	--ds-shadow-lg: 0 6px 10px -3px rgb(15 23 42 / 0.14), 0 2px 4px -3px rgb(15 23 42 / 0.1);
+	--ds-shadow-xl: 0 10px 16px -5px rgb(15 23 42 / 0.16), 0 4px 6px -5px rgb(15 23 42 / 0.12);
+	--ds-shadow-2xl: 0 14px 28px -10px rgb(15 23 42 / 0.28);
+
 	/* ─── Пластика ──────────────────────────────────────────────────────────── */
 	--ds-motion-duration: 0.5s;
 	--ds-motion-duration-fast: 0.35s;
 	--ds-motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
 	--ds-motion-ease-soft: ease-out;
 	--ds-motion-theme-swap: 0.2s;
+	/* Отклик интерактива — в те же ~1,6 раза короче базового. */
+	--ds-motion-duration-ui: 180ms;
+	--ds-motion-duration-ui-slow: 300ms;
+	--ds-motion-ease-ui: cubic-bezier(0.16, 1, 0.3, 1);
+	/* Лестница короче базовой в те же ~1,6 раза, что и длительность. */
+	--ds-motion-stagger-1: 50ms;
+	--ds-motion-stagger-2: 100ms;
+	--ds-motion-stagger-3: 150ms;
+	--ds-motion-stagger-4: 210ms;
+	--ds-motion-stagger-5: 260ms;
 
 	/* ─── Контент поверх поверхностей ─────────────────────────────────────────
 	   Здесь и видно, зачем роли разведены: on-dark у «Графита» не чисто белый
@@ -126,6 +188,20 @@
 	--ds-on-accent: #ffffff;
 	--ds-surface-raised: #ffffff;
 	--ds-scrim: #020617;
+
+	/* Акцентная поверхность — ровно то место, где рескин перестаёт быть
+	   перекраской. Базовая берёт глубокую ступень своего интерактивного
+	   акцента, Графит — свой синий (`--ds-brand-700/800`), а не бирюзу
+	   `--ds-link-*`: у Графита акцент синий, и CTA обязан быть частью системы,
+	   а не пятном чужого хью. Раньше эта плашка была захардкожена ступенями
+	   Базовой и на Графите оставалась бирюзовой.
+	   Замеры к `--ds-on-accent`:
+	     surface 6,83:1 · deep 8,82:1 · muted на surface 5,60:1 · на deep 7,23:1
+	   `--ds-accent-ink` на `--ds-surface-raised` — 6,83:1. */
+	--ds-accent-surface: #1447e6;
+	--ds-accent-surface-deep: #193cb8;
+	--ds-on-accent-muted: #dbeafe;
+	--ds-accent-ink: #1447e6;
 
 	/* ══ Карантин: палитры, которые несут отдельные ВЕРСИИ блоков ═════════════
 	   Заведены 10.08.2026 при разборе произвольных `bg-[#…]`.

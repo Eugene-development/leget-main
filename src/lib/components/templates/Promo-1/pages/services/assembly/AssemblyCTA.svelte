@@ -21,7 +21,7 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-ink-950 py-24 sm:py-32">
+<section class="relative overflow-hidden bg-ink-950 py-section-sm sm:py-section">
 	<div class="absolute inset-0 opacity-20">
 		<div
 			class="absolute top-0 left-0 h-full w-full bg-[radial-gradient(var(--color-cat-6-500)_1px,transparent_1px)] [background-size:32px_32px]"

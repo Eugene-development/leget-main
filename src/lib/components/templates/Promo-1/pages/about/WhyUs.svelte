@@ -97,7 +97,7 @@
 	скачет в конце анимации появления.
 -->
 <section
-	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28"
+	class="p1-surface relative isolate overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Градиентная подложка — только в тёмной теме: на светлой она бы гасила контраст. -->

@@ -68,7 +68,7 @@
 </script>
 
 <section
-	class="p1-surface relative overflow-hidden py-24 font-sans select-none sm:py-32"
+	class="p1-surface relative overflow-hidden py-section-sm font-sans select-none sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Декоративные фоновые круги -->

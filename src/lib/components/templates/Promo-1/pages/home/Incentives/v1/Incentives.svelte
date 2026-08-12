@@ -4,6 +4,11 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import {
+		INCENTIVES_DEFAULT_TEXT,
+		INCENTIVES_DEFAULT_TITLE,
+		resolveIncentivesGallery
+	} from '../data';
 	import '../../../../theme.css';
 
 	let {
@@ -19,16 +24,7 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
 
-	const gallery = $derived(
-		Array.isArray(data?.gallery) && data.gallery.length > 0
-			? (data.gallery as { src: string; alt: string; label: string }[])
-			: [
-					{ src: '', alt: 'Шкафы-купе', label: 'Системы раздвижения' },
-					{ src: '', alt: 'Детали', label: 'Фасады' },
-					{ src: '', alt: 'Кухни', label: 'Свет' },
-					{ src: '', alt: 'Гардеробные', label: 'Гардеробные' }
-				]
-	);
+	const gallery = $derived(resolveIncentivesGallery(data?.gallery));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -36,51 +32,35 @@
 		await saveComponentData(editContext, 'Incentives', updated);
 		data = updated;
 	}
+
+	async function saveGalleryLabel(index: number, value: string) {
+		if (!editContext) return;
+		const updatedGallery = gallery.map((item, itemIndex) =>
+			itemIndex === index ? { ...item, label: value } : item
+		);
+		const updated = { ...data, gallery: updatedGallery };
+		await saveComponentData(editContext, 'Incentives', updated);
+		data = updated;
+	}
 </script>
 
 <!-- Преимущества (Incentives) -->
 <section
-	class="p1-surface relative overflow-hidden py-24 sm:py-32"
+	class="p1-surface relative overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
 			<!-- Текст -->
+			<!-- Метки над заголовком у блока нет: пилюля «Выгода» удалена 12.08.2026
+			     во всех трёх версиях сразу. Ключ `badge` в данных остаётся —
+			     переименование или удаление ключа обнулило бы поле у тенантов,
+			     которые его уже правили. -->
 			<div class="flex flex-col justify-center lg:py-8">
-				<div class="mb-6">
-					<span
-						class="inline-flex items-center gap-2 rounded-full bg-link-50 px-3 py-1 text-xs font-semibold tracking-wider text-link-700 uppercase"
-					>
-						<svg
-							class="h-4 w-4"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-							/>
-						</svg>
-						<EditableField
-							fieldKey="Incentives.badge"
-							label="Метка"
-							value={String(data?.badge ?? 'Выгода')}
-							{isEditable}
-							onSave={(v) => saveField('badge', v)}
-							class="inline"
-						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
-						</EditableField>
-					</span>
-				</div>
-
 				<EditableField
 					fieldKey="Incentives.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'С нами выгодно')}
+					value={String(data?.title ?? INCENTIVES_DEFAULT_TITLE)}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -94,7 +74,7 @@
 					<EditableField
 						fieldKey="Incentives.text"
 						label="Текст"
-						value={String(data?.text ?? '')}
+						value={String(data?.text ?? INCENTIVES_DEFAULT_TEXT)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('text', v)}
@@ -112,7 +92,7 @@
 			<!-- Галерея -->
 			<div class="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
 				<div class="space-y-4 sm:space-y-6 lg:space-y-8">
-					{#each gallery.slice(0, 2) as item}
+					{#each gallery.slice(0, 2) as item, index}
 						<div
 							class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-lg transition-all duration-500 hover:shadow-xl hover:ring-ink-300"
 						>
@@ -126,15 +106,26 @@
 							<div
 								class="absolute inset-0 bg-linear-to-t from-scrim/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"
 							></div>
-							<div class="absolute bottom-6 left-6 text-on-dark">
-								<p class="text-lg font-bold">{item.label}</p>
+							<div class="absolute right-6 bottom-6 left-6 text-on-dark">
+								<EditableField
+									fieldKey={`Incentives.gallery.${index}.label`}
+									label={`Подпись карточки ${index + 1}`}
+									value={item.label}
+									{isEditable}
+									onSave={(value) => saveGalleryLabel(index, value)}
+									class="block"
+								>
+									{#snippet children(displayValue)}
+										<p class="text-lg leading-tight font-bold break-words">{displayValue}</p>
+									{/snippet}
+								</EditableField>
 							</div>
 						</div>
 					{/each}
 				</div>
 
 				<div class="space-y-4 pt-8 sm:space-y-6 sm:pt-12 lg:space-y-8">
-					{#each gallery.slice(2, 4) as item}
+					{#each gallery.slice(2, 4) as item, index}
 						<div
 							class="group p1-card p1-border relative overflow-hidden rounded-3xl border shadow-lg transition-all duration-500 hover:shadow-xl hover:ring-ink-300"
 						>
@@ -148,8 +139,19 @@
 							<div
 								class="absolute inset-0 bg-linear-to-t from-scrim/60 via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-70"
 							></div>
-							<div class="absolute bottom-6 left-6 text-on-dark">
-								<p class="text-lg font-bold">{item.label}</p>
+							<div class="absolute right-6 bottom-6 left-6 text-on-dark">
+								<EditableField
+									fieldKey={`Incentives.gallery.${index + 2}.label`}
+									label={`Подпись карточки ${index + 3}`}
+									value={item.label}
+									{isEditable}
+									onSave={(value) => saveGalleryLabel(index + 2, value)}
+									class="block"
+								>
+									{#snippet children(displayValue)}
+										<p class="text-lg leading-tight font-bold break-words">{displayValue}</p>
+									{/snippet}
+								</EditableField>
 							</div>
 						</div>
 					{/each}

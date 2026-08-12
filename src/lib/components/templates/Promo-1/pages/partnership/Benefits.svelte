@@ -145,7 +145,7 @@
 </script>
 
 <section
-	class="p1-surface relative isolate overflow-hidden py-24"
+	class="p1-surface relative isolate overflow-hidden py-section-sm"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Вертикальные линии-колонки: лёгкая структура под светлой секцией -->

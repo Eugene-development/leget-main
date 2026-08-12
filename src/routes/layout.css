@@ -180,25 +180,122 @@
 	/* Типографика */
 	--font-heading: var(--ds-font-heading);
 	--font-body: var(--ds-font-body);
+	/**
+	 * `font-sans` — не «ещё одно имя тела», а дыра, через которую блок молча
+	 * уходил из системы: ключ не был объявлен, утилита брала встроенный стек
+	 * Tailwind (`ui-sans-serif, system-ui, …`), и 19 мест в шаблонах набирались
+	 * системным шрифтом ОС вместо Inter. Замечено на `Incentives/v2`: секция
+	 * несла `font-sans`, и вся её типографика шла мимо `--ds-font-body`.
+	 * Ключ объявлен, чтобы утилиты такого имени в принципе не существовало
+	 * вне системы. `font-serif` и `font-mono` остаются тейлвиндовскими
+	 * намеренно: моноширинной и антиквенной ролей у системы нет — их 12 мест
+	 * ждут своих ролей, а не подмены телом.
+	 */
+	--font-sans: var(--ds-font-body);
 
-	/* Вертикальный ритм */
-	--spacing-section: var(--ds-spacing-section);
+	/* Вертикальный ритм — пять ступеней, см. base.css */
+	--spacing-section-2xs: var(--ds-spacing-section-2xs);
+	--spacing-section-xs: var(--ds-spacing-section-xs);
 	--spacing-section-sm: var(--ds-spacing-section-sm);
+	--spacing-section: var(--ds-spacing-section);
+	--spacing-section-lg: var(--ds-spacing-section-lg);
+
+	/**
+	 * Радиусы. Перекрывают встроенную шкалу Tailwind: до этого `rounded-2xl`
+	 * брал дефолт фреймворка, и геометрия углов дизайн-системе не принадлежала.
+	 * Значения Базовой равны прежним дефолтам, поэтому вид не меняется — как
+	 * и при переезде палитры.
+	 */
+	--radius-xs: var(--ds-radius-xs);
+	--radius-sm: var(--ds-radius-sm);
+	--radius-md: var(--ds-radius-md);
+	--radius-lg: var(--ds-radius-lg);
+	--radius-xl: var(--ds-radius-xl);
+	--radius-2xl: var(--ds-radius-2xl);
+	--radius-3xl: var(--ds-radius-3xl);
+	--radius-4xl: var(--ds-radius-4xl);
+	/**
+	 * `full` переезд 11.08.2026 пропустил: ключ `--ds-radius-full` объявлен
+	 * в обеих системах и — до 12.08.2026 — не читался ничем. Ни строки здесь,
+	 * ни одного `var()` в компонентах; все **345** применений `rounded-full`
+	 * продолжали брать дефолт Tailwind. То есть комментарий Графита о том, что
+	 * `full` неприкосновенен, описывал намерение, которого код не мог исполнить.
+	 * Обе системы дают 9999px против `calc(infinity * 1px)` у Tailwind —
+	 * не буква в букву, но неотличимо на любом элементе уже ниже стены.
+	 */
+	--radius-full: var(--ds-radius-full);
 
 	/**
 	 * Анимации. Траектория (@keyframes ниже) — структура и общая для всех систем;
 	 * длительность и кривая — характер системы, поэтому приходят токенами.
 	 */
 	--animate-fade-up: fade-up var(--ds-motion-duration) var(--ds-motion-ease) forwards;
+	/**
+	 * То же появление, но с `both` — для элементов, входящих лестницей
+	 * (`--ds-motion-stagger-*`). С `forwards` элемент до старта стоит в
+	 * конечном виде и на задержке мигает; поэтому блоки со ступенчатым
+	 * входом заводили собственные @keyframes мимо системы (`Message/v1`).
+	 */
+	--animate-fade-up-in: fade-up var(--ds-motion-duration) var(--ds-motion-ease) both;
 	--animate-fade-in: fade-in var(--ds-motion-duration-fast) var(--ds-motion-ease-soft) forwards;
 	--animate-slide-right: slide-right var(--ds-motion-duration) var(--ds-motion-ease) forwards;
 	--animate-scale-in: scale-in var(--ds-motion-duration-fast) var(--ds-motion-ease) forwards;
+
+	/**
+	 * Кривая интерактива. Namespace `--ease-*` у Tailwind v4 есть, поэтому
+	 * ключ сразу даёт утилиту `ease-ui`. У длительности namespace нет —
+	 * `duration-300` там голое число в мс, — и в разметке она берётся как
+	 * `duration-[var(--ds-motion-duration-ui)]`. Асимметрия неприятная, но
+	 * это граница фреймворка, а не решение системы.
+	 */
+	--ease-ui: var(--ds-motion-ease-ui);
+
+	/**
+	 * Дефолт для голого `transition-*`. Заведено 12.08.2026 при разборе
+	 * `MebelCTA`: у его кнопок замерено `0.15s cubic-bezier(0.4, 0, 0.2, 1)` —
+	 * встроенный дефолт Tailwind, а не пластика системы.
+	 *
+	 * Утилита `duration-N` покрывает только тех, кто её написал. `transition-*`
+	 * без `duration-*` стоит на **249** элементах (217 из них в Promo-1), и все
+	 * они отвечали на курсор мимо `--ds-motion-duration-ui`. На одной странице
+	 * это давало два разных отклика сразу, а у Графита расхождение шире всего:
+	 * система просит 180ms, эти 249 продолжали идти 150ms.
+	 *
+	 * Эти два ключа — единственный способ отдать их системе, не трогая разметку:
+	 * своей утилиты `duration-ui` не будет, у длительности в Tailwind v4 нет
+	 * namespace (см. комментарий к `--ease-ui` выше).
+	 */
+	--default-transition-duration: var(--ds-motion-duration-ui);
+	--default-transition-timing-function: var(--ds-motion-ease-ui);
+
+	/**
+	 * Числовая шкала теней. Та же операция, что с радиусами: до этого 221
+	 * применение `shadow-sm…2xl` в одном Promo-1 сидело на дефолтах Tailwind,
+	 * и «тени резче» у другой системы до них не доходило. Именованные роли
+	 * (`shadow-card`, `shadow-soft`, …) ниже остаются — это разные вещи:
+	 * роль говорит, ЧЕМ является поверхность, ступень — насколько она поднята.
+	 */
+	--shadow-2xs: var(--ds-shadow-2xs);
+	--shadow-xs: var(--ds-shadow-xs);
+	--shadow-sm: var(--ds-shadow-sm);
+	--shadow-md: var(--ds-shadow-md);
+	--shadow-lg: var(--ds-shadow-lg);
+	--shadow-xl: var(--ds-shadow-xl);
+	--shadow-2xl: var(--ds-shadow-2xl);
 
 	/* Контент поверх поверхностей: бывшие white/black. */
 	--color-on-dark: var(--ds-on-dark);
 	--color-on-accent: var(--ds-on-accent);
 	--color-surface-raised: var(--ds-surface-raised);
 	--color-scrim: var(--ds-scrim);
+
+	/* Пара к on-accent: сама акцентная поверхность и то, что на ней читается.
+	   До 12.08.2026 роли не было, и 92 применения `text-on-accent` выбирали
+	   себе фон сами — 51 разное выражение из сырых шкал. */
+	--color-accent-surface: var(--ds-accent-surface);
+	--color-accent-surface-deep: var(--ds-accent-surface-deep);
+	--color-on-accent-muted: var(--ds-on-accent-muted);
+	--color-accent-ink: var(--ds-accent-ink);
 
 	/* Роли из разбора произвольных hex. */
 	--color-surface-inverse: var(--ds-dark-surface);
@@ -418,6 +515,31 @@ html {
 	   JS (ResizeObserver в Header.svelte / Banner.svelte) уточняет их. */
 	--banner-h: 36px; /* примерно: десктоп ~36px, мобайл ~48px */
 	--header-h: 72px; /* примерно: десктоп ~72px, мобайл — хедер скрыт */
+
+	/**
+	 * Сколько верха экрана съедает липкий хром. Баннер стоит НАД хедером и
+	 * уезжает при прокрутке, поэтому в перекрытии участвует только хедер;
+	 * баннер важен лишь в самом верху страницы (см. HeroMain, он вычитает оба).
+	 *
+	 * Заведено 11.08.2026. До этого поправку на хедер каждый блок изобретал
+	 * сам: во всём каталоге её делали четыре блока Promo-2 — `scroll-mt-20`,
+	 * `scroll-mt-24`, `lg:scroll-mt-24`, `lg:scroll-mt-32`, четыре разных
+	 * догадки о высоте хедера, ни одна не выведена из `--header-h`. В Promo-1
+	 * поправки не делал никто.
+	 */
+	--chrome-overlay: var(--header-h, 72px);
+
+	/**
+	 * Прокрутка к якорю останавливается ниже хедера, а не под ним.
+	 *
+	 * `scroll-behavior: smooth` объявлен строкой выше, а вот компенсации
+	 * липкого хрома не было: любой переход по `#id` приводил цель под хедер,
+	 * и первые ~76px блока — метка и верх заголовка — оказывались закрыты.
+	 * Одна строка здесь заменяет `scroll-mt-*` на каждом блоке во всех
+	 * шаблонах: правило наследуется и работает для якорей, `scrollIntoView`
+	 * и восстановления позиции при навигации.
+	 */
+	scroll-padding-top: calc(var(--chrome-overlay) + 1.5rem);
 }
 
 body {

@@ -108,7 +108,7 @@
 	(GuaranteesHero). Заливка волны — переменная `--gh-wave` (#f8fafc), поэтому
 	фон секции обязан быть ровно `bg-ink-50` и БЕЗ градиента у верхней кромки.
 -->
-<section class="relative isolate overflow-hidden bg-ink-50 py-20 sm:py-24">
+<section class="relative isolate overflow-hidden bg-ink-50 py-section-xs sm:py-section-sm">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="gt-rules"></div>
 	</div>

@@ -132,7 +132,7 @@
 	отодвинут от верха и приглушён маской.
 -->
 <section
-	class="p1-surface-alt relative isolate overflow-hidden py-16 sm:py-20"
+	class="p1-surface-alt relative isolate overflow-hidden py-section-xs sm:py-section-sm"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">

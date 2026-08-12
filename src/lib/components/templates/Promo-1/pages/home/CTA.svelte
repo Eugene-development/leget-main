@@ -20,7 +20,7 @@
 	}
 </script>
 
-<section class="bg-ink-900 px-6 py-20 text-center text-on-dark">
+<section class="bg-ink-900 px-6 py-section-xs text-center text-on-dark">
 	<div class="mx-auto max-w-2xl">
 		<EditableField
 			fieldKey="CTA.title"

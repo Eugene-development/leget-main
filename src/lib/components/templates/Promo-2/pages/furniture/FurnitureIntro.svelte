@@ -39,7 +39,7 @@
 </script>
 
 <section
-	class="relative scroll-mt-20 bg-white py-section-sm lg:scroll-mt-24 lg:py-section"
+	class="relative bg-white py-section-sm lg:py-section"
 	id="intro-section"
 	bind:this={sectionEl}
 >

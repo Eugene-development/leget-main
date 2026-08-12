@@ -22,7 +22,7 @@
 	);
 </script>
 
-<section class="bg-surface-raised px-6 py-20">
+<section class="bg-surface-raised px-6 py-section-xs">
 	<div class="mx-auto max-w-6xl">
 		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each items as item}

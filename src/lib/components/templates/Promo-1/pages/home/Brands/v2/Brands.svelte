@@ -109,7 +109,7 @@
 </script>
 
 <section
-	class="p1-surface p1-title relative overflow-hidden py-20 font-sans select-none sm:py-28"
+	class="p1-surface p1-title relative overflow-hidden py-section-xs font-sans select-none sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Вспомогательные светящиеся бэкдропы -->

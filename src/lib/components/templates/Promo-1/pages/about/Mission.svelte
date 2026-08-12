@@ -37,7 +37,7 @@
 </script>
 
 <section
-	class="p1-surface relative isolate overflow-hidden py-24"
+	class="p1-surface relative isolate overflow-hidden py-section-sm"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">

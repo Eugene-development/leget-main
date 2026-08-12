@@ -311,7 +311,7 @@
 
 <section
 	bind:this={sectionEl}
-	class="relative scroll-mt-20 bg-surface py-section-sm lg:scroll-mt-24 lg:py-section"
+	class="relative bg-surface py-section-sm lg:py-section"
 	id="network-section"
 >
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">

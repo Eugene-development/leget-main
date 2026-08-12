@@ -4,6 +4,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { MEBEL_BENEFITS_DEFAULT_TITLE, resolveMebelBenefits } from '../data';
 
 	let {
 		data = $bindable(),
@@ -28,25 +29,7 @@
 		await saveField('items', newItems);
 	}
 
-	const items = $derived(
-		data.items || [
-			{
-				title: 'Гарантия качества',
-				desc: 'Используются только сертифицированные материалы от надёжных производителей',
-				icon: 'shield'
-			},
-			{
-				title: 'Точные сроки',
-				desc: 'Соблюдаем оговорённые сроки изготовления, доставки и сборки мебели',
-				icon: 'clock'
-			},
-			{
-				title: 'Индивидуальный дизайн',
-				desc: 'Разрабатываем проект под ваши размеры и пожелания и с учётом нашего опыта',
-				icon: 'design'
-			}
-		]
-	);
+	const items = $derived(resolveMebelBenefits(data.items));
 
 	const iconColors: Record<string, string> = {
 		shield: 'bg-link-100 text-link-600 group-hover:bg-link-500 group-hover:text-on-accent',
@@ -60,7 +43,7 @@
 		<EditableField
 			fieldKey="MebelBenefits.title"
 			label="Заголовок блока"
-			value={String(data.title || 'Почему выбирают нас')}
+			value={String(data.title || MEBEL_BENEFITS_DEFAULT_TITLE)}
 			{isEditable}
 			inline
 			onSave={(v) => saveField('title', v)}

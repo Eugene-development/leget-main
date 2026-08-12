@@ -46,7 +46,7 @@
 	);
 </script>
 
-<section class="relative isolate overflow-hidden bg-surface-raised py-24">
+<section class="relative isolate overflow-hidden bg-surface-raised py-section-sm">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="gt-rules"></div>
 	</div>

@@ -56,7 +56,7 @@
 	ForManufacturers. Появление элементов — ступенями, см. <style> ниже.
 -->
 <section
-	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28 lg:py-32"
+	class="p1-surface relative isolate overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Декор: сетка, свечения, волосяные линии по краям секции -->

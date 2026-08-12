@@ -29,7 +29,7 @@
 	узлах — при активном transform backdrop-filter сэмплит другую подложку и тон
 	элемента скачет в конце анимации.
 -->
-<section class="relative isolate overflow-hidden bg-ink-950 py-24 sm:py-28 lg:py-32">
+<section class="relative isolate overflow-hidden bg-ink-950 py-section-sm sm:py-section">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="it-grid it-grid--fade-center"></div>
 		<div class="it-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-cat-3-500/20"></div>

@@ -79,7 +79,7 @@
 </script>
 
 <!-- Этапы работы (Stage) -->
-<section class="relative isolate overflow-hidden py-24 sm:py-32">
+<section class="relative isolate overflow-hidden py-section-sm sm:py-section">
 	<ImageFallback
 		src={String(data?.bgImage ?? '')}
 		alt="Интерьер с мебелью"

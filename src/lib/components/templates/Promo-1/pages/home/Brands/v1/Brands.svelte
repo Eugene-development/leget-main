@@ -109,7 +109,7 @@
 </script>
 
 <!-- Бренды материалов (Brands) -->
-<section class="p1-surface py-20 sm:py-28" data-p1-theme={isLight ? 'light' : 'dark'}>
+<section class="p1-surface py-section-xs sm:py-section" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="mx-auto max-w-2xl text-center">
 			<span

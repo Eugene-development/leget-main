@@ -167,7 +167,7 @@
 </script>
 
 {#if hasVisibleCards}
-	<section class="p1-surface relative py-24 sm:py-24" data-p1-theme={isLight ? 'light' : 'dark'}>
+	<section class="p1-surface relative py-section-sm" data-p1-theme={isLight ? 'light' : 'dark'}>
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
 			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{#each localCards as card, i}
@@ -194,7 +194,7 @@
 												class="peer sr-only"
 											/>
 											<div
-												class="peer relative h-4 w-7 rounded-full bg-ink-200 peer-checked:bg-brand-500 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-ink-300 after:bg-surface-raised after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-on-dark"
+												class="peer relative h-4 w-7 rounded-full bg-ink-200 peer-checked:bg-brand-500 peer-focus-visible:ring-2 peer-focus-visible:ring-link-600 peer-focus-visible:ring-offset-2 after:absolute after:start-[2px] after:top-[2px] after:h-3 after:w-3 after:rounded-full after:border after:border-ink-300 after:bg-surface-raised after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-on-dark"
 											></div>
 											<span
 												class="p1-muted text-[10px] font-bold tracking-wider uppercase select-none"

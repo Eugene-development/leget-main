@@ -21,9 +21,9 @@
 	}
 </script>
 
-<div class="mebel-container mt-12 mb-12">
+<div class="p1-catalog-container mt-12 mb-12">
 	<div
-		class="rounded-2xl bg-linear-to-r from-link-500 to-cat-5-600 p-8 text-center text-on-accent sm:p-12"
+		class="rounded-2xl bg-linear-to-r from-accent-surface to-accent-surface-deep p-8 text-center text-on-accent sm:p-12"
 	>
 		<h2 class="text-2xl sm:text-3xl">
 			<EditableField
@@ -40,7 +40,7 @@
 			</EditableField>
 		</h2>
 
-		<p class="mx-auto mt-3 max-w-md text-link-100">
+		<p class="mx-auto mt-3 max-w-md text-on-accent-muted">
 			<EditableField
 				fieldKey="MebelCTA.description"
 				label="Описание"
@@ -61,7 +61,7 @@
 
 		<div class="mt-6 flex flex-wrap justify-center gap-4">
 			<button
-				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-link-600 transition-all hover:bg-link-50"
+				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-accent-ink transition-colors hover:bg-accent-ink/10"
 			>
 				<EditableField
 					fieldKey="MebelCTA.buttonText"
@@ -78,8 +78,8 @@
 			</button>
 
 			<a
-				href="tel:+79154000020"
-				class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
+				href={data.phone ? `tel:${data.phone}` : 'tel:+79999000000'}
+				class="inline-flex items-center gap-2 rounded-lg bg-on-accent/10 px-6 py-3 font-medium text-on-accent backdrop-blur transition-colors hover:bg-on-accent/20"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
@@ -94,19 +94,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	.mebel-container {
-		max-width: 1536px;
-		margin-left: auto;
-		margin-right: auto;
-		padding-left: 1rem;
-		padding-right: 1rem;
-	}
-
-	@media (min-width: 1024px) {
-		.mebel-container {
-			padding-left: 360px;
-		}
-	}
-</style>

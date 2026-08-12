@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.2.7.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -40,7 +41,7 @@
 -->
 {#if content || isEditable}
 	<section
-		class="p1-surface-alt relative isolate overflow-hidden py-16 sm:py-20"
+		class="p1-surface-alt relative isolate overflow-hidden py-section-xs sm:py-section-sm"
 		data-p1-theme={isLight ? 'light' : 'dark'}
 	>
 		<div class="pointer-events-none absolute inset-0" aria-hidden="true">

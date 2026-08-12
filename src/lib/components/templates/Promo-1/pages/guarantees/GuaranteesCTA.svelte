@@ -28,7 +28,7 @@
 	как на Hero). Без backdrop-blur на анимируемых узлах — при активном transform
 	backdrop-filter сэмплит другую подложку и тон элемента скачет в конце анимации.
 -->
-<section class="relative isolate overflow-hidden bg-ink-950 py-24 sm:py-28 lg:py-32">
+<section class="relative isolate overflow-hidden bg-ink-950 py-section-sm sm:py-section">
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="gt-grid gt-grid--fade-center"></div>
 		<div class="gt-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-cat-2-500/20"></div>

@@ -26,7 +26,7 @@
 </script>
 
 <section
-	class="p1-surface relative overflow-hidden py-24 sm:py-32"
+	class="p1-surface relative overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Тёплая подложка — только в светлой теме: на ink она бы светила белым. -->

@@ -92,7 +92,7 @@
 	`--color-surface` (#faf9f7) — на границе с волной был виден шов.
 -->
 <section
-	class="p1-surface-alt relative isolate overflow-hidden py-20 sm:py-24"
+	class="p1-surface-alt relative isolate overflow-hidden py-section-xs sm:py-section-sm"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">

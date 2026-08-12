@@ -114,11 +114,7 @@
 	});
 </script>
 
-<section
-	class="relative scroll-mt-20 bg-surface py-section lg:scroll-mt-24"
-	id="facades-catalog"
-	bind:this={sectionEl}
->
+<section class="relative bg-surface py-section" id="facades-catalog" bind:this={sectionEl}>
 	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
 		<div class="mb-16 opacity-0 lg:mb-24" class:animate-fade-up={true}>
 			<h2 class="text-4xl text-primary lg:text-5xl" style="font-family: var(--font-heading);">

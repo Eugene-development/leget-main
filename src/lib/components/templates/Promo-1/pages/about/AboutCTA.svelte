@@ -33,7 +33,7 @@
 	WhyUs, и плашка во всю ширину перебивала весь остальной контент страницы.
 -->
 <section
-	class="p1-surface relative isolate overflow-hidden py-24 sm:py-28 lg:py-32"
+	class="p1-surface relative isolate overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">

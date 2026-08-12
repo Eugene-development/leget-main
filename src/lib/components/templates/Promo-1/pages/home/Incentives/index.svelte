@@ -1,6 +1,7 @@
 <script lang="ts">
 	import IncentivesV1 from './v1/Incentives.svelte';
 	import IncentivesV2 from './v2/Incentives.svelte';
+	import IncentivesV3 from './v3/Incentives.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 	import { fly } from 'svelte/transition';
 
@@ -18,8 +19,8 @@
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
 	// на живых сайтах это давало подмену версии после гидратации, а каталог
 	// /_ds (пререндер) вообще не смог бы показать ничего, кроме v1.
-	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
-		(data?.incentivesVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
+	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'disabled'>(
+		(data?.incentivesVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
 	);
 </script>
 
@@ -36,7 +37,8 @@
 			{isEditable}
 			componentType="Incentives"
 			versionKey="incentivesVersion"
-			themeVersions={['v1', 'v2']}
+			versions={['v1', 'v2', 'v3']}
+			themeVersions={['v1', 'v2', 'v3']}
 			themeDefault="light"
 			title="Выгоды"
 			bind:selectedVersion
@@ -64,7 +66,11 @@
 		{/if}
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
-		{#if selectedVersion === 'v2'}
+		{#if selectedVersion === 'v3'}
+			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+				<IncentivesV3 bind:data {editContext} {isEditable} />
+			</div>
+		{:else if selectedVersion === 'v2'}
 			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
 				<IncentivesV2 bind:data {editContext} {isEditable} />
 			</div>

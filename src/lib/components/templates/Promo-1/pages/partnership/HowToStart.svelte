@@ -55,7 +55,7 @@
 	);
 </script>
 
-<div class="p1-surface-alt relative py-24" data-p1-theme={isLight ? 'light' : 'dark'}>
+<div class="p1-surface-alt relative py-section-sm" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<div class="text-center">
 			<EditableField

@@ -20,7 +20,7 @@
 	}
 </script>
 
-<section class="relative overflow-hidden bg-ink-900 px-6 py-32 text-on-dark sm:py-40">
+<section class="relative overflow-hidden bg-ink-900 px-6 py-section text-on-dark sm:py-section-lg">
 	<div
 		class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--color-cat-11-800)_13.3%,transparent),_transparent_60%)]"
 	></div>
