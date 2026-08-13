@@ -6,11 +6,21 @@
 	let {
 		imageFile = null,
 		aspectRatio = NaN, // NaN = свободное соотношение
+		maxOutputWidth = 4096,
+		maxOutputHeight = 4096,
+		outputMimeType = 'image/jpeg',
+		outputQuality = 0.95,
+		maxOutputBytes = null,
 		onCrop = () => {},
 		onCancel = () => {}
 	}: {
 		imageFile?: File | null;
 		aspectRatio?: number;
+		maxOutputWidth?: number;
+		maxOutputHeight?: number;
+		outputMimeType?: 'image/jpeg' | 'image/png' | 'image/webp';
+		outputQuality?: number;
+		maxOutputBytes?: number | null;
 		onCrop?: (file: File) => void;
 		onCancel?: () => void;
 	} = $props();
@@ -20,6 +30,7 @@
 	let isProcessing = $state(false);
 	let isReady = $state(false);
 	let cropperReady = $state(false);
+	let processingError = $state('');
 
 	// Хранение вне $state чтобы избежать прокси
 	let CropperClass: any = null;
@@ -151,30 +162,107 @@
 		if (!cropperInstance || isProcessing) return;
 
 		isProcessing = true;
+		processingError = '';
 
 		try {
 			const canvas = cropperInstance.getCroppedCanvas({
-				maxWidth: 4096,
-				maxHeight: 4096,
+				maxWidth: maxOutputWidth,
+				maxHeight: maxOutputHeight,
 				imageSmoothingEnabled: true,
 				imageSmoothingQuality: 'high'
 			});
 
-			// Конвертируем canvas в blob
-			const blob = await new Promise<any>((resolve) => {
-				canvas.toBlob(resolve, 'image/jpeg', 0.95);
-			});
+			if (!canvas) throw new Error('Не удалось сформировать область изображения');
 
-			// Создаём File из blob с оригинальным именем
-			const fileName = imageFile?.name || 'cropped-image.jpg';
-			const croppedFile = new File([blob], fileName, { type: 'image/jpeg' });
+			const blob = await encodeCanvas(canvas);
+			const actualMimeType =
+				blob.type === 'image/png' || blob.type === 'image/webp' || blob.type === 'image/jpeg'
+					? blob.type
+					: outputMimeType;
+			const croppedFile = new File([blob], outputFileName(imageFile?.name, actualMimeType), {
+				type: actualMimeType,
+				lastModified: Date.now()
+			});
 
 			onCrop(croppedFile);
 		} catch (err) {
 			console.error('Crop failed:', err);
+			processingError =
+				err instanceof Error
+					? err.message
+					: 'Не удалось обработать изображение. Попробуйте другой файл.';
 		} finally {
 			isProcessing = false;
 		}
+	}
+
+	function outputFileName(originalName: string | undefined, mimeType: string): string {
+		const baseName = (originalName || 'cropped-image').replace(/\.[^.]+$/, '') || 'cropped-image';
+		const extension = mimeType === 'image/png' ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
+		return `${baseName}.${extension}`;
+	}
+
+	function canvasToBlob(canvas: HTMLCanvasElement, quality: number): Promise<Blob> {
+		return new Promise((resolve, reject) => {
+			canvas.toBlob(
+				(blob) => {
+					if (blob) resolve(blob);
+					else reject(new Error('Браузер не смог сжать изображение'));
+				},
+				outputMimeType,
+				quality
+			);
+		});
+	}
+
+	function resizeCanvas(source: HTMLCanvasElement, scale: number): HTMLCanvasElement {
+		const canvas = document.createElement('canvas');
+		canvas.width = Math.max(1, Math.round(source.width * scale));
+		canvas.height = Math.max(1, Math.round(source.height * scale));
+		const context = canvas.getContext('2d');
+		if (!context) throw new Error('Не удалось подготовить изображение к сжатию');
+		context.imageSmoothingEnabled = true;
+		context.imageSmoothingQuality = 'high';
+		context.drawImage(source, 0, 0, canvas.width, canvas.height);
+		return canvas;
+	}
+
+	async function encodeCanvas(source: HTMLCanvasElement): Promise<Blob> {
+		const minimumQuality = 0.55;
+		const supportsQuality = outputMimeType !== 'image/png';
+		let canvas = source;
+		let quality = Math.min(1, Math.max(minimumQuality, outputQuality));
+		let blob = await canvasToBlob(canvas, quality);
+
+		if (!maxOutputBytes || blob.size <= maxOutputBytes) return blob;
+
+		// Сначала уменьшаем степень сжатия, не трогая выбранную пользователем область.
+		while (supportsQuality && blob.size > maxOutputBytes && quality > minimumQuality) {
+			quality = Math.max(minimumQuality, quality - 0.1);
+			blob = await canvasToBlob(canvas, quality);
+		}
+
+		// Если одного quality недостаточно, постепенно уменьшаем разрешение.
+		for (let attempt = 0; blob.size > maxOutputBytes && attempt < 6; attempt += 1) {
+			const targetScale = Math.sqrt(maxOutputBytes / blob.size) * 0.92;
+			const scale = Math.min(0.85, Math.max(0.5, targetScale));
+			canvas = resizeCanvas(canvas, scale);
+			quality = Math.min(1, Math.max(minimumQuality, outputQuality));
+			blob = await canvasToBlob(canvas, quality);
+
+			while (supportsQuality && blob.size > maxOutputBytes && quality > minimumQuality) {
+				quality = Math.max(minimumQuality, quality - 0.1);
+				blob = await canvasToBlob(canvas, quality);
+			}
+		}
+
+		if (blob.size > maxOutputBytes) {
+			throw new Error(
+				'Не удалось уложить изображение в допустимый размер. Выберите меньшую область.'
+			);
+		}
+
+		return blob;
 	}
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
@@ -347,27 +435,38 @@
 		</div>
 
 		<!-- Actions -->
-		<div class="flex justify-end gap-3 px-6 py-4">
-			<button
-				type="button"
-				onclick={handleCancel}
-				class="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
-			>
-				Отмена
-			</button>
-			<button
-				type="button"
-				onclick={handleCrop}
-				disabled={isProcessing || !cropperReady}
-				class="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-			>
-				{#if isProcessing}
-					<div
-						class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-					></div>
-				{/if}
-				Применить
-			</button>
+		<div class="flex flex-col justify-between gap-3 px-6 py-4 sm:flex-row sm:items-center">
+			{#if processingError}
+				<p class="max-w-lg text-sm text-red-600" role="alert">{processingError}</p>
+			{:else}
+				<p class="text-xs text-gray-500">
+					Результат: до {maxOutputWidth}×{maxOutputHeight}px{maxOutputBytes
+						? ` · до ${(maxOutputBytes / (1024 * 1024)).toFixed(1)} МБ`
+						: ''}
+				</p>
+			{/if}
+			<div class="flex shrink-0 justify-end gap-3">
+				<button
+					type="button"
+					onclick={handleCancel}
+					class="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+				>
+					Отмена
+				</button>
+				<button
+					type="button"
+					onclick={handleCrop}
+					disabled={isProcessing || !cropperReady}
+					class="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+				>
+					{#if isProcessing}
+						<div
+							class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+						></div>
+					{/if}
+					Применить
+				</button>
+			</div>
 		</div>
 	</div>
 </div>

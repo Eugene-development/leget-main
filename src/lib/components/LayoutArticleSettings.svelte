@@ -39,7 +39,7 @@
 		</svg>
 	</button>
 
-	<SideDrawer bind:open {title} eyebrow="Компонент макета">
+	<SideDrawer bind:open {title}>
 		<div class="flex flex-col gap-6">
 			<div class="flex items-center gap-2">
 				<span class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">

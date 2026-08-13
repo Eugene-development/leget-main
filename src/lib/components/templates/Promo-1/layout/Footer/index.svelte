@@ -2,7 +2,7 @@
 	import FooterV1 from './v1/Footer.svelte';
 	import FooterV2 from './v2/Footer.svelte';
 	import FooterV3 from './v3/Footer.svelte';
-	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
+	import ComponentSettingsDrawer from '$lib/components/ComponentSettingsDrawer.svelte';
 	import {
 		saveComponentData,
 		getLayoutComponentArticle,
@@ -23,8 +23,9 @@
 	// Footer (Promo-1) — page-компонент на глобальной странице '__global__':
 	// данные сохраняются через saveComponentData (апсёрт идёт на '__global__' через
 	// footerEditContext из ComponentResolver). Версия и контент живут в data компонента.
-	// Свой переключатель (вместо общего VersionSwitcher) — т.к. сброс тут контент-only
-	// (сохраняем вариант), а стандартный сброс удаляет запись и откатывает версию.
+	// Свой переключатель вариантов (вместо общего VersionSwitcher) нужен потому, что
+	// сброс тут content-only: сохраняем выбранный вариант. Интерфейс редких операций
+	// при этом общий с остальными блоками — через ComponentSettingsDrawer.
 	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
 	// на живых сайтах это давало подмену версии после гидратации, а каталог
@@ -33,13 +34,19 @@
 		(data?.footerVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
 	);
 	let isOpen = $state(false);
+	let settingsOpen = $state(false);
 	let hasManuallySelected = $state(false);
+	let lastEnabledVersion = $state<'v1' | 'v2' | 'v3'>('v1');
 
 	$effect(() => {
 		const ver = (data?.footerVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1';
 		if (!hasManuallySelected && ver !== selectedVersion) {
 			selectedVersion = ver;
 		}
+	});
+
+	$effect(() => {
+		if (selectedVersion !== 'disabled') lastEnabledVersion = selectedVersion;
 	});
 
 	const versionNumber = (v: unknown): number | null => {
@@ -76,6 +83,10 @@
 			data = prevData;
 			console.error('Ошибка сохранения версии футера:', err);
 		}
+	}
+
+	function toggleDisabled() {
+		selectVersion(selectedVersion === 'disabled' ? lastEnabledVersion : 'disabled');
 	}
 
 	// ── Сброс контента футера ──
@@ -116,6 +127,7 @@
 			cleared.footerVersion = selectedVersion;
 			data = cleared;
 			showConfirmModal = false;
+			settingsOpen = false;
 		} catch (err) {
 			console.error('Ошибка при сбросе контента футера:', err);
 			alert(err instanceof Error ? err.message : 'Не удалось сбросить контент');
@@ -128,17 +140,15 @@
 {#if selectedVersion !== 'disabled' || isEditable}
 	<div class="relative w-full {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}">
 		{#if isEditable && editContext}
-			<!-- Переключатель вариантов футера (виден только редактору) -->
+			<!-- Общая панель редактора: варианты + настройки, как у основных компонентов. -->
 			<div class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
-				<ArticleBadge article={footerArticle} sectionLabel="Раздел" align="left" />
-
 				<div class="relative">
 					<button
 						type="button"
 						class="flex cursor-pointer items-center gap-2 rounded-2xl border border-on-dark/10 bg-ink-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
 						onclick={() => (isOpen = !isOpen)}
 					>
-						<span>Варианты футера</span>
+						<span>Варианты</span>
 						<svg
 							class="h-3 w-3 transition-transform duration-300 {isOpen ? 'rotate-180' : ''}"
 							fill="none"
@@ -208,31 +218,23 @@
 							>
 								Вариант 3
 							</button>
-							<button
-								type="button"
-								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-								'disabled'
-									? 'scale-[1.02] border border-brand-500/30 bg-brand-500/20 text-brand-200 shadow-md'
-									: 'border border-transparent text-ink-400 hover:bg-brand-500/5 hover:text-brand-400'}"
-								onclick={() => {
-									selectVersion('disabled');
-									isOpen = false;
-								}}
-							>
-								Отключить
-							</button>
 						</div>
 					{/if}
 				</div>
 
-				<button
-					type="button"
-					class="cursor-pointer rounded-2xl border border-on-dark/10 bg-ink-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-brand-500/30 hover:bg-brand-950/80 hover:text-brand-200 active:scale-95"
-					onclick={handleReset}
-					disabled={isResetting}
-				>
-					<span>{isResetting ? 'Сброс...' : 'Сброс'}</span>
-				</button>
+				<ComponentSettingsDrawer
+					bind:open={settingsOpen}
+					title="Футер"
+					article={footerArticle}
+					articleSectionHint="__global__"
+					articleComponentHint="Footer"
+					canReset
+					{isResetting}
+					onReset={handleReset}
+					isDisabled={selectedVersion === 'disabled'}
+					enabledVersionLabel={lastEnabledVersion.replace('v', '')}
+					onToggleDisabled={toggleDisabled}
+				/>
 			</div>
 		{/if}
 

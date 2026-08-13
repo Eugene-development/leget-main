@@ -64,7 +64,7 @@
 	</svg>
 </button>
 
-<SideDrawer bind:open {title} eyebrow={null}>
+<SideDrawer bind:open {title}>
 	<div class="flex flex-col gap-6">
 		<!-- Артикул выбранной версии -->
 		{#if article}

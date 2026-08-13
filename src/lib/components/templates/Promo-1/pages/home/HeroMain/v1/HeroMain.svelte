@@ -71,22 +71,69 @@
 	const brands = $derived<PartnerBrand[]>(
 		Array.isArray(data?.brands) ? (data.brands as PartnerBrand[]) : defaultBrands
 	);
+	const hasBrandMarquee = $derived(brands.length > 4);
+	const brandMarqueeDuration = $derived(Math.max(25, brands.length * 5));
 
 	let editingBrandIndex = $state<number | null>(null);
+	let isAddingBrand = $state(false);
+	let brandsViewport = $state<HTMLDivElement>();
+	let isBrandsVisible = $state(true);
 	const editingBrand = $derived(
-		editingBrandIndex === null ? null : (brands[editingBrandIndex] ?? null)
+		isAddingBrand
+			? { name: `Партнёр ${brands.length + 1}`, logo: '', url: '' }
+			: editingBrandIndex === null
+				? null
+				: (brands[editingBrandIndex] ?? null)
 	);
 
-	async function handleBrandLogoApprove(url: string) {
-		if (!editContext || editingBrandIndex === null || !brands[editingBrandIndex]) return;
+	$effect(() => {
+		if (!brandsViewport || typeof IntersectionObserver === 'undefined') return;
 
-		const updatedBrands = brands.map((brand, index) =>
-			index === editingBrandIndex ? { ...brand, logo: url } : brand
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				isBrandsVisible = entry?.isIntersecting ?? true;
+			},
+			{ threshold: 0.01 }
 		);
+		observer.observe(brandsViewport);
+
+		return () => observer.disconnect();
+	});
+
+	function openBrandLogoPicker(index: number) {
+		isAddingBrand = false;
+		editingBrandIndex = index;
+	}
+
+	function openNewBrandPicker() {
+		editingBrandIndex = null;
+		isAddingBrand = true;
+	}
+
+	function closeBrandPicker() {
+		editingBrandIndex = null;
+		isAddingBrand = false;
+	}
+
+	async function handleBrandLogoApprove(url: string) {
+		if (!editContext) return;
+
+		const updatedBrands = isAddingBrand
+			? [
+					...brands,
+					{
+						name: `Партнёр ${brands.length + 1}`,
+						logo: url,
+						url: ''
+					}
+				]
+			: brands.map((brand, index) =>
+					index === editingBrandIndex ? { ...brand, logo: url } : brand
+				);
 		const updated = { ...data, brands: updatedBrands };
 		await saveComponentData(editContext, 'HeroMain', updated);
 		data = updated;
-		editingBrandIndex = null;
+		closeBrandPicker();
 	}
 
 	async function saveField(field: string, value: string) {
@@ -154,11 +201,17 @@
 			currentImage={editingBrand.logo}
 			folder="logos"
 			title={`Логотип партнёра «${editingBrand.name}»`}
-			cropUploads={false}
+			cropUploads
+			aspectRatio={NaN}
 			previewFit="contain"
-			maxUploadBytes={2 * 1024 * 1024}
+			maxUploadBytes={20 * 1024 * 1024}
+			cropMaxWidth={1024}
+			cropMaxHeight={1024}
+			cropOutputMimeType="image/webp"
+			cropOutputQuality={0.86}
+			cropMaxOutputBytes={2 * 1024 * 1024}
 			onApprove={handleBrandLogoApprove}
-			onClose={() => (editingBrandIndex = null)}
+			onClose={closeBrandPicker}
 		/>
 	{/if}
 
@@ -298,58 +351,111 @@
 					>
 						РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:
 					</p>
-					<div
-						class="flex w-full flex-row items-center justify-center gap-6 md:grid md:grid-cols-4 md:gap-12"
-					>
-						{#each brands as brand, i}
-							{#if isEditable && editContext}
-								<button
-									type="button"
-									onclick={() => (editingBrandIndex = i)}
-									class="group relative flex h-12 cursor-pointer items-center justify-center rounded-lg border border-transparent px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-400/40 hover:bg-surface-raised/40 hover:opacity-100 focus-visible:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none {i >=
-									3
-										? 'hidden md:flex'
-										: ''}"
-									aria-label={`Заменить логотип «${brand.name}»`}
-									title={`Заменить логотип «${brand.name}»`}
-								>
-									<ImageFallback
-										class="max-h-full max-w-full object-contain"
-										src={brand.logo}
-										alt={brand.name}
-									/>
-									<span
-										class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 opacity-80 shadow-sm transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:opacity-100 group-focus-visible:opacity-100"
-										aria-hidden="true"
+					<div class="flex w-full items-center gap-3 md:gap-5">
+						<div
+							class="brand-viewport {hasBrandMarquee ? 'brand-viewport-scroll' : ''}"
+							bind:this={brandsViewport}
+						>
+							<div
+								class="brand-track {hasBrandMarquee ? 'brand-track-marquee' : ''} {!isBrandsVisible
+									? 'brand-track-paused'
+									: ''}"
+								style={`--brand-duration: ${brandMarqueeDuration}s`}
+							>
+								{#each Array(hasBrandMarquee ? 2 : 1) as _, copyIndex}
+									<div
+										class="brand-group {hasBrandMarquee
+											? 'brand-group-marquee'
+											: 'brand-group-static'} {copyIndex === 1 ? 'brand-group-copy' : ''}"
+										aria-hidden={copyIndex === 1 ? 'true' : undefined}
 									>
-										<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="1.75"
-												d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
-											/>
-										</svg>
-									</span>
-								</button>
-							{:else}
-								<a
-									href={brand.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="group flex h-10 items-center justify-center px-2 opacity-90 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-100 {i >=
-									3
-										? 'hidden md:flex'
-										: ''}"
-								>
-									<ImageFallback
-										class="max-h-full max-w-full object-contain"
-										src={brand.logo}
-										alt={brand.name}
+										{#each brands as brand, i}
+											<div
+												class="brand-item {hasBrandMarquee
+													? 'brand-item-marquee'
+													: 'brand-item-static'}"
+											>
+												{#if isEditable && editContext}
+													<button
+														type="button"
+														onclick={() => openBrandLogoPicker(i)}
+														tabindex={copyIndex === 1 ? -1 : undefined}
+														class="brand-logo group relative flex h-12 w-full cursor-pointer items-center justify-center rounded-lg border border-transparent px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-400/40 hover:bg-surface-raised/40 hover:opacity-100 focus-visible:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+														aria-label={`Заменить логотип «${brand.name}»`}
+														title={`Заменить логотип «${brand.name}»`}
+													>
+														<ImageFallback
+															class="max-h-full max-w-full object-contain"
+															src={brand.logo}
+															alt={copyIndex === 1 ? '' : brand.name}
+														/>
+														<span
+															class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 opacity-80 shadow-sm transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:opacity-100 group-focus-visible:opacity-100"
+															aria-hidden="true"
+														>
+															<svg
+																class="size-3.5"
+																fill="none"
+																viewBox="0 0 24 24"
+																stroke="currentColor"
+															>
+																<path
+																	stroke-linecap="round"
+																	stroke-linejoin="round"
+																	stroke-width="1.75"
+																	d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
+																/>
+															</svg>
+														</span>
+													</button>
+												{:else if brand.url}
+													<a
+														href={brand.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														tabindex={copyIndex === 1 ? -1 : undefined}
+														class="brand-logo group flex h-10 w-full items-center justify-center px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:opacity-100"
+													>
+														<ImageFallback
+															class="max-h-full max-w-full object-contain"
+															src={brand.logo}
+															alt={copyIndex === 1 ? '' : brand.name}
+														/>
+													</a>
+												{:else}
+													<div class="brand-logo flex h-10 w-full items-center justify-center px-2">
+														<ImageFallback
+															class="max-h-full max-w-full object-contain"
+															src={brand.logo}
+															alt={copyIndex === 1 ? '' : brand.name}
+														/>
+													</div>
+												{/if}
+											</div>
+										{/each}
+									</div>
+								{/each}
+							</div>
+						</div>
+
+						{#if isEditable && editContext}
+							<button
+								type="button"
+								onclick={openNewBrandPicker}
+								class="brand-add flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-dashed border-ink-400 bg-surface-raised/70 text-ink-700 shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-link-500 hover:text-link-600 hover:shadow-md focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+								aria-label="Добавить логотип партнёра"
+								title="Добавить логотип партнёра"
+							>
+								<svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.75"
+										d="M12 5v14M5 12h14"
 									/>
-								</a>
-							{/if}
-						{/each}
+								</svg>
+							</button>
+						{/if}
 					</div>
 				</div>
 			</div>
@@ -383,6 +489,103 @@
 
 	.hero-description {
 		line-height: 1.6;
+	}
+
+	.brand-viewport {
+		width: 100%;
+		min-width: 0;
+		overflow: hidden;
+	}
+
+	.brand-viewport-scroll {
+		mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+		-webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+	}
+
+	.brand-track {
+		display: flex;
+		width: 100%;
+	}
+
+	.brand-track-marquee {
+		width: max-content;
+		animation: brand-marquee var(--brand-duration, 24s) linear infinite;
+		will-change: transform;
+	}
+
+	.brand-track-marquee:hover,
+	.brand-track-marquee:focus-within,
+	.brand-track-paused {
+		animation-play-state: paused;
+	}
+
+	.brand-group {
+		display: flex;
+		align-items: center;
+	}
+
+	.brand-group-static {
+		width: 100%;
+		justify-content: center;
+		gap: 0.75rem;
+	}
+
+	.brand-group-marquee {
+		gap: 1.5rem;
+		padding-right: 1.5rem;
+	}
+
+	.brand-item {
+		min-width: 0;
+	}
+
+	.brand-item-static {
+		flex: 1 1 0;
+	}
+
+	.brand-item-marquee {
+		width: 6.5rem;
+		flex: 0 0 6.5rem;
+	}
+
+	@keyframes brand-marquee {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.brand-viewport-scroll {
+			overflow-x: auto;
+			mask-image: none;
+			-webkit-mask-image: none;
+			scrollbar-width: thin;
+		}
+
+		.brand-track-marquee {
+			animation: none;
+			will-change: auto;
+		}
+
+		.brand-group-copy {
+			display: none;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.brand-group-static {
+			gap: 3rem;
+		}
+
+		.brand-group-marquee {
+			gap: 3rem;
+			padding-right: 3rem;
+		}
+
+		.brand-item-marquee {
+			width: 8rem;
+			flex-basis: 8rem;
+		}
 	}
 
 	@media (min-width: 768px) {

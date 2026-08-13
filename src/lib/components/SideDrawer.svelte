@@ -12,12 +12,10 @@
 	let {
 		open = $bindable(false),
 		title = '',
-		eyebrow = 'Компонент',
 		children
 	}: {
 		open?: boolean;
 		title?: string;
-		eyebrow?: string | null;
 		children?: Snippet;
 	} = $props();
 
@@ -66,11 +64,6 @@
 		>
 			<header class="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
 				<div class="flex min-w-0 flex-col">
-					{#if eyebrow}
-						<span class="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase"
-							>{eyebrow}</span
-						>
-					{/if}
 					<h3 class="truncate text-base text-white">{title}</h3>
 				</div>
 				<button

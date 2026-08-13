@@ -20,6 +20,11 @@
 		cropUploads = true,
 		previewFit = 'cover',
 		maxUploadBytes = 10 * 1024 * 1024,
+		cropMaxWidth = 4096,
+		cropMaxHeight = 4096,
+		cropOutputMimeType = 'image/jpeg',
+		cropOutputQuality = 0.95,
+		cropMaxOutputBytes = null,
 		onApprove,
 		onClose
 	}: {
@@ -31,7 +36,13 @@
 		title?: string;
 		cropUploads?: boolean;
 		previewFit?: 'cover' | 'contain';
+		/** Максимальный размер исходного файла до обработки. */
 		maxUploadBytes?: number;
+		cropMaxWidth?: number;
+		cropMaxHeight?: number;
+		cropOutputMimeType?: 'image/jpeg' | 'image/png' | 'image/webp';
+		cropOutputQuality?: number;
+		cropMaxOutputBytes?: number | null;
 		onApprove: (url: string) => void | Promise<void>;
 		onClose: () => void;
 	} = $props();
@@ -44,6 +55,14 @@
 		'image/gif',
 		'image/avif'
 	];
+	const allowedExtensionsByType: Record<string, string[]> = {
+		'image/jpeg': ['jpg', 'jpeg'],
+		'image/png': ['png'],
+		'image/webp': ['webp'],
+		'image/svg+xml': ['svg'],
+		'image/gif': ['gif'],
+		'image/avif': ['avif']
+	};
 
 	// ─── State ──────────────────────────────────────────────────────────────────
 	let images = $state<BucketFile[]>([]);
@@ -163,6 +182,17 @@
 			if (fileInput) fileInput.value = '';
 			return;
 		}
+		if (file.size === 0) {
+			uploadError = 'Выбран пустой файл';
+			if (fileInput) fileInput.value = '';
+			return;
+		}
+		const extension = file.name.toLowerCase().match(/\.([^.]+)$/)?.[1] ?? '';
+		if (!allowedExtensionsByType[file.type]?.includes(extension)) {
+			uploadError = 'Расширение файла не соответствует формату изображения';
+			if (fileInput) fileInput.value = '';
+			return;
+		}
 
 		if (file.size > maxUploadBytes) {
 			uploadError = `Файл больше ${formatSize(maxUploadBytes)}`;
@@ -181,6 +211,10 @@
 	/** Шаг 2: пользователь обрезал изображение → загружаем результат */
 	async function handleCropDone(croppedFile: File) {
 		cropFile = null;
+		if (cropMaxOutputBytes && croppedFile.size > cropMaxOutputBytes) {
+			uploadError = `После обработки файл больше ${formatSize(cropMaxOutputBytes)}. Выберите меньшую область.`;
+			return;
+		}
 		await uploadFile(croppedFile);
 	}
 
@@ -192,6 +226,7 @@
 		try {
 			// 1. Получаем pre-signed URL
 			const token = localStorage.getItem('auth_token');
+			if (!token) throw new Error('Сессия истекла. Войдите снова и повторите загрузку.');
 			const apiUrl = getGraphQLUrl();
 
 			const gqlRes = await fetch(apiUrl, {
@@ -203,8 +238,8 @@
 				},
 				body: JSON.stringify({
 					query: `
-						mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String) {
-							generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder) {
+						mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String, $licenseId: ID) {
+							generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder, licenseId: $licenseId) {
 								uploadUrl
 								objectUrl
 							}
@@ -213,11 +248,13 @@
 					variables: {
 						filename: file.name,
 						mimeType: file.type,
-						folder
+						folder,
+						licenseId: editContext.licenseId
 					}
 				})
 			});
 
+			if (!gqlRes.ok) throw new Error(`Не удалось подготовить загрузку (HTTP ${gqlRes.status})`);
 			const gqlData = await gqlRes.json();
 			if (gqlData.errors?.length) throw new Error(gqlData.errors[0]?.message);
 
@@ -277,6 +314,11 @@
 		<ImageCropper
 			imageFile={cropFile}
 			{aspectRatio}
+			maxOutputWidth={cropMaxWidth}
+			maxOutputHeight={cropMaxHeight}
+			outputMimeType={cropOutputMimeType}
+			outputQuality={cropOutputQuality}
+			maxOutputBytes={cropMaxOutputBytes}
 			onCrop={handleCropDone}
 			onCancel={handleCropCancel}
 		/>

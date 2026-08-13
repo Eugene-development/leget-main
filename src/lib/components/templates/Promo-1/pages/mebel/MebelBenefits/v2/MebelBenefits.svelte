@@ -60,97 +60,111 @@
 </script>
 
 <!-- Почему выбирают нас (MebelBenefits) — спецификация обязательств -->
-<section
-	class="p1-surface relative py-section-sm sm:py-section"
-	data-p1-theme={isLight ? 'light' : 'dark'}
->
+<!--
+	Тему красит панель внутри полосы контента, а не сама секция.
+	На обычной странице `p1-surface` на `<section>` — правильно: секция занимает
+	всю ширину, и тёмная тема даёт тёмную полосу во всю страницу. На каталожной
+	странице слева стоит фиксированный `CatalogSidebar`, который в поток не входит,
+	поэтому такая заливка уезжает под него: сайдбар остаётся светлой карточкой на
+	тёмном поле, которое ему не принадлежит. Тема блока обязана красить блок.
+	Роль — `p1-catalog-panel`, см. Promo-1/theme.css.
+-->
+<!--
+	Ритм секции на ступень тише обычного (`xs`/`sm` вместо `sm`/`section`):
+	воздух вокруг блока теперь складывается из двух слагаемых — внешнего ритма
+	между блоками и собственных полей панели. На полной ступени они суммируются
+	в полторы секции пустоты над заголовком.
+-->
+<section class="relative py-section-xs sm:py-section-sm" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div class="p1-catalog-container">
-		<div class="max-w-2xl">
-			<h2 class="p1-title text-4xl sm:text-5xl">
-				<EditableField
-					fieldKey="MebelBenefits.title"
-					label="Заголовок блока"
-					value={String(data.title || MEBEL_BENEFITS_DEFAULT_TITLE)}
-					{isEditable}
-					inline
-					onSave={(v) => saveField('title', v)}
-				>
-					{#snippet children(val)}
-						{val}
-					{/snippet}
-				</EditableField>
-			</h2>
-		</div>
+		<div class="p1-surface p1-catalog-panel px-6 py-12 sm:px-10 sm:py-16">
+			<div class="max-w-2xl">
+				<h2 class="p1-title text-4xl sm:text-5xl">
+					<EditableField
+						fieldKey="MebelBenefits.title"
+						label="Заголовок блока"
+						value={String(data.title || MEBEL_BENEFITS_DEFAULT_TITLE)}
+						{isEditable}
+						inline
+						onSave={(v) => saveField('title', v)}
+					>
+						{#snippet children(val)}
+							{val}
+						{/snippet}
+					</EditableField>
+				</h2>
+			</div>
 
-		<dl class="spec mt-12 sm:mt-16">
-			{#each items as item, i}
-				<div
-					class="spec-row p1-border group animate-fade-up-in"
-					style="animation-delay: var(--ds-motion-stagger-{Math.min(i + 1, 5)})"
-				>
-					<div class="spec-name">
-						<svg
-							class="spec-icon p1-muted"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							aria-hidden="true"
-						>
-							{#if item.icon === 'shield'}
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-								/>
-							{:else if item.icon === 'clock'}
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							{:else}
-								<!-- design / fallback -->
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-								/>
-							{/if}
-						</svg>
-						<dt class="p1-title p1-title-sub text-lg sm:text-xl">
+			<dl class="spec mt-12 sm:mt-16">
+				{#each items as item, i}
+					<div
+						class="spec-row p1-border group animate-fade-up-in"
+						style="animation-delay: var(--ds-motion-stagger-{Math.min(i + 1, 5)})"
+					>
+						<div class="spec-name">
+							<svg
+								class="spec-icon p1-muted"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								{#if item.icon === 'shield'}
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+									/>
+								{:else if item.icon === 'clock'}
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+									/>
+								{:else}
+									<!-- design / fallback -->
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+									/>
+								{/if}
+							</svg>
+							<dt class="p1-title p1-title-sub text-lg sm:text-xl">
+								<EditableField
+									fieldKey="MebelBenefits.item.{i}.title"
+									label="Заголовок карточки"
+									value={String(item.title)}
+									{isEditable}
+									inline
+									onSave={(v) => updateItem(i, 'title', v)}
+								>
+									{#snippet children(val)}
+										{val}
+									{/snippet}
+								</EditableField>
+							</dt>
+						</div>
+
+						<dd class="p1-body spec-meaning text-base leading-relaxed">
 							<EditableField
-								fieldKey="MebelBenefits.item.{i}.title"
-								label="Заголовок карточки"
-								value={String(item.title)}
+								fieldKey="MebelBenefits.item.{i}.desc"
+								label="Описание карточки"
+								value={String(item.desc ?? '')}
 								{isEditable}
 								inline
-								onSave={(v) => updateItem(i, 'title', v)}
+								multiline
+								onSave={(v) => updateItem(i, 'desc', v)}
 							>
 								{#snippet children(val)}
 									{val}
 								{/snippet}
 							</EditableField>
-						</dt>
+						</dd>
 					</div>
-
-					<dd class="p1-body spec-meaning text-base leading-relaxed">
-						<EditableField
-							fieldKey="MebelBenefits.item.{i}.desc"
-							label="Описание карточки"
-							value={String(item.desc ?? '')}
-							{isEditable}
-							inline
-							multiline
-							onSave={(v) => updateItem(i, 'desc', v)}
-						>
-							{#snippet children(val)}
-								{val}
-							{/snippet}
-						</EditableField>
-					</dd>
-				</div>
-			{/each}
-		</dl>
+				{/each}
+			</dl>
+		</div>
 	</div>
 </section>
 

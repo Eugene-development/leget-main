@@ -4,6 +4,7 @@
 	import MenuV3 from './v3/Menu.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
+	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import {
 		saveLayoutData,
 		getLayoutComponentArticle,
@@ -49,7 +50,9 @@
 		(data?.menuVersion as 'v1' | 'v2' | 'v3') ?? 'v1'
 	);
 	let drawerOpen = $state(false);
+	let logoPickerOpen = $state(false);
 	let hasManuallySelected = $state(false);
+	const logoUrl = $derived(typeof data?.logoUrl === 'string' ? data.logoUrl : '');
 
 	$effect(() => {
 		const ver = (data?.menuVersion as 'v1' | 'v2' | 'v3') ?? 'v1';
@@ -82,6 +85,25 @@
 		} catch (err) {
 			console.error('Ошибка сохранения версии меню:', err);
 		}
+	}
+
+	function openLogoPicker() {
+		// BgImagePicker и SideDrawer используют полноэкранные слои. Закрываем drawer,
+		// чтобы пикер оказался единственным активным диалогом и корректно получил фокус.
+		drawerOpen = false;
+		logoPickerOpen = true;
+	}
+
+	function closeLogoPicker() {
+		logoPickerOpen = false;
+	}
+
+	async function handleLogoApprove(url: string) {
+		if (!editContext) return;
+		const updated = { ...data, logoUrl: url };
+		await saveLayoutData(editContext, 'Header', updated);
+		data = updated;
+		closeLogoPicker();
 	}
 </script>
 
@@ -122,13 +144,13 @@
 	{/if}
 
 	{#if isEditable && editContext}
-		<!-- Компактный триггер: открывает SideDrawer с выбором варианта меню -->
+		<!-- Компактный триггер: открывает SideDrawer с настройками меню -->
 		<button
 			type="button"
 			onclick={() => (drawerOpen = true)}
 			class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-surface-raised text-ink-500 shadow-sm transition-all duration-300 hover:border-link-300 hover:text-link-600 active:scale-95"
-			title="Варианты меню"
-			aria-label="Варианты меню"
+			title="Настройки меню"
+			aria-label="Настройки меню"
 		>
 			<svg
 				class="h-3.5 w-3.5"
@@ -147,7 +169,7 @@
 </div>
 
 {#if isEditable && editContext}
-	<SideDrawer bind:open={drawerOpen} title="Меню" eyebrow="Шапка · Promo-1">
+	<SideDrawer bind:open={drawerOpen} title="Меню">
 		<div class="flex flex-col gap-6">
 			<!-- Артикул выбранной версии -->
 			{#if menuArticle}
@@ -158,6 +180,65 @@
 					<ArticleBadge article={menuArticle} sectionLabel="Раздел" align="left" />
 				</div>
 			{/if}
+
+			<section>
+				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Логотип</h4>
+				<div class="rounded-2xl border border-on-dark/10 bg-on-dark/5 p-3">
+					<div class="flex min-h-24 items-center justify-center rounded-xl bg-surface-raised p-4">
+						{#if logoUrl}
+							<img
+								src={logoUrl}
+								alt="Текущий логотип сайта"
+								class="max-h-16 max-w-full object-contain"
+							/>
+						{:else}
+							<div class="text-center">
+								<svg
+									class="mx-auto h-7 w-7 text-ink-400"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="1.5"
+									aria-hidden="true"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M4 16l4.6-4.6a2 2 0 0 1 2.8 0L16 16m-2-2 1.6-1.6a2 2 0 0 1 2.8 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"
+									/>
+								</svg>
+								<p class="mt-2 text-xs text-ink-500">Логотип ещё не выбран</p>
+							</div>
+						{/if}
+					</div>
+
+					<button
+						type="button"
+						onclick={openLogoPicker}
+						class="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-link-500/35 bg-link-500/10 px-4 py-3 text-xs font-semibold text-link-200 transition-[background-color,border-color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:border-link-400/60 hover:bg-link-500/18 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 focus-visible:outline-none active:scale-[0.98]"
+					>
+						<svg
+							class="h-4 w-4"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M4 16l4.6-4.6a2 2 0 0 1 2.8 0L16 16m-2-2 1.6-1.6a2 2 0 0 1 2.8 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"
+							/>
+						</svg>
+						{logoUrl ? 'Заменить логотип' : 'Выбрать логотип'}
+					</button>
+					<p class="mt-2 text-[11px] leading-relaxed text-ink-400">
+						PNG, JPG, WebP или SVG · исходник до 20 МБ. Перед загрузкой можно обрезать; результат
+						будет сжат. Логотип общий для всех вариантов меню.
+					</p>
+				</div>
+			</section>
 
 			<!-- Варианты -->
 			<section>
@@ -202,4 +283,25 @@
 			</p>
 		</div>
 	</SideDrawer>
+{/if}
+
+{#if logoPickerOpen && editContext}
+	<BgImagePicker
+		{editContext}
+		currentImage={logoUrl}
+		defaultImage={logoUrl}
+		folder="logos"
+		title="Логотип сайта"
+		cropUploads
+		aspectRatio={NaN}
+		previewFit="contain"
+		maxUploadBytes={20 * 1024 * 1024}
+		cropMaxWidth={1024}
+		cropMaxHeight={1024}
+		cropOutputMimeType="image/webp"
+		cropOutputQuality={0.86}
+		cropMaxOutputBytes={2 * 1024 * 1024}
+		onApprove={handleLogoApprove}
+		onClose={closeLogoPicker}
+	/>
 {/if}

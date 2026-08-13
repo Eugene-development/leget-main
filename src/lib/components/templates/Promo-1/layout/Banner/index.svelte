@@ -154,7 +154,7 @@
 </div>
 
 {#if isEditable && editContext}
-	<SideDrawer bind:open={drawerOpen} title="Баннер" eyebrow="Шапка · Promo-1">
+	<SideDrawer bind:open={drawerOpen} title="Баннер">
 		<div class="flex flex-col gap-6">
 			<!-- Артикул выбранной версии -->
 			{#if bannerArticle}
