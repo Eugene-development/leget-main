@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.13.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -158,7 +159,7 @@
 					<div
 						class="relative z-10 overflow-hidden rounded-[2.5rem] border border-on-dark/10 bg-on-dark/5 p-4 shadow-2xl backdrop-blur-3xl transition-transform duration-500 group-hover:scale-[1.02]"
 					>
-						<img
+						<ImageFallback
 							src={String(
 								data?.hero_image ??
 									'https://storage.yandexcloud.net/leget-main/templates/promo-1/measurement_hero.png'

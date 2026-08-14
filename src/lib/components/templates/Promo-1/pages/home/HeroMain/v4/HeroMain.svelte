@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.1.4 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -318,8 +319,10 @@
 						onmouseleave={() => (hoveredCardId = null)}
 					>
 						<div class="relative h-full w-full overflow-hidden rounded-lg bg-ink-950">
-							<img
-								src="https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg"
+							<ImageFallback
+								src={String(
+									data?.renderImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
+								)}
 								alt="LEGET Premium Kitchen"
 								class="h-full w-full object-cover grayscale-[20%] transition-transform duration-700 hover:scale-105"
 							/>
@@ -347,10 +350,13 @@
 					>
 						<!-- Премиум текстура дуба -->
 						<div class="h-[78%] w-full overflow-hidden rounded-lg border border-ink-800 bg-ink-900">
-							<div
-								class="h-full w-full bg-cover"
-								style="background-image: url('https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg');"
-							></div>
+							<ImageFallback
+								src={String(
+									data?.materialImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg'
+								)}
+								alt="Текстура натурального шпона"
+								class="h-full w-full object-cover"
+							/>
 						</div>
 						<div class="mt-2 flex items-center justify-between">
 							<span class="font-mono text-[8px] tracking-wider uppercase">Veneer Oak</span>
@@ -413,7 +419,7 @@
 						rel="noopener noreferrer"
 						class="flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
 					>
-						<img
+						<ImageFallback
 							class="max-h-[14px] max-w-[60px] object-contain {isLight
 								? ''
 								: 'brightness-0 invert filter'}"

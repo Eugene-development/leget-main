@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.1.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -57,7 +58,7 @@
 			<!-- Image -->
 			<div class="relative opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
 				<div class="relative z-40 overflow-hidden">
-					<img
+					<ImageFallback
 						loading="lazy"
 						src={String(
 							data?.image ?? 'https://storage.yandexcloud.net/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg'

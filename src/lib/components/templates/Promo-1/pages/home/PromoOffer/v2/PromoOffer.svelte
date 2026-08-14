@@ -42,6 +42,10 @@
 		showImagePicker = false;
 		await saveField('imageV2', url);
 	}
+
+	async function handleImageRemove() {
+		await handleImageApprove('');
+	}
 </script>
 
 <section
@@ -269,6 +273,7 @@
 			defaultImage=""
 			aspectRatio={1}
 			onApprove={handleImageApprove}
+			onRemove={handleImageRemove}
 			onClose={() => (showImagePicker = false)}
 		/>
 	{/if}

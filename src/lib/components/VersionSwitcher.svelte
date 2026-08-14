@@ -173,6 +173,11 @@
 		selectVersion(selectedVersion === 'disabled' ? lastEnabledVersion : 'disabled');
 	}
 
+	async function saveImageData(next: Record<string, unknown>) {
+		if (!editContext) return;
+		await saveComponentData(editContext, componentType, next);
+	}
+
 	async function confirmReset() {
 		if (!editContext || !actualResetId || isResetting) return;
 		isResetting = true;
@@ -308,6 +313,10 @@
 
 		<!-- Триггер панели настроек + сама панель (SideDrawer уходит порталом в body) -->
 		<ComponentSettingsDrawer
+			bind:data
+			{editContext}
+			{componentType}
+			onSaveData={saveImageData}
 			bind:open={drawerOpen}
 			title={title || componentType}
 			article={activeArticle}

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
+	import ComponentImageManager from '$lib/components/ComponentImageManager.svelte';
+	import type { EditContext } from '$lib/utils/page-edit';
 
 	/**
 	 * Панель настроек блока: артикул, анимации, сброс контента, отключение.
@@ -24,7 +26,11 @@
 		onReset,
 		isDisabled = false,
 		enabledVersionLabel = null,
-		onToggleDisabled
+		onToggleDisabled,
+		data = $bindable({}),
+		editContext = null,
+		componentType = '',
+		onSaveData = null
 	}: {
 		/** Открыта ли панель. Владелец может закрыть её извне (напр. после сброса). */
 		open?: boolean;
@@ -45,6 +51,11 @@
 		/** Вариант, который вернётся при включении («2» → «вариант 2»). */
 		enabledVersionLabel?: string | null;
 		onToggleDisabled: () => void;
+		/** JSON-данные блока для универсального управления изображениями. */
+		data?: Record<string, unknown>;
+		editContext?: EditContext | null;
+		componentType?: string;
+		onSaveData?: ((next: Record<string, unknown>) => void | Promise<void>) | null;
 	} = $props();
 </script>
 
@@ -102,6 +113,11 @@
 				</span>
 			</button>
 		</section>
+
+		<!-- Сброс контента -->
+		{#if editContext && componentType && onSaveData}
+			<ComponentImageManager bind:data {editContext} {componentType} {onSaveData} />
+		{/if}
 
 		<!-- Сброс контента -->
 		<section class="border-t border-white/10 pt-5">

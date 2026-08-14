@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.23.3.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -28,7 +29,7 @@
 					in:fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 				>
 					{#if brand.logo}
-						<img
+						<ImageFallback
 							loading="lazy"
 							src={brand.logo}
 							alt={brand.title ?? brand.value}

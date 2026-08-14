@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.18.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 
 	let {
 		data = {}
@@ -22,7 +23,7 @@
 			>
 				<div class="relative aspect-4/3 overflow-hidden bg-ink-100">
 					{#if project.images && project.images.length > 0}
-						<img
+						<ImageFallback
 							loading="lazy"
 							src={project.images[0].url}
 							alt={project.value}

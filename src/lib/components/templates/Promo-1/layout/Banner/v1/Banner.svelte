@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.Б.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { page } from '$app/stores';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -172,7 +173,7 @@
 		<a href="/" class="flex items-center gap-2">
 			<span class="sr-only">Главная</span>
 			{#if data?.logoUrl}
-				<img class="h-6 w-auto" src={String(data.logoUrl)} alt="Логотип" />
+				<ImageFallback class="h-6 w-auto" src={String(data.logoUrl)} alt="Логотип" />
 			{:else}
 				<div class="size-6 rounded-full bg-linear-to-tr from-link-400 to-cat-4-500 shadow-sm"></div>
 			{/if}

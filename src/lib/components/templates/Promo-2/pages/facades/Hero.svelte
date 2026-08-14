@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.5.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -30,10 +31,12 @@
 
 <section class="relative min-h-[90vh] overflow-hidden bg-surface">
 	<div class="absolute inset-0">
-		<img
+		<ImageFallback
+			src={String(data?.image ?? '')}
 			alt="Мебельные фасады"
-			class="h-full w-full object-cover transition-transform duration-[2s]"
-			class:scale-105={visible}
+			class="h-full w-full object-cover transition-transform duration-[2s] {visible
+				? 'scale-105'
+				: ''}"
 		/>
 		<div class="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/70 to-primary/30"></div>
 	</div>

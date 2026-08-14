@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.1.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -106,7 +107,7 @@
 					class="group relative overflow-hidden rounded-2xl border border-surface-700/50 bg-surface-800/80 transition-all duration-500 hover:border-accent-500/20 hover:shadow-2xl hover:shadow-accent-500/5"
 				>
 					<div class="relative aspect-[4/3] overflow-hidden">
-						<img
+						<ImageFallback
 							loading="lazy"
 							src={item.image || undefined}
 							alt={item.name}

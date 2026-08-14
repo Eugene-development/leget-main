@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.М.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
@@ -114,7 +115,7 @@
 		<!-- Logo -->
 		<a href="/" class="group flex items-center gap-3" onclick={closeMenu}>
 			{#if data?.logoUrl}
-				<img
+				<ImageFallback
 					class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
 					src={String(data.logoUrl)}
 					alt="Логотип {siteName}"

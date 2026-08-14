@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.9.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -217,7 +218,7 @@
 						class:animate-fade-up={visible}
 						style="animation-delay: {0.1 + i * 0.05}s"
 					>
-						<img
+						<ImageFallback
 							loading="lazy"
 							src={project.image}
 							alt={project.title}

@@ -5,6 +5,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import EditModal from '$lib/components/EditModal.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
+	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 
 	interface PageComponent {
@@ -175,7 +176,19 @@
 {/if}
 
 {#if Header}
-	<Header bind:data={headerDataState} {editContext} {isEditable} />
+	<div class="relative">
+		<Header bind:data={headerDataState} {editContext} {isEditable} />
+		{#if Number(editContext?.templateId) !== 1}
+			<LayoutImageSettings
+				bind:data={headerDataState}
+				{editContext}
+				{isEditable}
+				slots={Number(editContext?.templateId) === 0
+					? [{ path: ['logo'], label: 'Логотип' }]
+					: [{ path: ['logoUrl'], label: 'Логотип' }]}
+			/>
+		{/if}
+	</div>
 {/if}
 
 {#each pageComponents as element (element.type)}

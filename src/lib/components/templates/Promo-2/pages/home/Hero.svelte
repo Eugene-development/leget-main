@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.1.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -61,7 +62,7 @@
 	<!-- Background: static image on mobile, crossfade videos on desktop -->
 	<div class="absolute inset-0">
 		<!-- Mobile: static image -->
-		<img
+		<ImageFallback
 			src={String(data?.mobileImage ?? '')}
 			alt={String(data?.title ?? 'Hero')}
 			class="h-full w-full object-cover md:hidden"

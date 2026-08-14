@@ -26,13 +26,15 @@
 		cropOutputQuality = 0.95,
 		cropMaxOutputBytes = null,
 		onApprove,
+		onRemove = null,
 		onClose
 	}: {
 		editContext: EditContext;
 		currentImage?: string;
 		defaultImage?: string;
 		aspectRatio?: number;
-		folder?: 'bg' | 'logos';
+		/** Папка внутри бакета. Например: bg, logos или имя компонента. */
+		folder?: string;
 		title?: string;
 		cropUploads?: boolean;
 		previewFit?: 'cover' | 'contain';
@@ -44,6 +46,7 @@
 		cropOutputQuality?: number;
 		cropMaxOutputBytes?: number | null;
 		onApprove: (url: string) => void | Promise<void>;
+		onRemove?: (() => void | Promise<void>) | null;
 		onClose: () => void;
 	} = $props();
 
@@ -97,9 +100,30 @@
 		isLoading = true;
 		loadError = '';
 		try {
-			const files = await listBucketFiles(folder, 100);
-			let allImages = [...files];
-			if (defaultImage) {
+			// Фоны образуют переиспользуемую галерею. Папка logos, напротив, общая
+			// для всех логотипов лицензии: показывать её целиком в picker означает
+			// смешивать изображения других брендов и прошлых замен. В режиме логотипа
+			// начинаем только с текущего значения и не запрашиваем историю бакета.
+			const files = folder === 'logos' ? [] : await listBucketFiles(folder, 100);
+			let allImages: BucketFile[] = [];
+
+			if (folder === 'logos') {
+				const activeLogo = currentImage || defaultImage;
+				if (activeLogo) {
+					allImages = [
+						{
+							key: 'current',
+							url: activeLogo,
+							size: null,
+							lastModified: null
+						}
+					];
+				}
+			} else {
+				allImages = [...files];
+			}
+
+			if (folder !== 'logos' && defaultImage) {
 				const hasDefault = files.some((f) => f.url === defaultImage);
 				if (!hasDefault) {
 					allImages.unshift({
@@ -164,6 +188,19 @@
 			await onApprove(selectedImage.url);
 		} catch (err) {
 			saveError = err instanceof Error ? err.message : 'Ошибка сохранения';
+		} finally {
+			isSaving = false;
+		}
+	}
+
+	async function handleRemove() {
+		if (!onRemove || !currentImage || isSaving) return;
+		isSaving = true;
+		saveError = '';
+		try {
+			await onRemove();
+		} catch (err) {
+			saveError = err instanceof Error ? err.message : 'Ошибка удаления изображения';
 		} finally {
 			isSaving = false;
 		}
@@ -283,7 +320,7 @@
 				size: file.size,
 				lastModified: new Date().toISOString()
 			};
-			images = [newFile, ...images];
+			images = folder === 'logos' ? [newFile] : [newFile, ...images];
 			selectedIndex = 0;
 		} catch (err) {
 			uploadError = err instanceof Error ? err.message : 'Ошибка загрузки файла';
@@ -540,6 +577,19 @@
 				<p class="footer-error">{saveError}</p>
 			{/if}
 			<div class="footer-actions">
+				{#if onRemove && currentImage}
+					<button type="button" class="btn-remove" onclick={handleRemove} disabled={isSaving}>
+						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.75"
+								d="M6 7h12m-9 0V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7m-7 0 .7 12h6.6L16 7M10 10.5v5m4-5v5"
+							/>
+						</svg>
+						Удалить
+					</button>
+				{/if}
 				<button type="button" class="btn-cancel" onclick={onClose}> Отмена </button>
 				<button
 					type="button"
@@ -963,6 +1013,37 @@
 	.btn-cancel:hover {
 		background: rgba(255, 255, 255, 0.06);
 		color: #f1f5f9;
+	}
+
+	.btn-remove {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		padding: 0.5rem 0.875rem;
+		border-radius: 0.625rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		border: 1px solid rgba(248, 113, 113, 0.3);
+		background: rgba(239, 68, 68, 0.08);
+		color: #fca5a5;
+		cursor: pointer;
+		transition: all 0.15s;
+	}
+
+	.btn-remove:hover:not(:disabled) {
+		background: rgba(239, 68, 68, 0.16);
+		border-color: rgba(248, 113, 113, 0.55);
+		color: #fecaca;
+	}
+
+	.btn-remove:disabled {
+		opacity: 0.45;
+		cursor: not-allowed;
+	}
+
+	.btn-remove svg {
+		width: 1rem;
+		height: 1rem;
 	}
 
 	.btn-approve {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.2.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -23,6 +24,17 @@
 
 	let visible = $state(false);
 	let sectionEl: HTMLElement;
+	const factoryImages = $derived(
+		Array.isArray(data?.factoryImages)
+			? (data.factoryImages as string[])
+			: [
+					'https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg',
+					'https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg',
+					'https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg',
+					'https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg',
+					'https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg'
+				]
+	);
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -98,9 +110,9 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.1s"
 			>
-				<img
+				<ImageFallback
 					loading="lazy"
-					src="https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg"
+					src={factoryImages[0] ?? ''}
 					alt="Цех сборки"
 					class="bento-media"
 				/>
@@ -112,9 +124,9 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.2s"
 			>
-				<img
+				<ImageFallback
 					loading="lazy"
-					src="https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg"
+					src={factoryImages[1] ?? ''}
 					alt="ЧПУ-станки"
 					class="bento-media"
 				/>
@@ -126,9 +138,9 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.3s"
 			>
-				<img
+				<ImageFallback
 					loading="lazy"
-					src="https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg"
+					src={factoryImages[2] ?? ''}
 					alt="Окрасочная камера"
 					class="bento-media"
 				/>
@@ -140,9 +152,9 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.4s"
 			>
-				<img
+				<ImageFallback
 					loading="lazy"
-					src="https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg"
+					src={factoryImages[3] ?? ''}
 					alt="Склад"
 					class="bento-media"
 				/>
@@ -154,9 +166,9 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.5s"
 			>
-				<img
+				<ImageFallback
 					loading="lazy"
-					src="https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg"
+					src={factoryImages[4] ?? ''}
 					alt="Контроль качества"
 					class="bento-media"
 				/>
@@ -193,11 +205,11 @@
 		border-radius: 4px;
 	}
 
-	.bento-cell:hover .bento-media {
+	:global(.bento-cell:hover .bento-media) {
 		transform: scale(1.05);
 	}
 
-	.bento-media {
+	:global(.bento-media) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;

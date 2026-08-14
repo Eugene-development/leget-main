@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.4.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -43,7 +44,7 @@
 			>
 				{#snippet children(displayValue)}
 					{#if displayValue}
-						<img
+						<ImageFallback
 							loading="lazy"
 							alt={String(data?.imageAlt ?? 'Акция')}
 							src={displayValue}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.9.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -114,7 +115,7 @@
 					style="animation-delay: {0.1 + i * 0.1}s"
 				>
 					<div class="aspect-[4/3] w-full overflow-hidden">
-						<img
+						<ImageFallback
 							loading="lazy"
 							src={style.image || undefined}
 							alt={style.title}

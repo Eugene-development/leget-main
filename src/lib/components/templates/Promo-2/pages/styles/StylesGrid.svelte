@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.4.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -127,7 +128,7 @@
 				<div
 					class="relative mb-6 aspect-[4/3] overflow-hidden rounded-sm bg-surface-muted transition-shadow duration-500 group-hover:shadow-elevated"
 				>
-					<img
+					<ImageFallback
 						loading="lazy"
 						src={style.image}
 						alt={style.name}

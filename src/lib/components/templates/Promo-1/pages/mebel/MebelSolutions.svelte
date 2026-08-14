@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.16.4.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -67,7 +68,7 @@
 	<div class="grid gap-6 sm:grid-cols-2">
 		{#each items as item, i}
 			<div class="group relative overflow-hidden rounded-2xl bg-ink-100">
-				<img
+				<ImageFallback
 					loading="lazy"
 					src={item.image}
 					alt={item.title}

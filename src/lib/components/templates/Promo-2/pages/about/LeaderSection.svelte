@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.2.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -76,7 +77,7 @@
 					<div
 						class="absolute -right-6 -bottom-6 h-12 w-12 border-r border-b border-accent/40 lg:h-16 lg:w-16"
 					></div>
-					<img
+					<ImageFallback
 						loading="lazy"
 						src={String(
 							data?.image ??

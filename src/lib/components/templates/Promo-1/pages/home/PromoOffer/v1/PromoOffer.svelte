@@ -50,6 +50,10 @@
 		showImagePicker = false;
 		await saveField('imageV1', url);
 	}
+
+	async function handleImageRemove() {
+		await handleImageApprove('');
+	}
 </script>
 
 <section class="promo-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
@@ -248,6 +252,7 @@
 			defaultImage=""
 			aspectRatio={1}
 			onApprove={handleImageApprove}
+			onRemove={handleImageRemove}
 			onClose={() => (showImagePicker = false)}
 		/>
 	{/if}

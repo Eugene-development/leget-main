@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.9.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -36,7 +37,7 @@
 <section class="relative flex min-h-screen items-center overflow-hidden">
 	<!-- Background -->
 	<div class="absolute inset-0">
-		<img
+		<ImageFallback
 			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')}
 			alt={String(data?.title ?? 'Мебель на заказ')}
 			class="size-full object-cover"

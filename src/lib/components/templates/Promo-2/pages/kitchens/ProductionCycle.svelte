@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.9.3.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -122,9 +123,12 @@
 				</div>
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
-						<img
+						<ImageFallback
 							loading="lazy"
-							src="https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg"
+							src={String(
+								data?.designImage ??
+									'https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg'
+							)}
 							alt="Проектирование кухни технологами"
 							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 						/>
@@ -140,9 +144,12 @@
 			>
 				<div class="lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
-						<img
+						<ImageFallback
 							loading="lazy"
-							src="https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg"
+							src={String(
+								data?.productionImage ??
+									'https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg'
+							)}
 							alt="Производственный процесс"
 							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 						/>
@@ -259,8 +266,9 @@
 				</div>
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
-						<img
+						<ImageFallback
 							loading="lazy"
+							src={String(data?.assemblyImage ?? '')}
 							alt="Сборка кухни"
 							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 						/>

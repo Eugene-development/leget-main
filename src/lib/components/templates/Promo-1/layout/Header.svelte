@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { page } from '$app/stores';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -217,7 +218,7 @@
 			>
 				<span class="sr-only">{siteName}</span>
 				{#if data?.logoUrl}
-					<img
+					<ImageFallback
 						class="h-14 w-auto transition-transform duration-300 group-hover:scale-105"
 						src={String(data.logoUrl)}
 						alt="Логотип {siteName}"

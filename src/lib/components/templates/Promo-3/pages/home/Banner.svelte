@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.1.3.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -44,7 +45,7 @@
 			<!-- Left: image -->
 			<div class="relative">
 				<div class="relative aspect-[4/3] overflow-hidden rounded-2xl">
-					<img
+					<ImageFallback
 						loading="lazy"
 						src={String(data?.image ?? '')}
 						alt={String(data?.heading ?? '')}

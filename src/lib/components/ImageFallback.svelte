@@ -1,13 +1,13 @@
 <script lang="ts">
+	import type { HTMLImgAttributes } from 'svelte/elements';
+
 	let {
 		src,
 		alt = '',
-		class: className = ''
-	}: {
-		src?: string | null;
-		alt?: string;
-		class?: string;
-	} = $props();
+		class: className = '',
+		onerror,
+		...imgAttributes
+	}: HTMLImgAttributes & { src?: string | null } = $props();
 
 	let failed = $state(false);
 	const hasImage = $derived(Boolean(src?.trim()) && !failed);
@@ -19,7 +19,16 @@
 </script>
 
 {#if hasImage}
-	<img {src} {alt} class={className} onerror={() => (failed = true)} />
+	<img
+		{...imgAttributes}
+		{src}
+		{alt}
+		class={className}
+		onerror={(event) => {
+			failed = true;
+			onerror?.(event);
+		}}
+	/>
 {:else}
 	<!--
 		Заглушка следует теме блока, а не светится собственным цветом.

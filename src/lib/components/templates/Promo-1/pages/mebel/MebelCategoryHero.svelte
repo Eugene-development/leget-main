@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.17.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import EditableField from '$lib/components/EditableField.svelte';
 
@@ -41,7 +42,7 @@
 
 <div class="mebel-container">
 	<div class="relative overflow-hidden rounded-2xl bg-ink-900">
-		<img
+		<ImageFallback
 			src={getHeroImage(data.categorySlug)}
 			alt={data.title}
 			class="absolute inset-0 h-full w-full object-cover opacity-40"

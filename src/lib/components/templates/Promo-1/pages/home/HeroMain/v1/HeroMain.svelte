@@ -45,6 +45,10 @@
 		showImagePicker = false;
 	}
 
+	async function handleImageRemove() {
+		await handleImageApprove('');
+	}
+
 	const defaultBrands: PartnerBrand[] = [
 		{
 			name: 'Hettich',
@@ -136,6 +140,17 @@
 		closeBrandPicker();
 	}
 
+	async function handleBrandLogoRemove() {
+		if (isAddingBrand || editingBrandIndex === null || !editContext) return;
+		const updatedBrands = brands.map((brand, index) =>
+			index === editingBrandIndex ? { ...brand, logo: '' } : brand
+		);
+		const updated = { ...data, brands: updatedBrands };
+		await saveComponentData(editContext, 'HeroMain', updated);
+		data = updated;
+		closeBrandPicker();
+	}
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -188,6 +203,7 @@
 			currentImage={String(data?.bgImageV1 ?? data?.bgImage ?? '')}
 			defaultImage="https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg"
 			onApprove={handleImageApprove}
+			onRemove={handleImageRemove}
 			onClose={() => {
 				previewBgImage = null;
 				showImagePicker = false;
@@ -211,6 +227,7 @@
 			cropOutputQuality={0.86}
 			cropMaxOutputBytes={2 * 1024 * 1024}
 			onApprove={handleBrandLogoApprove}
+			onRemove={!isAddingBrand ? handleBrandLogoRemove : null}
 			onClose={closeBrandPicker}
 		/>
 	{/if}
@@ -472,8 +489,10 @@
 			rgba(255, 255, 255, 0.72) 0%,
 			rgba(255, 255, 255, 0.58) 100%
 		);
+		/* Не дублировать вручную через -webkit-: production CSS-оптимизатор
+		   сам добавляет префикс, а при обратном порядке удаляет стандартное
+		   свойство — в Chrome панель остаётся без blur. */
 		backdrop-filter: blur(20px) saturate(180%);
-		-webkit-backdrop-filter: blur(20px) saturate(180%);
 	}
 
 	/* Fallback: если backdrop-filter не поддерживается — делаем фон ещё плотнее */
@@ -494,6 +513,11 @@
 	.brand-viewport {
 		width: 100%;
 		min-width: 0;
+		/* Карандаш вынесен на 0.5rem над логотипом. Оставляем вертикальный
+		   безопасный пояс внутри clipping-контейнера; отрицательные поля
+		   сохраняют прежнюю высоту и положение строки брендов. */
+		padding-block: 0.75rem;
+		margin-block: -0.75rem;
 		overflow: hidden;
 	}
 
@@ -657,7 +681,6 @@
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		background: rgba(15, 23, 42, 0.55);
 		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
 		color: #f1f5f9;
 		font-size: 0.8125rem;
 		font-weight: 600;

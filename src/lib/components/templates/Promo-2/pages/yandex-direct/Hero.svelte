@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.14.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -31,11 +32,12 @@
 <section class="relative min-h-[90vh] overflow-hidden bg-surface" id="yd-hero">
 	<!-- Background Image -->
 	<div class="absolute inset-0">
-		<img
+		<ImageFallback
 			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/zovtop/bg/hero-2.jpg')}
 			alt={String(data?.title ?? 'Мебель на заказ')}
-			class="h-full w-full object-cover transition-transform duration-[2s]"
-			class:scale-105={heroVisible}
+			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible
+				? 'scale-105'
+				: ''}"
 		/>
 		<div class="absolute inset-0 bg-linear-to-r from-white/95 via-white/70 to-white/10"></div>
 		<div class="absolute inset-0 bg-linear-to-t from-white/50 via-transparent to-transparent"></div>

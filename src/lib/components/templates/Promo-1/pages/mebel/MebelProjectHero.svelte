@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { invalidateAll, goto } from '$app/navigation';
 	import { cubicOut } from 'svelte/easing';
@@ -183,7 +184,7 @@
 				class="relative aspect-4/3 overflow-hidden rounded-2xl border border-ink-100 bg-surface-raised shadow-sm"
 			>
 				{#if images.length > 0 && images[selectedImageIndex]?.url}
-					<img
+					<ImageFallback
 						src={images[selectedImageIndex].url}
 						alt={project.value}
 						class="h-full w-full object-cover transition-all duration-500"
@@ -254,7 +255,7 @@
 								? 'border-link-500'
 								: 'border-transparent hover:border-ink-200'}"
 						>
-							<img src={image.url} alt="" class="h-full w-full object-cover" />
+							<ImageFallback src={image.url} alt="" class="h-full w-full object-cover" />
 						</button>
 					{/each}
 				</div>
@@ -613,12 +614,13 @@
 			<div
 				class="relative flex h-[85vh] w-[90vw] max-w-5xl items-center justify-center overflow-hidden rounded-xl bg-ink-900/50 shadow-2xl"
 			>
-				<img
-					src={images[selectedImageIndex].url}
-					alt=""
-					class="h-full w-full object-cover"
-					in:fly={{ y: 20, duration: 400, easing: cubicOut }}
-				/>
+				<div class="h-full w-full" in:fly={{ y: 20, duration: 400, easing: cubicOut }}>
+					<ImageFallback
+						src={images[selectedImageIndex].url}
+						alt=""
+						class="h-full w-full object-cover"
+					/>
+				</div>
 			</div>
 
 			<!-- Навигация -->

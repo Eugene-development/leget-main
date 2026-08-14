@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { untrack } from 'svelte';
 	import { getGraphQLUrl } from '$lib/utils/config';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
@@ -313,7 +314,7 @@
 							<div
 								class="group relative aspect-square overflow-hidden rounded-lg border bg-ink-100"
 							>
-								<img
+								<ImageFallback
 									src={URL.createObjectURL(file)}
 									alt="Preview"
 									class="h-full w-full object-cover"

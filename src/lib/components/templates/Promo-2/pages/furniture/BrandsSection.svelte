@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.6.3.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -130,7 +131,7 @@
 						class:animate-fade-up={brandVisibility[brand.id]}
 						style="animation-delay: 0.4s"
 					>
-						<img
+						<ImageFallback
 							loading="lazy"
 							src={brand.image}
 							alt={`Фурнитура ${brand.name}`}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.10.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -130,7 +131,8 @@
 
 	<!-- Right: image -->
 	<div class="relative hidden overflow-hidden bg-border-light lg:block">
-		<img
+		<ImageFallback
+			src={String(data?.image ?? '')}
 			alt="Премиальная гардеробная"
 			class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 		/>

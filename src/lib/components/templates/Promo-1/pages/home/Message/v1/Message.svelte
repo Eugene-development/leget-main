@@ -2,9 +2,17 @@
 	// Артикул: 1.1.2.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../../../theme.css';
+
+	type MessageCard = {
+		title: string;
+		description: string;
+		image: string | null;
+		alt: string;
+	};
 
 	let {
 		data = $bindable(),
@@ -19,9 +27,9 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
 
-	const cards = $derived(
+	const cards = $derived<MessageCard[]>(
 		Array.isArray(data?.cards) && data.cards.length > 0
-			? (data.cards as { title: string; description: string; image: string; alt: string }[])
+			? (data.cards as MessageCard[])
 			: [
 					{
 						title: 'Дизайн-проект',
@@ -49,6 +57,10 @@
 					}
 				]
 	);
+	let editingCardImageIndex = $state<number | null>(null);
+	const editingCard = $derived(
+		editingCardImageIndex === null ? null : (cards[editingCardImageIndex] ?? null)
+	);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -65,7 +77,53 @@
 		await saveComponentData(editContext, 'Message', updated);
 		data = updated;
 	}
+
+	function openCardImagePicker(index: number) {
+		editingCardImageIndex = index;
+	}
+
+	function closeCardImagePicker() {
+		editingCardImageIndex = null;
+	}
+
+	async function handleCardImageApprove(url: string) {
+		if (!editContext || editingCardImageIndex === null) return;
+
+		const targetIndex = editingCardImageIndex;
+		const updatedCards = cards.map((card, index) =>
+			index === targetIndex ? { ...card, image: url } : card
+		);
+		const updated = { ...data, cards: updatedCards };
+		await saveComponentData(editContext, 'Message', updated);
+		data = updated;
+		closeCardImagePicker();
+	}
+
+	async function handleCardImageRemove() {
+		await handleCardImageApprove('');
+	}
 </script>
+
+{#if editingCard && editContext}
+	<BgImagePicker
+		{editContext}
+		currentImage={editingCard.image ?? ''}
+		folder="message"
+		title={`Изображение блока «${editingCard.title}»`}
+		cropUploads
+		aspectRatio={1}
+		previewFit="cover"
+		maxUploadBytes={20 * 1024 * 1024}
+		cropMaxWidth={1024}
+		cropMaxHeight={1024}
+		cropOutputMimeType="image/webp"
+		cropOutputQuality={0.86}
+		cropMaxOutputBytes={2 * 1024 * 1024}
+		onApprove={handleCardImageApprove}
+		onRemove={handleCardImageRemove}
+		onClose={closeCardImagePicker}
+	/>
+{/if}
 
 <!-- О компании (Message) -->
 <section class="p1-surface-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
@@ -161,9 +219,68 @@
 								: 'bg-link-500/10'}"
 						></div>
 						<div class="relative">
-							<div class="mb-4 size-24 overflow-hidden rounded-xl">
-								<ImageFallback src={card.image} alt={card.alt} class="h-full w-full object-cover" />
-							</div>
+							{#if isEditable && editContext}
+								<button
+									type="button"
+									onclick={() => openCardImagePicker(i)}
+									class="group/image relative mb-4 block size-24 cursor-pointer rounded-xl text-left focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+									aria-label={`${card.image ? 'Заменить' : 'Добавить'} изображение блока «${card.title}»`}
+									title={`${card.image ? 'Заменить' : 'Добавить'} изображение блока «${card.title}»`}
+								>
+									<span
+										class="p1-border p1-card flex size-full overflow-hidden rounded-xl border transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui group-hover/image:border-link-500/50"
+									>
+										{#if card.image}
+											<ImageFallback
+												src={card.image}
+												alt={card.alt}
+												class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui group-hover/image:scale-105"
+											/>
+										{:else}
+											<span
+												class="p1-muted flex size-full flex-col items-center justify-center gap-1.5"
+											>
+												<svg
+													class="size-5"
+													fill="none"
+													viewBox="0 0 24 24"
+													stroke="currentColor"
+													aria-hidden="true"
+												>
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="1.5"
+														d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2 1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2Z"
+													/>
+												</svg>
+												<span class="text-xs font-semibold">Добавить</span>
+											</span>
+										{/if}
+									</span>
+									<span
+										class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui group-hover/image:border-link-500 group-hover/image:text-link-600"
+										aria-hidden="true"
+									>
+										<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="1.75"
+												d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
+											/>
+										</svg>
+									</span>
+								</button>
+							{:else}
+								<div class="mb-4 size-24 overflow-hidden rounded-xl">
+									<ImageFallback
+										src={card.image}
+										alt={card.alt}
+										class="h-full w-full object-cover"
+									/>
+								</div>
+							{/if}
 							<h3 class="p1-title p1-title-sub text-sm sm:text-base">
 								<EditableField
 									fieldKey={`Message.cards.${i}.title`}

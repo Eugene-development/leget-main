@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.5.3.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
@@ -278,7 +279,12 @@
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<img loading="lazy" src={displayValue} alt="Карта" class="w-full object-cover" />
+								<ImageFallback
+									loading="lazy"
+									src={displayValue}
+									alt="Карта"
+									class="w-full object-cover"
+								/>
 							{:else}
 								<div class="flex aspect-square items-center justify-center bg-surface-paper">
 									<div class="text-center">

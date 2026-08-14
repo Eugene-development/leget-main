@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -20,12 +21,12 @@
 	}
 </script>
 
-<section
-	class="relative flex min-h-[60vh] items-center justify-center px-6 py-24 text-center"
-	style={data?.backgroundImage
-		? `background-image: url('${data.backgroundImage}'); background-size: cover; background-position: center;`
-		: ''}
->
+<section class="relative flex min-h-[60vh] items-center justify-center px-6 py-24 text-center">
+	<ImageFallback
+		src={String(data?.backgroundImage ?? '')}
+		alt="Фон первого экрана"
+		class="absolute inset-0 h-full w-full object-cover"
+	/>
 	{#if data?.backgroundImage}
 		<div class="absolute inset-0 bg-black/50"></div>
 	{/if}

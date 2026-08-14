@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.1.3 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -138,12 +139,13 @@
 	<!-- Фоновое изображение с плавным переходом -->
 	<div class="absolute inset-0 z-0">
 		{#key activeSkillIndex}
-			<img
-				src={activeSkill.bgImage}
-				alt="Фоновое изображение"
-				class="absolute inset-0 h-full w-full scale-102 object-cover blur-[2px] transition-all duration-1000"
-				in:fade={{ duration: 800 }}
-			/>
+			<div class="absolute inset-0" in:fade={{ duration: 800 }}>
+				<ImageFallback
+					src={activeSkill.bgImage}
+					alt="Фоновое изображение"
+					class="h-full w-full scale-102 object-cover blur-[2px] transition-all duration-1000"
+				/>
+			</div>
 		{/key}
 		<!-- Динамический премиальный оверлей в зависимости от выбранного скилла и темы -->
 		<div
@@ -178,7 +180,7 @@
 							{#if displayValue}
 								<!-- max-h обязателен: без него квадратный логотип растягивается
 								     до ширины бокса (128px) и выдавливает контент вниз. -->
-								<img
+								<ImageFallback
 									src={displayValue}
 									alt={String(data?.logoAlt ?? 'Логотип')}
 									class="relative max-h-12 w-full object-contain md:max-h-16 {isLight
@@ -334,7 +336,7 @@
 									? 'border-ink-200 bg-surface-raised/70 hover:border-cat-4-500/30'
 									: 'border-on-dark/5 bg-on-dark/5 opacity-60 hover:border-cat-4-500/20 hover:opacity-100'}"
 							>
-								<img
+								<ImageFallback
 									class="max-h-[16px] max-w-[64px] object-contain transition-all duration-300 {isLight
 										? 'opacity-60 brightness-0 hover:opacity-100'
 										: 'brightness-0 invert filter'}"
@@ -549,13 +551,13 @@
 		font-family: 'Playfair Display', serif !important;
 	}
 
-	.brand-capsule img {
+	:global(.brand-capsule img) {
 		transition:
 			filter 0.3s,
 			transform 0.3s;
 	}
 
-	.brand-capsule:hover img {
+	:global(.brand-capsule:hover img) {
 		filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(99, 102, 241, 0.4));
 	}
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.22.3.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -71,7 +72,7 @@
 								: g.bg}"
 						>
 							{#if shop.logo}
-								<img
+								<ImageFallback
 									loading="lazy"
 									src={shop.logo}
 									alt={shop.title ?? shop.value}
@@ -116,7 +117,7 @@
 							<div class="mt-2 flex flex-wrap gap-2">
 								{#each shop.brands.filter((b: any) => b.is_active !== false) as brand}
 									{#if brand.logo}
-										<img
+										<ImageFallback
 											loading="lazy"
 											src={brand.logo}
 											alt={brand.value}

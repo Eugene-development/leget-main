@@ -11,7 +11,8 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"check:typography": "node ../../scripts/check-heading-typography.mjs",
-		"lint": "npm run check:typography && prettier --check .",
+		"check:images": "node ../../scripts/check-component-images.mjs",
+		"lint": "npm run check:typography && npm run check:images && prettier --check .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {

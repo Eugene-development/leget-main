@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import MenuV1 from './v1/Menu.svelte';
 	import MenuV2 from './v2/Menu.svelte';
 	import MenuV3 from './v3/Menu.svelte';
@@ -105,6 +106,10 @@
 		data = updated;
 		closeLogoPicker();
 	}
+
+	async function handleLogoRemove() {
+		await handleLogoApprove('');
+	}
 </script>
 
 <div class="relative flex items-center gap-2">
@@ -186,7 +191,7 @@
 				<div class="rounded-2xl border border-on-dark/10 bg-on-dark/5 p-3">
 					<div class="flex min-h-24 items-center justify-center rounded-xl bg-surface-raised p-4">
 						{#if logoUrl}
-							<img
+							<ImageFallback
 								src={logoUrl}
 								alt="Текущий логотип сайта"
 								class="max-h-16 max-w-full object-contain"
@@ -302,6 +307,7 @@
 		cropOutputQuality={0.86}
 		cropMaxOutputBytes={2 * 1024 * 1024}
 		onApprove={handleLogoApprove}
+		onRemove={handleLogoRemove}
 		onClose={closeLogoPicker}
 	/>
 {/if}

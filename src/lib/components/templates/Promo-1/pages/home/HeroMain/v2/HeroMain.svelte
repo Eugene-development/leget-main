@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.1.2 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -834,12 +835,13 @@
 						class="hero-media group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-on-dark/10 bg-ink-950"
 					>
 						{#key activeStyleIndex}
-							<img
-								src={activeStyle.image}
-								alt={activeStyle.name}
-								class="h-full w-full object-cover transition-transform duration-700 group-hover/img:scale-105"
-								in:fade={{ duration: 400 }}
-							/>
+							<div class="h-full w-full" in:fade={{ duration: 400 }}>
+								<ImageFallback
+									src={activeStyle.image}
+									alt={activeStyle.name}
+									class="h-full w-full object-cover transition-transform duration-700 group-hover/img:scale-105"
+								/>
+							</div>
 						{/key}
 
 						<!-- Наложение затемнения при активном хотспоте -->
@@ -933,7 +935,7 @@
 							? 'border-ink-200 bg-surface-raised/70 shadow-sm hover:border-link-500/30 hover:bg-surface-raised'
 							: 'border-on-dark/5 bg-on-dark/5 opacity-60 hover:border-link-500/20 hover:bg-on-dark/10 hover:opacity-100'}"
 					>
-						<img
+						<ImageFallback
 							class="max-h-[22px] max-w-[72px] object-contain transition-all duration-300 {isLight
 								? 'opacity-60 brightness-0 hover:opacity-100'
 								: 'brightness-0 invert filter'}"
@@ -1082,13 +1084,13 @@
 	}
 
 	/* Бренды */
-	.brand-capsule img {
+	:global(.brand-capsule img) {
 		transition:
 			filter 0.3s,
 			transform 0.3s;
 	}
 
-	.brand-capsule:hover img {
+	:global(.brand-capsule:hover img) {
 		filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(56, 189, 248, 0.4));
 	}
 

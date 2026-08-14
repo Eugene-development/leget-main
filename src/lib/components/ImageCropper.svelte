@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
+	import type Cropper from 'cropperjs';
 	import 'cropperjs/dist/cropper.css';
 
 	let {
@@ -29,12 +30,15 @@
 	let imageUrl = $state('');
 	let isProcessing = $state(false);
 	let isReady = $state(false);
+	let imageDecoded = $state(false);
 	let cropperReady = $state(false);
 	let processingError = $state('');
+	let initializationError = $state('');
 
 	// Хранение вне $state чтобы избежать прокси
-	let CropperClass: any = null;
-	let cropperInstance: any = null;
+	let CropperClass: typeof Cropper | null = null;
+	let cropperInstance: Cropper | null = null;
+	let destroyed = false;
 
 	// Предустановленные соотношения сторон
 	const aspectRatios = [
@@ -58,32 +62,53 @@
 		}
 	});
 
-	onMount(async () => {
+	onMount(() => {
 		if (imageFile) {
 			imageUrl = URL.createObjectURL(imageFile);
 		}
-		// Динамический импорт cropperjs только на клиенте
-		if (browser) {
-			// Импортируем библиотеку
+		void loadCropper();
+	});
+
+	async function loadCropper() {
+		if (!browser) return;
+
+		try {
 			const module = await import('cropperjs');
+			if (destroyed) return;
 			CropperClass = module.default;
 			isReady = true;
+			initializeCropper();
+		} catch (err) {
+			console.error('Cropper load failed:', err);
+			initializationError = 'Не удалось загрузить редактор. Обновите страницу и попробуйте снова.';
 		}
-	});
+	}
 
-	onDestroy(() => {
-		if (cropperInstance) {
-			cropperInstance.destroy();
-			cropperInstance = null;
-		}
-		if (imageUrl) {
-			URL.revokeObjectURL(imageUrl);
-		}
-	});
+	function handleImageLoad() {
+		imageDecoded = true;
+		initializeCropper();
+	}
 
-	// Инициализация cropper когда и элемент и библиотека готовы
-	$effect(() => {
-		if (imageElement && CropperClass && !cropperInstance) {
+	function handleImageError() {
+		imageDecoded = false;
+		initializationError =
+			'Браузер не смог открыть это изображение. Сохраните его в PNG, JPEG или WebP и повторите.';
+	}
+
+	function initializeCropper() {
+		if (
+			destroyed ||
+			!isReady ||
+			!imageDecoded ||
+			!imageElement ||
+			!CropperClass ||
+			cropperInstance
+		) {
+			return;
+		}
+
+		try {
+			cropperReady = false;
 			cropperInstance = new CropperClass(imageElement, {
 				aspectRatio: selectedRatio,
 				viewMode: 1,
@@ -98,9 +123,26 @@
 				toggleDragModeOnDblclick: false,
 				initialAspectRatio: selectedRatio,
 				responsive: true,
-				background: true
+				background: true,
+				ready: () => {
+					if (!destroyed) cropperReady = true;
+				}
 			});
-			cropperReady = true;
+		} catch (err) {
+			console.error('Cropper initialization failed:', err);
+			initializationError =
+				'Не удалось запустить редактор для этого изображения. Попробуйте другой файл.';
+		}
+	}
+
+	onDestroy(() => {
+		destroyed = true;
+		if (cropperInstance) {
+			cropperInstance.destroy();
+			cropperInstance = null;
+		}
+		if (imageUrl) {
+			URL.revokeObjectURL(imageUrl);
 		}
 	});
 
@@ -173,6 +215,9 @@
 			});
 
 			if (!canvas) throw new Error('Не удалось сформировать область изображения');
+			if (canvas.width < 1 || canvas.height < 1) {
+				throw new Error('Выбранная область изображения пуста');
+			}
 
 			const blob = await encodeCanvas(canvas);
 			const actualMimeType =
@@ -243,7 +288,11 @@
 		}
 
 		// Если одного quality недостаточно, постепенно уменьшаем разрешение.
-		for (let attempt = 0; blob.size > maxOutputBytes && attempt < 6; attempt += 1) {
+		for (
+			let attempt = 0;
+			blob.size > maxOutputBytes && attempt < 10 && (canvas.width > 64 || canvas.height > 64);
+			attempt += 1
+		) {
 			const targetScale = Math.sqrt(maxOutputBytes / blob.size) * 0.92;
 			const scale = Math.min(0.85, Math.max(0.5, targetScale));
 			canvas = resizeCanvas(canvas, scale);
@@ -258,7 +307,7 @@
 
 		if (blob.size > maxOutputBytes) {
 			throw new Error(
-				'Не удалось уложить изображение в допустимый размер. Выберите меньшую область.'
+				'Не удалось сжать изображение до допустимого размера. Выберите меньшую область.'
 			);
 		}
 
@@ -313,20 +362,30 @@
 
 		<!-- Cropper Area -->
 		<div class="relative max-h-[60vh] min-h-[400px] flex-1 bg-gray-900">
-			{#if !isReady}
-				<div class="absolute inset-0 flex items-center justify-center">
-					<div
-						class="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"
-					></div>
-				</div>
-			{/if}
-			{#if imageUrl && isReady}
+			{#if imageUrl}
 				<img
 					src={imageUrl}
 					alt="Редактирование"
 					bind:this={imageElement}
+					onload={handleImageLoad}
+					onerror={handleImageError}
 					class="max-h-full max-w-full"
 				/>
+			{/if}
+			{#if !cropperReady && !initializationError}
+				<div class="absolute inset-0 z-10 flex items-center justify-center bg-gray-900">
+					<div
+						class="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"
+						aria-label="Подготовка редактора"
+					></div>
+				</div>
+			{:else if initializationError}
+				<div
+					class="absolute inset-0 z-10 flex items-center justify-center bg-gray-900 px-6 text-center text-sm text-red-300"
+					role="alert"
+				>
+					{initializationError}
+				</div>
 			{/if}
 		</div>
 
@@ -436,8 +495,10 @@
 
 		<!-- Actions -->
 		<div class="flex flex-col justify-between gap-3 px-6 py-4 sm:flex-row sm:items-center">
-			{#if processingError}
-				<p class="max-w-lg text-sm text-red-600" role="alert">{processingError}</p>
+			{#if processingError || initializationError}
+				<p class="max-w-lg text-sm text-red-600" role="alert">
+					{processingError || initializationError}
+				</p>
 			{:else}
 				<p class="text-xs text-gray-500">
 					Результат: до {maxOutputWidth}×{maxOutputHeight}px{maxOutputBytes
@@ -464,7 +525,7 @@
 							class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
 						></div>
 					{/if}
-					Применить
+					{isProcessing ? 'Сжимаем…' : 'Применить'}
 				</button>
 			</div>
 		</div>

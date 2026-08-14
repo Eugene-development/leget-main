@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 2.9.1.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -43,7 +44,11 @@
 	class="relative flex min-h-[calc(100vh-64px)] items-center justify-center overflow-hidden bg-primary text-white lg:min-h-[calc(100vh-120px)]"
 >
 	<div class="absolute inset-0 z-0">
-		<img alt="Премиальные кухни" class="h-full w-full object-cover opacity-30 mix-blend-overlay" />
+		<ImageFallback
+			src={String(data?.image ?? '')}
+			alt="Премиальные кухни"
+			class="h-full w-full object-cover opacity-30 mix-blend-overlay"
+		/>
 		<div
 			class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/95"
 		></div>

@@ -1180,7 +1180,14 @@
 				"Factory": {
 					"label": "Производство",
 					"heading": "Наша фабрика",
-					"description": "25 000 м² современного производства, оснащённого передовым европейским оборудованием"
+					"description": "25 000 м² современного производства, оснащённого передовым европейским оборудованием",
+					"factoryImages": [
+						"https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg",
+						"https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg",
+						"https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg",
+						"https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg",
+						"https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg"
+					]
 				},
 				"Video": {
 					"src": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4"
@@ -1329,7 +1336,10 @@
 				"ProductionCycle": {
 					"label": "Этапы",
 					"heading": "Производственный цикл",
-					"description": "Отточенный годами процесс создания премиальной мебели."
+					"description": "Отточенный годами процесс создания премиальной мебели.",
+					"designImage": "https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg",
+					"productionImage": "https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg",
+					"assemblyImage": ""
 				},
 				"KitchenStyles": {
 					"heading": "Варианты стилистических решений",
@@ -1742,10 +1752,10 @@
 			"Equipment": 2,
 			"Incentives": 3,
 			"MebelBenefits": 2,
+			"MebelProcess": 2,
 			"Message": 2,
 			"PromoOffer": 2,
-			"Stage": 2,
-			"MebelProcess": 2
+			"Stage": 2
 		},
 		"2": {},
 		"3": {}
