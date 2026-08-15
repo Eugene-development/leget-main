@@ -2,16 +2,28 @@
 	// Артикул: 3.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
+	import { auth } from '$lib/stores/auth';
+	import LoginModal from '$lib/components/LoginModal.svelte';
+	import type { Snippet } from 'svelte';
 
 	let {
 		data,
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		pageSettings
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
+
+	let showLoginModal = $state(false);
+
+	function handleAuthClick() {
+		if ($auth.isAuthenticated) auth.logout();
+		else showLoginModal = true;
+	}
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'PLITKA');
 	const siteTagline = $derived(
@@ -135,7 +147,7 @@
 			class="mt-16 flex flex-col items-center justify-between gap-4 border-t border-surface-700/50 pt-8 md:flex-row"
 		>
 			<p class="text-xs text-surface-300">{copyright}</p>
-			<div class="flex gap-6">
+			<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:justify-end">
 				<a
 					href={privacyLink}
 					class="text-xs text-surface-300 transition-colors hover:text-surface-200"
@@ -146,7 +158,23 @@
 					class="text-xs text-surface-300 transition-colors hover:text-surface-200"
 					>Пользовательское соглашение</a
 				>
+				<div class="flex items-center gap-2">
+					{@render pageSettings?.(
+						'rounded-lg border border-surface-600/60 bg-surface-800/70 text-surface-300 hover:border-accent-500/60 hover:text-accent-500'
+					)}
+					<button
+						type="button"
+						onclick={handleAuthClick}
+						class="h-9 rounded-lg border border-surface-600/60 bg-surface-800/70 px-4 text-xs font-semibold text-surface-300 transition-colors hover:border-accent-500/60 hover:text-accent-500"
+					>
+						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </footer>
+
+{#if showLoginModal}
+	<LoginModal onClose={() => (showLoginModal = false)} />
+{/if}

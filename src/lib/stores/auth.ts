@@ -100,6 +100,11 @@ function createAuthStore() {
 			if (browser) {
 				localStorage.removeItem('auth_token');
 				localStorage.removeItem('email_verified');
+				// Сессия карты целей хранится в отдельной httpOnly-cookie, поэтому
+				// клиент не может удалить её напрямую. Endpoint завершает её вместе
+				// с общей пользовательской сессией; ошибка сети не блокирует выход.
+				void fetch('/goals/session', { method: 'DELETE' }).catch(() => undefined);
+				void fetch('/site-settings/session', { method: 'DELETE' }).catch(() => undefined);
 			}
 			set({ isAuthenticated: false, user: null, isLoading: false });
 		}

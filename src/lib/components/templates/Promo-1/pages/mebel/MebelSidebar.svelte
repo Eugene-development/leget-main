@@ -61,10 +61,12 @@
 	 * в справочнике. Без id: переключать и наполнять можно только реальные записи.
 	 */
 	const DEFAULT_CATEGORIES = [
-		{ value: 'Кухни', slug: 'kitchens' },
-		{ value: 'Шкафы', slug: 'wardrobes' },
-		{ value: 'Гардеробные', slug: 'dressing-rooms' },
-		{ value: 'Прихожие', slug: 'hallways' }
+		{ value: 'Кухни', slug: 'kuhni' },
+		{ value: 'Шкафы', slug: 'shkafy' },
+		{ value: 'Гардеробные', slug: 'garderobnye' },
+		{ value: 'Прихожие', slug: 'prihozhie' },
+		{ value: 'Детская мебель', slug: 'detskaya-mebel' },
+		{ value: 'Офисная мебель', slug: 'ofisnaya-mebel' }
 	];
 </script>
 

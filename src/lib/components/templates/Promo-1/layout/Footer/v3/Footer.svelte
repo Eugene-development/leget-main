@@ -5,6 +5,7 @@
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import type { Action } from 'svelte/action';
+	import type { Snippet } from 'svelte';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
@@ -13,12 +14,14 @@
 		data = $bindable({}),
 		editContext = null,
 		isEditable = false,
-		sitePhone = null
+		sitePhone = null,
+		pageSettings
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
 		sitePhone?: string | null;
+		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
 
 	let showLoginModal = $state(false);
@@ -388,13 +391,18 @@
 						>Leget</a
 					>
 				</p>
-				<button
-					type="button"
-					onclick={handleAuthClick}
-					class="rounded-full border border-alt-warm-ink/20 px-4 py-1.5 font-semibold text-alt-warm-ink transition-colors hover:border-alt-warm-accent hover:text-alt-warm-accent active:scale-[0.98]"
-				>
-					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
-				</button>
+				<div class="flex items-center gap-2">
+					{@render pageSettings?.(
+						'rounded-full border border-alt-warm-ink/20 text-alt-warm-ink hover:border-alt-warm-accent hover:text-alt-warm-accent'
+					)}
+					<button
+						type="button"
+						onclick={handleAuthClick}
+						class="h-9 rounded-full border border-alt-warm-ink/20 px-4 font-semibold text-alt-warm-ink transition-colors hover:border-alt-warm-accent hover:text-alt-warm-accent active:scale-[0.98]"
+					>
+						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

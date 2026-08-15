@@ -16,10 +16,41 @@ const RENDER_PAGE_QUERY = `
 				header { data }
 				footer { data }
 			}
-			page { id licenseId slug componentsData }
+			page {
+				id
+				licenseId
+				slug
+				requestedSlug
+				componentsData
+				seo {
+					title
+					description
+					keywords
+					rawTitle
+					rawDescription
+					isDynamic
+					pattern
+					variables { token label value }
+				}
+			}
 		}
 	}
 `;
+
+export interface PageSeoData {
+	title: string | null;
+	description: string | null;
+	keywords: string | null;
+	rawTitle: string | null;
+	rawDescription: string | null;
+	isDynamic: boolean;
+	pattern: string;
+	variables: Array<{
+		token: string;
+		label: string;
+		value: string;
+	}>;
+}
 
 export interface RenderPageResponse {
 	renderPage: {
@@ -35,7 +66,9 @@ export interface RenderPageResponse {
 			id: string;
 			licenseId: string;
 			slug: string;
+			requestedSlug: string;
 			componentsData: unknown[];
+			seo: PageSeoData;
 		};
 	};
 }

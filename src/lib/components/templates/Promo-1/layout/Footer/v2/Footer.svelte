@@ -7,18 +7,21 @@
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import type { Action } from 'svelte/action';
+	import type { Snippet } from 'svelte';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 
 	let {
 		data = $bindable({}),
 		editContext = null,
 		isEditable = false,
-		sitePhone = null
+		sitePhone = null,
+		pageSettings
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
 		sitePhone?: string | null;
+		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
 
 	let showLoginModal = $state(false);
@@ -527,7 +530,7 @@
 				&copy; {new Date().getFullYear()}
 				{siteName}. Все права защищены.
 			</p>
-			<div class="flex items-center gap-6">
+			<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
 				<p class="text-xs text-on-dark/35">
 					Разработка — <a
 						href="https://leget.ru/"
@@ -537,13 +540,18 @@
 						>Leget</a
 					>
 				</p>
-				<button
-					type="button"
-					onclick={handleAuthClick}
-					class="rounded-full border border-on-dark/10 bg-surface-raised/[0.03] px-4 py-1.5 text-xs font-semibold tracking-wider text-on-dark/70 uppercase transition-all duration-300 hover:border-on-dark/25 hover:bg-surface-raised/[0.07] hover:text-on-dark"
-				>
-					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
-				</button>
+				<div class="flex items-center gap-2">
+					{@render pageSettings?.(
+						'rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 hover:border-on-dark/25 hover:bg-surface-raised/[0.07] hover:text-on-dark'
+					)}
+					<button
+						type="button"
+						onclick={handleAuthClick}
+						class="h-9 rounded-full border border-on-dark/10 bg-surface-raised/[0.03] px-4 text-xs font-semibold tracking-wider text-on-dark/70 uppercase transition-all duration-300 hover:border-on-dark/25 hover:bg-surface-raised/[0.07] hover:text-on-dark"
+					>
+						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

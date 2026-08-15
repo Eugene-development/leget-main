@@ -77,6 +77,19 @@
 		isEditPanelOpen = true;
 	}
 
+	/**
+	 * Панель редактирования должна жить на верхнем уровне документа: иначе любой
+	 * stacking context страницы может запереть fixed-слои под sticky-меню.
+	 */
+	function portal(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node);
+			}
+		};
+	}
+
 	async function saveProject() {
 		if (!editForm.value) return;
 		// Если category_id не установлен (старый кеш), использовать category.id
@@ -418,13 +431,18 @@
 <!-- Edit Panel -->
 {#if isEditPanelOpen}
 	<div
-		class="fixed inset-0 z-[90] bg-ink-950/40 backdrop-blur-sm"
+		use:portal
+		class="fixed inset-0 z-[200] bg-ink-950/40 backdrop-blur-sm"
 		onclick={() => (isEditPanelOpen = false)}
 		role="presentation"
 	></div>
-	<aside
-		class="fixed top-0 right-0 z-[91] flex h-full w-full max-w-md flex-col bg-surface-raised shadow-2xl"
+	<div
+		use:portal
+		class="fixed top-0 right-0 z-[210] flex h-full w-full max-w-md flex-col bg-surface-raised shadow-2xl"
 		in:fly={{ x: 420, duration: 350, easing: cubicOut }}
+		role="dialog"
+		aria-modal="true"
+		aria-label="Редактировать проект"
 	>
 		<!-- Header -->
 		<div class="flex items-center justify-between border-b border-ink-100 px-6 py-4">
@@ -596,7 +614,7 @@
 				{isSaving ? 'Сохраняем…' : 'Сохранить'}
 			</button>
 		</div>
-	</aside>
+	</div>
 {/if}
 
 <!-- Lightbox -->

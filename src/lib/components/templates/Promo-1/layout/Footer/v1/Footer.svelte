@@ -7,17 +7,20 @@
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
+	import type { Snippet } from 'svelte';
 
 	let {
 		data = $bindable({}),
 		editContext = null,
 		isEditable = false,
-		sitePhone = null
+		sitePhone = null,
+		pageSettings
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
 		sitePhone?: string | null;
+		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
 
 	let formSubmitted = $state(false);
@@ -408,7 +411,7 @@
 				</p>
 			</div>
 
-			<div class="flex items-center gap-8">
+			<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:justify-end">
 				<p class="text-xs text-ink-500">
 					Разработка проекта — <a
 						href="https://leget.ru/"
@@ -417,13 +420,18 @@
 						class="font-medium text-ink-400 transition-colors hover:text-on-dark">Leget</a
 					>
 				</p>
-				<button
-					type="button"
-					onclick={handleAuthClick}
-					class="rounded-md bg-on-dark/5 px-3 py-1.5 text-xs font-semibold text-ink-300 shadow-sm ring-1 ring-on-dark/10 transition-all ring-inset hover:bg-on-dark/10 hover:text-on-dark"
-				>
-					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
-				</button>
+				<div class="flex items-center gap-2">
+					{@render pageSettings?.(
+						'rounded-md bg-on-dark/5 text-ink-300 shadow-sm ring-1 ring-on-dark/10 ring-inset hover:bg-on-dark/10 hover:text-on-dark'
+					)}
+					<button
+						type="button"
+						onclick={handleAuthClick}
+						class="h-9 rounded-md bg-on-dark/5 px-3 text-xs font-semibold text-ink-300 shadow-sm ring-1 ring-on-dark/10 transition-all ring-inset hover:bg-on-dark/10 hover:text-on-dark"
+					>
+						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

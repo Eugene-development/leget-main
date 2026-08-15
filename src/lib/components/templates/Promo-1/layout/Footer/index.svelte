@@ -9,17 +9,20 @@
 		type EditContext
 	} from '$lib/utils/page-edit';
 	import { fly, fade } from 'svelte/transition';
+	import type { Snippet } from 'svelte';
 
 	let {
 		data = $bindable({}),
 		editContext = null,
 		isEditable = false,
-		sitePhone = null
+		sitePhone = null,
+		pageSettings
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
 		sitePhone?: string | null;
+		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
 
 	// Footer (Promo-1) — page-компонент на глобальной странице '__global__':
@@ -263,11 +266,11 @@
 		<!-- Динамический рендер выбранного варианта с эффектом слайдера -->
 		{#if selectedVersion === 'v3'}
 			<div class="w-full" in:fly={{ y: 120, duration: 600 }} out:fly={{ y: 120, duration: 600 }}>
-				<FooterV3 bind:data {editContext} {isEditable} {sitePhone} />
+				<FooterV3 bind:data {editContext} {isEditable} {sitePhone} {pageSettings} />
 			</div>
 		{:else if selectedVersion === 'v2'}
 			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
-				<FooterV2 bind:data {editContext} {isEditable} {sitePhone} />
+				<FooterV2 bind:data {editContext} {isEditable} {sitePhone} {pageSettings} />
 			</div>
 		{:else}
 			<div
@@ -275,7 +278,7 @@
 				in:fly={{ x: -1200, duration: 600 }}
 				out:fly={{ x: -1200, duration: 600 }}
 			>
-				<FooterV1 bind:data {editContext} {isEditable} {sitePhone} />
+				<FooterV1 bind:data {editContext} {isEditable} {sitePhone} {pageSettings} />
 			</div>
 		{/if}
 	</div>

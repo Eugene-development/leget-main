@@ -1,8 +1,15 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
+	import type { Snippet } from 'svelte';
 
-	let { data }: { data: Record<string, unknown> } = $props();
+	let {
+		data,
+		pageSettings
+	}: {
+		data: Record<string, unknown>;
+		pageSettings?: Snippet<[triggerClass: string]>;
+	} = $props();
 
 	// Cast data fields
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : null);
@@ -45,13 +52,18 @@
 				<span class="text-sm text-gray-400">{copyright}</span>
 			{/if}
 
-			<button
-				type="button"
-				onclick={handleAuthClick}
-				class="rounded-lg border border-gray-300 bg-white px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:text-gray-900"
-			>
-				{$auth.isAuthenticated ? 'Выйти' : 'Войти'}
-			</button>
+			<div class="flex items-center gap-2">
+				{@render pageSettings?.(
+					'rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900'
+				)}
+				<button
+					type="button"
+					onclick={handleAuthClick}
+					class="h-9 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:text-gray-900"
+				>
+					{$auth.isAuthenticated ? 'Выйти' : 'Войти'}
+				</button>
+			</div>
 		</div>
 	</div>
 </footer>

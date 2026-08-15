@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { EditContext } from '$lib/utils/page-edit';
+	import type { PageSeoData } from '$lib/utils/page-edit';
 	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 
@@ -31,6 +32,7 @@
 		components = [],
 		headerData = null,
 		footerData = null,
+		seo = null,
 		editContext = null
 	}: {
 		templateId: number | null;
@@ -38,6 +40,7 @@
 		components: PageComponent[];
 		headerData: Record<string, unknown> | null;
 		footerData: Record<string, unknown> | null;
+		seo?: PageSeoData | null;
 		editContext: EditContext | null;
 	} = $props();
 
@@ -94,4 +97,13 @@
 	});
 </script>
 
-<PageRenderer {layout} {componentMap} {slug} {components} {headerData} {footerData} {editContext} />
+<PageRenderer
+	{layout}
+	{componentMap}
+	{slug}
+	{components}
+	{headerData}
+	{footerData}
+	{seo}
+	{editContext}
+/>

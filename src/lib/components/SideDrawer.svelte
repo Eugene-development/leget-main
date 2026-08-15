@@ -24,8 +24,52 @@
 	}
 
 	function onKeydown(event: KeyboardEvent) {
-		if (open && event.key === 'Escape') close();
+		if (!open) return;
+		if (event.key === 'Escape') {
+			close();
+			return;
+		}
+
+		if (event.key !== 'Tab' || !panelEl) return;
+
+		const focusable = Array.from(
+			panelEl.querySelectorAll<HTMLElement>(
+				'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+			)
+		).filter((element) => element.offsetParent !== null);
+
+		if (focusable.length === 0) {
+			event.preventDefault();
+			panelEl.focus();
+			return;
+		}
+
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+		if (
+			event.shiftKey &&
+			(document.activeElement === first || document.activeElement === panelEl)
+		) {
+			event.preventDefault();
+			last.focus();
+		} else if (!event.shiftKey && document.activeElement === last) {
+			event.preventDefault();
+			first.focus();
+		}
 	}
+
+	let panelEl: HTMLElement | null = $state(null);
+	$effect(() => {
+		if (!open) return;
+
+		const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		const focusTimer = setTimeout(() => panelEl?.focus(), 0);
+
+		return () => {
+			clearTimeout(focusTimer);
+			trigger?.focus();
+		};
+	});
 
 	/**
 	 * Портал в document.body: панель рендерится внутри компонента-владельца, но её
@@ -58,7 +102,12 @@
 		></button>
 
 		<!-- Панель справа -->
-		<aside
+		<div
+			bind:this={panelEl}
+			role="dialog"
+			aria-modal="true"
+			aria-label={title || 'Панель настроек'}
+			tabindex="-1"
 			class="font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-sm flex-col border-l border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ x: 420, duration: 350, opacity: 1 }}
 		>
@@ -87,6 +136,6 @@
 			<div class="flex-1 overflow-y-auto px-5 py-5">
 				{@render children?.()}
 			</div>
-		</aside>
+		</div>
 	</div>
 {/if}

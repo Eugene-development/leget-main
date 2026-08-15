@@ -35,6 +35,86 @@ export interface EditContext {
 	slug?: string | null;
 }
 
+export interface PageSeoVariable {
+	token: string;
+	label: string;
+	value: string;
+}
+
+export interface PageSeoData {
+	title: string | null;
+	description: string | null;
+	keywords: string | null;
+	rawTitle: string | null;
+	rawDescription: string | null;
+	isDynamic: boolean;
+	pattern: string;
+	variables: PageSeoVariable[];
+}
+
+const UPDATE_PAGE_SEO_MUTATION = `
+  mutation UpdatePageSeo(
+    $id: ID!
+    $licenseId: ID!
+    $seoTitle: String
+    $seoDescription: String
+    $seoKeywords: String
+  ) {
+    updatePage(
+      id: $id
+      licenseId: $licenseId
+      seoTitle: $seoTitle
+      seoDescription: $seoDescription
+      seoKeywords: $seoKeywords
+    ) {
+      id
+      seoTitle
+      seoDescription
+      seoKeywords
+    }
+  }
+`;
+
+/** Save metadata for the current page; blank values remove the override. */
+export async function savePageSeo(
+	context: EditContext,
+	values: { title: string; description: string; keywords: string }
+): Promise<void> {
+	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+	if (!token) {
+		throw new Error('Не авторизован');
+	}
+
+	const response = await fetch(getGraphQLUrl(), {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify({
+			query: UPDATE_PAGE_SEO_MUTATION,
+			variables: {
+				id: context.pageId,
+				licenseId: context.licenseId,
+				seoTitle: values.title.trim() || null,
+				seoDescription: values.description.trim() || null,
+				seoKeywords: values.keywords.trim() || null
+			}
+		})
+	});
+
+	if (!response.ok) {
+		throw new Error('Не удалось сохранить настройки страницы. Повторите попытку.');
+	}
+
+	const result = await response.json();
+	if (result.errors?.length) {
+		throw new Error(result.errors[0]?.message ?? 'Не удалось сохранить настройки страницы.');
+	}
+}
+
 const COMPONENT_ARTICLE_QUERY = `
   query Component($templateId: Int!, $slug: String!, $type: String!) {
     component(templateId: $templateId, slug: $slug, type: $type) {

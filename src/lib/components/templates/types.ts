@@ -1,4 +1,4 @@
-import type { Component } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type { EditContext } from '$lib/utils/page-edit';
 
 /** Пропсы, которые получает любой компонент страницы или layout'а. */
@@ -15,6 +15,11 @@ export type PageComponentProps = {
 	 * местах. null — когда layout не смонтирован (каталог /_ds).
 	 */
 	sitePhone?: string | null;
+	/**
+	 * Триггер настроек текущей страницы. Layout-футер передаёт сюда собственные
+	 * классы, чтобы шестерёнка стояла рядом с авторизацией и сохраняла его облик.
+	 */
+	pageSettings?: Snippet<[triggerClass: string]>;
 };
 
 /** Карта «тип компонента из БД» → Svelte-компонент. */

@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
-	import type { EditContext } from '$lib/utils/page-edit';
+	import type { EditContext, PageSeoData } from '$lib/utils/page-edit';
 	import { invalidateAll } from '$app/navigation';
 	import EditModal from '$lib/components/EditModal.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
+	import PageSeoSettings from '$lib/components/PageSeoSettings.svelte';
+	import YandexDirectGoalsButton from '$lib/components/YandexDirectGoalsButton.svelte';
+	import SiteSettingsButton from '$lib/components/SiteSettingsButton.svelte';
+	import SiteAnalytics from '$lib/components/SiteAnalytics.svelte';
+	import { siteAppearanceStyle } from '$lib/site-settings/appearance';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 
 	interface PageComponent {
@@ -30,6 +35,7 @@
 		components = [],
 		headerData = null,
 		footerData = null,
+		seo = null,
 		editContext = null
 	}: {
 		layout: TemplateLayout;
@@ -38,6 +44,7 @@
 		components: PageComponent[];
 		headerData: Record<string, unknown> | null;
 		footerData: Record<string, unknown> | null;
+		seo: PageSeoData | null;
 		editContext: EditContext | null;
 	} = $props();
 
@@ -183,92 +190,104 @@
 	const pageComponents = $derived(componentsState.filter((c) => c.type !== 'Footer'));
 </script>
 
-{#if Banner}
-	<!-- bind нужен не только редактору баннера: после сохранения телефона тот же
+<div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
+	<SiteAnalytics data={headerDataState} />
+
+	{#if Banner}
+		<!-- bind нужен не только редактору баннера: после сохранения телефона тот же
 	     реактивный headerDataState сразу обновляет CTA и футер без перезагрузки. -->
-	<Banner bind:data={headerDataState} {editContext} {isEditable} />
-{/if}
-
-{#if Header}
-	<!-- Не оборачиваем публичный/Promo-1 header в короткий positioning-контейнер:
-	     он ограничивает sticky высотой шапки, а сайдбар рассчитывает top от её положения. -->
-	{#if isEditable && editContext && Number(editContext.templateId) !== 1}
-		<div class="relative">
-			<Header bind:data={headerDataState} {editContext} {isEditable} />
-			<LayoutImageSettings
-				bind:data={headerDataState}
-				{editContext}
-				{isEditable}
-				slots={Number(editContext.templateId) === 0
-					? [{ path: ['logo'], label: 'Логотип' }]
-					: [{ path: ['logoUrl'], label: 'Логотип' }]}
-			/>
-		</div>
-	{:else}
-		<Header bind:data={headerDataState} {editContext} {isEditable} />
+		<Banner bind:data={headerDataState} {editContext} {isEditable} />
 	{/if}
-{/if}
 
-{#each pageComponents as element (element.type)}
-	{@const Component = componentMap[element.type] ?? null}
-	{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
-	{#if Component && (isEditable || !isSingleVersionDisabled(element))}
-		<div
-			class="group/component relative {isSingleVersionDisabled(element)
-				? 'opacity-40 grayscale'
-				: ''}"
-		>
-			<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
+	{#if Header}
+		<!-- Не оборачиваем публичный/Promo-1 header в короткий positioning-контейнер:
+	     он ограничивает sticky высотой шапки, а сайдбар рассчитывает top от её положения. -->
+		{#if isEditable && editContext && Number(editContext.templateId) !== 1}
+			<div class="relative">
+				<Header bind:data={headerDataState} {editContext} {isEditable} />
+				<LayoutImageSettings
+					bind:data={headerDataState}
+					{editContext}
+					{isEditable}
+					slots={Number(editContext.templateId) === 0
+						? [{ path: ['logo'], label: 'Логотип' }]
+						: [{ path: ['logoUrl'], label: 'Логотип' }]}
+				/>
+			</div>
+		{:else}
+			<Header bind:data={headerDataState} {editContext} {isEditable} />
+		{/if}
+	{/if}
+
+	{#each pageComponents as element (element.type)}
+		{@const Component = componentMap[element.type] ?? null}
+		{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
+		{#if Component && (isEditable || !isSingleVersionDisabled(element))}
+			<div
+				class="group/component relative {isSingleVersionDisabled(element)
+					? 'opacity-40 grayscale'
+					: ''}"
+			>
+				<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
 			     с кнопкой «Позвонить» нужен тот же номер, что в баннере хэдера. Отдельным
 			     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
 			     целиком, и подмешанный номер осел бы копией в данных блока при первой же
 			     правке любого поля — после смены номера в баннере копии разошлись бы. -->
-			<Component
-				bind:data={element.data}
-				{editContext}
-				{isEditable}
-				componentId={String(element.data?._componentId ?? element.id ?? '') || null}
-				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
-			/>
-
-			{#if !componentHasOwnSwitcher(element.type) && !componentHasEmbeddedSingleVersionSettings(element.type)}
-				<SingleVersionSettings
+				<Component
 					bind:data={element.data}
 					{editContext}
 					{isEditable}
-					componentType={element.type}
-					resetId={String(element.data?._componentId ?? element.id ?? '') || null}
-					themeToggle={singleThemeDefault !== null}
-					themeDefault={singleThemeDefault ?? 'light'}
+					componentId={String(element.data?._componentId ?? element.id ?? '') || null}
+					sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
 				/>
-			{/if}
+
+				{#if !componentHasOwnSwitcher(element.type) && !componentHasEmbeddedSingleVersionSettings(element.type)}
+					<SingleVersionSettings
+						bind:data={element.data}
+						{editContext}
+						{isEditable}
+						componentType={element.type}
+						resetId={String(element.data?._componentId ?? element.id ?? '') || null}
+						themeToggle={singleThemeDefault !== null}
+						themeDefault={singleThemeDefault ?? 'light'}
+					/>
+				{/if}
+			</div>
+		{/if}
+	{/each}
+
+	{#if Footer}
+		{#snippet pageSettings(triggerClass: string)}
+			<PageSeoSettings {seo} {editContext} {isEditable} {triggerClass} />
+			<YandexDirectGoalsButton {isEditable} {triggerClass} />
+			<SiteSettingsButton {isEditable} {triggerClass} licenseId={editContext?.licenseId ?? null} />
+		{/snippet}
+		<div class="relative">
+			<Footer
+				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
+				data={footerComponent
+					? {
+							// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает
+							// возможные устаревшие копии из сохранённых данных компонента.
+							...footerComponent.data,
+							logoUrl: headerDataState.logoUrl,
+							disabledRubrics: headerDataState.disabledRubrics,
+							disabledServices: headerDataState.disabledServices
+						}
+					: {
+							logoUrl: headerDataState.logoUrl,
+							disabledRubrics: headerDataState.disabledRubrics,
+							disabledServices: headerDataState.disabledServices,
+							...footerData
+						}}
+				editContext={footerComponent ? footerEditContext : editContext}
+				{isEditable}
+				{pageSettings}
+			/>
 		</div>
 	{/if}
-{/each}
 
-{#if Footer}
-	<Footer
-		sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
-		data={footerComponent
-			? {
-					// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает
-					// возможные устаревшие копии из сохранённых данных компонента.
-					...footerComponent.data,
-					logoUrl: headerDataState.logoUrl,
-					disabledRubrics: headerDataState.disabledRubrics,
-					disabledServices: headerDataState.disabledServices
-				}
-			: {
-					logoUrl: headerDataState.logoUrl,
-					disabledRubrics: headerDataState.disabledRubrics,
-					disabledServices: headerDataState.disabledServices,
-					...footerData
-				}}
-		editContext={footerComponent ? footerEditContext : editContext}
-		{isEditable}
-	/>
-{/if}
-
-{#if isEditable}
-	<EditModal />
-{/if}
+	{#if isEditable}
+		<EditModal />
+	{/if}
+</div>

@@ -2,16 +2,28 @@
 	// Артикул: 2.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
+	import { auth } from '$lib/stores/auth';
+	import LoginModal from '$lib/components/LoginModal.svelte';
+	import type { Snippet } from 'svelte';
 
 	let {
 		data,
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		pageSettings
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
+
+	let showLoginModal = $state(false);
+
+	function handleAuthClick() {
+		if ($auth.isAuthenticated) auth.logout();
+		else showLoginModal = true;
+	}
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Фабрика');
 	const description = $derived(
@@ -157,7 +169,7 @@
 			class="mx-auto flex max-w-screen-xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row xl:px-1"
 		>
 			<p class="text-xs text-white/35">{copyright}</p>
-			<div class="flex items-center gap-6">
+			<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:justify-end">
 				<a
 					href={privacyLink}
 					class="text-xs text-white/35 transition-colors duration-300 hover:text-white/60"
@@ -170,7 +182,23 @@
 				>
 					Пользовательское соглашение
 				</a>
+				<div class="flex items-center gap-2">
+					{@render pageSettings?.(
+						'rounded-full border border-white/15 bg-white/5 text-white/65 hover:border-white/35 hover:bg-white/10 hover:text-white'
+					)}
+					<button
+						type="button"
+						onclick={handleAuthClick}
+						class="h-9 rounded-full border border-white/15 bg-white/5 px-4 text-xs font-semibold text-white/65 transition-colors hover:border-white/35 hover:bg-white/10 hover:text-white"
+					>
+						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </footer>
+
+{#if showLoginModal}
+	<LoginModal onClose={() => (showLoginModal = false)} />
+{/if}
