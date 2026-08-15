@@ -412,14 +412,14 @@
 			</div>
 
 			<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:justify-end">
-				<p class="text-xs text-ink-500">
-					Разработка проекта — <a
+				<!-- <p class="text-xs text-ink-500">
+					Разработка — <a
 						href="https://leget.ru/"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="font-medium text-ink-400 transition-colors hover:text-on-dark">Leget</a
 					>
-				</p>
+				</p> -->
 				<div class="flex items-center gap-2">
 					{@render pageSettings?.(
 						'rounded-md bg-on-dark/5 text-ink-300 shadow-sm ring-1 ring-on-dark/10 ring-inset hover:bg-on-dark/10 hover:text-on-dark'

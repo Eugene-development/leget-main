@@ -531,7 +531,7 @@
 				{siteName}. Все права защищены.
 			</p>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-				<p class="text-xs text-on-dark/35">
+				<!-- <p class="text-xs text-on-dark/35">
 					Разработка — <a
 						href="https://leget.ru/"
 						target="_blank"
@@ -539,7 +539,7 @@
 						class="font-medium text-on-dark/55 transition-colors duration-300 hover:text-on-dark"
 						>Leget</a
 					>
-				</p>
+				</p> -->
 				<div class="flex items-center gap-2">
 					{@render pageSettings?.(
 						'rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 hover:border-on-dark/25 hover:bg-surface-raised/[0.07] hover:text-on-dark'

@@ -382,7 +382,7 @@
 		>
 			<p>&copy; {new Date().getFullYear()} {siteName}. Все права защищены.</p>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-				<p>
+				<!-- <p>
 					Разработка — <a
 						href="https://leget.ru/"
 						target="_blank"
@@ -390,7 +390,7 @@
 						class="font-semibold text-alt-warm-ink transition-colors hover:text-alt-warm-accent"
 						>Leget</a
 					>
-				</p>
+				</p> -->
 				<div class="flex items-center gap-2">
 					{@render pageSettings?.(
 						'rounded-full border border-alt-warm-ink/20 text-alt-warm-ink hover:border-alt-warm-accent hover:text-alt-warm-accent'
