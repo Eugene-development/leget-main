@@ -9,16 +9,21 @@
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
 	import { getGraphQLUrl } from '$lib/utils/config';
+	import { sitePhoneHref } from '$lib/utils/site-phone';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: any;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	// Данные из API
 	const project = $derived(data.project || {});
@@ -308,7 +313,7 @@
 					Создать проект и узнать цену
 				</button>
 				<a
-					href="tel:+79154000020"
+					href={phoneHref}
 					class="flex items-center justify-center gap-2 rounded-xl border-2 border-ink-100 px-8 py-4 font-bold text-ink-700 transition-all hover:border-link-500 hover:text-link-600"
 				>
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

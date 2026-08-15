@@ -2,16 +2,22 @@
 	// Артикулы: 1.16.6.1, 1.17.5.1, 1.18.5.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { sitePhoneHref } from '$lib/utils/site-phone';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: any;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+
+	// Read-only мост из header_data.phone: локальную копию номера CTA не хранит.
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -61,7 +67,7 @@
 
 		<div class="mt-6 flex flex-wrap justify-center gap-4">
 			<button
-				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-accent-ink transition-colors hover:bg-accent-ink/10"
+				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-accent-ink transition-colors hover:bg-accent-ink-wash"
 			>
 				<EditableField
 					fieldKey="MebelCTA.buttonText"
@@ -78,7 +84,7 @@
 			</button>
 
 			<a
-				href={data.phone ? `tel:${data.phone}` : 'tel:+79999000000'}
+				href={phoneHref}
 				class="inline-flex items-center gap-2 rounded-lg bg-on-accent/10 px-6 py-3 font-medium text-on-accent backdrop-blur transition-colors hover:bg-on-accent/20"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

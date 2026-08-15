@@ -4,17 +4,20 @@
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 
 	let {
 		data = $bindable({}),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
+		sitePhone?: string | null;
 	} = $props();
 
 	let formSubmitted = $state(false);
@@ -22,6 +25,8 @@
 	let showLoginModal = $state(false);
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Логотип');
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	// Список отключённых в хэдере рубрик каталога. Прокидывается сюда из headerData
 	// через ComponentResolver. Список рубрик — общий с Header (см. ./catalogItems),
@@ -92,22 +97,7 @@
 								d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
 							/>
 						</svg>
-						<EditableField
-							fieldKey="Footer.phone"
-							label="Телефон"
-							value={String(data?.phone ?? '+7 (999) 000-00-00')}
-							onSave={(val) => saveField('phone', val)}
-							{isEditable}
-						>
-							{#snippet children(displayValue)}
-								<a
-									href="tel:{displayValue.replace(/[^+\d]/g, '')}"
-									class="transition-colors hover:text-on-dark"
-								>
-									{displayValue}
-								</a>
-							{/snippet}
-						</EditableField>
+						<a href={phoneHref} class="transition-colors hover:text-on-dark">{phone}</a>
 					</li>
 
 					<!-- Email -->

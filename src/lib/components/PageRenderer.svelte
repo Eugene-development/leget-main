@@ -47,7 +47,13 @@
 	// перезагрузки, прокидываем в Header через bind:, а Footer читает из того же
 	// стейта. $effect синхронизирует зеркало с внешним пропсом на случай обновления
 	// данных с сервера (например, invalidateAll после сброса блока).
-	let headerDataState = $state<Record<string, unknown>>({});
+	// Начальное значение берём из пропса ПРИ ИНИЦИАЛИЗАЦИИ, а не только в $effect:
+	// на сервере эффекты не выполняются, и с пустым зеркалом SSR отдавал баннеру,
+	// хэдеру и bridge-полям футера дефолты вместо сохранённых данных — реальный
+	// номер телефона появлялся только после гидратации.
+	// svelte-ignore state_referenced_locally — начальный SSR-снимок намеренный;
+	// последующие изменения входного prop синхронизирует $effect ниже.
+	let headerDataState = $state<Record<string, unknown>>(headerData ?? {});
 	$effect(() => {
 		headerDataState = headerData ?? {};
 	});
@@ -60,7 +66,13 @@
 	// или навигации. Из-за этого «зависал» переключатель темы у HeroMain (единственная
 	// функция, которой нужен именно write-back в data: текст рисуется из editStore,
 	// а версия — из локального selectedVersion). Через $state-зеркало запись видна сразу.
-	let componentsState = $state<PageComponent[]>([]);
+	// Как и у headerDataState, начальное значение берём из пропса ПРИ ИНИЦИАЛИЗАЦИИ:
+	// с пустым зеркалом на сервере (эффекты там не выполняются) pageComponents был пуст,
+	// и ни один page-блок не попадал в SSR-разметку — у всех страниц всех шаблонов было
+	// пустое тело для поисковиков.
+	// svelte-ignore state_referenced_locally — начальный SSR-снимок намеренный;
+	// последующие изменения входного prop синхронизирует $effect ниже.
+	let componentsState = $state<PageComponent[]>(components ?? []);
 	$effect(() => {
 		componentsState = components ?? [];
 	});
@@ -172,23 +184,29 @@
 </script>
 
 {#if Banner}
-	<Banner data={headerDataState} {editContext} {isEditable} />
+	<!-- bind нужен не только редактору баннера: после сохранения телефона тот же
+	     реактивный headerDataState сразу обновляет CTA и футер без перезагрузки. -->
+	<Banner bind:data={headerDataState} {editContext} {isEditable} />
 {/if}
 
 {#if Header}
-	<div class="relative">
-		<Header bind:data={headerDataState} {editContext} {isEditable} />
-		{#if Number(editContext?.templateId) !== 1}
+	<!-- Не оборачиваем публичный/Promo-1 header в короткий positioning-контейнер:
+	     он ограничивает sticky высотой шапки, а сайдбар рассчитывает top от её положения. -->
+	{#if isEditable && editContext && Number(editContext.templateId) !== 1}
+		<div class="relative">
+			<Header bind:data={headerDataState} {editContext} {isEditable} />
 			<LayoutImageSettings
 				bind:data={headerDataState}
 				{editContext}
 				{isEditable}
-				slots={Number(editContext?.templateId) === 0
+				slots={Number(editContext.templateId) === 0
 					? [{ path: ['logo'], label: 'Логотип' }]
 					: [{ path: ['logoUrl'], label: 'Логотип' }]}
 			/>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<Header bind:data={headerDataState} {editContext} {isEditable} />
+	{/if}
 {/if}
 
 {#each pageComponents as element (element.type)}
@@ -200,11 +218,17 @@
 				? 'opacity-40 grayscale'
 				: ''}"
 		>
+			<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
+			     с кнопкой «Позвонить» нужен тот же номер, что в баннере хэдера. Отдельным
+			     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
+			     целиком, и подмешанный номер осел бы копией в данных блока при первой же
+			     правке любого поля — после смены номера в баннере копии разошлись бы. -->
 			<Component
 				bind:data={element.data}
 				{editContext}
 				{isEditable}
 				componentId={String(element.data?._componentId ?? element.id ?? '') || null}
+				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
 			/>
 
 			{#if !componentHasOwnSwitcher(element.type) && !componentHasEmbeddedSingleVersionSettings(element.type)}
@@ -224,6 +248,7 @@
 
 {#if Footer}
 	<Footer
+		sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
 		data={footerComponent
 			? {
 					// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает

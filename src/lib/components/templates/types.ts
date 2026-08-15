@@ -8,6 +8,13 @@ export type PageComponentProps = {
 	isEditable?: boolean;
 	/** Идентификатор строки page_components для встроенных контролов настройки. */
 	componentId?: string | null;
+	/**
+	 * Телефон сайта из layout-данных (header_data.phone) — тот же номер, что
+	 * показывает баннер хэдера. Read-only мост: блоки с кнопкой «Позвонить»
+	 * читают его отсюда, а не из своего data, чтобы номер не хранился в двух
+	 * местах. null — когда layout не смонтирован (каталог /_ds).
+	 */
+	sitePhone?: string | null;
 };
 
 /** Карта «тип компонента из БД» → Svelte-компонент. */

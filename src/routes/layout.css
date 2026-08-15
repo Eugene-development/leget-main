@@ -296,6 +296,7 @@
 	--color-accent-surface-deep: var(--ds-accent-surface-deep);
 	--color-on-accent-muted: var(--ds-on-accent-muted);
 	--color-accent-ink: var(--ds-accent-ink);
+	--color-accent-ink-wash: var(--ds-accent-ink-wash);
 
 	/* Роли из разбора произвольных hex. */
 	--color-surface-inverse: var(--ds-dark-surface);

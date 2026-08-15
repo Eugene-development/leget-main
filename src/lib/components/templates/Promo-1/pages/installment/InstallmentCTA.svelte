@@ -3,17 +3,22 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import './theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -164,15 +169,15 @@
 						<EditableField
 							fieldKey="InstallmentCTA.phone"
 							label="Телефон"
-							value={String(data?.phone ?? '')}
-							{isEditable}
+							value={phone}
+							isEditable={false}
 							onSave={(v) => saveField('phone', v)}
 							class="inline-block"
 						>
 							{#snippet children(displayValue)}
 								{#if displayValue}
 									<a
-										href="tel:{displayValue}"
+										href={phoneHref}
 										class="group inline-flex items-center justify-center gap-2.5 rounded-full border border-on-dark/15 bg-on-dark/5 px-7 py-3.5 text-sm font-semibold text-on-dark transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5"
 									>
 										<svg

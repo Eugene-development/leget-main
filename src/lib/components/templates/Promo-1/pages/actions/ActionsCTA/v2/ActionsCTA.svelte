@@ -3,17 +3,22 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	const isLight = $derived(isLightBlock(data, 'dark'));
 
@@ -161,15 +166,15 @@
 						<EditableField
 							fieldKey="ActionsCTA.phone"
 							label="Телефон"
-							value={String(data?.phone ?? '')}
-							{isEditable}
+							value={phone}
+							isEditable={false}
 							onSave={(v) => saveField('phone', v)}
 							class="block"
 						>
 							{#snippet children(displayValue)}
 								{#if displayValue}
 									<a
-										href="tel:{displayValue}"
+										href={phoneHref}
 										class="group inline-flex items-center gap-4 rounded-2xl border border-on-dark/10 bg-on-dark/5 px-6 py-4 text-on-dark backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-cat-1-400/40 hover:bg-on-dark/10"
 									>
 										<span

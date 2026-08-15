@@ -3,17 +3,22 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
 	// акцентные плитки и кнопки остаются белым по цвету бренда.
@@ -195,15 +200,15 @@
 						<EditableField
 							fieldKey="PartnershipCTA.phone"
 							label="Телефон"
-							value={String(data?.phone ?? '')}
-							{isEditable}
+							value={phone}
+							isEditable={false}
 							onSave={(v) => saveField('phone', v)}
 							class="inline-block"
 						>
 							{#snippet children(displayValue)}
 								{#if displayValue}
 									<a
-										href="tel:{displayValue}"
+										href={phoneHref}
 										class="group p1-border p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border px-7 py-3.5 text-sm font-semibold backdrop-blur-sm transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5"
 									>
 										<svg

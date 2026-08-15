@@ -7,11 +7,13 @@
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: any;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
 
 	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
@@ -66,7 +68,7 @@
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
 			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
-				<ActionsCTAV2 bind:data {editContext} {isEditable} />
+				<ActionsCTAV2 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else}
 			<div
@@ -74,7 +76,7 @@
 				in:fly={{ x: -1200, duration: 600 }}
 				out:fly={{ x: -1200, duration: 600 }}
 			>
-				<ActionsCTAV1 bind:data {editContext} {isEditable} />
+				<ActionsCTAV1 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{/if}
 	</div>

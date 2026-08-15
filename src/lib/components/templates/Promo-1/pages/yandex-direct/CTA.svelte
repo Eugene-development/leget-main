@@ -2,16 +2,21 @@
 	// Артикул: 1.10.7.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { sitePhoneHref } from '$lib/utils/site-phone';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -67,10 +72,7 @@
 						{#snippet children(displayValue)}{displayValue}{/snippet}
 					</EditableField>
 				</a>
-				<a
-					href={String(data?.phoneHref ?? 'tel:+70000000000')}
-					class="yd-cta__btn yd-cta__btn--secondary"
-				>
+				<a href={phoneHref} class="yd-cta__btn yd-cta__btn--secondary">
 					<svg
 						width="18"
 						height="18"

@@ -4,18 +4,23 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../theme.css';
 	import './theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	const isLight = $derived(isLightBlock(data, 'light'));
 	async function saveField(field: string, value: string) {
@@ -94,14 +99,14 @@
 					<EditableField
 						fieldKey="ContactChannels.phone"
 						label="Номер телефона"
-						value={String(data?.phone || '+7 (999) 000-00-00')}
-						{isEditable}
+						value={phone}
+						isEditable={false}
 						onSave={(v) => saveField('phone', v)}
 						class="mt-6 block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<a href="tel:{displayValue}" class={ct.btn.link}>
+								<a href={phoneHref} class={ct.btn.link}>
 									{displayValue}
 									<svg
 										class="size-4 {ct.arrow}"

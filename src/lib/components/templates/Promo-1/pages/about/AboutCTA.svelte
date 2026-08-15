@@ -5,17 +5,22 @@
 	import { revealOnScroll } from './theme';
 	import './theme.css';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
@@ -155,15 +160,15 @@
 					<EditableField
 						fieldKey="AboutCTA.phone"
 						label="Телефон"
-						value={String(data?.phone ?? '')}
-						{isEditable}
+						value={phone}
+						isEditable={false}
 						onSave={(v) => saveField('phone', v)}
 						class="inline-block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
 								<a
-									href="tel:{displayValue}"
+									href={phoneHref}
 									class="group p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border border-ink-900/15 px-7 py-3.5 text-sm font-semibold transition duration-300 hover:border-ink-900/30 hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink-400 motion-safe:hover:-translate-y-0.5"
 								>
 									<svg

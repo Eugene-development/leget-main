@@ -13,11 +13,13 @@
 	let {
 		data = $bindable({}),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
+		sitePhone?: string | null;
 	} = $props();
 
 	// Footer (Promo-1) — page-компонент на глобальной странице '__global__':
@@ -94,7 +96,6 @@
 	// Не удаляем запись (иначе откатилась бы версия) и не пишем bridge-поля хэдера
 	// (logoUrl/disabledRubrics/disabledServices) → пункты меню не затрагиваются.
 	const FOOTER_CONTENT_KEYS = [
-		'phone',
 		'email',
 		'address',
 		'hours',
@@ -262,11 +263,11 @@
 		<!-- Динамический рендер выбранного варианта с эффектом слайдера -->
 		{#if selectedVersion === 'v3'}
 			<div class="w-full" in:fly={{ y: 120, duration: 600 }} out:fly={{ y: 120, duration: 600 }}>
-				<FooterV3 bind:data {editContext} {isEditable} />
+				<FooterV3 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else if selectedVersion === 'v2'}
 			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
-				<FooterV2 bind:data {editContext} {isEditable} />
+				<FooterV2 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else}
 			<div
@@ -274,7 +275,7 @@
 				in:fly={{ x: -1200, duration: 600 }}
 				out:fly={{ x: -1200, duration: 600 }}
 			>
-				<FooterV1 bind:data {editContext} {isEditable} />
+				<FooterV1 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{/if}
 	</div>

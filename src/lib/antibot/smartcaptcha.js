@@ -9,16 +9,14 @@
  * Fail-open: без sitekey капча не рендерится и формы не блокируются
  * (dev/staging, где ключ может быть не прописан).
  *
- * Sitekey берётся из $env/dynamic/public (а не static), чтобы отсутствие
- * ключа не ломало сборку и сохраняло fail-open behaviour.
+ * Sitekey вшивается Vite во время production-сборки — так же, как в
+ * leget-front. Отсутствие ключа сохраняет fail-open behaviour.
  *
  * @see https://yandex.cloud/en/docs/smartcaptcha
  */
 
-import { env } from '$env/dynamic/public';
-
 /** Sitekey виджета (публичный ключ ysс1_...) из env. Пусто = капча выключена. */
-export const SITE_KEY = env.PUBLIC_SMARTCAPTCHA_SITE_KEY;
+export const SITE_KEY = import.meta.env.VITE_SMARTCAPTCHA_SITE_KEY;
 
 const CAPTCHA_SCRIPT_SRC = 'https://smartcaptcha.yandexcloud.net/captcha.js';
 

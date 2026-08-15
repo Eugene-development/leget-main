@@ -7,15 +7,18 @@
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import type { Action } from 'svelte/action';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 
 	let {
 		data = $bindable({}),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
+		sitePhone?: string | null;
 	} = $props();
 
 	let showLoginModal = $state(false);
@@ -26,8 +29,8 @@
 			? data.siteName
 			: 'Логотип'
 	);
-	const phone = $derived(String(data?.phone ?? '+7 (999) 000-00-00'));
-	const phoneHref = $derived('tel:' + phone.replace(/[^+\d]/g, ''));
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 	const email = $derived(String(data?.email ?? 'info@site.ru'));
 	const address = $derived(String(data?.address ?? 'г. Москва, ул. Ленина, д. 10'));
 	const hours = $derived(String(data?.hours ?? 'Пн–Вс: 9:00 — 21:00'));
@@ -259,21 +262,11 @@
 									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
 										Телефон
 									</div>
-									<EditableField
-										fieldKey="Footer.phone"
-										label="Телефон"
-										value={phone}
-										onSave={(val) => saveField('phone', val)}
-										{isEditable}
+									<a
+										href={phoneHref}
+										class="text-sm text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
+										>{phone}</a
 									>
-										{#snippet children(displayValue)}
-											<a
-												href={phoneHref}
-												class="text-sm text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
-												>{displayValue}</a
-											>
-										{/snippet}
-									</EditableField>
 								</div>
 							</div>
 

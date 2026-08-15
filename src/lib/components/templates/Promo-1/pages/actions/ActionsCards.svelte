@@ -94,8 +94,6 @@
 		}
 	];
 
-	let localCards = $state<Card[]>([]);
-
 	function mergeCards(propsCards: any[] | undefined): Card[] {
 		if (!Array.isArray(propsCards) || propsCards.length === 0) {
 			return defaultCards;
@@ -131,6 +129,13 @@
 
 		return result;
 	}
+
+	// Начальное значение считаем ПРИ ИНИЦИАЛИЗАЦИИ, а не только в $effect: на сервере
+	// эффекты не выполняются, и с пустым localCards hasVisibleCards давал false —
+	// вся секция выпадала из SSR-разметки. $effect ниже оставлен для синхронизации
+	// с обновлённым пропсом (например, invalidateAll после сброса блока).
+	// svelte-ignore state_referenced_locally — начальный SSR-снимок намеренный.
+	let localCards = $state<Card[]>(mergeCards(data?.cards as any[] | undefined));
 
 	$effect(() => {
 		const merged = mergeCards(data?.cards as any[] | undefined);

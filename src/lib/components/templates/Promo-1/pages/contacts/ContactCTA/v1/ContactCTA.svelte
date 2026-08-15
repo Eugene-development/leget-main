@@ -4,18 +4,23 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from '../../theme';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../../../theme.css';
 	import '../../theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		sitePhone = null
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		sitePhone?: string | null;
 	} = $props();
+	const phone = $derived(resolveSitePhone(sitePhone));
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	// Ink-блок: дефолт тёмный, тумблер живёт в панели VersionSwitcher.
 	const isLight = $derived(isLightBlock(data, 'dark'));
@@ -91,14 +96,14 @@
 			<EditableField
 				fieldKey="ContactCTA.phone"
 				label="Телефон"
-				value={String(data?.phone ?? '')}
-				{isEditable}
+				value={phone}
+				isEditable={false}
 				onSave={(v) => saveField('phone', v)}
 				class="inline-block"
 			>
 				{#snippet children(displayValue)}
 					{#if displayValue}
-						<a href="tel:{displayValue}" class={ct.btn.primary}>
+						<a href={phoneHref} class={ct.btn.primary}>
 							<svg
 								class="size-4.5 transition-transform duration-300 group-hover:-rotate-12"
 								fill="none"
