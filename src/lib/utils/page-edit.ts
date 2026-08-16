@@ -122,6 +122,8 @@ const COMPONENT_ARTICLE_QUERY = `
       variants {
         version
         article
+        morph
+        roles
       }
     }
   }
@@ -130,6 +132,10 @@ const COMPONENT_ARTICLE_QUERY = `
 export interface ComponentVariantArticle {
 	version: number;
 	article: string;
+	/** Конструкция версии: «plain : cards.grid.3-6.icon». null — ещё не выписана. */
+	morph?: string | null;
+	/** Роли, которые способна исполнить конструкция. Это ВОЗМОЖНОСТИ, а не выбор тенанта. */
+	roles?: string[];
 }
 
 export interface ComponentArticle {

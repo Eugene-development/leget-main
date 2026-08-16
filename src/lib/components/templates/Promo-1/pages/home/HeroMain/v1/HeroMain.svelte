@@ -266,8 +266,13 @@
 										class="relative mx-auto max-h-16 w-full rounded-2xl object-contain md:max-h-20"
 									/>
 								{:else if isEditable}
+									<!-- Роль метки, а не три утилиты руками: кегль, начертание и
+									     разрежение приходят из `--ds-font-label-*` через `p1-label`.
+									     Раньше здесь стоял произвольный кегль ниже пола шкалы плюс
+									     начертание и разрядка, набранные по месту, — тот самый приём,
+									     из-за которого характер системы жил в разметке. -->
 									<div
-										class="rounded-2xl border-2 border-dashed border-ink-400/30 bg-on-dark/10 p-4 text-[10px] font-bold tracking-widest text-ink-500/50 uppercase backdrop-blur-sm"
+										class="p1-label rounded-2xl border-2 border-dashed border-ink-400/30 bg-on-dark/10 p-4 text-ink-500/50 uppercase backdrop-blur-sm"
 									>
 										Логотип
 									</div>
@@ -305,7 +310,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="hero-title mb-6 text-3xl text-ink-900 md:text-5xl lg:text-7xl">
+						<h1 class="hero-title mb-6 text-3xl font-bold text-ink-900 md:text-5xl lg:text-7xl">
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -510,6 +515,13 @@
 		line-height: 1.6;
 	}
 
+	/* Глобальный h1{font-weight: var(--ds-font-heading-weight)} в layout.css
+	   объявлен вне @layer и перебивает утилиту font-bold на элементе —
+	   переопределяем вес только для этого заголовка через scoped-класс. */
+	.hero-title {
+		font-weight: 700;
+	}
+
 	.brand-viewport {
 		width: 100%;
 		min-width: 0;
@@ -648,7 +660,13 @@
 		}
 
 		.hero-title {
-			font-size: 3rem;
+			/* Та же ступень, что `md:text-5xl` на самом элементе: компактный режим
+			   откатывает заголовок с lg-ступени на md-ю, а не заводит свой кегль.
+			   Ключ шкалы, а не 3rem, — размер остаётся одним значением в одном
+			   месте. Размер заголовка системе не принадлежит намеренно (DESIGN.md,
+			   Hierarchy: «компонент задаёт только размер»), поэтому шкала здесь
+			   тейлвиндовская — но та же самая, что у утилиты рядом. */
+			font-size: var(--text-5xl);
 			margin-bottom: 1rem;
 		}
 
@@ -677,12 +695,17 @@
 		align-items: center;
 		gap: 0.4rem;
 		padding: 0.45rem 0.9rem;
-		border-radius: 0.625rem;
+		/* Радиус элемента управления — 12px (DESIGN.md, Shapes: «кнопки и поля»),
+		   он же `rounded-xl` у такой же кнопки редактора в `PromoOffer/v2`.
+		   Было 0.625rem — ступень между `lg` и `xl`, мимо шкалы. */
+		border-radius: var(--ds-radius-xl);
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		background: rgba(15, 23, 42, 0.55);
 		backdrop-filter: blur(12px);
 		color: #f1f5f9;
-		font-size: 0.8125rem;
+		/* Ступень `sm` — та же, что у кнопки редактора в `PromoOffer/v2` рядом
+		   с иконкой 16px. Было 0.8125rem (13px) — между `xs` и `sm`. */
+		font-size: var(--text-sm);
 		font-weight: 600;
 		cursor: pointer;
 		transition:
@@ -699,11 +722,20 @@
 		flex-shrink: 0;
 	}
 
+	/* Отклик на курсор принадлежит шкале `link` — «интерактив: ссылки, hover,
+	   focus-кольца». Ровно её берут остальные кнопки редактора в этом же файле
+	   (`hover:border-link-500`, `hover:text-link-600`, `ring-link-600`), и эта
+	   была единственной, кто красил ховер литералом мимо системы.
+	   Ступень та же: литерал был sky-400 палитры Tailwind v3, из которой `link`
+	   и выведена. Токены несут v4, а та шире по гамме, поэтому в sRGB ступень
+	   рисуется чуть иначе — замер по каналам 56/189/248 против 0/188/255. Под
+	   20–55% альфы на тёмном стекле это единицы на канал; тот же случай, что
+	   описан для теней в design-system-tokens.md. */
 	.bg-picker-btn:hover {
-		background: rgba(56, 189, 248, 0.25);
-		border-color: rgba(56, 189, 248, 0.55);
+		background: color-mix(in oklab, var(--ds-link-400) 25%, transparent);
+		border-color: color-mix(in oklab, var(--ds-link-400) 55%, transparent);
 		transform: translateY(-1px);
-		box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+		box-shadow: 0 6px 20px color-mix(in oklab, var(--ds-link-400) 20%, transparent);
 	}
 
 	.bg-picker-btn:active {

@@ -98,7 +98,8 @@
 		'Brands',
 		'ContactCTA',
 		'ContactsHero',
-		'Direction'
+		'Direction',
+		'PartnerOffers'
 	]);
 	// У сайдбара контрол одноверсионных настроек находится в его собственной шапке:
 	// внешний overlay здесь дал бы кнопку вне fixed-карточки.

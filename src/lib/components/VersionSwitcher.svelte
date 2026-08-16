@@ -9,6 +9,7 @@
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import ComponentSettingsDrawer from '$lib/components/ComponentSettingsDrawer.svelte';
 	import { createThemeToggle, isLightBlock, type BlockTheme } from '$lib/utils/block-theme';
+	import { legacyVersionsFor } from '$lib/components/lifecycle';
 	import { invalidateAll } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
 
@@ -57,6 +58,15 @@
 	const actualResetId = $derived(
 		(typeof data?._componentId === 'string' ? data._componentId : null) ?? resetId
 	);
+
+	// Вывод версий из обращения. Выведенные не предлагаются в меню, но остаются
+	// выбранными и продолжают рендериться — ветка рендера живёт в `<Тип>/index.svelte`
+	// и об этом списке не знает. Разница между «не предлагается» и «не работает»
+	// и есть весь смысл статуса legacy; см. docs/architecture/component-lifecycle.md.
+	const legacyVersions = $derived(legacyVersionsFor(editContext?.templateId, componentType));
+	const offeredVersions = $derived(versions.filter((ver) => !legacyVersions.includes(ver)));
+	/** Тенант сидит на выведенной версии — ему показываем предложение перейти. */
+	const onLegacyVersion = $derived(legacyVersions.includes(selectedVersion));
 
 	let hasManuallySelected = $state(false);
 	let isOpen = $state(false);
@@ -124,6 +134,15 @@
 		const vn = versionNumber(selectedVersion);
 		if (vn === null) return null;
 		return articleVariants.find((v) => v.version === vn)?.article ?? componentArticle;
+	});
+
+	// Конструкция активной версии. Принадлежит именно версии, а не компоненту:
+	// переключение варианта меняет и морфотип, поэтому подпись-запаска в панели
+	// настроек обязана пересчитываться вместе с выбором.
+	const activeMorph = $derived.by(() => {
+		const vn = versionNumber(selectedVersion);
+		if (vn === null) return null;
+		return articleVariants.find((v) => v.version === vn)?.morph ?? null;
 	});
 
 	// Артикул тянем только для авторизованного пользователя: запрос идёт под @guard и
@@ -247,7 +266,26 @@
 						class="absolute top-12 left-0 z-50 flex w-44 flex-col gap-1 rounded-2xl border border-white/10 bg-slate-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
 						transition:fly={{ y: -10, duration: 200 }}
 					>
-						{#each versions as ver}
+						{#if onLegacyVersion}
+							<!-- Предложение сменить компонент. Видит только тот, кто сидит на
+							     выведенной версии; остальные о ней вообще не узнают. -->
+							<div
+								class="mb-1 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-[10px] leading-relaxed font-medium text-amber-200"
+							>
+								Этот вариант выведен из обращения. Он продолжит работать, но новых улучшений не
+								получит — выберите другой, когда будет удобно.
+							</div>
+						{/if}
+
+						{#if offeredVersions.length === 0}
+							<div
+								class="rounded-xl px-3 py-2.5 text-[10px] leading-relaxed font-medium text-slate-400"
+							>
+								Активных вариантов у этого блока не осталось: он заменён другим блоком.
+							</div>
+						{/if}
+
+						{#each offeredVersions as ver}
 							{#if ver === 'v1'}
 								<button
 									type="button"
@@ -318,7 +356,8 @@
 			{componentType}
 			onSaveData={saveImageData}
 			bind:open={drawerOpen}
-			title={title || componentType}
+			fallbackTitle={title || componentType}
+			morph={activeMorph}
 			article={activeArticle}
 			articleSectionHint={editContext.slug}
 			articleComponentHint={componentType}

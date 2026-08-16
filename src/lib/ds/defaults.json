@@ -24,6 +24,30 @@
 					"buttonText": "Дизайн-проект с расчётом стоимости",
 					"buttonHref": "/contact"
 				},
+				"PartnerOffers": {
+					"offers": [
+						{
+							"image": "https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg",
+							"alt": "Скидка 15% на фурнитуру Blum",
+							"partner": "Blum",
+							"offer": "Скидка 15% на фурнитуру",
+							"terms": "При заказе кухни от 150 000 ₽",
+							"validUntil": "31.12.2026",
+							"buttonText": "Получить предложение",
+							"buttonHref": "/contact"
+						},
+						{
+							"image": "https://storage.yandexcloud.net/novostroy/bg/prih.jpg",
+							"alt": "Столешница в подарок от Egger",
+							"partner": "Egger",
+							"offer": "Столешница в подарок",
+							"terms": "К любому кухонному гарнитуру от 200 000 ₽",
+							"validUntil": "30.11.2026",
+							"buttonText": "Получить предложение",
+							"buttonHref": "/contact"
+						}
+					]
+				},
 				"Message": {
 					"text": "Предлагаем мебель на заказ для вашего идеального интерьера с индивидуальным подбором размеров и дизайна."
 				},

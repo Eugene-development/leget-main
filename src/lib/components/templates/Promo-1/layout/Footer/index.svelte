@@ -228,7 +228,7 @@
 
 				<ComponentSettingsDrawer
 					bind:open={settingsOpen}
-					title="Футер"
+					fallbackTitle="Футер"
 					article={footerArticle}
 					articleSectionHint="__global__"
 					articleComponentHint="Footer"

@@ -19,6 +19,7 @@ import HomeEquipment from './pages/home/Equipment/index.svelte';
 import HomeStage from './pages/home/Stage/index.svelte';
 import HomeIncentives from './pages/home/Incentives/index.svelte';
 import HomeDirection from './pages/home/Direction/index.svelte';
+import HomePartnerOffers from './pages/home/PartnerOffers/index.svelte';
 import HomeBrands from './pages/home/Brands/index.svelte';
 
 // About page components
@@ -183,6 +184,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		Stage: HomeStage,
 		Incentives: HomeIncentives,
 		Direction: HomeDirection,
+		PartnerOffers: HomePartnerOffers,
 		Brands: HomeBrands
 	},
 	'/about': {
