@@ -20,8 +20,16 @@
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
+	<!-- `overflow-clip`, а не `overflow-hidden`: режет одинаково, но не заводит
+	     контейнер прокрутки. `hidden` его заводит, и `view()` внутри блока
+	     считает видимость относительно этой обёртки, а не окна — карточка внутри
+	     неё видна всегда, прогресс намертво стоит на 100%, анимация молча не
+	     идёт. Ошибки при этом нет никакой, поэтому проверять надо замером
+	     (`getAnimations()[0].timeline.source`), а не на глаз.
+	     ⚠️ Та же обёртка стоит ещё в 13 `index.svelte` шаблона — там скролл-
+	     связанная анимация по-прежнему не заработает. Ретрофит не сделан. -->
 	<div
-		class="relative w-full overflow-hidden {selectedVersion === 'disabled'
+		class="relative w-full overflow-clip {selectedVersion === 'disabled'
 			? 'opacity-40 grayscale'
 			: ''}"
 	>

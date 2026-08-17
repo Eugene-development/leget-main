@@ -4,6 +4,25 @@
     "ignoreFiles": [
       "docs/design-system/foundations/*"
     ],
-    "ignoreValues": []
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-17T05:39:43.033Z",
+        "reason": "Гарнитура тела Базовой (--ds-font-body), self-host кириллическими сабсетами, описана в DESIGN.md"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "ibm plex sans",
+        "createdAt": "2026-08-17T05:39:52.460Z",
+        "reason": "Гарнитура Графита (--ds-font-heading/body в graphite.css), описана в DESIGN.md; frontmatter несёт значения Базовой"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "ibm plex mono",
+        "createdAt": "2026-08-17T05:39:52.499Z",
+        "reason": "Роль цифры у Графита (--ds-font-numeric в graphite.css), описана в DESIGN.md; frontmatter несёт значения Базовой"
+      }
+    ]
   }
 }

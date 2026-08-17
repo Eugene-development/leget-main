@@ -1,1787 +1,1813 @@
 {
-	"1": {
-		"name": "Promo-1",
-		"pages": {
-			"__global__": {
-				"Footer": {
-					"siteName": "Логотип"
-				}
-			},
-			"/404": {
-				"NotFound": {
-					"title": "Страница не найдена",
-					"subtitle": "Возможно, страница была перемещена или удалена, а ссылка устарела. Вернитесь на главную или к предыдущему разделу.",
-					"homeButtonText": "На главную",
-					"homeHref": "/",
-					"backButtonText": "Вернуться назад"
-				}
-			},
-			"/": {
-				"HeroMain": {
-					"companyName": "Компания",
-					"title": "Мебель и Техника",
-					"description": "Эксклюзивная корпусная мебель по вашим индивидуальным размерам с бесплатным 3D-проектом от профессионального дизайнера, подбором премиальных материалов и расчётом стоимости под ваш бюджет.",
-					"buttonText": "Дизайн-проект с расчётом стоимости",
-					"buttonHref": "/contact"
-				},
-				"PartnerOffers": {
-					"offers": [
-						{
-							"image": "https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg",
-							"alt": "Скидка 15% на фурнитуру Blum",
-							"partner": "Blum",
-							"offer": "Скидка 15% на фурнитуру",
-							"terms": "При заказе кухни от 150 000 ₽",
-							"validUntil": "31.12.2026",
-							"buttonText": "Получить предложение",
-							"buttonHref": "/contact"
-						},
-						{
-							"image": "https://storage.yandexcloud.net/novostroy/bg/prih.jpg",
-							"alt": "Столешница в подарок от Egger",
-							"partner": "Egger",
-							"offer": "Столешница в подарок",
-							"terms": "К любому кухонному гарнитуру от 200 000 ₽",
-							"validUntil": "30.11.2026",
-							"buttonText": "Получить предложение",
-							"buttonHref": "/contact"
-						}
-					]
-				},
-				"Message": {
-					"text": "Предлагаем мебель на заказ для вашего идеального интерьера с индивидуальным подбором размеров и дизайна."
-				},
-				"PromoOffer": {
-					"badge": "Эксклюзивное предложение",
-					"title": "Специальное предложение",
-					"textPrimary": "Скидка 15% на мебель этой весной",
-					"textSecondary": "Воспользуйтесь уникальной возможностью приобрести качественную мебель по выгодной цене",
-					"primaryButton": "Получить предложение",
-					"secondaryButton": "Узнать больше",
-					"primaryHref": "/contact",
-					"secondaryHref": "/about"
-				},
-				"Equipment": {
-					"badge": "Дополнительно",
-					"title": "Комплектация проектов"
-				},
-				"Stage": {
-					"badge": "Это важно",
-					"title": "Наша работа",
-					"description": "Мы поддержим вас на всех этапах работы над мебельным проектом: от первой консультации до дня финальной сборки."
-				},
-				"Incentives": {
-					"badge": "Выгода",
-					"title": "С нами выгодно",
-					"text": "<p>Помогаем выбрать фурнитуру, материалы, цветовые сочетания и производителя мебели — чтобы вы получили честную цену, соблюдение сроков, высокое качество и внимательный сервис без лишних затрат времени и бюджета.</p>",
-					"gallery": [
-						{
-							"src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/price.webp",
-							"alt": "Образцы материалов и расчёт стоимости мебели",
-							"label": "Цена"
-						},
-						{
-							"src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/timelines.webp",
-							"alt": "Монтаж мебели точно в срок",
-							"label": "Сроки"
-						},
-						{
-							"src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/quality-v2.webp",
-							"alt": "Ровные фасады и точная подгонка деталей мебели",
-							"label": "Качество"
-						},
-						{
-							"src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/service.webp",
-							"alt": "Консультация дизайнера с клиентом",
-							"label": "Сервис"
-						}
-					]
-				},
-				"Direction": {},
-				"Brands": {
-					"badge": "Материалы",
-					"title": "Бренды, говорящие о качестве",
-					"partnersLabel": "Наши партнёры-производители"
-				}
-			},
-			"/about": {
-				"Hero": {
-					"badge": "О компании",
-					"title": "О нас",
-					"lead": "Мы помогаем пройти путь от идеи до готового интерьера: подбираем материалы, считаем проект и ведём его до финальной сборки.",
-					"text": "",
-					"buttonText": "Связаться с нами",
-					"img1": "",
-					"img2": "",
-					"img3": "",
-					"img4": ""
-				},
-				"Text": {
-					"content": "<p>Мы делаем мебель под конкретное помещение и конкретных людей: сначала замер и разговор о том, как вы живёте и что храните, потом дизайн-проект, расчёт и подбор материалов под ваш бюджет.</p><p>Ведём проект до конца — согласуем детали, держим сроки и остаёмся на связи после сборки.</p>"
-				},
-				"Statistics": {},
-				"Mission": {
-					"title": "Наша миссия",
-					"text1": "",
-					"text2": "",
-					"text3": "",
-					"imageUrl": ""
-				},
-				"Values": {
-					"title": "Наши ценности",
-					"subtitle": "Принципы, которыми мы руководствуемся в работе",
-					"items": []
-				},
-				"WhyUs": {
-					"title": "Почему выбирают нас",
-					"subtitle": "Преимущества работы с нами",
-					"items": []
-				},
-				"AboutCTA": {
-					"title": "Ждём вас в качестве клиента",
-					"subtitle": "Свяжитесь с нами, чтобы обсудить ваш проект",
-					"buttonText": "Получить консультацию",
-					"phone": ""
-				}
-			},
-			"/contact": {
-				"ContactForm": {
-					"title": "Контакты",
-					"email": "info@example.com"
-				}
-			},
-			"/actions": {
-				"Hero": {
-					"eyebrow": "Выгодные предложения",
-					"title": "Акции, скидки и подарки",
-					"subtitle": "Получите актуальные акции наших партнёров и узнайте о подарках и скидках на проекты и услуги"
-				},
-				"ActionsCards": {},
-				"ActionsCardsExtra": {},
-				"ActionsBanner": {
-					"imageUrl": "",
-					"imageAlt": "Акция"
-				},
-				"ActionsCTA": {
-					"title": "Хотите узнать больше об акциях?",
-					"subtitle": "Свяжитесь с нами и мы расскажем обо всех актуальных предложениях",
-					"buttonText": "Связаться с нами",
-					"phone": ""
-				}
-			},
-			"/contacts": {
-				"ContactsHero": {
-					"eyebrow": "Связь с нами",
-					"title": "Контакты",
-					"subtitle": "Мы работаем с понедельника по субботу с 10:00 до 20:00. В иное время воспользуйтесь онлайн-чатом или почтой."
-				},
-				"ContactChannels": {
-					"phone": "",
-					"email": ""
-				},
-				"ContactAddress": {
-					"eyebrow": "Давайте встретимся",
-					"title": "Личная консультация",
-					"description": "Для обсуждения деталей мы можем организовать с вами встречу в одном из салонов наших партнёров или на вашем объекте",
-					"buttonText": "Записаться на консультацию",
-					"addressTitle": "Адрес",
-					"addressText": "",
-					"hoursTitle": "Часы работы",
-					"hoursText": "",
-					"parkingTitle": "Парковка",
-					"parkingText": "",
-					"mapImageUrl": ""
-				},
-				"ContactMessengers": {
-					"eyebrow": "Социальные сети",
-					"title": "Мы в Телеграм",
-					"subtitle": "Напишите нам и мы ответим в течение нескольких минут",
-					"telegramUrl": ""
-				},
-				"ContactCTA": {
-					"title": "Остались вопросы?",
-					"subtitle": "Свяжитесь с нами любым удобным способом — мы всегда рады помочь",
-					"phone": "",
-					"telegramUrl": ""
-				}
-			},
-			"/partnership": {
-				"PartnershipHero": {
-					"badge": "Партнёрская программа",
-					"title": "Растём вместе",
-					"text": "Приглашаем к сотрудничеству дизайнеров интерьеров, ремонтные бригады и продавцов мебели. Выгодные условия и прозрачная система вознаграждений.",
-					"buttonText": "Обсудить сотрудничество",
-					"quote": "Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.",
-					"quoteName": "",
-					"quoteRole": ""
-				},
-				"WhoWeInvite": {
-					"title": "Кого мы приглашаем",
-					"subtitle": "Партнёрство для профессионалов в сфере интерьера и ремонта",
-					"cards": [],
-					"platformText": "Профессиональная платформа для автоматизации партнёрских продаж.",
-					"platformUrl": "",
-					"platformButtonText": "Перейти на платформу"
-				},
-				"ForManufacturers": {
-					"badge": "Вы организация?",
-					"title": "Для производителей и поставщиков",
-					"text": "Мы готовы предложить уникальные возможности для совместного развития.",
-					"buttonText": "Оставить заявку",
-					"benefits": [],
-					"stats": []
-				},
-				"Benefits": {
-					"title": "Преимущества партнёрства",
-					"subtitle": "Что вы получаете, работая с нами",
-					"items": []
-				},
-				"HowToStart": {
-					"title": "Как стать партнёром",
-					"subtitle": "Простой процесс от первого контакта до результата",
-					"steps": []
-				},
-				"PartnershipCTA": {
-					"title": "Присоединяйтесь к нам",
-					"subtitle": "Начните работать вместе с нами уже сегодня",
-					"buttonText": "Обсудить сотрудничество",
-					"phone": ""
-				}
-			},
-			"/testimonials": {
-				"Hero": {
-					"eyebrow": "Отзывы",
-					"title": "Отзывы о нас",
-					"subtitle": "Мы работаем ради таких отзывов клиентов о нашей работе"
-				},
-				"TestimonialsSummary": {
-					"title": "Нам доверяют",
-					"subtitle": "Каждый отзыв — результат работы дизайнеров, мастеров и сборщиков",
-					"rating": "4.9",
-					"ratingCaption": "на основе отзывов покупателей за всё время работы",
-					"stats": []
-				},
-				"TestimonialsGrid": {
-					"featured": [],
-					"reviews": []
-				}
-			},
-			"/installment": {
-				"InstallmentHero": {
-					"title": "Рассрочка без переплаты",
-					"subtitle": "Купите мебель и технику сейчас — платите частями до 12 месяцев. Быстрое одобрение, минимум документов.",
-					"buttonText": "Консультация по рассрочке"
-				},
-				"InstallmentPlans": {
-					"title": "Программы рассрочки",
-					"subtitle": "Выберите удобный срок и условия оплаты",
-					"plans": []
-				},
-				"InstallmentRequirements": {
-					"title": "Что нужно для оформления",
-					"subtitle": "Минимум документов — максимум удобства",
-					"items": []
-				},
-				"InstallmentSteps": {
-					"title": "Как оформить рассрочку",
-					"subtitle": "Простой процесс за 4 шага",
-					"steps": []
-				},
-				"InstallmentBanks": {
-					"title": "Банки-партнёры",
-					"subtitle": "Работаем с надёжными финансовыми организациями",
-					"banks": []
-				},
-				"InstallmentFAQ": {
-					"title": "Частые вопросы",
-					"items": []
-				},
-				"InstallmentCTA": {
-					"title": "Оформите рассрочку сегодня",
-					"subtitle": "Получите мебель и технику не откладывая покупку — платите комфортными частями",
-					"buttonText": "Консультация",
-					"phone": ""
-				}
-			},
-			"/guarantees": {
-				"GuaranteesHero": {
-					"title": "Гарантия качества",
-					"subtitle": "Мы уверены в качестве продукции наших партнёров. Вся продукция имеет расширенную гарантию на материалы и работу мастеров."
-				},
-				"GuaranteeTerms": {
-					"title": "Сроки гарантии",
-					"subtitle": "Официальная гарантия от производителей на все категории",
-					"items": []
-				},
-				"WhatsCovered": {
-					"title": "Что покрывает гарантия",
-					"description": "Наша гарантия распространяется на производственные дефекты материалов и качество сборки.",
-					"items": [],
-					"imageUrl": ""
-				},
-				"HowToApply": {
-					"title": "Как обратиться по гарантии",
-					"subtitle": "Простой процесс решения гарантийных вопросов",
-					"steps": []
-				},
-				"GuaranteesCTA": {
-					"title": "Гарантийный случай?",
-					"subtitle": "Заполните форму или позвоните нам — решим вопрос в кратчайшие сроки",
-					"buttonText": "Оставить заявку",
-					"phone": ""
-				}
-			},
-			"/yandex-direct": {
-				"Hero": {
-					"badge": "Специальное предложение",
-					"title": "Мебель на заказ по вашим размерам",
-					"subtitle": "Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект",
-					"primaryButton": "Рассчитать стоимость",
-					"primaryHref": "/contact",
-					"secondaryButton": "Позвонить",
-					"secondaryHref": "tel:+70000000000"
-				},
-				"USP": {
-					"label": "Почему мы",
-					"title": "Уникальное торговое предложение",
-					"subtitle": "То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас",
-					"items": []
-				},
-				"Advantages": {
-					"label": "Наши преимущества",
-					"title": "Цифры говорят за нас",
-					"stats": [],
-					"features": []
-				},
-				"Steps": {
-					"label": "Как мы работаем",
-					"title": "4 простых шага к вашей идеальной мебели",
-					"steps": []
-				},
-				"SocialProof": {
-					"label": "Отзывы клиентов",
-					"title": "Нам доверяют сотни клиентов",
-					"reviews": []
-				},
-				"Offer": {
-					"badge": "Ограниченное предложение",
-					"title": "Закажите сейчас — получите скидку 15%",
-					"subtitle": "Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ",
-					"buttonText": "Получить скидку",
-					"buttonHref": "/contact",
-					"includes": []
-				},
-				"CTA": {
-					"title": "Готовы обсудить ваш проект?",
-					"subtitle": "Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы",
-					"primaryButton": "Оставить заявку",
-					"primaryHref": "/contact",
-					"phoneButton": "Позвонить нам",
-					"phoneHref": "tel:+70000000000"
-				}
-			},
-			"/consultation": {
-				"ConsultationHero": {
-					"badge": "Премиальный сервис",
-					"title_part1": "Консультация",
-					"title_part2": "дизайнера",
-					"description": "Трансформируйте свои идеи в безупречный интерьер. Получите экспертные рекомендации по стилю, эргономике и материалам от ведущих специалистов отрасли.",
-					"cta_text": "Заказать консультацию"
-				},
-				"ConsultationFeatures": {
-					"badge": "Что вы получите",
-					"title": "Комплексный подход к вашему интерьеру"
-				},
-				"ConsultationWhy": {
-					"title": "Почему начать с консультации?"
-				},
-				"ConsultationCTA": {
-					"title": "Готовы преобразить пространство?",
-					"description": "Запишитесь на консультацию сегодня и сделайте первый уверенный шаг к созданию интерьера вашей мечты.",
-					"cta_text": "Заказать консультацию"
-				}
-			},
-			"/design-project": {
-				"DesignProjectHero": {
-					"badge": "Проектирование полного цикла",
-					"title_part1": "Проект",
-					"title_part2": "дизайна",
-					"description": "Создаем не просто красивые картинки, а детально проработанные технические решения для безупречной реализации вашего интерьера.",
-					"cta_text": "Начать проект"
-				},
-				"DesignProjectFeatures": {
-					"badge": "Состав проекта",
-					"title": "Полный комплект документации"
-				},
-				"DesignProjectWhy": {
-					"title": "Почему нужен дизайн-проект?"
-				},
-				"DesignProjectCTA": {
-					"title_part1": "Готовы создать",
-					"title_part2": "свой идеал?",
-					"cta_text": "Заказать проект"
-				}
-			},
-			"/measurement": {
-				"MeasurementHero": {
-					"badge": "Услуга компании",
-					"title_part1": "Проектный замер",
-					"title_part2": "помещения",
-					"description": "Точные обмеры — основа качественного дизайн-проекта. Профессиональный замер с фиксацией всех коммуникаций и особенностей помещения.",
-					"cta_text": "Заказать замер"
-				},
-				"MeasurementFeatures": {
-					"badge": "Что мы фиксируем",
-					"title": "Детальный обмер помещения"
-				},
-				"MeasurementWhy": {
-					"title": "Зачем нужен профессиональный замер?"
-				},
-				"MeasurementCTA": {
-					"title": "Готовы начать с точного замера?",
-					"description": "Закажите профессиональный замер — первый шаг к идеальному интерьеру",
-					"cta_text": "Заказать замер"
-				}
-			},
-			"/furniture-project": {
-				"FurnitureProjectHero": {
-					"badge": "Услуга компании",
-					"title_part1": "Проектирование",
-					"title_part2": "мебели",
-					"description": "Индивидуальная мебель, спроектированная под ваше пространство с учётом ваших пожеланий. От стартового эскиза до рабочих чертежей для производства.",
-					"cta_text": "Заказать проект мебели"
-				},
-				"FurnitureProjectFeatures": {
-					"badge": "Состав проекта",
-					"title": "Полный комплект для производства"
-				},
-				"FurnitureProjectWhy": {
-					"title": "Почему мебель на заказ?"
-				},
-				"FurnitureProjectCTA": {
-					"title": "Готовы создать уникальную мебель?",
-					"description": "Закажите проект мебели и получите изделие, идеально подходящее под ваш интерьер",
-					"cta_text": "Заказать проект мебели"
-				}
-			},
-			"/assembly": {
-				"AssemblyHero": {
-					"badge": "Услуга компании",
-					"title_part1": "Сборка и",
-					"title_part2": "установка",
-					"description": "Профессиональная сборка и установка мебели любой сложности профессиональным инструментом. Быстро, чисто, аккуратно и с гарантией качества.",
-					"cta_text": "Заказать сборку"
-				},
-				"AssemblyFeatures": {
-					"badge": "Наши услуги",
-					"title": "Полный комплекс работ"
-				},
-				"AssemblyWhy": {
-					"title": "Почему выбирают нас?"
-				},
-				"AssemblyCTA": {
-					"title": "Нужна сборка мебели?",
-					"description": "Оставьте заявку и мы соберём вашу мебель быстро и качественно",
-					"cta_text": "Заказать сборку"
-				}
-			},
-			"/mebel": {
-				"MebelSidebar": {
-					"categories": [
-						{
-							"value": "Кухни",
-							"slug": "kitchens"
-						},
-						{
-							"value": "Шкафы",
-							"slug": "wardrobes"
-						},
-						{
-							"value": "Гардеробные",
-							"slug": "dressing-rooms"
-						},
-						{
-							"value": "Прихожие",
-							"slug": "hallways"
-						},
-						{
-							"value": "Детская мебель",
-							"slug": "kids-furniture"
-						}
-					]
-				},
-				"MebelHero": {
-					"title": "Мебель на заказ",
-					"description": "Создаём уникальную корпусную мебель по вашим размерам и дизайну. Индивидуальный подход к каждому проекту.",
-					"primaryButton": "Ваш проект",
-					"secondaryButton": "Бесплатный замер",
-					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png"
-				},
-				"MebelBenefits": {
-					"title": "Почему выбирают нас",
-					"items": [
-						{
-							"title": "Гарантия качества",
-							"desc": "Используются только сертифицированные материалы от надёжных производителей",
-							"icon": "shield"
-						},
-						{
-							"title": "Точные сроки",
-							"desc": "Соблюдаем оговорённые сроки изготовления, доставки и сборки мебели",
-							"icon": "clock"
-						},
-						{
-							"title": "Индивидуальный дизайн",
-							"desc": "Разрабатываем проект под ваши размеры и пожелания",
-							"icon": "design"
-						}
-					]
-				},
-				"MebelSolutions": {
-					"title": "Популярные решения",
-					"items": [
-						{
-							"title": "Кухонные гарнитуры",
-							"desc": "От классики до современного минимализма",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_kitchens.png"
-						},
-						{
-							"title": "Шкафы",
-							"desc": "Максимум функциональности и стиля",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_wardrobes.png"
-						}
-					]
-				},
-				"MebelProcess": {
-					"title": "Как мы работаем",
-					"steps": [
-						{
-							"title": "Консультация",
-							"desc": "Обсуждаем ваши пожелания"
-						},
-						{
-							"title": "Замер",
-							"desc": "Бесплатный выезд специалиста"
-						},
-						{
-							"title": "Проект",
-							"desc": "3D-визуализация и расчёт"
-						},
-						{
-							"title": "Установка",
-							"desc": "Профессиональный монтаж"
-						}
-					]
-				},
-				"MebelCTA": {
-					"title": "Готовы начать проект?",
-					"description": "Оставьте заявку и получите бесплатный дизайн-проект вашей будущей мебели",
-					"buttonText": "Получить консультацию"
-				}
-			},
-			"/mebel/{category}": {
-				"MebelSidebar": {
-					"categories": []
-				},
-				"MebelCategoryHero": {
-					"title": "Категория",
-					"description": "Описание категории",
-					"buttonText": "Создать проект"
-				},
-				"MebelProjectsGrid": {
-					"projects": []
-				},
-				"MebelBenefits": {
-					"title": "Почему выбирают нас",
-					"items": [
-						{
-							"title": "Гарантия качества",
-							"desc": "Используются только сертифицированные материалы",
-							"icon": "shield"
-						},
-						{
-							"title": "Точные сроки",
-							"desc": "Соблюдаем оговорённые сроки",
-							"icon": "clock"
-						},
-						{
-							"title": "3D-проект бесплатно",
-							"desc": "Визуализация вашего будущего интерьера",
-							"icon": "design"
-						}
-					]
-				},
-				"MebelCTA": {
-					"title": "Не нашли подходящий вариант?",
-					"description": "Мы изготовим мебель по вашему индивидуальному проекту",
-					"buttonText": "Заказать проект"
-				}
-			},
-			"/mebel/{category}/{project}": {
-				"MebelSidebar": {},
-				"MebelProjectHero": {},
-				"MebelProjectDescription": {},
-				"MebelProjectSimilar": {},
-				"MebelCTA": {
-					"title": "Хотите такую же мебель?",
-					"description": "Оставьте заявку и получите бесплатный расчёт стоимости с учётом ваших размеров",
-					"buttonText": "Создать проект и узнать цену"
-				}
-			},
-			"/stoleshnica": {
-				"StoleshnicaSidebar": {
-					"categories": [
-						{
-							"title": "Кварц",
-							"slug": "kvarc"
-						},
-						{
-							"title": "Акриловый камень",
-							"slug": "akril"
-						},
-						{
-							"title": "ДСП / Постформинг",
-							"slug": "dsp"
-						},
-						{
-							"title": "Массив дерева",
-							"slug": "massiv"
-						},
-						{
-							"title": "Керамика",
-							"slug": "keramika"
-						}
-					]
-				},
-				"StoleshnicaHero": {
-					"title": "Столешницы",
-					"description": "Изготавливаем столешницы из искусственного камня, кварца, массива и других материалов. Точный раскрой под вашу кухню с вырезами под мойку и варочную панель.",
-					"primaryButton": "Рассчитать стоимость",
-					"secondaryButton": "Вызвать замерщика"
-				},
-				"StoleshnicaMaterials": {
-					"title": "Сравнение материалов",
-					"rows": [
-						{
-							"material": "Кварцевый агломерат",
-							"price": "Высокая",
-							"strength": "Высокая",
-							"care": "Простой",
-							"strengthColor": "emerald",
-							"careColor": "emerald"
-						},
-						{
-							"material": "Акриловый камень",
-							"price": "Средняя",
-							"strength": "Средняя",
-							"care": "Простой",
-							"strengthColor": "amber",
-							"careColor": "emerald"
-						},
-						{
-							"material": "ДСП / Постформинг",
-							"price": "Низкая",
-							"strength": "Средняя",
-							"care": "Простой",
-							"strengthColor": "amber",
-							"careColor": "emerald"
-						},
-						{
-							"material": "Массив дерева",
-							"price": "Высокая",
-							"strength": "Низкая",
-							"care": "Требует ухода",
-							"strengthColor": "sky",
-							"careColor": "amber"
-						},
-						{
-							"material": "Керамика",
-							"price": "Высокая",
-							"strength": "Высокая",
-							"care": "Простой",
-							"strengthColor": "emerald",
-							"careColor": "emerald"
-						}
-					]
-				},
-				"StoleshnicaBenefits": {
-					"title": "Наши преимущества",
-					"items": [
-						{
-							"title": "Точный расчёт",
-							"desc": "Замер с точностью до миллиметра для идеальной подгонки",
-							"icon": "calc",
-							"color": "amber"
-						},
-						{
-							"title": "Профессиональный монтаж",
-							"desc": "Установка с герметизацией стыков и вырезами под технику",
-							"icon": "tools",
-							"color": "sky"
-						},
-						{
-							"title": "Гарантия 2-10 лет",
-							"desc": "Гарантия на материал и работы по установке вашего изделия",
-							"icon": "shield",
-							"color": "emerald"
-						}
-					]
-				},
-				"StoleshnicaSolutions": {
-					"title": "Популярные решения",
-					"items": [
-						{
-							"title": "Кварцевый агломерат",
-							"desc": "Прочность и элегантность натурального камня",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/stoleshnica_popular_kvarc.png",
-							"href": "/stoleshnica/kvarc"
-						},
-						{
-							"title": "Акриловый камень",
-							"desc": "Бесшовное соединение и любые формы",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/stoleshnica_popular_akril.png",
-							"href": "/stoleshnica/akril"
-						}
-					]
-				},
-				"StoleshnicaServices": {
-					"title": "Что входит в стоимость",
-					"services": [
-						{
-							"title": "Выезд замерщика",
-							"desc": "Бесплатный замер помещения"
-						},
-						{
-							"title": "Изготовление",
-							"desc": "Производство по вашим размерам"
-						},
-						{
-							"title": "Вырезы под технику",
-							"desc": "Под мойку, варочную панель, смеситель"
-						},
-						{
-							"title": "Доставка и монтаж",
-							"desc": "Профессиональная установка"
-						}
-					]
-				},
-				"StoleshnicaCTA": {
-					"title": "Рассчитайте стоимость столешницы",
-					"description": "Оставьте заявку и получите расчёт стоимости с учётом всех вырезов и монтажа",
-					"buttonText": "Получить расчёт"
-				}
-			},
-			"/bytovaya-tehnika": {
-				"ByttehnikaSidebar": {
-					"brands": [
-						{
-							"title": "Bosch",
-							"slug": "bosch"
-						},
-						{
-							"title": "Siemens",
-							"slug": "siemens"
-						},
-						{
-							"title": "Electrolux",
-							"slug": "electrolux"
-						},
-						{
-							"title": "Hansa",
-							"slug": "hansa"
-						},
-						{
-							"title": "Gorenje",
-							"slug": "gorenje"
-						}
-					]
-				},
-				"ByttehnikaHero": {
-					"title": "Бытовая техника",
-					"description": "Встраиваемая и отдельностоящая техника от ведущих мировых производителей. Подберём оптимальное решение с учётом ваших пожеланий и бюджета.",
-					"primaryButton": "Подобрать технику",
-					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/appliances_hero.png"
-				},
-				"ByttehnikaBrands": {
-					"title": "Работаем с лучшими брендами",
-					"brands": [
-						{
-							"title": "Bosch",
-							"slug": "bosch"
-						},
-						{
-							"title": "Siemens",
-							"slug": "siemens"
-						},
-						{
-							"title": "Electrolux",
-							"slug": "electrolux"
-						},
-						{
-							"title": "Hansa",
-							"slug": "hansa"
-						},
-						{
-							"title": "Gorenje",
-							"slug": "gorenje"
-						},
-						{
-							"title": "Whirlpool",
-							"slug": "whirlpool"
-						}
-					]
-				},
-				"ByttehnikaBenefits": {
-					"title": "Почему покупают у нас",
-					"items": [
-						{
-							"title": "Официальная гарантия",
-							"desc": "Вся техника с официальной гарантией производителя до 5 лет",
-							"icon": "shield",
-							"color": "emerald"
-						},
-						{
-							"title": "Выгодные цены",
-							"desc": "Прямые поставки техники от производителей без посредников",
-							"icon": "wallet",
-							"color": "sky"
-						},
-						{
-							"title": "Быстрая доставка",
-							"desc": "Доставим технику в удобное время с подъёмом на этаж",
-							"icon": "bolt",
-							"color": "amber"
-						}
-					]
-				},
-				"ByttehnikaCategories": {
-					"title": "Популярные категории",
-					"items": [
-						{
-							"title": "Варочные панели",
-							"desc": "Индукционные, газовые, электрические",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/varochna.jpg"
-						},
-						{
-							"title": "Духовые шкафы",
-							"desc": "Встраиваемые с конвекцией и грилем",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/duhshkaf.jpg"
-						}
-					]
-				},
-				"ByttehnikaComplex": {
-					"title": "Комплексное решение",
-					"description": "Закажите кухню вместе с техникой и получите скидку до 15% на весь комплект. Наши дизайнеры подберут технику, которая идеально впишется в ваш проект.",
-					"buttonText": "Заказать проект мебели",
-					"perks": [
-						"Единый проект кухни и техники",
-						"Скидка на комплект до 15%",
-						"Одновременная доставка и установка"
-					]
-				},
-				"ByttehnikaCTA": {
-					"title": "Нужна помощь с выбором?",
-					"description": "Наши специалисты помогут подобрать технику под ваши задачи и бюджет",
-					"buttonText": "Получить консультацию"
-				}
-			},
-			"/santehnika": {
-				"SantehnikaSidebar": {
-					"brands": [
-						{
-							"title": "Blanco",
-							"slug": "blanco"
-						},
-						{
-							"title": "Grohe",
-							"slug": "grohe"
-						},
-						{
-							"title": "Hansgrohe",
-							"slug": "hansgrohe"
-						},
-						{
-							"title": "Franke",
-							"slug": "franke"
-						},
-						{
-							"title": "Omoikiri",
-							"slug": "omoikiri"
-						}
-					]
-				},
-				"SantehnikaHero": {
-					"title": "Сантехника",
-					"description": "Кухонные мойки, смесители, измельчители и аксессуары от ведущих производителей. Подберём идеальное сочетание цвета и формы для вашей кухни.",
-					"primaryButton": "Подобрать комплект",
-					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/plumbing_hero.png"
-				},
-				"SantehnikaBrands": {
-					"title": "Бренды сантехники",
-					"brands": [
-						{
-							"title": "Blanco",
-							"slug": "blanco"
-						},
-						{
-							"title": "Grohe",
-							"slug": "grohe"
-						},
-						{
-							"title": "Hansgrohe",
-							"slug": "hansgrohe"
-						},
-						{
-							"title": "Franke",
-							"slug": "franke"
-						},
-						{
-							"title": "Omoikiri",
-							"slug": "omoikiri"
-						},
-						{
-							"title": "Elikor",
-							"slug": "elikor"
-						}
-					]
-				},
-				"SantehnikaSinkTypes": {
-					"title": "Типы кухонных моек",
-					"items": [
-						{
-							"title": "Нержавеющая сталь",
-							"desc": "Классика для любой кухни. Прочные, гигиеничные, доступные по цене",
-							"icon": "cube",
-							"color": "slate"
-						},
-						{
-							"title": "Гранитные композитные",
-							"desc": "Стильный внешний вид, устойчивость к царапинам и высоким температурам",
-							"icon": "sparkles",
-							"color": "amber"
-						},
-						{
-							"title": "Керамические",
-							"desc": "Элегантность и долговечность. Идеально для классических интерьеров",
-							"icon": "palette",
-							"color": "sky"
-						}
-					]
-				},
-				"SantehnikaCategories": {
-					"title": "Популярные категории",
-					"items": [
-						{
-							"title": "Кухонные мойки",
-							"desc": "Врезные, накладные, интегрированные",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/kitchen_sink.png"
-						},
-						{
-							"title": "Смесители",
-							"desc": "С выдвижным изливом, сенсорные, классические",
-							"image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/kitchen_faucet.png"
-						}
-					]
-				},
-				"SantehnikaBenefits": {
-					"title": "Почему выбирают нас",
-					"items": [
-						{
-							"title": "Оригинальная продукция",
-							"desc": "Только сертифицированная сантехника от официальных дистрибьюторов",
-							"icon": "shield",
-							"color": "emerald"
-						},
-						{
-							"title": "Профессиональный монтаж",
-							"desc": "Установка с подключением и проверкой на герметичность",
-							"icon": "tools",
-							"color": "sky"
-						},
-						{
-							"title": "Выгодные комплекты",
-							"desc": "Скидки при покупке мойки со смесителем и аксессуарами",
-							"icon": "coin",
-							"color": "amber"
-						}
-					]
-				},
-				"SantehnikaComplex": {
-					"title": "Комплект для кухни",
-					"description": "Закажите мойку вместе со смесителем, измельчителем и диспенсером — получите скидку до 20% на комплект.",
-					"buttonText": "Собрать комплект",
-					"perks": [
-						"Мойка + смеситель в едином стиле",
-						"Измельчитель пищевых отходов",
-						"Диспенсер для моющего средства"
-					]
-				},
-				"SantehnikaCTA": {
-					"title": "Нужна помощь с выбором?",
-					"description": "Наши специалисты помогут подобрать сантехнику под вашу кухню и бюджет",
-					"buttonText": "Получить консультацию"
-				}
-			},
-			"/furnitura": {
-				"FurnituraSidebar": {
-					"shops": []
-				},
-				"FurnituraHero": {
-					"title": "Фурнитура",
-					"description": "Каталог интернет-магазинов и поставщиков мебельной фурнитуры. Петли, направляющие, подъёмники и системы хранения от проверенных поставщиков.",
-					"primaryButton": "Подобрать фурнитуру",
-					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png"
-				},
-				"FurnituraShops": {
-					"title": "Магазины и поставщики",
-					"shops": []
-				},
-				"FurnituraCTA": {
-					"title": "Подберём фурнитуру под ваш проект",
-					"description": "Поможем выбрать оптимальное решение с учётом бюджета и требований к мебели",
-					"buttonText": "Получить консультацию"
-				}
-			},
-			"/plitka": {
-				"PliitkaSidebar": {
-					"brands": [
-						{
-							"title": "Italon",
-							"slug": "italon"
-						},
-						{
-							"title": "Kerama Marazzi",
-							"slug": "kerama-marazzi"
-						},
-						{
-							"title": "Atlas Concorde",
-							"slug": "atlas-concorde"
-						},
-						{
-							"title": "Estima",
-							"slug": "estima"
-						}
-					]
-				},
-				"PliitkaHero": {
-					"title": "Плитка",
-					"description": "Керамическая плитка, керамогранит и мозаика от ведущих мировых производителей. Подберём оптимальное решение для любого интерьера.",
-					"primaryButton": "Подобрать плитку",
-					"bgImage": ""
-				},
-				"PliitkaBrands": {
-					"title": "Работаем с лучшими брендами",
-					"brands": [
-						{
-							"title": "Italon",
-							"slug": "italon"
-						},
-						{
-							"title": "Kerama Marazzi",
-							"slug": "kerama-marazzi"
-						},
-						{
-							"title": "Atlas Concorde",
-							"slug": "atlas-concorde"
-						},
-						{
-							"title": "Estima",
-							"slug": "estima"
-						}
-					]
-				},
-				"PliitkaBenefits": {
-					"title": "Почему выбирают нас",
-					"items": [
-						{
-							"title": "Сертифицированная продукция",
-							"desc": "Вся плитка сертифицирована и соответствует стандартам качества",
-							"icon": "shield",
-							"color": "emerald"
-						},
-						{
-							"title": "Широкий ассортимент",
-							"desc": "Более 1000 коллекций плитки различных стилей и форматов",
-							"icon": "grid",
-							"color": "sky"
-						},
-						{
-							"title": "Профессиональный подбор",
-							"desc": "Поможем подобрать плитку, подходящую по стилю и бюджету вашего проекта",
-							"icon": "bolt",
-							"color": "amber"
-						}
-					]
-				},
-				"PliitkaCategories": {
-					"title": "Популярные категории",
-					"items": [
-						{
-							"title": "Керамогранит",
-							"desc": "Прочный и долговечный материал для пола и стен",
-							"gradient": "from-amber-50 to-orange-50"
-						},
-						{
-							"title": "Керамическая плитка",
-							"desc": "Классическое решение для ванной и кухни",
-							"gradient": "from-sky-50 to-blue-50"
-						}
-					]
-				},
-				"PliitkaComplex": {
-					"title": "Комплексное решение",
-					"description": "Закажите плитку вместе с дизайн-проектом и получите скидку на весь комплект. Наши дизайнеры подберут плитку, которая идеально впишется в ваш интерьер.",
-					"buttonText": "Заказать дизайн-проект",
-					"perks": [
-						"Подбор плитки под дизайн-проект",
-						"Расчёт количества материала",
-						"Доставка и укладка под ключ"
-					]
-				},
-				"PliitkaCTA": {
-					"title": "Нужна помощь с выбором?",
-					"description": "Наши специалисты помогут подобрать плитку под ваши задачи и бюджет",
-					"buttonText": "Получить консультацию"
-				}
-			}
-		}
-	},
-	"2": {
-		"name": "Promo-2",
-		"pages": {
-			"/": {
-				"Hero": {
-					"label": "Белорусская фабрика мебели",
-					"title": "Мебель европейского качества по доступной цене",
-					"description": "Создаём кухонные гарнитуры, шкафы и гардеробы, которые сочетают безупречный дизайн, премиальные материалы и выверенную функциональность изделий",
-					"ctaPrimary": "Дизайнер на дом",
-					"ctaPrimaryLink": "/contact",
-					"ctaSecondary": "Промокод на 10% скидку",
-					"ctaSecondaryLink": "/actions"
-				},
-				"Styles": {
-					"label": "Коллекции",
-					"heading": "Найдите свой стиль",
-					"allLinkText": "Все стили",
-					"allLink": "/styles"
-				},
-				"Advantages": {
-					"label": "Преимущества",
-					"heading": "Почему выбирают нас",
-					"description": "Мы объединяем многолетний опыт, передовые технологии и внимание к деталям для создания мебели, которая превосходит ожидания."
-				},
-				"Details": {
-					"label": "Мебельная фабрика",
-					"heading": "Мебель для жизни",
-					"description": "Мебель — это сочетание безупречного дизайна, функциональности и долговечности. Мы используем только качественные материалы и фурнитуру от ведущих мировых производителей."
-				},
-				"CTA": {
-					"label": "Начните сейчас",
-					"heading": "Создадим кухню вашей мечты",
-					"description": "Запишитесь на бесплатную консультацию. Наш дизайнер поможет подобрать идеальное решение для вашего пространства.",
-					"buttonText": "Бесплатная консультация",
-					"buttonLink": "/contact"
-				}
-			},
-			"/about": {
-				"Hero": {
-					"label": "О фабрике",
-					"title": "От нашей фабрики для вашей семьи",
-					"description": "Наша фабрика располагает самой крупной сетью мебельных салонов. Предлагаем отличный сервис и доступные цены на мебель премиального качества.",
-					"ctaPrimary": "Найти ближайший салон",
-					"ctaPrimaryLink": "/showrooms"
-				},
-				"LeaderSection": {
-					"quote": "Мы вкладываем весь свой опыт и душу в создание мебели",
-					"name": "Зуховицкий О.В.",
-					"role": "Руководитель фабрики ЗОВ",
-					"image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zovdir.png"
-				},
-				"Mission": {
-					"label": "Наша миссия",
-					"heading": "Мы создаём мебель, которая дарит радость"
-				},
-				"Factory": {
-					"label": "Производство",
-					"heading": "Наша фабрика",
-					"description": "25 000 м² современного производства, оснащённого передовым европейским оборудованием",
-					"factoryImages": [
-						"https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg",
-						"https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg",
-						"https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg",
-						"https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg",
-						"https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg"
-					]
-				},
-				"Video": {
-					"src": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4"
-				},
-				"Principles": {
-					"label": "Наши ценности",
-					"heading": "Принципы компании"
-				},
-				"AboutCTA": {
-					"eyebrow": "Бесплатная услуга",
-					"heading": "Закажите дизайн-проект",
-					"description": "Запишитесь на бесплатную консультацию. Наш дизайнер поможет подобрать идеальное решение.",
-					"ctaText": "Заказать дизайн-проект",
-					"ctaLink": "/contact"
-				}
-			},
-			"/news": {
-				"Hero": {
-					"label": "Мебельная фабрика",
-					"heading": "Новости",
-					"description": "События, обновления и достижения фабрики"
-				},
-				"NewsList": {},
-				"NewsCTA": {
-					"eyebrow": "Хотите узнавать первыми?",
-					"heading": "Посетите наши салоны",
-					"description": "Наши дизайнеры всегда в курсе последних новинок и акций.",
-					"ctaText": "Найти ближайший салон",
-					"ctaLink": "/showrooms"
-				}
-			},
-			"/styles": {
-				"Hero": {
-					"label": "Коллекции",
-					"heading": "Стили кухонь",
-					"description": "Откройте для себя наше портфолио. От строгой классики до минимализма — найдите идеальное решение, отражающее ваш индивидуальный вкус."
-				},
-				"StylesGrid": {},
-				"StylesCTA": {
-					"heading": "Поможем с выбором",
-					"description": "Запишитесь на встречу с нашим дизайнером. Мы подберем идеальный стиль, материалы и фурнитуру, учитывая архитектуру вашего пространства.",
-					"ctaText": "Записаться в салон",
-					"ctaLink": "/contact"
-				}
-			},
-			"/facades": {
-				"Hero": {
-					"label": "Материалы",
-					"title": "Фасад это лицо вашей мебели",
-					"description": "Фасады задают характер вашего домашнего интерьера. От натурального массива до технологичного акрила: мы предлагаем материалы, которые сочетают в себе безупречную эстетику, функциональность и долговечность."
-				},
-				"FacadesCatalog": {},
-				"FacadesCTA": {
-					"eyebrow": "Образцы",
-					"heading": "Посмотрите вживую",
-					"description": "Посетите салон фабрики, чтобы прикоснуться к образцам.",
-					"ctaText": "Запись в салон",
-					"ctaLink": "/contact"
-				}
-			},
-			"/furniture": {
-				"Hero": {
-					"label": "Функциональность",
-					"title": "Безупречное движение",
-					"description": "Мебель премиум-класса требует фурнитуры соответствующего уровня. Мы предлагаем решения от ведущих европейских брендов, которые сделают каждое движение фасада или ящика плавным и комфортным."
-				},
-				"FurnitureIntro": {
-					"eyebrow": "Качество в деталях",
-					"heading": "Надежность, которую вы чувствуете каждый день",
-					"description": "Фурнитура — это невидимое сердце любой мебели. От нее зависит, насколько плавно будут открываться дверцы, как тихо будут закрываться ящики и сколько лет мебель прослужит без единого скрипа."
-				},
-				"BrandsSection": {},
-				"FurnitureCTA": {
-					"eyebrow": "Консультация",
-					"heading": "Поможем выбрать лучшую систему для вашей мебели",
-					"ctaText": "Записаться в салон",
-					"ctaLink": "/contact"
-				}
-			},
-			"/contact": {
-				"ContactForm": {
-					"title": "Контакты",
-					"email": "info@example.com"
-				},
-				"Map": {
-					"address": "Москва, ул. Примерная, 1"
-				}
-			},
-			"/actions": {
-				"Hero": {
-					"label": "Специальные предложения",
-					"title": "Скидки & акции",
-					"description": "",
-					"ctaText": "Расчёт проекта за час",
-					"ctaLink": "/contact",
-					"discountBadge": "−30%",
-					"statCount": "6+",
-					"statDiscount": "−30%"
-				},
-				"ActionsTimer": {
-					"badge": "Главные акции сезона",
-					"heading": "Сезонные акции",
-					"description": "Успейте оформить заказ до окончания акции",
-					"ctaText": "Консультация по акциям",
-					"ctaLink": "/contact",
-					"deadline": "2026-12-31T00:00:00"
-				},
-				"ActionsCards": {
-					"label": "Текущие предложения",
-					"heading": "Все акции",
-					"consultLink": "/contact"
-				},
-				"ActionsBanner": {
-					"eyebrow": "Специальное предложение",
-					"title": "Кухня мечты −30%",
-					"description": "",
-					"ctaText": "Консультация по акции",
-					"ctaLink": "/contact"
-				},
-				"ActionsSteps": {
-					"label": "Просто",
-					"heading": "Как получить скидку",
-					"description": "Воспользоваться акцией легко — всего 3 шага до вашей новой мебели по выгодной цене"
-				},
-				"ActionsCTA": {
-					"eyebrow": "Не упустите момент",
-					"title": "Запишитесь на бесплатную консультацию",
-					"description": "Наш дизайнер поможет выбрать подходящую акцию, разработает проект и рассчитает точную стоимость с учётом скидок",
-					"ctaText": "Записаться на консультацию",
-					"ctaLink": "/contact",
-					"phone": ""
-				}
-			},
-			"/kitchens": {
-				"Hero": {
-					"title": "Создание вашей идеальной кухни",
-					"description": "От детального проектирования до бережной сборки — каждый этап контролируется нашими специалистами",
-					"ctaText": "Спроектировать кухню",
-					"ctaLink": "/contact"
-				},
-				"KitchensGallery": {
-					"label": "Галерея",
-					"heading": "Наши гарнитуры",
-					"description": "Ознакомьтесь с вариантами решений для вашей кухни."
-				},
-				"ProductionCycle": {
-					"label": "Этапы",
-					"heading": "Производственный цикл",
-					"description": "Отточенный годами процесс создания премиальной мебели.",
-					"designImage": "https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg",
-					"productionImage": "https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg",
-					"assemblyImage": ""
-				},
-				"KitchenStyles": {
-					"heading": "Варианты стилистических решений",
-					"description": "Мы адаптируем индивидуальный проект под любой стиль."
-				},
-				"KitchensCTA": {
-					"heading": "Хотите заказать кухню?",
-					"description": "Запишитесь в наши салоны для бесплатной консультации с дизайнером.",
-					"ctaText": "Записаться в салон",
-					"ctaLink": "/contact"
-				}
-			},
-			"/wardrobes": {
-				"Hero": {
-					"label": "Системы хранения",
-					"title": "Идеальный порядок в каждой детали",
-					"description": "Мы создаем уникальные встроенные и корпусные шкафы, которые становятся органичным продолжением вашей квартиры.",
-					"ctaText": "Спроектировать шкаф",
-					"ctaLink": "/contact"
-				},
-				"WardrobesGallery": {
-					"label": "Галерея",
-					"heading": "Наши шкафы и гардеробные"
-				},
-				"WardrobeFeatures": {
-					"heading": "Безупречное качество от замера до установки"
-				},
-				"WardrobeTypes": {
-					"label": "Варианты решений",
-					"heading": "Виды систем"
-				},
-				"WardrobesCTA": {
-					"heading": "Закажите расчет стоимости",
-					"ctaText": "Запись в салон",
-					"ctaLink": "/contact"
-				}
-			},
-			"/showrooms": {
-				"Hero": {
-					"label": "Где купить",
-					"title": "Наши салоны",
-					"description": "Посетите один из наших фирменных салонов. Оцените качество материалов вживую.",
-					"ctaText": "Посмотреть карту",
-					"ctaLink": "#network-section"
-				},
-				"ShowroomsMap": {},
-				"ShowroomsCTA": {
-					"heading": "Нет времени на поездку в салон?",
-					"description": "Закажите выезд дизайнера на дом абсолютно бесплатно.",
-					"ctaText": "Вызвать дизайнера",
-					"ctaLink": "/contact"
-				}
-			},
-			"/careers": {
-				"Hero": {
-					"label": "Карьера",
-					"title": "Строй карьеру вместе с нами",
-					"description": "Фабрика — это более 700 специалистов, которые создают премиальную мебель. Присоединяйтесь к команде профессионалов."
-				},
-				"CareersPerks": {
-					"label": "Почему мы",
-					"heading": "Условия работы"
-				},
-				"CareersVacancies": {
-					"label": "Открытые позиции",
-					"heading": "Вакансии"
-				},
-				"CareersForm": {
-					"label": "Открытое резюме",
-					"heading": "Отправьте ваше резюме",
-					"description": "Отправьте открытое резюме — мы сохраняем его в базе и свяжемся, когда появится подходящая позиция.",
-					"email": "info@zov.top",
-					"phone": "+7 915 400-00-20"
-				}
-			},
-			"/designers": {
-				"Hero": {
-					"label": "Партнёрская программа",
-					"title": "Для дизайнеров и студий",
-					"description": "Станьте партнёром фабрики — и предлагайте клиентам премиальную мебель с эксклюзивными условиями."
-				},
-				"DesignersBenefits": {
-					"label": "Что вы получаете",
-					"heading": "Преимущества партнёрства"
-				},
-				"DesignersTracks": {
-					"label": "Выберите формат",
-					"heading": "Программы сотрудничества"
-				},
-				"DesignersSteps": {
-					"label": "Просто и быстро",
-					"heading": "Как стать партнёром"
-				},
-				"DesignersForm": {
-					"label": "Начните сегодня",
-					"heading": "Оставьте заявку — мы позвоним первыми",
-					"description": "Расскажите о себе, и мы предложим наиболее подходящие условия сотрудничества.",
-					"email": "info@zov.top",
-					"phone": "+7 915 400-00-20"
-				}
-			},
-			"/yandex-direct": {
-				"Hero": {
-					"badge": "Специальное предложение",
-					"title": "Мебель на заказ по вашим размерам",
-					"subtitle": "Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект",
-					"primaryButton": "Рассчитать стоимость",
-					"primaryHref": "/contact",
-					"secondaryButton": "Позвонить",
-					"secondaryHref": "tel:+70000000000"
-				},
-				"USP": {
-					"label": "Почему мы",
-					"title": "Уникальное торговое предложение",
-					"subtitle": "То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас",
-					"items": []
-				},
-				"Advantages": {
-					"label": "Наши преимущества",
-					"title": "Цифры говорят за нас",
-					"stats": [],
-					"features": []
-				},
-				"Steps": {
-					"label": "Как мы работаем",
-					"title": "4 простых шага к вашей идеальной мебели",
-					"steps": []
-				},
-				"SocialProof": {
-					"label": "Отзывы клиентов",
-					"title": "Нам доверяют сотни клиентов",
-					"reviews": []
-				},
-				"Offer": {
-					"badge": "Ограниченное предложение",
-					"title": "Закажите сейчас — получите скидку 15%",
-					"subtitle": "Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ",
-					"buttonText": "Получить скидку",
-					"buttonHref": "/contact",
-					"includes": []
-				},
-				"CTA": {
-					"eyebrow": "Готовы начать?",
-					"title": "Готовы обсудить ваш проект?",
-					"subtitle": "Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы",
-					"primaryButton": "Оставить заявку",
-					"primaryHref": "/contact",
-					"phoneButton": "Позвонить нам",
-					"phoneHref": "tel:+70000000000"
-				}
-			}
-		}
-	},
-	"3": {
-		"name": "Promo-3",
-		"pages": {
-			"/": {
-				"Hero": {
-					"tag": "Коллекция 2026",
-					"title": "Искусство плитки в каждой детали",
-					"subtitle": "Качественная плитка из разных материалов от ведущих мировых производителей.",
-					"ctaPrimary": "Промокод на скидку 10%",
-					"ctaPrimaryLink": "/contacts",
-					"ctaSecondary": "Курьер с образцом",
-					"ctaSecondaryLink": "/contacts"
-				},
-				"Categories": {
-					"label": "Категории",
-					"heading": "Подберите идеальную плитку",
-					"allLinkText": "Весь каталог",
-					"allLink": "/collections"
-				},
-				"Banner": {
-					"label": "Для дизайнеров",
-					"heading": "Визуализируйте пространство до покупки",
-					"description": "Наши специалисты создадут 3D-раскладку плитки в вашем интерьере.",
-					"ctaText": "Заказать визуализацию",
-					"ctaLink": "/contacts",
-					"floatingTitle": "3D-визуализация",
-					"floatingSubtitle": "Бесплатно для заказов"
-				},
-				"Collections": {
-					"label": "Популярное",
-					"heading": "Бестселлеры коллекций",
-					"description": "Самые востребованные коллекции плитки, выбранные нашими клиентами и профессиональными дизайнерами"
-				},
-				"Advantages": {
-					"label": "Почему мы",
-					"heading": "Преимущества работы с нами"
-				},
-				"CTA": {
-					"heading": "Готовы начать проект?",
-					"description": "Свяжитесь с нами для бесплатной консультации. Наши специалисты помогут подобрать идеальную плитку для вашего интерьера.",
-					"ctaPrimary": "Позвонить нам",
-					"ctaPrimaryLink": "/contacts",
-					"ctaSecondary": "Оставить заявку",
-					"ctaSecondaryLink": "/contacts"
-				}
-			},
-			"/about": {
-				"Hero": {
-					"tag": "Наша история",
-					"title": "О компании",
-					"titleAccent": "PLITKA",
-					"description": "Мы помогаем создавать красивые интерьеры уже 15 лет. Прямые поставки от лучших мировых производителей, честные цены и экспертиза на каждом шагу."
-				},
-				"Mission": {
-					"label": "Наша миссия",
-					"heading": "Красота в каждом квадратном метре",
-					"quote": "Плитка — это не просто материал. Это основа атмосферы, которую вы создаёте в своём доме.",
-					"quoteName": "Александр Петров",
-					"quoteRole": "Основатель компании",
-					"quoteInitials": "АП"
-				},
-				"Values": {
-					"label": "Наши принципы",
-					"heading": "На чём держится компания"
-				},
-				"Timeline": {
-					"label": "Хронология",
-					"heading": "Как мы росли"
-				},
-				"Team": {
-					"label": "Люди",
-					"heading": "Команда",
-					"description": "За каждым заказом стоит команда профессионалов, которые искренне любят своё дело."
-				},
-				"Brands": {
-					"label": "Наши партнёры",
-					"heading": "Бренды, которым мы доверяем",
-					"description": "Прямые контракты с ведущими производителями — гарантия оригинальности и лучших цен."
-				},
-				"CTA": {
-					"heading": "Готовы начать вместе?",
-					"description": "Свяжитесь с нами — поможем подобрать идеальную плитку, рассчитаем количество и сделаем 3D-визуализацию бесплатно.",
-					"ctaPrimary": "Смотреть каталог",
-					"ctaPrimaryLink": "/collections",
-					"ctaSecondary": "Связаться с нами",
-					"ctaSecondaryLink": "/contacts"
-				}
-			},
-			"/brands": {
-				"Hero": {
-					"tag": "Наши партнёры",
-					"title": "Бренды",
-					"description": "Прямые поставки от ведущих производителей плитки из России, Италии, Испании и всей Европы."
-				},
-				"BrandsList": {},
-				"CTA": {
-					"heading": "Не нашли нужный бренд?",
-					"description": "Свяжитесь с нами — мы работаем с широким кругом производителей и поможем найти нужную коллекцию под ваш проект.",
-					"ctaPrimary": "Связаться с нами",
-					"ctaPrimaryLink": "/contacts",
-					"ctaSecondary": "Смотреть каталог",
-					"ctaSecondaryLink": "/collections"
-				}
-			},
-			"/collections": {
-				"Hero": {
-					"tag": "Каталог 2026",
-					"title": "Коллекции плитки",
-					"description": "Откройте для себя уникальные коллекции от ведущих мировых производителей."
-				},
-				"CollectionsList": {},
-				"CTA": {
-					"heading": "Не нашли нужную коллекцию?",
-					"description": "Свяжитесь с нами — мы поможем подобрать идеальную плитку под ваш проект и бюджет.",
-					"ctaPrimary": "Связаться с нами",
-					"ctaPrimaryLink": "/contacts",
-					"ctaSecondary": "Все бренды",
-					"ctaSecondaryLink": "/brands"
-				}
-			},
-			"/contacts": {
-				"Hero": {
-					"tag": "Связаться с нами",
-					"title": "Контакты",
-					"description": "Посетите наши партнёрские салоны, закажите образцы с доставкой или оставьте заявку — и получите скидку 10%."
-				},
-				"Salons": {
-					"label": "Партнёрские салоны",
-					"heading": "Посмотрите образцы вживую",
-					"description": "В наших партнёрских салонах представлены сотни коллекций."
-				},
-				"Courier": {
-					"label": "Курьер с образцами",
-					"heading": "Образцы привезём к вам",
-					"description": "Не можете приехать в салон? Наш курьер доставит образцы понравившихся коллекций прямо к вам домой или в офис. Бесплатно, в удобное время.",
-					"ctaText": "Заказать доставку образцов",
-					"ctaLink": "tel:+78001234567"
-				},
-				"Form": {
-					"label": "Специальное предложение",
-					"heading": "Скидка 10%",
-					"description": "Оставьте имя и номер телефона — мы пришлём промокод. Без спама, только актуальные предложения.",
-					"buttonText": "Получить промокод на 10%"
-				}
-			},
-			"/materials": {
-				"Hero": {
-					"tag": "Ассортимент",
-					"title": "Материалы",
-					"description": "Полный ассортимент отделочных материалов для вашего проекта: от классической керамики до эксклюзивного натурального камня."
-				},
-				"Categories": {
-					"heading": "Категории материалов",
-					"description": "Все виды плитки и облицовочных материалов в одном месте."
-				},
-				"HowWeWork": {
-					"heading": "Как мы работаем",
-					"description": "Простой процесс от выбора до укладки"
-				},
-				"CTA": {
-					"heading": "Нужна помощь с выбором?",
-					"description": "Наши специалисты помогут подобрать материал, рассчитать количество и подготовить смету для вашего проекта.",
-					"ctaPrimary": "Получить консультацию",
-					"ctaPrimaryLink": "/contacts",
-					"ctaSecondary": "Смотреть коллекции",
-					"ctaSecondaryLink": "/collections"
-				}
-			},
-			"/services": {
-				"Hero": {
-					"tag": "Для вашего проекта",
-					"title": "Услуги",
-					"description": "Берём на себя все этапы — от доставки материалов до реализации дизайн-проекта «под ключ». Работаем профессионально и в срок."
-				},
-				"ServicesGrid": {},
-				"CTA": {
-					"heading": "Готовы обсудить ваш проект?",
-					"description": "Свяжитесь с нами — бесплатно проконсультируем, рассчитаем стоимость и подберём оптимальное решение под ваши задачи.",
-					"ctaPrimary": "Связаться с нами",
-					"ctaPrimaryLink": "/contacts"
-				}
-			},
-			"/vacancies": {
-				"Hero": {
-					"tag": "Команда",
-					"title": "Вакансии",
-					"description": "Мы строим команду профессионалов, которым важно качество. Присоединяйтесь — вместе создаём пространства, которыми гордятся."
-				},
-				"VacanciesList": {},
-				"Form": {
-					"label": "Отклик на вакансию",
-					"heading": "Напишите нам",
-					"description": "Укажите имя и телефон — мы свяжемся с вами, обсудим детали и договоримся о встрече.",
-					"buttonText": "Отправить отклик"
-				}
-			},
-			"/yandex-direct": {
-				"Hero": {
-					"badge": "Специальное предложение",
-					"title": "Мебель на заказ по вашим размерам",
-					"subtitle": "Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект",
-					"primaryButton": "Рассчитать стоимость",
-					"primaryHref": "/contacts",
-					"secondaryButton": "Позвонить",
-					"secondaryHref": "tel:+70000000000"
-				},
-				"USP": {
-					"label": "Почему мы",
-					"title": "Уникальное торговое предложение",
-					"subtitle": "То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас",
-					"items": []
-				},
-				"Advantages": {
-					"label": "Наши преимущества",
-					"title": "Цифры говорят за нас",
-					"stats": [],
-					"features": []
-				},
-				"Steps": {
-					"label": "Как мы работаем",
-					"title": "4 простых шага к вашей идеальной мебели",
-					"steps": []
-				},
-				"SocialProof": {
-					"label": "Отзывы клиентов",
-					"title": "Нам доверяют сотни клиентов",
-					"reviews": []
-				},
-				"Offer": {
-					"badge": "Ограниченное предложение",
-					"title": "Закажите сейчас — получите скидку 15%",
-					"subtitle": "Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ",
-					"buttonText": "Получить скидку",
-					"buttonHref": "/contacts",
-					"includes": []
-				},
-				"CTA": {
-					"eyebrow": "Готовы начать?",
-					"title": "Готовы обсудить ваш проект?",
-					"subtitle": "Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы",
-					"primaryButton": "Оставить заявку",
-					"primaryHref": "/contacts",
-					"phoneButton": "Позвонить нам",
-					"phoneHref": "tel:+70000000000"
-				}
-			}
-		}
-	},
-	"_versions": {
-		"1": {
-			"HeroMain": 4,
-			"ActionsCTA": 2,
-			"Brands": 2,
-			"ContactCTA": 2,
-			"ContactsHero": 2,
-			"Direction": 2,
-			"Equipment": 2,
-			"Incentives": 3,
-			"MebelBenefits": 2,
-			"MebelProcess": 2,
-			"Message": 2,
-			"PromoOffer": 2,
-			"Stage": 2
-		},
-		"2": {},
-		"3": {}
-	}
+    "1": {
+        "name": "Promo-1",
+        "pages": {
+            "__global__": {
+                "Footer": {
+                    "siteName": "Логотип"
+                }
+            },
+            "/404": {
+                "NotFound": {
+                    "title": "Страница не найдена",
+                    "subtitle": "Возможно, страница была перемещена или удалена, а ссылка устарела. Вернитесь на главную или к предыдущему разделу.",
+                    "homeButtonText": "На главную",
+                    "homeHref": "/",
+                    "backButtonText": "Вернуться назад"
+                }
+            },
+            "/": {
+                "HeroMain": {
+                    "companyName": "Компания",
+                    "title": "Мебель и Техника",
+                    "description": "Эксклюзивная корпусная мебель по вашим индивидуальным размерам с бесплатным 3D-проектом от профессионального дизайнера, подбором премиальных материалов и расчётом стоимости под ваш бюджет.",
+                    "buttonText": "Дизайн-проект с расчётом стоимости",
+                    "buttonHref": "/contact"
+                },
+                "PartnerOffers": {
+                    "title": "Предложения партнёров",
+                    "description": "Мы работаем напрямую с производителями фурнитуры и материалов, поэтому часть их выгоды достаётся вам. Условия действуют ограниченное время и суммируются со скидкой на проект.",
+                    "offers": [
+                        {
+                            "image": "https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg",
+                            "alt": "Скидка 15% на фурнитуру Blum",
+                            "partner": "Blum",
+                            "offer": "Скидка 15% на фурнитуру",
+                            "terms": "При заказе кухни от 150 000 ₽",
+                            "validFrom": "01.09.2026",
+                            "validUntil": "31.12.2026",
+                            "buttonText": "Получить предложение",
+                            "buttonHref": "/actions"
+                        },
+                        {
+                            "image": "https://storage.yandexcloud.net/novostroy/bg/prih.jpg",
+                            "alt": "Столешница в подарок от Egger",
+                            "partner": "Egger",
+                            "offer": "Столешница в подарок",
+                            "terms": "К любому кухонному гарнитуру от 200 000 ₽",
+                            "validFrom": "",
+                            "validUntil": "30.11.2026",
+                            "buttonText": "Получить предложение",
+                            "buttonHref": "/actions"
+                        },
+                        {
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_wardrobes.png",
+                            "alt": "Бесплатный подъём и сборка от Aristo",
+                            "partner": "Aristo",
+                            "offer": "Подъём и сборка бесплатно",
+                            "terms": "При заказе шкафа-купе от 120 000 ₽",
+                            "validFrom": "15.09.2026",
+                            "validUntil": "",
+                            "buttonText": "Получить предложение",
+                            "buttonHref": "/actions"
+                        },
+                        {
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_kitchens.png",
+                            "alt": "Доводчики на все фасады от Hettich",
+                            "partner": "Hettich",
+                            "offer": "Доводчики на все фасады",
+                            "terms": "При заказе кухни от 100 000 ₽",
+                            "validFrom": "01.10.2026",
+                            "validUntil": "31.12.2026",
+                            "buttonText": "Получить предложение",
+                            "buttonHref": "/actions"
+                        }
+                    ]
+                },
+                "Message": {
+                    "text": "Предлагаем мебель на заказ для вашего идеального интерьера с индивидуальным подбором размеров и дизайна."
+                },
+                "PromoOffer": {
+                    "badge": "Эксклюзивное предложение",
+                    "title": "Специальное предложение",
+                    "textPrimary": "Скидка 15% на мебель этой весной",
+                    "textSecondary": "Воспользуйтесь уникальной возможностью приобрести качественную мебель по выгодной цене",
+                    "primaryButton": "Получить предложение",
+                    "secondaryButton": "Узнать больше",
+                    "primaryHref": "/contact",
+                    "secondaryHref": "/about"
+                },
+                "Equipment": {
+                    "badge": "Дополнительно",
+                    "title": "Комплектация проектов"
+                },
+                "Stage": {
+                    "badge": "Это важно",
+                    "title": "Наша работа",
+                    "description": "Мы поддержим вас на всех этапах работы над мебельным проектом: от первой консультации до дня финальной сборки."
+                },
+                "Incentives": {
+                    "badge": "Выгода",
+                    "title": "С нами выгодно",
+                    "text": "<p>Помогаем выбрать фурнитуру, материалы, цветовые сочетания и производителя мебели — чтобы вы получили честную цену, соблюдение сроков, высокое качество и внимательный сервис без лишних затрат времени и бюджета.</p>",
+                    "gallery": [
+                        {
+                            "src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/price.webp",
+                            "alt": "Образцы материалов и расчёт стоимости мебели",
+                            "label": "Цена"
+                        },
+                        {
+                            "src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/timelines.webp",
+                            "alt": "Монтаж мебели точно в срок",
+                            "label": "Сроки"
+                        },
+                        {
+                            "src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/quality-v2.webp",
+                            "alt": "Ровные фасады и точная подгонка деталей мебели",
+                            "label": "Качество"
+                        },
+                        {
+                            "src": "https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/service.webp",
+                            "alt": "Консультация дизайнера с клиентом",
+                            "label": "Сервис"
+                        }
+                    ]
+                },
+                "Direction": {},
+                "Brands": {
+                    "badge": "Материалы",
+                    "title": "Бренды, говорящие о качестве",
+                    "partnersLabel": "Наши партнёры-производители"
+                }
+            },
+            "/about": {
+                "Hero": {
+                    "badge": "О компании",
+                    "title": "О нас",
+                    "lead": "Мы помогаем пройти путь от идеи до готового интерьера: подбираем материалы, считаем проект и ведём его до финальной сборки.",
+                    "text": "",
+                    "buttonText": "Связаться с нами",
+                    "img1": "",
+                    "img2": "",
+                    "img3": "",
+                    "img4": ""
+                },
+                "Text": {
+                    "content": "<p>Мы делаем мебель под конкретное помещение и конкретных людей: сначала замер и разговор о том, как вы живёте и что храните, потом дизайн-проект, расчёт и подбор материалов под ваш бюджет.</p><p>Ведём проект до конца — согласуем детали, держим сроки и остаёмся на связи после сборки.</p>"
+                },
+                "Statistics": {},
+                "Mission": {
+                    "title": "Наша миссия",
+                    "text1": "",
+                    "text2": "",
+                    "text3": "",
+                    "imageUrl": ""
+                },
+                "Values": {
+                    "title": "Наши ценности",
+                    "subtitle": "Принципы, которыми мы руководствуемся в работе",
+                    "items": []
+                },
+                "WhyUs": {
+                    "title": "Почему выбирают нас",
+                    "subtitle": "Преимущества работы с нами",
+                    "items": []
+                },
+                "AboutCTA": {
+                    "title": "Ждём вас в качестве клиента",
+                    "subtitle": "Свяжитесь с нами, чтобы обсудить ваш проект",
+                    "buttonText": "Получить консультацию",
+                    "phone": ""
+                }
+            },
+            "/contact": {
+                "ContactForm": {
+                    "title": "Контакты",
+                    "email": "info@example.com"
+                }
+            },
+            "/actions": {
+                "Hero": {
+                    "eyebrow": "Выгодные предложения",
+                    "title": "Акции, скидки и подарки",
+                    "subtitle": "Получите актуальные акции наших партнёров и узнайте о подарках и скидках на проекты и услуги"
+                },
+                "ActionsCards": {},
+                "ActionsCardsExtra": {},
+                "ActionsBanner": {
+                    "imageUrl": "",
+                    "imageAlt": "Акция"
+                },
+                "ActionsCTA": {
+                    "title": "Хотите узнать больше об акциях?",
+                    "subtitle": "Свяжитесь с нами и мы расскажем обо всех актуальных предложениях",
+                    "buttonText": "Связаться с нами",
+                    "phone": ""
+                }
+            },
+            "/contacts": {
+                "ContactsHero": {
+                    "eyebrow": "Связь с нами",
+                    "title": "Контакты",
+                    "subtitle": "Мы работаем с понедельника по субботу с 10:00 до 20:00. В иное время воспользуйтесь онлайн-чатом или почтой."
+                },
+                "ContactChannels": {
+                    "phone": "",
+                    "email": ""
+                },
+                "ContactAddress": {
+                    "eyebrow": "Давайте встретимся",
+                    "title": "Личная консультация",
+                    "description": "Для обсуждения деталей мы можем организовать с вами встречу в одном из салонов наших партнёров или на вашем объекте",
+                    "buttonText": "Записаться на консультацию",
+                    "addressTitle": "Адрес",
+                    "addressText": "",
+                    "hoursTitle": "Часы работы",
+                    "hoursText": "",
+                    "parkingTitle": "Парковка",
+                    "parkingText": "",
+                    "mapImageUrl": ""
+                },
+                "ContactMessengers": {
+                    "eyebrow": "Социальные сети",
+                    "title": "Мы в Телеграм",
+                    "subtitle": "Напишите нам и мы ответим в течение нескольких минут",
+                    "telegramUrl": ""
+                },
+                "ContactCTA": {
+                    "title": "Остались вопросы?",
+                    "subtitle": "Свяжитесь с нами любым удобным способом — мы всегда рады помочь",
+                    "phone": "",
+                    "telegramUrl": ""
+                }
+            },
+            "/partnership": {
+                "PartnershipHero": {
+                    "badge": "Партнёрская программа",
+                    "title": "Растём вместе",
+                    "text": "Приглашаем к сотрудничеству дизайнеров интерьеров, ремонтные бригады и продавцов мебели. Выгодные условия и прозрачная система вознаграждений.",
+                    "buttonText": "Обсудить сотрудничество",
+                    "quote": "Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.",
+                    "quoteName": "",
+                    "quoteRole": ""
+                },
+                "WhoWeInvite": {
+                    "title": "Кого мы приглашаем",
+                    "subtitle": "Партнёрство для профессионалов в сфере интерьера и ремонта",
+                    "cards": [],
+                    "platformText": "Профессиональная платформа для автоматизации партнёрских продаж.",
+                    "platformUrl": "",
+                    "platformButtonText": "Перейти на платформу"
+                },
+                "ForManufacturers": {
+                    "badge": "Вы организация?",
+                    "title": "Для производителей и поставщиков",
+                    "text": "Мы готовы предложить уникальные возможности для совместного развития.",
+                    "buttonText": "Оставить заявку",
+                    "benefits": [],
+                    "stats": []
+                },
+                "Benefits": {
+                    "title": "Преимущества партнёрства",
+                    "subtitle": "Что вы получаете, работая с нами",
+                    "items": []
+                },
+                "HowToStart": {
+                    "title": "Как стать партнёром",
+                    "subtitle": "Простой процесс от первого контакта до результата",
+                    "steps": []
+                },
+                "PartnershipCTA": {
+                    "title": "Присоединяйтесь к нам",
+                    "subtitle": "Начните работать вместе с нами уже сегодня",
+                    "buttonText": "Обсудить сотрудничество",
+                    "phone": ""
+                }
+            },
+            "/testimonials": {
+                "Hero": {
+                    "eyebrow": "Отзывы",
+                    "title": "Отзывы о нас",
+                    "subtitle": "Мы работаем ради таких отзывов клиентов о нашей работе"
+                },
+                "TestimonialsSummary": {
+                    "title": "Нам доверяют",
+                    "subtitle": "Каждый отзыв — результат работы дизайнеров, мастеров и сборщиков",
+                    "rating": "4.9",
+                    "ratingCaption": "на основе отзывов покупателей за всё время работы",
+                    "stats": []
+                },
+                "TestimonialsGrid": {
+                    "featured": [],
+                    "reviews": []
+                }
+            },
+            "/installment": {
+                "InstallmentHero": {
+                    "title": "Рассрочка без переплаты",
+                    "subtitle": "Купите мебель и технику сейчас — платите частями до 12 месяцев. Быстрое одобрение, минимум документов.",
+                    "buttonText": "Консультация по рассрочке"
+                },
+                "InstallmentPlans": {
+                    "title": "Программы рассрочки",
+                    "subtitle": "Выберите удобный срок и условия оплаты",
+                    "plans": []
+                },
+                "InstallmentRequirements": {
+                    "title": "Что нужно для оформления",
+                    "subtitle": "Минимум документов — максимум удобства",
+                    "items": []
+                },
+                "InstallmentSteps": {
+                    "title": "Как оформить рассрочку",
+                    "subtitle": "Простой процесс за 4 шага",
+                    "steps": []
+                },
+                "InstallmentBanks": {
+                    "title": "Банки-партнёры",
+                    "subtitle": "Работаем с надёжными финансовыми организациями",
+                    "banks": []
+                },
+                "InstallmentFAQ": {
+                    "title": "Частые вопросы",
+                    "items": []
+                },
+                "InstallmentCTA": {
+                    "title": "Оформите рассрочку сегодня",
+                    "subtitle": "Получите мебель и технику не откладывая покупку — платите комфортными частями",
+                    "buttonText": "Консультация",
+                    "phone": ""
+                }
+            },
+            "/guarantees": {
+                "GuaranteesHero": {
+                    "title": "Гарантия качества",
+                    "subtitle": "Мы уверены в качестве продукции наших партнёров. Вся продукция имеет расширенную гарантию на материалы и работу мастеров."
+                },
+                "GuaranteeTerms": {
+                    "title": "Сроки гарантии",
+                    "subtitle": "Официальная гарантия от производителей на все категории",
+                    "items": []
+                },
+                "WhatsCovered": {
+                    "title": "Что покрывает гарантия",
+                    "description": "Наша гарантия распространяется на производственные дефекты материалов и качество сборки.",
+                    "items": [],
+                    "imageUrl": ""
+                },
+                "HowToApply": {
+                    "title": "Как обратиться по гарантии",
+                    "subtitle": "Простой процесс решения гарантийных вопросов",
+                    "steps": []
+                },
+                "GuaranteesCTA": {
+                    "title": "Гарантийный случай?",
+                    "subtitle": "Заполните форму или позвоните нам — решим вопрос в кратчайшие сроки",
+                    "buttonText": "Оставить заявку",
+                    "phone": ""
+                }
+            },
+            "/yandex-direct": {
+                "Hero": {
+                    "badge": "Специальное предложение",
+                    "title": "Мебель на заказ по вашим размерам",
+                    "subtitle": "Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект",
+                    "primaryButton": "Рассчитать стоимость",
+                    "primaryHref": "/contact",
+                    "secondaryButton": "Позвонить",
+                    "secondaryHref": "tel:+70000000000"
+                },
+                "USP": {
+                    "label": "Почему мы",
+                    "title": "Уникальное торговое предложение",
+                    "subtitle": "То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас",
+                    "items": []
+                },
+                "Advantages": {
+                    "label": "Наши преимущества",
+                    "title": "Цифры говорят за нас",
+                    "stats": [],
+                    "features": []
+                },
+                "Steps": {
+                    "label": "Как мы работаем",
+                    "title": "4 простых шага к вашей идеальной мебели",
+                    "steps": []
+                },
+                "SocialProof": {
+                    "label": "Отзывы клиентов",
+                    "title": "Нам доверяют сотни клиентов",
+                    "reviews": []
+                },
+                "Offer": {
+                    "badge": "Ограниченное предложение",
+                    "title": "Закажите сейчас — получите скидку 15%",
+                    "subtitle": "Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ",
+                    "buttonText": "Получить скидку",
+                    "buttonHref": "/contact",
+                    "includes": []
+                },
+                "CTA": {
+                    "title": "Готовы обсудить ваш проект?",
+                    "subtitle": "Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы",
+                    "primaryButton": "Оставить заявку",
+                    "primaryHref": "/contact",
+                    "phoneButton": "Позвонить нам",
+                    "phoneHref": "tel:+70000000000"
+                }
+            },
+            "/consultation": {
+                "ConsultationHero": {
+                    "badge": "Премиальный сервис",
+                    "title_part1": "Консультация",
+                    "title_part2": "дизайнера",
+                    "description": "Трансформируйте свои идеи в безупречный интерьер. Получите экспертные рекомендации по стилю, эргономике и материалам от ведущих специалистов отрасли.",
+                    "cta_text": "Заказать консультацию"
+                },
+                "ConsultationFeatures": {
+                    "badge": "Что вы получите",
+                    "title": "Комплексный подход к вашему интерьеру"
+                },
+                "ConsultationWhy": {
+                    "title": "Почему начать с консультации?"
+                },
+                "ConsultationCTA": {
+                    "title": "Готовы преобразить пространство?",
+                    "description": "Запишитесь на консультацию сегодня и сделайте первый уверенный шаг к созданию интерьера вашей мечты.",
+                    "cta_text": "Заказать консультацию"
+                }
+            },
+            "/design-project": {
+                "DesignProjectHero": {
+                    "badge": "Проектирование полного цикла",
+                    "title_part1": "Проект",
+                    "title_part2": "дизайна",
+                    "description": "Создаем не просто красивые картинки, а детально проработанные технические решения для безупречной реализации вашего интерьера.",
+                    "cta_text": "Начать проект"
+                },
+                "DesignProjectFeatures": {
+                    "badge": "Состав проекта",
+                    "title": "Полный комплект документации"
+                },
+                "DesignProjectWhy": {
+                    "title": "Почему нужен дизайн-проект?"
+                },
+                "DesignProjectCTA": {
+                    "title_part1": "Готовы создать",
+                    "title_part2": "свой идеал?",
+                    "cta_text": "Заказать проект"
+                }
+            },
+            "/measurement": {
+                "MeasurementHero": {
+                    "badge": "Услуга компании",
+                    "title_part1": "Проектный замер",
+                    "title_part2": "помещения",
+                    "description": "Точные обмеры — основа качественного дизайн-проекта. Профессиональный замер с фиксацией всех коммуникаций и особенностей помещения.",
+                    "cta_text": "Заказать замер"
+                },
+                "MeasurementFeatures": {
+                    "badge": "Что мы фиксируем",
+                    "title": "Детальный обмер помещения"
+                },
+                "MeasurementWhy": {
+                    "title": "Зачем нужен профессиональный замер?"
+                },
+                "MeasurementCTA": {
+                    "title": "Готовы начать с точного замера?",
+                    "description": "Закажите профессиональный замер — первый шаг к идеальному интерьеру",
+                    "cta_text": "Заказать замер"
+                }
+            },
+            "/furniture-project": {
+                "FurnitureProjectHero": {
+                    "badge": "Услуга компании",
+                    "title_part1": "Проектирование",
+                    "title_part2": "мебели",
+                    "description": "Индивидуальная мебель, спроектированная под ваше пространство с учётом ваших пожеланий. От стартового эскиза до рабочих чертежей для производства.",
+                    "cta_text": "Заказать проект мебели"
+                },
+                "FurnitureProjectFeatures": {
+                    "badge": "Состав проекта",
+                    "title": "Полный комплект для производства"
+                },
+                "FurnitureProjectWhy": {
+                    "title": "Почему мебель на заказ?"
+                },
+                "FurnitureProjectCTA": {
+                    "title": "Готовы создать уникальную мебель?",
+                    "description": "Закажите проект мебели и получите изделие, идеально подходящее под ваш интерьер",
+                    "cta_text": "Заказать проект мебели"
+                }
+            },
+            "/assembly": {
+                "AssemblyHero": {
+                    "badge": "Услуга компании",
+                    "title_part1": "Сборка и",
+                    "title_part2": "установка",
+                    "description": "Профессиональная сборка и установка мебели любой сложности профессиональным инструментом. Быстро, чисто, аккуратно и с гарантией качества.",
+                    "cta_text": "Заказать сборку"
+                },
+                "AssemblyFeatures": {
+                    "badge": "Наши услуги",
+                    "title": "Полный комплекс работ"
+                },
+                "AssemblyWhy": {
+                    "title": "Почему выбирают нас?"
+                },
+                "AssemblyCTA": {
+                    "title": "Нужна сборка мебели?",
+                    "description": "Оставьте заявку и мы соберём вашу мебель быстро и качественно",
+                    "cta_text": "Заказать сборку"
+                }
+            },
+            "/mebel": {
+                "MebelSidebar": {
+                    "categories": [
+                        {
+                            "value": "Кухни",
+                            "slug": "kitchens"
+                        },
+                        {
+                            "value": "Шкафы",
+                            "slug": "wardrobes"
+                        },
+                        {
+                            "value": "Гардеробные",
+                            "slug": "dressing-rooms"
+                        },
+                        {
+                            "value": "Прихожие",
+                            "slug": "hallways"
+                        },
+                        {
+                            "value": "Детская мебель",
+                            "slug": "kids-furniture"
+                        }
+                    ]
+                },
+                "MebelHero": {
+                    "title": "Мебель на заказ",
+                    "description": "Создаём уникальную корпусную мебель по вашим размерам и дизайну. Индивидуальный подход к каждому проекту.",
+                    "primaryButton": "Ваш проект",
+                    "secondaryButton": "Бесплатный замер",
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png"
+                },
+                "MebelBenefits": {
+                    "title": "Почему выбирают нас",
+                    "items": [
+                        {
+                            "title": "Гарантия качества",
+                            "desc": "Используются только сертифицированные материалы от надёжных производителей",
+                            "icon": "shield"
+                        },
+                        {
+                            "title": "Точные сроки",
+                            "desc": "Соблюдаем оговорённые сроки изготовления, доставки и сборки мебели",
+                            "icon": "clock"
+                        },
+                        {
+                            "title": "Индивидуальный дизайн",
+                            "desc": "Разрабатываем проект под ваши размеры и пожелания",
+                            "icon": "design"
+                        }
+                    ]
+                },
+                "MebelSolutions": {
+                    "title": "Популярные решения",
+                    "items": [
+                        {
+                            "title": "Кухонные гарнитуры",
+                            "desc": "От классики до современного минимализма",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_kitchens.png"
+                        },
+                        {
+                            "title": "Шкафы",
+                            "desc": "Максимум функциональности и стиля",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_wardrobes.png"
+                        }
+                    ]
+                },
+                "MebelProcess": {
+                    "title": "Как мы работаем",
+                    "steps": [
+                        {
+                            "title": "Консультация",
+                            "desc": "Обсуждаем ваши пожелания"
+                        },
+                        {
+                            "title": "Замер",
+                            "desc": "Бесплатный выезд специалиста"
+                        },
+                        {
+                            "title": "Проект",
+                            "desc": "3D-визуализация и расчёт"
+                        },
+                        {
+                            "title": "Установка",
+                            "desc": "Профессиональный монтаж"
+                        }
+                    ]
+                },
+                "MebelCTA": {
+                    "title": "Готовы начать проект?",
+                    "description": "Оставьте заявку и получите бесплатный дизайн-проект вашей будущей мебели",
+                    "buttonText": "Получить консультацию"
+                }
+            },
+            "/mebel/{category}": {
+                "MebelSidebar": {
+                    "categories": []
+                },
+                "MebelCategoryHero": {
+                    "title": "Категория",
+                    "description": "Описание категории",
+                    "buttonText": "Создать проект"
+                },
+                "MebelProjectsGrid": {
+                    "projects": []
+                },
+                "MebelBenefits": {
+                    "title": "Почему выбирают нас",
+                    "items": [
+                        {
+                            "title": "Гарантия качества",
+                            "desc": "Используются только сертифицированные материалы",
+                            "icon": "shield"
+                        },
+                        {
+                            "title": "Точные сроки",
+                            "desc": "Соблюдаем оговорённые сроки",
+                            "icon": "clock"
+                        },
+                        {
+                            "title": "3D-проект бесплатно",
+                            "desc": "Визуализация вашего будущего интерьера",
+                            "icon": "design"
+                        }
+                    ]
+                },
+                "MebelCTA": {
+                    "title": "Не нашли подходящий вариант?",
+                    "description": "Мы изготовим мебель по вашему индивидуальному проекту",
+                    "buttonText": "Заказать проект"
+                }
+            },
+            "/mebel/{category}/{project}": {
+                "MebelSidebar": {},
+                "MebelProjectHero": {},
+                "MebelProjectDescription": {},
+                "MebelProjectSimilar": {},
+                "MebelCTA": {
+                    "title": "Хотите такую же мебель?",
+                    "description": "Оставьте заявку и получите бесплатный расчёт стоимости с учётом ваших размеров",
+                    "buttonText": "Создать проект и узнать цену"
+                }
+            },
+            "/stoleshnica": {
+                "StoleshnicaSidebar": {
+                    "categories": [
+                        {
+                            "title": "Кварц",
+                            "slug": "kvarc"
+                        },
+                        {
+                            "title": "Акриловый камень",
+                            "slug": "akril"
+                        },
+                        {
+                            "title": "ДСП / Постформинг",
+                            "slug": "dsp"
+                        },
+                        {
+                            "title": "Массив дерева",
+                            "slug": "massiv"
+                        },
+                        {
+                            "title": "Керамика",
+                            "slug": "keramika"
+                        }
+                    ]
+                },
+                "StoleshnicaHero": {
+                    "title": "Столешницы",
+                    "description": "Изготавливаем столешницы из искусственного камня, кварца, массива и других материалов. Точный раскрой под вашу кухню с вырезами под мойку и варочную панель.",
+                    "primaryButton": "Рассчитать стоимость",
+                    "secondaryButton": "Вызвать замерщика"
+                },
+                "StoleshnicaMaterials": {
+                    "title": "Сравнение материалов",
+                    "rows": [
+                        {
+                            "material": "Кварцевый агломерат",
+                            "price": "Высокая",
+                            "strength": "Высокая",
+                            "care": "Простой",
+                            "strengthColor": "emerald",
+                            "careColor": "emerald"
+                        },
+                        {
+                            "material": "Акриловый камень",
+                            "price": "Средняя",
+                            "strength": "Средняя",
+                            "care": "Простой",
+                            "strengthColor": "amber",
+                            "careColor": "emerald"
+                        },
+                        {
+                            "material": "ДСП / Постформинг",
+                            "price": "Низкая",
+                            "strength": "Средняя",
+                            "care": "Простой",
+                            "strengthColor": "amber",
+                            "careColor": "emerald"
+                        },
+                        {
+                            "material": "Массив дерева",
+                            "price": "Высокая",
+                            "strength": "Низкая",
+                            "care": "Требует ухода",
+                            "strengthColor": "sky",
+                            "careColor": "amber"
+                        },
+                        {
+                            "material": "Керамика",
+                            "price": "Высокая",
+                            "strength": "Высокая",
+                            "care": "Простой",
+                            "strengthColor": "emerald",
+                            "careColor": "emerald"
+                        }
+                    ]
+                },
+                "StoleshnicaBenefits": {
+                    "title": "Наши преимущества",
+                    "items": [
+                        {
+                            "title": "Точный расчёт",
+                            "desc": "Замер с точностью до миллиметра для идеальной подгонки",
+                            "icon": "calc",
+                            "color": "amber"
+                        },
+                        {
+                            "title": "Профессиональный монтаж",
+                            "desc": "Установка с герметизацией стыков и вырезами под технику",
+                            "icon": "tools",
+                            "color": "sky"
+                        },
+                        {
+                            "title": "Гарантия 2-10 лет",
+                            "desc": "Гарантия на материал и работы по установке вашего изделия",
+                            "icon": "shield",
+                            "color": "emerald"
+                        }
+                    ]
+                },
+                "StoleshnicaSolutions": {
+                    "title": "Популярные решения",
+                    "items": [
+                        {
+                            "title": "Кварцевый агломерат",
+                            "desc": "Прочность и элегантность натурального камня",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/stoleshnica_popular_kvarc.png",
+                            "href": "/stoleshnica/kvarc"
+                        },
+                        {
+                            "title": "Акриловый камень",
+                            "desc": "Бесшовное соединение и любые формы",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/stoleshnica_popular_akril.png",
+                            "href": "/stoleshnica/akril"
+                        }
+                    ]
+                },
+                "StoleshnicaServices": {
+                    "title": "Что входит в стоимость",
+                    "services": [
+                        {
+                            "title": "Выезд замерщика",
+                            "desc": "Бесплатный замер помещения"
+                        },
+                        {
+                            "title": "Изготовление",
+                            "desc": "Производство по вашим размерам"
+                        },
+                        {
+                            "title": "Вырезы под технику",
+                            "desc": "Под мойку, варочную панель, смеситель"
+                        },
+                        {
+                            "title": "Доставка и монтаж",
+                            "desc": "Профессиональная установка"
+                        }
+                    ]
+                },
+                "StoleshnicaCTA": {
+                    "title": "Рассчитайте стоимость столешницы",
+                    "description": "Оставьте заявку и получите расчёт стоимости с учётом всех вырезов и монтажа",
+                    "buttonText": "Получить расчёт"
+                }
+            },
+            "/bytovaya-tehnika": {
+                "ByttehnikaSidebar": {
+                    "brands": [
+                        {
+                            "title": "Bosch",
+                            "slug": "bosch"
+                        },
+                        {
+                            "title": "Siemens",
+                            "slug": "siemens"
+                        },
+                        {
+                            "title": "Electrolux",
+                            "slug": "electrolux"
+                        },
+                        {
+                            "title": "Hansa",
+                            "slug": "hansa"
+                        },
+                        {
+                            "title": "Gorenje",
+                            "slug": "gorenje"
+                        }
+                    ]
+                },
+                "ByttehnikaHero": {
+                    "title": "Бытовая техника",
+                    "description": "Встраиваемая и отдельностоящая техника от ведущих мировых производителей. Подберём оптимальное решение с учётом ваших пожеланий и бюджета.",
+                    "primaryButton": "Подобрать технику",
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/appliances_hero.png"
+                },
+                "ByttehnikaBrands": {
+                    "title": "Работаем с лучшими брендами",
+                    "brands": [
+                        {
+                            "title": "Bosch",
+                            "slug": "bosch"
+                        },
+                        {
+                            "title": "Siemens",
+                            "slug": "siemens"
+                        },
+                        {
+                            "title": "Electrolux",
+                            "slug": "electrolux"
+                        },
+                        {
+                            "title": "Hansa",
+                            "slug": "hansa"
+                        },
+                        {
+                            "title": "Gorenje",
+                            "slug": "gorenje"
+                        },
+                        {
+                            "title": "Whirlpool",
+                            "slug": "whirlpool"
+                        }
+                    ]
+                },
+                "ByttehnikaBenefits": {
+                    "title": "Почему покупают у нас",
+                    "items": [
+                        {
+                            "title": "Официальная гарантия",
+                            "desc": "Вся техника с официальной гарантией производителя до 5 лет",
+                            "icon": "shield",
+                            "color": "emerald"
+                        },
+                        {
+                            "title": "Выгодные цены",
+                            "desc": "Прямые поставки техники от производителей без посредников",
+                            "icon": "wallet",
+                            "color": "sky"
+                        },
+                        {
+                            "title": "Быстрая доставка",
+                            "desc": "Доставим технику в удобное время с подъёмом на этаж",
+                            "icon": "bolt",
+                            "color": "amber"
+                        }
+                    ]
+                },
+                "ByttehnikaCategories": {
+                    "title": "Популярные категории",
+                    "items": [
+                        {
+                            "title": "Варочные панели",
+                            "desc": "Индукционные, газовые, электрические",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/varochna.jpg"
+                        },
+                        {
+                            "title": "Духовые шкафы",
+                            "desc": "Встраиваемые с конвекцией и грилем",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/duhshkaf.jpg"
+                        }
+                    ]
+                },
+                "ByttehnikaComplex": {
+                    "title": "Комплексное решение",
+                    "description": "Закажите кухню вместе с техникой и получите скидку до 15% на весь комплект. Наши дизайнеры подберут технику, которая идеально впишется в ваш проект.",
+                    "buttonText": "Заказать проект мебели",
+                    "perks": [
+                        "Единый проект кухни и техники",
+                        "Скидка на комплект до 15%",
+                        "Одновременная доставка и установка"
+                    ]
+                },
+                "ByttehnikaCTA": {
+                    "title": "Нужна помощь с выбором?",
+                    "description": "Наши специалисты помогут подобрать технику под ваши задачи и бюджет",
+                    "buttonText": "Получить консультацию"
+                }
+            },
+            "/santehnika": {
+                "SantehnikaSidebar": {
+                    "brands": [
+                        {
+                            "title": "Blanco",
+                            "slug": "blanco"
+                        },
+                        {
+                            "title": "Grohe",
+                            "slug": "grohe"
+                        },
+                        {
+                            "title": "Hansgrohe",
+                            "slug": "hansgrohe"
+                        },
+                        {
+                            "title": "Franke",
+                            "slug": "franke"
+                        },
+                        {
+                            "title": "Omoikiri",
+                            "slug": "omoikiri"
+                        }
+                    ]
+                },
+                "SantehnikaHero": {
+                    "title": "Сантехника",
+                    "description": "Кухонные мойки, смесители, измельчители и аксессуары от ведущих производителей. Подберём идеальное сочетание цвета и формы для вашей кухни.",
+                    "primaryButton": "Подобрать комплект",
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/plumbing_hero.png"
+                },
+                "SantehnikaBrands": {
+                    "title": "Бренды сантехники",
+                    "brands": [
+                        {
+                            "title": "Blanco",
+                            "slug": "blanco"
+                        },
+                        {
+                            "title": "Grohe",
+                            "slug": "grohe"
+                        },
+                        {
+                            "title": "Hansgrohe",
+                            "slug": "hansgrohe"
+                        },
+                        {
+                            "title": "Franke",
+                            "slug": "franke"
+                        },
+                        {
+                            "title": "Omoikiri",
+                            "slug": "omoikiri"
+                        },
+                        {
+                            "title": "Elikor",
+                            "slug": "elikor"
+                        }
+                    ]
+                },
+                "SantehnikaSinkTypes": {
+                    "title": "Типы кухонных моек",
+                    "items": [
+                        {
+                            "title": "Нержавеющая сталь",
+                            "desc": "Классика для любой кухни. Прочные, гигиеничные, доступные по цене",
+                            "icon": "cube",
+                            "color": "slate"
+                        },
+                        {
+                            "title": "Гранитные композитные",
+                            "desc": "Стильный внешний вид, устойчивость к царапинам и высоким температурам",
+                            "icon": "sparkles",
+                            "color": "amber"
+                        },
+                        {
+                            "title": "Керамические",
+                            "desc": "Элегантность и долговечность. Идеально для классических интерьеров",
+                            "icon": "palette",
+                            "color": "sky"
+                        }
+                    ]
+                },
+                "SantehnikaCategories": {
+                    "title": "Популярные категории",
+                    "items": [
+                        {
+                            "title": "Кухонные мойки",
+                            "desc": "Врезные, накладные, интегрированные",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/kitchen_sink.png"
+                        },
+                        {
+                            "title": "Смесители",
+                            "desc": "С выдвижным изливом, сенсорные, классические",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-1/kitchen_faucet.png"
+                        }
+                    ]
+                },
+                "SantehnikaBenefits": {
+                    "title": "Почему выбирают нас",
+                    "items": [
+                        {
+                            "title": "Оригинальная продукция",
+                            "desc": "Только сертифицированная сантехника от официальных дистрибьюторов",
+                            "icon": "shield",
+                            "color": "emerald"
+                        },
+                        {
+                            "title": "Профессиональный монтаж",
+                            "desc": "Установка с подключением и проверкой на герметичность",
+                            "icon": "tools",
+                            "color": "sky"
+                        },
+                        {
+                            "title": "Выгодные комплекты",
+                            "desc": "Скидки при покупке мойки со смесителем и аксессуарами",
+                            "icon": "coin",
+                            "color": "amber"
+                        }
+                    ]
+                },
+                "SantehnikaComplex": {
+                    "title": "Комплект для кухни",
+                    "description": "Закажите мойку вместе со смесителем, измельчителем и диспенсером — получите скидку до 20% на комплект.",
+                    "buttonText": "Собрать комплект",
+                    "perks": [
+                        "Мойка + смеситель в едином стиле",
+                        "Измельчитель пищевых отходов",
+                        "Диспенсер для моющего средства"
+                    ]
+                },
+                "SantehnikaCTA": {
+                    "title": "Нужна помощь с выбором?",
+                    "description": "Наши специалисты помогут подобрать сантехнику под вашу кухню и бюджет",
+                    "buttonText": "Получить консультацию"
+                }
+            },
+            "/furnitura": {
+                "FurnituraSidebar": {
+                    "shops": []
+                },
+                "FurnituraHero": {
+                    "title": "Фурнитура",
+                    "description": "Каталог интернет-магазинов и поставщиков мебельной фурнитуры. Петли, направляющие, подъёмники и системы хранения от проверенных поставщиков.",
+                    "primaryButton": "Подобрать фурнитуру",
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png"
+                },
+                "FurnituraShops": {
+                    "title": "Магазины и поставщики",
+                    "shops": []
+                },
+                "FurnituraCTA": {
+                    "title": "Подберём фурнитуру под ваш проект",
+                    "description": "Поможем выбрать оптимальное решение с учётом бюджета и требований к мебели",
+                    "buttonText": "Получить консультацию"
+                }
+            },
+            "/plitka": {
+                "PliitkaSidebar": {
+                    "brands": [
+                        {
+                            "title": "Italon",
+                            "slug": "italon"
+                        },
+                        {
+                            "title": "Kerama Marazzi",
+                            "slug": "kerama-marazzi"
+                        },
+                        {
+                            "title": "Atlas Concorde",
+                            "slug": "atlas-concorde"
+                        },
+                        {
+                            "title": "Estima",
+                            "slug": "estima"
+                        }
+                    ]
+                },
+                "PliitkaHero": {
+                    "title": "Плитка",
+                    "description": "Керамическая плитка, керамогранит и мозаика от ведущих мировых производителей. Подберём оптимальное решение для любого интерьера.",
+                    "primaryButton": "Подобрать плитку",
+                    "bgImage": ""
+                },
+                "PliitkaBrands": {
+                    "title": "Работаем с лучшими брендами",
+                    "brands": [
+                        {
+                            "title": "Italon",
+                            "slug": "italon"
+                        },
+                        {
+                            "title": "Kerama Marazzi",
+                            "slug": "kerama-marazzi"
+                        },
+                        {
+                            "title": "Atlas Concorde",
+                            "slug": "atlas-concorde"
+                        },
+                        {
+                            "title": "Estima",
+                            "slug": "estima"
+                        }
+                    ]
+                },
+                "PliitkaBenefits": {
+                    "title": "Почему выбирают нас",
+                    "items": [
+                        {
+                            "title": "Сертифицированная продукция",
+                            "desc": "Вся плитка сертифицирована и соответствует стандартам качества",
+                            "icon": "shield",
+                            "color": "emerald"
+                        },
+                        {
+                            "title": "Широкий ассортимент",
+                            "desc": "Более 1000 коллекций плитки различных стилей и форматов",
+                            "icon": "grid",
+                            "color": "sky"
+                        },
+                        {
+                            "title": "Профессиональный подбор",
+                            "desc": "Поможем подобрать плитку, подходящую по стилю и бюджету вашего проекта",
+                            "icon": "bolt",
+                            "color": "amber"
+                        }
+                    ]
+                },
+                "PliitkaCategories": {
+                    "title": "Популярные категории",
+                    "items": [
+                        {
+                            "title": "Керамогранит",
+                            "desc": "Прочный и долговечный материал для пола и стен",
+                            "gradient": "from-amber-50 to-orange-50"
+                        },
+                        {
+                            "title": "Керамическая плитка",
+                            "desc": "Классическое решение для ванной и кухни",
+                            "gradient": "from-sky-50 to-blue-50"
+                        }
+                    ]
+                },
+                "PliitkaComplex": {
+                    "title": "Комплексное решение",
+                    "description": "Закажите плитку вместе с дизайн-проектом и получите скидку на весь комплект. Наши дизайнеры подберут плитку, которая идеально впишется в ваш интерьер.",
+                    "buttonText": "Заказать дизайн-проект",
+                    "perks": [
+                        "Подбор плитки под дизайн-проект",
+                        "Расчёт количества материала",
+                        "Доставка и укладка под ключ"
+                    ]
+                },
+                "PliitkaCTA": {
+                    "title": "Нужна помощь с выбором?",
+                    "description": "Наши специалисты помогут подобрать плитку под ваши задачи и бюджет",
+                    "buttonText": "Получить консультацию"
+                }
+            }
+        }
+    },
+    "2": {
+        "name": "Promo-2",
+        "pages": {
+            "/": {
+                "Hero": {
+                    "label": "Белорусская фабрика мебели",
+                    "title": "Мебель европейского качества по доступной цене",
+                    "description": "Создаём кухонные гарнитуры, шкафы и гардеробы, которые сочетают безупречный дизайн, премиальные материалы и выверенную функциональность изделий",
+                    "ctaPrimary": "Дизайнер на дом",
+                    "ctaPrimaryLink": "/contact",
+                    "ctaSecondary": "Промокод на 10% скидку",
+                    "ctaSecondaryLink": "/actions"
+                },
+                "Styles": {
+                    "label": "Коллекции",
+                    "heading": "Найдите свой стиль",
+                    "allLinkText": "Все стили",
+                    "allLink": "/styles"
+                },
+                "Advantages": {
+                    "label": "Преимущества",
+                    "heading": "Почему выбирают нас",
+                    "description": "Мы объединяем многолетний опыт, передовые технологии и внимание к деталям для создания мебели, которая превосходит ожидания."
+                },
+                "Details": {
+                    "label": "Мебельная фабрика",
+                    "heading": "Мебель для жизни",
+                    "description": "Мебель — это сочетание безупречного дизайна, функциональности и долговечности. Мы используем только качественные материалы и фурнитуру от ведущих мировых производителей."
+                },
+                "CTA": {
+                    "label": "Начните сейчас",
+                    "heading": "Создадим кухню вашей мечты",
+                    "description": "Запишитесь на бесплатную консультацию. Наш дизайнер поможет подобрать идеальное решение для вашего пространства.",
+                    "buttonText": "Бесплатная консультация",
+                    "buttonLink": "/contact"
+                }
+            },
+            "/about": {
+                "Hero": {
+                    "label": "О фабрике",
+                    "title": "От нашей фабрики для вашей семьи",
+                    "description": "Наша фабрика располагает самой крупной сетью мебельных салонов. Предлагаем отличный сервис и доступные цены на мебель премиального качества.",
+                    "ctaPrimary": "Найти ближайший салон",
+                    "ctaPrimaryLink": "/showrooms"
+                },
+                "LeaderSection": {
+                    "quote": "Мы вкладываем весь свой опыт и душу в создание мебели",
+                    "name": "Зуховицкий О.В.",
+                    "role": "Руководитель фабрики ЗОВ",
+                    "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zovdir.png"
+                },
+                "Mission": {
+                    "label": "Наша миссия",
+                    "heading": "Мы создаём мебель, которая дарит радость"
+                },
+                "Factory": {
+                    "label": "Производство",
+                    "heading": "Наша фабрика",
+                    "description": "25 000 м² современного производства, оснащённого передовым европейским оборудованием",
+                    "factoryImages": [
+                        "https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg",
+                        "https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg",
+                        "https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg",
+                        "https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg",
+                        "https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg"
+                    ]
+                },
+                "Video": {
+                    "src": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4"
+                },
+                "Principles": {
+                    "label": "Наши ценности",
+                    "heading": "Принципы компании"
+                },
+                "AboutCTA": {
+                    "eyebrow": "Бесплатная услуга",
+                    "heading": "Закажите дизайн-проект",
+                    "description": "Запишитесь на бесплатную консультацию. Наш дизайнер поможет подобрать идеальное решение.",
+                    "ctaText": "Заказать дизайн-проект",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/news": {
+                "Hero": {
+                    "label": "Мебельная фабрика",
+                    "heading": "Новости",
+                    "description": "События, обновления и достижения фабрики"
+                },
+                "NewsList": {},
+                "NewsCTA": {
+                    "eyebrow": "Хотите узнавать первыми?",
+                    "heading": "Посетите наши салоны",
+                    "description": "Наши дизайнеры всегда в курсе последних новинок и акций.",
+                    "ctaText": "Найти ближайший салон",
+                    "ctaLink": "/showrooms"
+                }
+            },
+            "/styles": {
+                "Hero": {
+                    "label": "Коллекции",
+                    "heading": "Стили кухонь",
+                    "description": "Откройте для себя наше портфолио. От строгой классики до минимализма — найдите идеальное решение, отражающее ваш индивидуальный вкус."
+                },
+                "StylesGrid": {},
+                "StylesCTA": {
+                    "heading": "Поможем с выбором",
+                    "description": "Запишитесь на встречу с нашим дизайнером. Мы подберем идеальный стиль, материалы и фурнитуру, учитывая архитектуру вашего пространства.",
+                    "ctaText": "Записаться в салон",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/facades": {
+                "Hero": {
+                    "label": "Материалы",
+                    "title": "Фасад это лицо вашей мебели",
+                    "description": "Фасады задают характер вашего домашнего интерьера. От натурального массива до технологичного акрила: мы предлагаем материалы, которые сочетают в себе безупречную эстетику, функциональность и долговечность."
+                },
+                "FacadesCatalog": {},
+                "FacadesCTA": {
+                    "eyebrow": "Образцы",
+                    "heading": "Посмотрите вживую",
+                    "description": "Посетите салон фабрики, чтобы прикоснуться к образцам.",
+                    "ctaText": "Запись в салон",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/furniture": {
+                "Hero": {
+                    "label": "Функциональность",
+                    "title": "Безупречное движение",
+                    "description": "Мебель премиум-класса требует фурнитуры соответствующего уровня. Мы предлагаем решения от ведущих европейских брендов, которые сделают каждое движение фасада или ящика плавным и комфортным."
+                },
+                "FurnitureIntro": {
+                    "eyebrow": "Качество в деталях",
+                    "heading": "Надежность, которую вы чувствуете каждый день",
+                    "description": "Фурнитура — это невидимое сердце любой мебели. От нее зависит, насколько плавно будут открываться дверцы, как тихо будут закрываться ящики и сколько лет мебель прослужит без единого скрипа."
+                },
+                "BrandsSection": {},
+                "FurnitureCTA": {
+                    "eyebrow": "Консультация",
+                    "heading": "Поможем выбрать лучшую систему для вашей мебели",
+                    "ctaText": "Записаться в салон",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/contact": {
+                "ContactForm": {
+                    "title": "Контакты",
+                    "email": "info@example.com"
+                },
+                "Map": {
+                    "address": "Москва, ул. Примерная, 1"
+                }
+            },
+            "/actions": {
+                "Hero": {
+                    "label": "Специальные предложения",
+                    "title": "Скидки & акции",
+                    "description": "",
+                    "ctaText": "Расчёт проекта за час",
+                    "ctaLink": "/contact",
+                    "discountBadge": "−30%",
+                    "statCount": "6+",
+                    "statDiscount": "−30%"
+                },
+                "ActionsTimer": {
+                    "badge": "Главные акции сезона",
+                    "heading": "Сезонные акции",
+                    "description": "Успейте оформить заказ до окончания акции",
+                    "ctaText": "Консультация по акциям",
+                    "ctaLink": "/contact",
+                    "deadline": "2026-12-31T00:00:00"
+                },
+                "ActionsCards": {
+                    "label": "Текущие предложения",
+                    "heading": "Все акции",
+                    "consultLink": "/contact"
+                },
+                "ActionsBanner": {
+                    "eyebrow": "Специальное предложение",
+                    "title": "Кухня мечты −30%",
+                    "description": "",
+                    "ctaText": "Консультация по акции",
+                    "ctaLink": "/contact"
+                },
+                "ActionsSteps": {
+                    "label": "Просто",
+                    "heading": "Как получить скидку",
+                    "description": "Воспользоваться акцией легко — всего 3 шага до вашей новой мебели по выгодной цене"
+                },
+                "ActionsCTA": {
+                    "eyebrow": "Не упустите момент",
+                    "title": "Запишитесь на бесплатную консультацию",
+                    "description": "Наш дизайнер поможет выбрать подходящую акцию, разработает проект и рассчитает точную стоимость с учётом скидок",
+                    "ctaText": "Записаться на консультацию",
+                    "ctaLink": "/contact",
+                    "phone": ""
+                }
+            },
+            "/kitchens": {
+                "Hero": {
+                    "title": "Создание вашей идеальной кухни",
+                    "description": "От детального проектирования до бережной сборки — каждый этап контролируется нашими специалистами",
+                    "ctaText": "Спроектировать кухню",
+                    "ctaLink": "/contact"
+                },
+                "KitchensGallery": {
+                    "label": "Галерея",
+                    "heading": "Наши гарнитуры",
+                    "description": "Ознакомьтесь с вариантами решений для вашей кухни."
+                },
+                "ProductionCycle": {
+                    "label": "Этапы",
+                    "heading": "Производственный цикл",
+                    "description": "Отточенный годами процесс создания премиальной мебели.",
+                    "designImage": "https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg",
+                    "productionImage": "https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg",
+                    "assemblyImage": ""
+                },
+                "KitchenStyles": {
+                    "heading": "Варианты стилистических решений",
+                    "description": "Мы адаптируем индивидуальный проект под любой стиль."
+                },
+                "KitchensCTA": {
+                    "heading": "Хотите заказать кухню?",
+                    "description": "Запишитесь в наши салоны для бесплатной консультации с дизайнером.",
+                    "ctaText": "Записаться в салон",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/wardrobes": {
+                "Hero": {
+                    "label": "Системы хранения",
+                    "title": "Идеальный порядок в каждой детали",
+                    "description": "Мы создаем уникальные встроенные и корпусные шкафы, которые становятся органичным продолжением вашей квартиры.",
+                    "ctaText": "Спроектировать шкаф",
+                    "ctaLink": "/contact"
+                },
+                "WardrobesGallery": {
+                    "label": "Галерея",
+                    "heading": "Наши шкафы и гардеробные"
+                },
+                "WardrobeFeatures": {
+                    "heading": "Безупречное качество от замера до установки"
+                },
+                "WardrobeTypes": {
+                    "label": "Варианты решений",
+                    "heading": "Виды систем"
+                },
+                "WardrobesCTA": {
+                    "heading": "Закажите расчет стоимости",
+                    "ctaText": "Запись в салон",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/showrooms": {
+                "Hero": {
+                    "label": "Где купить",
+                    "title": "Наши салоны",
+                    "description": "Посетите один из наших фирменных салонов. Оцените качество материалов вживую.",
+                    "ctaText": "Посмотреть карту",
+                    "ctaLink": "#network-section"
+                },
+                "ShowroomsMap": {},
+                "ShowroomsCTA": {
+                    "heading": "Нет времени на поездку в салон?",
+                    "description": "Закажите выезд дизайнера на дом абсолютно бесплатно.",
+                    "ctaText": "Вызвать дизайнера",
+                    "ctaLink": "/contact"
+                }
+            },
+            "/careers": {
+                "Hero": {
+                    "label": "Карьера",
+                    "title": "Строй карьеру вместе с нами",
+                    "description": "Фабрика — это более 700 специалистов, которые создают премиальную мебель. Присоединяйтесь к команде профессионалов."
+                },
+                "CareersPerks": {
+                    "label": "Почему мы",
+                    "heading": "Условия работы"
+                },
+                "CareersVacancies": {
+                    "label": "Открытые позиции",
+                    "heading": "Вакансии"
+                },
+                "CareersForm": {
+                    "label": "Открытое резюме",
+                    "heading": "Отправьте ваше резюме",
+                    "description": "Отправьте открытое резюме — мы сохраняем его в базе и свяжемся, когда появится подходящая позиция.",
+                    "email": "info@zov.top",
+                    "phone": "+7 915 400-00-20"
+                }
+            },
+            "/designers": {
+                "Hero": {
+                    "label": "Партнёрская программа",
+                    "title": "Для дизайнеров и студий",
+                    "description": "Станьте партнёром фабрики — и предлагайте клиентам премиальную мебель с эксклюзивными условиями."
+                },
+                "DesignersBenefits": {
+                    "label": "Что вы получаете",
+                    "heading": "Преимущества партнёрства"
+                },
+                "DesignersTracks": {
+                    "label": "Выберите формат",
+                    "heading": "Программы сотрудничества"
+                },
+                "DesignersSteps": {
+                    "label": "Просто и быстро",
+                    "heading": "Как стать партнёром"
+                },
+                "DesignersForm": {
+                    "label": "Начните сегодня",
+                    "heading": "Оставьте заявку — мы позвоним первыми",
+                    "description": "Расскажите о себе, и мы предложим наиболее подходящие условия сотрудничества.",
+                    "email": "info@zov.top",
+                    "phone": "+7 915 400-00-20"
+                }
+            },
+            "/yandex-direct": {
+                "Hero": {
+                    "badge": "Специальное предложение",
+                    "title": "Мебель на заказ по вашим размерам",
+                    "subtitle": "Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект",
+                    "primaryButton": "Рассчитать стоимость",
+                    "primaryHref": "/contact",
+                    "secondaryButton": "Позвонить",
+                    "secondaryHref": "tel:+70000000000"
+                },
+                "USP": {
+                    "label": "Почему мы",
+                    "title": "Уникальное торговое предложение",
+                    "subtitle": "То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас",
+                    "items": []
+                },
+                "Advantages": {
+                    "label": "Наши преимущества",
+                    "title": "Цифры говорят за нас",
+                    "stats": [],
+                    "features": []
+                },
+                "Steps": {
+                    "label": "Как мы работаем",
+                    "title": "4 простых шага к вашей идеальной мебели",
+                    "steps": []
+                },
+                "SocialProof": {
+                    "label": "Отзывы клиентов",
+                    "title": "Нам доверяют сотни клиентов",
+                    "reviews": []
+                },
+                "Offer": {
+                    "badge": "Ограниченное предложение",
+                    "title": "Закажите сейчас — получите скидку 15%",
+                    "subtitle": "Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ",
+                    "buttonText": "Получить скидку",
+                    "buttonHref": "/contact",
+                    "includes": []
+                },
+                "CTA": {
+                    "eyebrow": "Готовы начать?",
+                    "title": "Готовы обсудить ваш проект?",
+                    "subtitle": "Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы",
+                    "primaryButton": "Оставить заявку",
+                    "primaryHref": "/contact",
+                    "phoneButton": "Позвонить нам",
+                    "phoneHref": "tel:+70000000000"
+                }
+            }
+        }
+    },
+    "3": {
+        "name": "Promo-3",
+        "pages": {
+            "/": {
+                "Hero": {
+                    "tag": "Коллекция 2026",
+                    "title": "Искусство плитки в каждой детали",
+                    "subtitle": "Качественная плитка из разных материалов от ведущих мировых производителей.",
+                    "ctaPrimary": "Промокод на скидку 10%",
+                    "ctaPrimaryLink": "/contacts",
+                    "ctaSecondary": "Курьер с образцом",
+                    "ctaSecondaryLink": "/contacts"
+                },
+                "Categories": {
+                    "label": "Категории",
+                    "heading": "Подберите идеальную плитку",
+                    "allLinkText": "Весь каталог",
+                    "allLink": "/collections"
+                },
+                "Banner": {
+                    "label": "Для дизайнеров",
+                    "heading": "Визуализируйте пространство до покупки",
+                    "description": "Наши специалисты создадут 3D-раскладку плитки в вашем интерьере.",
+                    "ctaText": "Заказать визуализацию",
+                    "ctaLink": "/contacts",
+                    "floatingTitle": "3D-визуализация",
+                    "floatingSubtitle": "Бесплатно для заказов"
+                },
+                "Collections": {
+                    "label": "Популярное",
+                    "heading": "Бестселлеры коллекций",
+                    "description": "Самые востребованные коллекции плитки, выбранные нашими клиентами и профессиональными дизайнерами"
+                },
+                "Advantages": {
+                    "label": "Почему мы",
+                    "heading": "Преимущества работы с нами"
+                },
+                "CTA": {
+                    "heading": "Готовы начать проект?",
+                    "description": "Свяжитесь с нами для бесплатной консультации. Наши специалисты помогут подобрать идеальную плитку для вашего интерьера.",
+                    "ctaPrimary": "Позвонить нам",
+                    "ctaPrimaryLink": "/contacts",
+                    "ctaSecondary": "Оставить заявку",
+                    "ctaSecondaryLink": "/contacts"
+                }
+            },
+            "/about": {
+                "Hero": {
+                    "tag": "Наша история",
+                    "title": "О компании",
+                    "titleAccent": "PLITKA",
+                    "description": "Мы помогаем создавать красивые интерьеры уже 15 лет. Прямые поставки от лучших мировых производителей, честные цены и экспертиза на каждом шагу."
+                },
+                "Mission": {
+                    "label": "Наша миссия",
+                    "heading": "Красота в каждом квадратном метре",
+                    "quote": "Плитка — это не просто материал. Это основа атмосферы, которую вы создаёте в своём доме.",
+                    "quoteName": "Александр Петров",
+                    "quoteRole": "Основатель компании",
+                    "quoteInitials": "АП"
+                },
+                "Values": {
+                    "label": "Наши принципы",
+                    "heading": "На чём держится компания"
+                },
+                "Timeline": {
+                    "label": "Хронология",
+                    "heading": "Как мы росли"
+                },
+                "Team": {
+                    "label": "Люди",
+                    "heading": "Команда",
+                    "description": "За каждым заказом стоит команда профессионалов, которые искренне любят своё дело."
+                },
+                "Brands": {
+                    "label": "Наши партнёры",
+                    "heading": "Бренды, которым мы доверяем",
+                    "description": "Прямые контракты с ведущими производителями — гарантия оригинальности и лучших цен."
+                },
+                "CTA": {
+                    "heading": "Готовы начать вместе?",
+                    "description": "Свяжитесь с нами — поможем подобрать идеальную плитку, рассчитаем количество и сделаем 3D-визуализацию бесплатно.",
+                    "ctaPrimary": "Смотреть каталог",
+                    "ctaPrimaryLink": "/collections",
+                    "ctaSecondary": "Связаться с нами",
+                    "ctaSecondaryLink": "/contacts"
+                }
+            },
+            "/brands": {
+                "Hero": {
+                    "tag": "Наши партнёры",
+                    "title": "Бренды",
+                    "description": "Прямые поставки от ведущих производителей плитки из России, Италии, Испании и всей Европы."
+                },
+                "BrandsList": {},
+                "CTA": {
+                    "heading": "Не нашли нужный бренд?",
+                    "description": "Свяжитесь с нами — мы работаем с широким кругом производителей и поможем найти нужную коллекцию под ваш проект.",
+                    "ctaPrimary": "Связаться с нами",
+                    "ctaPrimaryLink": "/contacts",
+                    "ctaSecondary": "Смотреть каталог",
+                    "ctaSecondaryLink": "/collections"
+                }
+            },
+            "/collections": {
+                "Hero": {
+                    "tag": "Каталог 2026",
+                    "title": "Коллекции плитки",
+                    "description": "Откройте для себя уникальные коллекции от ведущих мировых производителей."
+                },
+                "CollectionsList": {},
+                "CTA": {
+                    "heading": "Не нашли нужную коллекцию?",
+                    "description": "Свяжитесь с нами — мы поможем подобрать идеальную плитку под ваш проект и бюджет.",
+                    "ctaPrimary": "Связаться с нами",
+                    "ctaPrimaryLink": "/contacts",
+                    "ctaSecondary": "Все бренды",
+                    "ctaSecondaryLink": "/brands"
+                }
+            },
+            "/contacts": {
+                "Hero": {
+                    "tag": "Связаться с нами",
+                    "title": "Контакты",
+                    "description": "Посетите наши партнёрские салоны, закажите образцы с доставкой или оставьте заявку — и получите скидку 10%."
+                },
+                "Salons": {
+                    "label": "Партнёрские салоны",
+                    "heading": "Посмотрите образцы вживую",
+                    "description": "В наших партнёрских салонах представлены сотни коллекций."
+                },
+                "Courier": {
+                    "label": "Курьер с образцами",
+                    "heading": "Образцы привезём к вам",
+                    "description": "Не можете приехать в салон? Наш курьер доставит образцы понравившихся коллекций прямо к вам домой или в офис. Бесплатно, в удобное время.",
+                    "ctaText": "Заказать доставку образцов",
+                    "ctaLink": "tel:+78001234567"
+                },
+                "Form": {
+                    "label": "Специальное предложение",
+                    "heading": "Скидка 10%",
+                    "description": "Оставьте имя и номер телефона — мы пришлём промокод. Без спама, только актуальные предложения.",
+                    "buttonText": "Получить промокод на 10%"
+                }
+            },
+            "/materials": {
+                "Hero": {
+                    "tag": "Ассортимент",
+                    "title": "Материалы",
+                    "description": "Полный ассортимент отделочных материалов для вашего проекта: от классической керамики до эксклюзивного натурального камня."
+                },
+                "Categories": {
+                    "heading": "Категории материалов",
+                    "description": "Все виды плитки и облицовочных материалов в одном месте."
+                },
+                "HowWeWork": {
+                    "heading": "Как мы работаем",
+                    "description": "Простой процесс от выбора до укладки"
+                },
+                "CTA": {
+                    "heading": "Нужна помощь с выбором?",
+                    "description": "Наши специалисты помогут подобрать материал, рассчитать количество и подготовить смету для вашего проекта.",
+                    "ctaPrimary": "Получить консультацию",
+                    "ctaPrimaryLink": "/contacts",
+                    "ctaSecondary": "Смотреть коллекции",
+                    "ctaSecondaryLink": "/collections"
+                }
+            },
+            "/services": {
+                "Hero": {
+                    "tag": "Для вашего проекта",
+                    "title": "Услуги",
+                    "description": "Берём на себя все этапы — от доставки материалов до реализации дизайн-проекта «под ключ». Работаем профессионально и в срок."
+                },
+                "ServicesGrid": {},
+                "CTA": {
+                    "heading": "Готовы обсудить ваш проект?",
+                    "description": "Свяжитесь с нами — бесплатно проконсультируем, рассчитаем стоимость и подберём оптимальное решение под ваши задачи.",
+                    "ctaPrimary": "Связаться с нами",
+                    "ctaPrimaryLink": "/contacts"
+                }
+            },
+            "/vacancies": {
+                "Hero": {
+                    "tag": "Команда",
+                    "title": "Вакансии",
+                    "description": "Мы строим команду профессионалов, которым важно качество. Присоединяйтесь — вместе создаём пространства, которыми гордятся."
+                },
+                "VacanciesList": {},
+                "Form": {
+                    "label": "Отклик на вакансию",
+                    "heading": "Напишите нам",
+                    "description": "Укажите имя и телефон — мы свяжемся с вами, обсудим детали и договоримся о встрече.",
+                    "buttonText": "Отправить отклик"
+                }
+            },
+            "/yandex-direct": {
+                "Hero": {
+                    "badge": "Специальное предложение",
+                    "title": "Мебель на заказ по вашим размерам",
+                    "subtitle": "Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект",
+                    "primaryButton": "Рассчитать стоимость",
+                    "primaryHref": "/contacts",
+                    "secondaryButton": "Позвонить",
+                    "secondaryHref": "tel:+70000000000"
+                },
+                "USP": {
+                    "label": "Почему мы",
+                    "title": "Уникальное торговое предложение",
+                    "subtitle": "То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас",
+                    "items": []
+                },
+                "Advantages": {
+                    "label": "Наши преимущества",
+                    "title": "Цифры говорят за нас",
+                    "stats": [],
+                    "features": []
+                },
+                "Steps": {
+                    "label": "Как мы работаем",
+                    "title": "4 простых шага к вашей идеальной мебели",
+                    "steps": []
+                },
+                "SocialProof": {
+                    "label": "Отзывы клиентов",
+                    "title": "Нам доверяют сотни клиентов",
+                    "reviews": []
+                },
+                "Offer": {
+                    "badge": "Ограниченное предложение",
+                    "title": "Закажите сейчас — получите скидку 15%",
+                    "subtitle": "Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ",
+                    "buttonText": "Получить скидку",
+                    "buttonHref": "/contacts",
+                    "includes": []
+                },
+                "CTA": {
+                    "eyebrow": "Готовы начать?",
+                    "title": "Готовы обсудить ваш проект?",
+                    "subtitle": "Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы",
+                    "primaryButton": "Оставить заявку",
+                    "primaryHref": "/contacts",
+                    "phoneButton": "Позвонить нам",
+                    "phoneHref": "tel:+70000000000"
+                }
+            }
+        }
+    },
+    "_versions": {
+        "1": {
+            "HeroMain": 4,
+            "ActionsCTA": 2,
+            "Brands": 2,
+            "ContactCTA": 2,
+            "ContactsHero": 2,
+            "Direction": 2,
+            "Equipment": 2,
+            "Incentives": 3,
+            "MebelBenefits": 2,
+            "MebelProcess": 2,
+            "Message": 2,
+            "PromoOffer": 2,
+            "Stage": 2
+        },
+        "2": {},
+        "3": {}
+    }
 }

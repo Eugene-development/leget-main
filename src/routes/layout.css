@@ -580,7 +580,7 @@
 @keyframes fade-up {
 	from {
 		opacity: 0;
-		transform: translateY(30px);
+		transform: translateY(var(--ds-motion-lift));
 	}
 	to {
 		opacity: 1;
@@ -600,7 +600,7 @@
 @keyframes slide-right {
 	from {
 		opacity: 0;
-		transform: translateX(-30px);
+		transform: translateX(calc(-1 * var(--ds-motion-lift)));
 	}
 	to {
 		opacity: 1;
