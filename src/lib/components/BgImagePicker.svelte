@@ -617,6 +617,14 @@
 </div>
 
 <style>
+	/*
+	 * Цвет здесь берётся из токенов через `var(--color-*)`: утилит в этом файле
+	 * нет — модалка написана обычным CSS, — но ключи @theme лежат в :root, и
+	 * смена дизайн-системы перекрашивает её наравне с разметкой на классах.
+	 * Полупрозрачные значения — доля одного токена через `color-mix`, как в
+	 * ImageFallback: `rgba()` с сырыми каналами вернуло бы хардкод обратно.
+	 */
+
 	/* ── Backdrop ── */
 	.picker-backdrop {
 		position: fixed;
@@ -626,7 +634,7 @@
 		align-items: center;
 		justify-content: center;
 		padding: 1rem;
-		background: rgba(0, 0, 0, 0.75);
+		background: color-mix(in oklab, var(--color-scrim) 75%, transparent);
 		backdrop-filter: blur(6px);
 		-webkit-backdrop-filter: blur(6px);
 	}
@@ -640,10 +648,10 @@
 		max-height: 92vh;
 		border-radius: 1.25rem;
 		overflow: hidden;
-		background: #0f172a;
+		background: var(--color-ink-900);
 		box-shadow:
-			0 32px 80px rgba(0, 0, 0, 0.6),
-			0 0 0 1px rgba(255, 255, 255, 0.06);
+			0 32px 80px color-mix(in oklab, var(--color-scrim) 60%, transparent),
+			0 0 0 1px color-mix(in oklab, var(--color-on-dark) 6%, transparent);
 	}
 
 	/* ── Header ── */
@@ -653,8 +661,8 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding: 1rem 1.25rem;
-		background: #1e293b;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+		background: var(--color-ink-800);
+		border-bottom: 1px solid color-mix(in oklab, var(--color-on-dark) 7%, transparent);
 		flex-shrink: 0;
 	}
 
@@ -667,20 +675,20 @@
 	.picker-header-icon {
 		width: 1.5rem;
 		height: 1.5rem;
-		color: #38bdf8;
+		color: var(--color-link-400);
 		flex-shrink: 0;
 	}
 
 	.picker-title {
 		font-size: 0.9375rem;
 		font-weight: 700;
-		color: #f1f5f9;
+		color: var(--color-ink-100);
 		margin: 0;
 	}
 
 	.picker-subtitle {
 		font-size: 0.75rem;
-		color: #64748b;
+		color: var(--color-ink-500);
 		margin: 0;
 	}
 
@@ -699,16 +707,16 @@
 		border-radius: 0.5rem;
 		font-size: 0.8125rem;
 		font-weight: 600;
-		color: #bae6fd;
-		border: 1px solid rgba(56, 189, 248, 0.3);
-		background: rgba(56, 189, 248, 0.08);
+		color: var(--color-link-200);
+		border: 1px solid color-mix(in oklab, var(--color-link-400) 30%, transparent);
+		background: color-mix(in oklab, var(--color-link-400) 8%, transparent);
 		cursor: pointer;
 		transition: all 0.2s;
 	}
 
 	.btn-upload:hover {
-		background: rgba(56, 189, 248, 0.16);
-		border-color: rgba(56, 189, 248, 0.5);
+		background: color-mix(in oklab, var(--color-link-400) 16%, transparent);
+		border-color: color-mix(in oklab, var(--color-link-400) 50%, transparent);
 	}
 
 	.btn-upload svg {
@@ -726,14 +734,14 @@
 		border-radius: 0.5rem;
 		border: none;
 		background: transparent;
-		color: #64748b;
+		color: var(--color-ink-500);
 		cursor: pointer;
 		transition: all 0.15s;
 	}
 
 	.btn-close:hover {
-		background: rgba(255, 255, 255, 0.08);
-		color: #f1f5f9;
+		background: color-mix(in oklab, var(--color-on-dark) 8%, transparent);
+		color: var(--color-ink-100);
 	}
 
 	.btn-close svg {
@@ -744,23 +752,25 @@
 	/* ── Error / progress bars ── */
 	.error-bar {
 		padding: 0.5rem 1.25rem;
-		background: rgba(239, 68, 68, 0.15);
-		border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+		background: color-mix(in oklab, var(--color-cat-6-500) 15%, transparent);
+		border-bottom: 1px solid color-mix(in oklab, var(--color-cat-6-500) 30%, transparent);
 		font-size: 0.8125rem;
-		color: #fca5a5;
+		color: var(--color-cat-6-300);
 		flex-shrink: 0;
 	}
 
 	.progress-bar-track {
 		height: 3px;
-		background: rgba(255, 255, 255, 0.06);
+		background: color-mix(in oklab, var(--color-on-dark) 6%, transparent);
 		flex-shrink: 0;
 	}
 
 	.progress-bar-fill {
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(90deg, #38bdf8, #818cf8);
+		/* Был градиент sky-400 → indigo-400; обе точки — интерактивная роль системы,
+		   поэтому теперь одна заливка, а не градиент из токена в себя же. */
+		background: var(--color-link-400);
 		transform-origin: left center;
 		transition: transform 0.2s;
 	}
@@ -783,12 +793,12 @@
 		justify-content: center;
 		gap: 0.75rem;
 		padding: 3rem 1.5rem;
-		color: #64748b;
+		color: var(--color-ink-500);
 		font-size: 0.9375rem;
 	}
 
 	.state-error {
-		color: #fca5a5;
+		color: var(--color-cat-6-300);
 	}
 
 	.state-icon {
@@ -805,13 +815,13 @@
 	.state-empty-text {
 		font-size: 1rem;
 		font-weight: 600;
-		color: #94a3b8;
+		color: var(--color-ink-400);
 		margin: 0;
 	}
 
 	.state-empty-hint {
 		font-size: 0.8125rem;
-		color: #475569;
+		color: var(--color-ink-600);
 		margin: 0;
 	}
 
@@ -821,15 +831,15 @@
 		border-radius: 0.5rem;
 		font-size: 0.8125rem;
 		font-weight: 600;
-		background: rgba(239, 68, 68, 0.15);
-		border: 1px solid rgba(239, 68, 68, 0.3);
-		color: #fca5a5;
+		background: color-mix(in oklab, var(--color-cat-6-500) 15%, transparent);
+		border: 1px solid color-mix(in oklab, var(--color-cat-6-500) 30%, transparent);
+		color: var(--color-cat-6-300);
 		cursor: pointer;
 		transition: all 0.2s;
 	}
 
 	.btn-retry:hover {
-		background: rgba(239, 68, 68, 0.25);
+		background: color-mix(in oklab, var(--color-cat-6-500) 25%, transparent);
 	}
 
 	/* ── Slide area ── */
@@ -837,7 +847,7 @@
 		position: relative;
 		flex: 1;
 		min-height: 0;
-		background: #020617;
+		background: var(--color-ink-950);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -869,16 +879,16 @@
 		height: 2.5rem;
 		border-radius: 50%;
 		border: none;
-		background: rgba(15, 23, 42, 0.7);
-		color: #f1f5f9;
+		background: color-mix(in oklab, var(--color-ink-900) 70%, transparent);
+		color: var(--color-ink-100);
 		cursor: pointer;
 		transition: all 0.2s;
 		backdrop-filter: blur(4px);
 	}
 
 	.nav-arrow:hover:not(:disabled) {
-		background: rgba(56, 189, 248, 0.25);
-		color: #38bdf8;
+		background: color-mix(in oklab, var(--color-link-400) 25%, transparent);
+		color: var(--color-link-400);
 		transform: translateY(-50%) scale(1.1);
 	}
 
@@ -909,15 +919,15 @@
 		gap: 0.5rem;
 		padding: 0.25rem 0.625rem;
 		border-radius: 999px;
-		background: rgba(15, 23, 42, 0.75);
+		background: color-mix(in oklab, var(--color-ink-900) 75%, transparent);
 		backdrop-filter: blur(6px);
 		font-size: 0.75rem;
-		color: #94a3b8;
+		color: var(--color-ink-400);
 		pointer-events: none;
 	}
 
 	.badge-active {
-		color: #34d399;
+		color: var(--color-cat-2-400);
 		font-weight: 700;
 	}
 
@@ -927,10 +937,10 @@
 		gap: 0.375rem;
 		padding: 0.625rem 0.875rem;
 		overflow-x: auto;
-		background: #1e293b;
+		background: var(--color-ink-800);
 		flex-shrink: 0;
 		scrollbar-width: thin;
-		scrollbar-color: #334155 transparent;
+		scrollbar-color: var(--color-ink-700) transparent;
 	}
 
 	.thumb {
@@ -943,15 +953,15 @@
 		cursor: pointer;
 		position: relative;
 		transition: all 0.15s;
-		background: #0f172a;
+		background: var(--color-ink-900);
 		padding: 0;
 	}
 
 	.thumb:hover {
-		border-color: rgba(56, 189, 248, 0.5);
+		border-color: color-mix(in oklab, var(--color-link-400) 50%, transparent);
 	}
 	.thumb-active {
-		border-color: #38bdf8 !important;
+		border-color: var(--color-link-400) !important;
 	}
 
 	.thumb-img {
@@ -968,8 +978,8 @@
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: #34d399;
-		border: 1px solid rgba(0, 0, 0, 0.4);
+		background: var(--color-cat-2-400);
+		border: 1px solid color-mix(in oklab, var(--color-scrim) 40%, transparent);
 	}
 
 	/* ── Footer ── */
@@ -979,8 +989,8 @@
 		justify-content: flex-end;
 		gap: 0.75rem;
 		padding: 0.875rem 1.25rem;
-		background: #1e293b;
-		border-top: 1px solid rgba(255, 255, 255, 0.07);
+		background: var(--color-ink-800);
+		border-top: 1px solid color-mix(in oklab, var(--color-on-dark) 7%, transparent);
 		flex-shrink: 0;
 		flex-wrap: wrap;
 	}
@@ -988,7 +998,7 @@
 	.footer-error {
 		flex: 1;
 		font-size: 0.8125rem;
-		color: #fca5a5;
+		color: var(--color-cat-6-300);
 		margin: 0;
 	}
 
@@ -1003,16 +1013,16 @@
 		border-radius: 0.625rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		border: 1px solid rgba(255, 255, 255, 0.12);
+		border: 1px solid color-mix(in oklab, var(--color-on-dark) 12%, transparent);
 		background: transparent;
-		color: #94a3b8;
+		color: var(--color-ink-400);
 		cursor: pointer;
 		transition: all 0.15s;
 	}
 
 	.btn-cancel:hover {
-		background: rgba(255, 255, 255, 0.06);
-		color: #f1f5f9;
+		background: color-mix(in oklab, var(--color-on-dark) 6%, transparent);
+		color: var(--color-ink-100);
 	}
 
 	.btn-remove {
@@ -1023,17 +1033,17 @@
 		border-radius: 0.625rem;
 		font-size: 0.875rem;
 		font-weight: 600;
-		border: 1px solid rgba(248, 113, 113, 0.3);
-		background: rgba(239, 68, 68, 0.08);
-		color: #fca5a5;
+		border: 1px solid color-mix(in oklab, var(--color-cat-6-400) 30%, transparent);
+		background: color-mix(in oklab, var(--color-cat-6-500) 8%, transparent);
+		color: var(--color-cat-6-300);
 		cursor: pointer;
 		transition: all 0.15s;
 	}
 
 	.btn-remove:hover:not(:disabled) {
-		background: rgba(239, 68, 68, 0.16);
-		border-color: rgba(248, 113, 113, 0.55);
-		color: #fecaca;
+		background: color-mix(in oklab, var(--color-cat-6-500) 16%, transparent);
+		border-color: color-mix(in oklab, var(--color-cat-6-400) 55%, transparent);
+		color: var(--color-cat-6-100);
 	}
 
 	.btn-remove:disabled {
@@ -1055,16 +1065,17 @@
 		font-size: 0.875rem;
 		font-weight: 700;
 		border: none;
-		background: linear-gradient(135deg, #0ea5e9, #6366f1);
-		color: #fff;
+		/* Был градиент sky-500 → indigo-500 — см. progress-bar-fill. */
+		background: var(--color-link-500);
+		color: var(--color-on-dark);
 		cursor: pointer;
 		transition: all 0.2s;
-		box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+		box-shadow: 0 4px 14px color-mix(in oklab, var(--color-link-500) 30%, transparent);
 	}
 
 	.btn-approve:hover:not(:disabled) {
 		transform: translateY(-1px);
-		box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+		box-shadow: 0 6px 20px color-mix(in oklab, var(--color-link-500) 40%, transparent);
 	}
 
 	.btn-approve:disabled {
@@ -1083,8 +1094,8 @@
 		width: 2.5rem;
 		height: 2.5rem;
 		border-radius: 50%;
-		border: 3px solid rgba(56, 189, 248, 0.2);
-		border-top-color: #38bdf8;
+		border: 3px solid color-mix(in oklab, var(--color-link-400) 20%, transparent);
+		border-top-color: var(--color-link-400);
 		animation: spin 0.7s linear infinite;
 	}
 
@@ -1092,8 +1103,8 @@
 		width: 1rem;
 		height: 1rem;
 		border-radius: 50%;
-		border: 2px solid rgba(255, 255, 255, 0.2);
-		border-top-color: #fff;
+		border: 2px solid color-mix(in oklab, var(--color-on-dark) 20%, transparent);
+		border-top-color: var(--color-on-dark);
 		animation: spin 0.7s linear infinite;
 	}
 

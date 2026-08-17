@@ -95,7 +95,7 @@
 		<button
 			type="button"
 			tabindex="-1"
-			class="fixed inset-0 z-200 h-full w-full cursor-default border-none bg-slate-950/55 backdrop-blur-[2px] outline-none"
+			class="fixed inset-0 z-200 h-full w-full cursor-default border-none bg-ink-950/55 backdrop-blur-[2px] outline-none"
 			onclick={close}
 			aria-label="Закрыть панель"
 			transition:fade={{ duration: 200 }}
@@ -108,16 +108,16 @@
 			aria-modal="true"
 			aria-label={title || 'Панель настроек'}
 			tabindex="-1"
-			class="font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-sm flex-col border-l border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-2xl"
+			class="font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-sm flex-col border-l border-on-dark/10 bg-ink-950/95 shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ x: 420, duration: 350, opacity: 1 }}
 		>
-			<header class="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
+			<header class="flex items-center justify-between gap-3 border-b border-on-dark/10 px-5 py-4">
 				<div class="flex min-w-0 flex-col">
-					<h3 class="truncate text-base text-white">{title}</h3>
+					<h3 class="truncate text-base text-on-dark">{title}</h3>
 				</div>
 				<button
 					type="button"
-					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/3 text-white/60 transition-all duration-300 hover:bg-white/10 hover:text-white active:scale-95"
+					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-on-dark/3 text-on-dark/60 transition-all duration-300 hover:bg-on-dark/10 hover:text-on-dark active:scale-95"
 					onclick={close}
 					aria-label="Закрыть"
 				>

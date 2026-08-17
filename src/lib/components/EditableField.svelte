@@ -122,10 +122,10 @@
 		<button
 			type="button"
 			onclick={openModal}
-			class="absolute -top-3 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 shadow-md ring-1 transition-all hover:bg-indigo-50 hover:ring-indigo-400 {pencilPositionClass}"
-			class:ring-indigo-400={isActive}
-			class:bg-indigo-50={isActive}
-			class:ring-gray-200={!isActive}
+			class="absolute -top-3 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-surface-raised/90 shadow-md ring-1 transition-all hover:bg-link-50 hover:ring-link-400 {pencilPositionClass}"
+			class:ring-link-400={isActive}
+			class:bg-link-50={isActive}
+			class:ring-ink-200={!isActive}
 			style="opacity: {hovered || isActive ? 1 : 0}; pointer-events: {hovered || isActive
 				? 'auto'
 				: 'none'};"
@@ -136,8 +136,8 @@
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				class="h-3.5 w-3.5 transition-colors"
-				class:text-indigo-600={isActive}
-				class:text-gray-500={!isActive}
+				class:text-link-600={isActive}
+				class:text-ink-500={!isActive}
 				viewBox="0 0 20 20"
 				fill="currentColor"
 				aria-hidden="true"

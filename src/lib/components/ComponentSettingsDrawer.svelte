@@ -169,7 +169,7 @@
 <!-- Компактный триггер: становится в один ряд с «Вариантами» и тумблером темы -->
 <button
 	type="button"
-	class="flex cursor-pointer items-center justify-center rounded-2xl border border-white/10 bg-slate-950/75 p-2.5 text-white shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/25 active:scale-95"
+	class="flex cursor-pointer items-center justify-center rounded-2xl border border-on-dark/10 bg-ink-950/75 p-2.5 text-on-dark shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
 	onclick={() => (open = true)}
 	title="Настройки блока"
 	aria-label="Настройки блока"
@@ -187,8 +187,8 @@
 		<!-- Имя и назначение блока на этом сайте -->
 		{#if editContext && componentType}
 			<section>
-				<h4 class="text-[10px] text-white/40 uppercase">Имя блока</h4>
-				<p class="mt-2 text-xs leading-relaxed text-slate-400">
+				<h4 class="text-[10px] text-on-dark/40 uppercase">Имя блока</h4>
+				<p class="mt-2 text-xs leading-relaxed text-ink-400">
 					Как блок называется у вас в панели. На сайте это имя не показывается.
 				</p>
 				<input
@@ -197,42 +197,42 @@
 					onblur={saveIdentity}
 					maxlength="120"
 					placeholder={nameWithoutLabel}
-					class="mt-3 w-full rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
+					class="mt-3 w-full rounded-2xl border border-on-dark/10 bg-on-dark/3 px-4 py-3 text-sm text-on-dark placeholder:text-ink-500 focus:border-on-dark/30 focus:outline-none"
 					aria-label="Имя блока"
 				/>
 
-				<h4 class="mt-5 text-[10px] text-white/40 uppercase">Назначение</h4>
-				<p class="mt-2 text-xs leading-relaxed text-slate-400">
+				<h4 class="mt-5 text-[10px] text-on-dark/40 uppercase">Назначение</h4>
+				<p class="mt-2 text-xs leading-relaxed text-ink-400">
 					Чем этот блок работает. Влияет на подпись и подбор замены; тексты и картинки не меняются.
 				</p>
 				<select
 					bind:value={roleSlug}
 					onchange={saveIdentity}
-					class="mt-3 w-full cursor-pointer rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-sm text-white focus:border-white/30 focus:outline-none"
+					class="mt-3 w-full cursor-pointer rounded-2xl border border-on-dark/10 bg-on-dark/3 px-4 py-3 text-sm text-on-dark focus:border-on-dark/30 focus:outline-none"
 					aria-label="Назначение блока"
 				>
-					<option value="" class="bg-slate-900">Не выбрано</option>
+					<option value="" class="bg-ink-900">Не выбрано</option>
 					{#each roleGroups as group (group.name)}
 						<optgroup label={group.name}>
 							{#each group.items as role (role.slug)}
-								<option value={role.slug} class="bg-slate-900">{role.name}</option>
+								<option value={role.slug} class="bg-ink-900">{role.name}</option>
 							{/each}
 						</optgroup>
 					{/each}
 				</select>
 
 				{#if identityState === 'saving'}
-					<p class="mt-2 text-xs text-slate-400">Сохранение…</p>
+					<p class="mt-2 text-xs text-ink-400">Сохранение…</p>
 				{:else if identityState === 'saved'}
-					<p class="mt-2 text-xs text-emerald-300">Сохранено</p>
+					<p class="mt-2 text-xs text-cat-2-300">Сохранено</p>
 				{:else if identityState === 'error'}
-					<p class="mt-2 text-xs text-red-300">{identityError}</p>
+					<p class="mt-2 text-xs text-cat-6-300">{identityError}</p>
 				{/if}
 
 				{#if morphName}
 					<!-- Последняя ступень каскада, показанная явно: тенант должен видеть,
 					     что подпись не берётся из воздуха, а описывает саму конструкцию. -->
-					<p class="mt-3 text-xs leading-relaxed text-slate-500">
+					<p class="mt-3 text-xs leading-relaxed text-ink-500">
 						Конструкция: {morphName}{morphDescription ? ` — ${morphDescription}` : ''}
 					</p>
 				{/if}
@@ -242,7 +242,7 @@
 		<!-- Артикул выбранной версии -->
 		{#if article}
 			<div class="flex items-center gap-2">
-				<span class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+				<span class="text-[10px] font-semibold tracking-[0.2em] text-on-dark/40 uppercase">
 					Артикул
 				</span>
 				<ArticleBadge
@@ -256,20 +256,20 @@
 		{/if}
 
 		<!-- Анимации (заглушка: функциональность в разработке) -->
-		<section class="border-white/10 pt-5 {article ? 'border-t' : ''}">
-			<h4 class="text-[10px] text-white/40 uppercase">Анимации</h4>
-			<p class="mt-2 text-xs leading-relaxed text-slate-400">
+		<section class="border-on-dark/10 pt-5 {article ? 'border-t' : ''}">
+			<h4 class="text-[10px] text-on-dark/40 uppercase">Анимации</h4>
+			<p class="mt-2 text-xs leading-relaxed text-ink-400">
 				Включение и отключение анимаций блока. Функция появится в одном из ближайших обновлений.
 			</p>
 			<button
 				type="button"
-				class="mt-4 flex w-full cursor-not-allowed items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-xs font-bold tracking-wider text-slate-500 uppercase"
+				class="mt-4 flex w-full cursor-not-allowed items-center justify-between gap-3 rounded-2xl border border-on-dark/10 bg-on-dark/3 px-4 py-3 text-xs font-bold tracking-wider text-ink-500 uppercase"
 				disabled
 				aria-disabled="true"
 			>
 				<span>Отключить анимации</span>
 				<span
-					class="rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-1 text-[9px] font-bold tracking-wider text-amber-300/80 uppercase"
+					class="rounded-full border border-cat-1-500/25 bg-cat-1-500/10 px-2 py-1 text-[9px] font-bold tracking-wider text-cat-1-300/80 uppercase"
 				>
 					В разработке
 				</span>
@@ -282,9 +282,9 @@
 		{/if}
 
 		<!-- Сброс контента -->
-		<section class="border-t border-white/10 pt-5">
-			<h4 class="text-[10px] text-white/40 uppercase">Контент</h4>
-			<p class="mt-2 text-xs leading-relaxed text-slate-400">
+		<section class="border-t border-on-dark/10 pt-5">
+			<h4 class="text-[10px] text-on-dark/40 uppercase">Контент</h4>
+			<p class="mt-2 text-xs leading-relaxed text-ink-400">
 				{#if canReset}
 					Сброс вернёт тексты и изображения блока к значениям по умолчанию. Выбранный вариант и тема
 					не изменятся.
@@ -294,7 +294,7 @@
 			</p>
 			<button
 				type="button"
-				class="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs font-bold tracking-wider text-red-300 uppercase transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/3 disabled:text-slate-500 disabled:hover:bg-white/3 {canReset
+				class="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-cat-6-500/20 bg-cat-6-500/5 px-4 py-3 text-xs font-bold tracking-wider text-cat-6-300 uppercase transition-all duration-300 hover:border-cat-6-500/40 hover:bg-cat-6-500/15 hover:text-cat-6-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:border-on-dark/10 disabled:bg-on-dark/3 disabled:text-ink-500 disabled:hover:bg-on-dark/3 {canReset
 					? 'cursor-pointer'
 					: ''}"
 				onclick={onReset}
@@ -318,9 +318,9 @@
 		</section>
 
 		<!-- Отключение блока -->
-		<section class="border-t border-white/10 pt-5">
-			<h4 class="text-[10px] text-white/40 uppercase">Блок</h4>
-			<p class="mt-2 text-xs leading-relaxed text-slate-400">
+		<section class="border-t border-on-dark/10 pt-5">
+			<h4 class="text-[10px] text-on-dark/40 uppercase">Блок</h4>
+			<p class="mt-2 text-xs leading-relaxed text-ink-400">
 				{#if isDisabled}
 					Блок отключён и не отображается обычным посетителям.
 					{#if enabledVersionLabel}Включение вернёт вариант {enabledVersionLabel}.{/if}
@@ -332,11 +332,11 @@
 			<button
 				type="button"
 				class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-xs font-bold tracking-wider uppercase transition-all duration-300 active:scale-[0.98] {isDisabled
-					? 'border-emerald-500/25 bg-emerald-500/10 text-emerald-200 hover:border-emerald-500/45 hover:bg-emerald-500/20'
-					: 'border-red-500/20 bg-red-500/5 text-red-300 hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-200'}"
+					? 'border-cat-2-500/25 bg-cat-2-500/10 text-cat-2-200 hover:border-cat-2-500/45 hover:bg-cat-2-500/20'
+					: 'border-cat-6-500/20 bg-cat-6-500/5 text-cat-6-300 hover:border-cat-6-500/40 hover:bg-cat-6-500/15 hover:text-cat-6-300'}"
 				onclick={onToggleDisabled}
 			>
-				<span class="h-2 w-2 rounded-full {isDisabled ? 'bg-emerald-400' : 'bg-red-500'}"></span>
+				<span class="h-2 w-2 rounded-full {isDisabled ? 'bg-cat-2-400' : 'bg-cat-6-500'}"></span>
 				{isDisabled ? 'Включить блок' : 'Отключить блок'}
 			</button>
 		</section>

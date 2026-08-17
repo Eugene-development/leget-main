@@ -310,7 +310,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="hero-title mb-6 text-3xl font-bold text-ink-900 md:text-5xl lg:text-7xl">
+						<h1 class="hero-title mb-6 text-3xl text-ink-900 md:text-5xl lg:text-7xl">
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -351,9 +351,28 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:bg-surface-raised/80 hover:shadow-xl"
+								class="group cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-ink-900/60 hover:shadow-xl"
 							>
-								{displayValue}
+								<!-- Обычное состояние — исходный текст, при наведении — «Это бесплатно».
+								     Оба варианта лежат в одной ячейке grid, поэтому ширина кнопки не прыгает.
+								     В режиме редактирования подмена отключена: текст остаётся видимым и редактируемым. -->
+								<span class="grid">
+									<span
+										class="col-start-1 row-start-1 transition-opacity duration-150 ease-out {isEditable
+											? ''
+											: 'delay-150 group-hover:opacity-0 group-hover:delay-0'}"
+									>
+										{displayValue}
+									</span>
+									{#if !isEditable}
+										<span
+											aria-hidden="true"
+											class="col-start-1 row-start-1 place-self-center opacity-0 transition-opacity delay-0 duration-150 ease-out group-hover:opacity-100 group-hover:delay-150"
+										>
+											Это бесплатно
+										</span>
+									{/if}
+								</span>
 							</button>
 						{/snippet}
 					</EditableField>

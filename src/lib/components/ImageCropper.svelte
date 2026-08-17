@@ -324,7 +324,7 @@
 
 <!-- Modal Backdrop -->
 <div
-	class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+	class="fixed inset-0 z-[100] flex items-center justify-center bg-scrim/70 backdrop-blur-sm"
 	onkeydown={(e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			if (e.target === e.currentTarget) onCancel();
@@ -337,16 +337,16 @@
 >
 	<!-- Modal Content -->
 	<div
-		class="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+		class="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-surface-raised shadow-2xl"
 	>
 		<!-- Header -->
-		<div class="flex items-center justify-between border-b bg-gray-50 px-6 py-4">
-			<h3 id="cropper-title" class="text-lg text-gray-900">Обрезка изображения</h3>
+		<div class="flex items-center justify-between border-b bg-ink-50 px-6 py-4">
+			<h3 id="cropper-title" class="text-lg text-ink-900">Обрезка изображения</h3>
 
 			<button
 				type="button"
 				onclick={handleCancel}
-				class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+				class="rounded-lg p-2 text-ink-400 transition-colors hover:bg-ink-100 hover:text-ink-600"
 				aria-label="Закрыть"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -361,7 +361,7 @@
 		</div>
 
 		<!-- Cropper Area -->
-		<div class="relative max-h-[60vh] min-h-[400px] flex-1 bg-gray-900">
+		<div class="relative max-h-[60vh] min-h-[400px] flex-1 bg-ink-900">
 			{#if imageUrl}
 				<img
 					src={imageUrl}
@@ -373,15 +373,15 @@
 				/>
 			{/if}
 			{#if !cropperReady && !initializationError}
-				<div class="absolute inset-0 z-10 flex items-center justify-center bg-gray-900">
+				<div class="absolute inset-0 z-10 flex items-center justify-center bg-ink-900">
 					<div
-						class="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"
+						class="h-8 w-8 animate-spin rounded-full border-4 border-link-600 border-t-transparent"
 						aria-label="Подготовка редактора"
 					></div>
 				</div>
 			{:else if initializationError}
 				<div
-					class="absolute inset-0 z-10 flex items-center justify-center bg-gray-900 px-6 text-center text-sm text-red-300"
+					class="absolute inset-0 z-10 flex items-center justify-center bg-ink-900 px-6 text-center text-sm text-cat-6-300"
 					role="alert"
 				>
 					{initializationError}
@@ -390,11 +390,11 @@
 		</div>
 
 		<!-- Tools -->
-		<div class="border-t border-b bg-gray-50 px-6 py-3">
+		<div class="border-t border-b bg-ink-50 px-6 py-3">
 			<div class="flex flex-wrap items-center gap-4">
 				<!-- Aspect Ratio -->
 				<div class="flex items-center gap-2">
-					<span class="text-xs font-medium text-gray-500">Соотношение:</span>
+					<span class="text-xs font-medium text-ink-500">Соотношение:</span>
 					<div class="flex gap-1">
 						{#each aspectRatios as ratio (ratio.label)}
 							<button
@@ -403,8 +403,8 @@
 								class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors
                                     {(Number.isNaN(selectedRatio) && Number.isNaN(ratio.value)) ||
 								selectedRatio === ratio.value
-									? 'bg-indigo-600 text-white'
-									: 'border bg-white text-gray-700 hover:bg-gray-50'}"
+									? 'bg-link-600 text-on-dark'
+									: 'border bg-surface-raised text-ink-700 hover:bg-ink-50'}"
 							>
 								{ratio.label}
 							</button>
@@ -413,14 +413,14 @@
 				</div>
 
 				<!-- Divider -->
-				<div class="h-6 w-px bg-gray-300"></div>
+				<div class="h-6 w-px bg-ink-300"></div>
 
 				<!-- Rotate & Flip -->
 				<div class="flex items-center gap-1">
 					<button
 						type="button"
 						onclick={handleRotateLeft}
-						class="rounded-lg p-2 text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+						class="rounded-lg p-2 text-ink-600 transition-colors hover:bg-surface-raised hover:text-ink-900"
 						title="Повернуть влево"
 					>
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -435,7 +435,7 @@
 					<button
 						type="button"
 						onclick={handleRotateRight}
-						class="rounded-lg p-2 text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+						class="rounded-lg p-2 text-ink-600 transition-colors hover:bg-surface-raised hover:text-ink-900"
 						title="Повернуть вправо"
 					>
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,7 +450,7 @@
 					<button
 						type="button"
 						onclick={handleFlipHorizontal}
-						class="rounded-lg p-2 text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+						class="rounded-lg p-2 text-ink-600 transition-colors hover:bg-surface-raised hover:text-ink-900"
 						title="Отразить горизонтально"
 					>
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -465,7 +465,7 @@
 					<button
 						type="button"
 						onclick={handleFlipVertical}
-						class="rounded-lg p-2 text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+						class="rounded-lg p-2 text-ink-600 transition-colors hover:bg-surface-raised hover:text-ink-900"
 						title="Отразить вертикально"
 					>
 						<svg class="h-5 w-5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -480,13 +480,13 @@
 				</div>
 
 				<!-- Divider -->
-				<div class="h-6 w-px bg-gray-300"></div>
+				<div class="h-6 w-px bg-ink-300"></div>
 
 				<!-- Reset -->
 				<button
 					type="button"
 					onclick={handleReset}
-					class="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-white hover:text-gray-900"
+					class="rounded-lg px-3 py-1.5 text-xs font-medium text-ink-600 transition-colors hover:bg-surface-raised hover:text-ink-900"
 				>
 					Сбросить
 				</button>
@@ -496,11 +496,11 @@
 		<!-- Actions -->
 		<div class="flex flex-col justify-between gap-3 px-6 py-4 sm:flex-row sm:items-center">
 			{#if processingError || initializationError}
-				<p class="max-w-lg text-sm text-red-600" role="alert">
+				<p class="max-w-lg text-sm text-cat-6-600" role="alert">
 					{processingError || initializationError}
 				</p>
 			{:else}
-				<p class="text-xs text-gray-500">
+				<p class="text-xs text-ink-500">
 					Результат: до {maxOutputWidth}×{maxOutputHeight}px{maxOutputBytes
 						? ` · до ${(maxOutputBytes / (1024 * 1024)).toFixed(1)} МБ`
 						: ''}
@@ -510,7 +510,7 @@
 				<button
 					type="button"
 					onclick={handleCancel}
-					class="rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+					class="rounded-lg px-4 py-2.5 text-sm font-medium text-ink-700 transition-colors hover:bg-ink-100"
 				>
 					Отмена
 				</button>
@@ -518,11 +518,11 @@
 					type="button"
 					onclick={handleCrop}
 					disabled={isProcessing || !cropperReady}
-					class="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+					class="flex items-center gap-2 rounded-lg bg-link-600 px-5 py-2.5 text-sm font-medium text-on-dark transition-colors hover:bg-link-700 disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					{#if isProcessing}
 						<div
-							class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+							class="h-4 w-4 animate-spin rounded-full border-2 border-on-dark border-t-transparent"
 						></div>
 					{/if}
 					{isProcessing ? 'Сжимаем…' : 'Применить'}
@@ -533,7 +533,11 @@
 </div>
 
 <style>
-	/* Cropper.js базовые стили */
+	/* Cropper.js базовые стили.
+	   Геометрия — вендорная, как есть; цвет наш и берётся токенами через
+	   `var(--color-*)`: рамка и точки кадрирования — интерактивная роль `link`,
+	   затемнение вне кадра — `scrim`. До этого здесь стоял indigo-500 сырыми
+	   каналами, то есть инструмент не перекрашивался вместе с системой. */
 	:global(.cropper-container) {
 		direction: ltr;
 		font-size: 0;
@@ -569,24 +573,24 @@
 		overflow: hidden;
 	}
 	:global(.cropper-drag-box) {
-		background-color: #fff;
+		background-color: var(--color-surface-raised);
 		opacity: 0;
 	}
 	:global(.cropper-modal) {
-		background-color: #000;
+		background-color: var(--color-scrim);
 		opacity: 0.5;
 	}
 	:global(.cropper-view-box) {
 		display: block;
 		height: 100%;
-		outline: 2px solid rgba(99, 102, 241, 0.75);
+		outline: 2px solid color-mix(in oklab, var(--color-link-500) 75%, transparent);
 		outline-offset: -2px;
 		overflow: hidden;
 		width: 100%;
 		border-radius: 2px;
 	}
 	:global(.cropper-dashed) {
-		border: 0 dashed rgba(255, 255, 255, 0.5);
+		border: 0 dashed color-mix(in oklab, var(--color-on-dark) 50%, transparent);
 		display: block;
 		opacity: 0.5;
 		position: absolute;
@@ -618,7 +622,7 @@
 	}
 	:global(.cropper-center::before),
 	:global(.cropper-center::after) {
-		background-color: rgba(255, 255, 255, 0.75);
+		background-color: color-mix(in oklab, var(--color-on-dark) 75%, transparent);
 		content: ' ';
 		display: block;
 		position: absolute;
@@ -645,12 +649,12 @@
 		width: 100%;
 	}
 	:global(.cropper-face) {
-		background-color: #fff;
+		background-color: var(--color-surface-raised);
 		left: 0;
 		top: 0;
 	}
 	:global(.cropper-line) {
-		background-color: rgba(99, 102, 241, 0.75);
+		background-color: color-mix(in oklab, var(--color-link-500) 75%, transparent);
 	}
 	:global(.cropper-line.line-e) {
 		cursor: ew-resize;
@@ -677,7 +681,7 @@
 		left: 0;
 	}
 	:global(.cropper-point) {
-		background-color: rgba(99, 102, 241, 1);
+		background-color: var(--color-link-500);
 		height: 10px;
 		opacity: 0.75;
 		width: 10px;
@@ -737,7 +741,7 @@
 		}
 	}
 	:global(.cropper-point.point-se::before) {
-		background-color: rgba(99, 102, 241, 1);
+		background-color: var(--color-link-500);
 		bottom: -50%;
 		content: ' ';
 		display: block;

@@ -29,7 +29,7 @@
 {#if isEditable && editContext}
 	<button
 		type="button"
-		class="font-sans-premium absolute top-3 left-3 z-[170] flex min-h-10 items-center gap-2 rounded-xl border border-white/15 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-xl backdrop-blur-xl transition-colors hover:border-sky-400/45 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none"
+		class="font-sans-premium absolute top-3 left-3 z-[170] flex min-h-10 items-center gap-2 rounded-xl border border-on-dark/15 bg-ink-950/80 px-3 py-2 text-xs font-semibold text-on-dark shadow-xl backdrop-blur-xl transition-colors hover:border-link-400/45 hover:bg-ink-900 focus-visible:ring-2 focus-visible:ring-link-400 focus-visible:outline-none"
 		onclick={() => (open = true)}
 		aria-label="Изображения шапки"
 		title="Изображения шапки"

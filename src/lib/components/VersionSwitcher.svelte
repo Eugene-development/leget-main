@@ -148,9 +148,9 @@
 	// Артикул тянем только для авторизованного пользователя: запрос идёт под @guard и
 	// без токена всегда возвращает null. Гость монтирует свитчер наравне со всеми
 	// (разметка скрыта, но скрипт работает), и раньше единственная попытка сгорала
-	// именно на нём: после логина без перезагрузки блоки не пересоздаются
-	// (`{#each ... (element.type)}` + invalidateAll), флаг оставался взведён — и бейдж
-	// не появлялся до F5. Зависимость от isEditable даёт повтор ровно в момент входа.
+	// именно на нём: вход не пересоздаёт блоки (они живут в keyed `{#each ... (element.type)}`,
+	// а рефетча страницы после входа нет), флаг оставался взведён — и бейдж не
+	// появлялся до F5. Зависимость от isEditable даёт повтор ровно в момент входа.
 	$effect(() => {
 		const tid = editContext?.templateId ?? null;
 		const slug = editContext?.slug ?? null;
@@ -230,7 +230,7 @@
 				<!-- Кнопка-триггер меню -->
 				<button
 					type="button"
-					class="flex cursor-pointer items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/25 active:scale-95"
+					class="flex cursor-pointer items-center gap-2 rounded-2xl border border-on-dark/10 bg-ink-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
 					onclick={() => (isOpen = !isOpen)}
 				>
 					<span>Варианты</span>
@@ -263,14 +263,14 @@
 				<!-- Выпадающий список вариантов с анимацией -->
 				{#if isOpen}
 					<div
-						class="absolute top-12 left-0 z-50 flex w-44 flex-col gap-1 rounded-2xl border border-white/10 bg-slate-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
+						class="absolute top-12 left-0 z-50 flex w-44 flex-col gap-1 rounded-2xl border border-on-dark/10 bg-ink-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
 						transition:fly={{ y: -10, duration: 200 }}
 					>
 						{#if onLegacyVersion}
 							<!-- Предложение сменить компонент. Видит только тот, кто сидит на
 							     выведенной версии; остальные о ней вообще не узнают. -->
 							<div
-								class="mb-1 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-[10px] leading-relaxed font-medium text-amber-200"
+								class="mb-1 rounded-xl border border-cat-1-500/30 bg-cat-1-500/10 px-3 py-2.5 text-xs leading-relaxed font-medium text-cat-1-200"
 							>
 								Этот вариант выведен из обращения. Он продолжит работать, но новых улучшений не
 								получит — выберите другой, когда будет удобно.
@@ -278,71 +278,29 @@
 						{/if}
 
 						{#if offeredVersions.length === 0}
-							<div
-								class="rounded-xl px-3 py-2.5 text-[10px] leading-relaxed font-medium text-slate-400"
-							>
+							<div class="rounded-xl px-3 py-2.5 text-xs leading-relaxed font-medium text-ink-400">
 								Активных вариантов у этого блока не осталось: он заменён другим блоком.
 							</div>
 						{/if}
 
+						<!-- Выбранный вариант подсвечен одним и тем же интерактивным цветом системы.
+						     Раньше у каждого варианта был свой хью (белый / sky→indigo / violet→fuchsia /
+						     emerald→teal): выбран всегда ровно один, так что четыре разных подсветки не
+						     различали ничего — это была декорация мимо токенного слоя. -->
 						{#each offeredVersions as ver}
-							{#if ver === 'v1'}
-								<button
-									type="button"
-									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-									'v1'
-										? 'scale-[1.02] border border-white/20 bg-white/15 text-white shadow-md'
-										: 'border border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
-									onclick={() => {
-										selectVersion('v1');
-										isOpen = false;
-									}}
-								>
-									Вариант 1
-								</button>
-							{:else if ver === 'v2'}
-								<button
-									type="button"
-									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-									'v2'
-										? 'scale-[1.02] border border-sky-500/30 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 text-sky-200 shadow-md'
-										: 'border border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
-									onclick={() => {
-										selectVersion('v2');
-										isOpen = false;
-									}}
-								>
-									Вариант 2
-								</button>
-							{:else if ver === 'v3'}
-								<button
-									type="button"
-									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-									'v3'
-										? 'scale-[1.02] border border-violet-500/30 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-200 shadow-md'
-										: 'border border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
-									onclick={() => {
-										selectVersion('v3');
-										isOpen = false;
-									}}
-								>
-									Вариант 3
-								</button>
-							{:else if ver === 'v4'}
-								<button
-									type="button"
-									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-									'v4'
-										? 'scale-[1.02] border border-emerald-500/30 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-200 shadow-md'
-										: 'border border-transparent text-slate-400 hover:bg-white/5 hover:text-slate-200'}"
-									onclick={() => {
-										selectVersion('v4');
-										isOpen = false;
-									}}
-								>
-									Вариант 4
-								</button>
-							{/if}
+							<button
+								type="button"
+								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-xs font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+								ver
+									? 'scale-[1.02] border border-link-500/40 bg-link-500/15 text-link-200 shadow-md'
+									: 'border border-transparent text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
+								onclick={() => {
+									selectVersion(ver);
+									isOpen = false;
+								}}
+							>
+								Вариант {ver.slice(1)}
+							</button>
 						{/each}
 					</div>
 				{/if}
@@ -373,7 +331,7 @@
 
 {#if showConfirmModal}
 	<div
-		class="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-md"
+		class="fixed inset-0 z-[1000] flex items-center justify-center bg-scrim/60 p-4 backdrop-blur-md"
 		transition:fade={{ duration: 200 }}
 	>
 		<!-- Backdrop click to close -->
@@ -386,12 +344,14 @@
 
 		<!-- Modal Card -->
 		<div
-			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-white/10 bg-slate-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
+			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-on-dark/10 bg-ink-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ y: 20, duration: 300 }}
 		>
-			<!-- Warning Icon Container with subtle red glow -->
+			<!-- Значок предупреждения. Розовый хью категориальной шкалы (cat-6), а не
+			     brand: brand — акцент тенанта, и у «Графита» он синий, то есть
+			     разрушающее действие красилось бы там как обычное. -->
 			<div
-				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-cat-6-500/25 bg-cat-6-500/10 text-cat-6-400 shadow-[0_0_20px] shadow-cat-6-500/15"
 			>
 				<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
@@ -405,10 +365,10 @@
 
 			<!-- Typography -->
 			<div class="flex flex-col gap-2">
-				<h3 class="text-lg text-white uppercase">Сбросить изменения?</h3>
-				<p class="text-xs leading-relaxed font-medium text-slate-400">
+				<h3 class="text-lg text-on-dark uppercase">Сбросить изменения?</h3>
+				<p class="text-xs leading-relaxed font-medium text-ink-400">
 					Вы уверены, что хотите сбросить контент блока
-					<span class="font-bold text-slate-200">"{componentType}"</span>
+					<span class="font-bold text-ink-200">"{componentType}"</span>
 					к начальному состоянию? Все изменения будут безвозвратно удалены.
 				</p>
 			</div>
@@ -417,14 +377,14 @@
 			<div class="mt-2 flex w-full items-center gap-3">
 				<button
 					type="button"
-					class="flex-1 cursor-pointer rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-bold tracking-wider text-white uppercase transition-all duration-300 hover:bg-white/10 active:scale-98"
+					class="flex-1 cursor-pointer rounded-xl border border-on-dark/10 bg-on-dark/5 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-on-dark/10 active:scale-98"
 					onclick={() => (showConfirmModal = false)}
 				>
 					Отмена
 				</button>
 				<button
 					type="button"
-					class="flex-1 cursor-pointer rounded-xl bg-gradient-to-r from-red-600 to-rose-600 px-4 py-3 text-xs font-bold tracking-wider text-white uppercase transition-all duration-300 hover:shadow-lg hover:shadow-red-600/20 hover:brightness-110 active:scale-98"
+					class="flex-1 cursor-pointer rounded-xl bg-cat-6-600 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-cat-6-500 hover:shadow-lg hover:shadow-cat-6-600/25 active:scale-98"
 					onclick={confirmReset}
 					disabled={isResetting}
 				>

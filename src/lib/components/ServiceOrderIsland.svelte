@@ -119,14 +119,18 @@
 	<!-- Overlay Backdrop -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<!--
+		z-200 — тот же этаж, что у SideDrawer: sticky-хэдер шаблона живёт на `z-[150]`,
+		поэтому с прежним `z-50` шапка перекрывала верх формы заявки своим слоем.
+	-->
 	<div
-		class="fixed inset-0 z-50 flex justify-end overflow-hidden bg-slate-950/40 backdrop-blur-sm"
+		class="fixed inset-0 z-200 flex justify-end overflow-hidden bg-scrim/40 backdrop-blur-sm"
 		onclick={handleBackdropClick}
 		transition:fade={{ duration: 300 }}
 	>
 		<!-- Slide-out Drawer Panel -->
 		<div
-			class="relative flex h-full w-full max-w-lg flex-col justify-between overflow-x-hidden overflow-y-auto border-l border-slate-800 bg-slate-900/95 p-8 shadow-2xl md:p-10"
+			class="relative flex h-full w-full max-w-lg flex-col justify-between overflow-x-hidden overflow-y-auto border-l border-ink-800 bg-ink-900/95 p-8 shadow-2xl md:p-10"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="drawer-title"
@@ -134,22 +138,22 @@
 		>
 			<!-- Decorative Background Glow -->
 			<div
-				class="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-sky-500/10 blur-[100px]"
+				class="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-link-500/10 blur-[100px]"
 			></div>
 			<div
-				class="pointer-events-none absolute -right-40 -bottom-40 h-96 w-96 rounded-full bg-indigo-500/10 blur-[100px]"
+				class="pointer-events-none absolute -right-40 -bottom-40 h-96 w-96 rounded-full bg-link-500/10 blur-[100px]"
 			></div>
 
 			<div class="relative z-10">
 				<!-- Header -->
 				<div class="mb-10 flex items-center justify-between">
-					<h2 id="drawer-title" class="text-2xl text-white sm:text-3xl">
+					<h2 id="drawer-title" class="text-2xl text-on-dark sm:text-3xl">
 						{serviceOrderStore.title}
 					</h2>
 					<button
 						type="button"
 						onclick={handleClose}
-						class="cursor-pointer rounded-full border border-slate-700/50 bg-slate-800/40 p-2 text-slate-400 transition duration-300 hover:bg-slate-800 hover:text-white"
+						class="cursor-pointer rounded-full border border-ink-700/50 bg-ink-800/40 p-2 text-ink-400 transition duration-300 hover:bg-ink-800 hover:text-on-dark"
 						aria-label="Закрыть"
 					>
 						<svg
@@ -172,11 +176,11 @@
 				{#if submitSuccess}
 					<!-- Success Message Panel -->
 					<div
-						class="flex flex-col items-center rounded-3xl border border-slate-700/40 bg-slate-800/30 px-4 py-12 text-center"
+						class="flex flex-col items-center rounded-3xl border border-ink-700/40 bg-ink-800/30 px-4 py-12 text-center"
 						in:fly={{ y: 20, duration: 500, easing: cubicOut }}
 					>
 						<div
-							class="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+							class="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-cat-2-500/20 bg-cat-2-500/10 text-cat-2-400"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -193,15 +197,15 @@
 								/>
 							</svg>
 						</div>
-						<h3 class="mb-3 text-xl text-white">Заявка успешно отправлена!</h3>
-						<p class="mb-8 max-w-sm text-sm leading-relaxed text-slate-400">
+						<h3 class="mb-3 text-xl text-on-dark">Заявка успешно отправлена!</h3>
+						<p class="mb-8 max-w-sm text-sm leading-relaxed text-ink-400">
 							Спасибо за обращение. Наш специалист свяжется с вами в течение 15 минут для уточнения
 							деталей.
 						</p>
 						<button
 							type="button"
 							onclick={handleClose}
-							class="w-full cursor-pointer rounded-full border border-slate-700/80 bg-slate-800 px-8 py-3.5 text-base font-bold text-white transition duration-300 hover:bg-slate-700"
+							class="w-full cursor-pointer rounded-full border border-ink-700/80 bg-ink-800 px-8 py-3.5 text-base font-bold text-on-dark transition duration-300 hover:bg-ink-700"
 						>
 							Отлично
 						</button>
@@ -211,19 +215,19 @@
 					<form onsubmit={handleSubmit} class="space-y-6" novalidate>
 						<!-- Name -->
 						<div class="flex flex-col gap-1.5">
-							<label for="client-name" class="text-sm font-semibold text-slate-300">
-								Ваше имя <span class="text-red-400">*</span>
+							<label for="client-name" class="text-sm font-semibold text-ink-300">
+								Ваше имя <span class="text-cat-6-400">*</span>
 							</label>
 							<input
 								id="client-name"
 								type="text"
 								bind:value={name}
-								class="w-full rounded-xl border border-slate-700/80 bg-slate-900/60 px-4 py-3.5 text-base text-white placeholder-slate-500 transition duration-300 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 focus:outline-none"
-								class:border-red-400={errors.name}
+								class="w-full rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
+								class:border-cat-6-400={errors.name}
 								placeholder="Иван Иванов"
 							/>
 							{#if errors.name}
-								<span class="mt-1 text-xs font-medium text-red-400">{errors.name}</span>
+								<span class="mt-1 text-xs font-medium text-cat-6-400">{errors.name}</span>
 							{/if}
 						</div>
 
@@ -232,14 +236,14 @@
 
 						<!-- Message -->
 						<div class="flex flex-col gap-1.5">
-							<label for="client-message" class="text-sm font-semibold text-slate-300">
+							<label for="client-message" class="text-sm font-semibold text-ink-300">
 								Сообщение или пожелания
 							</label>
 							<textarea
 								id="client-message"
 								rows="4"
 								bind:value={message}
-								class="w-full resize-none rounded-xl border border-slate-700/80 bg-slate-900/60 px-4 py-3.5 text-base text-white placeholder-slate-500 transition duration-300 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 focus:outline-none"
+								class="w-full resize-none rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
 								placeholder="Расскажите немного о вашем проекте или задайте вопрос..."
 							></textarea>
 						</div>
@@ -247,7 +251,7 @@
 						<!-- City and URL context (Read-only badge info for premium feeling) -->
 						<div class="flex flex-wrap items-center gap-2 pt-2">
 							<span
-								class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/60 bg-slate-800/60 px-3 py-1 text-xs font-medium text-slate-400"
+								class="inline-flex items-center gap-1.5 rounded-full border border-ink-700/60 bg-ink-800/60 px-3 py-1 text-xs font-medium text-ink-400"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -275,7 +279,7 @@
 
 						{#if generalError}
 							<div
-								class="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3.5 text-sm text-red-400"
+								class="rounded-xl border border-cat-6-500/20 bg-cat-6-500/10 px-4 py-3.5 text-sm text-cat-6-400"
 							>
 								{generalError}
 							</div>
@@ -284,11 +288,11 @@
 						<button
 							type="submit"
 							disabled={isSubmitting}
-							class="group relative mt-8 inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-gradient-to-r from-sky-500 to-indigo-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-sky-500/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-sky-500/40 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
+							class="group relative mt-8 inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-gradient-to-r from-link-500 to-link-600 px-8 py-4 text-base font-bold text-on-dark shadow-xl shadow-link-500/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-link-500/40 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
 						>
 							{#if isSubmitting}
 								<svg
-									class="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
+									class="mr-3 -ml-1 h-5 w-5 animate-spin text-on-dark"
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
 									viewBox="0 0 24 24"
@@ -329,7 +333,7 @@
 				{/if}
 			</div>
 
-			<div class="relative z-10 pt-10 text-center text-xs text-slate-500">
+			<div class="relative z-10 pt-10 text-center text-xs text-ink-500">
 				Нажимая кнопку, вы соглашаетесь на обработку персональных данных.
 			</div>
 		</div>

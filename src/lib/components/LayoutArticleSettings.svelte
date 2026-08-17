@@ -26,7 +26,7 @@
 {#if isEditable && editContext}
 	<button
 		type="button"
-		class="flex cursor-pointer items-center justify-center rounded-2xl border border-white/10 bg-slate-950/75 p-2.5 text-white shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/25 active:scale-95"
+		class="flex cursor-pointer items-center justify-center rounded-2xl border border-on-dark/10 bg-ink-950/75 p-2.5 text-on-dark shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
 		onclick={() => (open = true)}
 		title="Настройки компонента"
 		aria-label="Настройки компонента {title}"
@@ -42,7 +42,7 @@
 	<SideDrawer bind:open {title}>
 		<div class="flex flex-col gap-6">
 			<div class="flex items-center gap-2">
-				<span class="text-[10px] font-semibold tracking-[0.2em] text-white/40 uppercase">
+				<span class="text-[10px] font-semibold tracking-[0.2em] text-on-dark/40 uppercase">
 					Артикул
 				</span>
 				{#if article}

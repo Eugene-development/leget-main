@@ -157,17 +157,17 @@
 	</button>
 
 	<SideDrawer bind:open title="Настройки страницы">
-		<div class="flex flex-col gap-6 text-slate-100">
+		<div class="flex flex-col gap-6 text-ink-100">
 			<div class="flex items-start justify-between gap-4">
 				<div class="min-w-0">
-					<p class="text-sm text-white">Метатеги страницы</p>
-					<p class="mt-1 truncate text-xs text-slate-400">
+					<p class="text-sm text-on-dark">Метатеги страницы</p>
+					<p class="mt-1 truncate text-xs text-ink-400">
 						{seo.isDynamic ? `Шаблон ${seo.pattern}` : seo.pattern}
 					</p>
 				</div>
 				<button
 					type="button"
-					class="shrink-0 rounded-xl border border-white/10 bg-white/4 px-3 py-2 text-xs text-slate-200 transition hover:border-white/25 hover:bg-white/8 focus-visible:ring-2 focus-visible:ring-link-600 disabled:cursor-not-allowed disabled:opacity-40"
+					class="shrink-0 rounded-xl border border-on-dark/10 bg-on-dark/4 px-3 py-2 text-xs text-ink-200 transition hover:border-on-dark/25 hover:bg-on-dark/8 focus-visible:ring-2 focus-visible:ring-link-600 disabled:cursor-not-allowed disabled:opacity-40"
 					onclick={copyAll}
 					disabled={!title.trim() && !description.trim() && !keywords.trim()}
 				>
@@ -176,9 +176,9 @@
 			</div>
 
 			{#if seo.isDynamic}
-				<div class="rounded-2xl border border-sky-400/15 bg-sky-400/8 px-4 py-3">
-					<p class="text-xs text-sky-100">Значения подставляются отдельно для каждого URL.</p>
-					<p class="mt-1 text-xs leading-relaxed text-sky-100/65">
+				<div class="rounded-2xl border border-link-400/15 bg-link-400/8 px-4 py-3">
+					<p class="text-xs text-link-100">Значения подставляются отдельно для каждого URL.</p>
+					<p class="mt-1 text-xs leading-relaxed text-link-100/65">
 						Нажмите переменную под полем, чтобы добавить её в шаблон.
 					</p>
 				</div>
@@ -186,12 +186,12 @@
 
 			<div class="flex flex-col gap-2">
 				<div class="flex items-center justify-between gap-3">
-					<label for="page-seo-title" class="text-xs text-slate-200">
+					<label for="page-seo-title" class="text-xs text-ink-200">
 						{seo.isDynamic ? 'Шаблон Title' : 'Title'}
 					</label>
 					<button
 						type="button"
-						class="rounded-lg p-1.5 text-slate-400 transition hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-link-600 disabled:opacity-30"
+						class="rounded-lg p-1.5 text-ink-400 transition hover:bg-on-dark/8 hover:text-on-dark focus-visible:ring-2 focus-visible:ring-link-600 disabled:opacity-30"
 						onclick={() => copyText(title, 'Title')}
 						disabled={!title}
 						title="Скопировать Title"
@@ -224,11 +224,11 @@
 					type="text"
 					bind:value={title}
 					maxlength="255"
-					class="w-full rounded-xl border border-white/12 bg-white/5 px-3.5 py-3 text-sm text-white shadow-sm outline-none focus:border-link-600 focus:ring-2 focus:ring-link-600"
+					class="w-full rounded-xl border border-on-dark/12 bg-on-dark/5 px-3.5 py-3 text-sm text-on-dark shadow-sm outline-none focus:border-link-600 focus:ring-2 focus:ring-link-600"
 				/>
 				<div class="flex items-center justify-between gap-3 text-xs">
-					<span class="text-slate-400">Оптимально 50–60 символов</span>
-					<span class={titlePreview.length > 60 ? 'text-amber-300' : 'text-slate-400'}>
+					<span class="text-ink-400">Оптимально 50–60 символов</span>
+					<span class={titlePreview.length > 60 ? 'text-cat-1-300' : 'text-ink-400'}>
 						{titlePreview.length}/60
 					</span>
 				</div>
@@ -237,7 +237,7 @@
 						{#each variables as variable (variable.token)}
 							<button
 								type="button"
-								class="rounded-lg border border-white/10 bg-white/4 px-2 py-1 text-xs text-slate-300 transition hover:border-white/25 hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-link-600"
+								class="rounded-lg border border-on-dark/10 bg-on-dark/4 px-2 py-1 text-xs text-ink-300 transition hover:border-on-dark/25 hover:bg-on-dark/8 hover:text-on-dark focus-visible:ring-2 focus-visible:ring-link-600"
 								onclick={() => insertToken('title', variable.token)}
 								title={`${variable.label}: ${variable.value || 'нет значения'}`}
 							>
@@ -250,12 +250,12 @@
 
 			<div class="flex flex-col gap-2">
 				<div class="flex items-center justify-between gap-3">
-					<label for="page-seo-description" class="text-xs text-slate-200">
+					<label for="page-seo-description" class="text-xs text-ink-200">
 						{seo.isDynamic ? 'Шаблон Description' : 'Description'}
 					</label>
 					<button
 						type="button"
-						class="rounded-lg p-1.5 text-slate-400 transition hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-link-600 disabled:opacity-30"
+						class="rounded-lg p-1.5 text-ink-400 transition hover:bg-on-dark/8 hover:text-on-dark focus-visible:ring-2 focus-visible:ring-link-600 disabled:opacity-30"
 						onclick={() => copyText(description, 'Description')}
 						disabled={!description}
 						title="Скопировать Description"
@@ -288,11 +288,11 @@
 					bind:value={description}
 					maxlength="500"
 					rows="5"
-					class="w-full resize-y rounded-xl border border-white/12 bg-white/5 px-3.5 py-3 text-sm text-white shadow-sm outline-none focus:border-link-600 focus:ring-2 focus:ring-link-600"
+					class="w-full resize-y rounded-xl border border-on-dark/12 bg-on-dark/5 px-3.5 py-3 text-sm text-on-dark shadow-sm outline-none focus:border-link-600 focus:ring-2 focus:ring-link-600"
 				></textarea>
 				<div class="flex items-center justify-between gap-3 text-xs">
-					<span class="text-slate-400">Оптимально 150–160 символов</span>
-					<span class={descriptionPreview.length > 160 ? 'text-amber-300' : 'text-slate-400'}>
+					<span class="text-ink-400">Оптимально 150–160 символов</span>
+					<span class={descriptionPreview.length > 160 ? 'text-cat-1-300' : 'text-ink-400'}>
 						{descriptionPreview.length}/160
 					</span>
 				</div>
@@ -301,7 +301,7 @@
 						{#each variables as variable (variable.token)}
 							<button
 								type="button"
-								class="rounded-lg border border-white/10 bg-white/4 px-2 py-1 text-xs text-slate-300 transition hover:border-white/25 hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-link-600"
+								class="rounded-lg border border-on-dark/10 bg-on-dark/4 px-2 py-1 text-xs text-ink-300 transition hover:border-on-dark/25 hover:bg-on-dark/8 hover:text-on-dark focus-visible:ring-2 focus-visible:ring-link-600"
 								onclick={() => insertToken('description', variable.token)}
 								title={`${variable.label}: ${variable.value || 'нет значения'}`}
 							>
@@ -314,10 +314,10 @@
 
 			<div class="flex flex-col gap-2">
 				<div class="flex items-center justify-between gap-3">
-					<label for="page-seo-keywords" class="text-xs text-slate-200">Keywords</label>
+					<label for="page-seo-keywords" class="text-xs text-ink-200">Keywords</label>
 					<button
 						type="button"
-						class="rounded-lg p-1.5 text-slate-400 transition hover:bg-white/8 hover:text-white focus-visible:ring-2 focus-visible:ring-link-600 disabled:opacity-30"
+						class="rounded-lg p-1.5 text-ink-400 transition hover:bg-on-dark/8 hover:text-on-dark focus-visible:ring-2 focus-visible:ring-link-600 disabled:opacity-30"
 						onclick={() => copyText(keywords, 'Keywords')}
 						disabled={!keywords}
 						title="Скопировать Keywords"
@@ -350,20 +350,20 @@
 					bind:value={keywords}
 					maxlength="500"
 					rows="3"
-					class="w-full resize-y rounded-xl border border-white/12 bg-white/5 px-3.5 py-3 text-sm text-white shadow-sm outline-none focus:border-link-600 focus:ring-2 focus:ring-link-600"
+					class="w-full resize-y rounded-xl border border-on-dark/12 bg-on-dark/5 px-3.5 py-3 text-sm text-on-dark shadow-sm outline-none focus:border-link-600 focus:ring-2 focus:ring-link-600"
 				></textarea>
-				<p class="text-xs leading-relaxed text-slate-400">
+				<p class="text-xs leading-relaxed text-ink-400">
 					Укажите ключевые фразы через запятую. Поле не влияет на генерацию Title и Description.
 				</p>
 			</div>
 
-			<section class="border-t border-white/10 pt-5">
-				<p class="text-xs text-slate-200">Предпросмотр</p>
-				<div class="mt-3 space-y-1 rounded-2xl bg-white/4 px-4 py-3">
-					<p class="text-sm break-words text-sky-300">
+			<section class="border-t border-on-dark/10 pt-5">
+				<p class="text-xs text-ink-200">Предпросмотр</p>
+				<div class="mt-3 space-y-1 rounded-2xl bg-on-dark/4 px-4 py-3">
+					<p class="text-sm break-words text-link-300">
 						{titlePreview || 'Будет использовано название сайта'}
 					</p>
-					<p class="text-xs leading-relaxed break-words text-slate-400">
+					<p class="text-xs leading-relaxed break-words text-ink-400">
 						{descriptionPreview || 'Будет использовано описание сайта'}
 					</p>
 				</div>
@@ -371,7 +371,7 @@
 
 			{#if unknownPlaceholders.length > 0}
 				<p
-					class="rounded-xl border border-red-400/20 bg-red-400/8 px-3 py-2.5 text-xs text-red-200"
+					class="rounded-xl border border-cat-6-400/20 bg-cat-6-400/8 px-3 py-2.5 text-xs text-cat-6-300"
 				>
 					Неизвестные переменные: {unknownPlaceholders.join(', ')}. Выберите переменные из списка.
 				</p>
@@ -379,18 +379,18 @@
 
 			{#if saveError}
 				<p
-					class="rounded-xl border border-red-400/20 bg-red-400/8 px-3 py-2.5 text-xs text-red-200"
+					class="rounded-xl border border-cat-6-400/20 bg-cat-6-400/8 px-3 py-2.5 text-xs text-cat-6-300"
 				>
 					{saveError}
 				</p>
 			{/if}
 
 			<div
-				class="sticky bottom-0 -mx-5 mt-1 flex gap-2 border-t border-white/10 bg-slate-950/95 px-5 pt-4 pb-1 backdrop-blur-xl"
+				class="sticky bottom-0 -mx-5 mt-1 flex gap-2 border-t border-on-dark/10 bg-ink-950/95 px-5 pt-4 pb-1 backdrop-blur-xl"
 			>
 				<button
 					type="button"
-					class="flex-1 rounded-xl bg-white px-4 py-2.5 text-sm text-slate-950 transition hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+					class="flex-1 rounded-xl bg-on-dark px-4 py-2.5 text-sm text-ink-950 transition hover:bg-ink-100 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
 					onclick={save}
 					disabled={isSaving || !isDirty || unknownPlaceholders.length > 0}
 				>
@@ -398,7 +398,7 @@
 				</button>
 				<button
 					type="button"
-					class="rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-300 transition hover:border-white/25 hover:bg-white/6 hover:text-white focus-visible:ring-2 focus-visible:ring-link-600"
+					class="rounded-xl border border-on-dark/10 px-4 py-2.5 text-sm text-ink-300 transition hover:border-on-dark/25 hover:bg-on-dark/6 hover:text-on-dark focus-visible:ring-2 focus-visible:ring-link-600"
 					onclick={() => (open = false)}
 				>
 					Отмена

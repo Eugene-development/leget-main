@@ -2,7 +2,6 @@
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
 	import type { EditContext, PageSeoData } from '$lib/utils/page-edit';
-	import { invalidateAll } from '$app/navigation';
 	import EditModal from '$lib/components/EditModal.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
@@ -161,16 +160,14 @@
 		}
 	});
 
-	let previousAuth = $state<boolean | null>(null);
-	$effect(() => {
-		if (browser) {
-			if (previousAuth !== null && previousAuth !== $auth.isAuthenticated) {
-				invalidateAll();
-			}
-			previousAuth = $auth.isAuthenticated;
-		}
-	});
-
+	// Вход/выход НЕ вызывают invalidateAll(). Серверная загрузка (loadRenderPage)
+	// ходит в leget-api без токена — она отдаёт один и тот же ответ гостю и
+	// владельцу, поэтому рефетч после входа не приносил ни одного нового байта.
+	// Стоил он при этом полного круга до API и второго прохода рендера всех
+	// блоков (`components` приезжали новыми объектами) ровно в тот момент, когда
+	// поток и так занят разворачиванием интерфейса редактирования, — это и была
+	// «заметная задержка» после входа. Режим редактирования включается чисто
+	// клиентски, по флагу ниже.
 	const isEditable = $derived(
 		browser && $auth.isAuthenticated && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);

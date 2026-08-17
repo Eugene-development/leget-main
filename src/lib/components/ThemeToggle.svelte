@@ -5,6 +5,11 @@
 	 * Только представление: состояние и сохранение — на вызывающей стороне
 	 * (оптимистичное обновление data + saveComponentData). Используется в
 	 * VersionSwitcher (HeroMain) и в блоках без переключателя версий.
+	 *
+	 * Палитра — токены системы: нейтраль `ink`, белое `on-dark`/`surface-raised`,
+	 * а два значка сидят на категориальной шкале — солнце `cat-1` (янтарь),
+	 * луна `cat-4` (индиго). Это не бренд и не интерактив: значок называет тему
+	 * блока, а не состояние управления, поэтому и хью взяты категориальные.
 	 */
 	let {
 		isLight = false,
@@ -20,8 +25,8 @@
 <button
 	type="button"
 	class="relative flex h-[38px] w-[68px] cursor-pointer items-center rounded-full border p-[3px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 {isLight
-		? 'border-slate-300/80 bg-slate-200/60 hover:border-slate-400/80'
-		: 'border-white/10 bg-slate-950/75 hover:border-white/20'} {className}"
+		? 'border-ink-300/80 bg-ink-200/60 hover:border-ink-400/80'
+		: 'border-on-dark/10 bg-ink-950/75 hover:border-on-dark/20'} {className}"
 	onclick={onToggle}
 	aria-label={isLight ? 'Включить тёмную тему' : 'Включить светлую тему'}
 	title={isLight ? 'Включить тёмную тему' : 'Включить светлую тему'}
@@ -30,7 +35,7 @@
 	     тема (луна), правая — светлая (солнце). -->
 	<span class="pointer-events-none absolute left-2.5 flex items-center justify-center opacity-40">
 		<!-- Луна слева: тёмная тема (позиция бегунка при isLight = false) -->
-		<svg class="h-3.5 w-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		<svg class="h-3.5 w-3.5 text-cat-4-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 			<path
 				stroke-linecap="round"
 				stroke-linejoin="round"
@@ -41,7 +46,7 @@
 	</span>
 	<span class="pointer-events-none absolute right-2.5 flex items-center justify-center opacity-40">
 		<!-- Солнце справа: светлая тема (позиция бегунка при isLight = true) -->
-		<svg class="h-3.5 w-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		<svg class="h-3.5 w-3.5 text-cat-1-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 			<path
 				stroke-linecap="round"
 				stroke-linejoin="round"
@@ -54,12 +59,12 @@
 	<!-- Подвижный бегунок: несёт значок ТЕКУЩЕЙ темы — солнце в светлой, луна в тёмной. -->
 	<span
 		class="flex h-[30px] w-[30px] items-center justify-center rounded-full shadow-lg transition-transform duration-300 ease-out {isLight
-			? 'translate-x-[30px] bg-white text-amber-500 shadow-amber-500/20'
-			: 'translate-x-0 bg-slate-900 text-indigo-400 shadow-indigo-500/10'}"
+			? 'translate-x-[30px] bg-surface-raised text-cat-1-500 shadow-cat-1-500/20'
+			: 'translate-x-0 bg-ink-900 text-cat-4-400 shadow-cat-4-500/10'}"
 	>
 		{#if isLight}
 			<!-- Солнце: активна светлая тема -->
-			<svg class="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg class="h-4 w-4 text-cat-1-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"
@@ -69,7 +74,7 @@
 			</svg>
 		{:else}
 			<!-- Луна: активна тёмная тема -->
-			<svg class="h-4 w-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg class="h-4 w-4 text-cat-4-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"

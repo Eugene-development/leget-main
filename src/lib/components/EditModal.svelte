@@ -29,17 +29,17 @@
 {#if field}
 	<!-- Модальное окно в левом нижнем углу -->
 	<div
-		class="fixed bottom-6 left-6 z-50 w-80 rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200"
+		class="fixed bottom-6 left-6 z-50 w-80 rounded-2xl bg-surface-raised shadow-2xl ring-1 ring-ink-200"
 		role="dialog"
 		aria-modal="true"
 		aria-label="Редактирование поля"
 	>
 		<!-- Заголовок -->
-		<div class="flex items-center justify-between border-b border-gray-100 px-4 py-3">
+		<div class="flex items-center justify-between border-b border-ink-100 px-4 py-3">
 			<div class="flex items-center gap-2">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-4 w-4 text-indigo-500"
+					class="h-4 w-4 text-link-500"
 					viewBox="0 0 20 20"
 					fill="currentColor"
 					aria-hidden="true"
@@ -48,12 +48,12 @@
 						d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
 					/>
 				</svg>
-				<span class="text-sm font-semibold text-gray-800">{field.label}</span>
+				<span class="text-sm font-semibold text-ink-800">{field.label}</span>
 			</div>
 			<button
 				type="button"
 				onclick={() => editStore.close()}
-				class="rounded-lg p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+				class="rounded-lg p-1 text-ink-400 transition hover:bg-ink-100 hover:text-ink-600"
 				aria-label="Закрыть"
 			>
 				<svg
@@ -77,7 +77,7 @@
 			{#if field.multiline}
 				<textarea
 					bind:this={textareaEl}
-					class="w-full resize-none rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:outline-none"
+					class="w-full resize-none rounded-xl border border-ink-200 px-3 py-2.5 text-sm text-ink-900 transition focus:border-link-400 focus:ring-2 focus:ring-link-100 focus:outline-none"
 					rows={5}
 					value={field.draft}
 					oninput={(e) => editStore.setDraft((e.target as HTMLTextAreaElement).value)}
@@ -87,7 +87,7 @@
 				<input
 					bind:this={inputEl}
 					type="text"
-					class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-900 transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:outline-none"
+					class="w-full rounded-xl border border-ink-200 px-3 py-2.5 text-sm text-ink-900 transition focus:border-link-400 focus:ring-2 focus:ring-link-100 focus:outline-none"
 					value={field.draft}
 					oninput={(e) => editStore.setDraft((e.target as HTMLInputElement).value)}
 					placeholder="Введите текст..."
@@ -95,7 +95,7 @@
 			{/if}
 
 			{#if saveError}
-				<p class="mt-2 text-xs text-red-500">{saveError}</p>
+				<p class="mt-2 text-xs text-cat-6-500">{saveError}</p>
 			{/if}
 
 			<!-- Кнопки -->
@@ -104,14 +104,14 @@
 					type="button"
 					onclick={() => editStore.save()}
 					disabled={isSaving || !isDirty}
-					class="flex-1 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+					class="flex-1 rounded-xl bg-link-600 px-4 py-2 text-sm font-semibold text-on-dark transition hover:bg-link-700 disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					{isSaving ? 'Сохранение...' : 'Сохранить'}
 				</button>
 				<button
 					type="button"
 					onclick={() => editStore.close()}
-					class="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-600 transition hover:border-gray-300 hover:bg-gray-50"
+					class="rounded-xl border border-ink-200 bg-surface-raised px-4 py-2 text-sm font-medium text-ink-600 transition hover:border-ink-300 hover:bg-ink-50"
 				>
 					Отмена
 				</button>

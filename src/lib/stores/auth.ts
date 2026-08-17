@@ -21,40 +21,71 @@ function createAuthStore() {
 		isLoading: false
 	});
 
+	/**
+	 * Ответ /auth/me актуален, только пока в хранилище лежит тот же токен, с
+	 * которым ушёл запрос. Если пользователь успел войти заново (login() кладёт
+	 * новый токен), ответ на старый — уже мусор: применив его, мы сбрасывали
+	 * свежий вход, стирали новый токен и гасили режим редактирования.
+	 */
+	function isStale(token: string): boolean {
+		return !browser || localStorage.getItem('auth_token') !== token;
+	}
+
+	/** Проверка идёт один раз на страницу: повторные вызовы ждут тот же запрос. */
+	let pendingInit: Promise<void> | null = null;
+
 	return {
 		subscribe,
 
 		/** Check token validity against /auth/me and update state */
 		async init() {
 			if (!browser) return;
+			if (pendingInit) return pendingInit;
 
 			const token = localStorage.getItem('auth_token');
 			if (!token) return;
 
-			update((s) => ({ ...s, isLoading: true }));
+			// Токен есть — считаем сессию активной сразу, не дожидаясь ответа.
+			// Иначе редактор включался только после сетевого запроса: на живом
+			// сайте это заметная задержка при каждой загрузке страницы. Проверка
+			// идёт следом и снимает флаг, если токен оказался недействителен.
+			// Гостю это ничего не показывает: без токена ветка не выполняется.
+			update((s) => ({ ...s, isAuthenticated: true, isLoading: true }));
 
-			try {
-				const authApiUrl = getAuthApiUrl();
-				const response = await fetch(`${authApiUrl}/auth/me`, {
-					method: 'GET',
-					headers: {
-						Accept: 'application/json',
-						Authorization: `Bearer ${token}`
+			pendingInit = (async () => {
+				try {
+					const authApiUrl = getAuthApiUrl();
+					const response = await fetch(`${authApiUrl}/auth/me`, {
+						method: 'GET',
+						headers: {
+							Accept: 'application/json',
+							Authorization: `Bearer ${token}`
+						}
+					});
+
+					if (isStale(token)) return;
+
+					if (!response.ok) {
+						localStorage.removeItem('auth_token');
+						localStorage.removeItem('email_verified');
+						set({ isAuthenticated: false, user: null, isLoading: false });
+						return;
 					}
-				});
 
-				if (!response.ok) {
-					localStorage.removeItem('auth_token');
-					localStorage.removeItem('email_verified');
+					const data = await response.json();
+					if (isStale(token)) return;
+					set({ isAuthenticated: true, user: data.user ?? data, isLoading: false });
+				} catch {
+					// Сеть не ответила — токен не трогаем (может быть исправен),
+					// но режим редактирования не оставляем включённым вслепую.
+					if (isStale(token)) return;
 					set({ isAuthenticated: false, user: null, isLoading: false });
-					return;
+				} finally {
+					pendingInit = null;
 				}
+			})();
 
-				const data = await response.json();
-				set({ isAuthenticated: true, user: data.user ?? data, isLoading: false });
-			} catch {
-				set({ isAuthenticated: false, user: null, isLoading: false });
-			}
+			return pendingInit;
 		},
 
 		/** Login with email/password, store token on success */

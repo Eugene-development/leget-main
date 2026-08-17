@@ -113,9 +113,9 @@
 {#if article && segments}
 	<button
 		type="button"
-		class="relative flex cursor-pointer items-center gap-1.5 rounded-2xl border bg-slate-950 px-3 py-2 font-mono text-[11px] font-semibold tracking-wider shadow-2xl transition-colors duration-200 select-none {copied
-			? 'border-emerald-500/40 text-emerald-200'
-			: 'border-white/10 text-white hover:border-white/25'}"
+		class="relative flex cursor-pointer items-center gap-1.5 rounded-2xl border bg-ink-950 px-3 py-2 font-mono text-[11px] font-semibold tracking-wider shadow-2xl transition-colors duration-200 select-none {copied
+			? 'border-cat-2-500/40 text-cat-2-200'
+			: 'border-on-dark/10 text-on-dark hover:border-on-dark/25'}"
 		onmouseenter={() => canHover && (showHint = true)}
 		onmouseleave={() => canHover && (showHint = false)}
 		onclick={handleClick}
@@ -143,49 +143,57 @@
 				class="absolute {placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'} {align ===
 				'right'
 					? 'right-0'
-					: 'left-0'} z-[300] w-64 rounded-2xl border border-white/10 bg-slate-950 p-3 font-sans shadow-2xl"
+					: 'left-0'} z-[300] w-64 rounded-2xl border border-on-dark/10 bg-ink-950 p-3 font-sans shadow-2xl"
 				role="tooltip"
 				transition:fade={{ duration: 120 }}
 			>
-				<div class="mb-2 flex items-center justify-between gap-2 border-b border-white/10 pb-2">
-					<span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">Артикул</span>
-					<span class="font-mono text-xs font-bold text-white">{article}</span>
+				<div class="mb-2 flex items-center justify-between gap-2 border-b border-on-dark/10 pb-2">
+					<span class="text-[10px] font-bold tracking-wider text-ink-400 uppercase">Артикул</span>
+					<span class="font-mono text-xs font-bold text-on-dark">{article}</span>
 				</div>
+				<!-- Четыре сегмента артикула раскрашены категориальной шкалой системы:
+				     шаблон — cat-2, раздел — cat-5, компонент — cat-3, версия — cat-1.
+				     Здесь хью действительно различает: все четыре цифры видны разом, и
+				     цвет — единственное, что связывает цифру со строкой расшифровки.
+				     Этим случай отличается от списка вариантов в VersionSwitcher, где
+				     выбран всегда один и разные подсветки не различали ничего. -->
 				<ul class="flex flex-col gap-1.5 text-[11px] leading-tight">
 					<li class="flex items-baseline gap-2">
-						<span class="w-3 text-center font-mono font-bold text-emerald-300"
+						<span class="w-3 text-center font-mono font-bold text-cat-2-300"
 							>{segments.template}</span
 						>
-						<span class="text-slate-300"
-							>Шаблон{#if TEMPLATE_NAMES[Number(segments.template)]}<span class="text-slate-500">
+						<span class="text-ink-300"
+							>Шаблон{#if TEMPLATE_NAMES[Number(segments.template)]}<span class="text-ink-500">
 									({TEMPLATE_NAMES[Number(segments.template)]})</span
 								>{/if}</span
 						>
 					</li>
 					<li class="flex items-baseline gap-2">
-						<span class="w-3 text-center font-mono font-bold text-sky-300">{segments.section}</span>
-						<span class="text-slate-300"
-							>{sectionLabel}{#if sectionHint}<span class="text-slate-500">
+						<span class="w-3 text-center font-mono font-bold text-cat-5-300"
+							>{segments.section}</span
+						>
+						<span class="text-ink-300"
+							>{sectionLabel}{#if sectionHint}<span class="text-ink-500">
 									({sectionHint})</span
 								>{/if}</span
 						>
 					</li>
 					<li class="flex items-baseline gap-2">
-						<span class="w-3 text-center font-mono font-bold text-violet-300"
+						<span class="w-3 text-center font-mono font-bold text-cat-3-300"
 							>{segments.component}</span
 						>
-						<span class="text-slate-300"
-							>Компонент{#if componentHint}<span class="text-slate-500">
+						<span class="text-ink-300"
+							>Компонент{#if componentHint}<span class="text-ink-500">
 									({componentHint})</span
 								>{/if}</span
 						>
 					</li>
 					{#if segments.version}
 						<li class="flex items-baseline gap-2">
-							<span class="w-3 text-center font-mono font-bold text-amber-300"
+							<span class="w-3 text-center font-mono font-bold text-cat-1-300"
 								>{segments.version}</span
 							>
-							<span class="text-slate-300">Версия (v{segments.version})</span>
+							<span class="text-ink-300">Версия (v{segments.version})</span>
 						</li>
 					{/if}
 				</ul>

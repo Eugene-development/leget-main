@@ -83,21 +83,21 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-	class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+	class="fixed inset-0 z-50 flex items-center justify-center bg-scrim/50 p-4"
 	onclick={handleBackdropClick}
 >
 	<div
-		class="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl"
+		class="w-full max-w-md rounded-2xl bg-surface-raised p-8 shadow-2xl"
 		role="dialog"
 		aria-modal="true"
 		aria-labelledby="login-modal-title"
 	>
 		<div class="mb-6 flex items-center justify-between">
-			<h2 id="login-modal-title" class="text-xl text-neutral-950">Вход в систему</h2>
+			<h2 id="login-modal-title" class="text-xl text-ink-950">Вход в систему</h2>
 			<button
 				type="button"
 				onclick={onClose}
-				class="rounded-lg p-1 text-neutral-400 transition hover:text-neutral-700"
+				class="rounded-lg p-1 text-ink-400 transition hover:text-ink-700"
 				aria-label="Закрыть"
 			>
 				<svg
@@ -120,7 +120,7 @@
 			<div class="space-y-4">
 				<!-- Email -->
 				<div>
-					<label for="login-email" class="mb-1 block text-sm font-medium text-neutral-700">
+					<label for="login-email" class="mb-1 block text-sm font-medium text-ink-700">
 						Email
 					</label>
 					<input
@@ -128,19 +128,19 @@
 						type="email"
 						autocomplete="email"
 						bind:value={email}
-						class="w-full rounded-xl border px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/10 focus:outline-none"
-						class:border-red-400={errors.email}
-						class:border-neutral-300={!errors.email}
+						class="w-full rounded-xl border px-4 py-3 text-sm text-ink-950 transition focus:border-link-600 focus:ring-2 focus:ring-link-600/20 focus:outline-none"
+						class:border-cat-6-400={errors.email}
+						class:border-ink-300={!errors.email}
 						placeholder="you@example.com"
 					/>
 					{#if errors.email}
-						<p class="mt-1 text-xs text-red-500">{errors.email}</p>
+						<p class="mt-1 text-xs text-cat-6-500">{errors.email}</p>
 					{/if}
 				</div>
 
 				<!-- Password -->
 				<div>
-					<label for="login-password" class="mb-1 block text-sm font-medium text-neutral-700">
+					<label for="login-password" class="mb-1 block text-sm font-medium text-ink-700">
 						Пароль
 					</label>
 					<input
@@ -148,13 +148,13 @@
 						type="password"
 						autocomplete="current-password"
 						bind:value={password}
-						class="w-full rounded-xl border px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/10 focus:outline-none"
-						class:border-red-400={errors.password}
-						class:border-neutral-300={!errors.password}
+						class="w-full rounded-xl border px-4 py-3 text-sm text-ink-950 transition focus:border-link-600 focus:ring-2 focus:ring-link-600/20 focus:outline-none"
+						class:border-cat-6-400={errors.password}
+						class:border-ink-300={!errors.password}
 						placeholder="••••••••"
 					/>
 					{#if errors.password}
-						<p class="mt-1 text-xs text-red-500">{errors.password}</p>
+						<p class="mt-1 text-xs text-cat-6-500">{errors.password}</p>
 					{/if}
 				</div>
 			</div>
@@ -170,7 +170,7 @@
 			{/if}
 
 			{#if submitError}
-				<div class="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+				<div class="mt-4 rounded-xl bg-cat-6-50 px-4 py-3 text-sm text-cat-6-600">
 					{submitError}
 				</div>
 			{/if}
@@ -178,7 +178,7 @@
 			<button
 				type="submit"
 				disabled={isSubmitting}
-				class="mt-6 w-full rounded-xl bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-60"
+				class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-sm font-semibold text-on-dark transition hover:bg-ink-800 disabled:opacity-60"
 			>
 				{isSubmitting ? 'Вход...' : 'Войти'}
 			</button>
