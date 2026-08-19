@@ -1,9 +1,22 @@
 <script lang="ts">
 	// Артикул: 1.1.2.2 — см. docs/architecture/component-articles-map.md
+	//
+	// Та же опись выполненных работ, что и в v1, но раскладкой в две колонки:
+	// слева заголовок и пояснение, справа сетка превью. Роль блока и контракт
+	// данных — в ../data.ts.
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import {
+		MESSAGE_DEFAULT_TEXT,
+		MESSAGE_DEFAULT_TITLE,
+		MESSAGE_PROJECT_LINK_LABEL,
+		isExternalProjectLink,
+		resolveMessageProjects,
+		type MessageProject
+	} from '../data';
 	import '../../../../theme.css';
 
 	let {
@@ -19,35 +32,11 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 
-	const cards = $derived(
-		Array.isArray(data?.cards) && data.cards.length > 0
-			? (data.cards as { title: string; description: string; image: string; alt: string }[])
-			: [
-					{
-						title: 'Дизайн-проект',
-						description: '3D-проект с визуализацией и точными замерами',
-						image: null,
-						alt: 'Дизайн-проект'
-					},
-					{
-						title: 'Мебель',
-						description: 'Производство по точным размерам и вашим предпочтениям',
-						image: null,
-						alt: 'Мебель на заказ'
-					},
-					{
-						title: 'Партнёрство',
-						description: 'Сотрудничаем с лучшими фабриками и поставщиками',
-						image: null,
-						alt: 'Партнёрство'
-					},
-					{
-						title: 'Гарантия качества',
-						description: 'Гарантия до 5 лет и полное сопровождение заказа',
-						image: null,
-						alt: 'Гарантия качества'
-					}
-				]
+	const projects = $derived<MessageProject[]>(resolveMessageProjects(data?.cards));
+
+	let editingCardImageIndex = $state<number | null>(null);
+	const editingCard = $derived(
+		editingCardImageIndex === null ? null : (projects[editingCardImageIndex] ?? null)
 	);
 
 	async function saveField(field: string, value: string) {
@@ -57,18 +46,69 @@
 		data = updated;
 	}
 
-	async function saveCardField(index: number, field: 'title' | 'description', value: string) {
+	async function saveCardField(
+		index: number,
+		field: 'title' | 'description' | 'link',
+		value: string
+	) {
 		if (!editContext) return;
-		const updatedCards = [...cards];
+		const updatedCards = [...projects];
 		updatedCards[index] = { ...updatedCards[index], [field]: value };
 		const updated = { ...data, cards: updatedCards };
 		await saveComponentData(editContext, 'Message', updated);
 		data = updated;
 	}
+
+	function openCardImagePicker(index: number) {
+		editingCardImageIndex = index;
+	}
+
+	function closeCardImagePicker() {
+		editingCardImageIndex = null;
+	}
+
+	async function handleCardImageApprove(url: string) {
+		if (!editContext || editingCardImageIndex === null) return;
+
+		const targetIndex = editingCardImageIndex;
+		const updatedCards = projects.map((card, index) =>
+			index === targetIndex ? { ...card, image: url } : card
+		);
+		const updated = { ...data, cards: updatedCards };
+		await saveComponentData(editContext, 'Message', updated);
+		data = updated;
+		closeCardImagePicker();
+	}
+
+	async function handleCardImageRemove() {
+		await handleCardImageApprove('');
+	}
 </script>
 
+{#if editingCard && editContext}
+	<BgImagePicker
+		{editContext}
+		currentImage={editingCard.image ?? ''}
+		folder="message"
+		title={`Фотография проекта «${editingCard.title}»`}
+		cropUploads
+		aspectRatio={4 / 3}
+		previewFit="cover"
+		maxUploadBytes={20 * 1024 * 1024}
+		cropMaxWidth={1600}
+		cropMaxHeight={1200}
+		cropOutputMimeType="image/webp"
+		cropOutputQuality={0.86}
+		cropMaxOutputBytes={2 * 1024 * 1024}
+		onApprove={handleCardImageApprove}
+		onRemove={handleCardImageRemove}
+		onClose={closeCardImagePicker}
+	/>
+{/if}
+
+<!-- Выполненные проекты (Message) -->
 <section
-	class="p1-surface relative overflow-hidden py-section-sm font-sans select-none sm:py-section"
+	class="p1-surface relative overflow-hidden py-section-sm font-sans sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Декоративные фоновые круги -->
@@ -76,50 +116,30 @@
 	<div class="absolute -right-32 -bottom-32 h-96 w-96 rounded-full bg-cat-4-500/10 blur-3xl"></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
-			<!-- Левая колонка: Огромный логотип и блок-цитата -->
-			<div class="flex flex-col items-start text-left lg:col-span-5">
-				{#if data?.logoUrl || isEditable}
-					<div class="mb-10 w-32 transition-transform duration-300 hover:scale-105 md:w-40">
-						<EditableField
-							fieldKey="Message.logoUrl"
-							label="Логотип (URL)"
-							value={String(data?.logoUrl ?? '')}
-							{isEditable}
-							onSave={(v) => saveField('logoUrl', v)}
-							class="block"
-						>
-							{#snippet children(displayValue)}
-								{#if displayValue}
-									<ImageFallback
-										src={displayValue}
-										alt={String(data?.logoAlt ?? 'Логотип')}
-										class="w-full object-contain brightness-0 invert filter"
-									/>
-								{:else if isEditable}
-									<div
-										class="p1-border p1-card p1-muted rounded-xl border border-dashed p-4 text-[10px] font-bold tracking-widest uppercase backdrop-blur-md"
-									>
-										Логотип
-									</div>
-								{/if}
-							{/snippet}
-						</EditableField>
-					</div>
-				{/if}
+		<div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
+			<!-- Левая колонка: заголовок описи и пояснение -->
+			<div class="flex flex-col items-start text-left lg:sticky lg:top-24 lg:col-span-5">
+				<EditableField
+					fieldKey="Message.title"
+					label="Заголовок"
+					value={String(data?.title ?? MESSAGE_DEFAULT_TITLE)}
+					{isEditable}
+					onSave={(v) => saveField('title', v)}
+					class="block"
+				>
+					{#snippet children(displayValue)}
+						<h2 class="p1-title text-4xl md:text-5xl">{displayValue}</h2>
+					{/snippet}
+				</EditableField>
 
-				<!-- Премиальный блок цитаты -->
-				<div class="p1-border p1-card relative rounded-3xl border p-8 shadow-2xl backdrop-blur-xl">
-					<div
-						class="absolute -top-6 -left-4 font-serif text-6xl leading-none text-link-500/20 select-none"
-					>
-						“
-					</div>
-					<blockquote class="p1-body text-base leading-relaxed font-medium md:text-lg">
+				<div
+					class="p1-border p1-card relative mt-8 rounded-3xl border p-8 shadow-2xl backdrop-blur-xl"
+				>
+					<div class="p1-body text-base leading-relaxed md:text-lg">
 						<EditableField
 							fieldKey="Message.text"
 							label="Текст"
-							value={String(data?.text ?? '')}
+							value={String(data?.text ?? MESSAGE_DEFAULT_TEXT)}
 							{isEditable}
 							multiline
 							onSave={(v) => saveField('text', v)}
@@ -129,123 +149,140 @@
 								<p class="relative z-10">{displayValue}</p>
 							{/snippet}
 						</EditableField>
-					</blockquote>
+					</div>
 					<div class="mt-6 flex items-center gap-3">
 						<span class="h-px w-8 bg-gradient-to-r from-link-400 to-cat-4-400"></span>
-						<span class="p1-muted text-[10px] font-bold tracking-widest uppercase"
-							>Стремление к идеалу</span
-						>
+						<!-- Роль `p1-body`, а не `p1-muted`: подпись набрана 10px, а `p1-muted`
+						     на составной подложке панели даёт 4,42:1 — порог 1.4.3 для
+						     такого кегля не взят. Ступенью ниже её держит кегль, не цвет. -->
+						<span class="p1-body text-[10px] font-bold tracking-widest uppercase">
+							Сдано заказчикам
+						</span>
 					</div>
 				</div>
 			</div>
 
-			<!-- Правая колонка: Карусель/список преимуществ -->
+			<!-- Правая колонка: опись работ -->
 			<div class="grid gap-6 sm:grid-cols-2 lg:col-span-7">
-				{#each cards as card, i}
-					<div
-						class="message-card-v2 group p1-border p1-card hover:p1-card relative overflow-hidden rounded-3xl border p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-link-500/30 hover:shadow-link-500/5"
+				{#each projects as card, i}
+					<!-- `relative` несущий: по нему растягивается зона нажатия ссылки
+					     (`after:inset-0`), поэтому кликабельна вся карточка. -->
+					<article
+						class="group p1-border p1-card relative flex animate-fade-up-in flex-col overflow-hidden rounded-3xl border shadow-lg backdrop-blur-md transition duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:border-link-500/30 hover:shadow-link-500/5"
+						style="animation-delay: var(--ds-motion-stagger-{Math.min(i + 1, 5)})"
 					>
-						<div
-							class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-gradient-to-br from-link-500/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-						></div>
-						<div class="relative flex h-full flex-col justify-between">
-							<div>
-								<div
-									class="p1-border mb-5 size-16 overflow-hidden rounded-2xl border bg-ink-900 transition-colors duration-300 group-hover:border-link-500/30"
-								>
-									<ImageFallback
-										src={card.image}
-										alt={card.alt}
-										class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-									/>
-								</div>
-								<h3
-									class="p1-title p1-title-sub text-base transition-colors duration-300 group-hover:text-link-300"
-								>
-									<EditableField
-										fieldKey={`Message.cards.${i}.title`}
-										label="Заголовок"
-										value={card.title}
-										{isEditable}
-										onSave={(v) => saveCardField(i, 'title', v)}
-										class="inline"
-									>
-										{#snippet children(displayValue)}{displayValue}{/snippet}
-									</EditableField>
-								</h3>
-								<p
-									class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300 md:text-sm"
-								>
-									<EditableField
-										fieldKey={`Message.cards.${i}.description`}
-										label="Описание"
-										value={card.description}
-										{isEditable}
-										multiline
-										onSave={(v) => saveCardField(i, 'description', v)}
-										class="block"
-									>
-										{#snippet children(displayValue)}{displayValue}{/snippet}
-									</EditableField>
-								</p>
-							</div>
-							<div
-								class="p1-muted mt-4 flex items-center gap-1.5 transition-colors duration-300 group-hover:text-link-400"
+						{#if isEditable && editContext}
+							<button
+								type="button"
+								onclick={() => openCardImagePicker(i)}
+								class="group/image p1-body relative block aspect-[4/3] w-full cursor-pointer overflow-hidden text-left focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none focus-visible:ring-inset"
+								aria-label={`${card.image ? 'Заменить' : 'Добавить'} фотографию проекта «${card.title}»`}
+								title={`${card.image ? 'Заменить' : 'Добавить'} фотографию проекта «${card.title}»`}
 							>
-								<span class="text-[10px] font-bold tracking-widest uppercase">Подробнее</span>
-								<svg
-									class="h-3.5 w-3.5 translate-x-0 transform transition-transform duration-300 group-hover:translate-x-1"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
+								<ImageFallback
+									src={card.image}
+									alt={card.alt}
+									class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover/image:scale-105"
+								/>
+								<span
+									class="absolute top-3 right-3 flex size-7 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui group-hover/image:border-link-500 group-hover/image:text-link-600"
+									aria-hidden="true"
 								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2.5"
-										d="M9 5l7 7-7 7"
-									/>
-								</svg>
+									<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="1.75"
+											d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
+										/>
+									</svg>
+								</span>
+							</button>
+						{:else}
+							<div class="p1-body aspect-[4/3] w-full overflow-hidden">
+								<ImageFallback
+									src={card.image}
+									alt={card.alt}
+									class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
+								/>
 							</div>
+						{/if}
+
+						<div class="flex flex-1 flex-col p-6">
+							<h3
+								class="p1-title p1-title-sub text-base transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:text-link-300"
+							>
+								<EditableField
+									fieldKey={`Message.cards.${i}.title`}
+									label="Название проекта"
+									value={card.title}
+									{isEditable}
+									inline
+									onSave={(v) => saveCardField(i, 'title', v)}
+									class="inline"
+								>
+									{#snippet children(displayValue)}{displayValue}{/snippet}
+								</EditableField>
+							</h3>
+							<p class="p1-body mt-2 text-xs leading-relaxed md:text-sm">
+								<EditableField
+									fieldKey={`Message.cards.${i}.description`}
+									label="Описание проекта"
+									value={card.description}
+									{isEditable}
+									multiline
+									inline
+									onSave={(v) => saveCardField(i, 'description', v)}
+									class="block"
+								>
+									{#snippet children(displayValue)}{displayValue}{/snippet}
+								</EditableField>
+							</p>
+
+							{#if isEditable}
+								<EditableField
+									fieldKey={`Message.cards.${i}.link`}
+									label="Ссылка на проект"
+									value={card.link}
+									{isEditable}
+									onSave={(v) => saveCardField(i, 'link', v)}
+									class="mt-auto block pt-4"
+								>
+									{#snippet children(displayValue)}
+										<span class="p1-muted block truncate text-[11px]">
+											{displayValue || 'Ссылка на проект не задана'}
+										</span>
+									{/snippet}
+								</EditableField>
+							{:else if card.link}
+								<a
+									href={card.link}
+									target={isExternalProjectLink(card.link) ? '_blank' : null}
+									rel={isExternalProjectLink(card.link) ? 'noopener noreferrer' : null}
+									aria-label={`${MESSAGE_PROJECT_LINK_LABEL}: ${card.title}`}
+									class="p1-accent mt-auto inline-flex items-center gap-1.5 self-start pt-4 text-[10px] font-bold tracking-widest uppercase after:absolute after:inset-0 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+								>
+									{MESSAGE_PROJECT_LINK_LABEL}
+									<svg
+										class="size-3.5 transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:translate-x-1"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										aria-hidden="true"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2.5"
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</a>
+							{/if}
 						</div>
-					</div>
+					</article>
 				{/each}
 			</div>
 		</div>
 	</div>
 </section>
-
-<style>
-	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
-
-	blockquote {
-		font-family: 'Outfit', sans-serif;
-	}
-
-	.message-card-v2 {
-		animation: message-fade-in-v2 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-	}
-	.message-card-v2:nth-child(1) {
-		animation-delay: 0.1s;
-	}
-	.message-card-v2:nth-child(2) {
-		animation-delay: 0.2s;
-	}
-	.message-card-v2:nth-child(3) {
-		animation-delay: 0.3s;
-	}
-	.message-card-v2:nth-child(4) {
-		animation-delay: 0.4s;
-	}
-
-	@keyframes message-fade-in-v2 {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-</style>

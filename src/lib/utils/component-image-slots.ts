@@ -9,7 +9,6 @@ const SLOT_KEYS: Record<string, string[]> = {
 	'1:/furnitura:FurnituraHero': ['bgImage'],
 	'1:/guarantees:WhatsCovered': ['imageUrl'],
 	'1:/:Equipment': ['item1Image', 'item2Image', 'item3Image', 'item4Image', 'item5Image'],
-	'1:/:Message': ['logoUrl'],
 	'1:/mebel:MebelHero': ['bgImage'],
 	'1:/plitka:PliitkaHero': ['bgImage'],
 	'1:/santehnika:SantehnikaHero': ['bgImage'],
@@ -78,6 +77,21 @@ export function componentImageSlots(
 						? []
 						: ['bgImageV1', 'logoUrl'];
 		return fields.map((field) => ({ path: [field] }));
+	}
+	if (key === '1:/:Message') {
+		// Блок 1.1.2 показывает выполненные работы, а не логотип (19.08.2026), и
+		// его пустые слоты — это фотографии проектов, по одной на карточку. Число
+		// карточек задаёт тенант, поэтому список считается по данным, а не
+		// объявлен константой в SLOT_KEYS: там путь — один ключ верхнего уровня,
+		// а здесь их столько, сколько работ в описи. До первой правки карточек
+		// четыре — столько же, сколько в стартовых данных версии.
+		//
+		// Ключ `logoUrl` из реестра убран вместе со слотом. У тенантов, успевших
+		// залить логотип, он остаётся непустым в data и продолжает находиться
+		// обычным обходом — чужие данные не трогаем.
+		const cards = Array.isArray(data.cards) ? data.cards : [];
+		const count = cards.length > 0 ? cards.length : 4;
+		return Array.from({ length: count }, (_, index) => ({ path: ['cards', index, 'image'] }));
 	}
 	if (key === '1:/:PromoOffer') {
 		// `image` — легаси-фолбэк из PromoOffer.svelte (`data?.imageV1 ?? data?.image`):
