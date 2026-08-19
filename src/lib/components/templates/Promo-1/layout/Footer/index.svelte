@@ -10,6 +10,7 @@
 	} from '$lib/utils/page-edit';
 	import { fly, fade } from 'svelte/transition';
 	import type { Snippet } from 'svelte';
+	import '../../theme.css';
 
 	let {
 		data = $bindable({}),
@@ -104,7 +105,9 @@
 		'hours',
 		'telegram',
 		'whatsapp',
-		'siteName'
+		'siteName',
+		// Видимость строк контактов (v3): сброс возвращает все четыре строки.
+		'hiddenContacts'
 	] as const;
 
 	let isResetting = $state(false);

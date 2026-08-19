@@ -108,13 +108,26 @@
 	}
 </script>
 
-<!-- Бренды материалов (Brands) -->
+<!--
+	Бренды материалов (Brands), версия 1 — «логотипная стена».
+
+	Несущая идея: чужой знак здесь не иконка при тексте, а само содержание.
+	Поэтому карточки и тени убраны совсем — ячейки разделены волосяной сеткой,
+	а все двенадцать логотипов поставлены в слот одной оптической меры
+	(`p1-logo-slot`) и приведены к нейтрали ролью `p1-logo`. До 19.08.2026 знаки
+	стояли без слота: замер дал ширины от 32 до 140px при одной высоте, и колонка
+	с названием начиналась в каждой карточке на своей широте.
+-->
 <section class="p1-surface py-section-xs sm:py-section" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="mx-auto max-w-2xl text-center">
-			<span
-				class="inline-flex items-center gap-2 rounded-full bg-link-100 px-4 py-1.5 text-sm font-medium text-link-700"
-			>
+			<!--
+				Метка берёт роль `p1-label`, а не пилюлю `bg-link-100 / text-link-700`,
+				как было до 19.08.2026. Шкала `link` системная, но абсолютная: замер
+				на инвертированном блоке давал ту же светло-синюю плашку на почти
+				чёрной поверхности — светлый островок, не зависящий от темы блока.
+			-->
+			<span class="p1-label p1-muted uppercase">
 				<EditableField
 					fieldKey="Brands.badge"
 					label="Метка"
@@ -135,34 +148,32 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-4 text-3xl sm:text-4xl">
+					<h2 class="p1-title mt-3 text-3xl sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
 			</EditableField>
 		</div>
 
-		<!-- Карточки брендов -->
-		<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		<!-- Стена: ячейки стоят на поверхности секции, зазор в пиксель играет линией -->
+		<div
+			class="p1-line p1-border mt-12 grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-3"
+		>
 			{#each brands as brand}
-				<div
-					class="group p1-border p1-card rounded-2xl border p-6 transition-all duration-300 hover:border-link-200 hover:shadow-lg"
-				>
-					<div class="flex items-center gap-4">
-						<ImageFallback class="h-8 w-auto" src={brand.logo} alt={brand.name} />
-						<div>
-							<h3 class="p1-title p1-title-sub">{brand.name}</h3>
-							<p class="p1-muted text-sm">{brand.country}</p>
-						</div>
+				<div class="group p1-surface flex flex-col items-center px-6 py-10 text-center">
+					<div class="p1-logo-slot p1-body justify-center self-center [--p1-logo-slot:56px]">
+						<ImageFallback class="p1-logo" src={brand.logo} alt={brand.name} />
 					</div>
-					<p class="p1-body mt-4 text-sm">{brand.description}</p>
+					<h3 class="p1-title p1-title-sub mt-7">{brand.name}</h3>
+					<span class="p1-label p1-muted mt-1 uppercase">{brand.country}</span>
+					<p class="p1-body mt-3 max-w-[34ch] text-sm">{brand.description}</p>
 				</div>
 			{/each}
 		</div>
 
-		<!-- Партнёры-производители -->
-		<div class="p1-border mt-16 border-t pt-12">
-			<p class="p1-muted text-center text-sm font-medium">
+		<!-- Партнёры-производители: тот же слот и та же роль, ступень мельче -->
+		<div class="mt-16">
+			<p class="p1-label p1-muted text-center uppercase">
 				<EditableField
 					fieldKey="Brands.partnersLabel"
 					label="Подпись партнёров"
@@ -175,29 +186,24 @@
 					{#snippet children(displayValue)}{displayValue}{/snippet}
 				</EditableField>
 			</p>
-			<div class="mt-8 grid grid-cols-3 items-center gap-8 sm:grid-cols-6">
+			<div class="mt-8 grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-6">
 				{#each partners as partner}
 					<a
 						href={partner.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="group flex items-center justify-center"
+						class="group p1-logo-slot p1-body justify-center [--p1-logo-slot:32px]"
+						aria-label={partner.name}
 					>
-						<ImageFallback
-							class="h-10 w-auto opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-							src={partner.logo}
-							alt={partner.name}
-						/>
+						<ImageFallback class="p1-logo" src={partner.logo} alt={partner.name} />
 					</a>
 				{/each}
 			</div>
 
 			{#if data?.partnersNote}
-				<div class="mt-12 text-center">
-					<p class="p1-card p1-body inline-flex items-center gap-2 rounded-full px-6 py-2 text-sm">
-						{String(data.partnersNote)}
-					</p>
-				</div>
+				<p class="p1-muted mt-10 text-center text-sm">
+					{String(data.partnersNote)}
+				</p>
 			{/if}
 		</div>
 	</div>

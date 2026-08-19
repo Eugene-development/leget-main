@@ -5,6 +5,7 @@
 	import { fly } from 'svelte/transition';
 	import type { CatalogItem } from '../../catalogItems';
 	import type { ServiceItem } from '../../serviceItems';
+	import '../../../theme.css';
 
 	type MenuItem = CatalogItem | ServiceItem;
 	type MenuKind = 'catalog' | 'services';

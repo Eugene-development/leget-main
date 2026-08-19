@@ -13,6 +13,7 @@
 	} from '$lib/utils/page-edit';
 	import type { CatalogItem } from '../catalogItems';
 	import type { ServiceItem } from '../serviceItems';
+	import '../../theme.css';
 
 	// Меню (навигация хэдера) — layout-компонент. Как и баннер, его версия хранится
 	// в общем header_data blob'е (ключ menuVersion) и сохраняется через

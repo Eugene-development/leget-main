@@ -10,6 +10,9 @@
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
+	import { createContactVisibility } from '../contacts.svelte';
+	import ContactToggle from '../ContactToggle.svelte';
+	import '../../../theme.css';
 
 	let {
 		data = $bindable({}),
@@ -48,6 +51,23 @@
 	const hours = $derived(String(data?.hours ?? 'Пн–Вс: 9:00 — 21:00'));
 	const telegram = $derived(String(data?.telegram ?? ''));
 	const whatsapp = $derived(String(data?.whatsapp ?? ''));
+
+	/**
+	 * Отключаемые строки контактов — логика общая для v1/v2/v3,
+	 * см. `../contacts.svelte.ts`.
+	 */
+	const contacts = createContactVisibility({
+		getData: () => data,
+		setData: (next) => (data = next),
+		getEditContext: () => editContext
+	});
+
+	// В режиме редактирования строке нужна третья колонка под переключатель.
+	const contactRowClass = $derived(
+		isEditable
+			? 'grid grid-cols-[6rem_1fr_auto] gap-4 py-5 sm:grid-cols-[5rem_1fr_auto]'
+			: 'grid grid-cols-[6rem_1fr] gap-4 py-5 sm:grid-cols-[5rem_1fr]'
+	);
 
 	const disabledRubrics = $derived(
 		Array.isArray(data?.disabledRubrics) ? (data.disabledRubrics as string[]) : []
@@ -124,7 +144,7 @@
 			<div class="lg:col-span-8">
 				<div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.24em] uppercase">
 					<span class="p1-accent-bg h-px w-10"></span>
-					Мебель и интерьер на заказ
+					Маркетплэйс интерьеров
 				</div>
 
 				<h2 class="font-footer-display mt-8 max-w-5xl text-[clamp(3.6rem,10vw,9rem)]">
@@ -171,87 +191,125 @@
 				</div>
 			</div>
 
-			<div class="lg:col-span-4 lg:pl-10">
-				<div class="p1-border border-t">
-					<div
-						class="p1-border grid grid-cols-[6rem_1fr] gap-4 border-b py-5 sm:grid-cols-[5rem_1fr]"
-					>
-						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
-							>01 / Телефон</span
-						>
-						<a
-							href={phoneHref}
-							class="p1-accent-hover rounded-sm text-base font-medium break-words transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-							>{phone}</a
-						>
-					</div>
-
-					<div
-						class="p1-border grid grid-cols-[6rem_1fr] gap-4 border-b py-5 sm:grid-cols-[5rem_1fr]"
-					>
-						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
-							>02 / Почта</span
-						>
-						<EditableField
-							fieldKey="Footer.email"
-							label="Email"
-							value={email}
-							onSave={(value) => saveField('email', value)}
-							{isEditable}
-						>
-							{#snippet children(displayValue)}
-								<a
-									href="mailto:{displayValue}"
-									class="p1-accent-hover rounded-sm text-base font-medium break-all transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-								>
-									{displayValue}
-								</a>
-							{/snippet}
-						</EditableField>
-					</div>
-
-					<div
-						class="p1-border grid grid-cols-[6rem_1fr] gap-4 border-b py-5 sm:grid-cols-[5rem_1fr]"
-					>
-						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
-							>03 / Адрес</span
-						>
-						<EditableField
-							fieldKey="Footer.address"
-							label="Адрес"
-							value={address}
-							onSave={(value) => saveField('address', value)}
-							{isEditable}
-							multiline
-						>
-							{#snippet children(displayValue)}
-								<span class="text-sm leading-relaxed font-medium">{displayValue}</span>
-							{/snippet}
-						</EditableField>
-					</div>
-
-					<div class="grid grid-cols-[6rem_1fr] gap-4 py-5 sm:grid-cols-[5rem_1fr]">
-						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
-							>04 / График</span
-						>
-						<div class="flex items-start gap-2.5">
-							<span class="footer-v3-signal p1-accent-bg mt-1.5 h-2 w-2 shrink-0 rounded-full"
-							></span>
-							<EditableField
-								fieldKey="Footer.hours"
-								label="Режим работы"
-								value={hours}
-								onSave={(value) => saveField('hours', value)}
-								{isEditable}
+			{#if contacts.hasVisible || isEditable}
+				<div class="lg:col-span-4 lg:pl-10">
+					<!-- Последняя ВИДИМАЯ строка не должна нести нижнюю границу — иначе
+					     скрытие «Графика» оставляло бы висящую линию. -->
+					<div class="p1-border border-t [&>div:last-child]:border-b-0">
+						{#if contacts.isVisible('phone') || isEditable}
+							<div
+								class="p1-border border-b {contactRowClass} {contacts.isVisible('phone')
+									? ''
+									: 'opacity-45'}"
 							>
-								{#snippet children(displayValue)}
-									<span class="text-sm leading-relaxed font-medium">{displayValue}</span>
-								{/snippet}
-							</EditableField>
-						</div>
+								<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
+									>Телефон</span
+								>
+								<a
+									href={phoneHref}
+									class="p1-accent-hover rounded-sm text-base font-medium break-words transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+									>{phone}</a
+								>
+								{#if isEditable}<ContactToggle
+										{contacts}
+										contactKey="phone"
+										class="self-start"
+									/>{/if}
+							</div>
+						{/if}
+
+						{#if contacts.isVisible('email') || isEditable}
+							<div
+								class="p1-border border-b {contactRowClass} {contacts.isVisible('email')
+									? ''
+									: 'opacity-45'}"
+							>
+								<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
+									>Почта</span
+								>
+								<EditableField
+									fieldKey="Footer.email"
+									label="Email"
+									value={email}
+									onSave={(value) => saveField('email', value)}
+									{isEditable}
+								>
+									{#snippet children(displayValue)}
+										<a
+											href="mailto:{displayValue}"
+											class="p1-accent-hover rounded-sm text-base font-medium break-all transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+										>
+											{displayValue}
+										</a>
+									{/snippet}
+								</EditableField>
+								{#if isEditable}<ContactToggle
+										{contacts}
+										contactKey="email"
+										class="self-start"
+									/>{/if}
+							</div>
+						{/if}
+
+						{#if contacts.isVisible('address') || isEditable}
+							<div
+								class="p1-border border-b {contactRowClass} {contacts.isVisible('address')
+									? ''
+									: 'opacity-45'}"
+							>
+								<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
+									>Адрес</span
+								>
+								<EditableField
+									fieldKey="Footer.address"
+									label="Адрес"
+									value={address}
+									onSave={(value) => saveField('address', value)}
+									{isEditable}
+									multiline
+								>
+									{#snippet children(displayValue)}
+										<span class="text-sm leading-relaxed font-medium">{displayValue}</span>
+									{/snippet}
+								</EditableField>
+								{#if isEditable}<ContactToggle
+										{contacts}
+										contactKey="address"
+										class="self-start"
+									/>{/if}
+							</div>
+						{/if}
+
+						{#if contacts.isVisible('hours') || isEditable}
+							<div
+								class="p1-border border-b {contactRowClass} {contacts.isVisible('hours')
+									? ''
+									: 'opacity-45'}"
+							>
+								<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
+									>График</span
+								>
+								<EditableField
+									fieldKey="Footer.hours"
+									label="Режим работы"
+									value={hours}
+									onSave={(value) => saveField('hours', value)}
+									{isEditable}
+								>
+									{#snippet children(displayValue)}
+										<span class="text-sm leading-relaxed font-medium">{displayValue}</span>
+									{/snippet}
+								</EditableField>
+								{#if isEditable}<ContactToggle
+										{contacts}
+										contactKey="hours"
+										class="self-start"
+									/>{/if}
+							</div>
+						{/if}
 					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<div
@@ -467,27 +525,5 @@
 		background-size: 80px 80px;
 		-webkit-mask-image: linear-gradient(to bottom, #000, transparent 78%);
 		mask-image: linear-gradient(to bottom, #000, transparent 78%);
-	}
-
-	.footer-v3-signal {
-		animation: footer-v3-signal 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-	}
-
-	@keyframes footer-v3-signal {
-		0%,
-		100% {
-			opacity: 0.45;
-			transform: scale(0.82);
-		}
-		50% {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.footer-v3-signal {
-			animation: none;
-		}
 	}
 </style>

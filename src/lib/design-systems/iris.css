@@ -147,6 +147,16 @@
 	--ds-light-shadow: 0 10px 15px -3px rgb(10 10 10 / 0.1), 0 4px 6px -4px rgb(10 10 10 / 0.1);
 	/* 8,09:1 на белом. У Базовой здесь красный 600, у Ириса — Electric Violet. */
 	--ds-light-accent: #432dd7;
+	/* Поле ввода — см. base.css. */
+	--ds-light-field: var(--ds-surface-raised);
+	--ds-light-field-border: var(--ds-ink-400);
+	--ds-light-field-focus: var(--ds-link-600);
+	--ds-light-field-placeholder: var(--ds-light-muted);
+	/* Чужой логотип. Белая мастерская: артворк гасится сильнее всех — цветным
+	   в системе имеет право быть только индиго. */
+	--ds-light-logo-filter: grayscale(1);
+	--ds-light-logo-opacity: 0.4;
+	--ds-light-logo-plate: transparent;
 
 	/* ─── Нейтраль блока: тёмная тема ─────────────────────────────────────────
 	   Reference тёмной половины не описывает вовсе — он светлый целиком. Но
@@ -176,6 +186,16 @@
 	--ds-dark-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
 	/* 8,89:1 на тёмной поверхности. */
 	--ds-dark-accent: #a6a5fe;
+	/* Поле ввода — см. base.css. */
+	--ds-dark-field: rgb(255 255 255 / 0.05);
+	--ds-dark-field-border: rgb(255 255 255 / 0.36);
+	--ds-dark-field-focus: var(--ds-link-400);
+	--ds-dark-field-placeholder: var(--ds-dark-muted);
+	/* Чужой логотип, тёмная половина. Подложка чистая: ахроматичная нейтраль
+	   без подтона — то же правило, что у остальных поверхностей системы. */
+	--ds-dark-logo-filter: grayscale(1);
+	--ds-dark-logo-opacity: 0.9;
+	--ds-dark-logo-plate: rgb(255 255 255 / 0.94);
 
 	/* ─── Типографика ─────────────────────────────────────────────────────────
 	   Пара reference'а — гуманистическая антиква в заголовке и Inter в

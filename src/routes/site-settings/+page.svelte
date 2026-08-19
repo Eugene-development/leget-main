@@ -93,6 +93,17 @@
 	const confirmFaviconDelete: SubmitFunction = ({ cancel }) => {
 		if (!window.confirm('Удалить фавиконку с сайта?')) cancel();
 	};
+
+	// Сохранение идёт фоновым POST и вместе с очисткой кеша сайта занимает заметное
+	// время: без индикатора кнопка выглядит нерабочей и владелец жмёт её повторно.
+	let saving = $state(false);
+	const trackSaving: SubmitFunction = () => {
+		saving = true;
+		return async ({ update }) => {
+			await update();
+			saving = false;
+		};
+	};
 </script>
 
 <svelte:head>
@@ -254,7 +265,7 @@
 				</div>
 			</section>
 
-			<form method="POST" action="?/save" use:enhance>
+			<form method="POST" action="?/save" use:enhance={trackSaving}>
 				<section id="analytics" class="scroll-mt-8 border-b border-border-medium py-10">
 					<h2 class="text-3xl">Счётчики</h2>
 					<p class="mt-3 max-w-[70ch] text-sm text-text-secondary">
@@ -544,7 +555,19 @@
 						<p class="max-w-[65ch] text-xs text-text-secondary">
 							Сохранение обновляет настройки лицензии и очищает кеш опубликованного сайта.
 						</p>
-						<button type="submit" class="settings-primary-button">Сохранить настройки</button>
+						<button
+							type="submit"
+							class="settings-primary-button"
+							disabled={saving}
+							aria-busy={saving ? 'true' : undefined}
+						>
+							{#if saving}
+								<span class="settings-button-spinner" aria-hidden="true"></span>
+								Сохраняем…
+							{:else}
+								Сохранить настройки
+							{/if}
+						</button>
 					</div>
 				</section>
 			</form>
@@ -678,5 +701,38 @@
 
 	:global(.settings-secondary-button:hover) {
 		background: var(--color-ink-100);
+	}
+
+	:global(.settings-primary-button:disabled) {
+		cursor: progress;
+		opacity: 0.72;
+	}
+
+	:global(.settings-primary-button:disabled:hover) {
+		background: var(--color-ink-900);
+	}
+
+	.settings-button-spinner {
+		margin-right: 0.5rem;
+		display: inline-block;
+		height: 1rem;
+		width: 1rem;
+		flex: none;
+		border-radius: 9999px;
+		border: 2px solid currentColor;
+		border-top-color: transparent;
+		animation: settings-button-spin 0.7s linear infinite;
+	}
+
+	@keyframes settings-button-spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.settings-button-spinner {
+			animation-duration: 1.8s;
+		}
 	}
 </style>

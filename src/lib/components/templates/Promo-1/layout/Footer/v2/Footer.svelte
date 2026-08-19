@@ -9,6 +9,9 @@
 	import type { Action } from 'svelte/action';
 	import type { Snippet } from 'svelte';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
+	import { createContactVisibility } from '../contacts.svelte';
+	import ContactToggle from '../ContactToggle.svelte';
+	import '../../../theme.css';
 
 	let {
 		data = $bindable({}),
@@ -23,6 +26,14 @@
 		sitePhone?: string | null;
 		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
+
+	// Отключаемые строки контактов — логика общая для v1/v2/v3,
+	// см. `../contacts.svelte.ts`.
+	const contacts = createContactVisibility({
+		getData: () => data,
+		setData: (next) => (data = next),
+		getEditContext: () => editContext
+	});
 
 	let showLoginModal = $state(false);
 
@@ -235,167 +246,223 @@
 
 			<!-- ПРАВО: контактная капсула (double-bezel) + колонки навигации -->
 			<div class="lg:col-span-7" use:reveal data-reveal-delay="120">
-				<div
-					class="rounded-[1.75rem] border border-on-dark/10 bg-surface-raised/[0.025] p-1.5 shadow-[0_20px_60px] shadow-scrim/45"
-				>
+				{#if contacts.hasVisible || isEditable}
 					<div
-						class="rounded-[calc(1.75rem-0.375rem)] bg-surface-inverse/80 p-6 shadow-[inset_0_1px_0] shadow-on-dark/6 sm:p-8"
+						class="rounded-[1.75rem] border border-on-dark/10 bg-surface-raised/[0.025] p-1.5 shadow-[0_20px_60px] shadow-scrim/45"
 					>
-						<div class="grid gap-5 sm:grid-cols-2">
-							<!-- Телефон -->
-							<div class="flex items-center gap-4">
-								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
-								>
-									<svg
-										class="h-[18px] w-[18px]"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="1.4"
+						<div
+							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-inverse/80 p-6 shadow-[inset_0_1px_0] shadow-on-dark/6 sm:p-8"
+						>
+							<div class="grid gap-5 sm:grid-cols-2">
+								<!-- Телефон -->
+								{#if contacts.isVisible('phone') || isEditable}
+									<div
+										class="flex items-center gap-4 {contacts.isVisible('phone')
+											? ''
+											: 'opacity-45'}"
 									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-										/>
-									</svg>
-								</span>
-								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
-										Телефон
-									</div>
-									<a
-										href={phoneHref}
-										class="text-sm text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
-										>{phone}</a
-									>
-								</div>
-							</div>
-
-							<!-- Email -->
-							<div class="flex items-center gap-4">
-								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
-								>
-									<svg
-										class="h-[18px] w-[18px]"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="1.4"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-										/>
-									</svg>
-								</span>
-								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
-										Почта
-									</div>
-									<EditableField
-										fieldKey="Footer.email"
-										label="Email"
-										value={email}
-										onSave={(val) => saveField('email', val)}
-										{isEditable}
-									>
-										{#snippet children(displayValue)}
-											<a
-												href="mailto:{displayValue}"
-												class="text-sm break-all text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
-												>{displayValue}</a
+										<span
+											class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
+										>
+											<svg
+												class="h-[18px] w-[18px]"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												stroke-width="1.4"
 											>
-										{/snippet}
-									</EditableField>
-								</div>
-							</div>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+												/>
+											</svg>
+										</span>
+										<div class="min-w-0">
+											<div
+												class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase"
+											>
+												Телефон
+											</div>
+											<a
+												href={phoneHref}
+												class="text-sm text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
+												>{phone}</a
+											>
+										</div>
 
-							<!-- Адрес -->
-							<div class="flex items-start gap-4 sm:col-span-2">
-								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
-								>
-									<svg
-										class="h-[18px] w-[18px]"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="1.4"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-										/>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-										/>
-									</svg>
-								</span>
-								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
-										Адрес
+										{#if isEditable}<ContactToggle
+												{contacts}
+												contactKey="phone"
+												class="ml-auto self-start"
+											/>{/if}
 									</div>
-									<EditableField
-										fieldKey="Footer.address"
-										label="Адрес"
-										value={address}
-										onSave={(val) => saveField('address', val)}
-										{isEditable}
-										multiline
-									>
-										{#snippet children(displayValue)}
-											<span class="text-sm leading-snug text-on-dark/85">{displayValue}</span>
-										{/snippet}
-									</EditableField>
-								</div>
-							</div>
+								{/if}
 
-							<!-- Режим работы -->
-							<div class="flex items-center gap-4 sm:col-span-2">
-								<span
-									class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
-								>
-									<svg
-										class="h-[18px] w-[18px]"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="1.4"
+								<!-- Email -->
+								{#if contacts.isVisible('email') || isEditable}
+									<div
+										class="flex items-center gap-4 {contacts.isVisible('email')
+											? ''
+											: 'opacity-45'}"
 									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-								</span>
-								<div class="min-w-0">
-									<div class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase">
-										Режим работы
+										<span
+											class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
+										>
+											<svg
+												class="h-[18px] w-[18px]"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												stroke-width="1.4"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+												/>
+											</svg>
+										</span>
+										<div class="min-w-0">
+											<div
+												class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase"
+											>
+												Почта
+											</div>
+											<EditableField
+												fieldKey="Footer.email"
+												label="Email"
+												value={email}
+												onSave={(val) => saveField('email', val)}
+												{isEditable}
+											>
+												{#snippet children(displayValue)}
+													<a
+														href="mailto:{displayValue}"
+														class="text-sm break-all text-on-dark/85 transition-colors duration-300 hover:text-on-dark"
+														>{displayValue}</a
+													>
+												{/snippet}
+											</EditableField>
+										</div>
+
+										{#if isEditable}<ContactToggle
+												{contacts}
+												contactKey="email"
+												class="ml-auto self-start"
+											/>{/if}
 									</div>
-									<EditableField
-										fieldKey="Footer.hours"
-										label="Режим работы"
-										value={hours}
-										onSave={(val) => saveField('hours', val)}
-										{isEditable}
+								{/if}
+
+								<!-- Адрес -->
+								{#if contacts.isVisible('address') || isEditable}
+									<div
+										class="flex items-start gap-4 {contacts.isVisible('address')
+											? ''
+											: 'opacity-45'}"
 									>
-										{#snippet children(displayValue)}
-											<span class="text-sm text-on-dark/85">{displayValue}</span>
-										{/snippet}
-									</EditableField>
-								</div>
+										<span
+											class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
+										>
+											<svg
+												class="h-[18px] w-[18px]"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												stroke-width="1.4"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+												/>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+												/>
+											</svg>
+										</span>
+										<div class="min-w-0">
+											<div
+												class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase"
+											>
+												Адрес
+											</div>
+											<EditableField
+												fieldKey="Footer.address"
+												label="Адрес"
+												value={address}
+												onSave={(val) => saveField('address', val)}
+												{isEditable}
+												multiline
+											>
+												{#snippet children(displayValue)}
+													<span class="text-sm leading-snug text-on-dark/85">{displayValue}</span>
+												{/snippet}
+											</EditableField>
+										</div>
+
+										{#if isEditable}<ContactToggle
+												{contacts}
+												contactKey="address"
+												class="ml-auto self-start"
+											/>{/if}
+									</div>
+								{/if}
+
+								<!-- Режим работы -->
+								{#if contacts.isVisible('hours') || isEditable}
+									<div
+										class="flex items-start gap-4 {contacts.isVisible('hours') ? '' : 'opacity-45'}"
+									>
+										<span
+											class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-cat-6-300"
+										>
+											<svg
+												class="h-[18px] w-[18px]"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+												stroke-width="1.4"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+												/>
+											</svg>
+										</span>
+										<div class="min-w-0">
+											<div
+												class="text-[10px] font-medium tracking-[0.2em] text-on-dark/40 uppercase"
+											>
+												Режим работы
+											</div>
+											<EditableField
+												fieldKey="Footer.hours"
+												label="Режим работы"
+												value={hours}
+												onSave={(val) => saveField('hours', val)}
+												{isEditable}
+											>
+												{#snippet children(displayValue)}
+													<span class="text-sm text-on-dark/85">{displayValue}</span>
+												{/snippet}
+											</EditableField>
+										</div>
+
+										{#if isEditable}<ContactToggle
+												{contacts}
+												contactKey="hours"
+												class="ml-auto self-start"
+											/>{/if}
+									</div>
+								{/if}
 							</div>
 						</div>
 					</div>
-				</div>
+				{/if}
 
 				<!-- Колонки навигации -->
 				<div class="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">

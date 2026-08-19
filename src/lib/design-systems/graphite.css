@@ -79,6 +79,17 @@
 	--ds-light-rail: rgb(15 23 42 / 0.32);
 	--ds-light-shadow: 0 18px 40px -28px rgb(15 23 42 / 0.45);
 	--ds-light-accent: #2563eb;
+	/* Поле ввода — см. base.css. Граница на ступень плотнее базовой, как весь
+	   штрих Графита: он чертит схему, а рамка поля у него полноправная линия. */
+	--ds-light-field: var(--ds-surface-raised);
+	--ds-light-field-border: var(--ds-ink-400);
+	--ds-light-field-focus: var(--ds-link-600);
+	--ds-light-field-placeholder: var(--ds-light-muted);
+	/* Чужой логотип. Холодная нейтраль и резче ритм — знак гасится глубже,
+	   чем в Базовой: система не терпит полутонов в покое. */
+	--ds-light-logo-filter: grayscale(1);
+	--ds-light-logo-opacity: 0.45;
+	--ds-light-logo-plate: transparent;
 
 	/* ─── Нейтраль блока: тёмная тема ───────────────────────────────────────── */
 	--ds-dark-surface: #0f172a;
@@ -95,6 +106,17 @@
 	--ds-dark-rail: rgb(255 255 255 / 0.22);
 	--ds-dark-shadow: 0 24px 50px -34px rgb(0 0 0 / 0.9);
 	--ds-dark-accent: #60a5fa;
+	/* Поле ввода — см. base.css. */
+	--ds-dark-field: rgb(255 255 255 / 0.06);
+	--ds-dark-field-border: rgb(255 255 255 / 0.4);
+	--ds-dark-field-focus: var(--ds-link-400);
+	--ds-dark-field-placeholder: var(--ds-dark-muted);
+	/* Чужой логотип, тёмная половина. Подложка холоднее и плотнее белого:
+	   тёмная поверхность Графита синеватая (#0f172a), и чистая плашка на ней
+	   отсвечивает тёплым. */
+	--ds-dark-logo-filter: grayscale(1);
+	--ds-dark-logo-opacity: 0.9;
+	--ds-dark-logo-plate: rgb(241 245 249 / 0.94);
 
 	/* ─── Типографика ─────────────────────────────────────────────────────────
 	   Собственная гарнитура с 16.08.2026. До неё Графит брал Inter — тот же,

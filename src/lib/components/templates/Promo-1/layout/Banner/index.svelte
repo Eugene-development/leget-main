@@ -9,6 +9,7 @@
 		type EditContext
 	} from '$lib/utils/page-edit';
 	import { fly } from 'svelte/transition';
+	import '../../theme.css';
 
 	let {
 		data = $bindable({}),

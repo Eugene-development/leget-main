@@ -44,6 +44,22 @@
 	--p1-catalog-measure: 1536px;
 	--p1-sidebar-width: 300px;
 	--p1-sidebar-gap: 60px;
+
+	/**
+	 * Слот под чужой логотип — тоже константы шаблона.
+	 *
+	 * Мера слота — композиция: блок вправе переопределить её на элементе
+	 * (`[--p1-logo-slot:56px]`), как размер картинки. Здесь только значение
+	 * по умолчанию.
+	 *
+	 * Поле вокруг знака объявлено одним числом на обе темы намеренно. Подложка
+	 * (`--p1-logo-plate`) появляется только там, где система её объявила, — но
+	 * если вместе с ней появлялось бы и поле, геометрия блока менялась бы при
+	 * инверсии темы: у карточки разъезжалась бы высота, у полосы партнёров —
+	 * шаг. Поле постоянно, красится только подложка.
+	 */
+	--p1-logo-slot: 40px;
+	--p1-logo-plate-pad: 10px;
 }
 
 /**
@@ -126,6 +142,13 @@
 	   в полутора процентах светлоты от `surface`, то есть полосой не читается. */
 	--p1-surface-paper: var(--ds-light-surface-paper);
 	--p1-accent: var(--ds-light-accent);
+	--p1-field: var(--ds-light-field);
+	--p1-field-border: var(--ds-light-field-border);
+	--p1-field-focus: var(--ds-light-field-focus);
+	--p1-field-placeholder: var(--ds-light-field-placeholder);
+	--p1-logo-filter: var(--ds-light-logo-filter);
+	--p1-logo-opacity: var(--ds-light-logo-opacity);
+	--p1-logo-plate: var(--ds-light-logo-plate);
 }
 
 [data-p1-theme='dark'] {
@@ -142,6 +165,13 @@
 	--p1-shadow: var(--ds-dark-shadow);
 	--p1-surface-paper: var(--ds-dark-surface-paper);
 	--p1-accent: var(--ds-dark-accent);
+	--p1-field: var(--ds-dark-field);
+	--p1-field-border: var(--ds-dark-field-border);
+	--p1-field-focus: var(--ds-dark-field-focus);
+	--p1-field-placeholder: var(--ds-dark-field-placeholder);
+	--p1-logo-filter: var(--ds-dark-logo-filter);
+	--p1-logo-opacity: var(--ds-dark-logo-opacity);
+	--p1-logo-plate: var(--ds-dark-logo-plate);
 }
 
 @layer components {
@@ -357,6 +387,100 @@
 		background-color: var(--p1-rail);
 	}
 
+	/**
+	 * Поле ввода: тот же приём, что у `p1-card`, — роль, а не набор утилит.
+	 *
+	 * Заведена 19.08.2026 при разборе `1.Ф.1.1`. Класс закрывает всё, что
+	 * у поля зависит от темы и системы: заливку, границу, цвет текста,
+	 * плейсхолдер и кольцо фокуса. Размер, радиус и поля остаются за блоком —
+	 * это композиция, а не характер.
+	 *
+	 * Текст поля своего ключа не получает — это `p1-title`, тот же, что и
+	 * везде. А плейсхолдер получает, и это вывод замера, а не симметрия:
+	 * подпись калибруется к поверхности блока, плейсхолдер же стоит на
+	 * заливке поля, которая поверхность подсвечивает. У Базовой `p1-muted`
+	 * даёт 4,73:1 к тёмной поверхности и 4,33:1 к заливке поля — то есть
+	 * роль, годная снаружи поля, внутри него порог не берёт.
+	 *
+	 * Фокус объявлен здесь, а не утилитой `focus-visible:*`: у Tailwind нет
+	 * варианта к произвольному классу — та же причина, по которой наведение
+	 * объявляет `p1-accent-hover`. Кольцо рисуется `outline`, а не `ring`:
+	 * `ring` — это `box-shadow`, и на поле он спорит с собственной тенью.
+	 */
+	.p1-field {
+		background-color: var(--p1-field);
+		border-color: var(--p1-field-border);
+		color: var(--p1-title);
+	}
+	.p1-field::placeholder {
+		color: var(--p1-field-placeholder);
+	}
+	.p1-field:focus-visible {
+		outline: 2px solid var(--p1-field-focus);
+		outline-offset: 2px;
+		border-color: var(--p1-field-focus);
+	}
+
+	/**
+	 * Чужой логотип на нашей поверхности: слот и приведение артворка.
+	 *
+	 * Заведена 19.08.2026 при разборе `1.1.8.1`. Единственный контент шаблона,
+	 * чью палитру система не контролирует, — знак третьей стороны: своя гамма,
+	 * своя плотность, часто непрозрачная подложка. До роли приём принадлежал
+	 * блокам: 17 применений в Promo-1 на восьми рецептах, причём ветвление по
+	 * теме блока набрано руками (`isLight ? 'opacity-60 brightness-0' :
+	 * 'brightness-0 invert filter'`) в трёх версиях `HeroMain`.
+	 *
+	 * Ролей две, потому что задачи две.
+	 *
+	 * `p1-logo-slot` — коробка. Логотипы приходят разной пропорции: замер
+	 * фолбэка `Brands` дал ширины от 32 до 140px при одной высоте, из-за чего
+	 * в сетке карточек колонка с названием начиналась в каждой карточке на
+	 * своей широте. Слот задаёт высоту знака и вписывает артворк внутрь, а не
+	 * растягивает; он же несёт подложку под знак там, где система её объявила.
+	 * Выключку слот НЕ задаёт — это композиция, дело блока (`justify-center`).
+	 *
+	 * `p1-logo` — сам артворк: гашение цвета и приглушение в покое. Восстановление
+	 * повешено на `.group:hover`, а не на сам знак: наводят на карточку или на
+	 * строку, а не на картинку. `group` — маркер носителя, уже принятый в
+	 * шаблоне; своего имени роль под это не заводит.
+	 *
+	 * Роль сидит в `@layer components` по той же причине, что `p1-label`: без
+	 * слоя нелойеренное правило било бы утилиту, и `justify-*`, `h-*` или
+	 * `rounded-*` на слоте перестали бы работать.
+	 */
+	.p1-logo-slot {
+		display: flex;
+		align-items: center;
+		/* Поле не входит в высоту: слот меряется знаком, а не плашкой вокруг. */
+		box-sizing: content-box;
+		height: var(--p1-logo-slot);
+		padding: var(--p1-logo-plate-pad);
+		background-color: var(--p1-logo-plate);
+		border-radius: var(--ds-radius-lg);
+	}
+	.p1-logo-slot > img,
+	.p1-logo-slot > .ph {
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		object-fit: contain;
+	}
+
+	.p1-logo {
+		filter: var(--p1-logo-filter);
+		opacity: var(--p1-logo-opacity);
+		transition:
+			filter var(--ds-motion-duration-ui) var(--ds-motion-ease-ui),
+			opacity var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+	}
+
+	.group:hover .p1-logo,
+	.p1-logo:hover {
+		filter: none;
+		opacity: 1;
+	}
+
 	/* Плавная смена темы. Только дешёвые свойства: анимировать цвет на
 	   размытых слоях (blur-[120px]) дорого и вызывает заметный лаг.
 	   Длительность принадлежит системе — это пластика, а не структура. */
@@ -372,7 +496,9 @@
 	.p1-muted,
 	.p1-border,
 	.p1-line,
-	.p1-rail {
+	.p1-rail,
+	.p1-field,
+	.p1-logo-slot {
 		transition:
 			background-color var(--ds-motion-theme-swap) ease,
 			border-color var(--ds-motion-theme-swap) ease,
@@ -389,7 +515,10 @@
 		.p1-body,
 		.p1-muted,
 		.p1-border,
-		.p1-line {
+		.p1-line,
+		.p1-field,
+		.p1-logo-slot,
+		.p1-logo {
 			transition: none;
 		}
 	}
