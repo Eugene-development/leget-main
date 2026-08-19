@@ -12,10 +12,13 @@
 	let {
 		open = $bindable(false),
 		title = '',
+		titleContent,
 		children
 	}: {
 		open?: boolean;
 		title?: string;
+		/** Заменяет заголовок произвольной разметкой (напр. интерактивным бейджем артикула). `title` при этом остаётся источником aria-label. */
+		titleContent?: Snippet;
 		children?: Snippet;
 	} = $props();
 
@@ -113,7 +116,11 @@
 		>
 			<header class="flex items-center justify-between gap-3 border-b border-on-dark/10 px-5 py-4">
 				<div class="flex min-w-0 flex-col">
-					<h3 class="truncate text-base text-on-dark">{title}</h3>
+					{#if titleContent}
+						{@render titleContent()}
+					{:else}
+						<h3 class="truncate text-base text-on-dark">{title}</h3>
+					{/if}
 				</div>
 				<button
 					type="button"

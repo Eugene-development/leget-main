@@ -2,6 +2,7 @@
 	// Артикул: 1.1.1.2 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { fade } from 'svelte/transition';
@@ -479,7 +480,7 @@
 										? 'border border-ink-200/85 bg-ink-100 text-ink-800 hover:bg-surface-raised'
 										: 'bg-ink-900/90 text-on-dark hover:bg-ink-950/80 hover:text-link-300'}"
 								>
-									{displayValue}
+									<HoverSwapLabel text={displayValue} disabled={isEditable} />
 									<svg
 										class="h-4 w-4 text-link-400 transition-transform duration-300 group-hover:translate-x-1.5"
 										fill="none"

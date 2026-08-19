@@ -42,6 +42,7 @@
 	<div class={ct.section.container}>
 		<div
 			use:revealOnScroll
+			data-p1-theme="dark"
 			class="ct-reveal ct-card-enter {ct.card
 				.inkPanel} relative isolate overflow-hidden px-6 py-14 sm:px-10 sm:py-16 lg:grid lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16 lg:px-16 lg:py-20"
 		>

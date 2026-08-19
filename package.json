@@ -13,7 +13,8 @@
 		"check:typography": "node ../../scripts/check-heading-typography.mjs",
 		"check:images": "node ../../scripts/check-component-images.mjs",
 		"check:phone": "node scripts/check-site-phone.mjs",
-		"lint": "npm run check:typography && npm run check:images && npm run check:phone && prettier --check .",
+		"check:ds-tokens": "node scripts/check-ds-tokens.mjs",
+		"lint": "npm run check:typography && npm run check:images && npm run check:phone && npm run check:ds-tokens && prettier --check .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {

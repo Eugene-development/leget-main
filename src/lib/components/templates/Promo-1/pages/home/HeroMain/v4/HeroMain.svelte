@@ -2,6 +2,7 @@
 	// Артикул: 1.1.1.4 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -220,11 +221,11 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="relative w-full cursor-pointer rounded-none border-2 px-8 py-4 font-mono text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 sm:w-auto {isLight
+								class="group relative w-full cursor-pointer rounded-none border-2 px-8 py-4 font-mono text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 sm:w-auto {isLight
 									? 'border-scrim bg-scrim text-on-dark shadow-[4px_4px_0px] shadow-ink-400'
 									: 'border-on-dark bg-surface-raised text-scrim shadow-[4px_4px_0px] shadow-on-dark/15'}"
 							>
-								{displayValue}
+								<HoverSwapLabel text={displayValue} disabled={isEditable} />
 							</button>
 						{/snippet}
 					</EditableField>

@@ -18,6 +18,12 @@ import {
 	normalizeGoogleTagId,
 	normalizeYandexCounterId
 } from '$lib/site-settings/analytics';
+import {
+	BASE_SLUG,
+	DESIGN_SYSTEM_KEY,
+	isKnownDesignSystem,
+	readDesignSystem
+} from '$lib/design-systems/registry';
 import type { Actions, PageServerLoad } from './$types';
 import type { Cookies } from '@sveltejs/kit';
 
@@ -35,6 +41,21 @@ const MY_LICENSES_QUERY = `
 			templateId
 			headerData
 			footerData
+		}
+	}
+`;
+
+const DESIGN_SYSTEMS_QUERY = `
+	query SiteSettingsDesignSystems($templateId: Int) {
+		designSystems(templateId: $templateId) {
+			slug
+			name
+			description
+			isBase
+			templates {
+				templateId
+				isPublished
+			}
 		}
 	}
 `;
@@ -89,6 +110,23 @@ interface LicenseSettings {
 
 interface LicensesResponse {
 	myLicenses: LicenseSettings[];
+}
+
+interface DesignSystemOption {
+	slug: string;
+	name: string;
+	description: string | null;
+	isBase: boolean;
+}
+
+interface DesignSystemsResponse {
+	designSystems: Array<{
+		slug: string;
+		name: string;
+		description: string | null;
+		isBase: boolean | null;
+		templates: Array<{ templateId: number; isPublished: boolean }>;
+	}>;
 }
 
 interface UploadResponse {
@@ -152,6 +190,78 @@ async function ownedLicense(hostname: string, token: string): Promise<LicenseSet
 	return license;
 }
 
+/**
+ * Дизайн-системы, которые владельцу этого сайта можно предложить.
+ *
+ * Три фильтра, и ни один не лишний:
+ *
+ *   1. Резолвер API отдаёт системы, ОТНОСЯЩИЕСЯ к шаблону, — это ещё не
+ *      готовность. Готовность живёт на паре «система × шаблон»: `isPublished`.
+ *      Без этого фильтра владелец выберет систему, у которой покрыта половина
+ *      блоков, и получит страницу с дырой (design-system-invariants.md).
+ *   2. Базовая — исключение: пары «система × шаблон» у неё нет вовсе, поэтому
+ *      проверять `isPublished` не на чем. Она предлагается, пока в ней лежат
+ *      версии этого шаблона (это и решает резолвер), и помечается как legacy.
+ *   3. Система обязана быть в реестре фронта. Строка в БД может опережать
+ *      выкатку CSS; такой выбор отрисовался бы Базовой, то есть предложение
+ *      было бы враньём.
+ *
+ * Текущий выбор добавляется в список всегда, даже если он через все три
+ * фильтра не прошёл: иначе `<select>` показал бы не то, чем сайт нарисован,
+ * и первое же сохранение молча сменило бы его облик.
+ *
+ * Сбой запроса — не повод ронять страницу настроек: остаётся один вариант,
+ * текущий, и раздел честно говорит, что список получить не удалось.
+ */
+async function designSystemOptions(
+	license: LicenseSettings,
+	token: string
+): Promise<{ options: DesignSystemOption[]; available: boolean }> {
+	const current = readDesignSystem(license.headerData);
+	const fallback: DesignSystemOption[] = [
+		{
+			slug: current,
+			name: current === BASE_SLUG ? 'Базовая' : current,
+			description: null,
+			isBase: current === BASE_SLUG
+		}
+	];
+
+	if (license.templateId === null) return { options: fallback, available: false };
+
+	let data: DesignSystemsResponse;
+	try {
+		const client = createGraphQLClient({ Authorization: `Bearer ${token}` });
+		data = await client.request<DesignSystemsResponse>(DESIGN_SYSTEMS_QUERY, {
+			templateId: license.templateId
+		});
+	} catch {
+		return { options: fallback, available: false };
+	}
+
+	const options = data.designSystems
+		.filter((system) => isKnownDesignSystem(system.slug))
+		.filter(
+			(system) =>
+				system.isBase === true ||
+				system.templates.some(
+					(scope) => scope.templateId === license.templateId && scope.isPublished
+				)
+		)
+		.map((system) => ({
+			slug: system.slug,
+			name: system.name,
+			description: system.description,
+			isBase: system.isBase === true
+		}));
+
+	if (!options.some((option) => option.slug === current)) {
+		options.unshift(...fallback);
+	}
+
+	return { options, available: true };
+}
+
 function publicSettings(license: LicenseSettings) {
 	const headerData = record(license.headerData);
 	return {
@@ -163,7 +273,8 @@ function publicSettings(license: LicenseSettings) {
 		yandexMetrica: normalizeYandexCounterId(headerData.yandexMetrica),
 		googleAnalytics: normalizeGoogleTagId(headerData.googleAnalytics),
 		appearanceEnabled: hasSiteAppearance(headerData.siteAppearance),
-		appearance: normalizeSiteAppearance(headerData.siteAppearance)
+		appearance: normalizeSiteAppearance(headerData.siteAppearance),
+		designSystem: readDesignSystem(license.headerData)
 	};
 }
 
@@ -245,7 +356,13 @@ function detectFaviconType(bytes: Uint8Array): 'image/png' | 'image/x-icon' | 'i
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const token = await requireSession(cookies);
 	const license = await ownedLicense(url.hostname, token);
-	return { site: publicSettings(license) };
+	const designSystems = await designSystemOptions(license, token);
+
+	return {
+		site: publicSettings(license),
+		designSystems: designSystems.options,
+		designSystemsAvailable: designSystems.available
+	};
 };
 
 export const actions: Actions = {
@@ -255,6 +372,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const yandexMetrica = field(formData, 'yandexMetrica');
 		const googleAnalytics = field(formData, 'googleAnalytics').toUpperCase();
+		const designSystem = field(formData, 'designSystem');
 		const appearanceEnabled = formData.get('appearanceEnabled') === 'on';
 		const { appearance, errors } = appearanceEnabled
 			? parseAppearance(formData)
@@ -267,10 +385,20 @@ export const actions: Actions = {
 			errors.googleAnalytics = 'Используйте ID вида G-, GT-, AW- или DC-XXXXXXXX.';
 		}
 
+		// Список пересчитывается на сервере, а не берётся из формы: `<select>` —
+		// это подсказка пользователю, а не источник правды. Иначе подменённым
+		// полем можно было бы поставить сайту систему, которая для его шаблона
+		// не опубликована или которой в этой сборке фронта вообще нет.
+		const { options: allowedSystems } = await designSystemOptions(license, token);
+		if (!allowedSystems.some((option) => option.slug === designSystem)) {
+			errors.designSystem = 'Выберите доступную дизайн-систему.';
+		}
+
 		const values = {
 			yandexMetrica,
 			googleAnalytics,
 			appearanceEnabled,
+			designSystem,
 			...(appearance ?? {})
 		};
 		if (Object.keys(errors).length || (appearanceEnabled && !appearance)) {
@@ -281,7 +409,12 @@ export const actions: Actions = {
 			...record(license.headerData),
 			yandexMetrica: yandexMetrica || null,
 			googleAnalytics: googleAnalytics || null,
-			siteAppearance: appearanceEnabled ? appearance : null
+			siteAppearance: appearanceEnabled ? appearance : null,
+			// Базовая пишется значением, а не null: у выбора системы нет состояния
+			// «выключено» — сайт всегда нарисован какой-то одной. null здесь означал
+			// бы «владелец не выбирал», а это неотличимо от выбора Базовой и только
+			// путало бы чтение.
+			[DESIGN_SYSTEM_KEY]: designSystem
 		};
 
 		try {

@@ -120,7 +120,10 @@
 	--p1-line: var(--ds-light-line);
 	--p1-rail: var(--ds-light-rail);
 	--p1-shadow: var(--ds-light-shadow);
-	/* Тёплая «бумага» — отдельный оттенок страницы «Контакты». */
+	/* Тёплая «бумага» — оттенок глубже, чем `surface-alt`, в трёх системах
+	   из четырёх. Заведена под страницу «Контакты», с 19.08.2026 её же берёт
+	   закрывающая полоса Footer/v3: `surface-alt` в Базовой и «Графите» стоит
+	   в полутора процентах светлоты от `surface`, то есть полосой не читается. */
 	--p1-surface-paper: var(--ds-light-surface-paper);
 	--p1-accent: var(--ds-light-accent);
 }
@@ -313,6 +316,23 @@
 		background-color: var(--p1-accent);
 	}
 
+	/**
+	 * Акцент на наведении — тем же способом, что `p1-card-hover`: роль-модификатор,
+	 * а не утилита. Заведены 19.08.2026 при выводе Footer/v3 из карантина
+	 * `alt-warm-*`: до него блок красил hover собственной терракотой, а перевести
+	 * его на шкалу (`hover:text-brand-600`) значило бы оставить в теперь уже
+	 * theme-aware блоке акцент, который от темы не зависит — на тёмной половине
+	 * `brand-600` встаёт на 3–4:1 против поверхности, то есть мелкая ссылка
+	 * перестаёт читаться. Вариант `hover:` у Tailwind к произвольному классу не
+	 * применяется, поэтому роль объявляет наведение сама.
+	 */
+	.p1-accent-hover:hover {
+		color: var(--p1-accent);
+	}
+	.p1-accent-border-hover:hover {
+		border-color: var(--p1-accent);
+	}
+
 	/* Границы и волосяные линии */
 	.p1-border {
 		border-color: var(--p1-border);
@@ -344,6 +364,8 @@
 	.p1-surface-alt,
 	.p1-surface-paper,
 	.p1-accent,
+	.p1-accent-hover,
+	.p1-accent-border-hover,
 	.p1-card,
 	.p1-title,
 	.p1-body,

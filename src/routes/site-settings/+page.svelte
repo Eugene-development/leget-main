@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { ActionData, PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import type { ActionData, PageData, SubmitFunction } from './$types';
 	import { siteAppearanceStyle, type SiteAppearance } from '$lib/site-settings/appearance';
 
 	type Feedback = {
@@ -10,6 +11,7 @@
 			yandexMetrica?: string;
 			googleAnalytics?: string;
 			appearanceEnabled?: boolean;
+			designSystem?: string;
 		};
 		faviconUrl?: string | null;
 	};
@@ -40,6 +42,21 @@
 	let radiusPreset = $state(data.site.appearance.radiusPreset);
 	// svelte-ignore state_referenced_locally
 	let appearanceEnabled = $state(data.site.appearanceEnabled);
+	// svelte-ignore state_referenced_locally
+	let designSystem = $state(data.site.designSystem);
+
+	// Список готовых к выбору систем и признак, удалось ли его получить, приезжают
+	// из load. Владельцу предлагаются только системы, опубликованные для его шаблона
+	// и присутствующие в этой сборке фронта, — фильтр на сервере (designSystemOptions).
+	const designSystems = $derived(data.designSystems);
+	const designSystemsAvailable = $derived(data.designSystemsAvailable);
+	const selectedSystem = $derived(
+		designSystems.find((system) => system.slug === designSystem) ?? null
+	);
+	// Есть ли из чего выбирать: одна-единственная система (обычно Базовая) — это не
+	// выбор, а данность, и об этом честнее сказать словами, чем показать select с одним
+	// пунктом.
+	const hasSystemChoice = $derived(designSystems.length > 1);
 
 	$effect(() => {
 		const values = feedback?.values;
@@ -53,6 +70,7 @@
 		if (values.fontPreset) fontPreset = values.fontPreset;
 		if (values.radiusPreset) radiusPreset = values.radiusPreset;
 		if (typeof values.appearanceEnabled === 'boolean') appearanceEnabled = values.appearanceEnabled;
+		if (typeof values.designSystem === 'string') designSystem = values.designSystem;
 	});
 
 	const previewStyle = $derived(
@@ -69,9 +87,12 @@
 		(yandexMetrica.trim() ? 1 : 0) + (googleAnalytics.trim() ? 1 : 0)
 	);
 
-	function confirmFaviconDelete(event: SubmitEvent) {
-		if (!window.confirm('Удалить фавиконку с сайта?')) event.preventDefault();
-	}
+	// Подтверждение живёт внутри enhance, а не в onsubmit: enhance не смотрит на
+	// defaultPrevented, поэтому отмена из отдельного обработчика остановила бы только
+	// нативную отправку, а фоновый POST всё равно ушёл бы.
+	const confirmFaviconDelete: SubmitFunction = ({ cancel }) => {
+		if (!window.confirm('Удалить фавиконку с сайта?')) cancel();
+	};
 </script>
 
 <svelte:head>
@@ -135,6 +156,7 @@
 			<nav class="settings-nav flex gap-2 overflow-x-auto py-5 lg:flex-col" aria-label="Оглавление">
 				<a class="settings-nav-link" href="#favicon">Фавиконка</a>
 				<a class="settings-nav-link" href="#analytics">Счётчики</a>
+				<a class="settings-nav-link" href="#design-system">Дизайн-система</a>
 				<a class="settings-nav-link" href="#appearance">Базовый стиль</a>
 				<a class="settings-nav-link" href="#summary">Сводка</a>
 			</nav>
@@ -167,6 +189,7 @@
 							method="POST"
 							action="?/uploadFavicon"
 							enctype="multipart/form-data"
+							use:enhance
 							class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end"
 						>
 							<label class="block min-w-0 flex-1 text-sm" for="favicon-file">
@@ -216,7 +239,7 @@
 							<form
 								method="POST"
 								action="?/deleteFavicon"
-								onsubmit={confirmFaviconDelete}
+								use:enhance={confirmFaviconDelete}
 								class="mt-5 border-t border-border-light pt-4"
 							>
 								<button
@@ -231,7 +254,7 @@
 				</div>
 			</section>
 
-			<form method="POST" action="?/save">
+			<form method="POST" action="?/save" use:enhance>
 				<section id="analytics" class="scroll-mt-8 border-b border-border-medium py-10">
 					<h2 class="text-3xl">Счётчики</h2>
 					<p class="mt-3 max-w-[70ch] text-sm text-text-secondary">
@@ -297,6 +320,72 @@
 									</p>
 								{/if}
 							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="design-system" class="scroll-mt-8 border-b border-border-medium py-10">
+					<h2 class="text-3xl">Дизайн-система</h2>
+					<p class="mt-3 max-w-[70ch] text-sm text-text-secondary">
+						Задаёт палитру, типографику, ритм и пластику всех блоков сайта. «Базовый стиль» ниже —
+						короткий слой поверх неё, а не замена: система решает характер, слой правит несколько
+						значений.
+					</p>
+
+					<div class="mt-7 grid gap-4 py-2 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
+						<div>
+							<label for="design-system-select" class="text-sm text-text-primary"
+								>Система сайта</label
+							>
+							<p class="mt-1 text-xs text-text-secondary">Применяется ко всем страницам</p>
+						</div>
+						<div>
+							{#if hasSystemChoice}
+								<select
+									id="design-system-select"
+									name="designSystem"
+									bind:value={designSystem}
+									aria-describedby={feedback?.errors?.designSystem
+										? 'design-system-help design-system-error'
+										: 'design-system-help'}
+									aria-invalid={feedback?.errors?.designSystem ? 'true' : undefined}
+									class="settings-input"
+								>
+									{#each designSystems as system (system.slug)}
+										<option value={system.slug}>
+											{system.name}{system.isBase ? ' — по умолчанию' : ''}
+										</option>
+									{/each}
+								</select>
+							{:else}
+								<!-- Выбирать не из чего: держим значение скрытым полем, чтобы сохранение
+								     формы не стёрло текущую систему, и объясняем словами. -->
+								<input type="hidden" name="designSystem" value={designSystem} />
+								<p
+									class="border border-border-light bg-surface-card px-4 py-3 text-sm text-text-primary"
+								>
+									{#if !designSystemsAvailable}
+										Список систем сейчас получить не удалось. Сайт остаётся на текущей системе «{selectedSystem?.name ??
+											designSystem}».
+									{:else}
+										Для вашего шаблона пока опубликована только «{selectedSystem?.name ??
+											designSystem}». Другие системы появятся здесь, когда их подготовят для этого
+										шаблона.
+									{/if}
+								</p>
+							{/if}
+							<p id="design-system-help" class="mt-2 text-xs text-text-secondary">
+								{#if selectedSystem?.description}
+									{selectedSystem.description}
+								{:else}
+									Смена системы перекрашивает и перекраивает блоки сразу на всём сайте.
+								{/if}
+							</p>
+							{#if feedback?.errors?.designSystem}
+								<p id="design-system-error" class="mt-2 text-sm text-brand-700">
+									{feedback.errors.designSystem}
+								</p>
+							{/if}
 						</div>
 					</div>
 				</section>

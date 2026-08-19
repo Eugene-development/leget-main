@@ -4,6 +4,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import type { Action } from 'svelte/action';
 	import type { Snippet } from 'svelte';
 	import { catalogItems } from '../../catalogItems';
@@ -23,6 +24,15 @@
 		sitePhone?: string | null;
 		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
+
+	/**
+	 * Тема блока. До 19.08.2026 футер темы не имел вовсе: он был нарисован
+	 * собственной тёплой палитрой (карантин `alt-warm-*`) и потому выглядел
+	 * одинаково в любой дизайн-системе. Теперь нейтраль приходит ролями
+	 * `p1-*`, а какую половину палитры взять — решает блок, как у всех
+	 * остальных. Дефолт 'light': футер задуман светлой закрывающей полосой.
+	 */
+	const isLight = $derived(isLightBlock(data, 'light'));
 
 	let showLoginModal = $state(false);
 
@@ -97,20 +107,23 @@
 	};
 </script>
 
-<footer class="footer-v3 relative overflow-hidden bg-alt-warm-surface text-alt-warm-ink">
+<footer
+	class="footer-v3 p1-surface-paper p1-border p1-title relative overflow-hidden border-t"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="footer-v3-grid absolute inset-0 opacity-55"></div>
 		<div
-			class="absolute -top-20 right-[8%] h-56 w-56 rounded-full border-[46px] border-alt-warm-accent/10 sm:h-80 sm:w-80 sm:border-[64px]"
+			class="absolute -top-20 right-[8%] h-56 w-56 rounded-full border-[46px] border-[var(--p1-accent)]/10 sm:h-80 sm:w-80 sm:border-[64px]"
 		></div>
-		<div class="absolute top-0 left-[6%] h-full w-px bg-alt-warm-ink/7"></div>
+		<div class="p1-line absolute top-0 left-[6%] h-full w-px"></div>
 	</div>
 
 	<div class="relative mx-auto max-w-[1400px] px-5 pt-20 pb-8 sm:px-8 lg:px-12 lg:pt-28">
 		<div class="grid gap-12 lg:grid-cols-12 lg:gap-8" use:reveal>
 			<div class="lg:col-span-8">
 				<div class="flex items-center gap-3 text-[10px] font-semibold tracking-[0.24em] uppercase">
-					<span class="h-px w-10 bg-alt-warm-accent"></span>
+					<span class="p1-accent-bg h-px w-10"></span>
 					Мебель и интерьер на заказ
 				</div>
 
@@ -129,20 +142,19 @@
 				</h2>
 
 				<div
-					class="mt-12 flex flex-col gap-8 border-t border-alt-warm-ink/20 pt-7 sm:flex-row sm:items-end sm:justify-between"
+					class="p1-border mt-12 flex flex-col gap-8 border-t pt-7 sm:flex-row sm:items-end sm:justify-between"
 				>
-					<p class="max-w-md text-base leading-relaxed text-alt-warm-ink/65">
-						От идеи до установки: проектируем пространство, производим мебель и отвечаем за
-						результат на каждом этапе.
+					<p class="p1-body max-w-md text-base leading-relaxed">
+						От идеи до установки: проектируем пространство и отвечаем за результат на каждом этапе.
 					</p>
 
 					<a
 						href={phoneHref}
-						class="group inline-flex w-fit items-center gap-5 rounded-full bg-alt-warm-ink py-2 pr-2 pl-6 text-sm font-semibold text-alt-warm-paper transition-transform duration-300 active:scale-[0.98]"
+						class="group inline-flex w-fit items-center gap-5 rounded-full bg-brand-600 py-2 pr-2 pl-6 text-sm font-semibold text-on-accent transition-transform duration-300 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--p1-surface-paper)] focus-visible:outline-none active:scale-[0.98]"
 					>
 						Обсудить проект
 						<span
-							class="flex h-10 w-10 items-center justify-center rounded-full bg-alt-warm-accent transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:rotate-45"
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-on-accent/15 transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:rotate-45"
 						>
 							<svg
 								class="h-4 w-4"
@@ -160,20 +172,24 @@
 			</div>
 
 			<div class="lg:col-span-4 lg:pl-10">
-				<div class="border-t border-alt-warm-ink/25">
-					<div class="grid grid-cols-[5rem_1fr] gap-4 border-b border-alt-warm-ink/15 py-5">
-						<span class="text-[10px] font-semibold tracking-[0.18em] text-alt-warm-ink/45 uppercase"
+				<div class="p1-border border-t">
+					<div
+						class="p1-border grid grid-cols-[6rem_1fr] gap-4 border-b py-5 sm:grid-cols-[5rem_1fr]"
+					>
+						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
 							>01 / Телефон</span
 						>
 						<a
 							href={phoneHref}
-							class="text-base font-medium break-words transition-colors hover:text-alt-warm-accent"
+							class="p1-accent-hover rounded-sm text-base font-medium break-words transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 							>{phone}</a
 						>
 					</div>
 
-					<div class="grid grid-cols-[5rem_1fr] gap-4 border-b border-alt-warm-ink/15 py-5">
-						<span class="text-[10px] font-semibold tracking-[0.18em] text-alt-warm-ink/45 uppercase"
+					<div
+						class="p1-border grid grid-cols-[6rem_1fr] gap-4 border-b py-5 sm:grid-cols-[5rem_1fr]"
+					>
+						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
 							>02 / Почта</span
 						>
 						<EditableField
@@ -186,7 +202,7 @@
 							{#snippet children(displayValue)}
 								<a
 									href="mailto:{displayValue}"
-									class="text-base font-medium break-all transition-colors hover:text-alt-warm-accent"
+									class="p1-accent-hover rounded-sm text-base font-medium break-all transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 								>
 									{displayValue}
 								</a>
@@ -194,8 +210,10 @@
 						</EditableField>
 					</div>
 
-					<div class="grid grid-cols-[5rem_1fr] gap-4 border-b border-alt-warm-ink/15 py-5">
-						<span class="text-[10px] font-semibold tracking-[0.18em] text-alt-warm-ink/45 uppercase"
+					<div
+						class="p1-border grid grid-cols-[6rem_1fr] gap-4 border-b py-5 sm:grid-cols-[5rem_1fr]"
+					>
+						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
 							>03 / Адрес</span
 						>
 						<EditableField
@@ -212,12 +230,12 @@
 						</EditableField>
 					</div>
 
-					<div class="grid grid-cols-[5rem_1fr] gap-4 py-5">
-						<span class="text-[10px] font-semibold tracking-[0.18em] text-alt-warm-ink/45 uppercase"
+					<div class="grid grid-cols-[6rem_1fr] gap-4 py-5 sm:grid-cols-[5rem_1fr]">
+						<span class="p1-muted text-[10px] font-semibold tracking-[0.18em] uppercase"
 							>04 / График</span
 						>
 						<div class="flex items-start gap-2.5">
-							<span class="footer-v3-signal mt-1.5 h-2 w-2 shrink-0 rounded-full bg-alt-warm-accent"
+							<span class="footer-v3-signal p1-accent-bg mt-1.5 h-2 w-2 shrink-0 rounded-full"
 							></span>
 							<EditableField
 								fieldKey="Footer.hours"
@@ -237,12 +255,12 @@
 		</div>
 
 		<div
-			class="mt-20 grid gap-12 border-y border-alt-warm-ink/20 py-12 md:grid-cols-12 lg:mt-28"
+			class="p1-border mt-20 grid gap-12 border-y py-12 md:grid-cols-12 lg:mt-28"
 			use:reveal
 			data-reveal-delay="100"
 		>
 			<div class="md:col-span-3">
-				<p class="max-w-[16rem] text-sm leading-relaxed text-alt-warm-ink/55">
+				<p class="p1-muted max-w-[16rem] text-sm leading-relaxed">
 					Быстрый маршрут по проектам, услугам и информации о компании.
 				</p>
 
@@ -260,7 +278,7 @@
 									href={displayValue || '#'}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="group flex items-center gap-2 rounded-full border border-alt-warm-ink/20 px-4 py-2 text-xs font-semibold transition-colors hover:border-alt-warm-accent hover:text-alt-warm-accent"
+									class="group p1-border p1-accent-border-hover p1-accent-hover flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 								>
 									Telegram
 									<svg
@@ -290,7 +308,7 @@
 									href={displayValue || '#'}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="group flex items-center gap-2 rounded-full border border-alt-warm-ink/20 px-4 py-2 text-xs font-semibold transition-colors hover:border-alt-warm-accent hover:text-alt-warm-accent"
+									class="group p1-border p1-accent-border-hover p1-accent-hover flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 								>
 									WhatsApp
 									<svg
@@ -311,31 +329,48 @@
 
 			<div class="grid grid-cols-2 gap-x-6 gap-y-10 md:col-span-9 md:grid-cols-4 md:pl-8">
 				<div>
-					<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Компания</h3>
+					<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Компания</h3>
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
-							<a href="/about" class="transition-colors hover:text-alt-warm-accent">О компании</a>
-						</li>
-						<li>
-							<a href="/actions" class="transition-colors hover:text-alt-warm-accent">Акции</a>
-						</li>
-						<li>
-							<a href="/testimonials" class="transition-colors hover:text-alt-warm-accent">Отзывы</a
+							<a
+								href="/about"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>О компании</a
 							>
 						</li>
 						<li>
-							<a href="/contacts" class="transition-colors hover:text-alt-warm-accent">Контакты</a>
+							<a
+								href="/actions"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>Акции</a
+							>
+						</li>
+						<li>
+							<a
+								href="/testimonials"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>Отзывы</a
+							>
+						</li>
+						<li>
+							<a
+								href="/contacts"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>Контакты</a
+							>
 						</li>
 					</ul>
 				</div>
 
 				<div>
 					{#if visibleServiceItems.length > 0}
-						<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Услуги</h3>
+						<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Услуги</h3>
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleServiceItems as service}
 								<li>
-									<a href={service.href} class="transition-colors hover:text-alt-warm-accent"
+									<a
+										href={service.href}
+										class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 										>{service.label}</a
 									>
 								</li>
@@ -346,11 +381,13 @@
 
 				<div>
 					{#if visibleCatalogItems.length > 0}
-						<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Каталог</h3>
+						<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Каталог</h3>
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleCatalogItems as item}
 								<li>
-									<a href={item.href} class="transition-colors hover:text-alt-warm-accent"
+									<a
+										href={item.href}
+										class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 										>{item.label}</a
 									>
 								</li>
@@ -360,13 +397,19 @@
 				</div>
 
 				<div>
-					<h3 class="p1-title-sub text-[10px] text-alt-warm-accent uppercase">Ещё</h3>
+					<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Ещё</h3>
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
-							<a href="/vacancy" class="transition-colors hover:text-alt-warm-accent">Вакансии</a>
+							<a
+								href="/vacancy"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>Вакансии</a
+							>
 						</li>
 						<li>
-							<a href="/partnership" class="transition-colors hover:text-alt-warm-accent"
+							<a
+								href="/partnership"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 								>Партнёрство</a
 							>
 						</li>
@@ -376,7 +419,7 @@
 		</div>
 
 		<div
-			class="flex flex-col gap-5 pt-7 text-xs text-alt-warm-ink/55 md:flex-row md:items-center md:justify-between"
+			class="p1-muted flex flex-col gap-5 pt-7 text-xs md:flex-row md:items-center md:justify-between"
 			use:reveal
 			data-reveal-delay="180"
 		>
@@ -387,18 +430,18 @@
 						href="https://leget.ru/"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-semibold text-alt-warm-ink transition-colors hover:text-alt-warm-accent"
+						class="font-semibold p1-title transition-colors p1-accent-hover"
 						>Leget</a
 					>
 				</p> -->
 				<div class="flex items-center gap-2">
 					{@render pageSettings?.(
-						'rounded-full border border-alt-warm-ink/20 text-alt-warm-ink hover:border-alt-warm-accent hover:text-alt-warm-accent'
+						'rounded-full p1-border border p1-title p1-accent-border-hover p1-accent-hover focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none'
 					)}
 					<button
 						type="button"
 						onclick={handleAuthClick}
-						class="h-9 rounded-full border border-alt-warm-ink/20 px-4 font-semibold text-alt-warm-ink transition-colors hover:border-alt-warm-accent hover:text-alt-warm-accent active:scale-[0.98]"
+						class="p1-border p1-title p1-accent-border-hover p1-accent-hover h-9 rounded-full border px-4 font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none active:scale-[0.98]"
 					>
 						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
 					</button>
@@ -419,8 +462,8 @@
 
 	.footer-v3-grid {
 		background-image:
-			linear-gradient(rgb(32 33 31 / 0.04) 1px, transparent 1px),
-			linear-gradient(90deg, rgb(32 33 31 / 0.04) 1px, transparent 1px);
+			linear-gradient(var(--p1-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--p1-line) 1px, transparent 1px);
 		background-size: 80px 80px;
 		-webkit-mask-image: linear-gradient(to bottom, #000, transparent 78%);
 		mask-image: linear-gradient(to bottom, #000, transparent 78%);

@@ -12,11 +12,30 @@
 		licenseId?: string | null;
 	} = $props();
 
-	let isOwner = $state(false);
+	// Кэш владения в sessionStorage: ownership-запрос — сетевой раунд-трип, и без
+	// кэша кнопка всегда всплывает заметно позже соседей (SEO/Директ), которые
+	// рендерятся сразу по isEditable. Читаем результат прошлой проверки синхронно
+	// при инициализации, чтобы на повторных заходах кнопка появлялась вместе с
+	// остальными, а $effect ниже лишь тихо перепроверяет владение в фоне.
+	const cacheKey = (id: string) => `site-settings-owner:${id}`;
+	const readOwnerCache = (id: string | null): boolean => {
+		if (!browser || !id) return false;
+		try {
+			return sessionStorage.getItem(cacheKey(id)) === '1';
+		} catch {
+			return false;
+		}
+	};
+
+	let isOwner = $state(readOwnerCache(isEditable ? licenseId : null));
 
 	$effect(() => {
-		isOwner = false;
-		if (!browser || !isEditable || !licenseId) return;
+		if (!browser || !isEditable || !licenseId) {
+			isOwner = false;
+			return;
+		}
+
+		isOwner = readOwnerCache(licenseId);
 
 		const token = localStorage.getItem('auth_token');
 		if (!token) return;
@@ -35,9 +54,17 @@
 			.then((response) => (response.ok ? response.json() : null))
 			.then((result) => {
 				if (!result?.errors?.length) {
-					isOwner = result?.data?.myLicenses?.some(
-						(license: { id?: string | number }) => String(license.id) === String(licenseId)
+					const owner = Boolean(
+						result?.data?.myLicenses?.some(
+							(license: { id?: string | number }) => String(license.id) === String(licenseId)
+						)
 					);
+					isOwner = owner;
+					try {
+						sessionStorage.setItem(cacheKey(licenseId), owner ? '1' : '0');
+					} catch {
+						/* приватный режим/квота — просто без кэша */
+					}
 				}
 			})
 			.catch(() => undefined);

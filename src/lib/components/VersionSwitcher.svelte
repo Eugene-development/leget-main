@@ -136,15 +136,6 @@
 		return articleVariants.find((v) => v.version === vn)?.article ?? componentArticle;
 	});
 
-	// Конструкция активной версии. Принадлежит именно версии, а не компоненту:
-	// переключение варианта меняет и морфотип, поэтому подпись-запаска в панели
-	// настроек обязана пересчитываться вместе с выбором.
-	const activeMorph = $derived.by(() => {
-		const vn = versionNumber(selectedVersion);
-		if (vn === null) return null;
-		return articleVariants.find((v) => v.version === vn)?.morph ?? null;
-	});
-
 	// Артикул тянем только для авторизованного пользователя: запрос идёт под @guard и
 	// без токена всегда возвращает null. Гость монтирует свитчер наравне со всеми
 	// (разметка скрыта, но скрипт работает), и раньше единственная попытка сгорала
@@ -216,8 +207,9 @@
 
 {#if isEditable && editContext}
 	<div
-		class="font-sans-premium z-[100] flex items-center gap-2 select-none {placement === 'overlay'
-			? 'absolute top-6 right-6'
+		class="font-sans-premium z-[100] flex items-center gap-1.5 select-none sm:gap-2 {placement ===
+		'overlay'
+			? 'absolute top-2 left-1/2 -translate-x-1/2 sm:top-6 sm:left-auto sm:right-6 sm:translate-x-0'
 			: 'relative'}"
 	>
 		{#if themeVersions.includes(selectedVersion)}
@@ -230,12 +222,14 @@
 				<!-- Кнопка-триггер меню -->
 				<button
 					type="button"
-					class="flex cursor-pointer items-center gap-2 rounded-2xl border border-on-dark/10 bg-ink-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
+					class="flex cursor-pointer items-center gap-1 rounded-xl border border-on-dark/10 bg-ink-950/75 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95 sm:gap-2 sm:rounded-2xl sm:px-4 sm:py-2.5 sm:text-xs"
 					onclick={() => (isOpen = !isOpen)}
 				>
 					<span>Варианты</span>
 					<svg
-						class="h-3 w-3 transition-transform duration-300 {isOpen ? 'rotate-180' : ''}"
+						class="h-2.5 w-2.5 transition-transform duration-300 sm:h-3 sm:w-3 {isOpen
+							? 'rotate-180'
+							: ''}"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke="currentColor"
@@ -263,7 +257,7 @@
 				<!-- Выпадающий список вариантов с анимацией -->
 				{#if isOpen}
 					<div
-						class="absolute top-12 left-0 z-50 flex w-44 flex-col gap-1 rounded-2xl border border-on-dark/10 bg-ink-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
+						class="absolute top-9 left-0 z-50 flex w-44 flex-col gap-1 rounded-2xl border border-on-dark/10 bg-ink-950/90 p-1.5 shadow-2xl backdrop-blur-2xl sm:top-12"
 						transition:fly={{ y: -10, duration: 200 }}
 					>
 						{#if onLegacyVersion}
@@ -314,8 +308,7 @@
 			{componentType}
 			onSaveData={saveImageData}
 			bind:open={drawerOpen}
-			fallbackTitle={title || componentType}
-			morph={activeMorph}
+			title={title || componentType}
 			article={activeArticle}
 			articleSectionHint={editContext.slug}
 			articleComponentHint={componentType}

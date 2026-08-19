@@ -24,7 +24,7 @@
 
 <button
 	type="button"
-	class="relative flex h-[38px] w-[68px] cursor-pointer items-center rounded-full border p-[3px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 {isLight
+	class="relative flex h-[26px] w-[46px] cursor-pointer items-center rounded-full border p-[2px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 sm:h-[38px] sm:w-[68px] sm:p-[3px] {isLight
 		? 'border-ink-300/80 bg-ink-200/60 hover:border-ink-400/80'
 		: 'border-on-dark/10 bg-ink-950/75 hover:border-on-dark/20'} {className}"
 	onclick={onToggle}
@@ -33,9 +33,16 @@
 >
 	<!-- Подложка: значок закреплён за позицией бегунка. Левая позиция — тёмная
 	     тема (луна), правая — светлая (солнце). -->
-	<span class="pointer-events-none absolute left-2.5 flex items-center justify-center opacity-40">
+	<span
+		class="pointer-events-none absolute left-1.5 flex items-center justify-center opacity-40 sm:left-2.5"
+	>
 		<!-- Луна слева: тёмная тема (позиция бегунка при isLight = false) -->
-		<svg class="h-3.5 w-3.5 text-cat-4-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		<svg
+			class="h-2.5 w-2.5 text-cat-4-400 sm:h-3.5 sm:w-3.5"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+		>
 			<path
 				stroke-linecap="round"
 				stroke-linejoin="round"
@@ -44,9 +51,16 @@
 			/>
 		</svg>
 	</span>
-	<span class="pointer-events-none absolute right-2.5 flex items-center justify-center opacity-40">
+	<span
+		class="pointer-events-none absolute right-1.5 flex items-center justify-center opacity-40 sm:right-2.5"
+	>
 		<!-- Солнце справа: светлая тема (позиция бегунка при isLight = true) -->
-		<svg class="h-3.5 w-3.5 text-cat-1-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+		<svg
+			class="h-2.5 w-2.5 text-cat-1-500 sm:h-3.5 sm:w-3.5"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+		>
 			<path
 				stroke-linecap="round"
 				stroke-linejoin="round"
@@ -58,13 +72,18 @@
 
 	<!-- Подвижный бегунок: несёт значок ТЕКУЩЕЙ темы — солнце в светлой, луна в тёмной. -->
 	<span
-		class="flex h-[30px] w-[30px] items-center justify-center rounded-full shadow-lg transition-transform duration-300 ease-out {isLight
-			? 'translate-x-[30px] bg-surface-raised text-cat-1-500 shadow-cat-1-500/20'
+		class="flex h-5 w-5 items-center justify-center rounded-full shadow-lg transition-transform duration-300 ease-out sm:h-[30px] sm:w-[30px] {isLight
+			? 'translate-x-[22px] bg-surface-raised text-cat-1-500 shadow-cat-1-500/20 sm:translate-x-[30px]'
 			: 'translate-x-0 bg-ink-900 text-cat-4-400 shadow-cat-4-500/10'}"
 	>
 		{#if isLight}
 			<!-- Солнце: активна светлая тема -->
-			<svg class="h-4 w-4 text-cat-1-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg
+				class="h-2.5 w-2.5 text-cat-1-500 sm:h-4 sm:w-4"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"
@@ -74,7 +93,12 @@
 			</svg>
 		{:else}
 			<!-- Луна: активна тёмная тема -->
-			<svg class="h-4 w-4 text-cat-4-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg
+				class="h-2.5 w-2.5 text-cat-4-400 sm:h-4 sm:w-4"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"

@@ -61,6 +61,13 @@ export function componentImageSlots(
 	const key = `${Number(context.templateId ?? 0)}:${normalizeSlug(context.slug)}:${componentType}`;
 	if (key === '1:/:HeroMain') {
 		const version = String(data.heroVersion ?? 'v1');
+		// `bgImage` — легаси-фолбэк из HeroV1.svelte (`data?.bgImageV1 ?? data?.bgImage ??
+		// default`): реально пишет и читает интерфейс только `bgImageV1`, поэтому в
+		// список слотов его не заводим — иначе в панели рядом с «Bg Image V1»
+		// появлялась пустая вторая карточка «Фоновое изображение» без эффекта на
+		// странице. Тенантам со старыми данными это не мешает: `bgImage` в их data
+		// найдёт обычный обход collectComponentImages, слоты нужны только для
+		// пустых полей, которых обход не видит.
 		const fields =
 			version === 'v4'
 				? ['renderImage', 'materialImage']
@@ -68,16 +75,44 @@ export function componentImageSlots(
 					? ['logoUrl']
 					: version === 'v2'
 						? []
-						: ['bgImageV1', 'bgImage', 'logoUrl'];
+						: ['bgImageV1', 'logoUrl'];
 		return fields.map((field) => ({ path: [field] }));
 	}
 	if (key === '1:/:PromoOffer') {
+		// `image` — легаси-фолбэк из PromoOffer.svelte (`data?.imageV1 ?? data?.image`):
+		// реально пишет и читает интерфейс только `imageV1`/`imageV2`, поэтому в список
+		// слотов его не заводим — иначе в панели рядом с «Image V1» появлялась пустая
+		// вторая карточка «Изображение» без эффекта на странице. Тенантам со старыми
+		// данными это не мешает: `image` в их data найдёт обычный обход
+		// collectComponentImages, слоты нужны только для пустых полей, которых обход
+		// не видит.
 		const field = String(data.promoOfferVersion ?? 'v1') === 'v2' ? 'imageV2' : 'imageV1';
-		return [{ path: [field] }, { path: ['image'] }];
+		return [{ path: [field] }];
 	}
 	if (key === '1:/:Stage') {
 		const field = String(data.stageVersion ?? 'v1') === 'v2' ? 'bgImageV2' : 'bgImage';
 		return [{ path: [field] }];
 	}
 	return (SLOT_KEYS[key] ?? []).map((field) => ({ path: [field] }));
+}
+
+/**
+ * Ключи, которые обход `collectComponentImages` находит прямо в `data`
+ * (а не через реестр слотов) и поэтому не убрать одним лишь исключением
+ * из `componentImageSlots`. Список сокращённых полей, а не путей: обход
+ * ищет их по буквальному ключу в JSON независимо от места хранения слота.
+ *
+ * Прячем только ПУСТУЮ карточку: если у тенанта в данных реально лежит
+ * непустое значение по такому ключу (старые сайты до `bgImageV1`), она
+ * остаётся видимой и управляемой — правило неприкосновенности чужих
+ * данных то же, что и у самого поля.
+ */
+const EMPTY_ONLY_HIDDEN_KEYS: Record<string, string[]> = {
+	'1:/:HeroMain': ['bgImage'],
+	'1:/:PromoOffer': ['image']
+};
+
+export function hiddenWhenEmptyImageKeys(context: EditContext, componentType: string): string[] {
+	const key = `${Number(context.templateId ?? 0)}:${normalizeSlug(context.slug)}:${componentType}`;
+	return EMPTY_ONLY_HIDDEN_KEYS[key] ?? [];
 }

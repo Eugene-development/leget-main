@@ -1,6 +1,7 @@
-import { error } from '@sveltejs/kit';
+import { error, type RequestEvent } from '@sveltejs/kit';
 import { ClientError, type GraphQLClient } from 'graphql-request';
 import { createGraphQLClient } from '$lib/utils/graphql-client';
+import { readDesignSystem } from '$lib/design-systems/registry';
 
 /** Слаг страницы 404 в шаблоне — см. config/templates.php в leget-api. */
 const NOT_FOUND_SLUG = '/404';
@@ -80,12 +81,14 @@ export interface RenderPageResponse {
  * Общий для catch-all маршрута и маршрутов отдельных страниц (src/routes/about
  * и т.п.), чтобы обработка кодов ошибок жила в одном месте.
  */
-export async function loadRenderPage(request: Request, slug: string) {
-	const hostname = new URL(request.url).hostname;
+export async function loadRenderPage(event: RequestEvent, slug: string) {
+	const hostname = new URL(event.request.url).hostname;
 	const client = createGraphQLClient({ 'X-Forwarded-Host': hostname });
 
 	try {
 		const data = await client.request<RenderPageResponse>(RENDER_PAGE_QUERY, { slug });
+
+		event.locals.designSystem = readDesignSystem(data.renderPage.site.header?.data);
 
 		return {
 			pageData: {
@@ -98,7 +101,16 @@ export async function loadRenderPage(request: Request, slug: string) {
 			const code = err.response.errors?.[0]?.extensions?.['code'] as string | undefined;
 
 			if (code === 'PAGE_NOT_FOUND') {
-				error(404, { message: 'Not found', pageData: await loadNotFoundPage(client, slug) });
+				const notFound = await loadNotFoundPage(client, slug);
+
+				// 404 сайта рисуется его же системой: страница обязана выглядеть страницей
+				// шаблона, а не заглушкой в чужой палитре. Выбор берём из шапки той же
+				// лицензии — она приходит в ответе на '/404'.
+				if (notFound) {
+					event.locals.designSystem = readDesignSystem(notFound.site.header?.data);
+				}
+
+				error(404, { message: 'Not found', pageData: notFound });
 			}
 
 			if (code === 'SITE_NOT_FOUND') {

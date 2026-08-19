@@ -7,7 +7,8 @@
 		setComponentImage,
 		type ComponentImageField
 	} from '$lib/utils/component-images';
-	import { componentImageSlots } from '$lib/utils/component-image-slots';
+	import { componentImageSlots, hiddenWhenEmptyImageKeys } from '$lib/utils/component-image-slots';
+	import { fade, fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -24,10 +25,22 @@
 	} = $props();
 
 	const imageSlots = $derived([...componentImageSlots(editContext, componentType, data), ...slots]);
-	const images = $derived(collectComponentImages(data, imageSlots));
+	// Мёртвые легаси-ключи (напр. `bgImage` у HeroMain — вытеснен `bgImageV1`,
+	// но обход находит его прямо в data, минуя реестр слотов) не должны
+	// плодить пустую карточку рядом с актуальным полем. Непустые остаются:
+	// у тенантов, ещё не мигрировавших, это единственный способ его сменить.
+	const hiddenWhenEmpty = $derived(new Set(hiddenWhenEmptyImageKeys(editContext, componentType)));
+	const images = $derived(
+		collectComponentImages(data, imageSlots).filter(
+			(image) => image.value !== '' || !hiddenWhenEmpty.has(image.pathKey)
+		)
+	);
 	let activePathKey = $state<string | null>(null);
 	let removingPathKey = $state<string | null>(null);
 	let error = $state('');
+	/** Изображение, ожидающее подтверждения удаления — до клика по кнопке
+	    в модалке `remove()` не вызывается. */
+	let confirmRemoveImage = $state<ComponentImageField | null>(null);
 
 	const activeImage = $derived(
 		activePathKey ? (images.find((image) => image.pathKey === activePathKey) ?? null) : null
@@ -63,6 +76,19 @@
 		} finally {
 			removingPathKey = null;
 		}
+	}
+
+	/** Кнопка списка не удаляет сразу — только открывает подтверждение. */
+	function requestRemove(image: ComponentImageField) {
+		if (!image.value || removingPathKey) return;
+		confirmRemoveImage = image;
+	}
+
+	async function confirmRemove() {
+		if (!confirmRemoveImage) return;
+		const image = confirmRemoveImage;
+		confirmRemoveImage = null;
+		await remove(image);
 	}
 </script>
 
@@ -104,9 +130,6 @@
 							<p class="truncate text-xs font-semibold text-ink-200" title={image.label}>
 								{image.label}
 							</p>
-							<p class="mt-1 truncate text-xs text-ink-500" title={image.pathKey}>
-								{image.pathKey}
-							</p>
 						</div>
 					</div>
 
@@ -122,7 +145,7 @@
 							type="button"
 							class="min-h-10 rounded-xl border border-cat-6-500/20 bg-cat-6-500/5 px-3 py-2 text-xs font-semibold text-cat-6-300 transition-colors hover:border-cat-6-500/40 hover:bg-cat-6-500/15 disabled:cursor-not-allowed disabled:border-on-dark/10 disabled:bg-on-dark/3 disabled:text-cat-6-300/35"
 							disabled={!image.value || removingPathKey !== null}
-							onclick={() => remove(image)}
+							onclick={() => requestRemove(image)}
 							aria-label={`Удалить: ${image.label}`}
 						>
 							{removingPathKey === image.pathKey ? 'Удаление…' : 'Удалить'}
@@ -154,4 +177,64 @@
 		onRemove={() => remove(activeImage)}
 		onClose={() => (activePathKey = null)}
 	/>
+{/if}
+
+{#if confirmRemoveImage}
+	<div
+		class="fixed inset-0 z-[1000] flex items-center justify-center bg-scrim/60 p-4 backdrop-blur-md"
+		transition:fade={{ duration: 200 }}
+	>
+		<!-- Backdrop click to close -->
+		<button
+			type="button"
+			class="absolute inset-0 h-full w-full cursor-default border-none bg-transparent outline-none"
+			onclick={() => (confirmRemoveImage = null)}
+			aria-label="Закрыть"
+		></button>
+
+		<!-- Modal Card -->
+		<div
+			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-on-dark/10 bg-ink-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
+			transition:fly={{ y: 20, duration: 300 }}
+		>
+			<div
+				class="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl border border-cat-6-500/25 bg-cat-6-500/10 text-cat-6-400 shadow-[0_0_20px] shadow-cat-6-500/15"
+			>
+				<svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
+				</svg>
+			</div>
+
+			<div class="flex flex-col gap-2">
+				<h3 class="text-lg text-on-dark uppercase">Удалить изображение?</h3>
+				<p class="text-xs leading-relaxed font-medium text-ink-400">
+					Вы уверены, что хотите удалить
+					<span class="font-bold text-ink-200">"{confirmRemoveImage.label}"</span>
+					? Действие нельзя отменить.
+				</p>
+			</div>
+
+			<div class="mt-2 flex w-full items-center gap-3">
+				<button
+					type="button"
+					class="flex-1 cursor-pointer rounded-xl border border-on-dark/10 bg-on-dark/5 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-on-dark/10 active:scale-98"
+					onclick={() => (confirmRemoveImage = null)}
+				>
+					Отмена
+				</button>
+				<button
+					type="button"
+					class="flex-1 cursor-pointer rounded-xl bg-cat-6-600 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-cat-6-500 hover:shadow-lg hover:shadow-cat-6-600/25 active:scale-98"
+					onclick={confirmRemove}
+				>
+					Да, удалить
+				</button>
+			</div>
+		</div>
+	</div>
 {/if}

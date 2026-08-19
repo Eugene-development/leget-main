@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.1.1.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
+	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -22,32 +23,11 @@
 		isEditable?: boolean;
 	} = $props();
 
-	// ─── Bg image picker ──────────────────────────────────────────────────────
-	let showImagePicker = $state(false);
-	/** Live preview URL — перекрывает сохранённое только пока picker открыт. */
-	let previewBgImage = $state<string | null>(null);
-
 	const activeBgImage = $derived(
-		previewBgImage ??
-			String(
-				data?.bgImageV1 ??
-					data?.bgImage ??
-					'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
-			)
+		String(
+			data?.bgImageV1 ?? data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
+		)
 	);
-
-	async function handleImageApprove(url: string) {
-		if (!editContext) return;
-		const updated = { ...data, bgImageV1: url };
-		await saveComponentData(editContext, 'HeroMain', updated);
-		data = updated;
-		previewBgImage = null;
-		showImagePicker = false;
-	}
-
-	async function handleImageRemove() {
-		await handleImageApprove('');
-	}
 
 	const defaultBrands: PartnerBrand[] = [
 		{
@@ -170,46 +150,7 @@
 			class="h-full w-full object-cover transition-all duration-500"
 		/>
 		<div class="absolute inset-0 bg-linear-to-b from-scrim/20 via-scrim/10 to-scrim/30"></div>
-
-		<!-- Кнопка смены фото (только в режиме редактирования) -->
-		{#if isEditable && editContext}
-			<button
-				type="button"
-				class="bg-picker-btn"
-				onclick={() => {
-					previewBgImage = null;
-					showImagePicker = true;
-				}}
-				aria-label="Сменить фоновое изображение"
-				title="Сменить фоновое изображение"
-			>
-				<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="1.5"
-						d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-					/>
-				</svg>
-				<span>Сменить фото</span>
-			</button>
-		{/if}
 	</div>
-
-	<!-- Picker модалка -->
-	{#if showImagePicker && editContext}
-		<BgImagePicker
-			{editContext}
-			currentImage={String(data?.bgImageV1 ?? data?.bgImage ?? '')}
-			defaultImage="https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg"
-			onApprove={handleImageApprove}
-			onRemove={handleImageRemove}
-			onClose={() => {
-				previewBgImage = null;
-				showImagePicker = false;
-			}}
-		/>
-	{/if}
 
 	{#if editingBrand && editContext}
 		<BgImagePicker
@@ -353,26 +294,7 @@
 								onclick={() => serviceOrderStore.open('design-project')}
 								class="group cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-ink-900/60 hover:shadow-xl"
 							>
-								<!-- Обычное состояние — исходный текст, при наведении — «Это бесплатно».
-								     Оба варианта лежат в одной ячейке grid, поэтому ширина кнопки не прыгает.
-								     В режиме редактирования подмена отключена: текст остаётся видимым и редактируемым. -->
-								<span class="grid">
-									<span
-										class="col-start-1 row-start-1 transition-opacity duration-150 ease-out {isEditable
-											? ''
-											: 'delay-150 group-hover:opacity-0 group-hover:delay-0'}"
-									>
-										{displayValue}
-									</span>
-									{#if !isEditable}
-										<span
-											aria-hidden="true"
-											class="col-start-1 row-start-1 place-self-center opacity-0 transition-opacity delay-0 duration-150 ease-out group-hover:opacity-100 group-hover:delay-150"
-										>
-											Это бесплатно
-										</span>
-									{/if}
-								</span>
+								<HoverSwapLabel text={displayValue} disabled={isEditable} />
 							</button>
 						{/snippet}
 					</EditableField>
@@ -702,62 +624,5 @@
 		.hero-brands-label {
 			margin-bottom: 1rem;
 		}
-	}
-
-	/* ── Background image picker button ─────────────────────────────────────── */
-	.bg-picker-btn {
-		position: absolute;
-		bottom: 1rem;
-		left: 1rem;
-		z-index: 20;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		padding: 0.45rem 0.9rem;
-		/* Радиус элемента управления — 12px (DESIGN.md, Shapes: «кнопки и поля»),
-		   он же `rounded-xl` у такой же кнопки редактора в `PromoOffer/v2`.
-		   Было 0.625rem — ступень между `lg` и `xl`, мимо шкалы. */
-		border-radius: var(--ds-radius-xl);
-		border: 1px solid rgba(255, 255, 255, 0.3);
-		background: rgba(15, 23, 42, 0.55);
-		backdrop-filter: blur(12px);
-		color: #f1f5f9;
-		/* Ступень `sm` — та же, что у кнопки редактора в `PromoOffer/v2` рядом
-		   с иконкой 16px. Было 0.8125rem (13px) — между `xs` и `sm`. */
-		font-size: var(--text-sm);
-		font-weight: 600;
-		cursor: pointer;
-		transition:
-			background 0.2s,
-			border-color 0.2s,
-			transform 0.2s,
-			box-shadow 0.2s;
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-	}
-
-	.bg-picker-btn svg {
-		width: 1rem;
-		height: 1rem;
-		flex-shrink: 0;
-	}
-
-	/* Отклик на курсор принадлежит шкале `link` — «интерактив: ссылки, hover,
-	   focus-кольца». Ровно её берут остальные кнопки редактора в этом же файле
-	   (`hover:border-link-500`, `hover:text-link-600`, `ring-link-600`), и эта
-	   была единственной, кто красил ховер литералом мимо системы.
-	   Ступень та же: литерал был sky-400 палитры Tailwind v3, из которой `link`
-	   и выведена. Токены несут v4, а та шире по гамме, поэтому в sRGB ступень
-	   рисуется чуть иначе — замер по каналам 56/189/248 против 0/188/255. Под
-	   20–55% альфы на тёмном стекле это единицы на канал; тот же случай, что
-	   описан для теней в design-system-tokens.md. */
-	.bg-picker-btn:hover {
-		background: color-mix(in oklab, var(--ds-link-400) 25%, transparent);
-		border-color: color-mix(in oklab, var(--ds-link-400) 55%, transparent);
-		transform: translateY(-1px);
-		box-shadow: 0 6px 20px color-mix(in oklab, var(--ds-link-400) 20%, transparent);
-	}
-
-	.bg-picker-btn:active {
-		transform: translateY(0);
 	}
 </style>

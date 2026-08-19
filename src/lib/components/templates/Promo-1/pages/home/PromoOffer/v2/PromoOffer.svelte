@@ -2,7 +2,6 @@
 	// Артикул: 1.1.3.2 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -21,8 +20,6 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 
-	let showImagePicker = $state(false);
-
 	const features = $derived(
 		Array.isArray(data?.features) && data.features.length > 0
 			? (data.features as string[])
@@ -38,14 +35,7 @@
 		data = updated;
 	}
 
-	async function handleImageApprove(url: string) {
-		showImagePicker = false;
-		await saveField('imageV2', url);
-	}
 
-	async function handleImageRemove() {
-		await handleImageApprove('');
-	}
 </script>
 
 <section
@@ -211,39 +201,6 @@
 						alt={String(data?.imageAlt ?? 'Промо изображение')}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 					/>
-
-					{#if isEditable}
-						<button
-							type="button"
-							onclick={() => (showImagePicker = true)}
-							class="p1-card absolute inset-0 flex cursor-pointer items-center justify-center border-none opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100"
-							aria-label="Изменить изображение"
-						>
-							<span
-								class="inline-flex scale-95 transform items-center gap-2 rounded-xl bg-gradient-to-r from-cat-8-500 to-cat-1-600 px-5 py-2.5 text-sm font-bold text-on-accent shadow-lg transition-transform duration-300 group-hover:scale-100"
-							>
-								<svg
-									class="h-4 w-4"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									stroke-width="2"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-									/>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-									/>
-								</svg>
-								Изменить фото
-							</span>
-						</button>
-					{/if}
 				</div>
 
 				<!-- Декоративные парящие круги/элементы (похожие на V1, но с V2 дизайном) -->
@@ -265,18 +222,6 @@
 			</div>
 		</div>
 	</div>
-
-	{#if showImagePicker && editContext}
-		<BgImagePicker
-			{editContext}
-			currentImage={String(data?.imageV2 ?? data?.image ?? '')}
-			defaultImage=""
-			aspectRatio={1}
-			onApprove={handleImageApprove}
-			onRemove={handleImageRemove}
-			onClose={() => (showImagePicker = false)}
-		/>
-	{/if}
 </section>
 
 <style>
