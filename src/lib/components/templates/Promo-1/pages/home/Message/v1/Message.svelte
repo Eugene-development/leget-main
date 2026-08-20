@@ -235,7 +235,7 @@
 									class="mt-auto block pt-4"
 								>
 									{#snippet children(displayValue)}
-										<span class="p1-muted block truncate text-[11px]">
+										<span class="p1-muted block truncate text-xs">
 											{displayValue || 'Ссылка на проект не задана'}
 										</span>
 									{/snippet}
@@ -246,7 +246,7 @@
 									target={isExternalProjectLink(card.link) ? '_blank' : null}
 									rel={isExternalProjectLink(card.link) ? 'noopener noreferrer' : null}
 									aria-label={`${MESSAGE_PROJECT_LINK_LABEL}: ${card.title}`}
-									class="p1-accent mt-auto inline-flex items-center gap-1.5 self-start pt-4 text-[11px] font-bold tracking-widest uppercase transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui after:absolute after:inset-0 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+									class="p1-accent p1-label mt-auto inline-flex items-center gap-1.5 self-start pt-4 transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui after:absolute after:inset-0 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 								>
 									{MESSAGE_PROJECT_LINK_LABEL}
 									<svg

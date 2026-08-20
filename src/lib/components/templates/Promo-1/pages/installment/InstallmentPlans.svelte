@@ -97,7 +97,10 @@
 	(InstallmentHero). Заливка волны — переменная `--ih-wave` (#f8fafc), поэтому
 	фон секции обязан быть ровно `bg-ink-50` и БЕЗ градиента у верхней кромки.
 -->
-<section class="relative isolate overflow-hidden bg-ink-50 py-section-xs sm:py-section-sm">
+<section
+	data-p1-theme="light"
+	class="relative isolate overflow-hidden bg-ink-50 py-section-xs sm:py-section-sm"
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="it-rules"></div>
 	</div>
@@ -131,9 +134,9 @@
 				{/snippet}
 			</EditableField>
 			<div class="it-rule it-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="h-px flex-1 bg-ink-900/10"></span>
+				<span class="p1-line flex-1 border-t"></span>
 				<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
-				<span class="h-px flex-1 bg-ink-900/10"></span>
+				<span class="p1-line flex-1 border-t"></span>
 			</div>
 		</div>
 

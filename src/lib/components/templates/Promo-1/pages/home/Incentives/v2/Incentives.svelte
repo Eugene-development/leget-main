@@ -186,9 +186,9 @@
 							     переключении все четыре имени скачут по горизонтали. -->
 							<span class="w-8 shrink-0 sm:w-14">
 								<span
-									class="block h-px transition-all duration-[var(--ds-motion-duration-ui)] ease-ui {isCurrent
-										? 'p1-accent-bg w-8 sm:w-14'
-										: 'p1-line w-4 group-hover:w-6 sm:w-6 sm:group-hover:w-9'}"
+									class="block transition-all duration-[var(--ds-motion-duration-ui)] ease-ui {isCurrent
+										? 'p1-accent-bg h-px w-8 sm:w-14'
+										: 'p1-line w-4 border-t group-hover:w-6 sm:w-6 sm:group-hover:w-9'}"
 								></span>
 							</span>
 							<EditableField
@@ -215,7 +215,7 @@
 							</EditableField>
 						</div>
 						{#if index < gallery.length - 1}
-							<div class="p1-line h-px w-full"></div>
+							<div class="p1-line w-full border-t"></div>
 						{/if}
 					{/each}
 				</div>

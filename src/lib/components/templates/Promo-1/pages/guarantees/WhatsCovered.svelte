@@ -47,7 +47,10 @@
 	);
 </script>
 
-<section class="relative isolate overflow-hidden bg-surface-raised py-section-sm">
+<section
+	data-p1-theme="light"
+	class="relative isolate overflow-hidden bg-surface-raised py-section-sm"
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div class="gt-rules"></div>
 	</div>
@@ -71,9 +74,9 @@
 				</EditableField>
 
 				<div class="gt-rule gt-d1 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="h-px flex-1 bg-ink-900/10"></span>
+					<span class="p1-line flex-1 border-t"></span>
 					<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
-					<span class="h-px flex-1 bg-ink-900/10"></span>
+					<span class="p1-line flex-1 border-t"></span>
 				</div>
 
 				<EditableField

@@ -3,9 +3,9 @@
 	import { cubicOut } from 'svelte/easing';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { cityStore } from '$lib/stores/city.svelte';
-	import { getGraphQLUrl, getAuthApiUrl } from '$lib/utils/config';
 	import PhoneInput from './PhoneInput.svelte';
-	import { isValidPhone, cleanPhone } from '$lib/utils/phone';
+	import { isValidPhone } from '$lib/utils/phone';
+	import { submitServiceRequest } from '$lib/utils/service-request';
 
 	let name = $state('');
 	let phone = $state('');
@@ -42,49 +42,15 @@
 		isSubmitting = true;
 		generalError = '';
 
-		const payload = {
-			service_type: serviceOrderStore.serviceType,
-			name: name.trim(),
-			phone: cleanPhone(phone),
-			message: message.trim() || null,
-			source_url: typeof window !== 'undefined' ? window.location.href : null,
-			city: cityStore.city
-		};
-
 		try {
-			// 1. Submit mutation to leget-api (GraphQL)
-			const graphqlResponse = await fetch(getGraphQLUrl(), {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					query: `
-						mutation CreateServiceRequest($input: CreateServiceRequestInput!) {
-							createServiceRequest(input: $input) {
-								id
-								status
-							}
-						}
-					`,
-					variables: { input: payload }
-				})
+			await submitServiceRequest({
+				serviceType: serviceOrderStore.serviceType,
+				name,
+				phone,
+				message,
+				city: cityStore.city,
+				sourceUrl: typeof window !== 'undefined' ? window.location.href : null
 			});
-
-			const graphqlResult = await graphqlResponse.json();
-			if (graphqlResult.errors) {
-				throw new Error(graphqlResult.errors[0]?.message || 'Ошибка сохранения заявки');
-			}
-
-			// 2. Submit notification to leget-auth (REST)
-			const authResponse = await fetch(`${getAuthApiUrl()}/notify/service-request`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload)
-			});
-
-			const authResult = await authResponse.json();
-			if (!authResponse.ok) {
-				throw new Error(authResult.message || 'Ошибка отправки уведомления');
-			}
 
 			submitSuccess = true;
 			name = '';

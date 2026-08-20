@@ -136,7 +136,7 @@
 		<div
 			class="absolute -top-20 right-[8%] h-56 w-56 rounded-full border-[46px] border-[var(--p1-accent)]/10 sm:h-80 sm:w-80 sm:border-[64px]"
 		></div>
-		<div class="p1-line absolute top-0 left-[6%] h-full w-px"></div>
+		<div class="p1-line absolute top-0 left-[6%] h-full border-l"></div>
 	</div>
 
 	<div class="relative mx-auto max-w-[1400px] px-5 pt-20 pb-8 sm:px-8 lg:px-12 lg:pt-28">

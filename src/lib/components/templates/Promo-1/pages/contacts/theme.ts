@@ -68,8 +68,8 @@ export const ct = {
 		hairlineOnCard:
 			'pointer-events-none absolute -top-px left-1/2 h-px w-24 -translate-x-1/2 bg-brand-500/70',
 		diamond: 'size-1.5 rotate-45 border border-brand-500/70',
-		ruleOnInk: 'p1-line h-px flex-1',
-		ruleOnLight: 'p1-line h-px flex-1'
+		ruleOnInk: 'p1-line flex-1 border-t',
+		ruleOnLight: 'p1-line flex-1 border-t'
 	},
 
 	/** Карточки: единые радиусы и тени. */

@@ -3,6 +3,7 @@
 	import MenuV1 from './v1/Menu.svelte';
 	import MenuV2 from './v2/Menu.svelte';
 	import MenuV3 from './v3/Menu.svelte';
+	import MenuV4 from './v4/Menu.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
@@ -44,20 +45,20 @@
 		onToggleService: (href: string, currentEnabled: boolean, e: Event) => void;
 	} = $props();
 
+	type MenuVersion = 'v1' | 'v2' | 'v3' | 'v4';
+
 	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
 	// на живых сайтах это давало подмену версии после гидратации, а каталог
 	// /_ds (пререндер) вообще не смог бы показать ничего, кроме v1.
-	let selectedVersion = $state<'v1' | 'v2' | 'v3'>(
-		(data?.menuVersion as 'v1' | 'v2' | 'v3') ?? 'v1'
-	);
+	let selectedVersion = $state<MenuVersion>((data?.menuVersion as MenuVersion) ?? 'v1');
 	let drawerOpen = $state(false);
 	let logoPickerOpen = $state(false);
 	let hasManuallySelected = $state(false);
 	const logoUrl = $derived(typeof data?.logoUrl === 'string' ? data.logoUrl : '');
 
 	$effect(() => {
-		const ver = (data?.menuVersion as 'v1' | 'v2' | 'v3') ?? 'v1';
+		const ver = (data?.menuVersion as MenuVersion) ?? 'v1';
 		if (!hasManuallySelected && ver !== selectedVersion) {
 			selectedVersion = ver;
 		}
@@ -75,7 +76,7 @@
 			: null
 	);
 
-	async function selectVersion(version: 'v1' | 'v2' | 'v3') {
+	async function selectVersion(version: MenuVersion) {
 		if (version === selectedVersion) return;
 		selectedVersion = version;
 		hasManuallySelected = true;
@@ -114,7 +115,18 @@
 </script>
 
 <div class="relative flex items-center gap-2">
-	{#if selectedVersion === 'v3'}
+	{#if selectedVersion === 'v4'}
+		<MenuV4
+			{links}
+			{visibleCatalogItems}
+			{visibleServiceItems}
+			{disabledRubrics}
+			{disabledServices}
+			{isEditable}
+			{onToggleRubric}
+			{onToggleService}
+		/>
+	{:else if selectedVersion === 'v3'}
 		<MenuV3
 			{links}
 			{visibleCatalogItems}
@@ -279,6 +291,16 @@
 						onclick={() => selectVersion('v3')}
 					>
 						Вариант 3
+					</button>
+					<button
+						type="button"
+						class="w-full cursor-pointer rounded-2xl border px-4 py-3 text-left text-xs font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+						'v4'
+							? 'scale-[1.01] border-cat-2-400/40 bg-cat-2-400/10 text-cat-2-100 shadow-md'
+							: 'border-on-dark/10 text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
+						onclick={() => selectVersion('v4')}
+					>
+						Вариант 4
 					</button>
 				</div>
 			</section>

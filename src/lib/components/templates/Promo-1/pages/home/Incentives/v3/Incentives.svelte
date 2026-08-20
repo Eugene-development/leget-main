@@ -17,6 +17,7 @@
 	//   finish review, the verdict, and DESIGN.md.
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import {
@@ -144,17 +145,46 @@
 							     распадается на два несвязанных предмета. Ниже sm строка
 							     слишком узкая — линия сжимается в ноль, и связь берёт на
 							     себя разделитель под строкой. -->
-							<div class="p1-line hidden h-px flex-1 sm:block"></div>
+							<div class="p1-line hidden flex-1 border-t sm:block"></div>
 							<div
 								class="specimen p1-card p1-border p1-body ml-auto aspect-square w-20 shrink-0 overflow-hidden rounded-2xl border sm:ml-0 sm:w-24"
 							>
 								<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover" />
 							</div>
 						</div>
-						<div class="p1-line h-px w-full sm:hidden"></div>
+						<div class="p1-line w-full border-t sm:hidden"></div>
 					</li>
 				{/each}
 			</ul>
+
+			<div class="mt-10 flex justify-start sm:mt-12">
+				<button
+					type="button"
+					onclick={() => serviceOrderStore.open('consultation')}
+					class="inline-flex cursor-pointer items-center justify-center gap-3 rounded-full bg-accent-surface px-7 py-4 text-base font-semibold text-on-accent shadow-[0_8px_30px] shadow-brand-500/25 transition-[transform,background-color,box-shadow] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-accent-surface-deep hover:shadow-brand-500/35 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 active:translate-y-0"
+				>
+					<EditableField
+						fieldKey="Incentives.ctaText"
+						label="Текст кнопки"
+						value={String(data?.ctaText ?? 'Получить консультацию')}
+						{isEditable}
+						onSave={(v) => saveField('ctaText', v)}
+						class="inline"
+					>
+						{#snippet children(displayValue)}{displayValue}{/snippet}
+					</EditableField>
+					<svg
+						class="h-4 w-4 shrink-0"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+					</svg>
+				</button>
+			</div>
 		</div>
 	</div>
 </section>

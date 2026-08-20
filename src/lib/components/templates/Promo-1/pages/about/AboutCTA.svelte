@@ -115,9 +115,9 @@
 				</EditableField>
 
 				<div class="ab-rule ab-d3 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="p1-line h-px flex-1"></span>
+					<span class="p1-line flex-1 border-t"></span>
 					<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
-					<span class="p1-line h-px flex-1"></span>
+					<span class="p1-line flex-1 border-t"></span>
 				</div>
 
 				<EditableField
