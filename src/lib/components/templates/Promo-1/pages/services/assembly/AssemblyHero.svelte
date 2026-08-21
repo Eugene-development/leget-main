@@ -5,6 +5,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import ServiceHeroForm from '../_shared/ServiceHeroForm.svelte';
+	import ServiceHeroScrollCue from '../_shared/ServiceHeroScrollCue.svelte';
 	import '../../../theme.css';
 
 	let {
@@ -20,6 +21,18 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
+	const badge = $derived(
+		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+	);
+	const isLegacyTitle = $derived(
+		data?.title_part1 === 'Сборка и' && data?.title_part2 === 'установка'
+	);
+	const titlePart1 = $derived(
+		isLegacyTitle ? 'Сборка мебели' : String(data?.title_part1 ?? 'Сборка мебели')
+	);
+	const titlePart2 = $derived(
+		isLegacyTitle ? 'с подключением техники' : String(data?.title_part2 ?? 'с подключением техники')
+	);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -59,7 +72,7 @@
 			<EditableField
 				fieldKey="AssemblyHero.badge"
 				label="Бейдж"
-				value={String(data?.badge ?? 'Услуга')}
+				value={badge}
 				{isEditable}
 				onSave={(v) => saveField('badge', v)}
 				class="inline-block"
@@ -73,7 +86,7 @@
 				<EditableField
 					fieldKey="AssemblyHero.title_part1"
 					label="Заголовок часть 1"
-					value={String(data?.title_part1 ?? 'Сборка и')}
+					value={titlePart1}
 					{isEditable}
 					onSave={(v) => saveField('title_part1', v)}
 					class="inline-block"
@@ -85,7 +98,7 @@
 				<EditableField
 					fieldKey="AssemblyHero.title_part2"
 					label="Заголовок часть 2"
-					value={String(data?.title_part2 ?? 'установка')}
+					value={titlePart2}
 					{isEditable}
 					onSave={(v) => saveField('title_part2', v)}
 					class="inline-block"
@@ -117,7 +130,7 @@
 				serviceType="assembly"
 				ctaFieldKey="AssemblyHero.cta_text"
 				ctaValue={String(data?.cta_text ?? 'Заказать сборку')}
-				note="Вам позвонит первый освободившийся мастер. Заявка ни к чему не обязывает."
+				note="В ближайшее время с вами свяжется специалист."
 				nameId="assembly-hero-name"
 				phoneId="assembly-hero-phone"
 				{isEditable}
@@ -125,4 +138,5 @@
 			/>
 		</div>
 	</div>
+	<ServiceHeroScrollCue />
 </section>

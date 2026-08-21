@@ -5,6 +5,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import ServiceHeroForm from '../_shared/ServiceHeroForm.svelte';
+	import ServiceHeroScrollCue from '../_shared/ServiceHeroScrollCue.svelte';
 	import '../../../theme.css';
 
 	let {
@@ -20,6 +21,16 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
+	const badge = $derived(
+		data?.badge === 'Проектирование полного цикла' || data?.badge === 'Услуга'
+			? 'Услуга компании'
+			: String(data?.badge ?? 'Услуга компании')
+	);
+	const isLegacyTitle = $derived(data?.title_part1 === 'Проект' && data?.title_part2 === 'дизайна');
+	const titlePart1 = $derived(isLegacyTitle ? 'Дизайн' : String(data?.title_part1 ?? 'Дизайн'));
+	const titlePart2 = $derived(
+		isLegacyTitle ? 'вашего интерьера' : String(data?.title_part2 ?? 'вашего интерьера')
+	);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -59,7 +70,7 @@
 			<EditableField
 				fieldKey="DesignProjectHero.badge"
 				label="Бейдж"
-				value={String(data?.badge ?? 'Услуга')}
+				value={badge}
 				{isEditable}
 				onSave={(v) => saveField('badge', v)}
 				class="inline-block"
@@ -73,7 +84,7 @@
 				<EditableField
 					fieldKey="DesignProjectHero.title_part1"
 					label="Заголовок часть 1"
-					value={String(data?.title_part1 ?? 'Дизайн')}
+					value={titlePart1}
 					{isEditable}
 					onSave={(v) => saveField('title_part1', v)}
 					class="inline-block"
@@ -85,7 +96,7 @@
 				<EditableField
 					fieldKey="DesignProjectHero.title_part2"
 					label="Заголовок часть 2"
-					value={String(data?.title_part2 ?? 'вашего интерьера')}
+					value={titlePart2}
 					{isEditable}
 					onSave={(v) => saveField('title_part2', v)}
 					class="inline-block"
@@ -117,7 +128,7 @@
 				serviceType="design-project"
 				ctaFieldKey="DesignProjectHero.cta_text"
 				ctaValue={String(data?.cta_text ?? 'Начать проект')}
-				note="Вам позвонит первый освободившийся дизайнер. Заявка ни к чему не обязывает."
+				note="В ближайшее время с вами свяжется специалист."
 				nameId="design-project-hero-name"
 				phoneId="design-project-hero-phone"
 				{isEditable}
@@ -125,4 +136,5 @@
 			/>
 		</div>
 	</div>
+	<ServiceHeroScrollCue />
 </section>

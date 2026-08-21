@@ -5,6 +5,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import ServiceHeroForm from '../_shared/ServiceHeroForm.svelte';
+	import ServiceHeroScrollCue from '../_shared/ServiceHeroScrollCue.svelte';
 	import '../../../theme.css';
 
 	let {
@@ -20,6 +21,9 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
+	const badge = $derived(
+		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+	);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -59,7 +63,7 @@
 			<EditableField
 				fieldKey="MeasurementHero.badge"
 				label="Бейдж"
-				value={String(data?.badge ?? 'Услуга')}
+				value={badge}
 				{isEditable}
 				onSave={(v) => saveField('badge', v)}
 				class="inline-block"
@@ -117,7 +121,7 @@
 				serviceType="measurement"
 				ctaFieldKey="MeasurementHero.cta_text"
 				ctaValue={String(data?.cta_text ?? 'Заказать замер')}
-				note="Вам позвонит первый освободившийся замерщик. Заявка ни к чему не обязывает."
+				note="В ближайшее время с вами свяжется специалист."
 				nameId="measurement-hero-name"
 				phoneId="measurement-hero-phone"
 				{isEditable}
@@ -125,4 +129,5 @@
 			/>
 		</div>
 	</div>
+	<ServiceHeroScrollCue />
 </section>

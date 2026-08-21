@@ -5,6 +5,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import ServiceHeroForm from '../_shared/ServiceHeroForm.svelte';
+	import ServiceHeroScrollCue from '../_shared/ServiceHeroScrollCue.svelte';
 	import '../../../theme.css';
 
 	let {
@@ -20,6 +21,25 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
+	const badge = $derived(
+		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+	);
+	const legacyDescriptions = [
+		'Трансформируйте свои идеи в безупречный интерьер. Получите экспертные рекомендации по стилю, эргономике и материалам от ведущих специалистов отрасли.',
+		'На бесплатной консультации расскажем о возможностях компании, поставщиках и фабриках. Покажем выгоды сотрудничества и поможем выбрать следующий шаг.',
+		'На бесплатной консультации поможем выбрать материалы и технику, предложим стартовые варианты проекта и сориентируем по стоимости.',
+		'На бесплатной консультации поможем выбрать материалы, цвета и технику, предложим стартовые варианты проекта и сориентируем по стоимости.',
+		'На бесплатной консультации поможем выбрать материалы,цвета и технику, предложим стартовые варианты проекта и сориентируем по стоимости.',
+		'На бесплатной консультации поможем выбрать материалы, цвета и технику, предложим разные варианты проекта и сориентируем по условиям стоимости.',
+		'На бесплатной консультации поможем выбрать материалы, цвета и технику, предложим разные варианты проекта и сориентируем по условиям работы и по ценам'
+	];
+	const defaultDescription =
+		'На бесплатной консультации поможем выбрать материалы, цвета и технику, предложим разные варианты проекта, сориентируем по условиям работы и по ценам';
+	const description = $derived(
+		legacyDescriptions.includes(String(data?.description))
+			? defaultDescription
+			: String(data?.description ?? defaultDescription)
+	);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -59,7 +79,7 @@
 			<EditableField
 				fieldKey="ConsultationHero.badge"
 				label="Бейдж"
-				value={String(data?.badge ?? 'Услуга')}
+				value={badge}
 				{isEditable}
 				onSave={(v) => saveField('badge', v)}
 				class="inline-block"
@@ -99,10 +119,7 @@
 			<EditableField
 				fieldKey="ConsultationHero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Трансформируйте свои идеи в безупречный интерьер. Получите экспертные рекомендации по стилю, эргономике и материалам от ведущих специалистов отрасли.'
-				)}
+				value={description}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}
@@ -117,7 +134,7 @@
 				serviceType="consultation"
 				ctaFieldKey="ConsultationHero.cta_text"
 				ctaValue={String(data?.cta_text ?? 'Заказать консультацию')}
-				note="Вам позвонит первый освободившийся дизайнер. Консультация ни к чему не обязывает."
+				note="В ближайшее время с вами свяжется специалист."
 				nameId="consultation-hero-name"
 				phoneId="consultation-hero-phone"
 				{isEditable}
@@ -125,4 +142,5 @@
 			/>
 		</div>
 	</div>
+	<ServiceHeroScrollCue />
 </section>
