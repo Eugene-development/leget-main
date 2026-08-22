@@ -138,7 +138,7 @@
 				<EditableField
 					fieldKey="Brands.badge"
 					label="Метка"
-					value={String(data?.badge ?? 'Материалы')}
+					value={String(data?.badge ?? 'Бренды')}
 					{isEditable}
 					onSave={(v) => saveField('badge', v)}
 					class="inline"
@@ -195,7 +195,7 @@
 				<EditableField
 					fieldKey="Brands.partnersLabel"
 					label="Подпись партнёров"
-					value={String(data?.partnersLabel ?? 'Наши партнёры-производители')}
+					value={String(data?.partnersLabel ?? 'Для нас делают мебель')}
 					{isEditable}
 					onSave={(v) => saveField('partnersLabel', v)}
 					inline
@@ -321,6 +321,14 @@
 		.brands-screen .brands-partners-grid {
 			margin-top: 1rem;
 		}
+	}
+
+	/* Партнёры-производители — цветные логотипы: в отличие от стены брендов
+	   выше, гашение цвета роли `p1-logo` здесь не нужно, поэтому фильтр и
+	   приглушение сняты локально, не трогая саму роль (её ещё несёт стена). */
+	.brands-partners-grid :global(.p1-logo) {
+		filter: none;
+		opacity: 1;
 	}
 
 	/* Низкое окно при трёх колонках (ноутбучные 768px и мельче): доступной

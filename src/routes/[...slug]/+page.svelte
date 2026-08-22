@@ -10,6 +10,7 @@
 		metaDescription: string | null;
 		templateId: number | null;
 		faviconUrl: string | null;
+		ownerId: string | null;
 		header: { data: Record<string, unknown> } | null;
 		footer: { data: Record<string, unknown> } | null;
 	};
@@ -54,4 +55,5 @@
 	{seo}
 	components={(data.pageData?.page?.componentsData as PageComponent[]) ?? []}
 	editContext={pageId && licenseId ? { pageId, licenseId, templateId, slug: pageSlug } : null}
+	ownerId={site?.ownerId ?? null}
 />

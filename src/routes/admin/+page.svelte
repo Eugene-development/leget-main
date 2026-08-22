@@ -84,6 +84,12 @@
 						/>
 					</label>
 
+					{#if data.clientSession}
+						<p class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+							Вы вошли как клиент. Панель администратора для этой роли закрыта —
+							<a href="/cabinet" class="font-semibold underline">перейти в личный кабинет</a>.
+						</p>
+					{/if}
 					{#if data.sessionExpired}
 						<p class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
 							Сессия истекла. Войдите снова.
@@ -119,14 +125,22 @@
 					</p>
 				</div>
 
-				<form method="POST" action="?/logout" use:enhance>
-					<button
-						type="submit"
-						class="rounded-xl border border-border-medium bg-white px-5 py-3 text-xs font-bold tracking-wider text-text-primary uppercase transition hover:bg-surface focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+				<div class="flex items-center gap-3">
+					<a
+						href="/admin/clients"
+						class="rounded-xl border border-border-medium bg-white px-5 py-3 text-xs font-bold tracking-wider text-text-primary uppercase transition hover:bg-surface"
 					>
-						Выйти
-					</button>
-				</form>
+						Мои клиенты
+					</a>
+					<form method="POST" action="?/logout" use:enhance>
+						<button
+							type="submit"
+							class="rounded-xl border border-border-medium bg-white px-5 py-3 text-xs font-bold tracking-wider text-text-primary uppercase transition hover:bg-surface focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+						>
+							Выйти
+						</button>
+					</form>
+				</div>
 			</header>
 
 			{#if data.summary}

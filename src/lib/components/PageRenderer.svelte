@@ -35,7 +35,8 @@
 		headerData = null,
 		footerData = null,
 		seo = null,
-		editContext = null
+		editContext = null,
+		ownerId = null
 	}: {
 		layout: TemplateLayout;
 		componentMap: ComponentMap;
@@ -45,6 +46,8 @@
 		footerData: Record<string, unknown> | null;
 		seo: PageSeoData | null;
 		editContext: EditContext | null;
+		/** id владельца лицензии этого сайта — из renderPage. */
+		ownerId?: string | null;
 	} = $props();
 
 	// Локальное состояние-зеркало headerData. Нужно для мгновенной реактивности:
@@ -168,8 +171,24 @@
 	// поток и так занят разворачиванием интерфейса редактирования, — это и была
 	// «заметная задержка» после входа. Режим редактирования включается чисто
 	// клиентски, по флагу ниже.
+	//
+	// Владение сайтом тоже проверяется здесь, на клиенте, и по той же причине:
+	// ответ renderPage одинаков для всех и кэшируется в API одним куском, так что
+	// «владелец ли ты» сервер сказать не может — он присылает ownerId, а сверять
+	// его с сессией некому, кроме браузера. Раньше сверки не было вовсе, и любой
+	// зарегистрированный пользователь платформы, войдя через футер на ЧУЖОМ сайте,
+	// видел там интерфейс редактора; сохранения при этом падали с AUTHORIZATION —
+	// владение проверяет UpsertPageComponent и соседние мутации. Здесь снимается
+	// именно этот косметический слой, серверная проверка остаётся источником истины.
+	//
+	// Незнакомый id (гость, чужой аккаунт, отсутствующий ownerId в ответе старого
+	// API) выключает редактор — правило закрытое по умолчанию.
+	const isOwner = $derived(
+		Boolean(ownerId) && $auth.userId !== null && String($auth.userId) === String(ownerId)
+	);
+
 	const isEditable = $derived(
-		browser && $auth.isAuthenticated && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
+		browser && $auth.isAuthenticated && isOwner && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
 	const Banner = $derived(layout.Banner ?? null);

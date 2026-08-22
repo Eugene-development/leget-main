@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ClientAuthButtons from '$lib/components/ClientAuthButtons.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -69,7 +70,7 @@
 			{/each}
 		</nav>
 
-		<!-- Правая часть: телефон (glass-пилюля) + email + избранное -->
+		<!-- Правая часть: телефон (glass-пилюля) + email + вход -->
 		<div class="hidden flex-1 items-center justify-end gap-3 py-1.5 lg:flex">
 			{#if phone}
 				<EditableField
@@ -124,27 +125,8 @@
 
 			<span class="h-3 w-px bg-on-dark/15" aria-hidden="true"></span>
 
-			<!-- Избранное -->
-			<a
-				href={favoritesHref}
-				class="relative isolate z-20 flex items-center px-1 focus-visible:outline-offset-[-4px]"
-			>
-				<span class="sr-only">Избранное</span>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="size-[18px] text-on-dark/80 transition-colors duration-300 hover:text-cat-6-400"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
-					></path>
-				</svg>
-			</a>
+			<!-- Вход и регистрация клиента: состояние приходит из клиентской cookie -->
+			<ClientAuthButtons />
 		</div>
 	</div>
 
@@ -191,6 +173,9 @@
 		</div>
 
 		<div class="flex items-center gap-1">
+			<!-- Вход и регистрация клиента -->
+			<ClientAuthButtons compact />
+
 			<!-- Избранное -->
 			<a href={favoritesHref} class="relative isolate z-20 flex items-center p-2">
 				<span class="sr-only">Избранное</span>

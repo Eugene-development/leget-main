@@ -6,6 +6,9 @@ import type { Actions, PageServerLoad } from './$types';
 
 const COOKIE_NAME = 'leget_admin_jwt';
 
+/** Cookie клиентской сессии — см. src/lib/server/client-session.ts. */
+const CLIENT_COOKIE = 'leget_client_jwt';
+
 function adminEmails(): string[] {
 	return (env.LEGET_ADMIN_EMAILS ?? '')
 		.split(',')
@@ -29,7 +32,14 @@ function safePage(value: string | null): number {
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const token = cookies.get(COOKIE_NAME);
 	if (!token) {
-		return { authenticated: false, conversions: null, summary: null };
+		// Клиентская сессия админом не является: показываем это прямо в форме,
+		// иначе человек упирается в «неверные учётные данные» без объяснения.
+		return {
+			authenticated: false,
+			conversions: null,
+			summary: null,
+			clientSession: Boolean(cookies.get(CLIENT_COOKIE))
+		};
 	}
 
 	try {

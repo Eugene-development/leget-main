@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import ClientAuthButtons from '$lib/components/ClientAuthButtons.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -70,7 +71,7 @@
 			</div>
 		</div>
 
-		<!-- Правая часть: контакты + избранное -->
+		<!-- Правая часть: контакты + вход -->
 		<div class="hidden flex-1 justify-between lg:flex">
 			<div class="flex flex-1">
 				<div class="items-center py-1.5 lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
@@ -140,27 +141,8 @@
 						</svg>
 					{/if}
 
-					<!-- Избранное -->
-					<a
-						href={favoritesHref}
-						class="relative isolate z-20 flex items-center px-3 focus-visible:outline-offset-[-4px]"
-					>
-						<span class="sr-only">Избранное</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="size-5 text-ink-50 transition-colors duration-300 hover:text-brand-400"
-						>
-							<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-							<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
-							></path>
-						</svg>
-					</a>
+					<!-- Вход и регистрация клиента: состояние приходит из клиентской cookie -->
+					<ClientAuthButtons />
 				</div>
 			</div>
 		</div>
@@ -191,6 +173,9 @@
 		</div>
 
 		<div class="flex items-center gap-1">
+			<!-- Вход и регистрация клиента -->
+			<ClientAuthButtons compact />
+
 			<!-- Избранное -->
 			<a href={favoritesHref} class="relative isolate z-20 flex items-center p-2">
 				<span class="sr-only">Избранное</span>

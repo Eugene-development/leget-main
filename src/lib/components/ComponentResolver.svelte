@@ -33,7 +33,8 @@
 		headerData = null,
 		footerData = null,
 		seo = null,
-		editContext = null
+		editContext = null,
+		ownerId = null
 	}: {
 		templateId: number | null;
 		slug: string | null;
@@ -42,6 +43,8 @@
 		footerData: Record<string, unknown> | null;
 		seo?: PageSeoData | null;
 		editContext: EditContext | null;
+		/** id владельца лицензии — PageRenderer включает по нему режим редактирования. */
+		ownerId?: string | null;
 	} = $props();
 
 	/**
@@ -106,4 +109,5 @@
 	{footerData}
 	{seo}
 	{editContext}
+	{ownerId}
 />

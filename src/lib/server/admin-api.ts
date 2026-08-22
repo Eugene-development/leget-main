@@ -21,7 +21,8 @@ function apiBaseUrl(): string {
 	return 'http://localhost:8001';
 }
 
-export async function adminAuthApi(path: string, init: RequestInit = {}): Promise<Response> {
+/** Серверный запрос к API leget-auth (вход админа, вход и регистрация клиента). */
+export async function authApi(path: string, init: RequestInit = {}): Promise<Response> {
 	return fetch(`${authBaseUrl()}${path}`, {
 		...init,
 		headers: {
@@ -31,6 +32,9 @@ export async function adminAuthApi(path: string, init: RequestInit = {}): Promis
 		}
 	});
 }
+
+/** Историческое имя authApi — оставлено для маршрута /admin. */
+export const adminAuthApi = authApi;
 
 export async function adminApi(path: string, init: RequestInit = {}): Promise<Response> {
 	return fetch(`${apiBaseUrl()}${path}`, {

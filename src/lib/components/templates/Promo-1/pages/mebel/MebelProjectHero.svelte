@@ -6,8 +6,6 @@
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import { auth } from '$lib/stores/auth';
-	import { browser } from '$app/environment';
 	import { getGraphQLUrl } from '$lib/utils/config';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
 
@@ -31,8 +29,11 @@
 	const images = $derived(project.images || []);
 	const categories = $derived(data.categories || []);
 
-	// Авторизация
-	let isAdmin = $derived(browser ? $auth.isAuthenticated : false);
+	// Кнопка правки проекта — часть интерфейса редактора, а не отдельное право:
+	// раньше она стояла на голом $auth.isAuthenticated и появлялась у любого
+	// вошедшего пользователя платформы на ЧУЖОМ сайте. isEditable уже означает
+	// «владелец этой лицензии в браузере» (см. PageRenderer.svelte).
+	let isAdmin = $derived(isEditable);
 
 	// Локальное состояние галереи
 	let selectedImageIndex = $state(0);

@@ -14,6 +14,7 @@ const RENDER_PAGE_QUERY = `
 				metaDescription
 				templateId
 				faviconUrl
+				ownerId
 				header { data }
 				footer { data }
 			}
@@ -60,6 +61,13 @@ export interface RenderPageResponse {
 			metaDescription: string | null;
 			templateId: number | null;
 			faviconUrl: string | null;
+			/**
+			 * id владельца лицензии. Ответ renderPage кэшируется в API одним куском
+			 * на всех посетителей сайта и запрашивается без токена — поэтому сервер
+			 * не может сказать «это ты», он говорит «владелец — вот этот». Сверку с
+			 * текущей сессией делает клиент (см. PageRenderer.svelte).
+			 */
+			ownerId: string | null;
 			header: { data: Record<string, unknown> } | null;
 			footer: { data: Record<string, unknown> } | null;
 		};
