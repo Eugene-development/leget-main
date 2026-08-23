@@ -10,12 +10,14 @@
 	// ролями (`p1-surface`, `p1-title`, `p1-field`), а не абсолютной шкалой
 	// `ink-*`. Собственный дефолт темы — тёмный: блок задуман ink-секцией,
 	// и переключатель обязан инвертировать исходный вид, а не ломать его.
+	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import { createContactVisibility } from '../contacts.svelte';
@@ -47,6 +49,12 @@
 
 	// Тема блока. Дефолт 'dark' — см. isLightBlock() в block-theme.ts.
 	const isLight = $derived(isLightBlock(data, 'dark'));
+
+	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
+	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
+	const client = $derived(
+		(page.data as { client?: { name: string; email: string } | null }).client ?? null
+	);
 
 	let email = $state('');
 	let testbot = $state('');
@@ -470,6 +478,32 @@
 							>
 						</li>
 					{/each}
+					{#if client}
+						<li>
+							<a href="/cabinet" class="p1-muted p1-accent-hover text-sm/6 transition-colors"
+								>Личный кабинет</a
+							>
+						</li>
+					{:else}
+						<li>
+							<button
+								type="button"
+								onclick={() => clientAuthModal.open('login')}
+								class="p1-muted p1-accent-hover text-sm/6 text-left transition-colors"
+							>
+								Логин
+							</button>
+						</li>
+						<li>
+							<button
+								type="button"
+								onclick={() => clientAuthModal.open('register')}
+								class="p1-muted p1-accent-hover text-sm/6 text-left transition-colors"
+							>
+								Регистрация
+							</button>
+						</li>
+					{/if}
 				</ul>
 			</div>
 		</nav>

@@ -1,9 +1,11 @@
 <script lang="ts">
 	// Артикул: 1.Ф.1.2 — см. docs/architecture/component-articles-map.md
+	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import type { Action } from 'svelte/action';
@@ -36,6 +38,12 @@
 	});
 
 	let showLoginModal = $state(false);
+
+	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
+	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
+	const client = $derived(
+		(page.data as { client?: { name: string; email: string } | null }).client ?? null
+	);
 
 	// Те же поля и дефолты, что в v1 — редактирование и сохранение идентичны.
 	const siteName = $derived(
@@ -583,6 +591,44 @@
 									></span>
 								</a>
 							</li>
+							{#if client}
+								<li>
+									<a
+										href="/cabinet"
+										class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+									>
+										Личный кабинет
+										<span
+											class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+										></span>
+									</a>
+								</li>
+							{:else}
+								<li>
+									<button
+										type="button"
+										onclick={() => clientAuthModal.open('login')}
+										class="group/link relative inline-block text-left text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+									>
+										Логин
+										<span
+											class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+										></span>
+									</button>
+								</li>
+								<li>
+									<button
+										type="button"
+										onclick={() => clientAuthModal.open('register')}
+										class="group/link relative inline-block text-left text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+									>
+										Регистрация
+										<span
+											class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+										></span>
+									</button>
+								</li>
+							{/if}
 						</ul>
 					</div>
 				</div>

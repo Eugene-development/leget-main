@@ -1,10 +1,12 @@
 <script lang="ts">
 	// Артикул: 1.Ф.1.3 — см. docs/architecture/component-articles-map.md
+	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import type { Action } from 'svelte/action';
 	import type { Snippet } from 'svelte';
 	import { catalogItems } from '../../catalogItems';
@@ -38,6 +40,12 @@
 	const isLight = $derived(isLightBlock(data, 'light'));
 
 	let showLoginModal = $state(false);
+
+	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
+	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
+	const client = $derived(
+		(page.data as { client?: { name: string; email: string } | null }).client ?? null
+	);
 
 	const siteName = $derived(
 		typeof data?.siteName === 'string' && data.siteName && data.siteName !== 'Новострой'
@@ -471,6 +479,34 @@
 								>Партнёрство</a
 							>
 						</li>
+						{#if client}
+							<li>
+								<a
+									href="/cabinet"
+									class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+									>Личный кабинет</a
+								>
+							</li>
+						{:else}
+							<li>
+								<button
+									type="button"
+									onclick={() => clientAuthModal.open('login')}
+									class="p1-accent-hover rounded-sm text-left transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>
+									Логин
+								</button>
+							</li>
+							<li>
+								<button
+									type="button"
+									onclick={() => clientAuthModal.open('register')}
+									class="p1-accent-hover rounded-sm text-left transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>
+									Регистрация
+								</button>
+							</li>
+						{/if}
 					</ul>
 				</div>
 			</div>
