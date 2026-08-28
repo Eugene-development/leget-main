@@ -1,0 +1,142 @@
+/*
+	Общие текстуры и анимации страницы «Вакансии» (Promo-1).
+
+	Файл подключается КАЖДЫМ блоком (`import './theme.css'`) — Vite склеивает
+	его в один чанк, дублирования в бандле нет. Бочка index.ts от этого не
+	спасает: в dev и в изолированных чанках лист без собственного импорта
+	останется без стилей.
+
+	Классы намеренно глобальные: часть анимируемых узлов — это обёртки
+	<EditableField>, которые Svelte не относит к разметке компонента,
+	и scoped-стили до них не доходят.
+*/
+
+/* ─────────────────────────── Текстуры фона ─────────────────────────── */
+
+/*
+	Вертикальные линии-колонки для светлых секций: та же текстура, что несут
+	«Гарантии» и «О компании», — страница обязана быть узнаваемой частью
+	шаблона, а не отдельным островом. Маска гасит текстуру у кромок, чтобы
+	стык с волной Hero остался ровным по цвету.
+*/
+.vc-rules {
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+	background-size: 25% 100%;
+	opacity: 0.5;
+	mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+}
+
+/* ───────────────────── Появление контента (единый сценарий) ───────────────────── */
+
+@keyframes vc-rise {
+	from {
+		opacity: 0;
+		transform: translateY(18px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes vc-rule {
+	from {
+		opacity: 0;
+		transform: scaleX(0.4);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes vc-frame {
+	from {
+		opacity: 0;
+		transform: scale(0.985) translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+/* Блок ниже сгиба ждёт вьюпорта: revealOnScroll добавляет .vc-visible. */
+.vc-reveal .vc-item,
+.vc-reveal .vc-rule,
+.vc-reveal .vc-card {
+	opacity: 0;
+}
+
+/*
+	fill-mode = backwards, а не both: при `both` финальный transform анимации
+	остаётся на элементе и перебивает подъём карточки на наведении.
+	Конечное состояние задаём обычным opacity.
+*/
+.vc-visible .vc-item {
+	opacity: 1;
+	animation: vc-rise 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--vc-delay, 0ms) backwards;
+}
+
+.vc-visible .vc-rule {
+	opacity: 1;
+	animation: vc-rule 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--vc-delay, 0ms) backwards;
+}
+
+.vc-visible .vc-card {
+	opacity: 1;
+	animation: vc-frame 880ms cubic-bezier(0.22, 1, 0.36, 1) var(--vc-delay, 0ms) backwards;
+}
+
+/*
+	Ступени задержки через кастомное свойство, а не animation-delay:
+	shorthand выше выиграл бы по специфичности и сбросил задержку в 0.
+*/
+.vc-d1 {
+	--vc-delay: 80ms;
+}
+.vc-d2 {
+	--vc-delay: 160ms;
+}
+.vc-d3 {
+	--vc-delay: 240ms;
+}
+
+/*
+	Раскрытие позиции. Высота анимируется через grid-template-rows: `height:
+	auto` не анимируется вовсе, а фиксированная max-height требует угадывать
+	высоту содержимого — у вакансии с шестью пунктами она втрое больше, чем
+	у вакансии с двумя, и переход либо рвётся, либо тянется впустую.
+*/
+.vc-fold {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vc-fold[data-open='true'] {
+	grid-template-rows: 1fr;
+}
+
+.vc-fold > * {
+	overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.vc-reveal .vc-item,
+	.vc-reveal .vc-rule,
+	.vc-reveal .vc-card,
+	.vc-visible .vc-item,
+	.vc-visible .vc-rule,
+	.vc-visible .vc-card {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+
+	.vc-fold {
+		transition: none;
+	}
+}

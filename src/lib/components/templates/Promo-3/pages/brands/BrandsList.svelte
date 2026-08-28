@@ -188,7 +188,7 @@
 							>
 						</div>
 						<h2
-							class="font-display text-xl text-white transition-colors duration-300 group-hover:text-accent-500"
+							class="ds-title-sub text-xl text-white transition-colors duration-300 group-hover:text-accent-500"
 						>
 							{brand.name}
 						</h2>

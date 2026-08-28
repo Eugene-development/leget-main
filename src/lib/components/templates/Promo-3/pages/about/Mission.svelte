@@ -45,9 +45,7 @@
 					onSave={(v) => saveField('heading', v)}
 					class="block"
 				>
-					{#snippet children(displayValue)}<h2
-							class="font-display mt-4 text-4xl text-white lg:text-5xl"
-						>
+					{#snippet children(displayValue)}<h2 class="mt-4 text-4xl text-white lg:text-5xl">
 							{displayValue}
 						</h2>{/snippet}
 				</EditableField>
@@ -92,7 +90,7 @@
 					<div
 						class="absolute -top-px left-10 h-px w-20 bg-linear-to-r from-transparent via-accent-500 to-transparent"
 					></div>
-					<div class="font-display mb-6 text-6xl leading-none text-accent-500/20">"</div>
+					<div class="ds-title-display mb-6 text-6xl text-accent-500/20">"</div>
 					<EditableField
 						fieldKey="Mission.quote"
 						label="Цитата"
@@ -105,15 +103,13 @@
 						onSave={(v) => saveField('quote', v)}
 						class="block"
 					>
-						{#snippet children(displayValue)}<blockquote
-								class="font-display text-2xl leading-snug font-semibold text-white"
-							>
+						{#snippet children(displayValue)}<blockquote class="ds-title-sub text-2xl text-white">
 								{displayValue}
 							</blockquote>{/snippet}
 					</EditableField>
 					<div class="mt-8 flex items-center gap-4">
 						<div
-							class="font-display flex size-12 items-center justify-center rounded-full border border-accent-500/30 bg-accent-500/10 text-lg font-bold text-accent-500"
+							class="flex size-12 items-center justify-center rounded-full border border-accent-500/30 bg-accent-500/10 text-lg font-bold text-accent-500"
 						>
 							{String(data?.quoteInitials ?? 'АП')}
 						</div>

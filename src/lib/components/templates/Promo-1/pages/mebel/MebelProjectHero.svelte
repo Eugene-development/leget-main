@@ -51,6 +51,13 @@
 		value: '',
 		short_description: '',
 		description: '',
+		// Паспорт сданной работы. Правится ТОЛЬКО здесь: страница `/projects`
+		// эти поля показывает и не редактирует — см. ProjectsFeed/data.ts.
+		completed_at: '',
+		object_address: '',
+		maker: '',
+		hardware_brands: '',
+		appliance_brands: '',
 		price: '',
 		old_price: '',
 		is_new: false,
@@ -58,15 +65,32 @@
 		is_active: true
 	});
 
+	/** Список брендов из строки формы: «Blum, Hettich» → ['Blum', 'Hettich']. */
+	function parseBrands(value: string): string[] {
+		return value
+			.split(',')
+			.map((brand) => brand.trim())
+			.filter((brand) => brand !== '');
+	}
+
 	function openEditPanel() {
 		// Попытаться получить category_id из проекта или из категории
 		const categoryId = project.category_id || category.id || '';
+		const meta = (project.meta ?? {}) as Record<string, unknown>;
+		const brands = (key: string) =>
+			Array.isArray(meta[key]) ? (meta[key] as unknown[]).join(', ') : '';
+
 		editForm = {
 			id: project.id || '',
 			category_id: categoryId,
 			value: project.value || '',
 			short_description: project.short_description || '',
 			description: project.description || '',
+			completed_at: project.completed_at || '',
+			object_address: project.object_address || '',
+			maker: typeof meta.maker === 'string' ? meta.maker : '',
+			hardware_brands: brands('hardware_brands'),
+			appliance_brands: brands('appliance_brands'),
 			price: project.price != null ? String(project.price) : '',
 			old_price: project.old_price != null ? String(project.old_price) : '',
 			is_new: project.is_new || false,
@@ -122,6 +146,16 @@
 							value: editForm.value,
 							short_description: editForm.short_description || null,
 							description: editForm.description || null,
+							// Пустое поле отправляется ЯВНЫМ null, а не пропускается:
+							// мутация различает «поле не прислали» и «поле очистили»,
+							// и очистка даты убирает работу из ленты `/projects`.
+							// Пустой строкой дату не очистить — скаляр Date её
+							// не разберёт и ответит ошибкой.
+							completed_at: editForm.completed_at || null,
+							object_address: editForm.object_address || null,
+							maker: editForm.maker || null,
+							hardware_brands: parseBrands(editForm.hardware_brands),
+							appliance_brands: parseBrands(editForm.appliance_brands),
 							price: editForm.price ? parseFloat(editForm.price) : null,
 							old_price: editForm.old_price ? parseFloat(editForm.old_price) : null,
 							is_new: editForm.is_new,
@@ -523,6 +557,95 @@
 					placeholder="Подробное описание проекта"
 					class="w-full resize-none rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
 				></textarea>
+			</div>
+
+			<!--
+				Паспорт сданной работы.
+
+				Единственное место на всей платформе, где эти поля правятся:
+				страница «Проекты» (`/projects`, артикул 1.26.2) собрана из них,
+				но редактора не имеет — там они только показываются.
+			-->
+			<div class="space-y-4 rounded-xl border border-ink-100 bg-ink-50 p-4">
+				<div>
+					<p class="text-xs font-semibold tracking-wide text-ink-400 uppercase">Паспорт работы</p>
+					<p class="mt-1 text-xs text-ink-500">
+						Показывается на странице «Проекты». Без даты сдачи работа туда не попадает, но в
+						каталоге остаётся.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-2 gap-4">
+					<div>
+						<label for="ep-completed" class="mb-1.5 block text-sm font-semibold text-ink-700"
+							>Дата сдачи</label
+						>
+						<input
+							id="ep-completed"
+							type="date"
+							bind:value={editForm.completed_at}
+							class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
+						/>
+					</div>
+					<div>
+						<label for="ep-maker" class="mb-1.5 block text-sm font-semibold text-ink-700"
+							>Кто делал мебель</label
+						>
+						<input
+							id="ep-maker"
+							type="text"
+							bind:value={editForm.maker}
+							placeholder="Собственное производство"
+							class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
+						/>
+					</div>
+				</div>
+
+				<div>
+					<label for="ep-address" class="mb-1.5 block text-sm font-semibold text-ink-700"
+						>Адрес объекта</label
+					>
+					<input
+						id="ep-address"
+						type="text"
+						bind:value={editForm.object_address}
+						placeholder="Москва, Хамовники, ул. Примерная, 1"
+						class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
+					/>
+					<!-- Усечение делает выдача, а не форма: тенант вводит один раз
+					     то, что знает, и не может случайно опубликовать больше. -->
+					<p class="mt-1.5 text-xs text-ink-500">
+						Храним целиком, для учёта. На сайте публикуются только первые два звена — город и район.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-2 gap-4">
+					<div>
+						<label for="ep-hardware" class="mb-1.5 block text-sm font-semibold text-ink-700"
+							>Бренды фурнитуры</label
+						>
+						<input
+							id="ep-hardware"
+							type="text"
+							bind:value={editForm.hardware_brands}
+							placeholder="Blum, Hettich"
+							class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
+						/>
+					</div>
+					<div>
+						<label for="ep-appliances" class="mb-1.5 block text-sm font-semibold text-ink-700"
+							>Бренды техники</label
+						>
+						<input
+							id="ep-appliances"
+							type="text"
+							bind:value={editForm.appliance_brands}
+							placeholder="Bosch, Franke"
+							class="w-full rounded-xl border border-ink-200 px-3.5 py-2.5 text-sm text-ink-900 transition-all outline-none focus:border-link-400 focus:ring-2 focus:ring-link-100"
+						/>
+					</div>
+				</div>
+				<p class="text-xs text-ink-500">Несколько брендов — через запятую.</p>
 			</div>
 
 			<!-- Цены -->

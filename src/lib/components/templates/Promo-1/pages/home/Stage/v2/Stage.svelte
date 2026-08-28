@@ -129,7 +129,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title font-display mt-4 text-3xl md:text-4xl">
+						<h2 class="p1-title mt-4 text-3xl md:text-4xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -183,7 +183,7 @@
 
 							<div>
 								<div class="flex items-center gap-3">
-									<span class="font-display text-xs font-black text-link-400">Шаг {i + 1}</span>
+									<span class="p1-label text-link-400">Шаг {i + 1}</span>
 									<span class="h-1.5 w-1.5 rounded-full bg-ink-600"></span>
 									<h3
 										class="p1-title p1-title-sub text-lg transition-colors duration-300 group-hover:text-link-300"
@@ -227,12 +227,6 @@
 </section>
 
 <style>
-	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
-
-	.font-display {
-		font-family: 'Outfit', sans-serif;
-	}
-
 	.stage-card {
 		animation: stage-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 	}

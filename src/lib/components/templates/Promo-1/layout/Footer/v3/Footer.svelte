@@ -7,6 +7,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
+	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import type { Action } from 'svelte/action';
 	import type { Snippet } from 'svelte';
 	import { catalogItems } from '../../catalogItems';
@@ -44,8 +45,11 @@
 	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
 	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
 	const client = $derived(
-		(page.data as { client?: { name: string; email: string } | null }).client ?? null
+		(page.data as { client?: { name: string; email: string; role: string } | null }).client ?? null
 	);
+
+	/** У партнёра кабинет свой — ссылка ведёт туда же, куда пустит сервер. */
+	const cabinet = $derived(cabinetHref(client?.role));
 
 	const siteName = $derived(
 		typeof data?.siteName === 'string' && data.siteName && data.siteName !== 'Новострой'
@@ -83,9 +87,15 @@
 	const disabledServices = $derived(
 		Array.isArray(data?.disabledServices) ? (data.disabledServices as string[]) : []
 	);
-	const visibleCatalogItems = $derived(
-		catalogItems.filter((item) => item.comingSoon !== true && !disabledRubrics.includes(item.href))
-	);
+	// «Проекты» (/projects) — не рубрика, поэтому в общем catalogItems её нет: там она
+	// попала бы и в меню каталога хэдера, и в переключатели рубрик. В футере ссылка
+	// уместна — секция «Каталог» здесь работает как навигация по витрине целиком.
+	const visibleCatalogItems = $derived([
+		...catalogItems.filter(
+			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
+		),
+		{ href: '/projects', label: 'Проекты' }
+	]);
 	const visibleServiceItems = $derived(
 		serviceItems.filter((item) => item.comingSoon !== true && !disabledServices.includes(item.href))
 	);
@@ -155,7 +165,7 @@
 					Маркетплэйс интерьеров
 				</div>
 
-				<h2 class="font-footer-display mt-8 max-w-5xl text-[clamp(3.6rem,10vw,9rem)]">
+				<h2 class="mt-8 max-w-5xl text-[clamp(3.6rem,10vw,9rem)]">
 					<EditableField
 						fieldKey="Footer.siteName"
 						label="Название компании"
@@ -425,6 +435,13 @@
 								>Контакты</a
 							>
 						</li>
+						<li>
+							<a
+								href="/vacancy"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>Вакансии</a
+							>
+						</li>
 					</ul>
 				</div>
 
@@ -467,13 +484,6 @@
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
 							<a
-								href="/vacancy"
-								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-								>Вакансии</a
-							>
-						</li>
-						<li>
-							<a
 								href="/partnership"
 								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 								>Партнёрство</a
@@ -482,7 +492,7 @@
 						{#if client}
 							<li>
 								<a
-									href="/cabinet"
+									href={cabinet}
 									class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 									>Личный кабинет</a
 								>
@@ -550,10 +560,6 @@
 {/if}
 
 <style>
-	:global(.font-footer-display) {
-		font-family: 'Outfit', 'Jost', sans-serif !important;
-	}
-
 	.footer-v3-grid {
 		background-image:
 			linear-gradient(var(--p1-line) 1px, transparent 1px),

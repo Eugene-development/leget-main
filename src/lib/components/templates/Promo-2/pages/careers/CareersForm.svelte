@@ -43,12 +43,18 @@
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				body: JSON.stringify({
-					form_type: 'careers',
+					// Ключ поля — `service_type`, как требует контроллер: `form_type`
+					// он не знает, и валидация отклоняла каждый отклик с 422.
+					service_type: 'careers',
 					name: resumeName.trim(),
 					phone: resumePhone.trim(),
-					message: resumeMessage.trim(),
-					source_url: sourceUrl,
-					extra: { email: resumeEmail.trim() }
+					// `extra` контроллер тоже не читает, поэтому почта соискателя
+					// уезжает в текст письма — иначе ответить ему будет некуда.
+					message: [`E-mail: ${resumeEmail.trim()}`, resumeMessage.trim()]
+						.filter(Boolean)
+						.join('\n\n')
+						.slice(0, 2000),
+					source_url: sourceUrl
 				})
 			});
 

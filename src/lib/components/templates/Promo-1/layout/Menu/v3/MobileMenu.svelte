@@ -7,6 +7,9 @@
 	import { cityStore } from '$lib/stores/city.svelte';
 	import type { CatalogItem } from '../../catalogItems';
 	import type { ServiceItem } from '../../serviceItems';
+	import type { BannerLink } from '../../bannerLinks';
+	import { createClientAccount } from '$lib/stores/client-account.svelte';
+	import { sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../../theme.css';
 
 	type MenuItem = CatalogItem | ServiceItem;
@@ -22,6 +25,11 @@
 	// открытым разделом: колонке негде стоять сбоку, но именно она несёт
 	// editorial-характер варианта, поэтому выкидывать её нельзя. Двух тёмных
 	// поверхностей при этом не появляется — она всегда одна.
+	// Телефон, почта, «Контакты» и вход приходят в лист с 25.08.2026: строка
+	// шапки переехала из баннера в хэдер, и в ней остались только значки, чей
+	// смысл читается без подписи. Здесь блоки стоят общими (`p1-*`, роли темы
+	// приютившего `<nav>`) — под идиому этой версии они ещё не подогнаны:
+	// эталоном разобран `1.М.1.1`, остальные три идут за ним.
 	let {
 		links = [],
 		visibleCatalogItems = [],
@@ -29,6 +37,9 @@
 		disabledRubrics = [],
 		disabledServices = [],
 		cities = [],
+		sitePhone = '',
+		email = '',
+		contactsLink = null,
 		isEditable = false,
 		onToggleRubric,
 		onToggleService
@@ -39,10 +50,16 @@
 		disabledRubrics: string[];
 		disabledServices: string[];
 		cities: { label: string }[];
+		sitePhone: string;
+		email: string;
+		contactsLink: BannerLink | null;
 		isEditable?: boolean;
 		onToggleRubric: ToggleHandler;
 		onToggleService: ToggleHandler;
 	} = $props();
+
+	const account = createClientAccount();
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	const initialSection = (): MenuKind | null => {
 		const path = $page.url.pathname;
@@ -255,10 +272,145 @@
 	</button>
 {/snippet}
 
+<!--
+	Учётная запись и контакты в языке варианта 3.
+
+	Остров набран пилюлями и круглыми бейджами на шкале `alt-petrol`, поэтому
+	и эти два блока — пилюли: строка контакта повторяет анатомию пункта
+	навигации (бейдж 7×7 слева, подпись 13px с отрицательным трекингом), а
+	«Войти» берёт тон тёмной колонки — в острове это самая сильная поверхность,
+	и главное действие законно её носит. Разделены блоки тем же волосяным
+	`border-t border-alt-petrol-950/8`, что каталог и город, и надзаголовок у
+	них тот же 9px вразрядку.
+
+	Телефон помечен акцентным бейджем `alt-petrol-accent` — единственным
+	хроматическим пятном варианта; им же остров метит раскрытый раздел.
+-->
+{#snippet groupHead(label: string)}
+	<p class="text-[9px] font-semibold tracking-[0.18em] text-alt-petrol-400 uppercase">{label}</p>
+{/snippet}
+
+{#snippet badge(accent: boolean, path: string)}
+	<span
+		class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full {accent
+			? 'bg-alt-petrol-accent-600/12 text-alt-petrol-accent-600'
+			: 'bg-alt-petrol-950/5 text-alt-petrol-600'}"
+		aria-hidden="true"
+	>
+		<svg
+			class="h-3.5 w-3.5"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="1.5"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" d={path} />
+		</svg>
+	</span>
+{/snippet}
+
+{#snippet contactRow(
+	href: string,
+	label: string,
+	path: string,
+	accent: boolean,
+	onclick?: () => void
+)}
+	<a
+		{href}
+		{onclick}
+		class="flex items-center gap-3 rounded-full px-3 py-2 text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] active:bg-alt-petrol-950/5"
+	>
+		{@render badge(accent, path)}
+		<span class="min-w-0 flex-1 truncate">{label}</span>
+	</a>
+{/snippet}
+
+{#snippet accountBlock()}
+	<div class="border-b border-alt-petrol-950/8 px-4 py-4">
+		{@render groupHead('Учётная запись')}
+		{#if account.client}
+			<div class="mt-3 flex items-center gap-3">
+				{@render badge(
+					true,
+					'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0'
+				)}
+				<a href={account.cabinet} onclick={() => uiStore.closeMenu()} class="min-w-0 flex-1">
+					<span class="block text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-950"
+						>Личный кабинет</span
+					>
+					<span class="mt-0.5 block truncate text-[11px] text-alt-petrol-500"
+						>{account.client.email}</span
+					>
+				</a>
+				<button
+					type="button"
+					onclick={account.logout}
+					disabled={account.isLoggingOut}
+					class="shrink-0 cursor-pointer rounded-full bg-alt-petrol-950/5 px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap text-alt-petrol-700 transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] disabled:cursor-default disabled:opacity-60"
+				>
+					Выйти
+				</button>
+			</div>
+		{:else}
+			<div class="mt-3 flex gap-2">
+				<button
+					type="button"
+					onclick={account.openLogin}
+					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950 px-4 text-[13px] font-medium tracking-[-0.01em] text-on-dark shadow-[0_10px_28px_-18px] shadow-alt-petrol-950/70 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+				>
+					Войти
+				</button>
+				<button
+					type="button"
+					onclick={account.openRegister}
+					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950/5 px-4 text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-700 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+				>
+					Регистрация
+				</button>
+			</div>
+		{/if}
+	</div>
+{/snippet}
+
+{#snippet contactsBlock()}
+	{#if sitePhone || email || contactsLink}
+		<div class="border-t border-alt-petrol-950/8 px-4 py-4">
+			{@render groupHead('Контакты')}
+			<div class="mt-2 flex flex-col gap-0.5">
+				{#if sitePhone}
+					{@render contactRow(
+						phoneHref,
+						sitePhone,
+						'M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z',
+						true
+					)}
+				{/if}
+				{#if email}
+					{@render contactRow(
+						`mailto:${email}`,
+						email,
+						'M3 8l7.89 4.26a2 2 0 001.94 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+						false
+					)}
+				{/if}
+				{#if contactsLink}
+					{@render contactRow(
+						contactsLink.href,
+						contactsLink.label,
+						'M5 12h14M13 6l6 6-6 6',
+						false,
+						() => uiStore.closeMenu()
+					)}
+				{/if}
+			</div>
+		</div>
+	{/if}
+{/snippet}
+
 {#if uiStore.menuOpen}
 	<div
-		class="px-3 pt-1 pb-4 sm:hidden"
-		style="font-family: 'Outfit', sans-serif;"
+		class="px-3 pt-1 pb-4 lg:hidden"
 		transition:fly={{ y: -14, duration: 440, easing: quintOut }}
 	>
 		<div
@@ -294,10 +446,7 @@
 								{heading.count}
 							</span>
 						</div>
-						<p
-							class="p1-title-sub mt-3 text-[1.75rem]"
-							style="font-family: 'Playfair Display', serif;"
-						>
+						<p class="p1-title-display mt-3 text-[1.75rem]">
 							{heading.title}
 						</p>
 						<p class="mt-3 max-w-[18rem] text-[11px] leading-relaxed text-on-dark/55">
@@ -321,6 +470,8 @@
 						{/if}
 					</div>
 				</div>
+
+				{@render accountBlock()}
 
 				<!-- Полоса навигации в двойной оправе — та же, что на десктопе, но столбцом. -->
 				<div class="p-3">
@@ -400,7 +551,7 @@
 								type="button"
 								onclick={() => cityStore.set(city.label)}
 								aria-pressed={cityStore.city === city.label}
-								class="rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {cityStore.city ===
+								class="flex min-h-11 items-center rounded-full px-4 text-[13px] font-medium tracking-[-0.01em] whitespace-nowrap transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {cityStore.city ===
 								city.label
 									? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8'
 									: 'bg-alt-petrol-950/5 text-alt-petrol-700'}"
@@ -410,6 +561,7 @@
 						{/each}
 					</div>
 				</div>
+				{@render contactsBlock()}
 			</nav>
 		</div>
 	</div>

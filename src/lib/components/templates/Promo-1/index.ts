@@ -3,10 +3,11 @@ import type { Component } from 'svelte';
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
 // Layout components
+import PromoStrip from './layout/PromoStrip/index.svelte';
 import Banner from './layout/Banner/index.svelte';
 import Header from './layout/Header.svelte';
 import Footer from './layout/Footer/index.svelte';
-export { Banner, Header, Footer };
+export { PromoStrip, Banner, Header, Footer };
 
 // 404 page components
 import NotFound from './pages/404/NotFound.svelte';
@@ -125,6 +126,15 @@ import MebelProjectsGrid from './pages/mebel/MebelProjectsGrid.svelte';
 import MebelProjectHero from './pages/mebel/MebelProjectHero.svelte';
 import MebelProjectDescription from './pages/mebel/MebelProjectDescription.svelte';
 import MebelProjectSimilar from './pages/mebel/MebelProjectSimilar.svelte';
+
+// Projects page components
+import ProjectsHero from './pages/projects/ProjectsHero.svelte';
+import ProjectsFeed from './pages/projects/ProjectsFeed/index.svelte';
+
+// Vacancy page components
+import VacancyHero from './pages/vacancy/VacancyHero.svelte';
+import VacancyList from './pages/vacancy/VacancyList.svelte';
+import VacancyForm from './pages/vacancy/VacancyForm.svelte';
 
 // Stoleshnica page components
 import StoleshnicaHero from './pages/stoleshnica/StoleshnicaHero.svelte';
@@ -302,6 +312,20 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		MebelProjectDescription,
 		MebelProjectSimilar,
 		MebelCTA
+	},
+	// Страница «Проекты»: те же работы, что в рубрике «Мебель» каталога, но
+	// сплошной лентой. Сайдбара каталога здесь нет намеренно — это страница
+	// верхнего уровня из меню шапки, а не рубрика.
+	'/projects': {
+		ProjectsHero,
+		ProjectsFeed
+	},
+	// Страница «Вакансии». Слаг — `/vacancy`: именно на него ведёт ссылка
+	// «Вакансии» в подвале всех трёх версий Footer шаблона.
+	'/vacancy': {
+		VacancyHero,
+		VacancyList,
+		VacancyForm
 	},
 	'/stoleshnica': {
 		StoleshnicaSidebar,

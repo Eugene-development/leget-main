@@ -19,6 +19,7 @@
 		assembly: 'Сборка',
 		measurement: 'Замер',
 		partnership: 'Партнёрство',
+		promo: 'Промокод',
 		offline_call: 'Звонок',
 		offline_email: 'Почта'
 	};

@@ -260,10 +260,8 @@
 	const activeStyle = $derived(styleOptions[activeStyleIndex]);
 </script>
 
-<!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
-
 <section
-	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-x-hidden transition-colors duration-500 lg:h-full {isLight
+	class="relative flex min-h-0 w-full items-center justify-start overflow-x-hidden transition-colors duration-500 lg:h-full {isLight
 		? 'bg-ink-50 text-ink-900'
 		: 'bg-ink-950 text-on-dark'}"
 >
@@ -423,7 +421,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
+							class="mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
 								? 'via-slate-850 from-ink-900 to-ink-700'
 								: 'hero-title from-surface-raised via-ink-100 to-ink-400'}"
 						>
@@ -444,7 +442,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="hero-desc font-sans-premium mb-5 max-w-2xl text-base leading-relaxed font-normal transition-colors duration-500 md:text-lg {isLight
+							class="hero-desc mb-5 max-w-2xl text-base leading-relaxed font-normal transition-colors duration-500 md:text-lg {isLight
 								? 'text-ink-600'
 								: 'hero-description text-ink-300'}"
 						>
@@ -1037,17 +1035,6 @@
 		.hero-feature-sub {
 			font-size: 0.6875rem;
 		}
-	}
-
-	/* Кастомные шрифты и эффекты */
-	/* Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte */
-
-	:global(.font-display) {
-		font-family: 'Playfair Display', serif !important;
-	}
-
-	:global(.font-sans-premium) {
-		font-family: 'Jost', sans-serif !important;
 	}
 
 	/* Тонкая сетка поверх фона для технологичного стиля */

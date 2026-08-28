@@ -13,6 +13,7 @@
 		ownerId: string | null;
 		header: { data: Record<string, unknown> } | null;
 		footer: { data: Record<string, unknown> } | null;
+		actionCards: unknown;
 	};
 
 	type PageComponent = {
@@ -52,6 +53,7 @@
 	slug={pageSlug}
 	headerData={site?.header?.data ?? null}
 	footerData={site?.footer?.data ?? null}
+	actionCards={site?.actionCards ?? null}
 	{seo}
 	components={(data.pageData?.page?.componentsData as PageComponent[]) ?? []}
 	editContext={pageId && licenseId ? { pageId, licenseId, templateId, slug: pageSlug } : null}

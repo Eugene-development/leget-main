@@ -77,7 +77,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">
+						<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -87,7 +87,7 @@
 				<div class="mt-12 grid grid-cols-2 gap-6">
 					{#each stats as stat}
 						<div class="rounded-2xl border border-surface-700/50 bg-surface-800/30 p-6">
-							<div class="font-display text-4xl font-bold text-accent-500">{stat.value}</div>
+							<div class="ds-numeric text-4xl text-accent-500">{stat.value}</div>
 							<div class="mt-2 text-sm text-surface-300">{stat.label}</div>
 						</div>
 					{/each}

@@ -1,75 +1,121 @@
 <script lang="ts">
 	/**
-	 * Кнопки клиентской авторизации в баннере шапки.
+	 * Значковые кнопки клиентской авторизации в правой зоне хэдера.
 	 *
-	 * Состояние берётся из `page.data.client` — корневой layout кладёт туда имя
-	 * и email из payload клиентской cookie (см. src/lib/server/client-session.ts),
-	 * поэтому шапка приходит из SSR уже в нужном виде, без мигания «Войти» у
-	 * вошедшего пользователя.
+	 * Состояние и действия — в `createClientAccount()`; здесь только разметка.
+	 * Она приходит из SSR уже в нужном виде, без мигания «Войти» у вошедшего:
+	 * корневой layout кладёт имя и email из payload клиентской cookie в
+	 * `page.data.client` (см. src/lib/server/client-session.ts).
 	 *
-	 * Рассчитаны на тёмную полосу баннера: цвета берутся из ролей `on-dark` и
-	 * шкалы `ink`, а не из белого/чёрного литералами.
+	 * **Вариант остался один.** Было три. `text` — надписи в полосе баннера —
+	 * умер 25.08.2026 вместе с самой полосой: мобильная строка шапки переехала
+	 * в `Header.svelte`, и вход из неё ушёл в лист меню. `menu` — строки листа —
+	 * прожил два дня: у каждой из четырёх версий меню свой язык, и общий
+	 * компонент, который делят все шаблоны, знать про них не должен. С ними
+	 * ушли пропсы `compact` и `themed`: первый прятал «Регистрацию» совсем,
+	 * второй переводил кнопки на роли темы приютившего блока — здесь ни то,
+	 * ни другое не нужно, зона хэдера темы не имеет.
+	 *
+	 * Чеканка повторяет соседей по зоне («Избранное», выбор города): та же
+	 * плашка, кольцо и размер значка — разведены только цвета наведения.
+	 * Сердце уходит в бренд, вход и город — в `link`: бренд в этой зоне
+	 * закреплён за избранным.
 	 */
+	import { browser } from '$app/environment';
 	import { page } from '$app/state';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
+	import { createClientAccount } from '$lib/stores/client-account.svelte';
+	import IconHint from '$lib/components/IconHint.svelte';
 
-	let { compact = false }: { compact?: boolean } = $props();
-
-	let isLoggingOut = $state(false);
-
-	const client = $derived(
-		(page.data as { client?: { name: string; email: string } | null }).client ?? null
-	);
+	const account = createClientAccount();
 
 	/**
 	 * `/cabinet` уводит гостя редиректом с `?auth=client-login` — по этой метке
 	 * сразу открываем форму входа, чтобы человек не искал кнопку глазами.
+	 * Живёт здесь, а не в `createClientAccount()`: правило нужно один раз на
+	 * страницу, а компонент этот на странице один.
 	 */
-	$effect(() => {
-		if (!client && page.url.searchParams.get('auth') === 'client-login') {
+	onMount(() => {
+		if (browser && !account.client && page.url.searchParams.get('auth') === 'client-login') {
 			clientAuthModal.open('login');
 		}
 	});
 
-	async function logout() {
-		isLoggingOut = true;
-		try {
-			await fetch('/cabinet/session', { method: 'DELETE' });
-		} catch {
-			// Сеть не ответила — cookie осталась; состояние ниже не меняем.
-		} finally {
-			isLoggingOut = false;
-		}
-		await invalidateAll();
-		if (page.url.pathname.startsWith('/cabinet')) await goto('/');
-	}
-
-	const linkClass =
-		'rounded-full px-3 py-1.5 text-xs whitespace-nowrap text-ink-50 transition-colors hover:text-brand-400';
-	const solidClass =
-		'rounded-full bg-on-dark/10 px-3 py-1.5 text-xs whitespace-nowrap text-ink-50 transition-colors hover:bg-on-dark/20';
+	const iconClass =
+		'group relative flex cursor-pointer items-center justify-center rounded-xl bg-linear-to-r from-ink-100/20 to-ink-50/80 p-3 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200 disabled:cursor-default disabled:opacity-60';
+	const iconGlyphClass =
+		'size-5 text-ink-500 transition-all duration-300 group-hover:scale-110 group-hover:text-link-500';
 </script>
 
-{#if client}
-	<div class="flex items-center gap-1">
-		<a href="/cabinet" class={solidClass} title={client.email}>
-			<span class="sr-only">Личный кабинет</span>
-			<span aria-hidden="true">{compact ? 'Кабинет' : client.name}</span>
-		</a>
-		<button type="button" onclick={logout} disabled={isLoggingOut} class={linkClass}>
-			Выйти
-		</button>
-	</div>
+{#if account.client}
+	<a href={account.cabinet} class={iconClass}>
+		<span class="sr-only">Личный кабинет</span>
+		<IconHint text="Кабинет — {account.client.email}" />
+		<svg
+			class={iconGlyphClass}
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="1.8"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0"
+			/>
+		</svg>
+	</a>
+	<button type="button" onclick={account.logout} disabled={account.isLoggingOut} class={iconClass}>
+		<span class="sr-only">Выйти</span>
+		<IconHint text="Выйти" align="right" />
+		<svg
+			class={iconGlyphClass}
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="1.8"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+			/>
+		</svg>
+	</button>
 {:else}
-	<div class="flex items-center gap-1">
-		<button type="button" onclick={() => clientAuthModal.open('login')} class={linkClass}>
-			Войти
-		</button>
-		{#if !compact}
-			<button type="button" onclick={() => clientAuthModal.open('register')} class={solidClass}>
-				Регистрация
-			</button>
-		{/if}
-	</div>
+	<button type="button" onclick={account.openLogin} class={iconClass}>
+		<span class="sr-only">Войти</span>
+		<IconHint text="Войти" />
+		<svg
+			class={iconGlyphClass}
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="1.8"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M8.25 9V5.25A2.25 2.25 0 0110.5 3h6a2.25 2.25 0 012.25 2.25v13.5A2.25 2.25 0 0116.5 21h-6a2.25 2.25 0 01-2.25-2.25V15m-6 0l3-3m0 0l-3-3m3 3H3.75"
+			/>
+		</svg>
+	</button>
+	<button type="button" onclick={account.openRegister} class={iconClass}>
+		<span class="sr-only">Регистрация</span>
+		<IconHint text="Регистрация" align="right" />
+		<svg
+			class={iconGlyphClass}
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="1.8"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M13.5 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM2.25 20.25a7.5 7.5 0 0115 0M18.75 8.25v6m3-3h-6"
+			/>
+		</svg>
+	</button>
 {/if}

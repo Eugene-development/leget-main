@@ -115,18 +115,6 @@ export async function savePageSeo(
 	}
 }
 
-const COMPONENT_ARTICLE_QUERY = `
-  query Component($templateId: Int!, $slug: String!, $type: String!) {
-    component(templateId: $templateId, slug: $slug, type: $type) {
-      article
-      variants {
-        version
-        article
-      }
-    }
-  }
-`;
-
 export interface ComponentVariantArticle {
 	version: number;
 	article: string;
@@ -140,32 +128,89 @@ export interface ComponentArticle {
 // In-memory cache to avoid refetching the same component's article on re-renders.
 const componentArticleCache = new Map<string, ComponentArticle | null>();
 
+interface ArticleRequest {
+	key: string;
+	templateId: number;
+	slug: string;
+	type: string;
+	resolve: (value: ComponentArticle | null) => void;
+}
+
+interface ComponentArticleNode {
+	article?: string;
+	variants?: ComponentVariantArticle[];
+}
+
 /**
- * Загружает артикул компонента каталога (и его вариантов) по координатам.
- * Возвращает null, если компонент не найден в каталоге или запрос не удался.
+ * Очередь запросов артикула на ближайшую микрозадачу.
  *
- * @param templateId - id шаблона (licenses.template_id)
- * @param slug       - slug страницы внутри шаблона
- * @param type       - тип компонента (совпадает с page_components.type)
+ * Артикул просят все блоки страницы разом: эффект-загрузчик в VersionSwitcher
+ * взводится у каждого в один и тот же флаш эффектов — при входе или при загрузке
+ * страницы с токеном. Раньше каждый блок бил в API своим запросом: десяток кругов
+ * до удалённого API, из которых браузер держит открытыми лишь несколько зараз, и
+ * каждый со своим разбором токена под @guard на стороне API. Бейдж артикула из-за
+ * этого проступал через секунды после самого редактора.
+ *
+ * Теперь такт собирается в ОДИН запрос с алиасами (a0, a1, …) — один круг на всю
+ * страницу. Блок, смонтированный позже (ленивый маршрут, повторное монтирование),
+ * просто попадёт в следующую пачку.
  */
-export async function fetchComponentArticle(
-	templateId: number,
-	slug: string,
-	type: string
-): Promise<ComponentArticle | null> {
-	const cacheKey = `${templateId}:${slug}:${type}`;
-	if (componentArticleCache.has(cacheKey)) {
-		return componentArticleCache.get(cacheKey) ?? null;
+let articleQueue: ArticleRequest[] = [];
+let articleFlushScheduled = false;
+
+function scheduleArticleFlush(): void {
+	if (articleFlushScheduled) return;
+	articleFlushScheduled = true;
+	// Микрозадача, а не таймер: Svelte прогоняет эффекты всех блоков синхронно
+	// одним флашем, поэтому к моменту её выполнения очередь уже собрана целиком.
+	queueMicrotask(() => {
+		articleFlushScheduled = false;
+		void flushArticleQueue();
+	});
+}
+
+async function flushArticleQueue(): Promise<void> {
+	const batch = articleQueue;
+	articleQueue = [];
+	if (batch.length === 0) return;
+
+	// На странице тип встречается один раз, но дедуп страхует от повторного
+	// монтирования в том же такте: каждый ключ уходит в запрос ровно однажды.
+	const groups = new Map<string, ArticleRequest[]>();
+	for (const request of batch) {
+		const waiting = groups.get(request.key);
+		if (waiting) waiting.push(request);
+		else groups.set(request.key, [request]);
 	}
+	const entries = [...groups.values()];
+	const settle = (index: number, value: ComponentArticle | null) => {
+		for (const request of entries[index]) request.resolve(value);
+	};
 
 	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
 	if (!token) {
-		return null;
+		entries.forEach((_, i) => settle(i, null));
+		return;
 	}
 
+	const varDefs = entries
+		.map((_, i) => `$t${i}: Int!, $s${i}: String!, $y${i}: String!`)
+		.join(', ');
+	const fields = entries
+		.map(
+			(_, i) =>
+				`  a${i}: component(templateId: $t${i}, slug: $s${i}, type: $y${i}) { article variants { version article } }`
+		)
+		.join('\n');
+	const variables: Record<string, unknown> = {};
+	entries.forEach((requests, i) => {
+		variables[`t${i}`] = requests[0].templateId;
+		variables[`s${i}`] = requests[0].slug;
+		variables[`y${i}`] = requests[0].type;
+	});
+
 	try {
-		const apiUrl = getGraphQLUrl();
-		const response = await fetch(apiUrl, {
+		const response = await fetch(getGraphQLUrl(), {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -173,8 +218,8 @@ export async function fetchComponentArticle(
 				Authorization: `Bearer ${token}`
 			},
 			body: JSON.stringify({
-				query: COMPONENT_ARTICLE_QUERY,
-				variables: { templateId, slug, type }
+				query: `query ComponentArticles(${varDefs}) {\n${fields}\n}`,
+				variables
 			})
 		});
 
@@ -182,35 +227,79 @@ export async function fetchComponentArticle(
 		// попытка — например, до того как подхватился токен — навсегда гасила бы бейдж
 		// артикула для этого компонента до перезагрузки страницы.
 		if (!response.ok) {
-			return null;
+			entries.forEach((_, i) => settle(i, null));
+			return;
 		}
 
 		const result = await response.json();
-		if (result.errors?.length) {
-			return null;
+
+		// Ошибка в общем ответе может относиться к одному полю (path: ['a3']) —
+		// тогда гасим только его: остальные алиасы того же ответа валидны. Ошибка
+		// без пути (сломан весь запрос, Unauthenticated) гасит всю пачку.
+		const failed = new Set<string>();
+		for (const error of (result.errors ?? []) as { path?: (string | number)[] }[]) {
+			const alias = error?.path?.[0];
+			if (typeof alias === 'string') failed.add(alias);
+			else entries.forEach((_, i) => failed.add(`a${i}`));
 		}
 
-		const data = result.data?.component;
-		const value = data
-			? {
-					article: data.article as string,
-					variants: (data.variants ?? []) as ComponentVariantArticle[]
-				}
-			: null;
-		componentArticleCache.set(cacheKey, value);
-		return value;
+		const data = (result.data ?? {}) as Record<string, ComponentArticleNode | null>;
+		entries.forEach((requests, i) => {
+			const alias = `a${i}`;
+			if (failed.has(alias)) {
+				settle(i, null);
+				return;
+			}
+			const node = data[alias];
+			const value: ComponentArticle | null = node
+				? {
+						article: node.article as string,
+						variants: (node.variants ?? []) as ComponentVariantArticle[]
+					}
+				: null;
+			componentArticleCache.set(requests[0].key, value);
+			settle(i, value);
+		});
 	} catch {
-		return null;
+		entries.forEach((_, i) => settle(i, null));
 	}
 }
 
-// ── Артикулы layout-компонентов (баннер/меню/футер) ──────────────────────────
+/**
+ * Загружает артикул компонента каталога (и его вариантов) по координатам.
+ * Возвращает null, если компонент не найден в каталоге или запрос не удался.
+ *
+ * Запросы, поданные в одном такте, уходят в API одной пачкой (см. очередь выше).
+ *
+ * @param templateId - id шаблона (licenses.template_id)
+ * @param slug       - slug страницы внутри шаблона
+ * @param type       - тип компонента (совпадает с page_components.type)
+ */
+export function fetchComponentArticle(
+	templateId: number,
+	slug: string,
+	type: string
+): Promise<ComponentArticle | null> {
+	const cacheKey = `${templateId}:${slug}:${type}`;
+	if (componentArticleCache.has(cacheKey)) {
+		return Promise.resolve(componentArticleCache.get(cacheKey) ?? null);
+	}
+
+	return new Promise((resolve) => {
+		articleQueue.push({ key: cacheKey, templateId, slug, type, resolve });
+		scheduleArticleFlush();
+	});
+}
+
+// ── Артикулы layout-компонентов (полоса акций/баннер/меню/футер) ─────────────
 // Эти компоненты общие для всех страниц и не привязаны к slug страницы, поэтому
 // их артикул не лежит в каталожной системе (template_pages/components). Сегмент 2 —
-// буквенный код раздела вместо номера страницы: Б — баннер, М — меню (хэдер),
-// Ф — футер. Формат: {template}.{код}.1.{version} (component_number = 1 — один
-// слот на раздел). Артикул детерминирован и стабилен (как и каталожные).
+// буквенный код раздела вместо номера страницы: П — полоса акций (над баннером),
+// Б — баннер, М — меню (хэдер), Ф — футер. Формат: {template}.{код}.1.{version}
+// (component_number = 1 — один слот на раздел). Артикул детерминирован и
+// стабилен (как и каталожные). Порядок ключей ниже — сверху вниз по странице.
 export const LAYOUT_SECTION_CODES: Record<string, string> = {
+	PromoStrip: 'П',
 	Banner: 'Б',
 	Header: 'М',
 	Footer: 'Ф'

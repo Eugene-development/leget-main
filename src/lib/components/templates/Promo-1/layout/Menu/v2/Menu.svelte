@@ -294,7 +294,7 @@
 	</button>
 {/snippet}
 
-<nav class="hidden items-center gap-1 sm:flex" style="font-family: 'Outfit', 'Jost', sans-serif;">
+<nav class="hidden items-center gap-1 lg:flex">
 	{#each links as link}
 		{#if link.label === 'Услуги'}
 			<div

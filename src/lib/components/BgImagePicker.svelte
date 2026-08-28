@@ -79,13 +79,38 @@
 	let isUploading = $state(false);
 	let uploadProgress = $state(0);
 	let uploadError = $state('');
-	let fileInput: HTMLInputElement;
+	let fileInput = $state<HTMLInputElement>();
 
 	// Cropper state — файл ожидает кадрирования перед загрузкой
 	let cropFile = $state<File | null>(null);
 
 	// Thumbnail strip
 	let thumbStrip = $state<HTMLDivElement>();
+
+	/**
+	 * Picker может открываться из SideDrawer. У drawer есть transform/backdrop-filter
+	 * и overflow-контейнер, поэтому вложенный `position: fixed` становится привязанным
+	 * к панели и обрезается ею. Портал возвращает модалку в viewport и отдельный
+	 * stacking context; фокус уходит из родительской focus trap в дочерний диалог.
+	 */
+	function portal(node: HTMLElement) {
+		const previousFocus =
+			document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		document.body.appendChild(node);
+		queueMicrotask(() => {
+			const dialog = node.matches('[role="dialog"]')
+				? node
+				: node.querySelector<HTMLElement>('[role="dialog"]');
+			dialog?.focus();
+		});
+
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node);
+				previousFocus?.focus();
+			}
+		};
+	}
 
 	// ─── Derived ────────────────────────────────────────────────────────────────
 	const selectedImage = $derived(images[selectedIndex] ?? null);
@@ -345,9 +370,10 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<!-- ImageCropper — рендерится поверх picker (z-index:300 > backdrop z-index:200) -->
+<!-- Оба полноэкранных слоя портируются в body. Кроппер с z-index:300 остаётся
+     поверх picker с z-index:200 даже когда владелец живёт внутри sticky/drawer. -->
 {#if cropFile}
-	<div style="position:fixed;inset:0;z-index:300;">
+	<div use:portal style="position:fixed;inset:0;z-index:300;">
 		<ImageCropper
 			imageFile={cropFile}
 			{aspectRatio}
@@ -364,6 +390,7 @@
 
 <!-- Backdrop -->
 <div
+	use:portal
 	class="picker-backdrop"
 	role="dialog"
 	aria-modal="true"
@@ -646,7 +673,7 @@
 		width: 100%;
 		max-width: 900px;
 		max-height: 92vh;
-		border-radius: 1.25rem;
+		border-radius: 1rem;
 		overflow: hidden;
 		background: var(--color-ink-900);
 		box-shadow:
@@ -1010,7 +1037,7 @@
 
 	.btn-cancel {
 		padding: 0.5rem 1.125rem;
-		border-radius: 0.625rem;
+		border-radius: 0.75rem;
 		font-size: 0.875rem;
 		font-weight: 600;
 		border: 1px solid color-mix(in oklab, var(--color-on-dark) 12%, transparent);
@@ -1030,7 +1057,7 @@
 		align-items: center;
 		gap: 0.375rem;
 		padding: 0.5rem 0.875rem;
-		border-radius: 0.625rem;
+		border-radius: 0.75rem;
 		font-size: 0.875rem;
 		font-weight: 600;
 		border: 1px solid color-mix(in oklab, var(--color-cat-6-400) 30%, transparent);
@@ -1061,7 +1088,7 @@
 		align-items: center;
 		gap: 0.375rem;
 		padding: 0.5rem 1.375rem;
-		border-radius: 0.625rem;
+		border-radius: 0.75rem;
 		font-size: 0.875rem;
 		font-weight: 700;
 		border: none;

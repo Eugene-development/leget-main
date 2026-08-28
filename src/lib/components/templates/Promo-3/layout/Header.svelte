@@ -138,7 +138,7 @@
 				</div>
 				<div>
 					<span
-						class="font-display text-xl font-bold tracking-wider text-surface-50 uppercase transition-colors group-hover:text-accent-500"
+						class="text-xl font-bold tracking-wider text-surface-50 uppercase transition-colors group-hover:text-accent-500"
 					>
 						{siteName}
 					</span>
@@ -307,7 +307,7 @@
 				<a
 					href={link.href}
 					onclick={closeMenu}
-					class="font-display text-3xl font-bold tracking-wide text-surface-200 transition-colors hover:text-accent-500"
+					class="ds-title-display text-3xl text-surface-200 transition-colors hover:text-accent-500"
 				>
 					{link.label}
 				</a>

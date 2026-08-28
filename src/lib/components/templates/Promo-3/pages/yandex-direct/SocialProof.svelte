@@ -76,7 +76,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">
+						<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 							{displayValue}
 						</h2>
 					{/snippet}
@@ -97,7 +97,7 @@
 					{/each}
 				</div>
 				<div>
-					<div class="font-display text-lg font-bold text-accent-500">4.9</div>
+					<div class="ds-numeric text-lg text-accent-500">4.9</div>
 					<div class="text-xs text-surface-300">200+ отзывов</div>
 				</div>
 			</div>
@@ -126,7 +126,7 @@
 					</div>
 
 					<!-- Quote mark -->
-					<div class="font-display mb-4 text-4xl leading-none text-accent-500/20">"</div>
+					<div class="ds-title-display mb-4 text-4xl text-accent-500/20">"</div>
 
 					<p class="flex-1 text-sm leading-relaxed text-surface-300 italic">
 						{review.text}
@@ -135,7 +135,7 @@
 					<!-- Author -->
 					<div class="mt-6 flex items-center gap-3">
 						<div
-							class="font-display flex size-10 items-center justify-center rounded-full border border-accent-500/30 bg-accent-500/10 text-sm font-bold text-accent-500"
+							class="flex size-10 items-center justify-center rounded-full border border-accent-500/30 bg-accent-500/10 text-sm font-bold text-accent-500"
 						>
 							{review.initials}
 						</div>

@@ -2,6 +2,7 @@
 	// Артикул: 1.1.6.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import {
@@ -87,6 +88,49 @@
 				</div>
 
 				<div class="mt-8 h-px w-24 bg-linear-to-r from-link-300 to-cat-5-300"></div>
+
+				<!-- Заявку рисует глобальный ServiceOrderIsland (+layout.svelte): блок только
+				     открывает его через стор. Ключ `ctaText` общий для версий Incentives —
+				     правка текста в v1 переносится в v3 и обратно.
+
+				     Кнопка контурная, а не залитая акцентом, как в v3. Причина не во вкусе:
+				     v1 — коллаж из четырёх фотографий, и залитая пилюля оказывалась
+				     единственным насыщенным плоским пятном рядом с ними, перетягивая вес
+				     с заголовка. Контур говорит на языке блока — тем же волосяным штрихом,
+				     что и линейка над ним. Тени нет намеренно: прежняя бралась от
+				     `brand-500`, то есть от КРАСНОЙ шкалы, и под синей заливкой лежало
+				     тёплое свечение — половина ощущения «громко» была от него.
+
+				     Поле 15/27, а не `py-4 px-7`: рамка добавляет 2px к коробке, и без
+				     поправки кнопка стала бы 58px против 56px у залитых кнопок шаблона. -->
+				<div class="mt-8 flex justify-start">
+					<button
+						type="button"
+						onclick={() => serviceOrderStore.open('consultation')}
+						class="inline-flex cursor-pointer items-center justify-center gap-3 rounded-full border border-accent-ink/35 px-[27px] py-[15px] text-base font-medium text-accent-ink transition-[background-color,border-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:border-accent-ink hover:bg-accent-ink-wash focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2"
+					>
+						<EditableField
+							fieldKey="Incentives.ctaText"
+							label="Текст кнопки"
+							value={String(data?.ctaText ?? 'Получить консультацию')}
+							{isEditable}
+							onSave={(v) => saveField('ctaText', v)}
+							class="inline"
+						>
+							{#snippet children(displayValue)}{displayValue}{/snippet}
+						</EditableField>
+						<svg
+							class="h-4 w-4 shrink-0"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+						</svg>
+					</button>
+				</div>
 			</div>
 
 			<!-- Галерея -->

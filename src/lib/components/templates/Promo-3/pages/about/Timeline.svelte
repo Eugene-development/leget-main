@@ -81,9 +81,7 @@
 				onSave={(v) => saveField('heading', v)}
 				class="block"
 			>
-				{#snippet children(displayValue)}<h2
-						class="font-display mt-3 text-4xl text-white lg:text-5xl"
-					>
+				{#snippet children(displayValue)}<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 						{displayValue}
 					</h2>{/snippet}
 			</EditableField>
@@ -112,7 +110,7 @@
 							<div
 								class="group rounded-2xl border border-surface-700/50 bg-surface-800/40 p-6 transition-all duration-300 hover:border-accent-500/20 hover:bg-surface-800/70"
 							>
-								<span class="font-display text-3xl font-bold text-accent-500">{item.year}</span>
+								<span class="ds-numeric text-3xl text-accent-500">{item.year}</span>
 								<h3 class="mt-2 text-base text-white">{item.title}</h3>
 								<p class="mt-2 text-sm leading-relaxed text-surface-300">{item.desc}</p>
 							</div>

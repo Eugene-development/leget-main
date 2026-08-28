@@ -146,7 +146,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title font-display mt-4 text-3xl sm:text-4xl">
+					<h2 class="p1-title mt-4 text-3xl sm:text-4xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -237,11 +237,3 @@
 		</div>
 	</div>
 </section>
-
-<style>
-	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
-
-	.font-display {
-		font-family: 'Outfit', sans-serif;
-	}
-</style>

@@ -8,6 +8,9 @@
 	import { iconPath } from '../icons';
 	import type { CatalogItem } from '../../catalogItems';
 	import type { ServiceItem } from '../../serviceItems';
+	import type { BannerLink } from '../../bannerLinks';
+	import { createClientAccount } from '$lib/stores/client-account.svelte';
+	import { sitePhoneHref } from '$lib/utils/site-phone';
 
 	// Вариант 2 мобильного меню — премиальная навигация, продолжение десктопной:
 	// пилюли-ссылки с мягким hover'ом, «двойная оправа» (doppelrand) вокруг всего
@@ -18,6 +21,11 @@
 	//
 	// API совпадает с остальными мобильными вариантами; данные и переключатели
 	// видимости приходят из Header.svelte пропсами.
+	// Телефон, почта, «Контакты» и вход приходят в лист с 25.08.2026: строка
+	// шапки переехала из баннера в хэдер, и в ней остались только значки, чей
+	// смысл читается без подписи. Здесь блоки стоят общими (`p1-*`, роли темы
+	// приютившего `<nav>`) — под идиому этой версии они ещё не подогнаны:
+	// эталоном разобран `1.М.1.1`, остальные три идут за ним.
 	let {
 		links = [],
 		visibleCatalogItems = [],
@@ -25,6 +33,9 @@
 		disabledRubrics = [],
 		disabledServices = [],
 		cities = [],
+		sitePhone = '',
+		email = '',
+		contactsLink = null,
 		isEditable = false,
 		onToggleRubric,
 		onToggleService
@@ -35,6 +46,9 @@
 		disabledRubrics: string[];
 		disabledServices: string[];
 		cities: { label: string }[];
+		sitePhone: string;
+		email: string;
+		contactsLink: BannerLink | null;
 		isEditable?: boolean;
 		onToggleRubric: (href: string, currentEnabled: boolean, e: Event) => void;
 		onToggleService: (href: string, currentEnabled: boolean, e: Event) => void;
@@ -42,6 +56,9 @@
 
 	type MenuKind = 'catalog' | 'services';
 	type ToggleHandler = (href: string, currentEnabled: boolean, e: Event) => void;
+
+	const account = createClientAccount();
+	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
 	const initialSection = (): MenuKind | null => {
 		const path = $page.url.pathname;
@@ -230,12 +247,140 @@
 	{/if}
 {/snippet}
 
-{#if uiStore.menuOpen}
-	<div
-		class="px-3 pt-1 pb-4 sm:hidden"
-		style="font-family: 'Outfit', 'Jost', sans-serif;"
-		transition:fly={{ y: -14, duration: 460, easing: expoOut }}
+<!--
+	Учётная запись и контакты в языке варианта 2.
+
+	Форма взята у собственных строк листа, а не приложена сбоку: плитка-иконка
+	11×11 в `rounded-2xl` с кольцом, подпись 13px, пояснение 11px — та же
+	анатомия, что у `sectionItem`, и та же пластика `duration-500` на кривой
+	варианта. Надзаголовок группы повторяет «Город»: метка вразрядку и
+	гаснущая вправо линия.
+
+	Плитка вошедшего залита градиентом `link → cat-4` — тем же, которым вариант
+	метит активную рубрику: в листе это единственное «вы здесь», и учётная
+	запись — законный его носитель.
+-->
+{#snippet groupHead(label: string)}
+	<div class="mb-2 flex items-center justify-between">
+		<span class="text-[10px] font-bold tracking-[0.22em] text-ink-400 uppercase">{label}</span>
+		<span class="ml-3 h-px flex-1 bg-linear-to-r from-ink-200 to-transparent"></span>
+	</div>
+{/snippet}
+
+{#snippet contactRow(href: string, label: string, path: string, onclick?: () => void)}
+	<a
+		{href}
+		{onclick}
+		class="group/item flex items-center gap-3.5 rounded-2xl p-3 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:bg-ink-50"
 	>
+		<span
+			class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-ink-100/80 text-ink-500 ring-1 ring-ink-900/5"
+		>
+			<svg
+				class="h-4.5 w-4.5"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				aria-hidden="true"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={path} />
+			</svg>
+		</span>
+		<span class="min-w-0 flex-1 text-[13px] font-semibold tracking-tight text-ink-900">{label}</span
+		>
+	</a>
+{/snippet}
+
+{#snippet accountBlock()}
+	<div class="mt-2 border-t border-ink-100 px-3 pt-3 pb-1">
+		{@render groupHead('Учётная запись')}
+		{#if account.client}
+			<div class="flex items-center gap-3.5 rounded-2xl p-3">
+				<span
+					class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-link-500 to-cat-4-500 shadow-lg ring-1 shadow-link-500/25 ring-ink-900/5"
+				>
+					<svg
+						class="h-4.5 w-4.5 text-on-dark"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0"
+						/>
+					</svg>
+				</span>
+				<a href={account.cabinet} onclick={() => uiStore.closeMenu()} class="min-w-0 flex-1">
+					<span class="block text-[13px] font-semibold tracking-tight text-ink-900"
+						>Личный кабинет</span
+					>
+					<span class="mt-0.5 block truncate text-[11px] leading-snug text-ink-400"
+						>{account.client.email}</span
+					>
+				</a>
+				<button
+					type="button"
+					onclick={account.logout}
+					disabled={account.isLoggingOut}
+					class="shrink-0 cursor-pointer rounded-full bg-ink-100/70 px-3.5 py-1.5 text-[12px] font-semibold whitespace-nowrap text-ink-600 ring-1 ring-ink-900/5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] disabled:cursor-default disabled:opacity-60"
+				>
+					Выйти
+				</button>
+			</div>
+		{:else}
+			<div class="flex gap-2 px-3 pb-2">
+				<button
+					type="button"
+					onclick={account.openLogin}
+					class="h-12 flex-1 cursor-pointer rounded-2xl bg-link-50 text-[13px] font-semibold tracking-wide text-link-600 ring-1 ring-link-200 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
+				>
+					Войти
+				</button>
+				<button
+					type="button"
+					onclick={account.openRegister}
+					class="h-12 flex-1 cursor-pointer rounded-2xl bg-ink-100/70 text-[13px] font-semibold tracking-wide text-ink-600 ring-1 ring-ink-900/5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
+				>
+					Регистрация
+				</button>
+			</div>
+		{/if}
+	</div>
+{/snippet}
+
+{#snippet contactsBlock()}
+	{#if sitePhone || email || contactsLink}
+		<div class="mt-2 border-t border-ink-100 px-3 pt-3 pb-1">
+			{@render groupHead('Контакты')}
+			{#if sitePhone}
+				{@render contactRow(
+					phoneHref,
+					sitePhone,
+					'M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'
+				)}
+			{/if}
+			{#if email}
+				{@render contactRow(
+					`mailto:${email}`,
+					email,
+					'M3 8l7.89 4.26a2 2 0 001.94 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
+				)}
+			{/if}
+			{#if contactsLink}
+				{@render contactRow(contactsLink.href, contactsLink.label, 'M5 12h14M13 6l6 6-6 6', () =>
+					uiStore.closeMenu()
+				)}
+			{/if}
+		</div>
+	{/if}
+{/snippet}
+
+{#if uiStore.menuOpen}
+	<div class="px-3 pt-1 pb-4 lg:hidden" transition:fly={{ y: -14, duration: 460, easing: expoOut }}>
 		<!-- Двойная оправа: внешняя «алюминиевая» подложка + внутренняя белая карта -->
 		<nav
 			class="rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px] ring-1 shadow-ink-900/45 ring-ink-900/5 backdrop-blur-2xl"
@@ -244,6 +389,8 @@
 			<div
 				class="max-h-[70dvh] overflow-y-auto rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 			>
+				{@render accountBlock()}
+
 				{#each links as link}
 					{#if link.label === 'Услуги'}
 						{@render section(
@@ -293,7 +440,7 @@
 								type="button"
 								onclick={() => cityStore.set(city.label)}
 								aria-pressed={cityStore.city === city.label}
-								class="rounded-full px-3.5 py-1.5 text-[12px] font-semibold whitespace-nowrap ring-1 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {cityStore.city ===
+								class="flex min-h-11 items-center rounded-full px-4 text-[13px] font-semibold whitespace-nowrap ring-1 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {cityStore.city ===
 								city.label
 									? 'bg-link-50 text-link-600 ring-link-200'
 									: 'bg-ink-100/70 text-ink-600 ring-ink-900/5'}"
@@ -303,6 +450,8 @@
 						{/each}
 					</div>
 				</div>
+
+				{@render contactsBlock()}
 			</div>
 		</nav>
 	</div>

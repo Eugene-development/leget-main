@@ -3,6 +3,8 @@
 	import BannerV2 from './v2/Banner.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
 	import {
 		saveLayoutData,
 		getLayoutComponentArticle,
@@ -22,7 +24,8 @@
 	} = $props();
 
 	// Баннер — layout-компонент, его данные живут в том же header_data blob, что и хэдер
-	// (сохраняется через saveLayoutData('Header')). Версия — bannerVersion в том же blob'е.
+	// (сохраняется через saveLayoutData('Header')). Версия — bannerVersion, тема — bannerTheme,
+	// оба ключа в том же blob'е.
 	// Баннер узкий, поэтому плавающий переключатель не подходит: компактная кнопка-триггер
 	// открывает SideDrawer (справа) с выбором варианта и сбросом.
 	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
@@ -35,6 +38,25 @@
 	let drawerOpen = $state(false);
 	let isResetting = $state(false);
 	let hasManuallySelected = $state(false);
+
+	// ── Тема баннера ──
+	// Живёт в том же blob'е, что версия и контакты, но под своим ключом
+	// (`bannerTheme`, а не общий `theme`): blob делят баннер и хэдер.
+	// Дефолт 'dark' — таким баннер нарисован, тумблер инвертирует исходный вид.
+	// Ключ общий на оба варианта: тема принадлежит полосе, а не её композиции,
+	// поэтому смена варианта её не сбрасывает.
+	const THEME_VERSIONS: ('v1' | 'v2')[] = ['v1', 'v2'];
+	const isLight = $derived(isLightBlock(data, 'dark', 'bannerTheme'));
+	const toggleTheme = createThemeToggle({
+		type: 'Header',
+		fallback: 'dark',
+		key: 'bannerTheme',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext,
+		// Layout-компонент: сохраняем не свой blob компонента, а headerData лицензии.
+		save: (context, _type, next) => saveLayoutData(context, 'Header', next)
+	});
 
 	$effect(() => {
 		const ver = (data?.bannerVersion as 'v1' | 'v2' | 'disabled') ?? 'v1';
@@ -167,6 +189,19 @@
 				</div>
 			{/if}
 
+			<!-- Тема полосы -->
+			{#if THEME_VERSIONS.includes(selectedVersion as 'v1' | 'v2')}
+				<section>
+					<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Тема</h4>
+					<div class="flex items-center gap-3">
+						<ThemeToggle {isLight} onToggle={toggleTheme} />
+						<span class="text-xs font-medium text-ink-300">
+							{isLight ? 'Светлая' : 'Тёмная'}
+						</span>
+					</div>
+				</section>
+			{/if}
+
 			<!-- Варианты -->
 			<section>
 				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Вариант дизайна</h4>
@@ -208,8 +243,8 @@
 			<section class="border-t border-on-dark/10 pt-5">
 				<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Контент</h4>
 				<p class="mt-2 text-xs leading-relaxed text-ink-400">
-					Сброс вернёт контакты и ссылки баннера к значениям по умолчанию. Выбранный вариант и меню
-					хэдера не изменятся.
+					Сброс вернёт контакты и ссылки баннера к значениям по умолчанию. Выбранный вариант, тема и
+					меню хэдера не изменятся.
 				</p>
 				<button
 					type="button"

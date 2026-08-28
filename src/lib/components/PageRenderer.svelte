@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
-	import type { EditContext, PageSeoData } from '$lib/utils/page-edit';
+	import { saveLayoutData, type EditContext, type PageSeoData } from '$lib/utils/page-edit';
+	import { setContext } from 'svelte';
 	import EditModal from '$lib/components/EditModal.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
@@ -9,6 +10,11 @@
 	import YandexDirectGoalsButton from '$lib/components/YandexDirectGoalsButton.svelte';
 	import SiteSettingsButton from '$lib/components/SiteSettingsButton.svelte';
 	import SiteAnalytics from '$lib/components/SiteAnalytics.svelte';
+	import EditableComponent from '$lib/components/EditableComponent.svelte';
+	import {
+		createEditableVisibility,
+		EDITABLE_VISIBILITY_CONTEXT
+	} from '$lib/utils/editable-visibility.svelte';
 	import { siteAppearanceStyle } from '$lib/site-settings/appearance';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 
@@ -34,6 +40,7 @@
 		components = [],
 		headerData = null,
 		footerData = null,
+		actionCards = null,
 		seo = null,
 		editContext = null,
 		ownerId = null
@@ -44,6 +51,12 @@
 		components: PageComponent[];
 		headerData: Record<string, unknown> | null;
 		footerData: Record<string, unknown> | null;
+		/**
+		 * Сохранённые карточки акций страницы `/actions` (`site.actionCards`).
+		 * Полоса акций стоит на каждой странице, а карточки лежат на одной,
+		 * поэтому список приходит вместе с настройками сайта, а не с блоками.
+		 */
+		actionCards?: unknown;
 		seo: PageSeoData | null;
 		editContext: EditContext | null;
 		/** id владельца лицензии этого сайта — из renderPage. */
@@ -66,6 +79,18 @@
 	$effect(() => {
 		headerDataState = headerData ?? {};
 	});
+
+	// Banner и Header — соседние layout-компоненты одного headerData blob.
+	// Один общий менеджер сериализует их переключения и не даёт двум запросам
+	// видимости перезаписать друг друга при быстрых кликах в разных секциях.
+	const layoutVisibility = createEditableVisibility({
+		getComponentType: () => 'Header',
+		getData: () => headerDataState,
+		setData: (next) => (headerDataState = next),
+		getEditContext: () => editContext,
+		save: (context, _componentType, next) => saveLayoutData(context, 'Header', next)
+	});
+	setContext(EDITABLE_VISIBILITY_CONTEXT, layoutVisibility);
 
 	// Зеркало списка блоков — по той же причине, что и headerDataState.
 	// `components` приходит пропсом из серверной загрузки: это обычные объекты, а не
@@ -101,11 +126,17 @@
 		'ContactCTA',
 		'ContactsHero',
 		'Direction',
-		'PartnerOffers'
+		'PartnerOffers',
+		'ProjectsFeed'
 	]);
 	// У сайдбара контрол одноверсионных настроек находится в его собственной шапке:
 	// внешний overlay здесь дал бы кнопку вне fixed-карточки.
-	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set(['MebelSidebar']);
+	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set([
+		'MebelSidebar',
+		'ProjectsHero',
+		'VacancyList',
+		'VacancyForm'
+	]);
 
 	function componentHasOwnSwitcher(type: string): boolean {
 		return Number(editContext?.templateId) === 1 && promo1ComponentsWithSwitcher.has(type);
@@ -191,6 +222,7 @@
 		browser && $auth.isAuthenticated && isOwner && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
+	const PromoStrip = $derived(layout.PromoStrip ?? null);
 	const Banner = $derived(layout.Banner ?? null);
 	const Header = $derived(layout.Header ?? null);
 	const Footer = $derived(layout.Footer ?? null);
@@ -209,6 +241,12 @@
 
 <div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
 	<SiteAnalytics data={headerDataState} />
+
+	{#if PromoStrip}
+		<!-- Полоса акций — над баннером. bind по той же причине, что у баннера:
+	     версия и тема полосы лежат в том же headerData. -->
+		<PromoStrip bind:data={headerDataState} {editContext} {isEditable} {actionCards} />
+	{/if}
 
 	{#if Banner}
 		<!-- bind нужен не только редактору баннера: после сохранения телефона тот же
@@ -250,7 +288,9 @@
 			     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
 			     целиком, и подмешанный номер осел бы копией в данных блока при первой же
 			     правке любого поля — после смены номера в баннере копии разошлись бы. -->
-				<Component
+				<EditableComponent
+					component={Component}
+					componentType={element.type}
 					bind:data={element.data}
 					{editContext}
 					{isEditable}

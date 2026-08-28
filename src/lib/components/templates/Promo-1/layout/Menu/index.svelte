@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикулы: 1.М.1.1, 1.М.1.2, 1.М.1.3, 1.М.1.4 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import MenuV1 from './v1/Menu.svelte';
 	import MenuV2 from './v2/Menu.svelte';

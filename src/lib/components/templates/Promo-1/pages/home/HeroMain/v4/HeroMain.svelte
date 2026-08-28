@@ -88,13 +88,11 @@
 	);
 </script>
 
-<!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
-
 <!-- lg:h-full — ровно высота .hero-wrapper (100dvh − banner − header).
      Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
-	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
+	class="relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
 		? 'bg-ink-100 text-ink-900'
 		: 'bg-scrim text-on-dark'}"
 >
@@ -177,7 +175,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="hero-title font-display mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight
+							class="hero-title mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight
 								? 'text-scrim'
 								: 'text-on-dark'}"
 						>
@@ -198,7 +196,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="hero-desc font-sans-premium mb-8 text-sm leading-relaxed font-light md:text-base {isLight
+							class="hero-desc mb-8 text-sm leading-relaxed font-light md:text-base {isLight
 								? 'text-ink-600'
 								: 'text-ink-300'}"
 						>
@@ -504,13 +502,5 @@
 			margin-top: 0.5rem;
 			padding-top: 1rem;
 		}
-	}
-
-	:global(.font-sans-premium) {
-		font-family: 'Jost', sans-serif !important;
-	}
-
-	:global(.font-display) {
-		font-family: 'Playfair Display', serif !important;
 	}
 </style>

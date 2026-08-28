@@ -29,6 +29,13 @@ type TemplateModule = {
 	pageOverrides?: Record<string, ComponentMap>;
 };
 
+type CatalogLayout = {
+	component: Component<PageComponentProps>;
+	versionCount: number;
+	versionKey: string;
+	data: Record<string, unknown>;
+};
+
 type TemplateDefaults = {
 	name: string;
 	pages: Record<string, Record<string, Record<string, unknown>>>;
@@ -56,14 +63,33 @@ const MODULES: Record<number, TemplateModule> = {
 	0: TestTemplate as TemplateModule
 };
 
+/**
+ * Layout-компоненты не входят в `pageOverrides` и не регистрируются в каталоге БД:
+ * их артикулы с буквенным сегментом считаются детерминированно. Поэтому для `/_ds`
+ * у них отдельный, явный реестр. Он одновременно фиксирует число реально доступных
+ * вариантов и ключ, которым layout-обёртка переключает версию при SSR.
+ */
+const CATALOG_LAYOUTS: Record<number, Record<string, CatalogLayout>> = {
+	1: {
+		Header: {
+			component: Promo1.Header as Component<PageComponentProps>,
+			versionCount: 4,
+			versionKey: 'menuVersion',
+			data: { siteName: 'LEGET' }
+		}
+	}
+};
+
 /** Слаг страницы в сегмент URL: `/` → `_root`, `/mebel/kuhni` → `mebel~kuhni`. */
 export function encodePage(slug: string): string {
+	if (slug === '(layout)') return '_layout';
 	const trimmed = slug.replace(/^\//, '');
 	return trimmed === '' ? '_root' : trimmed.replaceAll('/', '~');
 }
 
 /** Обратное преобразование сегмента URL в слаг страницы. */
 export function decodePage(segment: string): string {
+	if (segment === '_layout') return '(layout)';
 	return segment === '_root' ? '/' : '/' + segment.replaceAll('~', '/');
 }
 
@@ -91,6 +117,9 @@ export function versionKey(type: string): string {
  * шаблонах, а папки v1…vN — только у Promo-1.
  */
 export function versionCount(templateId: number, type: string): number {
+	const layout = CATALOG_LAYOUTS[templateId]?.[type];
+	if (layout) return layout.versionCount;
+
 	return defaults._versions?.[String(templateId)]?.[type] ?? 1;
 }
 
@@ -112,9 +141,11 @@ export type CatalogEntry = {
 /**
  * Плоский список всего, что каталог умеет отрендерить.
  *
- * Источник истины — `pageOverrides` шаблона, а не defaults.json: показываем то, что
- * реально существует в коде. Блок, описанный в конфиге, но не имеющий компонента,
- * отрендерить нельзя, поэтому в список он не попадает.
+ * Источник истины для блоков страниц — `pageOverrides` шаблона, а не defaults.json:
+ * показываем то, что реально существует в коде. Layout-варианты перечислены отдельно
+ * в `CATALOG_LAYOUTS`, потому что в БД и `pageOverrides` они намеренно не живут.
+ * Блок, описанный в конфиге, но не имеющий компонента, отрендерить нельзя, поэтому
+ * в список он не попадает.
  */
 export function catalogEntries(): CatalogEntry[] {
 	const entries: CatalogEntry[] = [];
@@ -147,6 +178,21 @@ export function catalogEntries(): CatalogEntry[] {
 				}
 			}
 		}
+
+		for (const [type, layout] of Object.entries(CATALOG_LAYOUTS[templateId] ?? {})) {
+			for (let version = 1; version <= layout.versionCount; version++) {
+				entries.push({
+					templateId,
+					templateName,
+					pageSlug: '(layout)',
+					page: encodePage('(layout)'),
+					type,
+					version,
+					versionCount: layout.versionCount,
+					hasData: true
+				});
+			}
+		}
 	}
 
 	return entries;
@@ -158,7 +204,11 @@ export function resolveComponent(
 	pageSlug: string,
 	type: string
 ): Component<PageComponentProps> | null {
-	return MODULES[templateId]?.pageOverrides?.[pageSlug]?.[type] ?? null;
+	return (
+		MODULES[templateId]?.pageOverrides?.[pageSlug]?.[type] ??
+		(pageSlug === '(layout)' ? CATALOG_LAYOUTS[templateId]?.[type]?.component : undefined) ??
+		null
+	);
 }
 
 /**
@@ -173,6 +223,11 @@ export function demoData(
 	type: string,
 	version = 1
 ): Record<string, unknown> {
+	const layout = CATALOG_LAYOUTS[templateId]?.[type];
+	if (pageSlug === '(layout)' && layout) {
+		return { ...layout.data, [layout.versionKey]: `v${version}` };
+	}
+
 	const base = templateDefaults(templateId)?.pages?.[pageSlug]?.[type] ?? {};
 
 	return { ...base, [versionKey(type)]: `v${version}` };

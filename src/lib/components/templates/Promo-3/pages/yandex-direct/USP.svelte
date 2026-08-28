@@ -84,7 +84,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">
+					<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 						{displayValue}
 					</h2>
 				{/snippet}
@@ -120,7 +120,7 @@
 					></div>
 
 					<div
-						class="font-display mb-6 text-5xl font-bold text-accent-500/20 transition-colors duration-300 group-hover:text-accent-500/40"
+						class="ds-numeric mb-6 text-5xl text-accent-500/20 transition-colors duration-300 group-hover:text-accent-500/40"
 					>
 						{item.number}
 					</div>

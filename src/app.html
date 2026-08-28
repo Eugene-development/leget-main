@@ -25,6 +25,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<!--
+			Полоса акций, закрытая посетителем, не должна мигать.
+
+			Разметку полосы отдаёт сервер, а о сессии посетителя он не знает и знать
+			не может — значит, закрытая полоса приезжает в HTML и без этой строки
+			успевала бы отрисоваться и исчезнуть на гидратации: прыжок содержимого
+			в самом верху страницы, и на каждом переходе заново. Признак ставится
+			до первой отрисовки, дальше по нему полосу прячет CSS и обнуляет вычет
+			высоты — см. templates/Promo-1/layout/PromoStrip/promo-strip.css.
+
+			Ключ хранилища и имя атрибута продублированы литералами в
+			templates/Promo-1/layout/PromoStrip/session.ts — менять надо в обоих.
+		-->
+		<script>
+			try {
+				if (sessionStorage.getItem('leget:promo-closed') === '1') {
+					document.documentElement.setAttribute('data-promo-closed', '');
+				}
+			} catch (e) {
+				/* приватный режим — полоса просто будет показана */
+			}
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

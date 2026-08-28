@@ -5,6 +5,7 @@
 	import MobileMenuV4 from './v4/MobileMenu.svelte';
 	import type { CatalogItem } from '../catalogItems';
 	import type { ServiceItem } from '../serviceItems';
+	import type { BannerLink } from '../bannerLinks';
 
 	// Мобильное меню (хэдер Promo-1) — та же навигация, что в `Menu/index.svelte`,
 	// на узком экране. Версию НЕ выбирает: читает ту же `data.menuVersion`, что
@@ -17,7 +18,9 @@
 	//
 	// Данные приходят пропсами из Header.svelte — те же, что у десктопной
 	// половины, плюс список городов: на узком экране выбор города живёт в меню,
-	// а не отдельной кнопкой в шапке.
+	// а не отдельной кнопкой в шапке. С 25.08.2026 к ним добавились телефон,
+	// почта и ссылка «Контакты»: строка шапки переехала из баннера в хэдер и
+	// отдала листу всё, что не читается значком без подписи.
 	let {
 		data = {},
 		links = [],
@@ -26,6 +29,10 @@
 		disabledRubrics = [],
 		disabledServices = [],
 		cities = [],
+		sitePhone = '',
+		email = '',
+		contactsLink = null,
+		informationLinks = [],
 		isEditable = false,
 		onToggleRubric,
 		onToggleService
@@ -37,6 +44,10 @@
 		disabledRubrics: string[];
 		disabledServices: string[];
 		cities: { label: string }[];
+		sitePhone: string;
+		email: string;
+		contactsLink: BannerLink | null;
+		informationLinks: BannerLink[];
 		isEditable: boolean;
 		onToggleRubric: (href: string, currentEnabled: boolean, e: Event) => void;
 		onToggleService: (href: string, currentEnabled: boolean, e: Event) => void;
@@ -58,6 +69,9 @@
 		{disabledRubrics}
 		{disabledServices}
 		{cities}
+		{sitePhone}
+		{email}
+		{contactsLink}
 		{isEditable}
 		{onToggleRubric}
 		{onToggleService}
@@ -70,6 +84,9 @@
 		{disabledRubrics}
 		{disabledServices}
 		{cities}
+		{sitePhone}
+		{email}
+		{contactsLink}
 		{isEditable}
 		{onToggleRubric}
 		{onToggleService}
@@ -82,6 +99,9 @@
 		{disabledRubrics}
 		{disabledServices}
 		{cities}
+		{sitePhone}
+		{email}
+		{contactsLink}
 		{isEditable}
 		{onToggleRubric}
 		{onToggleService}
@@ -94,6 +114,10 @@
 		{disabledRubrics}
 		{disabledServices}
 		{cities}
+		{sitePhone}
+		{email}
+		{contactsLink}
+		{informationLinks}
 		{isEditable}
 		{onToggleRubric}
 		{onToggleService}

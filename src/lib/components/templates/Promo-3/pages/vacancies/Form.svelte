@@ -72,9 +72,7 @@
 					onSave={(v) => saveField('heading', v)}
 					class="block"
 				>
-					{#snippet children(displayValue)}<h2
-							class="font-display mt-3 text-4xl text-white lg:text-5xl"
-						>
+					{#snippet children(displayValue)}<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 							{displayValue}
 						</h2>{/snippet}
 				</EditableField>
@@ -118,7 +116,7 @@
 								stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg
 							>
 						</div>
-						<h3 class="font-display text-2xl text-white">Отклик получен!</h3>
+						<h3 class="ds-title-sub text-2xl text-white">Отклик получен!</h3>
 						<p class="mt-3 text-surface-300">
 							Мы рассмотрим вашу кандидатуру и свяжемся с вами в течение <span
 								class="font-semibold text-accent-500">1 рабочего дня</span

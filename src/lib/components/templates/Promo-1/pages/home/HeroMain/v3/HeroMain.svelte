@@ -6,6 +6,9 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { fade, fly } from 'svelte/transition';
+	/* Роль `p1-numeric` живёт в theme.css шаблона; импорт нужен в самом листе —
+	   бочка index.ts маскирует пропуск только в проде. */
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -127,13 +130,11 @@
 	);
 </script>
 
-<!-- Jost/Playfair fonts are loaded once in Promo-1 layout/Header.svelte -->
-
 <!-- lg:h-full — ровно высота .hero-wrapper (100dvh − banner − header).
      Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
-	class="font-sans-premium relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
+	class="relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
 		? 'bg-ink-50 text-ink-900'
 		: 'bg-ink-950 text-on-dark'}"
 >
@@ -241,7 +242,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="font-display mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
+							class="mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
 								? 'from-ink-900 via-ink-800 to-ink-700'
 								: 'from-surface-raised via-ink-100 to-ink-400'}"
 						>
@@ -262,7 +263,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="font-sans-premium mb-6 text-sm leading-relaxed font-normal transition-colors duration-500 md:text-base {isLight
+							class="mb-6 text-sm leading-relaxed font-normal transition-colors duration-500 md:text-base {isLight
 								? 'text-ink-600'
 								: 'text-ink-300'}"
 						>
@@ -392,7 +393,7 @@
 							>
 								<!-- Номер / Иконка скилла с динамическим градиентным кругом -->
 								<div
-									class="font-display flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-black transition-all duration-300 {activeSkillIndex ===
+									class="p1-numeric flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm transition-all duration-300 {activeSkillIndex ===
 									idx
 										? `bg-gradient-to-br ${skill.gradient} text-on-dark shadow-lg`
 										: isLight
@@ -542,14 +543,6 @@
 
 	.shadow-glow {
 		box-shadow: 0 0 25px rgba(99, 102, 241, 0.12);
-	}
-
-	:global(.font-sans-premium) {
-		font-family: 'Jost', sans-serif !important;
-	}
-
-	:global(.font-display) {
-		font-family: 'Playfair Display', serif !important;
 	}
 
 	:global(.brand-capsule img) {

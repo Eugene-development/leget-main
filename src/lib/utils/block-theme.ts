@@ -6,6 +6,9 @@
  * 'dark', поэтому нетронутый блок выглядит ровно так, как его нарисовали, а
  * переключатель просто инвертирует исходный вид.
  *
+ * Ключ можно заменить (`key`): layout-компоненты делят один blob на несколько
+ * блоков, и баннер хранит свою тему в `bannerTheme` — рядом с `bannerVersion`.
+ *
  * Цвета переключаются не условиями в разметке, а семантическими классами
  * (`p1-surface`, `p1-title`, …) — см. templates/Promo-1/theme.css.
  */
@@ -14,21 +17,31 @@ import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 export type BlockTheme = 'light' | 'dark';
 
-/** Тема блока с учётом дефолта. */
+/**
+ * Тема блока с учётом дефолта.
+ *
+ * `key` нужен layout-компонентам: баннер, хэдер и меню делят один blob
+ * `headerData` (см. saveLayoutData), поэтому голое поле `theme` там означало бы
+ * «тема хэдера целиком», а не тема конкретной полосы. Баннер хранит свою тему
+ * в `bannerTheme` — рядом со своей же версией `bannerVersion`. У page-блоков,
+ * у которых blob свой, ключ остаётся общим (`theme`).
+ */
 export function blockTheme(
 	data: Record<string, unknown> | null | undefined,
-	fallback: BlockTheme = 'light'
+	fallback: BlockTheme = 'light',
+	key: string = 'theme'
 ): BlockTheme {
-	const value = data?.theme;
+	const value = data?.[key];
 	return value === 'light' || value === 'dark' ? value : fallback;
 }
 
 /** Светлая ли тема у блока (для ThemeToggle). */
 export function isLightBlock(
 	data: Record<string, unknown> | null | undefined,
-	fallback: BlockTheme = 'light'
+	fallback: BlockTheme = 'light',
+	key: string = 'theme'
 ): boolean {
-	return blockTheme(data, fallback) === 'light';
+	return blockTheme(data, fallback, key) === 'light';
 }
 
 /**
@@ -57,8 +70,16 @@ export function createThemeToggle(options: {
 	getData: () => Record<string, unknown>;
 	setData: (next: Record<string, unknown>) => void;
 	getContext: () => EditContext | null;
-	/** Тема блока по умолчанию, когда `data.theme` не задан. */
+	/** Тема блока по умолчанию, когда поле темы не задано. */
 	fallback?: BlockTheme | (() => BlockTheme);
+	/** Ключ темы в data. По умолчанию `theme` — см. blockTheme(). */
+	key?: string;
+	/**
+	 * Как сохранять. По умолчанию — `saveComponentData` (page-блок пишет свой
+	 * blob). Layout-компоненты пишут общий blob лицензии и передают сюда
+	 * `saveLayoutData`: у баннера тема живёт в `headerData`, рядом с версией.
+	 */
+	save?: (context: EditContext, type: string, next: Record<string, unknown>) => Promise<unknown>;
 }): () => Promise<void> {
 	return async () => {
 		const context = options.getContext();
@@ -67,17 +88,19 @@ export function createThemeToggle(options: {
 		const type = typeof options.type === 'function' ? options.type() : options.type;
 		const fallback =
 			typeof options.fallback === 'function' ? options.fallback() : (options.fallback ?? 'light');
+		const key = options.key ?? 'theme';
+		const save = options.save ?? ((ctx, t, next) => saveComponentData(ctx, t, next));
 
 		const previous = options.getData();
 		const next = {
 			...previous,
-			theme: isLightBlock(previous, fallback) ? 'dark' : 'light'
+			[key]: isLightBlock(previous, fallback, key) ? 'dark' : 'light'
 		};
 
 		// Оптимистично: тема применяется сразу, откат только при ошибке сохранения.
 		options.setData(next);
 		try {
-			await saveComponentData(context, type, next);
+			await save(context, type, next);
 		} catch (err) {
 			options.setData(previous);
 			console.error(`Ошибка сохранения темы для ${type}:`, err);

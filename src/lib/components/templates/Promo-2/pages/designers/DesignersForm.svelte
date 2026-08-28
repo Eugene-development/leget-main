@@ -43,15 +43,20 @@
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				body: JSON.stringify({
-					form_type: 'partnership',
+					// Ключ поля — `service_type`, как требует контроллер: `form_type`
+					// он не знает, и валидация отклоняла каждую заявку с 422.
+					service_type: 'partnership',
 					name: formName.trim(),
 					phone: formPhone.trim(),
-					message: `Тип партнерства: ${formType === 'studio' ? 'Студия' : 'Фрилансер'}`,
-					source_url: sourceUrl,
-					extra: {
-						email: formEmail.trim(),
-						partner_type: formType === 'studio' ? 'Студия' : 'Фрилансер'
-					}
+					// `extra` контроллер тоже не читает, поэтому почта партнёра
+					// уезжает в текст письма — иначе ответить ему будет некуда.
+					message: [
+						`Тип партнерства: ${formType === 'studio' ? 'Студия' : 'Фрилансер'}`,
+						`E-mail: ${formEmail.trim()}`
+					]
+						.join('\n')
+						.slice(0, 2000),
+					source_url: sourceUrl
 				})
 			});
 

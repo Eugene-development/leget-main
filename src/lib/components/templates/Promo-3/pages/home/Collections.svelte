@@ -80,7 +80,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">{displayValue}</h2>
+					<h2 class="mt-3 text-4xl text-white lg:text-5xl">{displayValue}</h2>
 				{/snippet}
 			</EditableField>
 			<EditableField
@@ -131,7 +131,7 @@
 							{item.name}
 						</h3>
 						<div class="mt-3 flex items-center justify-between">
-							<span class="font-display text-lg font-bold text-accent-500">{item.price}</span>
+							<span class="text-lg font-bold text-accent-500">{item.price}</span>
 							<button
 								class="flex items-center gap-2 rounded-lg border border-surface-600 bg-surface-700/50 px-4 py-2 text-xs font-medium text-surface-300 transition-all duration-300 hover:border-accent-500/40 hover:text-accent-500"
 							>

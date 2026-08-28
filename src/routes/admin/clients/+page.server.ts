@@ -16,8 +16,8 @@ function safePage(value: string | null): number {
  * `/admin`, поэтому вложенный маршрут её получает, а клиентские страницы (`/`)
  * — нет. Без cookie отправляем на /admin, там форма входа.
  *
- * Кто клиент, решает leget-api: allowlist LEGET_ADMIN_EMAILS исключается из
- * выдачи, доступ к endpoint'у закрыт middleware EnsureAdminAccess.
+ * Кто попадает в список, решает leget-api: из выдачи исключены пользователи
+ * с ролью `admin`, а сам endpoint закрыт способностью `clients.view`.
  */
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const token = cookies.get(COOKIE_NAME);

@@ -281,10 +281,7 @@
 						>
 							{eyebrow}
 						</p>
-						<h3
-							class="p1-title-sub mt-5 text-[2rem] lg:text-[2.7rem]"
-							style="font-family: 'Playfair Display', serif;"
-						>
+						<h3 class="p1-title-display mt-5 text-[2rem] lg:text-[2.7rem]">
 							{title}
 						</h3>
 						<p
@@ -354,8 +351,7 @@
 {/snippet}
 
 <div
-	class="relative hidden sm:block"
-	style="font-family: 'Outfit', sans-serif;"
+	class="relative hidden lg:block"
 	role="group"
 	aria-label="Навигация с выпадающими разделами"
 	onmouseleave={closeMenu}

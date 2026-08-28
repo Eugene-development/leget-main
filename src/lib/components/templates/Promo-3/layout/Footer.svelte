@@ -109,7 +109,7 @@
 						</svg>
 					</div>
 					<div>
-						<span class="font-display text-xl font-bold tracking-wider text-surface-50 uppercase"
+						<span class="text-xl font-bold tracking-wider text-surface-50 uppercase"
 							>{siteName}</span
 						>
 						<span class="block text-[10px] font-medium tracking-[0.3em] text-surface-300 uppercase"

@@ -10,6 +10,11 @@
 	} from '$lib/utils/page-edit';
 	import { fly, fade } from 'svelte/transition';
 	import type { Snippet } from 'svelte';
+	import { setContext } from 'svelte';
+	import {
+		createEditableVisibility,
+		EDITABLE_VISIBILITY_CONTEXT
+	} from '$lib/utils/editable-visibility.svelte';
 	import '../../theme.css';
 
 	let {
@@ -25,6 +30,14 @@
 		sitePhone?: string | null;
 		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
+
+	const editableVisibility = createEditableVisibility({
+		getComponentType: () => 'Footer',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getEditContext: () => editContext
+	});
+	setContext(EDITABLE_VISIBILITY_CONTEXT, editableVisibility);
 
 	// Footer (Promo-1) — page-компонент на глобальной странице '__global__':
 	// данные сохраняются через saveComponentData (апсёрт идёт на '__global__' через
@@ -123,7 +136,11 @@
 		isResetting = true;
 		try {
 			// Сохраняем только версию — контентные поля исчезают (→ фолбэки ?? в компоненте).
-			await saveComponentData(editContext, 'Footer', { footerVersion: selectedVersion });
+			await saveComponentData(editContext, 'Footer', {
+				footerVersion: selectedVersion,
+				// Сброс контента не меняет пользовательскую видимость строк футера.
+				...(Array.isArray(data.hiddenFields) ? { hiddenFields: data.hiddenFields } : {})
+			});
 			// Локально убираем контентные поля, чтобы UI сразу показал дефолты.
 			// invalidateAll после сохранений убран — локальный data = cleared
 			// теперь единственный источник состояния.
@@ -300,7 +317,7 @@
 		></button>
 
 		<div
-			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-on-dark/10 bg-ink-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
+			class="relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-on-dark/10 bg-ink-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ y: 20, duration: 300 }}
 		>
 			<div

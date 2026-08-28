@@ -20,13 +20,20 @@ export type PageComponentProps = {
 	 * классы, чтобы шестерёнка стояла рядом с авторизацией и сохраняла его облик.
 	 */
 	pageSettings?: Snippet<[triggerClass: string]>;
+	/**
+	 * Сохранённые карточки акций страницы `/actions` (`site.actionCards` из
+	 * renderPage). Нужны полосе акций: она стоит в шапке каждой страницы, а
+	 * карточки живут на одной. Остальные блоки проп игнорируют.
+	 */
+	actionCards?: unknown;
 };
 
 /** Карта «тип компонента из БД» → Svelte-компонент. */
 export type ComponentMap = Record<string, Component<PageComponentProps>>;
 
-/** Layout шаблона. Banner есть только у Promo-1. */
+/** Layout шаблона. PromoStrip и Banner есть только у Promo-1. */
 export type TemplateLayout = {
+	PromoStrip?: Component<PageComponentProps> | null;
 	Banner?: Component<PageComponentProps> | null;
 	Header?: Component<PageComponentProps> | null;
 	Footer?: Component<PageComponentProps> | null;

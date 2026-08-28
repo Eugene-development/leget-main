@@ -32,6 +32,7 @@
 		components = [],
 		headerData = null,
 		footerData = null,
+		actionCards = null,
 		seo = null,
 		editContext = null,
 		ownerId = null
@@ -41,6 +42,8 @@
 		components: PageComponent[];
 		headerData: Record<string, unknown> | null;
 		footerData: Record<string, unknown> | null;
+		/** Сохранённые карточки акций (`site.actionCards`) — для полосы акций. */
+		actionCards?: unknown;
 		seo?: PageSeoData | null;
 		editContext: EditContext | null;
 		/** id владельца лицензии — PageRenderer включает по нему режим редактирования. */
@@ -94,6 +97,7 @@
 	const template = $derived(resolveTemplate(templateId));
 	const componentMap = $derived(resolveComponentMap(template, slug));
 	const layout = $derived<TemplateLayout>({
+		PromoStrip: template.PromoStrip ?? null,
 		Banner: template.Banner ?? null,
 		Header: template.Header ?? null,
 		Footer: template.Footer ?? null
@@ -107,6 +111,7 @@
 	{components}
 	{headerData}
 	{footerData}
+	{actionCards}
 	{seo}
 	{editContext}
 	{ownerId}

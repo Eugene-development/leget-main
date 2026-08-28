@@ -17,6 +17,7 @@ const RENDER_PAGE_QUERY = `
 				ownerId
 				header { data }
 				footer { data }
+				actionCards
 			}
 			page {
 				id
@@ -70,6 +71,13 @@ export interface RenderPageResponse {
 			ownerId: string | null;
 			header: { data: Record<string, unknown> } | null;
 			footer: { data: Record<string, unknown> } | null;
+			/**
+			 * Сохранённые карточки акций страницы `/actions` — их читает полоса
+			 * акций в шапке, которая стоит на каждой странице. `null` означает
+			 * «блок акций тенант не правил», и это НЕ то же, что пустой список;
+			 * разбор — в `templates/Promo-1/pages/actions/actionCards.ts`.
+			 */
+			actionCards: unknown;
 		};
 		page: {
 			id: string;

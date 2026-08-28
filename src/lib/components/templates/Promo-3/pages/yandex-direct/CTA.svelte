@@ -54,7 +54,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="font-display mt-4 text-4xl text-white lg:text-5xl">
+				<h2 class="mt-4 text-4xl text-white lg:text-5xl">
 					{displayValue}
 				</h2>
 			{/snippet}

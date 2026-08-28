@@ -71,9 +71,7 @@
 			onSave={(v) => saveField('title', v)}
 			class="block"
 		>
-			{#snippet children(displayValue)}<h1
-					class="font-display text-5xl text-white sm:text-6xl lg:text-7xl"
-				>
+			{#snippet children(displayValue)}<h1 class="text-5xl text-white sm:text-6xl lg:text-7xl">
 					{displayValue}
 				</h1>{/snippet}
 		</EditableField>
@@ -98,7 +96,7 @@
 		<div class="mt-12 flex flex-wrap gap-10">
 			{#each stats as stat}
 				<div>
-					<div class="font-display text-3xl font-bold text-accent-500">{stat.value}</div>
+					<div class="ds-numeric text-3xl text-accent-500">{stat.value}</div>
 					<div class="mt-1 text-sm text-surface-400">{stat.label}</div>
 				</div>
 			{/each}

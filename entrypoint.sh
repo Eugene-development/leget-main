@@ -9,7 +9,6 @@ echo "🚀 SvelteKit LEGET Frontend starting with domain secrets resolution..."
 FRONTEND_URL_VALUE=""
 API_BASE_URL_VALUE=""
 AUTH_API_URL_VALUE=""
-ADMIN_EMAILS_VALUE=""
 
 if [ -f "/run/secrets/frontend_url" ]; then
     FRONTEND_URL_VALUE=$(tr -d '[:space:]' < /run/secrets/frontend_url)
@@ -24,10 +23,6 @@ fi
 if [ -f "/run/secrets/auth_api_url" ]; then
     AUTH_API_URL_VALUE=$(tr -d '[:space:]' < /run/secrets/auth_api_url)
     echo "✅ AUTH_API_URL set from secret: $AUTH_API_URL_VALUE"
-fi
-
-if [ -f "/run/secrets/leget_admin_emails" ]; then
-    ADMIN_EMAILS_VALUE=$(tr -d '[:space:]' < /run/secrets/leget_admin_emails)
 fi
 
 # Set production defaults if no secrets provided
@@ -53,9 +48,6 @@ echo "  FRONTEND_URL: ${FINAL_FRONTEND_URL}"
 # Export AUTH_BACKEND_URL for server-side proxy (used by SvelteKit $env/dynamic/private)
 export AUTH_BACKEND_URL="${FINAL_AUTH_API_URL}/api"
 export API_BACKEND_URL="${FINAL_API_BASE_URL}"
-if [ -n "${ADMIN_EMAILS_VALUE}" ]; then
-    export LEGET_ADMIN_EMAILS="${ADMIN_EMAILS_VALUE}"
-fi
 echo "  AUTH_BACKEND_URL: ${AUTH_BACKEND_URL}"
 echo "  API_BACKEND_URL: ${API_BACKEND_URL}"
 

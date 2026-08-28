@@ -116,7 +116,7 @@
 						</svg>
 					</div>
 					<h2
-						class="font-display text-2xl text-white transition-colors duration-300 group-hover:text-accent-500"
+						class="ds-title-sub text-2xl text-white transition-colors duration-300 group-hover:text-accent-500"
 					>
 						{service.title}
 					</h2>

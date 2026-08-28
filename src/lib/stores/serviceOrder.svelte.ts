@@ -8,7 +8,8 @@ export type ServiceType =
 	| 'furniture-project'
 	| 'assembly'
 	| 'measurement'
-	| 'partnership';
+	| 'partnership'
+	| 'promo';
 
 export const SERVICE_TITLES: Record<ServiceType, string> = {
 	consultation: 'Консультация дизайнера',
@@ -16,7 +17,8 @@ export const SERVICE_TITLES: Record<ServiceType, string> = {
 	'furniture-project': 'Проектирование мебели',
 	assembly: 'Сборка и монтаж',
 	measurement: 'Замер помещения',
-	partnership: 'Заявка на сотрудничество'
+	partnership: 'Заявка на сотрудничество',
+	promo: 'Получить промокод'
 };
 
 let _isOpen = $state(false);

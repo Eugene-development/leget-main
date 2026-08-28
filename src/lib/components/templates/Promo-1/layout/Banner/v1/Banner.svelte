@@ -1,12 +1,45 @@
 <script lang="ts">
 	// Артикул: 1.Б.1.1 — см. docs/architecture/component-articles-map.md
-	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { page } from '$app/stores';
-	import { uiStore } from '$lib/stores/ui.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
-	import ClientAuthButtons from '$lib/components/ClientAuthButtons.svelte';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
+	import { resolveBannerLinks } from '../../bannerLinks';
+	import '../../../theme.css';
 
+	// Вариант 1 баннера (верхняя полоса Promo-1) — тихая строка контактов.
+	//
+	// Тема. Полоса участвует в теме шаблона: корень объявляет `data-p1-theme`,
+	// элементы внутри набраны семантическими ролями (`p1-surface-alt`,
+	// `p1-title`, `p1-muted`, `p1-line`), а не абсолютными шкалами `ink`/`on-dark`.
+	// Значения приходят из выбранной дизайн-системы, поэтому светлая половина —
+	// не «инверсия чёрного», а нейтраль системы: у Базовой полоса становится
+	// #f9fafb с волосяной линией снизу, у «Охры» — тёплой.
+	//
+	// Дефолт темы — 'dark': таким баннер нарисован и таким стоит на живых
+	// сайтах, поэтому нетронутый блок не меняет вида, а тумблер (в панели
+	// настроек баннера) просто инвертирует исходное состояние.
+	//
+	// Почему снизу линия, а сверху нет. Тёмная полоса отделяется от страницы
+	// сама — темнотой; светлая садится на светлый хэдер и без границы
+	// сливается с ним в одно поле. Линия принадлежит роли `p1-line` и в тёмной
+	// теме уходит в фон (0,06 белого), то есть одно правило обслуживает обе
+	// половины без условий в разметке.
+	//
+	// Подложка непрозрачна, `backdrop-blur` снят: баннер стоит первым в потоке
+	// (его высота публикуется в `--banner-h` и вычитается из первого экрана),
+	// под ним ничего нет — размывать нечего.
+	//
+	// Ниже `lg` баннер не рисует ничего (с 25.08.2026). Его мобильная
+	// половина была строкой шапки — логотип, «Контакты», телефон, вход,
+	// избранное и бургер, — то есть баннер на узком экране подменял собой
+	// хэдер. Строка переехала в `Header.svelte`, внутрь липкого `<header>`;
+	// телефон, почта и «Контакты» остались доступны с мобильного — они
+	// теперь в строке и в листе меню. `--banner-h` на узком экране
+	// становится нулём, и первый экран считается верно: высоту хрома
+	// целиком несёт `--header-h`.
+	//
+	// Контракт данных не тронут: те же поля, те же ключи, то же сохранение.
 	let {
 		data = $bindable({}),
 		editContext = null,
@@ -17,23 +50,16 @@
 		isEditable: boolean;
 	} = $props();
 
-	const defaultLinks = [
-		{ href: '/about', label: 'О компании' },
-		{ href: '/partnership', label: 'Партнёрство' },
-		{ href: '/testimonials', label: 'Отзывы' },
-		{ href: '/installment', label: 'Рассрочка' },
-		{ href: '/guarantees', label: 'Гарантии' }
-	];
-
-	const links = $derived(
-		Array.isArray(data?.links) && (data.links as unknown[]).length > 0
-			? (data.links as typeof defaultLinks)
-			: defaultLinks
-	);
+	const links = $derived(resolveBannerLinks(data));
 
 	const phone = $derived(data?.phone ? String(data.phone) : '+7 (999) 000-00-00');
 	const email = $derived(data?.email ? String(data.email) : 'info@leget.ru');
-	const favoritesHref = $derived(String(data?.favoritesHref ?? '/favorites'));
+
+	// Тема читается прямо из пропса, без $state-зеркала: зеркало, заполняемое
+	// в $effect, на сервере осталось бы пустым, и SSR всегда отдавал бы дефолт.
+	// Ключ свой (`bannerTheme`), а не общий `theme`: blob `headerData` баннер
+	// делит с хэдером — как и версию (`bannerVersion`).
+	const isLight = $derived(isLightBlock(data, 'dark', 'bannerTheme'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -43,9 +69,9 @@
 	}
 </script>
 
-<div>
+<div data-p1-theme={isLight ? 'light' : 'dark'}>
 	<!-- Desktop Banner -->
-	<div class="z-50 hidden items-center bg-ink-950/90 px-4 backdrop-blur-sm sm:px-8 md:flex">
+	<div class="p1-surface-alt p1-line z-50 hidden items-center border-b px-4 sm:px-8 lg:flex">
 		<!-- Левая часть: навигационные ссылки -->
 		<div class="hidden flex-1 justify-start lg:flex">
 			<div class="flex items-center space-x-3.5 tracking-wide">
@@ -53,15 +79,15 @@
 					<a
 						href={link.href}
 						class={$page.url.pathname === link.href
-							? 'text-xs whitespace-nowrap text-link-400'
-							: 'text-xs whitespace-nowrap text-ink-50 transition-colors hover:text-link-300'}
+							? 'p1-accent text-xs whitespace-nowrap'
+							: 'p1-muted p1-accent-hover text-xs whitespace-nowrap transition-colors'}
 					>
 						{link.label}
 					</a>
 					{#if i < links.length - 1}
 						<svg
 							viewBox="0 0 2 2"
-							class="inline h-0.5 w-0.5 shrink-0 fill-current text-link-500"
+							class="p1-muted inline h-0.5 w-0.5 shrink-0 fill-current opacity-60"
 							aria-hidden="true"
 						>
 							<circle cx={1} cy={1} r={1} />
@@ -76,9 +102,7 @@
 			<div class="flex flex-1">
 				<div class="items-center py-1.5 lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
 					{#if phone}
-						<div
-							class="flex items-center justify-center px-2 py-1 text-xl leading-6 font-semibold xl:px-4"
-						>
+						<div class="flex items-center justify-center px-2 py-1 text-xs xl:px-4">
 							<EditableField
 								fieldKey="Banner.phone"
 								label="Телефон"
@@ -89,7 +113,7 @@
 								{#snippet children(displayValue)}
 									<a
 										href="tel:{displayValue}"
-										class="text-base font-normal tracking-wide text-ink-50 antialiased transition-colors hover:text-brand-400"
+										class="p1-title p1-accent-hover text-xs font-normal tracking-wide antialiased transition-colors"
 									>
 										{displayValue}
 									</a>
@@ -101,7 +125,7 @@
 					{#if phone && email}
 						<svg
 							viewBox="0 0 2 2"
-							class="mx-1 inline h-0.5 w-0.5 shrink-0 fill-current text-link-500"
+							class="p1-muted mx-1 inline h-0.5 w-0.5 shrink-0 fill-current opacity-60"
 							aria-hidden="true"
 						>
 							<circle cx={1} cy={1} r={1} />
@@ -109,9 +133,7 @@
 					{/if}
 
 					{#if email}
-						<div
-							class="flex items-center justify-center px-2 py-1 text-xl leading-6 font-semibold xl:px-4"
-						>
+						<div class="flex items-center justify-center px-2 py-1 text-xs xl:px-4">
 							<EditableField
 								fieldKey="Banner.email"
 								label="Email"
@@ -122,7 +144,7 @@
 								{#snippet children(displayValue)}
 									<a
 										href="mailto:{displayValue}"
-										class="text-base font-normal tracking-wide text-ink-50 antialiased transition-colors hover:text-brand-400"
+										class="p1-title p1-accent-hover text-xs font-normal tracking-wide antialiased transition-colors"
 									>
 										{displayValue}
 									</a>
@@ -130,96 +152,8 @@
 							</EditableField>
 						</div>
 					{/if}
-
-					{#if phone || email}
-						<svg
-							viewBox="0 0 2 2"
-							class="mx-1 inline h-0.5 w-0.5 shrink-0 fill-current text-link-500"
-							aria-hidden="true"
-						>
-							<circle cx={1} cy={1} r={1} />
-						</svg>
-					{/if}
-
-					<!-- Вход и регистрация клиента: состояние приходит из клиентской cookie -->
-					<ClientAuthButtons />
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<!-- Mobile Banner -->
-	<div
-		class="z-50 flex items-center justify-between bg-ink-900/90 px-4 py-3 backdrop-blur-md lg:hidden"
-	>
-		<a href="/" class="flex items-center gap-2">
-			<span class="sr-only">Главная</span>
-			{#if data?.logoUrl}
-				<ImageFallback class="h-6 w-auto" src={String(data.logoUrl)} alt="Логотип" />
-			{:else}
-				<div class="size-6 rounded-full bg-linear-to-tr from-link-400 to-cat-4-500 shadow-sm"></div>
-			{/if}
-		</a>
-
-		<div class="flex">
-			{#if phone}
-				<a
-					href="tel:{phone}"
-					class="font-display rounded-full bg-on-dark/10 px-4 py-1.5 text-base font-light tracking-wide text-ink-50 antialiased backdrop-blur-sm"
-				>
-					{phone}
-				</a>
-			{/if}
-		</div>
-
-		<div class="flex items-center gap-1">
-			<!-- Вход и регистрация клиента -->
-			<ClientAuthButtons compact />
-
-			<!-- Избранное -->
-			<a href={favoritesHref} class="relative isolate z-20 flex items-center p-2">
-				<span class="sr-only">Избранное</span>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="size-5 text-ink-50"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
-					></path>
-				</svg>
-			</a>
-
-			<!-- Mobile menu toggle -->
-			<button
-				type="button"
-				onclick={() => uiStore.toggleMenu()}
-				class="relative z-20 flex items-center p-2 text-ink-50"
-				aria-label="Меню"
-			>
-				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					{#if uiStore.menuOpen}
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					{:else}
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6h16M4 12h16M4 18h16"
-						/>
-					{/if}
-				</svg>
-			</button>
 		</div>
 	</div>
 </div>

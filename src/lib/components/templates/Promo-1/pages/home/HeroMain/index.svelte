@@ -27,9 +27,11 @@
 
 {#if selectedVersion !== 'disabled' || isEditable}
 	<div
-		class="hero-wrapper relative w-full overflow-hidden {selectedVersion === 'disabled'
-			? 'opacity-40 grayscale'
-			: ''}"
+		class="hero-wrapper relative w-full overflow-hidden {selectedVersion === 'v1'
+			? isEditable
+				? 'hero-wrapper-v1-editable'
+				: 'hero-wrapper-v1'
+			: ''} {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}"
 	>
 		<!-- Встраиваемый переключатель версий -->
 		<VersionSwitcher
@@ -93,7 +95,7 @@
 			</div>
 		{:else}
 			<div
-				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
+				class="hero-v1-slot relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
 				in:fly={{ x: -1200, duration: 600 }}
 				out:fly={{ x: 1200, duration: 600 }}
 			>
@@ -104,10 +106,11 @@
 {/if}
 
 <style>
-	/* Hero занимает ровно видимый viewport минус высоту баннера + хедера.
-	   --banner-h задаётся Banner.svelte, --header-h — Header.svelte (оба через ResizeObserver).
-	   Дефолты (--banner-h: 36px, --header-h: 72px) прописаны в layout.css для SSR
-	   и исключают флеш при гидратации.
+	/* Hero занимает ровно видимый viewport минус высоту полосы акций + баннера + хедера.
+	   --banner-h задаётся Banner.svelte, --header-h — Header.svelte (оба через ResizeObserver),
+	   --promo-h — статикой из PromoStrip/promo-strip.css (высота полосы постоянна).
+	   Дефолты (--promo-h: 0px, --banner-h: 36px, --header-h: 72px) прописаны в layout.css
+	   для SSR и исключают флеш при гидратации.
 
 	   `display: flex` — не для раскладки (внутри всегда ровно один элемент в
 	   потоке, тумблер версий уже `absolute`), а чтобы отдать этому элементу
@@ -131,6 +134,33 @@
 	   высоту оставила бы по контенту, то есть саму дыру, которую чиним. */
 	.hero-wrapper {
 		display: flex;
-		min-height: calc(100dvh - var(--banner-h, 36px) - var(--header-h, 72px));
+		min-height: calc(100dvh - var(--promo-h, 0px) - var(--banner-h, 36px) - var(--header-h, 72px));
+	}
+
+	/* В редакторе переполнение остаётся внутри Hero, а VersionSwitcher —
+	   закреплённым над ним. Стандартный scroll chaining намеренно сохранён:
+	   на краю внутреннего скролла прокрутка продолжает двигать страницу. */
+	@media (min-width: 1024px) {
+		.hero-wrapper-v1-editable .hero-v1-slot {
+			overflow-x: hidden;
+			overflow-y: auto;
+			scrollbar-gutter: stable;
+		}
+	}
+
+	/* Увеличенный логотип v1 не должен обрезать нижнюю часть панели на
+	   невысоком десктопе: возвращаем вариант в поток, чтобы hero мог стать
+	   выше viewport и страница получила обычную вертикальную прокрутку. */
+	@media (min-width: 1024px) and (max-height: 920px) {
+		.hero-wrapper-v1 {
+			overflow: visible;
+		}
+
+		.hero-wrapper-v1 .hero-v1-slot {
+			position: relative;
+			inset: auto;
+			height: auto;
+			min-height: inherit;
+		}
 	}
 </style>

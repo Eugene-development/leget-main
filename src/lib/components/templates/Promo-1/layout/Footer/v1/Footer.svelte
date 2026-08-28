@@ -18,6 +18,7 @@
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
+	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import { createContactVisibility } from '../contacts.svelte';
@@ -53,8 +54,11 @@
 	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
 	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
 	const client = $derived(
-		(page.data as { client?: { name: string; email: string } | null }).client ?? null
+		(page.data as { client?: { name: string; email: string; role: string } | null }).client ?? null
 	);
+
+	/** У партнёра кабинет свой — ссылка ведёт туда же, куда пустит сервер. */
+	const cabinet = $derived(cabinetHref(client?.role));
 
 	let email = $state('');
 	let testbot = $state('');
@@ -77,9 +81,15 @@
 	);
 	// В футере показываем только опубликованные рубрики: comingSoon (например «Плитка»)
 	// и явно отключённые в хэдере здесь не нужны — футер для посетителей.
-	const visibleCatalogItems = $derived(
-		catalogItems.filter((item) => item.comingSoon !== true && !disabledRubrics.includes(item.href))
-	);
+	// «Проекты» (/projects) — не рубрика, поэтому в общем catalogItems её нет: там она
+	// попала бы и в меню каталога хэдера, и в переключатели рубрик. В футере ссылка
+	// уместна — секция «Каталог» здесь работает как навигация по витрине целиком.
+	const visibleCatalogItems = $derived([
+		...catalogItems.filter(
+			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
+		),
+		{ href: '/projects', label: 'Проекты' }
+	]);
 	// Та же логика для услуг — скрываем comingSoon и отключённые в хэдере.
 	const visibleServiceItems = $derived(
 		serviceItems.filter((item) => item.comingSoon !== true && !disabledServices.includes(item.href))
@@ -89,12 +99,12 @@
 		{ href: '/actions', label: 'Акции' },
 		{ href: '/testimonials', label: 'Отзывы' },
 		{ href: '/about', label: 'О компании' },
-		{ href: '/contacts', label: 'Контакты' }
+		{ href: '/contacts', label: 'Контакты' },
+		// Страницы /vacancy в шаблоне ещё нет (см. index.ts) — ссылка заведена заранее,
+		// под будущую разработку. До неё маршрут отдаёт 404.
+		{ href: '/vacancy', label: 'Вакансии' }
 	];
-	const otherItems = [
-		{ href: '/vacancy', label: 'Вакансии' },
-		{ href: '/partnership', label: 'Партнёрство' }
-	];
+	const otherItems = [{ href: '/partnership', label: 'Партнёрство' }];
 
 	// Подписка живёт на клиенте: приёмника у форм в продукте пока нет вообще —
 	// главная форма шаблона (`ContactForm`, 1.3.1.1) тоже только выставляет флаг.
@@ -480,7 +490,7 @@
 					{/each}
 					{#if client}
 						<li>
-							<a href="/cabinet" class="p1-muted p1-accent-hover text-sm/6 transition-colors"
+							<a href={cabinet} class="p1-muted p1-accent-hover text-sm/6 transition-colors"
 								>Личный кабинет</a
 							>
 						</li>
@@ -489,7 +499,7 @@
 							<button
 								type="button"
 								onclick={() => clientAuthModal.open('login')}
-								class="p1-muted p1-accent-hover text-sm/6 text-left transition-colors"
+								class="p1-muted p1-accent-hover text-left text-sm/6 transition-colors"
 							>
 								Логин
 							</button>
@@ -498,7 +508,7 @@
 							<button
 								type="button"
 								onclick={() => clientAuthModal.open('register')}
-								class="p1-muted p1-accent-hover text-sm/6 text-left transition-colors"
+								class="p1-muted p1-accent-hover text-left text-sm/6 transition-colors"
 							>
 								Регистрация
 							</button>

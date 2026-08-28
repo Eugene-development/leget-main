@@ -64,7 +64,7 @@
 				onSave={(v) => saveField('heading', v)}
 				class="block"
 			>
-				{#snippet children(displayValue)}<h2 class="font-display text-3xl text-white lg:text-4xl">
+				{#snippet children(displayValue)}<h2 class="text-3xl text-white lg:text-4xl">
 						{displayValue}
 					</h2>{/snippet}
 			</EditableField>
@@ -85,11 +85,11 @@
 			{#each steps as item}
 				<div class="relative">
 					<div
-						class="font-display mb-4 inline-flex size-12 items-center justify-center rounded-xl border border-accent-500/20 bg-accent-500/5 text-lg font-bold text-accent-500"
+						class="ds-numeric mb-4 inline-flex size-12 items-center justify-center rounded-xl border border-accent-500/20 bg-accent-500/5 text-lg text-accent-500"
 					>
 						{item.step}
 					</div>
-					<h3 class="font-display text-lg text-white">{item.title}</h3>
+					<h3 class="ds-title-sub text-lg text-white">{item.title}</h3>
 					<p class="mt-2 text-sm leading-relaxed text-surface-400">{item.desc}</p>
 				</div>
 			{/each}

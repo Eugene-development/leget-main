@@ -5,6 +5,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { createEditableVisibility } from '$lib/utils/editable-visibility.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	type PartnerBrand = {
@@ -22,6 +23,16 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Видимость сохраняется вместе с контентом HeroMain и применяется на SSR:
+	// посетитель не получает скрытые части, а владелец видит их полупрозрачными
+	// и может вернуть тем же тумблером рядом с карандашом.
+	const visibility = createEditableVisibility({
+		getComponentType: () => 'HeroMain',
+		getData: () => data,
+		setData: (next) => (data = next),
+		getEditContext: () => editContext
+	});
 
 	const activeBgImage = $derived(
 		String(
@@ -55,8 +66,14 @@
 	const brands = $derived<PartnerBrand[]>(
 		Array.isArray(data?.brands) ? (data.brands as PartnerBrand[]) : defaultBrands
 	);
-	const hasBrandMarquee = $derived(brands.length > 4);
-	const brandMarqueeDuration = $derived(Math.max(25, brands.length * 5));
+	const renderedBrands = $derived(
+		brands
+			.map((brand, index) => ({ brand, index }))
+			.filter(({ index }) => isEditable || visibility.isVisible(`brand:${index}`))
+	);
+	const hasBrandMarquee = $derived(renderedBrands.length > 4);
+	const brandMarqueeDuration = $derived(Math.max(25, renderedBrands.length * 5));
+	const brandsBlockVisible = $derived(visibility.isVisible('brandsBlock'));
 
 	let editingBrandIndex = $state<number | null>(null);
 	let isAddingBrand = $state(false);
@@ -188,13 +205,17 @@
 				<!-- Логотип. Габариты ограничены и по ширине, и по высоте: панель живёт
 				     в боксе фиксированной высоты (см. .hero-wrapper в ../index.svelte),
 				     поэтому квадратный логотип без max-h выдавливал контент за нижний край. -->
-				{#if data?.logoUrl || isEditable}
-					<div class="hero-logo mb-6 w-24 md:w-32">
+				{#if (data?.logoUrl && visibility.isVisible('logo')) || isEditable}
+					<div class="hero-logo mb-6 w-[14.4rem] md:w-64 lg:w-[27.648rem]">
 						<EditableField
 							fieldKey="HeroMain.logoUrl"
 							label="Логотип (URL)"
 							value={String(data?.logoUrl ?? '')}
 							{isEditable}
+							visible={visibility.isVisible('logo')}
+							visibilityLabel="логотип"
+							visibilityPending={visibility.isPending('logo')}
+							onToggleVisibility={(event) => visibility.toggle('logo', event)}
 							onSave={(v) => saveField('logoUrl', v)}
 							class="block"
 						>
@@ -204,7 +225,7 @@
 										src={displayValue ||
 											'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
 										alt={String(data?.logoAlt ?? 'Логотип')}
-										class="relative mx-auto max-h-16 w-full rounded-2xl object-contain md:max-h-20"
+										class="relative mx-auto max-h-[9.6rem] w-full rounded-2xl object-contain md:max-h-40 lg:max-h-[17.28rem]"
 									/>
 								{:else if isEditable}
 									<!-- Роль метки, а не три утилиты руками: кегль, начертание и
@@ -229,6 +250,10 @@
 					label="Название компании"
 					value={String(data?.companyName ?? '')}
 					{isEditable}
+					visible={visibility.isVisible('companyName')}
+					visibilityLabel="название компании"
+					visibilityPending={visibility.isPending('companyName')}
+					onToggleVisibility={(event) => visibility.toggle('companyName', event)}
 					onSave={(v) => saveField('companyName', v)}
 					class="block"
 				>
@@ -247,6 +272,10 @@
 					label="Заголовок"
 					value={String(data?.title ?? '')}
 					{isEditable}
+					visible={visibility.isVisible('title')}
+					visibilityLabel="заголовок"
+					visibilityPending={visibility.isPending('title')}
+					onToggleVisibility={(event) => visibility.toggle('title', event)}
 					onSave={(v) => saveField('title', v)}
 					class="block"
 				>
@@ -264,6 +293,10 @@
 					value={String(data?.description ?? '')}
 					{isEditable}
 					multiline
+					visible={visibility.isVisible('description')}
+					visibilityLabel="описание"
+					visibilityPending={visibility.isPending('description')}
+					onToggleVisibility={(event) => visibility.toggle('description', event)}
 					onSave={(v) => saveField('description', v)}
 					class="block"
 				>
@@ -276,15 +309,21 @@
 					{/snippet}
 				</EditableField>
 
-				<!-- Кнопка -->
+				<!-- Кнопки. Направление не reverse: пока кнопка была одна, порядок
+				     ничего не значил, а со вторым CTA он стал смыслом — основной
+				     остаётся первым и на мобильном, и на десктопе. -->
 				<div
-					class="flex w-full flex-col-reverse items-center justify-center gap-6 md:w-auto md:flex-row md:gap-16"
+					class="flex w-full flex-col items-center justify-center gap-4 md:w-auto md:flex-row md:gap-6"
 				>
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
 						value={String(data?.buttonText ?? 'Дизайн-проект с расчётом стоимости')}
 						{isEditable}
+						visible={visibility.isVisible('button')}
+						visibilityLabel="кнопку"
+						visibilityPending={visibility.isPending('button')}
+						onToggleVisibility={(event) => visibility.toggle('button', event)}
 						onSave={(v) => saveField('buttonText', v)}
 						class="block"
 					>
@@ -292,136 +331,222 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('design-project')}
-								class="group cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-ink-900/60 hover:shadow-xl"
+								class="group cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-900/60 hover:shadow-xl"
 							>
 								<HoverSwapLabel text={displayValue} disabled={isEditable} />
+							</button>
+						{/snippet}
+					</EditableField>
+
+					<!-- Второй CTA держится тише первого: тот уже контурный, поэтому
+					     здесь остаётся только подпись с подчёркиванием — иерархия
+					     читается без второй рамки рядом с первой. -->
+					<EditableField
+						fieldKey="HeroMain.promoButtonText"
+						label="Текст кнопки промокода"
+						value={String(data?.promoButtonText ?? 'Получить промокод')}
+						{isEditable}
+						visible={visibility.isVisible('promoButton')}
+						visibilityLabel="кнопку промокода"
+						visibilityPending={visibility.isPending('promoButton')}
+						onToggleVisibility={(event) => visibility.toggle('promoButton', event)}
+						onSave={(v) => saveField('promoButtonText', v)}
+						class="block"
+					>
+						{#snippet children(displayValue)}
+							<button
+								type="button"
+								onclick={() => serviceOrderStore.open('promo')}
+								class="cursor-pointer rounded-xl px-6 py-4 text-center text-base font-semibold text-ink-800 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+							>
+								{displayValue}
 							</button>
 						{/snippet}
 					</EditableField>
 				</div>
 			</div>
 
-			<!-- Разделитель -->
-			<div class="flex w-full justify-center px-6 md:px-12">
-				<div class="h-px w-full max-w-xl bg-ink-300/50"></div>
-			</div>
+			{#if (renderedBrands.length > 0 && brandsBlockVisible) || isEditable}
+				<!-- Разделитель входит в секцию брендов: когда скрыты все логотипы,
+				     у посетителя не остаётся одинокая линия. -->
+				<div
+					class="flex w-full justify-center px-6 transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui md:px-12 {brandsBlockVisible
+						? ''
+						: 'opacity-45'}"
+				>
+					<div class="h-px w-full max-w-xl bg-ink-300/50"></div>
+				</div>
 
-			<!-- Секция брендов -->
-			<div class="hero-brands flex w-full justify-center px-6 pt-6 pb-6 md:px-12 md:pt-8 md:pb-8">
-				<div class="flex w-full flex-col items-center">
-					<p
-						class="hero-brands-label mb-6 hidden text-xs font-semibold tracking-widest text-ink-700 uppercase md:block"
-					>
-						РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:
-					</p>
-					<div class="flex w-full items-center gap-3 md:gap-5">
+				<!-- Секция брендов -->
+				<div class="hero-brands flex w-full justify-center px-6 pt-6 pb-6 md:px-12 md:pt-8 md:pb-8">
+					<div class="flex w-full flex-col items-center">
+						<EditableField
+							fieldKey="HeroMain.brandsTitle"
+							label="Заголовок блока брендов"
+							value={String(data?.brandsTitle ?? 'РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:')}
+							{isEditable}
+							visible={brandsBlockVisible}
+							visibilityLabel="блок брендов"
+							visibilityPending={visibility.isPending('brandsBlock')}
+							onToggleVisibility={(event) => visibility.toggle('brandsBlock', event)}
+							onSave={(v) => saveField('brandsTitle', v)}
+							class="block"
+						>
+							{#snippet children(displayValue)}
+								<p
+									class="hero-brands-label mb-6 min-h-4 text-xs font-semibold tracking-widest text-ink-700 uppercase {isEditable
+										? 'block'
+										: 'hidden md:block'}"
+								>
+									{displayValue}
+								</p>
+							{/snippet}
+						</EditableField>
 						<div
-							class="brand-viewport {hasBrandMarquee ? 'brand-viewport-scroll' : ''}"
-							bind:this={brandsViewport}
+							class="flex w-full items-center gap-3 transition-[opacity,filter] duration-[var(--ds-motion-duration-ui)] ease-ui md:gap-5 {brandsBlockVisible
+								? ''
+								: 'opacity-45 grayscale'}"
 						>
 							<div
-								class="brand-track {hasBrandMarquee ? 'brand-track-marquee' : ''} {!isBrandsVisible
-									? 'brand-track-paused'
-									: ''}"
-								style={`--brand-duration: ${brandMarqueeDuration}s`}
+								class="brand-viewport {hasBrandMarquee ? 'brand-viewport-scroll' : ''}"
+								bind:this={brandsViewport}
 							>
-								{#each Array(hasBrandMarquee ? 2 : 1) as _, copyIndex}
-									<div
-										class="brand-group {hasBrandMarquee
-											? 'brand-group-marquee'
-											: 'brand-group-static'} {copyIndex === 1 ? 'brand-group-copy' : ''}"
-										aria-hidden={copyIndex === 1 ? 'true' : undefined}
-									>
-										{#each brands as brand, i}
-											<div
-												class="brand-item {hasBrandMarquee
-													? 'brand-item-marquee'
-													: 'brand-item-static'}"
-											>
-												{#if isEditable && editContext}
-													<button
-														type="button"
-														onclick={() => openBrandLogoPicker(i)}
-														tabindex={copyIndex === 1 ? -1 : undefined}
-														class="brand-logo group relative flex h-12 w-full cursor-pointer items-center justify-center rounded-lg border border-transparent px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-400/40 hover:bg-surface-raised/40 hover:opacity-100 focus-visible:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
-														aria-label={`Заменить логотип «${brand.name}»`}
-														title={`Заменить логотип «${brand.name}»`}
-													>
-														<ImageFallback
-															class="max-h-full max-w-full object-contain"
-															src={brand.logo}
-															alt={copyIndex === 1 ? '' : brand.name}
-														/>
-														<span
-															class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 opacity-80 shadow-sm transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:opacity-100 group-focus-visible:opacity-100"
-															aria-hidden="true"
-														>
-															<svg
-																class="size-3.5"
-																fill="none"
-																viewBox="0 0 24 24"
-																stroke="currentColor"
+								<div
+									class="brand-track {hasBrandMarquee
+										? 'brand-track-marquee'
+										: ''} {!isBrandsVisible || !brandsBlockVisible ? 'brand-track-paused' : ''}"
+									style={`--brand-duration: ${brandMarqueeDuration}s`}
+								>
+									{#each Array(hasBrandMarquee ? 2 : 1) as _, copyIndex}
+										<div
+											class="brand-group {hasBrandMarquee
+												? 'brand-group-marquee'
+												: 'brand-group-static'} {copyIndex === 1 ? 'brand-group-copy' : ''}"
+											aria-hidden={copyIndex === 1 ? 'true' : undefined}
+										>
+											{#each renderedBrands as { brand, index }}
+												<div
+													class="brand-item {hasBrandMarquee
+														? 'brand-item-marquee'
+														: 'brand-item-static'}"
+												>
+													{#if isEditable && editContext}
+														<div class="brand-logo relative h-12 w-full">
+															<button
+																type="button"
+																onclick={() => openBrandLogoPicker(index)}
+																tabindex={copyIndex === 1 ? -1 : undefined}
+																class="group flex h-full w-full cursor-pointer items-center justify-center rounded-lg border border-transparent px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-400/40 hover:bg-surface-raised/40 hover:opacity-100 focus-visible:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none {visibility.isVisible(
+																	`brand:${index}`
+																)
+																	? ''
+																	: 'opacity-45 grayscale'}"
+																aria-label={`Заменить логотип «${brand.name}»`}
+																title={`Заменить логотип «${brand.name}»`}
 															>
-																<path
-																	stroke-linecap="round"
-																	stroke-linejoin="round"
-																	stroke-width="1.75"
-																	d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
+																<ImageFallback
+																	class="max-h-full max-w-full object-contain"
+																	src={brand.logo}
+																	alt={copyIndex === 1 ? '' : brand.name}
 																/>
-															</svg>
-														</span>
-													</button>
-												{:else if brand.url}
-													<a
-														href={brand.url}
-														target="_blank"
-														rel="noopener noreferrer"
-														tabindex={copyIndex === 1 ? -1 : undefined}
-														class="brand-logo group flex h-10 w-full items-center justify-center px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:opacity-100"
-													>
-														<ImageFallback
-															class="max-h-full max-w-full object-contain"
-															src={brand.logo}
-															alt={copyIndex === 1 ? '' : brand.name}
-														/>
-													</a>
-												{:else}
-													<div class="brand-logo flex h-10 w-full items-center justify-center px-2">
-														<ImageFallback
-															class="max-h-full max-w-full object-contain"
-															src={brand.logo}
-															alt={copyIndex === 1 ? '' : brand.name}
-														/>
-													</div>
-												{/if}
-											</div>
-										{/each}
-									</div>
-								{/each}
+																<span
+																	class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 opacity-80 shadow-sm transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:opacity-100 group-focus-visible:opacity-100"
+																	aria-hidden="true"
+																>
+																	<svg
+																		class="size-3.5"
+																		fill="none"
+																		viewBox="0 0 24 24"
+																		stroke="currentColor"
+																	>
+																		<path
+																			stroke-linecap="round"
+																			stroke-linejoin="round"
+																			stroke-width="1.75"
+																			d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
+																		/>
+																	</svg>
+																</span>
+															</button>
+															<button
+																type="button"
+																role="switch"
+																aria-checked={visibility.isVisible(`brand:${index}`)}
+																aria-busy={visibility.isPending(`brand:${index}`)}
+																aria-label={`${visibility.isVisible(`brand:${index}`) ? 'Скрыть' : 'Показать'} логотип «${brand.name}»`}
+																title={`${visibility.isVisible(`brand:${index}`) ? 'Скрыть' : 'Показать'} логотип «${brand.name}»`}
+																tabindex={copyIndex === 1 ? -1 : undefined}
+																disabled={visibility.isPending(`brand:${index}`)}
+																onclick={(event) => visibility.toggle(`brand:${index}`, event)}
+																class="absolute -top-2 right-8 inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-surface-raised/80 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60 {visibility.isVisible(
+																	`brand:${index}`
+																)
+																	? 'bg-link-500'
+																	: 'bg-ink-400'}"
+															>
+																<span
+																	class="pointer-events-none inline-block size-4 rounded-full bg-surface-raised shadow-sm transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui {visibility.isVisible(
+																		`brand:${index}`
+																	)
+																		? 'translate-x-4'
+																		: 'translate-x-0'}"
+																></span>
+															</button>
+														</div>
+													{:else if brand.url}
+														<a
+															href={brand.url}
+															target="_blank"
+															rel="noopener noreferrer"
+															tabindex={copyIndex === 1 ? -1 : undefined}
+															class="brand-logo group flex h-10 w-full items-center justify-center px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:opacity-100"
+														>
+															<ImageFallback
+																class="max-h-full max-w-full object-contain"
+																src={brand.logo}
+																alt={copyIndex === 1 ? '' : brand.name}
+															/>
+														</a>
+													{:else}
+														<div
+															class="brand-logo flex h-10 w-full items-center justify-center px-2"
+														>
+															<ImageFallback
+																class="max-h-full max-w-full object-contain"
+																src={brand.logo}
+																alt={copyIndex === 1 ? '' : brand.name}
+															/>
+														</div>
+													{/if}
+												</div>
+											{/each}
+										</div>
+									{/each}
+								</div>
 							</div>
-						</div>
 
-						{#if isEditable && editContext}
-							<button
-								type="button"
-								onclick={openNewBrandPicker}
-								class="brand-add flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-dashed border-ink-400 bg-surface-raised/70 text-ink-700 shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-link-500 hover:text-link-600 hover:shadow-md focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
-								aria-label="Добавить логотип партнёра"
-								title="Добавить логотип партнёра"
-							>
-								<svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="1.75"
-										d="M12 5v14M5 12h14"
-									/>
-								</svg>
-							</button>
-						{/if}
+							{#if isEditable && editContext}
+								<button
+									type="button"
+									onclick={openNewBrandPicker}
+									class="brand-add flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-dashed border-ink-400 bg-surface-raised/70 text-ink-700 shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-link-500 hover:text-link-600 hover:shadow-md focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+									aria-label="Добавить логотип партнёра"
+									title="Добавить логотип партнёра"
+								>
+									<svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="1.75"
+											d="M12 5v14M5 12h14"
+										/>
+									</svg>
+								</button>
+							{/if}
+						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 	</div>
 </section>
@@ -591,13 +716,13 @@
 		}
 
 		.hero-logo {
-			width: 5rem;
+			width: 17.28rem;
 			margin-bottom: 0.75rem;
 		}
 
 		.hero-logo :global(img),
 		.hero-logo :global([role='img']) {
-			max-height: 3rem;
+			max-height: 10.368rem;
 		}
 
 		.hero-title {

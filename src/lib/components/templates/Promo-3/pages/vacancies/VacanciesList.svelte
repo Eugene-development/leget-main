@@ -114,7 +114,7 @@
 			<span class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase"
 				>Открытые позиции</span
 			>
-			<h2 class="font-display mt-3 text-4xl text-white lg:text-5xl">
+			<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 				{vacancies.length} вакансии <span class="text-surface-300">прямо сейчас</span>
 			</h2>
 			<p class="mt-4 max-w-2xl text-surface-300">

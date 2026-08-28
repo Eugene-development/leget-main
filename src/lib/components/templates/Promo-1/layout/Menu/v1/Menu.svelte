@@ -195,7 +195,7 @@
 				: 'p1-accent-hover p1-accent-border-hover'}"
 			class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 		>
-			<span class="text-[0.9375rem] font-semibold">
+			<span class="text-sm font-semibold">
 				{item.label}
 				{#if isEditable && !isEnabled && !isComingSoon}
 					<span class="p1-label p1-muted ml-1.5 align-middle">откл</span>
@@ -298,7 +298,7 @@
 	тему. Подвал свою получает из данных (`isLight`), у шапки такого поля нет
 	вовсе. Это находка прогона, а не решение блока.
 -->
-<nav bind:this={rootEl} data-p1-theme="light" class="hidden items-center gap-7 sm:flex">
+<nav bind:this={rootEl} data-p1-theme="light" class="hidden items-center gap-7 lg:flex">
 	{#each links as link}
 		{#if link.label === 'Услуги'}
 			<div

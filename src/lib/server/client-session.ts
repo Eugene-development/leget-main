@@ -21,6 +21,12 @@ export const CLIENT_COOKIE = 'leget_client_jwt';
 export interface ClientDisplay {
 	name: string;
 	email: string;
+	/**
+	 * Роль из claim'а токена. Снимок на момент выдачи: после смены роли врёт до
+	 * истечения TTL, поэтому годится для надписи в шапке и не годится для
+	 * решения о доступе. Доступ решает ответ leget-auth.
+	 */
+	role: string;
 }
 
 export interface ClientProfile {
@@ -74,18 +80,26 @@ export function decodeClientDisplay(token: string | undefined): ClientDisplay | 
 		const email = typeof json.email === 'string' ? json.email : '';
 		if (!email) return null;
 
-		return { name: typeof json.name === 'string' && json.name ? json.name : email, email };
+		return {
+			name: typeof json.name === 'string' && json.name ? json.name : email,
+			email,
+			// Токены, выданные до появления claim'а, роли не несут — до истечения
+			// их TTL считаем такого пользователя клиентом, как и колонка по умолчанию.
+			role: typeof json.role === 'string' && json.role ? json.role : 'client'
+		};
 	} catch {
 		return null;
 	}
 }
 
 /**
- * Профиль клиента из leget-auth. `null` — токена нет, он недействителен или
- * принадлежит администратору (403 от EnsureClientAccess).
+ * Профиль вошедшего пользователя из leget-auth — «кто я» для любой роли.
+ *
+ * `null` — токена нет или он недействителен. Роль в ответе приходит из БД,
+ * а не из claim'а, поэтому именно по ней страница решает, свой ли это кабинет.
  */
-export async function readClientProfile(token: string): Promise<ClientProfile | null> {
-	const response = await authApi('/client/me', {
+export async function readSessionProfile(token: string): Promise<ClientProfile | null> {
+	const response = await authApi('/session/me', {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 

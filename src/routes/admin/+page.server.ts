@@ -1,5 +1,4 @@
 import { dev } from '$app/environment';
-import { env } from '$env/dynamic/private';
 import { fail } from '@sveltejs/kit';
 import { adminApi, adminAuthApi, readApiJson } from '$lib/server/admin-api';
 import type { Actions, PageServerLoad } from './$types';
@@ -8,17 +7,6 @@ const COOKIE_NAME = 'leget_admin_jwt';
 
 /** Cookie клиентской сессии — см. src/lib/server/client-session.ts. */
 const CLIENT_COOKIE = 'leget_client_jwt';
-
-function adminEmails(): string[] {
-	return (env.LEGET_ADMIN_EMAILS ?? '')
-		.split(',')
-		.map((email) => email.trim().toLowerCase())
-		.filter(Boolean);
-}
-
-function isAdminEmail(email: string): boolean {
-	return adminEmails().includes(email.trim().toLowerCase());
-}
 
 function bearer(token: string): HeadersInit {
 	return { Authorization: `Bearer ${token}` };
@@ -93,14 +81,10 @@ export const actions: Actions = {
 			return fail(422, { action: 'login', message: 'Введите email и пароль.', email });
 		}
 
-		if (!isAdminEmail(email)) {
-			return fail(401, {
-				action: 'login',
-				message: 'Неверные учётные данные или недостаточно прав.',
-				email
-			});
-		}
-
+		// Роль здесь не проверяется: её знает только leget-auth, который читает
+		// колонку `users.role`. Раньше тут стоял фильтр по LEGET_ADMIN_EMAILS —
+		// он отсекал вход ДО обращения к сервису, и админ, заведённый в БД,
+		// упирался в «недостаточно прав» ещё до проверки пароля.
 		try {
 			const response = await adminAuthApi('/admin/login', {
 				method: 'POST',

@@ -89,7 +89,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="font-display text-5xl text-white sm:text-6xl lg:text-7xl">
+				<h1 class="text-5xl text-white sm:text-6xl lg:text-7xl">
 					{displayValue}
 				</h1>
 			{/snippet}
@@ -162,7 +162,7 @@
 		<div class="mt-16 flex flex-wrap gap-12 border-t border-surface-700/50 pt-8">
 			{#each stats as stat}
 				<div>
-					<div class="font-display text-2xl font-bold text-accent-500">{stat.value}</div>
+					<div class="ds-numeric text-2xl text-accent-500">{stat.value}</div>
 					<div class="mt-1 text-xs tracking-wide text-surface-300">{stat.label}</div>
 				</div>
 			{/each}

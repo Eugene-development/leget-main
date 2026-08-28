@@ -28,6 +28,9 @@
 
 	function onKeydown(event: KeyboardEvent) {
 		if (!open) return;
+		// Вложенные модалки (например, выбор/обрезка изображения) портируются в body.
+		// Их клавиатурные события не должны закрывать drawer или возвращать фокус в него.
+		if (!(event.target instanceof Node) || !panelEl?.contains(event.target)) return;
 		if (event.key === 'Escape') {
 			close();
 			return;

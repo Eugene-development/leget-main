@@ -6,6 +6,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
+	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import { catalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import type { Action } from 'svelte/action';
@@ -42,8 +43,11 @@
 	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
 	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
 	const client = $derived(
-		(page.data as { client?: { name: string; email: string } | null }).client ?? null
+		(page.data as { client?: { name: string; email: string; role: string } | null }).client ?? null
 	);
+
+	/** У партнёра кабинет свой — ссылка ведёт туда же, куда пустит сервер. */
+	const cabinet = $derived(cabinetHref(client?.role));
 
 	// Те же поля и дефолты, что в v1 — редактирование и сохранение идентичны.
 	const siteName = $derived(
@@ -66,9 +70,15 @@
 	const disabledServices = $derived(
 		Array.isArray(data?.disabledServices) ? (data.disabledServices as string[]) : []
 	);
-	const visibleCatalogItems = $derived(
-		catalogItems.filter((item) => item.comingSoon !== true && !disabledRubrics.includes(item.href))
-	);
+	// «Проекты» (/projects) — не рубрика, поэтому в общем catalogItems её нет: там она
+	// попала бы и в меню каталога хэдера, и в переключатели рубрик. В футере ссылка
+	// уместна — секция «Каталог» здесь работает как навигация по витрине целиком.
+	const visibleCatalogItems = $derived([
+		...catalogItems.filter(
+			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
+		),
+		{ href: '/projects', label: 'Проекты' }
+	]);
 	const visibleServiceItems = $derived(
 		serviceItems.filter((item) => item.comingSoon !== true && !disabledServices.includes(item.href))
 	);
@@ -125,7 +135,7 @@
 	};
 </script>
 
-<footer class="font-sans-premium relative overflow-hidden bg-surface-inverse text-on-dark">
+<footer class="relative overflow-hidden bg-surface-inverse text-on-dark">
 	<!-- Декоративный фон: точечная сетка + мягкие световые орбы -->
 	<div class="footer-mesh-v2 pointer-events-none absolute inset-0"></div>
 	<div
@@ -153,7 +163,7 @@
 					Связаться с нами
 				</span>
 
-				<h2 class="font-display mt-7 text-5xl sm:text-6xl lg:text-7xl">
+				<h2 class="mt-7 text-5xl sm:text-6xl lg:text-7xl">
 					<EditableField
 						fieldKey="Footer.siteName"
 						label="Название компании"
@@ -521,6 +531,17 @@
 									></span>
 								</a>
 							</li>
+							<li>
+								<a
+									href="/vacancy"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
+									Вакансии
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
+								</a>
+							</li>
 						</ul>
 					</div>
 
@@ -571,17 +592,6 @@
 						<ul class="mt-5 space-y-3.5">
 							<li>
 								<a
-									href="/vacancy"
-									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
-								>
-									Вакансии
-									<span
-										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
-									></span>
-								</a>
-							</li>
-							<li>
-								<a
 									href="/partnership"
 									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
 								>
@@ -594,7 +604,7 @@
 							{#if client}
 								<li>
 									<a
-										href="/cabinet"
+										href={cabinet}
 										class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
 									>
 										Личный кабинет
@@ -675,15 +685,6 @@
 {/if}
 
 <style>
-	/* Шрифты грузятся один раз в layout/Header.svelte; классы продублированы :global
-	   на случай, если на странице не оказался HeroMain v2. */
-	:global(.font-display) {
-		font-family: 'Playfair Display', serif !important;
-	}
-	:global(.font-sans-premium) {
-		font-family: 'Jost', sans-serif !important;
-	}
-
 	/* Точечная сетка с мягким затуханием к краям — «технологичная» текстура фона. */
 	.footer-mesh-v2 {
 		background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);

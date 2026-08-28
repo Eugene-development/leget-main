@@ -68,9 +68,7 @@
 				onSave={(v) => saveField('heading', v)}
 				class="block"
 			>
-				{#snippet children(displayValue)}<h2
-						class="font-display mt-3 text-4xl text-white lg:text-5xl"
-					>
+				{#snippet children(displayValue)}<h2 class="mt-3 text-4xl text-white lg:text-5xl">
 						{displayValue}
 					</h2>{/snippet}
 			</EditableField>
@@ -97,7 +95,7 @@
 					class="group rounded-2xl border border-surface-700/50 bg-surface-800/40 p-8 text-center transition-all duration-500 hover:border-accent-500/20 hover:bg-surface-800/70 hover:shadow-2xl hover:shadow-accent-500/5"
 				>
 					<div
-						class="font-display mx-auto mb-6 flex size-20 items-center justify-center rounded-full border border-accent-500/20 bg-gradient-to-br from-accent-500/20 to-accent-600/5 text-2xl font-bold text-accent-500 transition-all duration-300 group-hover:border-accent-500/40"
+						class="mx-auto mb-6 flex size-20 items-center justify-center rounded-full border border-accent-500/20 bg-gradient-to-br from-accent-500/20 to-accent-600/5 text-2xl font-bold text-accent-500 transition-all duration-300 group-hover:border-accent-500/40"
 					>
 						{member.name
 							.split(' ')

@@ -304,7 +304,7 @@
 		>
 			<span class="mt-0.5">{@render icon(service.icon, 'h-5 w-5')}</span>
 			<span class="flex flex-col gap-0.5">
-				<span class="text-[0.9375rem] font-semibold">{service.label}</span>
+				<span class="text-sm font-semibold">{service.label}</span>
 				{#if service.desc}
 					<span class="p1-note p1-muted">{service.desc}</span>
 				{/if}
@@ -362,7 +362,7 @@
 	на `--ds-surface-raised`, светлом во всех пяти системах. У layout-компонентов
 	входа под тему нет; подробнее — в DESIGN.md → Components → Navigation.
 -->
-<nav bind:this={rootEl} data-p1-theme="light" class="hidden items-center gap-7 sm:flex">
+<nav bind:this={rootEl} data-p1-theme="light" class="hidden items-center gap-7 lg:flex">
 	{#each links as link}
 		{#if link.label === 'Услуги'}
 			<div

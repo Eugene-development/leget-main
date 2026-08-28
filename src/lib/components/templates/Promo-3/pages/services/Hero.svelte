@@ -59,9 +59,7 @@
 			onSave={(v) => saveField('title', v)}
 			class="block"
 		>
-			{#snippet children(displayValue)}<h1
-					class="font-display text-5xl text-white sm:text-6xl lg:text-7xl"
-				>
+			{#snippet children(displayValue)}<h1 class="text-5xl text-white sm:text-6xl lg:text-7xl">
 					{displayValue}
 				</h1>{/snippet}
 		</EditableField>

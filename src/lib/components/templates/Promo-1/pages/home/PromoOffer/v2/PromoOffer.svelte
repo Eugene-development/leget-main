@@ -34,8 +34,6 @@
 		await saveComponentData(editContext, 'PromoOffer', updated);
 		data = updated;
 	}
-
-
 </script>
 
 <section
@@ -225,12 +223,6 @@
 </section>
 
 <style>
-	/* Outfit font is loaded once in Promo-1 layout/Header.svelte */
-
-	h2 {
-		font-family: 'Outfit', sans-serif;
-	}
-
 	@keyframes promo-float {
 		0%,
 		100% {
