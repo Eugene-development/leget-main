@@ -3,6 +3,7 @@
 	import HeroV2 from './v2/HeroMain.svelte';
 	import HeroV3 from './v3/HeroMain.svelte';
 	import HeroV4 from './v4/HeroMain.svelte';
+	import HeroBackgroundSettings from './v1/HeroBackgroundSettings.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 	import { fly } from 'svelte/transition';
 
@@ -34,6 +35,11 @@
 			: ''} {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}"
 	>
 		<!-- Встраиваемый переключатель версий -->
+		{#snippet heroSettings()}
+			{#if selectedVersion === 'v1' && editContext}
+				<HeroBackgroundSettings bind:data {editContext} />
+			{/if}
+		{/snippet}
 		<VersionSwitcher
 			bind:data
 			{editContext}
@@ -44,6 +50,8 @@
 			themeVersions={['v2', 'v3', 'v4']}
 			themeDefault="dark"
 			title="Главный экран"
+			settings={heroSettings}
+			imageManagerExcludePaths={['bgImage', 'bgImageV1', 'bgImagesV1']}
 			bind:selectedVersion
 		/>
 

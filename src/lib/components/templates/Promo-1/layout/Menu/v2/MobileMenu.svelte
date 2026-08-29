@@ -21,6 +21,20 @@
 	//
 	// API совпадает с остальными мобильными вариантами; данные и переключатели
 	// видимости приходят из Header.svelte пропсами.
+	// Пункты верхнего уровня стоят на подмывке `bg-link-50` — «здесь можно
+	// нажать», сказанное собственным акцентом варианта, а не серой заливкой
+	// (28.08.2026, вслед за 1.М.1.1). Выбранный ушёл на ступень глубже,
+	// `bg-link-100`: до подмывки он метился как раз `link-50`, и оставить его
+	// там значило сравнять выбранное с покоем. Нажатие идёт по той же шкале.
+	//
+	// Поле строки — `py-2.5`, то есть 41px: на ступень ниже цели касания 44.
+	// Шаг сделан осознанно, ради более плотного листа; строка при этом идёт
+	// во всю ширину, и промахнуться по ней сложнее, чем по чипу той же
+	// высоты.
+	//
+	// Полоса прокрутки у листа погашена: у него своя, и на классической
+	// (`::-webkit-scrollbar` глобально задан 6px) раскрытие раздела сжимало
+	// содержимое по горизонтали — тот же разбор, что в 1.М.1.1.
 	// Телефон, почта, «Контакты» и вход приходят в лист с 25.08.2026: строка
 	// шапки переехала из баннера в хэдер, и в ней остались только значки, чей
 	// смысл читается без подписи. Здесь блоки стоят общими (`p1-*`, роли темы
@@ -211,11 +225,11 @@
 	<button
 		type="button"
 		onclick={() => toggleSection(kind)}
-		class="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-[13px] font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {isSectionActive(
+		class="flex w-full items-center justify-between rounded-2xl bg-link-50 px-4 py-2.5 text-left text-[13px] font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {isSectionActive(
 			kind
 		)
-			? 'bg-link-50 text-link-600'
-			: 'text-ink-600 active:bg-ink-900/4'}"
+			? 'bg-link-100 text-link-600'
+			: 'text-ink-600 active:bg-link-100'}"
 		aria-expanded={openSection === kind}
 		aria-controls="mobile-menu-{kind}"
 	>
@@ -387,7 +401,7 @@
 			aria-label="Мобильная навигация"
 		>
 			<div
-				class="max-h-[70dvh] overflow-y-auto rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
+				class="max-h-[70dvh] overflow-y-auto rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 			>
 				{@render accountBlock()}
 
@@ -417,11 +431,11 @@
 							href={link.href}
 							onclick={() => uiStore.closeMenu()}
 							aria-current={isLinkActive(link.href) ? 'page' : undefined}
-							class="block rounded-2xl px-4 py-3 text-[13px] font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {isLinkActive(
+							class="block rounded-2xl bg-link-50 px-4 py-2.5 text-[13px] font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {isLinkActive(
 								link.href
 							)
-								? 'bg-link-50 text-link-600'
-								: 'text-ink-600 active:bg-ink-900/4'}"
+								? 'bg-link-100 text-link-600'
+								: 'text-ink-600 active:bg-link-100'}"
 						>
 							{link.label}
 						</a>

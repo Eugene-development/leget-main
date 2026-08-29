@@ -42,7 +42,6 @@
 			class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--p1-accent)_55%,transparent)] to-transparent"
 		></div>
 
-		<span class="p1-label p1-muted hidden shrink-0 pr-3.5 whitespace-nowrap lg:inline">Акции</span>
 		<span class="p1-line hidden h-3.5 shrink-0 border-l lg:block" aria-hidden="true"></span>
 
 		<!-- Лента. Два одинаковых набора подряд, едем на -50%: когда прокрутка
@@ -77,7 +76,7 @@
 
 		<a
 			href="/actions"
-			class="p1-body p1-accent-hover hidden shrink-0 items-center gap-1.5 pl-3.5 text-xs whitespace-nowrap transition-colors lg:flex"
+			class="p1-accent hidden shrink-0 items-center gap-1.5 pl-3.5 text-xs whitespace-nowrap transition-colors lg:flex"
 		>
 			Все акции
 			<svg

@@ -249,11 +249,11 @@
 	<button
 		type="button"
 		onclick={() => toggleSection(kind)}
-		class="group relative flex w-full items-center justify-between rounded-full px-4 py-2.5 text-left text-[13px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] {isSectionActive(
+		class="group relative flex w-full items-center justify-between rounded-full px-4 py-2 text-left text-[13px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] {isSectionActive(
 			kind
 		)
 			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
-			: 'text-alt-petrol-800'}"
+			: 'bg-alt-petrol-accent-600/8 text-alt-petrol-800'}"
 		aria-expanded={openSection === kind}
 		aria-controls="mobile-menu-{kind}"
 	>
@@ -417,7 +417,7 @@
 			class="rounded-[2.15rem] bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
 		>
 			<nav
-				class="max-h-[74dvh] overflow-y-auto rounded-[calc(2.15rem-0.375rem)] bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95"
+				class="max-h-[74dvh] overflow-y-auto rounded-[calc(2.15rem-0.375rem)] bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 				aria-label="Мобильная навигация"
 			>
 				<!-- Шапка острова = тёмная колонка десктопной панели, положенная сверху. -->
@@ -473,7 +473,20 @@
 
 				{@render accountBlock()}
 
-				<!-- Полоса навигации в двойной оправе — та же, что на десктопе, но столбцом. -->
+				<!--
+					Полоса навигации в двойной оправе — та же, что на десктопе, но столбцом.
+					
+					Пилюли покоя подмыты акцентом варианта (8% `alt-petrol-accent-600`) —
+					28.08.2026, вслед за 1.М.1.1: до этого пункт в покое был прозрачен и
+					вся полоса читалась пустой оправой. Выбранный пункт не тронут: он
+					по-прежнему белая приподнятая пилюля, то есть остаётся сильнее
+					подмывки, а не спорит с ней.
+					
+					Поле пилюли — `py-2`: 37px у ссылки и 40px у раздела (там держит
+					кружок шеврона). Это ниже цели касания 44 — шаг сделан осознанно,
+					ради более плотной полосы; пилюля идёт во всю ширину оправы, и
+					промахнуться по ней сложнее, чем по чипу той же высоты.
+				-->
 				<div class="p-3">
 					<div
 						class="rounded-[1.45rem] bg-alt-petrol-100/80 p-1 shadow-[0_16px_46px_-30px] ring-1 shadow-alt-petrol-950/48 ring-alt-petrol-950/7"
@@ -491,11 +504,11 @@
 										href={link.href}
 										onclick={() => uiStore.closeMenu()}
 										aria-current={isLinkActive(link.href) ? 'page' : undefined}
-										class="flex items-center rounded-full px-4 py-2.5 text-[13px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] {isLinkActive(
+										class="flex items-center rounded-full px-4 py-2 text-[13px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] {isLinkActive(
 											link.href
 										)
 											? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
-											: 'text-alt-petrol-800'}"
+											: 'bg-alt-petrol-accent-600/8 text-alt-petrol-800'}"
 									>
 										{link.label}
 									</a>

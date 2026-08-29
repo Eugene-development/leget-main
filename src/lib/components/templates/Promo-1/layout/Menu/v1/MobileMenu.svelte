@@ -403,9 +403,9 @@
 	<button
 		type="button"
 		onclick={() => toggleSection(kind)}
-		class="p1-card p1-line p1-title-sub flex min-h-20 w-full items-center rounded-xl border p-4 text-left transition-[color,border-color,background-color] focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none {active
+		class="p1-surface-alt p1-line p1-title-sub flex min-h-18 w-full items-center rounded-xl border px-4 py-3 text-left transition-[color,border-color,background-color] focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none {active
 			? 'p1-accent border-[var(--p1-accent)]'
-			: 'p1-title p1-card-hover'}"
+			: 'p1-title p1-accent-wash-hover'}"
 		aria-expanded={openSection === kind}
 		aria-controls="mobile-menu-{kind}"
 	>
@@ -432,7 +432,7 @@
 		href={link.href}
 		onclick={() => uiStore.closeMenu()}
 		aria-current={isLinkActive(link.href) ? 'page' : undefined}
-		class="p1-card p1-line p1-title-sub p1-card-hover flex min-h-20 items-center rounded-xl border p-4 text-base transition-[color,border-color,background-color] focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none {isLinkActive(
+		class="p1-surface-alt p1-line p1-title-sub flex min-h-18 items-center rounded-xl border px-4 py-3 text-base transition-[color,border-color,background-color] focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none {isLinkActive(
 			link.href
 		)
 			? 'p1-accent border-[var(--p1-accent)]'
@@ -475,12 +475,21 @@
 	в `light` по той же причине и с той же оговоркой, что у десктопной половины:
 	меню стоит на `--ds-surface-raised`, светлом во всех пяти системах, а входа
 	под тему у layout-компонентов нет.
+
+	Полоса прокрутки у листа скрыта. Лист — единственный скроллер, пока он открыт
+	(страница под ним заблокирована), и его содержимое меняется в высоте прямо на
+	глазах: раскрыли «Услуги» — прокрутка появилась, свернули — исчезла. Классическая
+	полоса занимает ширину, поэтому каждое такое раскрытие сжимало плитки по
+	горизонтали и дёргало всю сетку. На телефоне полосы и так наложенные, ширины они
+	не отнимают, — прячем её и в узком окне десктопа, чтобы поведение совпало.
+	`scrollbar-gutter: stable` тут не подходит: он убирает дёрганье, но держит
+	пустой жёлоб постоянно и саму полосу оставляет.
 -->
 {#if uiStore.menuOpen}
 	<nav
 		id="p1-mobile-menu"
 		data-p1-theme="light"
-		class="p1-overlay fixed inset-x-0 bottom-0 z-0 overflow-y-auto overscroll-contain lg:hidden"
+		class="p1-overlay fixed inset-x-0 bottom-0 z-0 overflow-y-auto overscroll-contain [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden"
 		style="top: var(--p1-sheet-top, 3.5rem);"
 		aria-label="Мобильная навигация"
 		transition:fly={{ y: -8, duration: motion.enterDuration }}
@@ -491,7 +500,18 @@
 		>
 			{@render groupLabel('Навигация')}
 
-			<div class="grid grid-cols-2 gap-3 px-4">
+			<!--
+				Межстрочный отступ сетки набран полями плиток, а не `gap-y`. Раскрытая
+				панель занимает в сетке собственную строку, и `row-gap` вокруг неё —
+				величина, которой нет в `transition:slide`: он ведёт высоту, поля и
+				толщину рамок, но не зазор сетки. Из-за этого свёртывание шло в два шага —
+				плавно до нуля высоты, короткая пауза до размонтирования, затем рывок на
+				оставшиеся 12px зазора. Поле `mt-3` на каждом ребёнке — та же величина,
+				но уже внутри элемента: `slide` уводит его вместе с высотой, и к моменту
+				удаления панель не занимает ничего. `-mt-3` на сетке гасит поле первой
+				строки, чтобы верхняя кромка осталась там же, где была.
+			-->
+			<div class="-mt-3 grid grid-cols-2 gap-x-3 px-4 [&>*]:mt-3">
 				{@render disclosureTile('Каталог', 'catalog')}
 				{@render disclosureTile('Услуги', 'services')}
 
@@ -554,8 +574,19 @@
 				{/if}
 			</div>
 
+			<div class="mt-5 border-t border-[var(--p1-line)] pt-5">
+				{@render accountBlock()}
+			</div>
+
 			{#if sitePhone || email}
-				<div class="grid grid-cols-2 gap-3 px-4 pt-5">
+				<div class="mt-auto grid grid-cols-2 gap-3 border-t border-[var(--p1-line)] px-4 pt-5">
+					{#if email}
+						{@render contactButton(
+							`mailto:${email}`,
+							email,
+							'M3 8l7.89 4.26a2 2 0 001.94 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
+						)}
+					{/if}
 					{#if sitePhone}
 						{@render contactButton(
 							phoneHref,
@@ -564,19 +595,8 @@
 							true
 						)}
 					{/if}
-					{#if email}
-						{@render contactButton(
-							`mailto:${email}`,
-							email,
-							'M3 8l7.89 4.26a2 2 0 001.94 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
-						)}
-					{/if}
 				</div>
 			{/if}
-
-			<div class="mt-auto border-t border-[var(--p1-line)] pt-5">
-				{@render accountBlock()}
-			</div>
 		</div>
 	</nav>
 {/if}

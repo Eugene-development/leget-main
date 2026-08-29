@@ -7,6 +7,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { createEditableVisibility } from '$lib/utils/editable-visibility.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
+	import { onMount } from 'svelte';
 
 	type PartnerBrand = {
 		name: string;
@@ -34,11 +35,61 @@
 		getEditContext: () => editContext
 	});
 
-	const activeBgImage = $derived(
-		String(
-			data?.bgImageV1 ?? data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
-		)
-	);
+	const defaultBgImages = [
+		'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
+		'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg'
+	];
+	const bgImages = $derived.by(() => {
+		if (Array.isArray(data?.bgImagesV1)) {
+			const stored = data.bgImagesV1.filter(
+				(value): value is string => typeof value === 'string' && value.trim() !== ''
+			);
+			if (stored.length > 0) return stored;
+		}
+
+		const legacy = [data?.bgImageV1, data?.bgImage].find(
+			(value): value is string => typeof value === 'string' && value.trim() !== ''
+		);
+		return legacy ? [legacy] : defaultBgImages;
+	});
+	const bgIntervalMs = $derived(Math.min(300, Math.max(1, Number(data?.bgIntervalV1) || 5)) * 1000);
+	let activeBgIndex = $state(0);
+	let bgViewport = $state<HTMLDivElement>();
+	let bgInViewport = $state(true);
+	let pageVisible = $state(true);
+
+	$effect(() => {
+		if (activeBgIndex >= bgImages.length) activeBgIndex = 0;
+	});
+
+	$effect(() => {
+		if (typeof window === 'undefined' || bgImages.length < 2 || !bgInViewport || !pageVisible)
+			return;
+
+		const timer = window.setInterval(() => {
+			activeBgIndex = (activeBgIndex + 1) % bgImages.length;
+		}, bgIntervalMs);
+		return () => window.clearInterval(timer);
+	});
+
+	onMount(() => {
+		const handleVisibility = () => (pageVisible = document.visibilityState === 'visible');
+		handleVisibility();
+		document.addEventListener('visibilitychange', handleVisibility);
+
+		const observer =
+			bgViewport && typeof IntersectionObserver !== 'undefined'
+				? new IntersectionObserver(([entry]) => (bgInViewport = entry?.isIntersecting ?? true), {
+						threshold: 0.01
+					})
+				: null;
+		if (bgViewport) observer?.observe(bgViewport);
+
+		return () => {
+			document.removeEventListener('visibilitychange', handleVisibility);
+			observer?.disconnect();
+		};
+	});
 
 	const defaultBrands: PartnerBrand[] = [
 		{
@@ -160,12 +211,17 @@
 	class="relative flex min-h-full w-full items-center justify-center overflow-hidden py-6 text-ink-900 md:py-8"
 >
 	<!-- Фоновое изображение -->
-	<div class="absolute inset-0 z-0">
-		<ImageFallback
-			src={activeBgImage}
-			alt="Фоновое изображение"
-			class="h-full w-full object-cover transition-all duration-500"
-		/>
+	<div class="absolute inset-0 z-0" bind:this={bgViewport}>
+		{#each bgImages as bgImage, index (`${index}:${bgImage}`)}
+			<div
+				class="hero-bg-slide absolute inset-0 {index === activeBgIndex
+					? 'hero-bg-slide-active'
+					: ''}"
+				aria-hidden={index === activeBgIndex ? undefined : 'true'}
+			>
+				<ImageFallback src={bgImage} alt="" class="h-full w-full object-cover" />
+			</div>
+		{/each}
 		<div class="absolute inset-0 bg-linear-to-b from-scrim/20 via-scrim/10 to-scrim/30"></div>
 	</div>
 
@@ -200,13 +256,16 @@
 		>
 			<!-- Контент -->
 			<div
-				class="hero-content mx-auto flex max-w-3xl flex-col items-center px-6 py-8 text-center md:px-12 md:py-10"
+				class="hero-content mx-auto flex max-w-3xl flex-col items-center px-6 py-8 text-center md:px-12 md:py-10 {renderedBrands.length >
+					0 && brandsBlockVisible
+					? ''
+					: 'hero-content-no-brands'}"
 			>
 				<!-- Логотип. Габариты ограничены и по ширине, и по высоте: панель живёт
 				     в боксе фиксированной высоты (см. .hero-wrapper в ../index.svelte),
 				     поэтому квадратный логотип без max-h выдавливал контент за нижний край. -->
 				{#if (data?.logoUrl && visibility.isVisible('logo')) || isEditable}
-					<div class="hero-logo mb-6 w-[14.4rem] md:w-64 lg:w-[27.648rem]">
+					<div class="hero-logo w-[14.4rem] md:w-64 lg:w-[27.648rem]">
 						<EditableField
 							fieldKey="HeroMain.logoUrl"
 							label="Логотип (URL)"
@@ -242,6 +301,10 @@
 							{/snippet}
 						</EditableField>
 					</div>
+					<div
+						aria-hidden="true"
+						class="hero-logo-divider mt-4 mb-4 h-0.5 w-full max-w-md bg-ink-700/15"
+					></div>
 				{/if}
 
 				<!-- Название компании -->
@@ -552,6 +615,17 @@
 </section>
 
 <style>
+	.hero-bg-slide {
+		opacity: 0;
+		transition-property: opacity;
+		transition-duration: var(--ds-motion-duration-fast);
+		transition-timing-function: var(--ds-motion-ease-soft);
+	}
+
+	.hero-bg-slide-active {
+		opacity: 1;
+	}
+
 	.glass-panel {
 		/* Достаточно плотный фон — работает как самостоятельный fallback
 		   когда backdrop-filter недоступен (cross-origin изображение, старый браузер) */
@@ -657,6 +731,10 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.hero-bg-slide {
+			transition-duration: var(--ds-motion-duration-ui);
+		}
+
 		.brand-viewport-scroll {
 			overflow-x: auto;
 			mask-image: none;
@@ -696,11 +774,27 @@
 		}
 	}
 
+	.hero-logo-divider {
+		clip-path: polygon(0 50%, 12% 0, 88% 0, 100% 50%, 88% 100%, 12% 100%);
+	}
+
+	/* Когда секция брендов скрыта, контент становится последним элементом
+	   стеклянной панели и сам отвечает за полноценный нижний воздух. */
+	.hero-content-no-brands {
+		padding-bottom: 3rem;
+	}
+
+	@media (min-width: 768px) {
+		.hero-content-no-brands {
+			padding-bottom: 4rem;
+		}
+	}
+
 	/* ── Компактный режим для невысоких десктопов ────────────────────────────
 	   На lg+ компонент живёт в боксе фиксированной высоты
 	   (.hero-wrapper: 100dvh − баннер − хедер, overflow-hidden), поэтому панель
 	   не может «растечься» вниз — при нехватке места её низ обрезается.
-	   Порог 920px — с него панель с логотипом (≈660px) начинает помещаться
+	   Порог 920px — с него панель с крупным логотипом начинает помещаться
 	   в доступную высоту с симметричными полями; ниже поджимаем вертикальный
 	   ритм и потолок логотипа, иначе панель прижимается к низу и обрезается.
 	   Свойства не в @layer, поэтому перекрывают Tailwind-утилиты на элементах. */
@@ -711,18 +805,26 @@
 		}
 
 		.hero-content {
-			padding-top: 1.5rem;
-			padding-bottom: 1.5rem;
+			padding-top: 2rem;
+			padding-bottom: 2rem;
+		}
+
+		.hero-content.hero-content-no-brands {
+			padding-bottom: 3rem;
 		}
 
 		.hero-logo {
-			width: 17.28rem;
-			margin-bottom: 0.75rem;
+			width: 15.552rem;
+		}
+
+		.hero-logo-divider {
+			margin-top: 0.5rem;
+			margin-bottom: 0.5rem;
 		}
 
 		.hero-logo :global(img),
 		.hero-logo :global([role='img']) {
-			max-height: 10.368rem;
+			max-height: 9.3312rem;
 		}
 
 		.hero-title {

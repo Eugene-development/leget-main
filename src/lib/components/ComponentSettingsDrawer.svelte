@@ -3,6 +3,7 @@
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ComponentImageManager from '$lib/components/ComponentImageManager.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
+	import type { Snippet } from 'svelte';
 
 	/**
 	 * Панель настроек блока: артикул, анимации, сброс контента, отключение.
@@ -30,7 +31,9 @@
 		data = $bindable({}),
 		editContext = null,
 		componentType = '',
-		onSaveData = null
+		onSaveData = null,
+		settings = null,
+		imageManagerExcludePaths = []
 	}: {
 		/** Открыта ли панель. Владелец может закрыть её извне (напр. после сброса). */
 		open?: boolean;
@@ -56,6 +59,10 @@
 		editContext?: EditContext | null;
 		componentType?: string;
 		onSaveData?: ((next: Record<string, unknown>) => void | Promise<void>) | null;
+		/** Специализированные настройки конкретного блока. */
+		settings?: Snippet | null;
+		/** Image-пути, которыми управляет специализированная секция. */
+		imageManagerExcludePaths?: string[];
 	} = $props();
 </script>
 
@@ -67,7 +74,13 @@
 	title="Настройки блока"
 	aria-label="Настройки блока"
 >
-	<svg class="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+	<svg
+		class="h-3 w-3 sm:h-4 sm:w-4"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		stroke-width="2"
+	>
 		<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
 		<circle cx="9" cy="6" r="2" fill="currentColor" />
 		<circle cx="15" cy="12" r="2" fill="currentColor" />
@@ -93,14 +106,24 @@
 		{/if}
 	{/snippet}
 	<div class="flex flex-col gap-6">
-		<!-- Сброс контента -->
+		{#if settings}
+			{@render settings()}
+		{/if}
+
+		<!-- Универсальное управление изображениями -->
 		{#if editContext && componentType && onSaveData}
-			<ComponentImageManager bind:data {editContext} {componentType} {onSaveData} />
+			<ComponentImageManager
+				bind:data
+				{editContext}
+				{componentType}
+				{onSaveData}
+				excludePathPrefixes={imageManagerExcludePaths}
+			/>
 		{/if}
 
 		<!-- Сброс контента -->
 		<section class="border-t border-on-dark/10 pt-5">
-			<h4 class="text-[10px] text-on-dark/40 uppercase">Контент</h4>
+			<h4 class="text-xs text-on-dark/40 uppercase">Контент</h4>
 			<p class="mt-2 text-xs leading-relaxed text-ink-400">
 				{#if canReset}
 					Сброс вернёт тексты и изображения блока к значениям по умолчанию. Выбранный вариант и тема
@@ -136,7 +159,7 @@
 
 		<!-- Отключение блока -->
 		<section class="border-t border-on-dark/10 pt-5">
-			<h4 class="text-[10px] text-on-dark/40 uppercase">Блок</h4>
+			<h4 class="text-xs text-on-dark/40 uppercase">Блок</h4>
 			<p class="mt-2 text-xs leading-relaxed text-ink-400">
 				{#if isDisabled}
 					Блок отключён и не отображается обычным посетителям.
@@ -160,7 +183,7 @@
 
 		<!-- Анимации (заглушка: функциональность в разработке) -->
 		<section class="border-t border-on-dark/10 pt-5">
-			<h4 class="text-[10px] text-on-dark/40 uppercase">Анимации</h4>
+			<h4 class="text-xs text-on-dark/40 uppercase">Анимации</h4>
 			<p class="mt-2 text-xs leading-relaxed text-ink-400">
 				Включение и отключение анимаций блока. Функция появится в одном из ближайших обновлений.
 			</p>
@@ -172,7 +195,7 @@
 			>
 				<span>Отключить анимации</span>
 				<span
-					class="rounded-full border border-cat-1-500/25 bg-cat-1-500/10 px-2 py-1 text-[9px] font-bold tracking-wider text-cat-1-300/80 uppercase"
+					class="rounded-full border border-cat-1-500/25 bg-cat-1-500/10 px-2 py-1 text-xs font-bold tracking-wider text-cat-1-300/80 uppercase"
 				>
 					В разработке
 				</span>

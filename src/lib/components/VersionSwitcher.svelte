@@ -12,6 +12,7 @@
 	import { legacyVersionsFor } from '$lib/components/lifecycle';
 	import { invalidateAll } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
+	import type { Snippet } from 'svelte';
 
 	let {
 		data = $bindable(),
@@ -26,7 +27,9 @@
 		themeVersions = [],
 		themeDefault = 'light',
 		title = '',
-		placement = 'overlay'
+		placement = 'overlay',
+		settings = null,
+		imageManagerExcludePaths = []
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
@@ -47,6 +50,10 @@
 		title?: string;
 		/** Overlay поверх секции либо inline внутри собственного тулбара компонента. */
 		placement?: 'overlay' | 'inline';
+		/** Специализированная секция внутри панели настроек блока. */
+		settings?: Snippet | null;
+		/** Image-пути, которыми управляет специализированная секция. */
+		imageManagerExcludePaths?: string[];
 	} = $props();
 
 	const actualVersionKey = $derived(
@@ -209,7 +216,7 @@
 	<div
 		class="font-sans-premium z-[100] flex items-center gap-1.5 select-none sm:gap-2 {placement ===
 		'overlay'
-			? 'absolute top-2 left-1/2 -translate-x-1/2 sm:top-6 sm:left-auto sm:right-6 sm:translate-x-0'
+			? 'absolute top-2 left-1/2 -translate-x-1/2 sm:top-6 sm:right-6 sm:left-auto sm:translate-x-0'
 			: 'relative'}"
 	>
 		{#if themeVersions.includes(selectedVersion)}
@@ -314,6 +321,8 @@
 			articleComponentHint={componentType}
 			canReset={Boolean(actualResetId)}
 			{isResetting}
+			{settings}
+			{imageManagerExcludePaths}
 			onReset={handleReset}
 			isDisabled={selectedVersion === 'disabled'}
 			enabledVersionLabel={lastEnabledVersion.replace('v', '')}

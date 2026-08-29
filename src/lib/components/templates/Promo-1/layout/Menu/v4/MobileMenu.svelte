@@ -114,7 +114,7 @@
 	{@const isComingSoon = item.comingSoon === true}
 	{@const isEnabled = !isComingSoon && !disabledRubrics.includes(item.href)}
 	<div
-		class="p1-overlay flex items-start justify-between gap-2 px-4 py-4"
+		class="p1-overlay p1-accent-wash flex items-start justify-between gap-2 px-4 py-4"
 		class:opacity-50={isComingSoon || (isEditable && !isEnabled)}
 		title={isComingSoon ? 'В разработке' : undefined}
 		in:fly={{ y: -5, duration: motion.enterDuration, delay: motion.enterDelay(idx) }}
@@ -158,7 +158,7 @@
 	{@const isComingSoon = service.comingSoon === true}
 	{@const isEnabled = !isComingSoon && !disabledServices.includes(service.href)}
 	<div
-		class="p1-overlay flex w-full items-stretch justify-between"
+		class="p1-overlay p1-accent-wash flex w-full items-stretch justify-between"
 		class:opacity-50={isComingSoon || (isEditable && !isEnabled)}
 		title={isComingSoon ? 'В разработке' : undefined}
 		in:fly={{ y: -5, duration: motion.enterDuration, delay: motion.enterDelay(idx) }}
@@ -210,6 +210,15 @@
 
 <!--
 	Учётная запись и контакты как ячейки полки.
+
+	Что подмыто акцентом, а что нет (28.08.2026, вслед за 1.М.1.1). Подмывку
+	`p1-accent-wash` несут ячейки, по которым ходят: рубрики, услуги и
+	строки-ссылки. Обвязка полки — надзаголовки, город, учётная запись,
+	контакты — остаётся на чистом `p1-overlay`. Правило читается с одного
+	взгляда: подмыто то, что уводит со страницы, бело то, что о ней
+	рассказывает. Красить полку целиком смысла нет — подмывка перестала бы
+	что-либо отличать. Полоса прокрутки у полки погашена по тому же разбору,
+	что в 1.М.1.1: классическая забирала 6px ширины у всех ячеек разом.
 
 	Разделителей своих у блоков нет и быть не должно: полка набрана `gap-px` по
 	залитому контейнеру, и любая собственная граница дала бы вторую линию рядом
@@ -326,7 +335,7 @@
 {#if uiStore.menuOpen}
 	<nav
 		data-p1-theme="light"
-		class="p1-border grid max-h-[74dvh] grid-cols-1 gap-px overflow-y-auto border-t bg-[var(--p1-line)] lg:hidden"
+		class="p1-border grid max-h-[74dvh] grid-cols-1 gap-px overflow-y-auto border-t bg-[var(--p1-line)] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden"
 		aria-label="Мобильная навигация"
 	>
 		{@render accountBlock()}
@@ -351,7 +360,7 @@
 					href={link.href}
 					onclick={() => uiStore.closeMenu()}
 					aria-current={isLinkActive(link.href) ? 'page' : undefined}
-					class="p1-overlay p1-label p1-accent-hover block px-5 py-3.5 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none {isLinkActive(
+					class="p1-overlay p1-accent-wash p1-label p1-accent-hover block px-5 py-3.5 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none {isLinkActive(
 						link.href
 					)
 						? 'p1-accent'

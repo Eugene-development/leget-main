@@ -15,12 +15,15 @@
 		editContext,
 		componentType,
 		slots = [],
+		excludePathPrefixes = [],
 		onSaveData
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext;
 		componentType: string;
 		slots?: import('$lib/utils/component-images').ComponentImageSlot[];
+		/** Пути, которыми владеет специализированная секция настроек блока. */
+		excludePathPrefixes?: string[];
 		onSaveData: (next: Record<string, unknown>) => void | Promise<void>;
 	} = $props();
 
@@ -30,9 +33,15 @@
 	// плодить пустую карточку рядом с актуальным полем. Непустые остаются:
 	// у тенантов, ещё не мигрировавших, это единственный способ его сменить.
 	const hiddenWhenEmpty = $derived(new Set(hiddenWhenEmptyImageKeys(editContext, componentType)));
+	const isExcluded = (pathKey: string) =>
+		excludePathPrefixes.some(
+			(prefix) =>
+				pathKey === prefix || pathKey.startsWith(`${prefix}.`) || pathKey.startsWith(`${prefix}[`)
+		);
 	const images = $derived(
 		collectComponentImages(data, imageSlots).filter(
-			(image) => image.value !== '' || !hiddenWhenEmpty.has(image.pathKey)
+			(image) =>
+				!isExcluded(image.pathKey) && (image.value !== '' || !hiddenWhenEmpty.has(image.pathKey))
 		)
 	);
 	let activePathKey = $state<string | null>(null);
