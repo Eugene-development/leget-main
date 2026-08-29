@@ -393,7 +393,7 @@
 						{#snippet children(displayValue)}
 							<button
 								type="button"
-								onclick={() => serviceOrderStore.open('design-project')}
+								onclick={() => serviceOrderStore.open('consultation')}
 								class="group cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-900/60 hover:shadow-xl"
 							>
 								<HoverSwapLabel text={displayValue} disabled={isEditable} />

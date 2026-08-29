@@ -74,7 +74,7 @@
 			<EditableField
 				fieldKey="ConsultationFeatures.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Комплексный подход к вашему интерьеру')}
+				value={String(data?.title ?? 'Дизайнер поможет с выбором нужных решений')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="mt-2 block"

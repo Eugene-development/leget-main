@@ -218,7 +218,7 @@
 						{#snippet children(displayValue)}
 							<button
 								type="button"
-								onclick={() => serviceOrderStore.open('design-project')}
+								onclick={() => serviceOrderStore.open('consultation')}
 								class="group relative w-full cursor-pointer rounded-none border-2 px-8 py-4 font-mono text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 sm:w-auto {isLight
 									? 'border-scrim bg-scrim text-on-dark shadow-[4px_4px_0px] shadow-ink-400'
 									: 'border-on-dark bg-surface-raised text-scrim shadow-[4px_4px_0px] shadow-on-dark/15'}"

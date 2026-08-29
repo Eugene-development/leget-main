@@ -285,7 +285,7 @@
 						{#snippet children(displayValue)}
 							<button
 								type="button"
-								onclick={() => serviceOrderStore.open('design-project')}
+								onclick={() => serviceOrderStore.open('consultation')}
 								class="group relative w-full cursor-pointer overflow-hidden rounded-2xl p-[1px] transition-transform duration-300 focus:ring-2 focus:ring-link-600 focus:outline-none active:scale-[0.98] sm:w-auto"
 							>
 								<!-- Динамическая рамка с градиентом активного скилла -->

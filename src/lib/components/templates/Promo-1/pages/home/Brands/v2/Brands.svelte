@@ -129,7 +129,7 @@
 				<EditableField
 					fieldKey="Brands.badge"
 					label="Метка"
-					value={String(data?.badge ?? 'Материалы')}
+					value={String(data?.badge ?? 'Партнёры')}
 					{isEditable}
 					onSave={(v) => saveField('badge', v)}
 					class="inline"
@@ -140,7 +140,7 @@
 			<EditableField
 				fieldKey="Brands.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Бренды, говорящие о качестве')}
+				value={String(data?.title ?? 'Фабрики изготовители мебели')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -197,7 +197,7 @@
 				<EditableField
 					fieldKey="Brands.partnersLabel"
 					label="Подпись партнёров"
-					value={String(data?.partnersLabel ?? 'Наши партнёры-производители')}
+					value={String(data?.partnersLabel ?? 'Поставщики техники')}
 					{isEditable}
 					onSave={(v) => saveField('partnersLabel', v)}
 					inline

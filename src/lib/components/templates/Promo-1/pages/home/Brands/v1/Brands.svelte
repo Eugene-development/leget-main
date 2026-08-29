@@ -189,7 +189,7 @@
 					{...partner.url
 						? { href: partner.url, target: '_blank', rel: 'noopener noreferrer' }
 						: {}}
-					class="brand-cell group p1-surface flex min-h-0 flex-col items-center justify-center px-6 py-10 text-center [--p1-logo-slot:56px]"
+					class="brand-cell group p1-surface flex min-h-0 flex-col items-center justify-center px-6 py-10 text-center [--p1-logo-slot:72px]"
 				>
 					<div class="p1-logo-slot p1-body justify-center self-center">
 						<ImageFallback class="p1-logo" src={partner.logo} alt={partner.name} />
@@ -199,7 +199,7 @@
 		</div>
 
 		<!-- Бренды материалов и фурнитуры: тот же слот и та же роль, ступень мельче -->
-		<div class="brands-strip mt-16 shrink-0">
+		<div class="brands-strip mt-16 shrink-0 py-4">
 			<p class="p1-label p1-muted text-center uppercase">
 				<EditableField
 					fieldKey="Brands.partnersLabel"
@@ -216,7 +216,7 @@
 			<div class="brands-strip-grid mt-8 grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-6">
 				{#each brands as brand}
 					<div
-						class="group p1-logo-slot p1-body justify-center [--p1-logo-slot:32px]"
+						class="group p1-logo-slot p1-body justify-center [--p1-logo-slot:48px]"
 						title={brand.name}
 					>
 						<ImageFallback class="p1-logo" src={brand.logo} alt={brand.name} />
@@ -288,10 +288,10 @@
 		   и в разметке, — только ступенью мельче и с ростом по высоте окна:
 		   на 1920×1080 ряд получает 341px против 193px набора, и без роста
 		   знака полтораста пикселей уходили бы в пустоту между строк. Верх
-		   `clamp` — 64px, чуть выше исходных 56px: слот задаёт высоту знака,
-		   и выше этого мелкие логотипы начинают растрироваться. */
+		   `clamp` — 76px: слот задаёт высоту знака, а верхняя граница не даёт
+		   исходникам низкого разрешения заметно растрироваться. */
 		.brands-screen .brand-cell {
-			--p1-logo-slot: clamp(40px, 4.5vh, 64px);
+			--p1-logo-slot: clamp(52px, 5.5vh, 76px);
 			padding-block: 1.25rem;
 		}
 
@@ -326,7 +326,7 @@
 	   то же самое — знак и воздух вокруг него, ещё на ступень. */
 	@media (min-width: 64rem) and (min-height: 44rem) and (max-height: 48rem) {
 		.brands-screen .brand-cell {
-			--p1-logo-slot: 32px;
+			--p1-logo-slot: 44px;
 			padding-block: 0.75rem;
 		}
 	}
