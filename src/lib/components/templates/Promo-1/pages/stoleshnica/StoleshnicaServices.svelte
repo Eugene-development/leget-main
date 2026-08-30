@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.19.6.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.19.6.1, 1.29.4.1, 1.30.4.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';

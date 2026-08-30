@@ -2,6 +2,7 @@
 	// Артикулы: 1.20.4.1, 1.28.3.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -13,6 +14,19 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	async function saveField(field: string, value: unknown) {
+		if (!editContext) return;
+		const updated = { ...data, [field]: value };
+		await saveComponentData(editContext, 'ByttehnikaBenefits', updated);
+		data = updated;
+	}
+
+	async function updateItem(index: number, field: 'title' | 'desc', value: string) {
+		const updatedItems = [...items];
+		updatedItems[index] = { ...updatedItems[index], [field]: value };
+		await saveField('items', updatedItems);
+	}
 
 	const items = $derived(
 		data.items || [
@@ -46,7 +60,16 @@
 
 <div class="mebel-container mt-12 mb-12">
 	<h2 class="mb-8 text-2xl text-ink-900">
-		{data.title || 'Работаем напрямую с поставщиками'}
+		<EditableField
+			fieldKey="ByttehnikaBenefits.title"
+			label="Заголовок блока"
+			value={String(data.title ?? 'Работаем напрямую с поставщиками')}
+			{isEditable}
+			inline
+			onSave={(value) => saveField('title', value)}
+		>
+			{#snippet children(value)}{value}{/snippet}
+		</EditableField>
 	</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -93,9 +116,30 @@
 				<h3
 					class="p1-title-sub mt-4 text-lg text-ink-900 transition-colors group-hover:text-link-600"
 				>
-					{item.title}
+					<EditableField
+						fieldKey="ByttehnikaBenefits.item.{i}.title"
+						label="Заголовок карточки"
+						value={String(item.title ?? '')}
+						{isEditable}
+						inline
+						onSave={(value) => updateItem(i, 'title', value)}
+					>
+						{#snippet children(value)}{value}{/snippet}
+					</EditableField>
 				</h3>
-				<p class="mt-2 text-sm leading-relaxed text-ink-600">{item.desc ?? ''}</p>
+				<p class="mt-2 text-sm leading-relaxed text-ink-600">
+					<EditableField
+						fieldKey="ByttehnikaBenefits.item.{i}.desc"
+						label="Описание карточки"
+						value={String(item.desc ?? '')}
+						{isEditable}
+						inline
+						multiline
+						onSave={(value) => updateItem(i, 'desc', value)}
+					>
+						{#snippet children(value)}{value}{/snippet}
+					</EditableField>
+				</p>
 			</div>
 		{/each}
 	</div>

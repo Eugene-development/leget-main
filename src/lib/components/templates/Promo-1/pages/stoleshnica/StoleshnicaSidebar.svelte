@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.19.1.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.19.1.1, 1.29.1.1, 1.30.1.1 — см. docs/architecture/component-articles-map.md
 	// Разметку и поведение отдаёт общий CatalogSidebar.
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { type EditContext } from '$lib/utils/page-edit';
@@ -16,15 +16,6 @@
 		isEditable?: boolean;
 		componentId?: string | null;
 	} = $props();
-
-	/** Статика на случай пустого блока в БД — тот же список, что сейчас в справочнике. */
-	const DEFAULT_MATERIALS = [
-		{ title: 'Кварц', slug: 'kvarc' },
-		{ title: 'Акриловый камень', slug: 'akril' },
-		{ title: 'ДСП / Постформинг', slug: 'dsp' },
-		{ title: 'Массив дерева', slug: 'massiv' },
-		{ title: 'Керамика', slug: 'keramika' }
-	];
 </script>
 
 <CatalogSidebar
@@ -36,7 +27,7 @@
 	itemsKey="categories"
 	basePath="/stoleshnica"
 	defaultTitle="Материалы столешниц"
-	defaultItems={DEFAULT_MATERIALS}
+	nestedBrands
 	fabLabel="Материалы"
 	emptyText="Материалы появятся здесь"
 	accent="amber"

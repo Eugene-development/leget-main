@@ -137,6 +137,8 @@ import VacancyList from './pages/vacancy/VacancyList.svelte';
 import VacancyForm from './pages/vacancy/VacancyForm.svelte';
 
 // Stoleshnica page components
+import StoleshnicaBrands from './pages/stoleshnica/StoleshnicaBrands.svelte';
+import StoleshnicaBrandHero from './pages/stoleshnica/StoleshnicaBrandHero.svelte';
 import StoleshnicaHero from './pages/stoleshnica/StoleshnicaHero.svelte';
 import StoleshnicaMaterials from './pages/stoleshnica/StoleshnicaMaterials.svelte';
 import StoleshnicaBenefits from './pages/stoleshnica/StoleshnicaBenefits.svelte';
@@ -331,11 +333,24 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/stoleshnica': {
 		StoleshnicaSidebar,
 		StoleshnicaHero,
+		StoleshnicaBrands,
 		StoleshnicaMaterials,
 		StoleshnicaBenefits,
 		StoleshnicaSolutions,
 		StoleshnicaServices,
 		StoleshnicaCTA
+	},
+	'/stoleshnica/{material}': {
+		StoleshnicaSidebar,
+		StoleshnicaBrandHero,
+		StoleshnicaBrands,
+		StoleshnicaServices
+	},
+	'/stoleshnica/{material}/{brand}': {
+		StoleshnicaSidebar,
+		StoleshnicaBrandHero,
+		StoleshnicaBrands,
+		StoleshnicaServices
 	},
 	'/bytovaya-tehnika': {
 		ByttehnikaSidebar,

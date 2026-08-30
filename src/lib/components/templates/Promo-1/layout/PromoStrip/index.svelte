@@ -12,7 +12,6 @@
 		type EditContext
 	} from '$lib/utils/page-edit';
 	import { activeActionCards } from '../../pages/actions/actionCards';
-	import { isPromoClosed, rememberPromoClosed } from './session';
 	import { fly } from 'svelte/transition';
 	import '../../theme.css';
 	import './promo-strip.css';
@@ -57,17 +56,6 @@
 	let drawerOpen = $state(false);
 	let hasManuallySelected = $state(false);
 
-	// Закрытие посетителем — на текущую сессию вкладки (см. ./session.ts).
-	// Значение читается ПРИ ИНИЦИАЛИЗАЦИИ: на сервере оно всегда `false`, а на
-	// клиенте уже известно к первому рендеру, поэтому закрытая полоса не успевает
-	// мигнуть. До гидратации серверную разметку прячет CSS по атрибуту на `<html>`.
-	//
-	// В режиме редактирования закрытие игнорируется: иначе владелец, разок
-	// закрывший полосу как посетитель, лишился бы доступа к её настройкам до
-	// конца сессии.
-	let closedBySession = $state(isPromoClosed());
-	const isHidden = $derived(closedBySession && !isEditable);
-
 	const THEME_VERSIONS: ('v1' | 'v2')[] = ['v1', 'v2'];
 	const isLight = $derived(isLightBlock(data, 'dark', 'promoTheme'));
 	const toggleTheme = createThemeToggle({
@@ -105,9 +93,9 @@
 	);
 
 	// Полоса нарисована живой (а не индикатором «отключена»/«нет акций») —
-	// от этого зависит, где стоит триггер настроек: у живой полосы справа уже
+	// от этого зависит, где стоит триггер настроек: у первой версии справа
 	// есть крестик, и наезжать на него нельзя.
-	const isLive = $derived(selectedVersion !== 'disabled' && actions.length > 0 && !isHidden);
+	const isLive = $derived(selectedVersion !== 'disabled' && actions.length > 0);
 
 	// «1 активную акцию» / «3 активные акции» / «8 активных акций» — у русского
 	// счётного оборота три формы, и двух здесь мало: список приходит от тенанта
@@ -121,11 +109,6 @@
 		if (tail >= 2 && tail <= 4 && (teen < 12 || teen > 14)) return `${n} активные акции`;
 		return `${n} активных акций`;
 	});
-
-	function close() {
-		closedBySession = true;
-		rememberPromoClosed();
-	}
 
 	async function saveLinkHref(value: string) {
 		if (!editContext) return;
@@ -176,27 +159,26 @@
 				Нет активных акций — полоса скрыта
 			</div>
 		{/if}
-	{:else if !isHidden}
-		{#if selectedVersion === 'v2'}
-			<div in:fly={{ x: 0, y: -40, duration: 400 }}>
-				<PromoStripV2 bind:data {editContext} {isEditable} {actions} onClose={close} />
-			</div>
-		{:else}
-			<div in:fly={{ x: 0, y: -40, duration: 400 }}>
-				<PromoStripV1 {data} {actions} onClose={close} />
-			</div>
-		{/if}
+	{:else if selectedVersion === 'v2'}
+		<div in:fly={{ x: 0, y: -40, duration: 400 }}>
+			<PromoStripV2 bind:data {editContext} {isEditable} {actions} />
+		</div>
+	{:else}
+		<div in:fly={{ x: 0, y: -40, duration: 400 }}>
+			<PromoStripV1 {data} {actions} {isEditable} />
+		</div>
 	{/if}
 
 	{#if isEditable && editContext}
 		<!-- Компактный триггер (полоса узкая): открывает SideDrawer справа.
 		     Рисуется ВСЕГДА, в том числе на индикаторе «полоса отключена», —
-		     иначе включить её обратно было бы нечем. У живой полосы отступает
+		     иначе включить её обратно было бы нечем. У первой версии отступает
 		     левее, чтобы не наехать на крестик посетителя. -->
 		<button
 			type="button"
 			onclick={() => (drawerOpen = true)}
-			class="absolute top-1/2 z-[100] flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/10 bg-ink-950/80 text-on-dark/80 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-link-400/40 hover:bg-ink-900 hover:text-on-dark active:scale-95 {isLive
+			class="absolute top-1/2 z-[100] flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/10 bg-ink-950/80 text-on-dark/80 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-link-400/40 hover:bg-ink-900 hover:text-on-dark active:scale-95 {isLive &&
+			selectedVersion === 'v1'
 				? 'right-14 lg:right-16'
 				: 'right-1.5'}"
 			title="Варианты полосы акций"
@@ -314,15 +296,17 @@
 				</a>
 			</section>
 
-			<!-- Крестик -->
-			<section class="border-t border-on-dark/10 pt-5">
-				<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Закрытие посетителем</h4>
-				<p class="mt-2 text-xs leading-relaxed text-ink-400">
-					Крестик скрывает полосу до конца сессии вкладки: в новой сессии акции показываются снова.
-					В режиме редактирования закрытие не действует — иначе настройки полосы стали бы
-					недоступны.
-				</p>
-			</section>
+			{#if selectedVersion === 'v1'}
+				<!-- Крестик -->
+				<section class="border-t border-on-dark/10 pt-5">
+					<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Закрытие посетителем</h4>
+					<p class="mt-2 text-xs leading-relaxed text-ink-400">
+						Крестик скрывает полосу до конца сессии вкладки: в новой сессии акции показываются
+						снова. В режиме редактирования закрытие не действует — иначе настройки полосы стали бы
+						недоступны.
+					</p>
+				</section>
+			{/if}
 		</div>
 	</SideDrawer>
 {/if}

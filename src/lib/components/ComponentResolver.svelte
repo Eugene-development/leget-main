@@ -96,6 +96,13 @@
 			return tmpl.pageOverrides['/bytovaya-tehnika/{brand}'] || {};
 		}
 
+		if (cleanSlug.match(/^\/stoleshnica\/[^/]+\/[^/]+$/)) {
+			return tmpl.pageOverrides['/stoleshnica/{material}/{brand}'] || {};
+		}
+		if (cleanSlug.match(/^\/stoleshnica\/[^/]+$/)) {
+			return tmpl.pageOverrides['/stoleshnica/{material}'] || {};
+		}
+
 		return {};
 	}
 

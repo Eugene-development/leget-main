@@ -20,14 +20,12 @@
 		data = $bindable({}),
 		editContext = null,
 		isEditable = false,
-		actions = [],
-		onClose
+		actions = []
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 		actions: ActiveAction[];
-		onClose: () => void;
 	} = $props();
 
 	const isLight = $derived(isLightBlock(data, 'dark', 'promoTheme'));
@@ -46,7 +44,10 @@
 
 <div class="promo-strip" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div
-		class="p1-surface p1-line relative flex h-12 items-center border-b px-4 sm:px-8 lg:h-10"
+		class="p1-surface p1-line relative flex h-12 items-center border-b px-4 sm:px-8 lg:h-10 {isEditable &&
+		editContext
+			? 'pr-12 sm:pr-12 lg:pr-8'
+			: ''}"
 		role="complementary"
 		aria-label="Акции"
 	>
@@ -115,26 +116,6 @@
 				</a>
 			{/snippet}
 		</EditableField>
-
-		<button
-			type="button"
-			onclick={onClose}
-			class="p1-muted p1-card-hover p1-accent-hover -mr-2 ml-2 flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors lg:-mr-1 lg:ml-3.5 lg:size-6"
-			aria-label="Скрыть акции до конца сессии"
-			title="Скрыть до конца сессии"
-		>
-			<svg
-				class="h-3.5 w-3.5 [stroke-width:var(--ds-icon-stroke)]"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				aria-hidden="true"
-			>
-				<path d="M6 6l12 12M18 6L6 18" />
-			</svg>
-		</button>
 	</div>
 </div>
 

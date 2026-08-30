@@ -28,6 +28,7 @@
 		title?: string;
 		name?: string;
 		is_enabled?: boolean;
+		brands?: SidebarItem[];
 		[key: string]: unknown;
 	}
 
@@ -52,6 +53,7 @@
 		accent = 'sky',
 		showDisabledBadge = true,
 		canToggleItems = false,
+		nestedBrands = false,
 		itemNoun = 'пункт',
 		cta,
 		itemActions,
@@ -81,6 +83,7 @@
 		 * обёртки) тумблера нет — переключать нечего.
 		 */
 		canToggleItems?: boolean;
+		nestedBrands?: boolean;
 		/** Существительное в винительном падеже для подписей тумблера: «категорию», «бренд». */
 		itemNoun?: string;
 		cta?: Partial<SidebarCta>;
@@ -91,6 +94,12 @@
 	} = $props();
 
 	const title = $derived(String(data?.title || defaultTitle));
+	let expandedMaterials = $state<Record<string, boolean>>({});
+	const sidebarId = $props.id();
+	const activeMaterial = $derived(String(data?.activeSlug ?? ''));
+	function isExpanded(slug: string) {
+		return expandedMaterials[`${activeMaterial}:${slug}`] ?? slug === activeMaterial;
+	}
 
 	/* Пустой ответ API не должен возвращать скрытые/удалённые пункты из статики. */
 	const items = $derived.by<SidebarItem[]>(() => {
@@ -299,35 +308,68 @@
 			{@const isActive = item.slug === data?.activeSlug}
 			{@const isEnabled = item.is_enabled !== false}
 			{@const label = labelOf(item)}
+			{@const expanded = isExpanded(item.slug)}
+			{@const brands = (item.brands ?? []).filter(
+				(brand) => isEditable || brand.is_enabled !== false
+			)}
 			<div
 				class="ms-item"
 				class:ms-item--active={isActive}
 				class:ms-item--off={isEditable && !isEnabled}
 				style="--i: {i}"
 			>
-				<a
-					href="{basePath}/{item.slug}"
-					class="ms-link"
-					class:pointer-events-none={isEditable && !isEnabled}
-					aria-current={isActive ? 'page' : undefined}
-					onclick={() => (isSheetOpen = false)}
-				>
-					<span class="ms-label">{label}</span>
-					{#if showDisabledBadge && isEditable && !isEnabled}
-						<span class="ms-badge">Откл.</span>
-					{/if}
-					{#if !isEditable}
-						<svg class="ms-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				{#if nestedBrands}
+					<button
+						type="button"
+						class="ms-link ms-expand"
+						aria-expanded={expanded}
+						aria-controls="{sidebarId}-{context}-{item.slug}"
+						onclick={() => (expandedMaterials[`${activeMaterial}:${item.slug}`] = !expanded)}
+					>
+						<span class="ms-label">{label}</span>
+						{#if showDisabledBadge && isEditable && !isEnabled}<span class="ms-badge">Откл.</span
+							>{/if}
+						<svg
+							class="ms-expand-icon"
+							class:ms-expand-icon--open={expanded}
+							viewBox="0 0 24 24"
+							fill="none"
+							aria-hidden="true"
+						>
 							<path
-								d="M9 5l7 7-7 7"
+								d="m6 9 6 6 6-6"
 								stroke="currentColor"
 								stroke-width="2"
 								stroke-linecap="round"
 								stroke-linejoin="round"
 							/>
 						</svg>
-					{/if}
-				</a>
+					</button>
+				{:else}
+					<a
+						href="{basePath}/{item.slug}"
+						class="ms-link"
+						class:pointer-events-none={isEditable && !isEnabled}
+						aria-current={isActive ? 'page' : undefined}
+						onclick={() => (isSheetOpen = false)}
+					>
+						<span class="ms-label">{label}</span>
+						{#if showDisabledBadge && isEditable && !isEnabled}
+							<span class="ms-badge">Откл.</span>
+						{/if}
+						{#if !isEditable}
+							<svg class="ms-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+								<path
+									d="M9 5l7 7-7 7"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+						{/if}
+					</a>
+				{/if}
 
 				{#if isEditable && (itemActions || (canToggleItems && item.id))}
 					<div class="ms-controls">
@@ -371,6 +413,32 @@
 					</div>
 				{/if}
 			</div>
+			{#if nestedBrands}
+				<div
+					id="{sidebarId}-{context}-{item.slug}"
+					class="ms-brands"
+					class:ms-brands--expanded={expanded}
+					inert={!expanded}
+					aria-hidden={!expanded}
+				>
+					<div class="ms-brands-clip">
+						<div class="ms-brands-content">
+							{#each brands as brand (brand.id ?? brand.slug)}
+								<a
+									href="{basePath}/{item.slug}/{brand.slug}"
+									class="ms-brand-link"
+									aria-current={isActive && brand.slug === data?.activeBrandSlug
+										? 'page'
+										: undefined}
+									onclick={() => (isSheetOpen = false)}>{labelOf(brand)}</a
+								>
+							{:else}
+								<p class="ms-empty">Бренды скоро появятся</p>
+							{/each}
+						</div>
+					</div>
+				</div>
+			{/if}
 		{/each}
 
 		{#if visibleItems.length === 0}
@@ -507,6 +575,63 @@
 {/if}
 
 <style>
+	.ms-expand {
+		width: 100%;
+		text-align: left;
+		cursor: pointer;
+	}
+	.ms-expand-icon {
+		width: 15px;
+		height: 15px;
+		flex: none;
+		transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.ms-expand-icon--open {
+		transform: rotate(180deg);
+	}
+	.ms-brands {
+		display: grid;
+		flex: none;
+		grid-template-rows: 0fr;
+		opacity: 0;
+		transition:
+			grid-template-rows 280ms cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 180ms ease;
+	}
+	.ms-brands--expanded {
+		grid-template-rows: 1fr;
+		opacity: 1;
+	}
+	.ms-brands-clip {
+		min-height: 0;
+		overflow: hidden;
+	}
+	.ms-brands-content {
+		padding: 0 0.5rem 0.5rem 1rem;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.ms-brands,
+		.ms-expand-icon {
+			transition: none;
+		}
+	}
+	.ms-brand-link {
+		display: block;
+		padding: 0.65rem 0.75rem;
+		border-radius: var(--ds-radius-lg);
+		font-size: var(--text-sm);
+		color: var(--ds-light-body);
+	}
+	.ms-brand-link:hover,
+	.ms-brand-link[aria-current='page'] {
+		background: var(--ms-accent-wash);
+		color: var(--ms-accent-deep);
+	}
+	.ms-expand:focus-visible,
+	.ms-brand-link:focus-visible {
+		outline: 2px solid var(--ms-accent);
+		outline-offset: -2px;
+	}
 	/* ---------------------------------------------------------------- *
 	 * Акцент рубрики
 	 *
@@ -515,17 +640,18 @@
 	 * каждого из трёх корневых элементов — сайдбара, FAB и листа.
 	 * ---------------------------------------------------------------- */
 	[data-accent] {
-		--ms-accent: #0ea5e9;
-		--ms-accent-deep: #0284c7;
-		--ms-accent-light: #38bdf8;
-		--ms-accent-wash: #f0f9ff;
+		font-family: var(--ds-font-body);
+		--ms-accent: var(--ds-link-500);
+		--ms-accent-deep: var(--ds-link-700);
+		--ms-accent-light: var(--ds-link-400);
+		--ms-accent-wash: var(--ds-link-50);
 	}
 
 	[data-accent='amber'] {
-		--ms-accent: #f59e0b;
-		--ms-accent-deep: #d97706;
-		--ms-accent-light: #fbbf24;
-		--ms-accent-wash: #fffbeb;
+		--ms-accent: var(--ds-cat-1-500);
+		--ms-accent-deep: var(--ds-cat-1-700);
+		--ms-accent-light: var(--ds-cat-1-400);
+		--ms-accent-wash: var(--ds-cat-1-50);
 	}
 
 	/* ---------------------------------------------------------------- *
@@ -557,18 +683,18 @@
 		flex-direction: column;
 		min-height: 0;
 		padding: 1.5rem 1.25rem 1.25rem;
-		border-radius: 24px;
-		border: 1px solid rgb(15 23 42 / 0.06);
+		border-radius: var(--ds-radius-3xl);
+		border: 1px solid color-mix(in srgb, var(--ds-light-title) 6%, transparent);
 		background:
 			radial-gradient(
 				120% 60% at 50% 0%,
 				color-mix(in srgb, var(--ms-accent) 6%, transparent),
 				transparent 70%
 			),
-			linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+			linear-gradient(180deg, var(--ds-light-overlay) 0%, var(--ds-light-surface-alt) 100%);
 		box-shadow:
-			0 1px 2px rgb(15 23 42 / 0.04),
-			0 12px 28px -14px rgb(15 23 42 / 0.14),
+			0 1px 2px color-mix(in srgb, var(--ds-light-title) 4%, transparent),
+			0 12px 28px -14px color-mix(in srgb, var(--ds-light-title) 14.000000000000002%, transparent),
 			0 44px 80px -60px color-mix(in srgb, var(--ms-accent-deep) 40%, transparent);
 	}
 
@@ -576,17 +702,19 @@
 	 * Шапка
 	 * ---------------------------------------------------------------- */
 	.ms-title {
-		font-size: 1.0625rem;
-		font-weight: 600;
-		letter-spacing: -0.01em;
-		color: #0f172a;
+		font-size: var(--text-lg);
+		color: var(--ds-light-title);
 	}
 
 	.ms-rule {
 		display: block;
 		height: 1px;
 		margin-top: 1.15rem;
-		background: linear-gradient(90deg, rgb(15 23 42 / 0.12), rgb(15 23 42 / 0));
+		background: linear-gradient(
+			90deg,
+			color-mix(in srgb, var(--ds-light-title) 12%, transparent),
+			transparent
+		);
 	}
 
 	.ms-head {
@@ -620,15 +748,15 @@
 		margin: 0.9rem -0.35rem 0;
 		padding: 0 0.35rem;
 		scrollbar-width: thin;
-		scrollbar-color: rgb(15 23 42 / 0.15) transparent;
+		scrollbar-color: color-mix(in srgb, var(--ds-light-title) 15%, transparent) transparent;
 	}
 
 	.ms-nav::-webkit-scrollbar {
 		width: 5px;
 	}
 	.ms-nav::-webkit-scrollbar-thumb {
-		border-radius: 999px;
-		background: rgb(15 23 42 / 0.14);
+		border-radius: var(--ds-radius-full);
+		background: color-mix(in srgb, var(--ds-light-title) 14.000000000000002%, transparent);
 	}
 	.ms-nav::-webkit-scrollbar-track {
 		background: transparent;
@@ -638,7 +766,7 @@
 		position: relative;
 		display: flex;
 		align-items: center;
-		border-radius: 14px;
+		border-radius: var(--ds-radius-xl);
 		animation: ms-item-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(var(--i) * 45ms);
 	}
@@ -649,7 +777,7 @@
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
-		background: linear-gradient(90deg, var(--ms-accent-wash) 0%, rgb(255 255 255 / 0) 100%);
+		background: linear-gradient(90deg, var(--ms-accent-wash) 0%, transparent 100%);
 		opacity: 0;
 		transform: translateX(-6px);
 		transition:
@@ -671,7 +799,7 @@
 		top: 50%;
 		width: 3px;
 		height: 22px;
-		border-radius: 999px;
+		border-radius: var(--ds-radius-full);
 		background: linear-gradient(180deg, var(--ms-accent-light), var(--ms-accent-deep));
 		transform: translateY(-50%) scaleY(0);
 		transform-origin: center;
@@ -692,8 +820,8 @@
 		opacity: 1;
 	}
 
-	.ms-item--off {
-		opacity: 0.55;
+	.ms-item--off .ms-link {
+		color: var(--ds-light-muted);
 	}
 
 	.ms-link {
@@ -705,9 +833,9 @@
 		gap: 0.625rem;
 		min-width: 0;
 		padding: 0.7rem 0.85rem;
-		font-size: 0.9375rem;
+		font-size: var(--text-sm);
 		font-weight: 500;
-		color: #475569;
+		color: var(--ds-light-body);
 		transition: color 0.22s ease;
 	}
 
@@ -747,20 +875,20 @@
 
 	.ms-badge {
 		flex: none;
-		border-radius: 6px;
-		background: rgb(148 163 184 / 0.2);
+		border-radius: var(--ds-radius-md);
+		background: color-mix(in srgb, var(--ds-light-muted) 15%, transparent);
 		padding: 2px 6px;
-		font-size: 9px;
+		font-size: var(--ds-font-note-size);
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: #475569;
+		color: var(--ds-light-body);
 	}
 
 	.ms-empty {
 		padding: 1rem 0.85rem;
-		font-size: 0.875rem;
-		color: #94a3b8;
+		font-size: var(--text-sm);
+		color: var(--ds-light-muted);
 	}
 
 	/* Контейнер админ-кнопок: сами кнопки приходят сниппетом от обёртки. */
@@ -784,8 +912,8 @@
 		width: 36px;
 		height: 20px;
 		padding: 2px;
-		border-radius: 999px;
-		background: #cbd5e1;
+		border-radius: var(--ds-radius-full);
+		background: var(--ds-light-muted);
 		cursor: pointer;
 		transition: background-color 0.25s ease;
 	}
@@ -809,9 +937,9 @@
 		justify-content: center;
 		width: 16px;
 		height: 16px;
-		border-radius: 999px;
-		background: #ffffff;
-		box-shadow: 0 1px 2px rgb(15 23 42 / 0.2);
+		border-radius: var(--ds-radius-full);
+		background: var(--ds-surface-raised);
+		box-shadow: 0 1px 2px color-mix(in srgb, var(--ds-light-title) 20%, transparent);
 		transform: translateX(0);
 		transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 		pointer-events: none;
@@ -849,9 +977,9 @@
 		overflow: hidden;
 		margin-top: 1.25rem;
 		padding: 1.25rem;
-		border-radius: 18px;
-		background: linear-gradient(155deg, #0f172a 0%, #1e293b 100%);
-		box-shadow: 0 18px 40px -24px rgb(15 23 42 / 0.7);
+		border-radius: var(--ds-radius-2xl);
+		background: var(--ds-dark-surface);
+		box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--ds-light-title) 70%, transparent);
 	}
 
 	.ms-cta-glow {
@@ -860,7 +988,7 @@
 		right: -25%;
 		width: 180px;
 		height: 180px;
-		border-radius: 999px;
+		border-radius: var(--ds-radius-full);
 		background: radial-gradient(
 			circle,
 			color-mix(in srgb, var(--ms-accent-light) 45%, transparent),
@@ -872,16 +1000,15 @@
 	}
 
 	.ms-cta-title {
-		font-size: 0.9375rem;
-		font-weight: 600;
-		color: #ffffff;
+		font-size: var(--text-base);
+		color: var(--ds-dark-title);
 	}
 
 	.ms-cta-text {
 		margin-top: 0.4rem;
-		font-size: 0.8125rem;
+		font-size: var(--text-sm);
 		line-height: 1.55;
-		color: rgb(203 213 225 / 0.9);
+		color: var(--ds-dark-body);
 	}
 
 	.ms-cta-btn {
@@ -890,11 +1017,11 @@
 		width: 100%;
 		margin-top: 1rem;
 		padding: 0.65rem 1rem;
-		border-radius: 12px;
-		background: #ffffff;
-		font-size: 0.8125rem;
+		border-radius: var(--ds-radius-xl);
+		background: var(--ds-light-overlay);
+		font-size: var(--text-sm);
 		font-weight: 600;
-		color: #0f172a;
+		color: var(--ds-light-title);
 		cursor: pointer;
 		transition:
 			transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
@@ -943,14 +1070,14 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.7rem 1.1rem;
-		border-radius: 999px;
-		background: linear-gradient(155deg, #0f172a 0%, #1e293b 100%);
-		font-size: 0.8125rem;
+		border-radius: var(--ds-radius-full);
+		background: var(--ds-dark-surface);
+		font-size: var(--text-sm);
 		font-weight: 600;
-		color: #ffffff;
+		color: var(--ds-dark-title);
 		box-shadow:
-			0 10px 30px -10px rgb(15 23 42 / 0.65),
-			0 0 0 1px rgb(255 255 255 / 0.06) inset;
+			0 10px 30px -10px color-mix(in srgb, var(--ds-light-title) 65%, transparent),
+			0 0 0 1px color-mix(in srgb, var(--ds-on-dark) 6%, transparent) inset;
 		cursor: pointer;
 		animation: ms-fab-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 		transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
@@ -967,9 +1094,10 @@
 		min-width: 20px;
 		height: 20px;
 		padding: 0 6px;
-		border-radius: 999px;
-		background: color-mix(in srgb, var(--ms-accent) 90%, transparent);
-		font-size: 11px;
+		border-radius: var(--ds-radius-full);
+		background: var(--ms-accent-deep);
+		color: var(--ds-on-accent);
+		font-size: var(--ds-font-note-size);
 		font-weight: 700;
 	}
 
@@ -986,7 +1114,7 @@
 		inset: 0;
 		width: 100%;
 		height: 100%;
-		background: rgb(2 6 23 / 0.5);
+		background: color-mix(in srgb, var(--ds-scrim) 50%, transparent);
 		backdrop-filter: blur(6px);
 		border: none;
 		cursor: default;
@@ -999,22 +1127,22 @@
 		width: 100%;
 		max-height: 85vh;
 		padding: 0.5rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
-		border-radius: 26px 26px 0 0;
+		border-radius: var(--ds-radius-3xl) var(--ds-radius-3xl) 0 0;
 		background:
 			radial-gradient(
 				120% 40% at 50% 0%,
 				color-mix(in srgb, var(--ms-accent) 7%, transparent),
 				transparent 70%
 			),
-			linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
-		box-shadow: 0 -20px 60px -20px rgb(15 23 42 / 0.35);
+			linear-gradient(180deg, var(--ds-light-overlay) 0%, var(--ds-light-surface-alt) 100%);
+		box-shadow: 0 -20px 60px -20px color-mix(in srgb, var(--ds-light-title) 35%, transparent);
 	}
 
 	@media (min-width: 640px) {
 		.ms-sheet {
 			max-width: 460px;
 			margin: 0 auto 1rem;
-			border-radius: 26px;
+			border-radius: var(--ds-radius-3xl);
 		}
 
 		.ms-sheet-root {
@@ -1027,8 +1155,8 @@
 		width: 40px;
 		height: 4px;
 		margin: 0.25rem auto 0.75rem;
-		border-radius: 999px;
-		background: rgb(15 23 42 / 0.14);
+		border-radius: var(--ds-radius-full);
+		background: color-mix(in srgb, var(--ds-light-title) 14.000000000000002%, transparent);
 	}
 
 	.ms-sheet-head {
@@ -1037,7 +1165,8 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding-bottom: 0.75rem;
-		border-bottom: 1px solid rgb(15 23 42 / 0.07);
+		border-bottom: 1px solid
+			color-mix(in srgb, var(--ds-light-title) 7.000000000000001%, transparent);
 	}
 
 	.ms-close {
@@ -1047,9 +1176,9 @@
 		justify-content: center;
 		width: 34px;
 		height: 34px;
-		border-radius: 999px;
-		background: rgb(15 23 42 / 0.05);
-		color: #475569;
+		border-radius: var(--ds-radius-full);
+		background: color-mix(in srgb, var(--ds-light-title) 5%, transparent);
+		color: var(--ds-light-body);
 		cursor: pointer;
 		transition:
 			background-color 0.2s ease,
@@ -1057,7 +1186,7 @@
 	}
 
 	.ms-close:hover {
-		background: rgb(15 23 42 / 0.09);
+		background: color-mix(in srgb, var(--ds-light-title) 9%, transparent);
 	}
 
 	.ms-close:active {
