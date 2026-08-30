@@ -8,11 +8,12 @@
 	 * у неё свой артикул и свой ключ в componentsData, — но всю разметку,
 	 * раскладку и поведение отдаёт сюда.
 	 *
-	 * Данные списка: сначала блок из БД (`data[itemsKey]`), при пустом или
-	 * отсутствующем значении — статический `defaultItems` от обёртки.
+	 * Данные списка: ответ API (`data[itemsKey]`), включая пустой массив.
+	 * Статический `defaultItems` нужен только для превью без данных API.
 	 */
 	import { onMount, type Snippet } from 'svelte';
-	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { goto, invalidateAll } from '$app/navigation';
+	import { saveComponentData, toggleCategory, type EditContext } from '$lib/utils/page-edit';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { browser } from '$app/environment';
 	import { fly, fade } from 'svelte/transition';
@@ -50,6 +51,8 @@
 		emptyText = 'Разделы появятся здесь',
 		accent = 'sky',
 		showDisabledBadge = true,
+		canToggleItems = false,
+		itemNoun = 'пункт',
 		cta,
 		itemActions,
 		settings
@@ -71,6 +74,15 @@
 		emptyText?: string;
 		accent?: 'sky' | 'amber';
 		showDisabledBadge?: boolean;
+		/**
+		 * Тумблер «показать/скрыть» у пункта. Включается там, где список —
+		 * настоящий справочник в БД: у пункта есть `id`, и состояние хранится
+		 * в настройках сайта, а не в общем справочнике. У пунктов без `id` (статика
+		 * обёртки) тумблера нет — переключать нечего.
+		 */
+		canToggleItems?: boolean;
+		/** Существительное в винительном падеже для подписей тумблера: «категорию», «бренд». */
+		itemNoun?: string;
 		cta?: Partial<SidebarCta>;
 		/** Админ-кнопки у пункта списка (сейчас только у мебели). */
 		itemActions?: Snippet<[SidebarItem]>;
@@ -80,10 +92,10 @@
 
 	const title = $derived(String(data?.title || defaultTitle));
 
-	/* Блок из БД имеет приоритет; пустой список — повод показать статику. */
+	/* Пустой ответ API не должен возвращать скрытые/удалённые пункты из статики. */
 	const items = $derived.by<SidebarItem[]>(() => {
 		const fromDb = data?.[itemsKey];
-		return Array.isArray(fromDb) && fromDb.length > 0 ? fromDb : defaultItems;
+		return Array.isArray(fromDb) ? fromDb : defaultItems;
 	});
 
 	/* В режиме редактирования показываем и отключённые пункты, чтобы их можно было включить обратно. */
@@ -100,6 +112,49 @@
 		const updated = { ...data, title: value };
 		await saveComponentData(editContext, componentType, updated);
 		data = updated;
+	}
+
+	/* Пункты в процессе переключения: у каждого свой спиннер, поэтому набор, а не флаг. */
+	let togglingIds = $state(new Set<string>());
+
+	/**
+	 * Переключение пункта справочника. Мутация одна на все рубрики
+	 * (`toggleCategory`): и категории мебели, и бренды бытовой техники — строки
+	 * одной таблицы, различает их только рубрика.
+	 *
+	 * После успеха перезагружаем данные страницы: список приезжает с сервера
+	 * внутри ответа renderPage, локальная правка `data` разошлась бы с ним.
+	 */
+	async function handleToggleItem(item: SidebarItem, e: Event) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		const id = String(item.id ?? '');
+		if (!id || !editContext || togglingIds.has(id)) return;
+
+		togglingIds.add(id);
+		togglingIds = new Set(togglingIds);
+
+		try {
+			await toggleCategory(editContext, id, item.is_enabled === false);
+			const itemPath = `${basePath}/${item.slug}`;
+			if (
+				item.is_enabled !== false &&
+				browser &&
+				(window.location.pathname === itemPath ||
+					window.location.pathname.startsWith(`${itemPath}/`))
+			) {
+				await goto(basePath, { invalidateAll: true });
+			} else {
+				await invalidateAll();
+			}
+		} catch (err: any) {
+			console.error('Failed to toggle sidebar item:', err);
+			alert(`Не удалось изменить состояние (${itemNoun}): ` + (err.message || 'ошибка'));
+		} finally {
+			togglingIds.delete(id);
+			togglingIds = new Set(togglingIds);
+		}
 	}
 
 	const ctaContent = $derived<SidebarCta>({
@@ -274,9 +329,45 @@
 					{/if}
 				</a>
 
-				{#if isEditable && itemActions}
+				{#if isEditable && (itemActions || (canToggleItems && item.id))}
 					<div class="ms-controls">
-						{@render itemActions(item)}
+						{#if itemActions}
+							{@render itemActions(item)}
+						{/if}
+
+						{#if canToggleItems && item.id}
+							{@const isToggling = togglingIds.has(String(item.id))}
+							<button
+								type="button"
+								onclick={(e) => handleToggleItem(item, e)}
+								disabled={isToggling}
+								class="ms-switch"
+								class:ms-switch--on={isEnabled}
+								title={isEnabled ? `Скрыть ${itemNoun}` : `Показать ${itemNoun}`}
+								aria-label={isEnabled ? `Скрыть ${itemNoun}` : `Показать ${itemNoun}`}
+								aria-pressed={isEnabled}
+							>
+								<span class="ms-knob">
+									{#if isToggling}
+										<svg class="ms-spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+											<circle
+												class="opacity-25"
+												cx="12"
+												cy="12"
+												r="10"
+												stroke="currentColor"
+												stroke-width="4"
+											></circle>
+											<path
+												class="opacity-75"
+												fill="currentColor"
+												d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+											></path>
+										</svg>
+									{/if}
+								</span>
+							</button>
+						{/if}
 					</div>
 				{/if}
 			</div>
@@ -681,6 +772,72 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding-right: 0.75rem;
+	}
+
+	/* Тумблер пункта справочника. Цвет берёт акцент рубрики, а не свой: у
+	   янтарной рубрики синий тумблер выглядел бы чужой деталью. */
+	.ms-switch {
+		position: relative;
+		display: inline-flex;
+		flex: none;
+		align-items: center;
+		width: 36px;
+		height: 20px;
+		padding: 2px;
+		border-radius: 999px;
+		background: #cbd5e1;
+		cursor: pointer;
+		transition: background-color 0.25s ease;
+	}
+
+	.ms-switch--on {
+		background: var(--ms-accent);
+	}
+
+	.ms-switch:focus-visible {
+		outline: 2px solid var(--ms-accent);
+		outline-offset: 2px;
+	}
+
+	.ms-switch:disabled {
+		cursor: default;
+	}
+
+	.ms-knob {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 16px;
+		height: 16px;
+		border-radius: 999px;
+		background: #ffffff;
+		box-shadow: 0 1px 2px rgb(15 23 42 / 0.2);
+		transform: translateX(0);
+		transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+		pointer-events: none;
+	}
+
+	.ms-switch--on .ms-knob {
+		transform: translateX(16px);
+	}
+
+	.ms-spinner {
+		width: 10px;
+		height: 10px;
+		color: var(--ms-accent);
+		animation: ms-spin 0.8s linear infinite;
+	}
+
+	@keyframes ms-spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ms-knob {
+			transition-duration: 0.01ms;
+		}
 	}
 
 	/* ---------------------------------------------------------------- *

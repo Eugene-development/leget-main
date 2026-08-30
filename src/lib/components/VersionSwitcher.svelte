@@ -2,9 +2,9 @@
 	import {
 		saveComponentData,
 		deleteComponentData,
-		fetchComponentArticle,
+		COMPONENT_ARTICLES_CONTEXT,
 		type EditContext,
-		type ComponentVariantArticle
+		type ComponentArticleLookup
 	} from '$lib/utils/page-edit';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import ComponentSettingsDrawer from '$lib/components/ComponentSettingsDrawer.svelte';
@@ -12,7 +12,7 @@
 	import { legacyVersionsFor } from '$lib/components/lifecycle';
 	import { invalidateAll } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
-	import type { Snippet } from 'svelte';
+	import { getContext, type Snippet } from 'svelte';
 
 	let {
 		data = $bindable(),
@@ -125,11 +125,10 @@
 	let showConfirmModal = $state(false);
 
 	// Артикул компонента из глобального каталога (template.page.component.version).
-	let articleVariants = $state<ComponentVariantArticle[]>([]);
-	let componentArticle = $state<string | null>(null);
-	// Сознательно не $state: флаг читается внутри эффекта-загрузчика, и реактивная
-	// запись перезапускала бы его же (при сбросе флага после неудачи — бесконечно).
-	let articleLoaded = false;
+	const getComponentArticle = getContext<ComponentArticleLookup | undefined>(
+		COMPONENT_ARTICLES_CONTEXT
+	);
+	const catalog = $derived(getComponentArticle?.(componentType) ?? null);
 
 	// 'v1'..'v4' → 1..4; 'disabled'/unknown → null (артикул не показывается).
 	const versionNumber = (v: unknown): number | null => {
@@ -140,32 +139,7 @@
 	const activeArticle = $derived.by(() => {
 		const vn = versionNumber(selectedVersion);
 		if (vn === null) return null;
-		return articleVariants.find((v) => v.version === vn)?.article ?? componentArticle;
-	});
-
-	// Артикул тянем только для авторизованного пользователя: запрос идёт под @guard и
-	// без токена всегда возвращает null. Гость монтирует свитчер наравне со всеми
-	// (разметка скрыта, но скрипт работает), и раньше единственная попытка сгорала
-	// именно на нём: вход не пересоздаёт блоки (они живут в keyed `{#each ... (element.type)}`,
-	// а рефетча страницы после входа нет), флаг оставался взведён — и бейдж не
-	// появлялся до F5. Зависимость от isEditable даёт повтор ровно в момент входа.
-	$effect(() => {
-		const tid = editContext?.templateId ?? null;
-		const slug = editContext?.slug ?? null;
-		if (!isEditable || !editContext || tid === null || !slug || articleLoaded) return;
-		articleLoaded = true;
-		fetchComponentArticle(tid, slug, componentType)
-			.then((res) => {
-				if (res) {
-					articleVariants = res.variants ?? [];
-					componentArticle = res.article ?? null;
-				}
-				// Не получилось — снимаем флаг, чтобы попробовать снова при смене контекста.
-				else articleLoaded = false;
-			})
-			.catch(() => {
-				articleLoaded = false;
-			});
+		return catalog?.variants.find((v) => v.version === vn)?.article ?? catalog?.article ?? null;
 	});
 
 	// Тема блока. Оптимистичное обновление с откатом живёт в общем помощнике —
@@ -229,7 +203,7 @@
 				<!-- Кнопка-триггер меню -->
 				<button
 					type="button"
-					class="flex cursor-pointer items-center gap-1 rounded-xl border border-on-dark/10 bg-ink-950/75 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95 sm:gap-2 sm:rounded-2xl sm:px-4 sm:py-2.5 sm:text-xs"
+					class="flex cursor-pointer items-center gap-1 rounded-xl border border-on-dark/10 bg-ink-950/75 px-2.5 py-1.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95 sm:gap-2 sm:rounded-2xl sm:px-4 sm:py-2.5 sm:text-xs"
 					onclick={() => (isOpen = !isOpen)}
 				>
 					<span>Варианты</span>

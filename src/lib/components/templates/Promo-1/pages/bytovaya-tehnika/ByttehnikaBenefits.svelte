@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.20.4.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.20.4.1, 1.28.3.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -46,7 +46,7 @@
 
 <div class="mebel-container mt-12 mb-12">
 	<h2 class="mb-8 text-2xl text-ink-900">
-		{data.title || 'Почему покупают у нас'}
+		{data.title || 'Работаем напрямую с поставщиками'}
 	</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

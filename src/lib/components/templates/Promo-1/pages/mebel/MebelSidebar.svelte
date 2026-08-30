@@ -1,12 +1,13 @@
 <script lang="ts">
 	// Артикулы: 1.16.1.1, 1.17.1.1, 1.18.1.1 — см. docs/architecture/component-articles-map.md
 	//
-	// Разметку и поведение отдаёт общий CatalogSidebar. Здесь остаётся только то,
-	// что есть у мебели и нет у других рубрик: категории — настоящий справочник в
-	// БД, их можно включать/выключать и добавлять в них проекты.
+	// Разметку и поведение отдаёт общий CatalogSidebar. Категории — настоящий
+	// справочник в БД, поэтому у пунктов есть тумблер: его рисует сам
+	// CatalogSidebar по `canToggleItems`. Здесь остаётся только то, чего нет
+	// у других рубрик, — добавление проекта в категорию.
 	import { invalidateAll } from '$app/navigation';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
-	import { toggleCategory, type EditContext } from '$lib/utils/page-edit';
+	import { type EditContext } from '$lib/utils/page-edit';
 	import CatalogSidebar from '../_shared/CatalogSidebar.svelte';
 	import MebelProjectModal from './MebelProjectModal.svelte';
 
@@ -26,34 +27,12 @@
 
 	let isModalOpen = $state(false);
 	let addCategoryId = $state('');
-	let togglingIds = $state(new Set<string>());
 
 	function openAddModal(categoryId: string, e: Event) {
 		e.preventDefault();
 		e.stopPropagation();
 		addCategoryId = categoryId;
 		isModalOpen = true;
-	}
-
-	async function handleToggleCategory(id: string, currentEnabled: boolean, e: Event) {
-		e.preventDefault();
-		e.stopPropagation();
-
-		if (togglingIds.has(id)) return;
-
-		togglingIds.add(id);
-		togglingIds = new Set(togglingIds);
-
-		try {
-			await toggleCategory(id, !currentEnabled);
-			await invalidateAll();
-		} catch (err: any) {
-			console.error('Failed to toggle category:', err);
-			alert('Не удалось изменить статус категории: ' + (err.message || 'ошибка'));
-		} finally {
-			togglingIds.delete(id);
-			togglingIds = new Set(togglingIds);
-		}
 	}
 
 	/**
@@ -91,6 +70,8 @@
 	emptyText="Категории появятся здесь"
 	accent="sky"
 	showDisabledBadge={false}
+	canToggleItems
+	itemNoun="категорию"
 	itemActions={categoryActions}
 	settings={componentSettings}
 />
@@ -107,7 +88,6 @@
 {/snippet}
 
 {#snippet categoryActions(category: any)}
-	{@const isEnabled = category.is_enabled !== false}
 	{#if category.id}
 		<button
 			type="button"
@@ -119,31 +99,6 @@
 			<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 				<path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
 			</svg>
-		</button>
-
-		<button
-			type="button"
-			onclick={(e) => handleToggleCategory(category.id, isEnabled, e)}
-			disabled={togglingIds.has(category.id)}
-			class="ms-switch"
-			class:ms-switch--on={isEnabled}
-			title={isEnabled ? 'Скрыть категорию' : 'Показать категорию'}
-			aria-label={isEnabled ? 'Скрыть категорию' : 'Показать категорию'}
-			aria-pressed={isEnabled}
-		>
-			<span class="ms-knob">
-				{#if togglingIds.has(category.id)}
-					<svg class="ms-spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
-						></circle>
-						<path
-							class="opacity-75"
-							fill="currentColor"
-							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-						></path>
-					</svg>
-				{/if}
-			</span>
 		</button>
 	{/if}
 {/snippet}
@@ -177,67 +132,8 @@
 		transform: scale(0.94);
 	}
 
-	.ms-switch {
-		position: relative;
-		display: inline-flex;
-		flex: none;
-		align-items: center;
-		width: 36px;
-		height: 20px;
-		padding: 2px;
-		border-radius: 999px;
-		background: #cbd5e1;
-		cursor: pointer;
-		transition: background-color 0.25s ease;
-	}
-
-	.ms-switch--on {
-		background: #0ea5e9;
-	}
-
-	.ms-switch:focus-visible {
-		outline: 2px solid #0ea5e9;
-		outline-offset: 2px;
-	}
-
-	.ms-switch:disabled {
-		cursor: default;
-	}
-
-	.ms-knob {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 16px;
-		height: 16px;
-		border-radius: 999px;
-		background: #ffffff;
-		box-shadow: 0 1px 2px rgb(15 23 42 / 0.2);
-		transform: translateX(0);
-		transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-		pointer-events: none;
-	}
-
-	.ms-switch--on .ms-knob {
-		transform: translateX(16px);
-	}
-
-	.ms-spinner {
-		width: 10px;
-		height: 10px;
-		color: #0ea5e9;
-		animation: ms-spin 0.8s linear infinite;
-	}
-
-	@keyframes ms-spin {
-		to {
-			transform: rotate(360deg);
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
-		.ms-add,
-		.ms-knob {
+		.ms-add {
 			transition-duration: 0.01ms;
 		}
 	}

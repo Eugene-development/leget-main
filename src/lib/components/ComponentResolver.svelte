@@ -91,6 +91,11 @@
 			return tmpl.pageOverrides['/mebel/{category}'] || {};
 		}
 
+		// /bytovaya-tehnika/{brand}
+		if (cleanSlug.match(/^\/bytovaya-tehnika\/[^\/]+$/)) {
+			return tmpl.pageOverrides['/bytovaya-tehnika/{brand}'] || {};
+		}
+
 		return {};
 	}
 

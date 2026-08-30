@@ -217,7 +217,7 @@
 						class="group flex items-center justify-center"
 					>
 						<ImageFallback
-							class="h-10 w-auto opacity-40 brightness-0 grayscale invert filter transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:brightness-100 group-hover:invert-0 group-hover:filter"
+							class="h-7 w-auto opacity-80 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 sm:h-8"
 							src={partner.logo}
 							alt={partner.name}
 						/>

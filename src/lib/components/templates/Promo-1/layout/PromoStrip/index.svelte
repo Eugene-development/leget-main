@@ -4,6 +4,7 @@
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import EditableField from '$lib/components/EditableField.svelte';
 	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
 	import {
 		saveLayoutData,
@@ -126,6 +127,17 @@
 		rememberPromoClosed();
 	}
 
+	async function saveLinkHref(value: string) {
+		if (!editContext) return;
+		const href = value.trim();
+		if (!/^(\/(?!\/)|https?:\/\/)[^\s]*$/i.test(href)) {
+			throw new Error('Укажите путь от / или полный адрес с https://');
+		}
+		const updated = { ...data, promoLinkHref: href };
+		await saveLayoutData(editContext, 'Header', updated);
+		data = updated;
+	}
+
 	async function selectVersion(version: 'v1' | 'v2' | 'disabled') {
 		if (version === selectedVersion) return;
 		selectedVersion = version;
@@ -167,7 +179,7 @@
 	{:else if !isHidden}
 		{#if selectedVersion === 'v2'}
 			<div in:fly={{ x: 0, y: -40, duration: 400 }}>
-				<PromoStripV2 {data} {actions} onClose={close} />
+				<PromoStripV2 bind:data {editContext} {isEditable} {actions} onClose={close} />
 			</div>
 		{:else}
 			<div in:fly={{ x: 0, y: -40, duration: 400 }}>
@@ -233,6 +245,21 @@
 			{/if}
 
 			<!-- Варианты -->
+			{#if selectedVersion === 'v2'}
+				<EditableField
+					fieldKey="PromoStrip.promoLinkHref"
+					label="Адрес ссылки «Все акции»"
+					value={String(data?.promoLinkHref ?? '/actions')}
+					{isEditable}
+					onSave={saveLinkHref}
+				>
+					{#snippet children(displayValue)}
+						<p class="text-xs text-ink-300">Адрес ссылки «Все акции»</p>
+						<p class="mt-1 text-sm break-all text-on-dark">{displayValue}</p>
+					{/snippet}
+				</EditableField>
+			{/if}
+
 			<section>
 				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Вариант дизайна</h4>
 				<div class="flex flex-col gap-2">

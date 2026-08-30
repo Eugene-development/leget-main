@@ -147,6 +147,7 @@ import StoleshnicaSidebar from './pages/stoleshnica/StoleshnicaSidebar.svelte';
 
 // Bytovaya-tehnika page components
 import ByttehnikaSidebar from './pages/bytovaya-tehnika/ByttehnikaSidebar.svelte';
+import ByttehnikaBrandHero from './pages/bytovaya-tehnika/ByttehnikaBrandHero.svelte';
 import ByttehnikaHero from './pages/bytovaya-tehnika/ByttehnikaHero.svelte';
 import ByttehnikaBrands from './pages/bytovaya-tehnika/ByttehnikaBrands.svelte';
 import ByttehnikaBenefits from './pages/bytovaya-tehnika/ByttehnikaBenefits.svelte';
@@ -343,6 +344,16 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		ByttehnikaBenefits,
 		ByttehnikaCategories,
 		ByttehnikaComplex,
+		ByttehnikaCTA
+	},
+	// Страница бренда бытовой техники. Товарной сетки здесь нет и быть пока
+	// нечему: каталога позиций у техники не существует (у мебели её наполняют
+	// `mebel_projects`), поэтому страница — шапка бренда из справочника плюс
+	// общие блоки рубрики.
+	'/bytovaya-tehnika/{brand}': {
+		ByttehnikaSidebar,
+		ByttehnikaBrandHero,
+		ByttehnikaBenefits,
 		ByttehnikaCTA
 	},
 	'/santehnika': {

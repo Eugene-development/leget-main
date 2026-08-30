@@ -1,6 +1,8 @@
 <script lang="ts">
 	// Артикул: 1.П.1.2 — см. docs/architecture/component-articles.md
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import EditableField from '$lib/components/EditableField.svelte';
+	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import type { ActiveAction } from '../../../pages/actions/actionCards';
 	import '../../../theme.css';
 
@@ -15,11 +17,15 @@
 	// color-mix): полоса и баннер стоят друг на друге, и общая деталь связывает
 	// их в одну шапку, а не в две независимые ленты.
 	let {
-		data = {},
+		data = $bindable({}),
+		editContext = null,
+		isEditable = false,
 		actions = [],
 		onClose
 	}: {
 		data: Record<string, unknown>;
+		editContext?: EditContext | null;
+		isEditable?: boolean;
 		actions: ActiveAction[];
 		onClose: () => void;
 	} = $props();
@@ -29,6 +35,13 @@
 	// Скорость постоянная, а не длительность: восемь акций едут дольше двух,
 	// иначе длинная лента летела бы, а короткая ползла. ~9 секунд на акцию.
 	const duration = $derived(`${Math.max(actions.length, 2) * 9}s`);
+
+	async function saveLinkText(value: string) {
+		if (!editContext) return;
+		const updated = { ...data, promoLinkText: value };
+		await saveLayoutData(editContext, 'Header', updated);
+		data = updated;
+	}
 </script>
 
 <div class="promo-strip" data-p1-theme={isLight ? 'light' : 'dark'}>
@@ -74,23 +87,34 @@
 
 		<span class="p1-line hidden h-3.5 shrink-0 border-l lg:block" aria-hidden="true"></span>
 
-		<a
-			href="/actions"
-			class="p1-accent hidden shrink-0 items-center gap-1.5 pl-3.5 text-xs whitespace-nowrap transition-colors lg:flex"
+		<EditableField
+			fieldKey="PromoStrip.promoLinkText"
+			label="Текст ссылки «Все акции»"
+			value={String(data?.promoLinkText ?? 'Все акции')}
+			isEditable={isEditable && !!editContext}
+			onSave={saveLinkText}
+			class="hidden shrink-0 pl-3.5 lg:block {isEditable && editContext ? 'lg:mr-9' : ''}"
 		>
-			Все акции
-			<svg
-				class="h-3 w-3 [stroke-width:var(--ds-icon-stroke)]"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				aria-hidden="true"
-			>
-				<path d="M5 12h14M13 6l6 6-6 6" />
-			</svg>
-		</a>
+			{#snippet children(displayValue)}
+				<a
+					href={String(data?.promoLinkHref ?? '/actions')}
+					class="promo-all-link p1-accent flex origin-left items-center gap-1.5 text-xs whitespace-nowrap transition-[color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600 motion-reduce:transition-none"
+				>
+					{displayValue}
+					<svg
+						class="h-3 w-3 [stroke-width:var(--ds-icon-stroke)]"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M5 12h14M13 6l6 6-6 6" />
+					</svg>
+				</a>
+			{/snippet}
+		</EditableField>
 
 		<button
 			type="button"
@@ -115,6 +139,18 @@
 </div>
 
 <style>
+	.promo-all-link:hover,
+	.promo-all-link:focus-visible {
+		color: color-mix(in oklab, var(--p1-accent) 65%, var(--p1-title));
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.promo-all-link:hover,
+		.promo-all-link:focus-visible {
+			transform: scale(1.05);
+		}
+	}
+
 	/* Края ленты гасятся в поверхность полосы, а не обрезаются: акция не должна
 	   вылезать из-под разделителя половиной буквы. Маска, а не два градиента
 	   сверху, — под полосой нет своего фона, `p1-surface` приходит из системы. */

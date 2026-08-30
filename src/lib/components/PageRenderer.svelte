@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
-	import { saveLayoutData, type EditContext, type PageSeoData } from '$lib/utils/page-edit';
+	import {
+		saveLayoutData,
+		COMPONENT_ARTICLES_CONTEXT,
+		type ComponentArticle,
+		type ComponentArticleLookup,
+		type EditContext,
+		type PageSeoData
+	} from '$lib/utils/page-edit';
 	import { setContext } from 'svelte';
 	import EditModal from '$lib/components/EditModal.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
@@ -21,6 +28,7 @@
 	interface PageComponent {
 		id?: string | null;
 		type: string;
+		catalog?: ComponentArticle | null;
 		data: Record<string, unknown>;
 	}
 
@@ -62,6 +70,13 @@
 		/** id владельца лицензии этого сайта — из renderPage. */
 		ownerId?: string | null;
 	} = $props();
+
+	// Метаданные из renderPage доступны синхронно и не попадают в bind:data.
+	// Getter читает актуальный prop и при навигации, и после invalidateAll.
+	setContext<ComponentArticleLookup>(
+		COMPONENT_ARTICLES_CONTEXT,
+		(type) => components.find((component) => component.type === type)?.catalog ?? null
+	);
 
 	// Локальное состояние-зеркало headerData. Нужно для мгновенной реактивности:
 	// Header обновляет disabledRubrics/disabledServices через handleToggleRubric и
@@ -133,6 +148,11 @@
 	// внешний overlay здесь дал бы кнопку вне fixed-карточки.
 	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set([
 		'MebelSidebar',
+		'ByttehnikaSidebar',
+		'StoleshnicaSidebar',
+		'SantehnikaSidebar',
+		'FurnituraSidebar',
+		'PliitkaSidebar',
 		'ProjectsHero',
 		'VacancyList',
 		'VacancyForm'

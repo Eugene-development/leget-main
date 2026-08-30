@@ -2,7 +2,13 @@
 	// Артикул: 1.1.8.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import { getContext } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import {
+		createEditableVisibility,
+		EDITABLE_VISIBILITY_CONTEXT,
+		type EditableVisibility
+	} from '$lib/utils/editable-visibility.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import '../../../../theme.css';
 
@@ -15,6 +21,17 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	// Используем общий контроллер редактора, чтобы сохранения hiddenFields
+	// сериализовались вместе с переключателями текстов. В отдельном превью — свой.
+	const visibility =
+		getContext<EditableVisibility | undefined>(EDITABLE_VISIBILITY_CONTEXT) ??
+		createEditableVisibility({
+			getComponentType: () => 'Brands',
+			getData: () => data,
+			setData: (next) => (data = next),
+			getEditContext: () => editContext
+		});
 
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
@@ -100,6 +117,18 @@
 				]
 	);
 
+	// Ключи привязаны к исходному индексу, а не к позиции после фильтрации.
+	const renderedPartners = $derived(
+		partners
+			.map((partner, index) => ({ partner, index }))
+			.filter(({ index }) => isEditable || visibility.isVisible(`partner:${index}`))
+	);
+	const renderedBrands = $derived(
+		brands
+			.map((brand, index) => ({ brand, index }))
+			.filter(({ index }) => isEditable || visibility.isVisible(`brand:${index}`))
+	);
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -107,6 +136,39 @@
 		data = updated;
 	}
 </script>
+
+{#snippet logoToggle(key: string, name: string, position: string)}
+	{#if isEditable && editContext}
+		<button
+			type="button"
+			role="switch"
+			aria-checked={visibility.isVisible(key)}
+			aria-busy={visibility.isPending(key)}
+			aria-label={`${visibility.isVisible(key) ? 'Скрыть' : 'Показать'} логотип «${name}»`}
+			title={`${visibility.isVisible(key) ? 'Скрыть' : 'Показать'} логотип «${name}»`}
+			disabled={visibility.isPending(key)}
+			onclick={(event) => visibility.toggle(key, event)}
+			class="absolute z-10 flex size-11 cursor-pointer items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60 {position}"
+		>
+			<span
+				aria-hidden="true"
+				class="inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-surface-raised/80 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui {visibility.isVisible(
+					key
+				)
+					? 'bg-link-500'
+					: 'bg-ink-400'}"
+			>
+				<span
+					class="inline-block size-4 rounded-full bg-surface-raised shadow-sm transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui {visibility.isVisible(
+						key
+					)
+						? 'translate-x-4'
+						: 'translate-x-0'}"
+				></span>
+			</span>
+		</button>
+	{/if}
+{/snippet}
 
 <!--
 	Бренды материалов (Brands), версия 1 — «логотипная стена».
@@ -130,47 +192,49 @@
 	высоту, остающуюся под липким хедером (`--chrome-overlay`), и раздаёт её
 	рядам. Правило и пороги — в `<style>` внизу файла.
 -->
-<section
-	class="brands-screen p1-surface py-section-xs sm:py-section"
-	data-p1-theme={isLight ? 'light' : 'dark'}
->
-	<div class="mx-auto flex h-full max-w-7xl flex-col px-6 lg:px-8">
-		<div class="mx-auto max-w-2xl shrink-0 text-center">
-			<!--
+{#if renderedPartners.length > 0 || renderedBrands.length > 0 || isEditable}
+	<section
+		class="brands-screen p1-surface py-section-xs sm:py-section"
+		data-p1-theme={isLight ? 'light' : 'dark'}
+		data-has-partners={renderedPartners.length > 0}
+	>
+		<div class="mx-auto flex h-full max-w-7xl flex-col px-6 lg:px-8">
+			<div class="mx-auto max-w-2xl shrink-0 py-4 text-center sm:py-6">
+				<!--
 				Метка берёт роль `p1-label`, а не пилюлю `bg-link-100 / text-link-700`,
 				как было до 19.08.2026. Шкала `link` системная, но абсолютная: замер
 				на инвертированном блоке давал ту же светло-синюю плашку на почти
 				чёрной поверхности — светлый островок, не зависящий от темы блока.
 			-->
-			<span class="p1-label p1-muted uppercase">
+				<span class="p1-label p1-muted uppercase">
+					<EditableField
+						fieldKey="Brands.badge"
+						label="Метка"
+						value={String(data?.badge ?? 'Партнёры')}
+						{isEditable}
+						onSave={(v) => saveField('badge', v)}
+						class="inline"
+					>
+						{#snippet children(displayValue)}{displayValue}{/snippet}
+					</EditableField>
+				</span>
 				<EditableField
-					fieldKey="Brands.badge"
-					label="Метка"
-					value={String(data?.badge ?? 'Бренды')}
+					fieldKey="Brands.title"
+					label="Заголовок"
+					value={String(data?.title ?? 'Фабрики изготовители мебели')}
 					{isEditable}
-					onSave={(v) => saveField('badge', v)}
-					class="inline"
+					onSave={(v) => saveField('title', v)}
+					class="block"
 				>
-					{#snippet children(displayValue)}{displayValue}{/snippet}
+					{#snippet children(displayValue)}
+						<h2 class="p1-title mt-3 text-3xl sm:text-4xl">
+							{displayValue}
+						</h2>
+					{/snippet}
 				</EditableField>
-			</span>
-			<EditableField
-				fieldKey="Brands.title"
-				label="Заголовок"
-				value={String(data?.title ?? 'Бренды, говорящие о качестве')}
-				{isEditable}
-				onSave={(v) => saveField('title', v)}
-				class="block"
-			>
-				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-3 text-3xl sm:text-4xl">
-						{displayValue}
-					</h2>
-				{/snippet}
-			</EditableField>
-		</div>
+			</div>
 
-		<!-- Стена: ячейки стоят на поверхности секции, зазор в пиксель играет линией.
+			<!-- Стена: ячейки стоят на поверхности секции, зазор в пиксель играет линией.
 
 		     Класс `p1-line` снят 19.08.2026, когда роль разделителя переехала с
 		     заливки на границу. Здесь линией работает НЕ линия, а фон контейнера,
@@ -180,58 +244,68 @@
 		     Заодно снята стопка `p1-line p1-border` на одном элементе: рамка
 		     стены — рамка карточки (0,1), а решётка внутри — линия (0,07), и
 		     раньше эти два тона спорили за один `border-color`. -->
-		<div
-			class="brand-wall p1-border mt-12 grid min-h-0 flex-1 gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-3"
-		>
-			{#each partners as partner}
-				<svelte:element
-					this={partner.url ? 'a' : 'div'}
-					{...partner.url
-						? { href: partner.url, target: '_blank', rel: 'noopener noreferrer' }
-						: {}}
-					class="brand-cell group p1-surface flex min-h-0 flex-col items-center justify-center px-6 py-10 text-center [--p1-logo-slot:72px]"
+			{#if renderedPartners.length > 0}
+				<div
+					class="brand-wall p1-border mt-12 grid min-h-0 flex-1 gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-3"
+					style:--brand-wall-rows={Math.ceil(renderedPartners.length / 3)}
 				>
-					<div class="p1-logo-slot p1-body justify-center self-center">
-						<ImageFallback class="p1-logo" src={partner.logo} alt={partner.name} />
-					</div>
-				</svelte:element>
-			{/each}
-		</div>
+					{#each renderedPartners as { partner, index } (index)}
+						<svelte:element
+							this={partner.url && !isEditable ? 'a' : 'div'}
+							{...partner.url && !isEditable
+								? { href: partner.url, target: '_blank', rel: 'noopener noreferrer' }
+								: {}}
+							class="brand-cell group p1-surface relative flex min-h-0 flex-col items-center justify-center px-6 py-10 text-center [--p1-logo-slot:108px]"
+							data-logo-hidden={!visibility.isVisible(`partner:${index}`)}
+						>
+							<div class="p1-logo-slot p1-body justify-center self-center">
+								<ImageFallback class="p1-logo" src={partner.logo} alt={partner.name} />
+							</div>
+							{@render logoToggle(`partner:${index}`, partner.name, 'top-1 right-1')}
+						</svelte:element>
+					{/each}
+				</div>
+			{/if}
 
-		<!-- Бренды материалов и фурнитуры: тот же слот и та же роль, ступень мельче -->
-		<div class="brands-strip mt-16 shrink-0 py-4">
-			<p class="p1-label p1-muted text-center uppercase">
-				<EditableField
-					fieldKey="Brands.partnersLabel"
-					label="Подпись брендов"
-					value={String(data?.partnersLabel ?? 'Из чего мы делаем мебель')}
-					{isEditable}
-					onSave={(v) => saveField('partnersLabel', v)}
-					inline
-					class="inline"
-				>
-					{#snippet children(displayValue)}{displayValue}{/snippet}
-				</EditableField>
-			</p>
-			<div class="brands-strip-grid mt-8 grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-6">
-				{#each brands as brand}
-					<div
-						class="group p1-logo-slot p1-body justify-center [--p1-logo-slot:48px]"
-						title={brand.name}
-					>
-						<ImageFallback class="p1-logo" src={brand.logo} alt={brand.name} />
+			<!-- Бренды материалов и фурнитуры: тот же слот и та же роль, ступень мельче -->
+			{#if renderedBrands.length > 0}
+				<div class="brands-strip mt-16 shrink-0 py-4">
+					<div class="p1-label p1-muted text-center uppercase">
+						<EditableField
+							fieldKey="Brands.partnersLabel"
+							label="Подпись брендов"
+							value={String(data?.partnersLabel ?? 'Поставщики техники')}
+							{isEditable}
+							onSave={(v) => saveField('partnersLabel', v)}
+							inline
+							class="inline"
+						>
+							{#snippet children(displayValue)}{displayValue}{/snippet}
+						</EditableField>
 					</div>
-				{/each}
-			</div>
+					<div class="brands-strip-grid mt-8 grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-6">
+						{#each renderedBrands as { brand, index } (index)}
+							<div
+								class="group p1-logo-slot p1-body relative justify-center [--p1-logo-slot:48px]"
+								title={brand.name}
+								data-logo-hidden={!visibility.isVisible(`brand:${index}`)}
+							>
+								<ImageFallback class="p1-logo max-h-8" src={brand.logo} alt={brand.name} />
+								{@render logoToggle(`brand:${index}`, brand.name, '-top-6 right-0')}
+							</div>
+						{/each}
+					</div>
 
-			{#if data?.partnersNote}
-				<p class="p1-muted mt-10 text-center text-sm">
-					{String(data.partnersNote)}
-				</p>
+					{#if data?.partnersNote}
+						<p class="p1-muted mt-10 text-center text-sm">
+							{String(data.partnersNote)}
+						</p>
+					{/if}
+				</div>
 			{/if}
 		</div>
-	</div>
-</section>
+	</section>
+{/if}
 
 <style>
 	/* Решётка стены брендов: зазор `gap-px` показывает фон контейнера, и это
@@ -268,30 +342,28 @@
 	   переполнение на 20px. На 44rem набор сходится. */
 	@media (min-width: 64rem) and (min-height: 44rem) {
 		.brands-screen {
-			height: calc(100svh - var(--chrome-overlay));
 			/* Ступень ритма ниже обычной: внешний воздух секции складывается
 			   с внутренним, который раздаёт свободную высоту стены. */
 			padding-block: var(--spacing-section-2xs);
 		}
 
+		.brands-screen[data-has-partners='true'] {
+			height: calc(100svh - var(--chrome-overlay));
+		}
+
 		/* Стена забирает всё, что осталось от заголовка и ленты партнёров, и
-		   делит поровну на два ряда. `minmax(0, 1fr)` обязателен: у `1fr`
+		   делит поровну между видимыми рядами. `minmax(0, 1fr)` обязателен: у `1fr`
 		   минимум равен содержимому, и ряд не сжимался бы, а переполнял
 		   секцию — высота уезжала бы ровно так же, как до правки. */
 		.brands-screen .brand-wall {
 			margin-top: 1.5rem;
-			grid-template-rows: repeat(2, minmax(0, 1fr));
+			grid-template-rows: repeat(var(--brand-wall-rows), minmax(0, 1fr));
 		}
 
-		/* Ячейка отдаёт высоту первой: её воздух — воздух, а не содержание.
-		   Слот принимает размер от ячейки (переменная наследуется вниз), как
-		   и в разметке, — только ступенью мельче и с ростом по высоте окна:
-		   на 1920×1080 ряд получает 341px против 193px набора, и без роста
-		   знака полтораста пикселей уходили бы в пустоту между строк. Верх
-		   `clamp` — 76px: слот задаёт высоту знака, а верхняя граница не даёт
-		   исходникам низкого разрешения заметно растрироваться. */
+		/* Слот растёт с высотой окна. Все три величины увеличены на 50%,
+		   сохраняя прежнюю адаптивную пропорцию верхних логотипов. */
 		.brands-screen .brand-cell {
-			--p1-logo-slot: clamp(52px, 5.5vh, 76px);
+			--p1-logo-slot: clamp(78px, 8.25vh, 114px);
 			padding-block: 1.25rem;
 		}
 
@@ -311,14 +383,18 @@
 		}
 	}
 
-	/* Партнёры-производители — цветные логотипы: гашение цвета роли `p1-logo`
-	   им не нужно, поэтому фильтр и приглушение сняты локально, не трогая саму
-	   роль (её несёт лента брендов внизу). Правило переехало сюда 25.08.2026
-	   вместе с содержанием: снятие фильтра привязано к тому, ЧТО показано, а
-	   не к тому, где оно стоит. */
-	.brand-wall :global(.p1-logo) {
+	/* Оба ряда сохраняют фирменные цвета и полную непрозрачность постоянно.
+	   Общая роль `p1-logo` в других компонентах остаётся без изменений. */
+	.brand-wall :global(.p1-logo),
+	.brands-strip :global(.p1-logo) {
 		filter: none;
 		opacity: 1;
+	}
+
+	/* Скрытые знаки доступны владельцу для повторного включения.
+	   Сам переключатель не приглушаем; активные логотипы всегда цветные. */
+	[data-logo-hidden='true'] :global(.p1-logo) {
+		opacity: 0.45;
 	}
 
 	/* Низкое окно при трёх колонках (ноутбучные 768px и мельче): доступной
@@ -326,7 +402,7 @@
 	   то же самое — знак и воздух вокруг него, ещё на ступень. */
 	@media (min-width: 64rem) and (min-height: 44rem) and (max-height: 48rem) {
 		.brands-screen .brand-cell {
-			--p1-logo-slot: 44px;
+			--p1-logo-slot: 66px;
 			padding-block: 0.75rem;
 		}
 	}

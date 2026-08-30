@@ -57,7 +57,7 @@
 		<EditableField
 			fieldKey="StoleshnicaBenefits.title"
 			label="Заголовок блока"
-			value={String(data.title || 'Наши преимущества')}
+			value={String(data.title || 'Работаем напрямую с поставщиками')}
 			{isEditable}
 			inline
 			onSave={(v) => saveField('title', v)}

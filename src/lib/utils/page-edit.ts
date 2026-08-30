@@ -125,171 +125,9 @@ export interface ComponentArticle {
 	variants: ComponentVariantArticle[];
 }
 
-// In-memory cache to avoid refetching the same component's article on re-renders.
-const componentArticleCache = new Map<string, ComponentArticle | null>();
-
-interface ArticleRequest {
-	key: string;
-	templateId: number;
-	slug: string;
-	type: string;
-	resolve: (value: ComponentArticle | null) => void;
-}
-
-interface ComponentArticleNode {
-	article?: string;
-	variants?: ComponentVariantArticle[];
-}
-
-/**
- * Очередь запросов артикула на ближайшую микрозадачу.
- *
- * Артикул просят все блоки страницы разом: эффект-загрузчик в VersionSwitcher
- * взводится у каждого в один и тот же флаш эффектов — при входе или при загрузке
- * страницы с токеном. Раньше каждый блок бил в API своим запросом: десяток кругов
- * до удалённого API, из которых браузер держит открытыми лишь несколько зараз, и
- * каждый со своим разбором токена под @guard на стороне API. Бейдж артикула из-за
- * этого проступал через секунды после самого редактора.
- *
- * Теперь такт собирается в ОДИН запрос с алиасами (a0, a1, …) — один круг на всю
- * страницу. Блок, смонтированный позже (ленивый маршрут, повторное монтирование),
- * просто попадёт в следующую пачку.
- */
-let articleQueue: ArticleRequest[] = [];
-let articleFlushScheduled = false;
-
-function scheduleArticleFlush(): void {
-	if (articleFlushScheduled) return;
-	articleFlushScheduled = true;
-	// Микрозадача, а не таймер: Svelte прогоняет эффекты всех блоков синхронно
-	// одним флашем, поэтому к моменту её выполнения очередь уже собрана целиком.
-	queueMicrotask(() => {
-		articleFlushScheduled = false;
-		void flushArticleQueue();
-	});
-}
-
-async function flushArticleQueue(): Promise<void> {
-	const batch = articleQueue;
-	articleQueue = [];
-	if (batch.length === 0) return;
-
-	// На странице тип встречается один раз, но дедуп страхует от повторного
-	// монтирования в том же такте: каждый ключ уходит в запрос ровно однажды.
-	const groups = new Map<string, ArticleRequest[]>();
-	for (const request of batch) {
-		const waiting = groups.get(request.key);
-		if (waiting) waiting.push(request);
-		else groups.set(request.key, [request]);
-	}
-	const entries = [...groups.values()];
-	const settle = (index: number, value: ComponentArticle | null) => {
-		for (const request of entries[index]) request.resolve(value);
-	};
-
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
-	if (!token) {
-		entries.forEach((_, i) => settle(i, null));
-		return;
-	}
-
-	const varDefs = entries
-		.map((_, i) => `$t${i}: Int!, $s${i}: String!, $y${i}: String!`)
-		.join(', ');
-	const fields = entries
-		.map(
-			(_, i) =>
-				`  a${i}: component(templateId: $t${i}, slug: $s${i}, type: $y${i}) { article variants { version article } }`
-		)
-		.join('\n');
-	const variables: Record<string, unknown> = {};
-	entries.forEach((requests, i) => {
-		variables[`t${i}`] = requests[0].templateId;
-		variables[`s${i}`] = requests[0].slug;
-		variables[`y${i}`] = requests[0].type;
-	});
-
-	try {
-		const response = await fetch(getGraphQLUrl(), {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${token}`
-			},
-			body: JSON.stringify({
-				query: `query ComponentArticles(${varDefs}) {\n${fields}\n}`,
-				variables
-			})
-		});
-
-		// Сбои (сеть, 5xx, Unauthenticated от @guard) не кэшируем: иначе одна неудачная
-		// попытка — например, до того как подхватился токен — навсегда гасила бы бейдж
-		// артикула для этого компонента до перезагрузки страницы.
-		if (!response.ok) {
-			entries.forEach((_, i) => settle(i, null));
-			return;
-		}
-
-		const result = await response.json();
-
-		// Ошибка в общем ответе может относиться к одному полю (path: ['a3']) —
-		// тогда гасим только его: остальные алиасы того же ответа валидны. Ошибка
-		// без пути (сломан весь запрос, Unauthenticated) гасит всю пачку.
-		const failed = new Set<string>();
-		for (const error of (result.errors ?? []) as { path?: (string | number)[] }[]) {
-			const alias = error?.path?.[0];
-			if (typeof alias === 'string') failed.add(alias);
-			else entries.forEach((_, i) => failed.add(`a${i}`));
-		}
-
-		const data = (result.data ?? {}) as Record<string, ComponentArticleNode | null>;
-		entries.forEach((requests, i) => {
-			const alias = `a${i}`;
-			if (failed.has(alias)) {
-				settle(i, null);
-				return;
-			}
-			const node = data[alias];
-			const value: ComponentArticle | null = node
-				? {
-						article: node.article as string,
-						variants: (node.variants ?? []) as ComponentVariantArticle[]
-					}
-				: null;
-			componentArticleCache.set(requests[0].key, value);
-			settle(i, value);
-		});
-	} catch {
-		entries.forEach((_, i) => settle(i, null));
-	}
-}
-
-/**
- * Загружает артикул компонента каталога (и его вариантов) по координатам.
- * Возвращает null, если компонент не найден в каталоге или запрос не удался.
- *
- * Запросы, поданные в одном такте, уходят в API одной пачкой (см. очередь выше).
- *
- * @param templateId - id шаблона (licenses.template_id)
- * @param slug       - slug страницы внутри шаблона
- * @param type       - тип компонента (совпадает с page_components.type)
- */
-export function fetchComponentArticle(
-	templateId: number,
-	slug: string,
-	type: string
-): Promise<ComponentArticle | null> {
-	const cacheKey = `${templateId}:${slug}:${type}`;
-	if (componentArticleCache.has(cacheKey)) {
-		return Promise.resolve(componentArticleCache.get(cacheKey) ?? null);
-	}
-
-	return new Promise((resolve) => {
-		articleQueue.push({ key: cacheKey, templateId, slug, type, resolve });
-		scheduleArticleFlush();
-	});
-}
+/** Каталог текущей страницы из renderPage; контекст изолирован между SSR-запросами. */
+export const COMPONENT_ARTICLES_CONTEXT = Symbol('component-articles');
+export type ComponentArticleLookup = (type: string) => ComponentArticle | null;
 
 // ── Артикулы layout-компонентов (полоса акций/баннер/меню/футер) ─────────────
 // Эти компоненты общие для всех страниц и не привязаны к slug страницы, поэтому
@@ -495,8 +333,8 @@ const LIST_BUCKET_FILES_QUERY = `
 `;
 
 const TOGGLE_CATEGORY_MUTATION = `
-  mutation ToggleCategory($id: ID!, $isEnabled: Boolean!) {
-    toggleCategory(id: $id, isEnabled: $isEnabled) {
+  mutation ToggleCategory($id: ID!, $licenseId: ID!, $isEnabled: Boolean!) {
+    toggleCategory(id: $id, licenseId: $licenseId, isEnabled: $isEnabled) {
       id
       is_enabled
     }
@@ -553,9 +391,13 @@ export async function listBucketFiles(folder = 'bg', maxKeys = 100): Promise<Buc
 }
 
 /**
- * Переключает активность категории (is_enabled) в каталоге.
+ * Переключает видимость пункта каталога только на сайте из контекста правки.
  */
-export async function toggleCategory(id: string, isEnabled: boolean): Promise<void> {
+export async function toggleCategory(
+	context: EditContext,
+	id: string,
+	isEnabled: boolean
+): Promise<void> {
 	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
 	if (!token) {
@@ -573,7 +415,7 @@ export async function toggleCategory(id: string, isEnabled: boolean): Promise<vo
 		},
 		body: JSON.stringify({
 			query: TOGGLE_CATEGORY_MUTATION,
-			variables: { id, isEnabled }
+			variables: { id, licenseId: context.licenseId, isEnabled }
 		})
 	});
 
