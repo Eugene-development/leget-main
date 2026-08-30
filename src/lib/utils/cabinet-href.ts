@@ -12,7 +12,8 @@
  */
 const CABINETS: Record<string, string> = {
 	client: '/cabinet',
-	partner: '/partner'
+	partner: '/partner',
+	curator: '/curator'
 };
 
 /** Пути всех кабинетов — по ним logout понимает, что уходить надо на главную. */

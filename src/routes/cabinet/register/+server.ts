@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { authApi, readApiJson } from '$lib/server/admin-api';
+import { claimAttribution } from '$lib/server/attribution';
 import { setClientSession } from '$lib/server/client-session';
 import type { RequestHandler } from './$types';
 
@@ -51,6 +52,15 @@ export const POST: RequestHandler = async ({ request, cookies, getClientAddress 
 		}
 
 		setClientSession(cookies, result.token, result.expires_in);
+
+		// Рекламная атрибуция живёт в cookie до появления аккаунта: строка
+		// в БД привязана к пользователю, а до регистрации его нет. Переносим
+		// сразу — иначе связь «переход → регистрация» потерялась бы вместе
+		// с первым закрытым браузером.
+		//
+		// Вход не роняется, если перенос не удался: атрибуция остаётся
+		// в cookie и уедет при следующем входе.
+		await claimAttribution(result.token, cookies);
 
 		return json({ success: true, user: result.user ?? null });
 	} catch {

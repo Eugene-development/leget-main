@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { authApi, readApiJson } from '$lib/server/admin-api';
+import { claimAttribution } from '$lib/server/attribution';
 import { clearClientSession, setClientSession } from '$lib/server/client-session';
 import type { RequestHandler } from './$types';
 
@@ -50,6 +51,10 @@ export const POST: RequestHandler = async ({ request, cookies, getClientAddress 
 		}
 
 		setClientSession(cookies, result.token, result.expires_in);
+
+		// Повторный рекламный переход обновляет последнее касание. Первое
+		// на сервере не перезаписывается — ни этим вызовом, ни любым другим.
+		await claimAttribution(result.token, cookies);
 
 		return json({ success: true, user: result.user ?? null });
 	} catch {
