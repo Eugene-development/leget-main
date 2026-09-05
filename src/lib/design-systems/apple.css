@@ -207,6 +207,7 @@
 	   быть верным для крупного заголовка, где эта роль и живёт. */
 	--ds-font-heading-tracking: -0.015em;
 	--ds-font-heading-leading: 1.1;
+	--ds-font-action-display-size: clamp(2rem, 6.4vw, 5.5rem);
 
 	/* Подчинённый заголовок: название карточки, пункта, поля. Референс сводит
 	   обе роли к одному семейству (SF Pro Text — «the working typeface»), но

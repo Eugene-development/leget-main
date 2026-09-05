@@ -222,6 +222,7 @@
 	   на все кегли (известная нехватка роли, см. design-system-tokens.md), а 0,80
 	   на заголовке карточки в 20px склеивает строки. */
 	--ds-font-heading-leading: 0.92;
+	--ds-font-action-display-size: clamp(2rem, 6.8vw, 6rem);
 
 	/* Подчинённый заголовок. Референс требует ОДНУ гарнитуру на всё («no secondary
 	   display face to dilute it»), поэтому семейство то же — расходятся только

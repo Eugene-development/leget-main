@@ -365,6 +365,7 @@
 	/* Типографика */
 	--font-heading: var(--ds-font-heading);
 	--font-body: var(--ds-font-body);
+	--text-action-display: var(--ds-font-action-display-size);
 	/**
 	 * `font-sans` — не «ещё одно имя тела», а дыра, через которую блок молча
 	 * уходил из системы: ключ не был объявлен, утилита брала встроенный стек

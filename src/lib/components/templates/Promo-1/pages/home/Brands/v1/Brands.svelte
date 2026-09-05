@@ -129,6 +129,26 @@
 			.filter(({ index }) => isEditable || visibility.isVisible(`brand:${index}`))
 	);
 
+	// Лента поставщиков: набор повторяется, пока в нём не наберётся столько
+	// знаков, чтобы один набор гарантированно перекрыл ширину контейнера.
+	// Иначе на -50% между концом первого набора и началом второго открывался бы
+	// пустой ход: шести знаков на 1216px стены не хватает даже в худшей
+	// пропорции (узкий знак — около 94px вместе с полем).
+	const MARQUEE_MIN_ITEMS = 16;
+	const marqueeBrands = $derived(
+		renderedBrands.length > 0
+			? Array.from(
+					{ length: Math.max(1, Math.ceil(MARQUEE_MIN_ITEMS / renderedBrands.length)) },
+					() => renderedBrands.map(({ brand }) => brand)
+				).flat()
+			: []
+	);
+
+	// Задаём скорость, а не длительность: длительность считается из числа
+	// знаков, поэтому лента из шести и из двенадцати едет одинаково — примерно
+	// 4.5 секунды на знак (~33px в секунду).
+	const marqueeDuration = $derived(`${Math.max(marqueeBrands.length, 4) * 4.5}s`);
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -187,6 +207,11 @@
 	убраны название, страна и описание — в стене остался один знак. Имя партнёра
 	живёт в `alt` картинки: оно нужно поиску и скринридеру, но не глазу, а шесть
 	подписей под шестью логотипами читались вторым, конкурирующим слоем.
+
+	31.08.2026 нижняя лента поехала: справка о поставщиках перестала быть вторым
+	прямоугольником под стеной и стала одной медленной строкой. Разбор скорости,
+	бесшовности и остановок — в `<style>` внизу файла; в режиме правки лента
+	остаётся сеткой, иначе тумблеры видимости не поймать.
 
 	Стена читается целиком, а не по частям: на трёх колонках блок садится в
 	высоту, остающуюся под липким хедером (`--chrome-overlay`), и раздаёт её
@@ -283,18 +308,54 @@
 							{#snippet children(displayValue)}{displayValue}{/snippet}
 						</EditableField>
 					</div>
-					<div class="brands-strip-grid mt-8 grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-6">
-						{#each renderedBrands as { brand, index } (index)}
+					{#if isEditable}
+						<!-- В редакторе лента стоит сеткой. Тумблер видимости висит над знаком
+						     (`-top-6`), а движущаяся строка с гашением по краям не даёт ни
+						     прицелиться в него, ни увидеть уже скрытые знаки: в живом режиме
+						     они отфильтрованы, и вернуть их было бы неоткуда. -->
+						<div class="brands-strip-grid mt-8 grid grid-cols-3 gap-x-8 gap-y-10 sm:grid-cols-6">
+							{#each renderedBrands as { brand, index } (index)}
+								<div
+									class="group p1-logo-slot p1-body relative justify-center [--p1-logo-slot:48px]"
+									title={brand.name}
+									data-logo-hidden={!visibility.isVisible(`brand:${index}`)}
+								>
+									<ImageFallback class="p1-logo max-h-8" src={brand.logo} alt={brand.name} />
+									{@render logoToggle(`brand:${index}`, brand.name, '-top-6 right-0')}
+								</div>
+							{/each}
+						</div>
+					{:else}
+						<!-- Два одинаковых набора подряд, едем на -50%: когда прокрутка уходит
+						     из первого набора, на его месте оказывается пиксель в пиксель та же
+						     картинка — шва нет. Второй набор — копия для глаза, для скринридера
+						     он скрыт. -->
+						<div class="brands-marquee brands-strip-marquee mt-8">
 							<div
-								class="group p1-logo-slot p1-body relative justify-center [--p1-logo-slot:48px]"
-								title={brand.name}
-								data-logo-hidden={!visibility.isVisible(`brand:${index}`)}
+								class="brands-track flex w-max items-center"
+								style="--brands-mq-duration: {marqueeDuration}"
 							>
-								<ImageFallback class="p1-logo max-h-8" src={brand.logo} alt={brand.name} />
-								{@render logoToggle(`brand:${index}`, brand.name, '-top-6 right-0')}
+								{#each [0, 1] as set (set)}
+									<div class="flex items-center" aria-hidden={set === 1 ? 'true' : undefined}>
+										{#each marqueeBrands as brand, position (position)}
+											<div class="shrink-0 px-8">
+												<div
+													class="p1-logo-slot p1-body justify-center [--p1-logo-slot:48px]"
+													title={brand.name}
+												>
+													<ImageFallback
+														class="p1-logo max-h-8"
+														src={brand.logo}
+														alt={brand.name}
+													/>
+												</div>
+											</div>
+										{/each}
+									</div>
+								{/each}
 							</div>
-						{/each}
-					</div>
+						</div>
+					{/if}
 
 					{#if data?.partnersNote}
 						<p class="p1-muted mt-10 text-center text-sm">
@@ -378,8 +439,60 @@
 			margin-top: 2rem;
 		}
 
-		.brands-screen .brands-strip-grid {
+		.brands-screen .brands-strip-grid,
+		.brands-screen .brands-strip-marquee {
 			margin-top: 1rem;
+		}
+	}
+
+	/* Лента поставщиков (31.08.2026). До этого дня знаки поставщиков стояли
+	   сеткой из шести ячеек и в двух рядах на узком экране: под стеной партнёров
+	   получался второй прямоугольник той же природы, спорящий с ней за внимание.
+	   Лента возвращает справке одну строку — она движется, но не тянет взгляд:
+	   около 33px в секунду, знак проходит мимо глаза примерно за 4.5 секунды.
+
+	   Наведение и `prefers-reduced-motion` движение останавливают; во втором
+	   случае лента отдаётся прокрутке рукой, иначе знаки за краем стали бы
+	   недоступны совсем. */
+	.brands-marquee {
+		overflow: hidden;
+		/* Края гасятся в поверхность секции, а не обрезаются: знак не должен
+		   вылезать из-под края половиной себя. Маска, а не пара градиентов
+		   поверх, — своего фона у ленты нет, `p1-surface` приходит из системы. */
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 72px,
+			#000 calc(100% - 72px),
+			transparent
+		);
+	}
+
+	.brands-track {
+		animation: brands-marquee var(--brands-mq-duration, 60s) linear infinite;
+	}
+
+	.brands-marquee:hover .brands-track,
+	.brands-marquee:focus-within .brands-track {
+		animation-play-state: paused;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.brands-track {
+			animation: none;
+		}
+
+		.brands-marquee {
+			overflow-x: auto;
+		}
+	}
+
+	@keyframes brands-marquee {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-50%);
 		}
 	}
 

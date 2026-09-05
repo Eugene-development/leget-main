@@ -161,6 +161,7 @@ import ByttehnikaCTA from './pages/bytovaya-tehnika/ByttehnikaCTA.svelte';
 import SantehnikaSidebar from './pages/santehnika/SantehnikaSidebar.svelte';
 import SantehnikaHero from './pages/santehnika/SantehnikaHero.svelte';
 import SantehnikaBrands from './pages/santehnika/SantehnikaBrands.svelte';
+import SantehnikaBrandHero from './pages/santehnika/SantehnikaBrandHero.svelte';
 import SantehnikaSinkTypes from './pages/santehnika/SantehnikaSinkTypes.svelte';
 import SantehnikaCategories from './pages/santehnika/SantehnikaCategories.svelte';
 import SantehnikaBenefits from './pages/santehnika/SantehnikaBenefits.svelte';
@@ -379,6 +380,16 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		SantehnikaCategories,
 		SantehnikaBenefits,
 		SantehnikaComplex,
+		SantehnikaCTA
+	},
+	// Страница бренда сантехники. Устроена как страница бренда бытовой техники:
+	// товарной сетки нет и наполнять её нечем — каталога позиций у сантехники
+	// не существует, поэтому страница это шапка бренда из справочника плюс
+	// общие блоки рубрики.
+	'/santehnika/{brand}': {
+		SantehnikaSidebar,
+		SantehnikaBrandHero,
+		SantehnikaBenefits,
 		SantehnikaCTA
 	},
 	'/furnitura': {

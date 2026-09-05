@@ -83,6 +83,17 @@
 [data-p1-theme] {
 	--p1-surface: var(--ds-light-surface);
 	--p1-surface-alt: var(--ds-light-surface-alt);
+	/* Тихий layout-хром. Светлая половина дословно повторяет чеканку кнопок
+	   меню 1.М.1.1 (`ink-100/20 → ink-50/80`) на поднятой поверхности.
+	   Это отдельная роль: `surface-alt` используют 20 компонентов, и менять их
+	   ради одной верхней полосы было бы системным побочным эффектом. */
+	--p1-chrome-quiet:
+		linear-gradient(
+			to right,
+			color-mix(in oklab, var(--ds-ink-100) 20%, transparent),
+			color-mix(in oklab, var(--ds-ink-50) 80%, transparent)
+		),
+		var(--ds-surface-raised);
 	--p1-card: var(--ds-light-card);
 	--p1-overlay: var(--ds-light-overlay);
 	--p1-veil: var(--ds-light-veil);
@@ -112,6 +123,8 @@
 [data-p1-theme='dark'] {
 	--p1-surface: var(--ds-dark-surface);
 	--p1-surface-alt: var(--ds-dark-surface-alt);
+	/* Тёмный баннер не меняется: кнопочная чеканка принадлежит светлому хрому. */
+	--p1-chrome-quiet: var(--ds-dark-surface-alt);
 	--p1-card: var(--ds-dark-card);
 	--p1-overlay: var(--ds-dark-overlay);
 	--p1-veil: var(--ds-dark-veil);
@@ -240,6 +253,9 @@
 	}
 	.p1-surface-alt {
 		background-color: var(--p1-surface-alt);
+	}
+	.p1-chrome-quiet {
+		background: var(--p1-chrome-quiet);
 	}
 	.p1-surface-paper {
 		background-color: var(--p1-surface-paper);
@@ -598,6 +614,7 @@
 	   Длительность принадлежит системе — это пластика, а не структура. */
 	.p1-surface,
 	.p1-surface-alt,
+	.p1-chrome-quiet,
 	.p1-surface-paper,
 	.p1-accent,
 	.p1-accent-hover,
@@ -624,6 +641,7 @@
 	@media (prefers-reduced-motion: reduce) {
 		.p1-surface,
 		.p1-surface-alt,
+		.p1-chrome-quiet,
 		.p1-surface-paper,
 		.p1-accent,
 		.p1-accent-wash,

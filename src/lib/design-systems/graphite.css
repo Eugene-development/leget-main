@@ -170,6 +170,7 @@
 	--ds-font-heading-weight: 600;
 	--ds-font-heading-tracking: -0.025em;
 	--ds-font-heading-leading: 1.1;
+	--ds-font-action-display-size: clamp(2rem, 6.2vw, 5.25rem);
 	/* Гарнитура у обеих ролей одна — Графит гротескный целиком, — но мелкий
 	   заголовок берёт трекинг пошире: плотный минус, посаженный по 40px, на
 	   18px слипается. */

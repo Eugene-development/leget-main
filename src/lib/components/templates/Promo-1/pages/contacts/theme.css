@@ -40,9 +40,9 @@
 	opacity: 0.55;
 }
 
-/* Красное свечение-акцент. Позиция задаётся утилитами Tailwind на самом узле. */
+/* Семантическое свечение-акцент. Позиция задаётся утилитами Tailwind на самом узле. */
 .ct-glow {
-	background-color: rgb(239 68 68 / 12%);
+	background-color: color-mix(in srgb, var(--p1-accent) 12%, transparent);
 	filter: blur(64px);
 	border-radius: 9999px;
 }

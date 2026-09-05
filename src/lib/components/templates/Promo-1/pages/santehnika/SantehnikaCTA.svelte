@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.21.8.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.21.8.1, 1.31.4.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';

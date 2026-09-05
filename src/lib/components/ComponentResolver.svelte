@@ -96,6 +96,11 @@
 			return tmpl.pageOverrides['/bytovaya-tehnika/{brand}'] || {};
 		}
 
+		// /santehnika/{brand}
+		if (cleanSlug.match(/^\/santehnika\/[^\/]+$/)) {
+			return tmpl.pageOverrides['/santehnika/{brand}'] || {};
+		}
+
 		if (cleanSlug.match(/^\/stoleshnica\/[^/]+\/[^/]+$/)) {
 			return tmpl.pageOverrides['/stoleshnica/{material}/{brand}'] || {};
 		}

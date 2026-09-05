@@ -256,6 +256,7 @@
 	   в вилке reference'а. */
 	--ds-font-heading-tracking: -0.035em;
 	--ds-font-heading-leading: 1.05;
+	--ds-font-action-display-size: clamp(2.125rem, 6.8vw, 6rem);
 
 	/* Подчинённый заголовок. Reference разводит роли ровно так же и по тому же
 	   рубежу: «Marund для всего от 30px, Inter для всего ниже». Совпадение не
