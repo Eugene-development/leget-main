@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ContactCTAV1 from './v1/ContactCTA.svelte';
 	import ContactCTAV2 from './v2/ContactCTA.svelte';
+	import ContactCTAV3 from './v3/ContactCTA.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 	import { fly } from 'svelte/transition';
 
@@ -20,8 +21,8 @@
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
 	// на живых сайтах это давало подмену версии после гидратации, а каталог
 	// /_ds (пререндер) вообще не смог бы показать ничего, кроме v1.
-	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
-		(data?.contactCTAVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
+	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'disabled'>(
+		(data?.contactCTAVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
 	);
 </script>
 
@@ -38,8 +39,8 @@
 			{isEditable}
 			componentType="ContactCTA"
 			versionKey="contactCTAVersion"
-			versions={['v1', 'v2']}
-			themeVersions={['v1', 'v2']}
+			versions={['v1', 'v2', 'v3']}
+			themeVersions={['v1', 'v2', 'v3']}
 			themeDefault="dark"
 			title="Призыв к действию"
 			bind:selectedVersion
@@ -71,7 +72,11 @@
 			и приходящий блоки накладываются друг на друга, а не встают в поток.
 		-->
 		<div class="grid w-full">
-			{#if selectedVersion === 'v2'}
+			{#if selectedVersion === 'v3'}
+				<div class="col-start-1 row-start-1 w-full">
+					<ContactCTAV3 bind:data {editContext} {isEditable} {sitePhone} />
+				</div>
+			{:else if selectedVersion === 'v2'}
 				<div
 					class="col-start-1 row-start-1 w-full"
 					in:fly={{ x: 1200, duration: 600 }}
