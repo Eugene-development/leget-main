@@ -102,11 +102,7 @@
 				<HeroV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div
-				class="hero-v1-slot relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
-				in:fly={{ x: -1200, duration: 600 }}
-				out:fly={{ x: 1200, duration: 600 }}
-			>
+			<div class="hero-v1-slot relative h-auto w-full">
 				<HeroV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}
@@ -145,30 +141,7 @@
 		min-height: calc(100dvh - var(--promo-h, 0px) - var(--banner-h, 36px) - var(--header-h, 72px));
 	}
 
-	/* В редакторе переполнение остаётся внутри Hero, а VersionSwitcher —
-	   закреплённым над ним. Стандартный scroll chaining намеренно сохранён:
-	   на краю внутреннего скролла прокрутка продолжает двигать страницу. */
-	@media (min-width: 1024px) {
-		.hero-wrapper-v1-editable .hero-v1-slot {
-			overflow-x: hidden;
-			overflow-y: auto;
-			scrollbar-gutter: stable;
-		}
-	}
-
-	/* Увеличенный логотип v1 не должен обрезать нижнюю часть панели на
-	   невысоком десктопе: возвращаем вариант в поток, чтобы hero мог стать
-	   выше viewport и страница получила обычную вертикальную прокрутку. */
-	@media (min-width: 1024px) and (max-height: 920px) {
-		.hero-wrapper-v1 {
-			overflow: visible;
-		}
-
-		.hero-wrapper-v1 .hero-v1-slot {
-			position: relative;
-			inset: auto;
-			height: auto;
-			min-height: inherit;
-		}
+	.hero-v1-slot {
+		min-height: inherit;
 	}
 </style>

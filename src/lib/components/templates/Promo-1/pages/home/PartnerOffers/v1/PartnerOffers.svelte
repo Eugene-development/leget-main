@@ -190,16 +190,6 @@
 	// иначе клик по точке рядом с текущей уводил бы ленту через весь трек.
 	const goToOffer = (i: number) => goToSlot(slotAt() - active + i);
 
-	function onKeydown(e: KeyboardEvent) {
-		if (e.key === 'ArrowRight') {
-			e.preventDefault();
-			step(1);
-		} else if (e.key === 'ArrowLeft') {
-			e.preventDefault();
-			step(-1);
-		}
-	}
-
 	// Раскладка и позиция. Отдельным эффектом от таймера: пересчитывать размеры
 	// нужно на ресайз, а таймер от ресайза перезапускать незачем.
 	$effect(() => {
@@ -416,11 +406,8 @@
 			onfocusin={() => (held = true)}
 			onfocusout={() => (held = false)}
 		>
-			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<div
 				bind:this={scroller}
-				tabindex="0"
-				onkeydown={onKeydown}
 				class="p1-offer-rail flex min-h-0 flex-1 snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain"
 			>
 				{#each track as slot (`${slot.set}-${slot.i}`)}

@@ -108,7 +108,6 @@
 		></div>
 	{/if}
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="ab-grid"></div>
 		<div class="ab-glow absolute -top-40 -left-24 size-112 bg-brand-500/15"></div>
 		<div class="ab-glow absolute -right-32 bottom-0 size-96 bg-ink-400/10"></div>
 		<div

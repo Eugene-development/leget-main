@@ -27,7 +27,7 @@
 		data = updated;
 	}
 
-	/** Абзацы миссии: ключи те же (text1…text3), пустые не рендерятся. */
+	/** Пустые абзацы не видны посетителю, но остаются доступными в редакторе. */
 	const paragraphs = $derived([
 		{ key: 'text1', label: 'Абзац 1', value: String(data?.text1 ?? '') },
 		{ key: 'text2', label: 'Абзац 2', value: String(data?.text2 ?? '') },
@@ -72,7 +72,7 @@
 				<!--
 					Абзацы идут одним списком: раньше каждый был отдельным блоком со своим
 					mt-*, и при пустом первом абзаце отступы съезжали. Теперь отступ задаёт
-					сам список, а пустые значения просто не рисуются.
+					сам список: пустое поле скрыто от посетителя, но в редакторе показывает подсказку.
 				-->
 				<div class="ab-item ab-d2 mt-6 space-y-4">
 					{#each paragraphs as paragraph (paragraph.key)}
@@ -86,8 +86,14 @@
 							class="block"
 						>
 							{#snippet children(displayValue)}
-								{#if displayValue}
+								{#if displayValue.trim()}
 									<p class="p1-body max-w-xl text-sm/6 sm:text-base/7">{displayValue}</p>
+								{:else if isEditable}
+									<p
+										class="p1-muted max-w-xl rounded-xl border border-dashed border-ink-400/50 px-4 py-3 text-sm/6"
+									>
+										Добавьте {paragraph.label.toLowerCase()}
+									</p>
 								{/if}
 							{/snippet}
 						</EditableField>

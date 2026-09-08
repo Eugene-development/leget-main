@@ -80,7 +80,8 @@
 						href={link.href}
 						class={$page.url.pathname === link.href
 							? 'p1-accent text-xs whitespace-nowrap'
-							: 'p1-muted p1-accent-hover text-xs whitespace-nowrap transition-colors'}
+							: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-xs whitespace-nowrap transition-colors`}
+						class:brightness-90={isLight}
 					>
 						{link.label}
 					</a>
@@ -114,6 +115,7 @@
 									<a
 										href="tel:{displayValue}"
 										class="p1-title p1-accent-hover text-xs font-normal tracking-wide antialiased transition-colors"
+										class:brightness-90={isLight}
 									>
 										{displayValue}
 									</a>
@@ -145,6 +147,7 @@
 									<a
 										href="mailto:{displayValue}"
 										class="p1-title p1-accent-hover text-xs font-normal tracking-wide antialiased transition-colors"
+										class:brightness-90={isLight}
 									>
 										{displayValue}
 									</a>

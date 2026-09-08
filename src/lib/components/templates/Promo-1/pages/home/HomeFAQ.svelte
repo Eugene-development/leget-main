@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.10.1 — см. docs/architecture/component-articles-map.md
+	import { onMount } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -17,7 +18,9 @@
 
 	type FAQItem = { question: string; answer: string };
 	const uid = $props.id();
-	let opened = $state<number[]>([]);
+	let sectionElement: HTMLElement;
+	let symbolVisible = $state(false);
+	let opened = $state<number[]>([0]);
 	const items = $derived((Array.isArray(data?.items) ? data.items : []) as FAQItem[]);
 	const isLight = $derived(isLightBlock(data, 'light'));
 	const toggleTheme = createThemeToggle({
@@ -26,6 +29,40 @@
 		getData: () => data,
 		setData: (next) => (data = next),
 		getContext: () => editContext
+	});
+
+	onMount(() => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			symbolVisible = true;
+			return;
+		}
+
+		let previousScrollY = window.scrollY;
+		let frame = 0;
+
+		const revealWhenReached = () => {
+			const bounds = sectionElement.getBoundingClientRect();
+			const visibleTop = Math.max(bounds.top, 0);
+			const visibleBottom = Math.min(bounds.bottom, window.innerHeight);
+			const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+			if (visibleHeight < bounds.height * 0.5) return;
+
+			symbolVisible = true;
+			window.removeEventListener('scroll', handleScroll);
+		};
+
+		const handleScroll = () => {
+			if (window.scrollY === previousScrollY) return;
+			previousScrollY = window.scrollY;
+			cancelAnimationFrame(frame);
+			frame = requestAnimationFrame(revealWhenReached);
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		return () => {
+			cancelAnimationFrame(frame);
+			window.removeEventListener('scroll', handleScroll);
+		};
 	});
 
 	function toggle(index: number) {
@@ -50,50 +87,34 @@
 </script>
 
 <section
+	bind:this={sectionElement}
 	id="faq"
 	aria-labelledby="{uid}-title"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 	class="faq-section p1-surface relative isolate overflow-hidden py-section"
 >
 	<div class="faq-dots pointer-events-none absolute inset-0" aria-hidden="true"></div>
-	<div class="faq-symbol pointer-events-none absolute" aria-hidden="true">?</div>
+	<div
+		class="faq-symbol pointer-events-none absolute"
+		class:is-visible={symbolVisible}
+		aria-hidden="true"
+	>
+		?
+	</div>
 	<div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 		<header class="mb-12 text-center sm:mb-16">
 			<h2 id="{uid}-title" class="p1-title text-4xl text-balance sm:text-6xl">
 				<EditableField
 					fieldKey="HomeFAQ.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Вопрос')}
+					value={String(data?.title ?? 'Ваши частые вопросы')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
 				>
 					{#snippet children(value)}{value}{/snippet}
-				</EditableField><span class="faq-heading-accent">
-					{' — '}<EditableField
-						fieldKey="HomeFAQ.titleAccent"
-						label="Акцент заголовка"
-						value={String(data?.titleAccent ?? 'Ответ')}
-						{isEditable}
-						inline
-						onSave={(v) => saveField('titleAccent', v)}
-					>
-						{#snippet children(value)}{value}{/snippet}
-					</EditableField></span
-				>
-			</h2>
-			<p class="p1-body mt-5 text-base sm:text-lg">
-				<EditableField
-					fieldKey="HomeFAQ.description"
-					label="Описание"
-					value={String(data?.description ?? '')}
-					{isEditable}
-					inline
-					onSave={(v) => saveField('description', v)}
-				>
-					{#snippet children(value)}{value}{/snippet}
 				</EditableField>
-			</p>
+			</h2>
 		</header>
 
 		<div class="faq-list">
@@ -175,14 +196,6 @@
 </section>
 
 <style>
-	.faq-section {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--ds-link-500) 8%, var(--p1-surface)),
-			var(--p1-surface) 60%,
-			color-mix(in srgb, var(--ds-link-500) 12%, var(--p1-surface))
-		);
-	}
 	.faq-dots {
 		background-image: radial-gradient(circle, var(--ds-link-500) 1px, transparent 1.5px);
 		background-size: 18px 18px;
@@ -190,21 +203,24 @@
 		mask-image: linear-gradient(to right, black, transparent 38%, transparent 72%, black);
 	}
 	.faq-symbol {
-		left: -0.08em;
-		bottom: -0.34em;
+		--faq-symbol-opacity: 0.16;
+		left: clamp(1rem, 4vw, 4rem);
+		top: 50%;
 		font-family: var(--ds-font-heading);
-		font-size: clamp(28rem, 65vw, 62rem);
+		font-size: clamp(16rem, 36vw, 32rem);
 		font-weight: var(--ds-font-heading-weight);
-		line-height: 1;
+		line-height: 0.8;
 		color: var(--ds-link-500);
-		opacity: 0.16;
-		transform: rotate(-18deg);
+		opacity: 0;
+		transform: translateY(-46%) rotate(-6deg) scale(0.96);
+		transform-origin: center;
+		transition:
+			opacity 900ms ease,
+			transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
 	}
-	.faq-heading-accent {
-		color: var(--ds-link-700);
-	}
-	[data-p1-theme='dark'] .faq-heading-accent {
-		color: var(--ds-link-300);
+	.faq-symbol.is-visible {
+		opacity: var(--faq-symbol-opacity);
+		transform: translateY(-50%) rotate(-10deg) scale(1);
 	}
 	.faq-list {
 		display: grid;
@@ -319,13 +335,16 @@
 			padding: 1.5rem;
 		}
 		.faq-symbol {
-			opacity: 0.08;
+			--faq-symbol-opacity: 0.08;
+			left: 1rem;
+			font-size: clamp(12rem, 58vw, 16rem);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.faq-question,
 		.faq-answer,
-		.faq-icon-vertical {
+		.faq-icon-vertical,
+		.faq-symbol {
 			transition: none;
 		}
 		button.faq-question:hover {

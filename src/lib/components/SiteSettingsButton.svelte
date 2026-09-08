@@ -27,6 +27,8 @@
 		}
 	};
 
+	// svelte-ignore state_referenced_locally — synchronous cache snapshot is intentional;
+	// the effect below tracks both props and refreshes ownership when either changes.
 	let isOwner = $state(readOwnerCache(isEditable ? licenseId : null));
 
 	$effect(() => {

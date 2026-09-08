@@ -57,13 +57,55 @@
 	let bgViewport = $state<HTMLDivElement>();
 	let bgInViewport = $state(true);
 	let pageVisible = $state(true);
+	let reducedMotion = $state(false);
+	let glassPanel = $state<HTMLDivElement>();
+
+	// Decorative pointer response never moves the text or click targets.
+	$effect(() => {
+		if (!glassPanel || reducedMotion || isEditable) return;
+		const panel = glassPanel;
+		let frame = 0;
+		const move = (event: PointerEvent) => {
+			if (event.pointerType !== 'mouse') return;
+			cancelAnimationFrame(frame);
+			frame = requestAnimationFrame(() => {
+				const rect = panel.getBoundingClientRect();
+				panel.style.setProperty(
+					'--glass-x',
+					`${((event.clientX - rect.left) / rect.width) * 100}%`
+				);
+				panel.style.setProperty(
+					'--glass-y',
+					`${((event.clientY - rect.top) / rect.height) * 100}%`
+				);
+			});
+		};
+		const reset = () => {
+			cancelAnimationFrame(frame);
+			panel.style.removeProperty('--glass-x');
+			panel.style.removeProperty('--glass-y');
+		};
+		panel.addEventListener('pointermove', move);
+		panel.addEventListener('pointerleave', reset);
+		return () => {
+			reset();
+			panel.removeEventListener('pointermove', move);
+			panel.removeEventListener('pointerleave', reset);
+		};
+	});
 
 	$effect(() => {
 		if (activeBgIndex >= bgImages.length) activeBgIndex = 0;
 	});
 
 	$effect(() => {
-		if (typeof window === 'undefined' || bgImages.length < 2 || !bgInViewport || !pageVisible)
+		if (
+			typeof window === 'undefined' ||
+			bgImages.length < 2 ||
+			reducedMotion ||
+			!bgInViewport ||
+			!pageVisible
+		)
 			return;
 
 		const timer = window.setInterval(() => {
@@ -73,6 +115,11 @@
 	});
 
 	onMount(() => {
+		const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const syncMotion = () => (reducedMotion = motion.matches);
+		syncMotion();
+		motion.addEventListener('change', syncMotion);
+
 		const handleVisibility = () => (pageVisible = document.visibilityState === 'visible');
 		handleVisibility();
 		document.addEventListener('visibilitychange', handleVisibility);
@@ -87,6 +134,7 @@
 
 		return () => {
 			document.removeEventListener('visibilitychange', handleVisibility);
+			motion.removeEventListener('change', syncMotion);
 			observer?.disconnect();
 		};
 	});
@@ -122,9 +170,29 @@
 			.map((brand, index) => ({ brand, index }))
 			.filter(({ index }) => isEditable || visibility.isVisible(`brand:${index}`))
 	);
-	const hasBrandMarquee = $derived(renderedBrands.length > 4);
-	const brandMarqueeDuration = $derived(Math.max(25, renderedBrands.length * 5));
+	// Как в Brands v1: сначала наполняем один цикл достаточным числом логотипов,
+	// затем выводим два одинаковых цикла и сдвигаем трек ровно на половину.
+	// Поэтому лента остаётся бесшовной даже после удаления части брендов.
+	const MARQUEE_MIN_ITEMS = 4;
+	const marqueeBrands = $derived(
+		renderedBrands.length > 0
+			? Array.from(
+					{ length: Math.max(1, Math.ceil(MARQUEE_MIN_ITEMS / renderedBrands.length)) },
+					() => renderedBrands
+				).flat()
+			: []
+	);
+	const hasBrandMarquee = $derived(!isEditable && marqueeBrands.length > 0);
+	const brandMarqueeDuration = $derived(Math.max(marqueeBrands.length, 4) * 4.5);
 	const brandsBlockVisible = $derived(visibility.isVisible('brandsBlock'));
+	// Laravel converts an empty string in GraphQL variables to null. Presence of the key
+	// therefore distinguishes an intentionally cleared title from untouched defaults.
+	const brandsTitle = $derived(
+		Object.prototype.hasOwnProperty.call(data ?? {}, 'brandsTitle')
+			? String(data?.brandsTitle ?? '')
+			: 'РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:'
+	);
+	const hasBrandsTitle = $derived(brandsTitle.trim().length > 0);
 
 	let editingBrandIndex = $state<number | null>(null);
 	let isAddingBrand = $state(false);
@@ -207,9 +275,7 @@
 	}
 </script>
 
-<section
-	class="relative flex min-h-full w-full items-center justify-center overflow-hidden py-6 text-ink-900 md:py-8"
->
+<section class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900">
 	<!-- Фоновое изображение -->
 	<div class="absolute inset-0 z-0" bind:this={bgViewport}>
 		{#each bgImages as bgImage, index (`${index}:${bgImage}`)}
@@ -247,66 +313,14 @@
 	{/if}
 
 	<!-- Основной контент -->
-	<div
-		class="hero-shell relative z-10 w-full max-w-4xl px-4 py-6 md:px-8 md:py-10 xl:px-4 xl:py-12"
-	>
+	<div class="hero-shell relative z-10 w-full">
 		<!-- Стеклянная панель -->
 		<div
-			class="glass-panel flex w-full flex-col items-center overflow-hidden rounded-3xl border border-on-dark/40 shadow-2xl"
+			bind:this={glassPanel}
+			class="glass-panel relative flex w-full flex-col rounded-3xl border border-on-dark/40"
 		>
 			<!-- Контент -->
-			<div
-				class="hero-content mx-auto flex max-w-3xl flex-col items-center px-6 py-8 text-center md:px-12 md:py-10 {renderedBrands.length >
-					0 && brandsBlockVisible
-					? ''
-					: 'hero-content-no-brands'}"
-			>
-				<!-- Логотип. Габариты ограничены и по ширине, и по высоте: панель живёт
-				     в боксе фиксированной высоты (см. .hero-wrapper в ../index.svelte),
-				     поэтому квадратный логотип без max-h выдавливал контент за нижний край. -->
-				{#if (data?.logoUrl && visibility.isVisible('logo')) || isEditable}
-					<div class="hero-logo w-[14.4rem] md:w-64 lg:w-[27.648rem]">
-						<EditableField
-							fieldKey="HeroMain.logoUrl"
-							label="Логотип (URL)"
-							value={String(data?.logoUrl ?? '')}
-							{isEditable}
-							visible={visibility.isVisible('logo')}
-							visibilityLabel="логотип"
-							visibilityPending={visibility.isPending('logo')}
-							onToggleVisibility={(event) => visibility.toggle('logo', event)}
-							onSave={(v) => saveField('logoUrl', v)}
-							class="block"
-						>
-							{#snippet children(displayValue)}
-								{#if displayValue}
-									<ImageFallback
-										src={displayValue ||
-											'https://storage.yandexcloud.net/novostroy/logo/promo-1-logo.png'}
-										alt={String(data?.logoAlt ?? 'Логотип')}
-										class="relative mx-auto max-h-[9.6rem] w-full rounded-2xl object-contain md:max-h-40 lg:max-h-[17.28rem]"
-									/>
-								{:else if isEditable}
-									<!-- Роль метки, а не три утилиты руками: кегль, начертание и
-									     разрежение приходят из `--ds-font-label-*` через `p1-label`.
-									     Раньше здесь стоял произвольный кегль ниже пола шкалы плюс
-									     начертание и разрядка, набранные по месту, — тот самый приём,
-									     из-за которого характер системы жил в разметке. -->
-									<div
-										class="p1-label rounded-2xl border-2 border-dashed border-ink-400/30 bg-on-dark/10 p-4 text-ink-500/50 uppercase backdrop-blur-sm"
-									>
-										Логотип
-									</div>
-								{/if}
-							{/snippet}
-						</EditableField>
-					</div>
-					<div
-						aria-hidden="true"
-						class="hero-logo-divider mt-4 mb-4 h-0.5 w-full max-w-md bg-ink-700/15"
-					></div>
-				{/if}
-
+			<div class="hero-content relative flex min-w-0 flex-col items-start text-left">
 				<!-- Название компании -->
 				<EditableField
 					fieldKey="HeroMain.companyName"
@@ -318,12 +332,10 @@
 					visibilityPending={visibility.isPending('companyName')}
 					onToggleVisibility={(event) => visibility.toggle('companyName', event)}
 					onSave={(v) => saveField('companyName', v)}
-					class="block"
+					class="-mb-2 block"
 				>
 					{#snippet children(displayValue)}
-						<span
-							class="mb-6 text-xs font-semibold tracking-[0.5em] text-ink-600 uppercase md:text-sm"
-						>
+						<span class="ds-label text-ink-700">
 							{displayValue}
 						</span>
 					{/snippet}
@@ -343,7 +355,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="hero-title mb-6 text-3xl text-ink-900 md:text-5xl lg:text-7xl">
+						<h1 class="hero-title text-4xl text-ink-900 md:text-5xl">
 							{displayValue}
 						</h1>
 					{/snippet}
@@ -364,9 +376,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p
-							class="hero-description mx-auto mb-8 max-w-2xl text-sm font-medium text-ink-800 md:mb-10 md:text-lg"
-						>
+						<p class="hero-description text-sm text-ink-900 md:text-base">
 							{displayValue}
 						</p>
 					{/snippet}
@@ -375,9 +385,7 @@
 				<!-- Кнопки. Направление не reverse: пока кнопка была одна, порядок
 				     ничего не значил, а со вторым CTA он стал смыслом — основной
 				     остаётся первым и на мобильном, и на десктопе. -->
-				<div
-					class="flex w-full flex-col items-center justify-center gap-4 md:w-auto md:flex-row md:gap-6"
-				>
+				<div class="hero-actions flex w-full flex-wrap items-center gap-x-4 gap-y-1">
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
@@ -394,16 +402,14 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('consultation')}
-								class="group cursor-pointer rounded-xl border border-ink-900/40 bg-transparent px-10 py-4 text-center text-base font-semibold text-ink-900 shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-900/60 hover:shadow-xl"
+								class="hero-primary group cursor-pointer rounded-xl border border-ink-900 bg-ink-900 px-5 py-3 text-left text-sm font-semibold text-on-dark shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-ink-800 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
 								<HoverSwapLabel text={displayValue} disabled={isEditable} />
 							</button>
 						{/snippet}
 					</EditableField>
 
-					<!-- Второй CTA держится тише первого: тот уже контурный, поэтому
-					     здесь остаётся только подпись с подчёркиванием — иерархия
-					     читается без второй рамки рядом с первой. -->
+					<!-- Вторичное действие — текстовая кнопка рядом с основным CTA. -->
 					<EditableField
 						fieldKey="HeroMain.promoButtonText"
 						label="Текст кнопки промокода"
@@ -420,7 +426,7 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('promo')}
-								class="cursor-pointer rounded-xl px-6 py-4 text-center text-base font-semibold text-ink-800 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+								class="cursor-pointer rounded-xl px-1 py-3 text-left text-sm font-semibold text-ink-900 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
 								{displayValue}
 							</button>
@@ -430,39 +436,31 @@
 			</div>
 
 			{#if (renderedBrands.length > 0 && brandsBlockVisible) || isEditable}
-				<!-- Разделитель входит в секцию брендов: когда скрыты все логотипы,
-				     у посетителя не остаётся одинокая линия. -->
-				<div
-					class="flex w-full justify-center px-6 transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui md:px-12 {brandsBlockVisible
-						? ''
-						: 'opacity-45'}"
-				>
-					<div class="h-px w-full max-w-xl bg-ink-300/50"></div>
-				</div>
-
 				<!-- Секция брендов -->
-				<div class="hero-brands flex w-full justify-center px-6 pt-6 pb-6 md:px-12 md:pt-8 md:pb-8">
+				<div class="hero-brands relative flex w-full justify-center px-6 pt-4 pb-6">
 					<div class="flex w-full flex-col items-center">
 						<EditableField
 							fieldKey="HeroMain.brandsTitle"
 							label="Заголовок блока брендов"
-							value={String(data?.brandsTitle ?? 'РАБОТАЕМ С ЛУЧШИМИ БРЕНДАМИ:')}
+							value={brandsTitle}
 							{isEditable}
 							visible={brandsBlockVisible}
 							visibilityLabel="блок брендов"
 							visibilityPending={visibility.isPending('brandsBlock')}
 							onToggleVisibility={(event) => visibility.toggle('brandsBlock', event)}
 							onSave={(v) => saveField('brandsTitle', v)}
-							class="block"
+							class={hasBrandsTitle ? 'block' : 'brands-title-empty'}
 						>
 							{#snippet children(displayValue)}
-								<p
-									class="hero-brands-label mb-6 min-h-4 text-xs font-semibold tracking-widest text-ink-700 uppercase {isEditable
-										? 'block'
-										: 'hidden md:block'}"
-								>
-									{displayValue}
-								</p>
+								{#if displayValue.trim()}
+									<p
+										class="hero-brands-label mb-3 min-h-4 text-xs font-semibold tracking-widest text-ink-700 uppercase {isEditable
+											? 'block'
+											: 'hidden md:block'}"
+									>
+										{displayValue}
+									</p>
+								{/if}
 							{/snippet}
 						</EditableField>
 						<div
@@ -487,14 +485,14 @@
 												: 'brand-group-static'} {copyIndex === 1 ? 'brand-group-copy' : ''}"
 											aria-hidden={copyIndex === 1 ? 'true' : undefined}
 										>
-											{#each renderedBrands as { brand, index }}
+											{#each hasBrandMarquee ? marqueeBrands : renderedBrands as { brand, index }}
 												<div
 													class="brand-item {hasBrandMarquee
 														? 'brand-item-marquee'
 														: 'brand-item-static'}"
 												>
 													{#if isEditable && editContext}
-														<div class="brand-logo relative h-12 w-full">
+														<div class="brand-logo relative h-10 w-full">
 															<button
 																type="button"
 																onclick={() => openBrandLogoPicker(index)}
@@ -562,7 +560,7 @@
 															target="_blank"
 															rel="noopener noreferrer"
 															tabindex={copyIndex === 1 ? -1 : undefined}
-															class="brand-logo group flex h-10 w-full items-center justify-center px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:opacity-100"
+															class="brand-logo group flex h-8 w-full items-center justify-center px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:opacity-100"
 														>
 															<ImageFallback
 																class="max-h-full max-w-full object-contain"
@@ -572,7 +570,7 @@
 														</a>
 													{:else}
 														<div
-															class="brand-logo flex h-10 w-full items-center justify-center px-2"
+															class="brand-logo flex h-8 w-full items-center justify-center px-2"
 														>
 															<ImageFallback
 																class="max-h-full max-w-full object-contain"
@@ -626,40 +624,123 @@
 		opacity: 1;
 	}
 
-	.glass-panel {
-		/* Достаточно плотный фон — работает как самостоятельный fallback
-		   когда backdrop-filter недоступен (cross-origin изображение, старый браузер) */
-		background: linear-gradient(
-			145deg,
-			rgba(255, 255, 255, 0.72) 0%,
-			rgba(255, 255, 255, 0.58) 100%
-		);
-		/* Не дублировать вручную через -webkit-: production CSS-оптимизатор
-		   сам добавляет префикс, а при обратном порядке удаляет стандартное
-		   свойство — в Chrome панель остаётся без blur. */
-		backdrop-filter: blur(20px) saturate(180%);
+	.hero-stage {
+		padding: clamp(1rem, 3vw, 3rem);
+		padding-top: clamp(10rem, 23vh, 16rem);
 	}
 
-	/* Fallback: если backdrop-filter не поддерживается — делаем фон ещё плотнее */
-	@supports not (backdrop-filter: blur(1px)) {
-		.glass-panel {
-			background: linear-gradient(
-				145deg,
-				rgba(255, 255, 255, 0.88) 0%,
-				rgba(255, 255, 255, 0.8) 100%
-			);
-		}
+	.hero-shell {
+		max-width: 29rem;
+	}
+
+	.glass-panel {
+		isolation: isolate;
+		background: linear-gradient(
+			135deg,
+			color-mix(
+				in srgb,
+				var(--ds-surface-raised) calc(var(--ds-liquid-glass-fill) - 14%),
+				transparent
+			),
+			color-mix(
+				in srgb,
+				var(--ds-surface-raised) calc(var(--ds-liquid-glass-fill) - 30%),
+				transparent
+			)
+		);
+		backdrop-filter: blur(var(--ds-liquid-glass-blur)) saturate(var(--ds-liquid-glass-saturation));
+		box-shadow:
+			var(--ds-light-shadow),
+			inset 0 1px 0 color-mix(in srgb, var(--ds-on-dark) 80%, transparent),
+			inset 0 -1px 0 color-mix(in srgb, var(--ds-on-dark) 30%, transparent);
+	}
+
+	/* Light travels across the glass, while the content stays perfectly still. */
+	.glass-panel::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border-radius: inherit;
+		pointer-events: none;
+		background: radial-gradient(
+			ellipse at var(--glass-x, 12%) var(--glass-y, 0%),
+			color-mix(in srgb, var(--ds-on-dark) var(--ds-liquid-glass-specular), transparent),
+			transparent 65%
+		);
+	}
+
+	.glass-panel::after {
+		content: '';
+		position: absolute;
+		inset: 4px;
+		border: 1px solid
+			color-mix(in srgb, var(--ds-on-dark) var(--ds-liquid-glass-specular), transparent);
+		border-radius: inherit;
+		pointer-events: none;
+	}
+
+	.hero-content {
+		padding: 1.5rem;
+		gap: 1rem;
+	}
+
+	.hero-title {
+		text-wrap: balance;
+		overflow-wrap: anywhere;
 	}
 
 	.hero-description {
 		line-height: 1.6;
+		text-wrap: pretty;
+		overflow-wrap: anywhere;
 	}
 
-	/* Глобальный h1{font-weight: var(--ds-font-heading-weight)} в layout.css
-	   объявлен вне @layer и перебивает утилиту font-bold на элементе —
-	   переопределяем вес только для этого заголовка через scoped-класс. */
-	.hero-title {
-		font-weight: 700;
+	.hero-actions :global(.editable-field) {
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.hero-primary {
+		min-height: 44px;
+		max-width: 100%;
+	}
+
+	@supports not (backdrop-filter: blur(1px)) {
+		.glass-panel {
+			background: var(--ds-surface-raised);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-shell {
+			animation: glass-arrive var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-soft);
+		}
+	}
+
+	@keyframes glass-arrive {
+		from {
+			opacity: 0.5;
+			transform: translateY(1.5rem) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	/* Пустой заголовок не занимает место над логотипами. В редакторе его
+	   карандаш остаётся доступным поверх строки брендов, чтобы текст можно
+	   было вернуть без появления пустого отступа. */
+	.hero-brands :global(.brands-title-empty) {
+		height: 0;
+		width: 100%;
+	}
+
+	.hero-brands :global(.brands-title-empty .editable-field-controls) {
+		top: -0.75rem;
+		opacity: 1 !important;
+		pointer-events: auto !important;
 	}
 
 	.brand-viewport {
@@ -768,88 +849,16 @@
 		}
 	}
 
-	@media (min-width: 768px) {
-		.hero-description {
-			line-height: 1.8;
+	@media (max-width: 767px) {
+		.hero-stage {
+			padding: 12rem 1rem 1rem;
 		}
-	}
-
-	.hero-logo-divider {
-		clip-path: polygon(0 50%, 12% 0, 88% 0, 100% 50%, 88% 100%, 12% 100%);
-	}
-
-	/* Когда секция брендов скрыта, контент становится последним элементом
-	   стеклянной панели и сам отвечает за полноценный нижний воздух. */
-	.hero-content-no-brands {
-		padding-bottom: 3rem;
-	}
-
-	@media (min-width: 768px) {
-		.hero-content-no-brands {
-			padding-bottom: 4rem;
-		}
-	}
-
-	/* ── Компактный режим для невысоких десктопов ────────────────────────────
-	   На lg+ компонент живёт в боксе фиксированной высоты
-	   (.hero-wrapper: 100dvh − баннер − хедер, overflow-hidden), поэтому панель
-	   не может «растечься» вниз — при нехватке места её низ обрезается.
-	   Порог 920px — с него панель с крупным логотипом начинает помещаться
-	   в доступную высоту с симметричными полями; ниже поджимаем вертикальный
-	   ритм и потолок логотипа, иначе панель прижимается к низу и обрезается.
-	   Свойства не в @layer, поэтому перекрывают Tailwind-утилиты на элементах. */
-	@media (min-width: 1024px) and (max-height: 920px) {
 		.hero-shell {
-			padding-top: 1rem;
-			padding-bottom: 1rem;
+			max-width: 29rem;
 		}
-
 		.hero-content {
-			padding-top: 2rem;
-			padding-bottom: 2rem;
-		}
-
-		.hero-content.hero-content-no-brands {
-			padding-bottom: 3rem;
-		}
-
-		.hero-logo {
-			width: 15.552rem;
-		}
-
-		.hero-logo-divider {
-			margin-top: 0.5rem;
-			margin-bottom: 0.5rem;
-		}
-
-		.hero-logo :global(img),
-		.hero-logo :global([role='img']) {
-			max-height: 9.3312rem;
-		}
-
-		.hero-title {
-			/* Та же ступень, что `md:text-5xl` на самом элементе: компактный режим
-			   откатывает заголовок с lg-ступени на md-ю, а не заводит свой кегль.
-			   Ключ шкалы, а не 3rem, — размер остаётся одним значением в одном
-			   месте. Размер заголовка системе не принадлежит намеренно (DESIGN.md,
-			   Hierarchy: «компонент задаёт только размер»), поэтому шкала здесь
-			   тейлвиндовская — но та же самая, что у утилиты рядом. */
-			font-size: var(--text-5xl);
-			margin-bottom: 1rem;
-		}
-
-		.hero-description {
-			line-height: 1.6;
-			margin-bottom: 1.5rem;
-		}
-
-		.hero-brands {
-			padding-top: 1rem;
-			padding-bottom: 1rem;
-		}
-
-		.hero-brands-label {
-			margin-bottom: 1rem;
+			padding: 1.25rem;
+			gap: 0.875rem;
 		}
 	}
 </style>
