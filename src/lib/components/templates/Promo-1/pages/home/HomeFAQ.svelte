@@ -260,7 +260,7 @@
 		box-shadow: 0 16px 32px -14px color-mix(in srgb, var(--ds-link-900) 55%, transparent);
 	}
 	button.faq-question:focus-visible {
-		outline: 3px solid var(--ds-link-500);
+		outline: 3px solid var(--ds-link-600);
 		outline-offset: 5px;
 	}
 	.faq-number,

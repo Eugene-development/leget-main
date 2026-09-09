@@ -8,6 +8,7 @@
 	import { createEditableVisibility } from '$lib/utils/editable-visibility.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { onMount } from 'svelte';
+	import { getHeroBackgrounds } from './backgrounds';
 
 	type PartnerBrand = {
 		name: string;
@@ -35,23 +36,11 @@
 		getEditContext: () => editContext
 	});
 
-	const defaultBgImages = [
-		'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
-		'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg'
-	];
-	const bgImages = $derived.by(() => {
-		if (Array.isArray(data?.bgImagesV1)) {
-			const stored = data.bgImagesV1.filter(
-				(value): value is string => typeof value === 'string' && value.trim() !== ''
-			);
-			if (stored.length > 0) return stored;
-		}
-
-		const legacy = [data?.bgImageV1, data?.bgImage].find(
-			(value): value is string => typeof value === 'string' && value.trim() !== ''
-		);
-		return legacy ? [legacy] : defaultBgImages;
-	});
+	const bgImages = $derived(
+		getHeroBackgrounds(data ?? {})
+			.filter(({ enabled }) => enabled)
+			.map(({ url }) => url)
+	);
 	const bgIntervalMs = $derived(Math.min(300, Math.max(1, Number(data?.bgIntervalV1) || 5)) * 1000);
 	let activeBgIndex = $state(0);
 	let bgViewport = $state<HTMLDivElement>();
@@ -277,7 +266,7 @@
 
 <section class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900">
 	<!-- Фоновое изображение -->
-	<div class="absolute inset-0 z-0" bind:this={bgViewport}>
+	<div class="hero-background absolute inset-0 z-0 bg-surface-raised" bind:this={bgViewport}>
 		{#each bgImages as bgImage, index (`${index}:${bgImage}`)}
 			<div
 				class="hero-bg-slide absolute inset-0 {index === activeBgIndex
@@ -320,7 +309,7 @@
 			class="glass-panel relative flex w-full flex-col rounded-3xl border border-on-dark/40"
 		>
 			<!-- Контент -->
-			<div class="hero-content relative flex min-w-0 flex-col items-start text-left">
+			<div class="hero-content relative flex min-w-0 flex-col items-center text-center">
 				<!-- Название компании -->
 				<EditableField
 					fieldKey="HeroMain.companyName"
@@ -385,7 +374,7 @@
 				<!-- Кнопки. Направление не reverse: пока кнопка была одна, порядок
 				     ничего не значил, а со вторым CTA он стал смыслом — основной
 				     остаётся первым и на мобильном, и на десктопе. -->
-				<div class="hero-actions flex w-full flex-wrap items-center gap-x-4 gap-y-1">
+				<div class="hero-actions flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-1">
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
@@ -402,7 +391,7 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('consultation')}
-								class="hero-primary group cursor-pointer rounded-xl border border-ink-900 bg-ink-900 px-5 py-3 text-left text-sm font-semibold text-on-dark shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-ink-800 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+								class="hero-primary group cursor-pointer rounded-xl border border-ink-900 bg-ink-900 px-5 py-3 text-center text-sm font-semibold text-on-dark shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-ink-800 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
 								<HoverSwapLabel text={displayValue} disabled={isEditable} />
 							</button>
@@ -426,7 +415,7 @@
 							<button
 								type="button"
 								onclick={() => serviceOrderStore.open('promo')}
-								class="cursor-pointer rounded-xl px-1 py-3 text-left text-sm font-semibold text-ink-900 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+								class="cursor-pointer rounded-xl px-1 py-3 text-center text-sm font-semibold text-ink-900 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
 								{displayValue}
 							</button>
@@ -437,7 +426,7 @@
 
 			{#if (renderedBrands.length > 0 && brandsBlockVisible) || isEditable}
 				<!-- Секция брендов -->
-				<div class="hero-brands relative flex w-full justify-center px-6 pt-4 pb-6">
+				<div class="hero-brands relative flex w-full justify-center px-6 pt-4 pb-8">
 					<div class="flex w-full flex-col items-center">
 						<EditableField
 							fieldKey="HeroMain.brandsTitle"
@@ -851,9 +840,23 @@
 
 	@media (max-width: 767px) {
 		.hero-stage {
-			padding: 12rem 1rem 1rem;
+			/* Карточка перекрывает только нижние 10% фото, независимо от объёма текста. */
+			--hero-photo-height: clamp(20rem, 85vw, 32rem);
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: calc(var(--hero-photo-height) * 0.9) auto;
+			align-content: start;
+			align-items: start;
+			padding: 0 1rem 1rem;
+			background: var(--ds-surface-raised);
+		}
+		.hero-background {
+			bottom: auto;
+			height: var(--hero-photo-height);
 		}
 		.hero-shell {
+			grid-row: 2;
+			justify-self: center;
 			max-width: 29rem;
 		}
 		.hero-content {

@@ -140,6 +140,7 @@
 		}
 	}
 
+	const mobileIconId = $props.id();
 	let headerEl: HTMLElement;
 	let visibleCityMenu = $state(false);
 
@@ -621,40 +622,54 @@
 			<!-- Телефон: цель 44, номер остаётся в дереве доступности. -->
 			<a
 				href={phoneHref}
-				class="p1-card p1-border p1-accent flex size-11 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				class="mobile-action mobile-phone p1-accent flex size-11 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
 				<span class="sr-only">Позвонить: {sitePhone}</span>
-				<svg
-					class="size-5 [stroke-width:var(--ds-icon-stroke-bold)]"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
+				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
+					><defs
+						><linearGradient id={`${mobileIconId}-phone`} x1="0" y1="0" x2="0.8" y2="1"
+							><stop offset="0" stop-color="var(--icon-light)" /><stop
+								offset="0.42"
+								stop-color="var(--icon-main)"
+							/><stop offset="1" stop-color="var(--icon-dark)" /></linearGradient
+						></defs
+					><path
+						d="M7.2 3.5H4.8a1.8 1.8 0 0 0-1.8 2c.8 8.2 7.3 14.7 15.5 15.5a1.8 1.8 0 0 0 2-1.8v-2.4a1.5 1.5 0 0 0-1.2-1.5l-2.5-.5a1.5 1.5 0 0 0-1.5.5l-1.1 1.3a13 13 0 0 1-6.3-6.3l1.3-1.1a1.5 1.5 0 0 0 .5-1.5l-.5-2.5a1.5 1.5 0 0 0-1.5-1.2Z"
+						fill="var(--icon-dark)"
+						transform="translate(0 1.4)"
+					/><path
+						d="M7.2 3.5H4.8a1.8 1.8 0 0 0-1.8 2c.8 8.2 7.3 14.7 15.5 15.5a1.8 1.8 0 0 0 2-1.8v-2.4a1.5 1.5 0 0 0-1.2-1.5l-2.5-.5a1.5 1.5 0 0 0-1.5.5l-1.1 1.3a13 13 0 0 1-6.3-6.3l1.3-1.1a1.5 1.5 0 0 0 .5-1.5l-.5-2.5a1.5 1.5 0 0 0-1.5-1.2Z"
+						fill={`url(#${mobileIconId}-phone)`}
+						stroke="var(--icon-main)"
+						stroke-width="0.5"
+					/><path d="M5 5h2M5 7v1" class="icon-shine" /></svg
 				>
-					<path
-						d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-					/>
-				</svg>
 			</a>
 
 			<a
 				href={favoritesHref}
-				class="p1-title p1-accent-hover flex size-11 items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				class="mobile-action mobile-favorite p1-title flex size-11 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
 				<span class="sr-only">Избранное</span>
-				<svg
-					class="size-5 [stroke-width:var(--ds-icon-stroke-bold)]"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
+				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
+					><defs
+						><linearGradient id={`${mobileIconId}-heart`} x1="0" y1="0" x2="0.8" y2="1"
+							><stop offset="0" stop-color="var(--icon-light)" /><stop
+								offset="0.42"
+								stop-color="var(--icon-main)"
+							/><stop offset="1" stop-color="var(--icon-dark)" /></linearGradient
+						></defs
+					><path
+						d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+						fill="var(--icon-dark)"
+						transform="translate(0 1.4)"
+					/><path
+						d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+						fill={`url(#${mobileIconId}-heart)`}
+						stroke="var(--icon-main)"
+						stroke-width="0.5"
+					/><path d="M5.5 9a2.5 2.5 0 0 1 3-2.5" class="icon-shine" /></svg
 				>
-					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-				</svg>
 			</a>
 
 			<button
@@ -664,23 +679,45 @@
 				aria-expanded={uiStore.menuOpen}
 				aria-controls="p1-mobile-menu"
 				aria-label={uiStore.menuOpen ? 'Закрыть меню' : 'Меню'}
-				class="p1-title p1-accent-hover -mr-2.5 flex size-11 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				class="mobile-action mobile-burger p1-title flex size-11 cursor-pointer items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
-				<svg
-					class="size-6 [stroke-width:var(--ds-icon-stroke-bold)]"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
+				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
+					><defs
+						><linearGradient id={`${mobileIconId}-menu`} x1="0" y1="0" x2="0.8" y2="1"
+							><stop offset="0" stop-color="var(--icon-light)" /><stop
+								offset="0.42"
+								stop-color="var(--icon-main)"
+							/><stop offset="1" stop-color="var(--icon-dark)" /></linearGradient
+						></defs
+					><g class="menu-line menu-line-top"
+						><rect x="3" y="5.7" width="18" height="1.8" rx="0.9" fill="var(--icon-dark)" /><rect
+							x="3"
+							y="5.1"
+							width="18"
+							height="1.8"
+							rx="0.9"
+							fill={`url(#${mobileIconId}-menu)`}
+						/><path d="M5 5.55h14" class="icon-shine" /></g
+					><g class="menu-line menu-line-middle"
+						><rect x="3" y="11.7" width="18" height="1.8" rx="0.9" fill="var(--icon-dark)" /><rect
+							x="3"
+							y="11.1"
+							width="18"
+							height="1.8"
+							rx="0.9"
+							fill={`url(#${mobileIconId}-menu)`}
+						/><path d="M5 11.55h14" class="icon-shine" /></g
+					><g class="menu-line menu-line-bottom"
+						><rect x="3" y="17.7" width="18" height="1.8" rx="0.9" fill="var(--icon-dark)" /><rect
+							x="3"
+							y="17.1"
+							width="18"
+							height="1.8"
+							rx="0.9"
+							fill={`url(#${mobileIconId}-menu)`}
+						/><path d="M5 17.55h14" class="icon-shine" /></g
+					></svg
 				>
-					{#if uiStore.menuOpen}
-						<path d="M6 18L18 6M6 6l12 12" />
-					{:else}
-						<path d="M4 6h16M4 12h16M4 18h16" />
-					{/if}
-				</svg>
 			</button>
 		</div>
 	</div>
@@ -706,6 +743,118 @@
 </header>
 
 <style>
+	/* Shared mobile controls: feedback is finite and never delays navigation. */
+	.mobile-action {
+		background: transparent;
+		transition: transform var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+		-webkit-tap-highlight-color: transparent;
+	}
+	.mobile-phone {
+		--icon-light: color-mix(in oklab, var(--color-link-200) 55%, var(--color-ink-200));
+		--icon-main: color-mix(in oklab, var(--color-link-500) 50%, var(--color-ink-400));
+		--icon-dark: color-mix(in oklab, var(--color-link-800) 50%, var(--color-ink-600));
+	}
+	.mobile-favorite {
+		--icon-light: color-mix(in oklab, var(--color-cat-6-300) 70%, var(--color-ink-200));
+		--icon-main: color-mix(in oklab, var(--color-cat-6-500) 70%, var(--color-ink-400));
+		--icon-dark: color-mix(in oklab, var(--color-cat-6-600) 70%, var(--color-ink-600));
+	}
+	.mobile-burger {
+		--icon-light: var(--color-ink-300);
+		--icon-main: var(--color-ink-500);
+		--icon-dark: var(--color-ink-600);
+	}
+	.mobile-icon {
+		width: 30px;
+		height: 32px;
+		overflow: visible;
+		filter: drop-shadow(0 2px 1px color-mix(in srgb, var(--icon-dark) 14%, transparent));
+	}
+	.icon-shine {
+		stroke: var(--color-on-dark);
+		stroke-opacity: 0.35;
+		stroke-width: 0.8;
+		stroke-linecap: round;
+		fill: none;
+	}
+
+	.mobile-action:active {
+		transform: scale(0.92);
+	}
+
+	.mobile-phone:is(:hover, :focus-visible, :active) svg {
+		animation: handset-ring calc(var(--ds-motion-duration-ui-slow) * 2) ease-out;
+	}
+
+	.mobile-favorite:is(:hover, :focus-visible, :active) svg {
+		animation: heart-beat calc(var(--ds-motion-duration-ui-slow) * 2) ease-out;
+	}
+
+	.menu-line {
+		transform-origin: 12px 12px;
+		transition:
+			transform var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-ui),
+			opacity var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+	}
+
+	.mobile-burger[aria-expanded='true'] .menu-line-top {
+		transform: translateY(6px) rotate(45deg);
+		transform-origin: 12px 6px;
+	}
+	.mobile-burger[aria-expanded='true'] .menu-line-middle {
+		transform: scaleX(0.3);
+		opacity: 0;
+	}
+	.mobile-burger[aria-expanded='true'] .menu-line-bottom {
+		transform: translateY(-6px) rotate(-45deg);
+		transform-origin: 12px 18px;
+	}
+
+	@keyframes handset-ring {
+		0%,
+		100% {
+			transform: rotate(0);
+		}
+		20%,
+		60% {
+			transform: rotate(-12deg);
+		}
+		40%,
+		80% {
+			transform: rotate(8deg);
+		}
+	}
+	@keyframes heart-beat {
+		0%,
+		100% {
+			transform: scale(1);
+		}
+		30% {
+			transform: scale(1.16);
+		}
+		55% {
+			transform: scale(0.96);
+		}
+		75% {
+			transform: scale(1.08);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.mobile-action {
+			transition: none;
+		}
+		.mobile-action:active {
+			transform: none;
+		}
+		.mobile-action:is(:hover, :focus-visible, :active) svg {
+			animation: none;
+		}
+		.menu-line {
+			transition: none;
+		}
+	}
+
 	.city-selector::before {
 		content: '';
 		position: absolute;

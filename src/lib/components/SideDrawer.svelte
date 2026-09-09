@@ -69,10 +69,16 @@
 		if (!open) return;
 
 		const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		const previousBodyOverflow = document.body.style.overflow;
+		const previousDocumentOverflow = document.documentElement.style.overflow;
+		document.body.style.overflow = 'hidden';
+		document.documentElement.style.overflow = 'hidden';
 		const focusTimer = setTimeout(() => panelEl?.focus(), 0);
 
 		return () => {
 			clearTimeout(focusTimer);
+			document.body.style.overflow = previousBodyOverflow;
+			document.documentElement.style.overflow = previousDocumentOverflow;
 			trigger?.focus();
 		};
 	});
@@ -114,10 +120,12 @@
 			aria-modal="true"
 			aria-label={title || 'Панель настроек'}
 			tabindex="-1"
-			class="font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-sm flex-col border-l border-on-dark/10 bg-ink-950/95 shadow-2xl backdrop-blur-2xl"
+			class="side-drawer font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-md flex-col overflow-y-auto overscroll-contain border-l border-on-dark/10 bg-ink-950/95 shadow-2xl backdrop-blur-2xl"
 			transition:fly={{ x: 420, duration: 350, opacity: 1 }}
 		>
-			<header class="flex items-center justify-between gap-3 border-b border-on-dark/10 px-5 py-4">
+			<header
+				class="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b border-on-dark/10 bg-ink-950/95 px-5 py-4 backdrop-blur-2xl"
+			>
 				<div class="flex min-w-0 flex-col">
 					{#if titleContent}
 						{@render titleContent()}
@@ -143,9 +151,24 @@
 				</button>
 			</header>
 
-			<div class="flex-1 overflow-y-auto px-5 py-5">
+			<div class="px-5 py-5">
 				{@render children?.()}
 			</div>
 		</div>
 	</div>
 {/if}
+
+<style>
+	.side-drawer {
+		scrollbar-color: var(--color-ink-700) transparent;
+		scrollbar-width: thin;
+	}
+
+	.side-drawer::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.side-drawer::-webkit-scrollbar-thumb {
+		background: var(--color-ink-700);
+	}
+</style>

@@ -2,11 +2,7 @@
 	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-
-	const DEFAULT_BACKGROUNDS = [
-		'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
-		'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg'
-	];
+	import { getHeroBackgrounds, backgroundFields } from './backgrounds';
 	const MIN_INTERVAL_SECONDS = 1;
 	const MAX_INTERVAL_SECONDS = 300;
 	const MAX_BACKGROUNDS = 12;
@@ -19,19 +15,8 @@
 		editContext: EditContext;
 	} = $props();
 
-	const backgrounds = $derived.by(() => {
-		if (Array.isArray(data.bgImagesV1)) {
-			const stored = data.bgImagesV1.filter(
-				(value): value is string => typeof value === 'string' && value.trim() !== ''
-			);
-			if (stored.length > 0) return stored;
-		}
-
-		const legacy = [data.bgImageV1, data.bgImage].find(
-			(value): value is string => typeof value === 'string' && value.trim() !== ''
-		);
-		return legacy ? [legacy] : DEFAULT_BACKGROUNDS;
-	});
+	const backgrounds = $derived(getHeroBackgrounds(data));
+	const enabledCount = $derived(backgrounds.filter(({ enabled }) => enabled).length);
 	const intervalSeconds = $derived(
 		Math.min(MAX_INTERVAL_SECONDS, Math.max(MIN_INTERVAL_SECONDS, Number(data.bgIntervalV1) || 5))
 	);
@@ -48,7 +33,7 @@
 	});
 
 	const pickerImage = $derived(
-		isAdding || activeImageIndex === null ? '' : (backgrounds[activeImageIndex] ?? '')
+		isAdding || activeImageIndex === null ? '' : (backgrounds[activeImageIndex]?.url ?? '')
 	);
 
 	async function persist(next: Record<string, unknown>) {
@@ -85,11 +70,26 @@
 	}
 
 	async function approveImage(url: string) {
+		if (isSaving) return;
 		const nextBackgrounds = isAdding
-			? [...backgrounds, url]
-			: backgrounds.map((background, index) => (index === activeImageIndex ? url : background));
-		await persist({ ...data, bgImagesV1: nextBackgrounds });
+			? [...backgrounds, { url, enabled: true }]
+			: backgrounds.map((background, index) =>
+					index === activeImageIndex ? { ...background, url } : background
+				);
+		await persist({ ...data, ...backgroundFields(nextBackgrounds) });
 		closePicker();
+	}
+
+	async function toggleImage(index: number) {
+		if (isSaving) return;
+		const nextBackgrounds = backgrounds.map((background, backgroundIndex) =>
+			backgroundIndex === index ? { ...background, enabled: !background.enabled } : background
+		);
+		try {
+			await persist({ ...data, ...backgroundFields(nextBackgrounds) });
+		} catch {
+			// persist() restores both the switch and the slideshow on failure.
+		}
 	}
 
 	async function removeImage(index: number) {
@@ -97,7 +97,7 @@
 		try {
 			await persist({
 				...data,
-				bgImagesV1: backgrounds.filter((_, backgroundIndex) => backgroundIndex !== index)
+				...backgroundFields(backgrounds.filter((_, backgroundIndex) => backgroundIndex !== index))
 			});
 		} catch {
 			// Сообщение уже показано в секции; оставляем текущий список на месте.
@@ -125,13 +125,20 @@
 		<div>
 			<h4 class="text-xs text-on-dark/40 uppercase">Фоновое слайд-шоу</h4>
 			<p class="mt-1 text-xs leading-relaxed text-ink-400">
-				Изображения идут по порядку и сменяют друг друга плавным переходом.
+				Выключите фон, чтобы пропустить его в слайд-шоу. Изображение останется в списке.
 			</p>
 		</div>
 		<span class="shrink-0 rounded-full bg-on-dark/5 px-2.5 py-1 text-xs text-ink-400">
 			{backgrounds.length}/{MAX_BACKGROUNDS}
 		</span>
 	</div>
+	<p class="mt-2 text-xs text-ink-300" role="status">
+		{enabledCount === 0
+			? 'Все фоны выключены. Блок отображается без фонового изображения.'
+			: enabledCount === 1
+				? 'Включён один фон — он отображается без смены.'
+				: `Включено фонов: ${enabledCount}. Они сменяются по порядку.`}
+	</p>
 
 	{#if error}
 		<p
@@ -166,9 +173,13 @@
 		{#each backgrounds as background, index (index)}
 			<div class="rounded-2xl border border-on-dark/10 bg-on-dark/3 p-3">
 				<div class="flex min-w-0 items-center gap-3">
-					<div class="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-ink-900 text-ink-500">
+					<div
+						class="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-ink-900 text-ink-500 {background.enabled
+							? ''
+							: 'opacity-45 grayscale'}"
+					>
 						<ImageFallback
-							src={background}
+							src={background.url}
 							alt={`Фоновое изображение ${index + 1}`}
 							class="h-full w-full object-cover"
 						/>
@@ -176,6 +187,29 @@
 					<p class="min-w-0 flex-1 truncate text-xs font-semibold text-ink-200">
 						Фон {index + 1}
 					</p>
+					<button
+						type="button"
+						role="switch"
+						aria-checked={background.enabled}
+						aria-label={`Фон ${index + 1} в слайд-шоу`}
+						disabled={isSaving}
+						onclick={() => toggleImage(index)}
+						class="flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-lg px-1 text-xs text-ink-200 focus-visible:ring-2 focus-visible:ring-link-400 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60"
+					>
+						<span>{background.enabled ? 'Вкл.' : 'Выкл.'}</span>
+						<span
+							aria-hidden="true"
+							class="inline-flex h-6 w-11 items-center rounded-full p-0.5 transition-colors {background.enabled
+								? 'bg-link-500'
+								: 'bg-ink-600'}"
+						>
+							<span
+								class="size-5 rounded-full bg-surface-raised transition-transform motion-reduce:transition-none {background.enabled
+									? 'translate-x-5'
+									: 'translate-x-0'}"
+							></span>
+						</span>
+					</button>
 				</div>
 
 				<div class="mt-3 flex gap-2">
