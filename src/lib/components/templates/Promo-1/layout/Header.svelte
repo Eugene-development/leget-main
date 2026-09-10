@@ -78,7 +78,7 @@
 
 	const visibleCatalogItems = $derived(
 		catalogItems.filter(
-			(item) => item.comingSoon === true || isEditable || !disabledRubrics.includes(item.href)
+			(item) => isEditable || (item.comingSoon !== true && !disabledRubrics.includes(item.href))
 		)
 	);
 

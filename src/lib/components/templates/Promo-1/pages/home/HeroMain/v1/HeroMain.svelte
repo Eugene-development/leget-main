@@ -274,7 +274,16 @@
 					: ''}"
 				aria-hidden={index === activeBgIndex ? undefined : 'true'}
 			>
-				<ImageFallback src={bgImage} alt="" class="h-full w-full object-cover" />
+				<!-- Новые интерьеры скомпонованы от верхнего края; у остальных фото сохраняем центр. -->
+				<ImageFallback
+					src={bgImage}
+					alt=""
+					class="h-full w-full object-cover {bgImage.startsWith(
+						'https://storage.yandexcloud.net/leget-main/templates/promo-1/hero-interior-'
+					)
+						? 'object-top'
+						: 'object-center'}"
+				/>
 			</div>
 		{/each}
 		<div class="absolute inset-0 bg-linear-to-b from-scrim/20 via-scrim/10 to-scrim/30"></div>
@@ -374,7 +383,7 @@
 				<!-- Кнопки. Направление не reverse: пока кнопка была одна, порядок
 				     ничего не значил, а со вторым CTA он стал смыслом — основной
 				     остаётся первым и на мобильном, и на десктопе. -->
-				<div class="hero-actions flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-1">
+				<div class="hero-actions flex w-full flex-wrap items-center justify-center gap-x-5 gap-y-2">
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
@@ -619,7 +628,7 @@
 	}
 
 	.hero-shell {
-		max-width: 29rem;
+		max-width: 31rem;
 	}
 
 	.glass-panel {
@@ -857,7 +866,7 @@
 		.hero-shell {
 			grid-row: 2;
 			justify-self: center;
-			max-width: 29rem;
+			max-width: 31rem;
 		}
 		.hero-content {
 			padding: 1.25rem;
