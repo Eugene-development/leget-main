@@ -96,11 +96,6 @@
 					<p class="mx-auto max-w-2xl text-sm/6 text-ink-600 sm:text-base/7">{displayValue}</p>
 				{/snippet}
 			</EditableField>
-			<div class="it-rule it-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="p1-line flex-1 border-t"></span>
-				<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
-				<span class="p1-line flex-1 border-t"></span>
-			</div>
 		</div>
 
 		<div use:revealOnScroll class="it-reveal mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

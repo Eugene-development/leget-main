@@ -116,6 +116,8 @@
 				>
 					<div class="aspect-[4/3] w-full overflow-hidden">
 						<ImageFallback
+							imagePath={['styles', i, 'image']}
+							imageDefaults={{ styles }}
 							loading="lazy"
 							src={style.image || undefined}
 							alt={style.title}

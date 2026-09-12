@@ -185,6 +185,8 @@
 							: 'opacity-45 grayscale'}"
 					>
 						<ImageFallback
+							imagePath={['bgImagesV1', index]}
+							imageDefaults={{ bgImagesV1: backgrounds.map((item) => item.url) }}
 							src={background.url}
 							alt={`Фоновое изображение ${index + 1}`}
 							class="h-full w-full object-cover"

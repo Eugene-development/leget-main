@@ -83,11 +83,6 @@
 					{/snippet}
 				</EditableField>
 
-				<div class="ct-rule ct-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class={ct.accent.diamond}></span>
-					<span class={ct.accent.ruleOnInk}></span>
-				</div>
-
 				<p class="ct-item ct-d3 mt-6 flex items-center gap-3 {ct.body.onInkMuted}">
 					<span class="relative flex size-2.5" aria-hidden="true">
 						<span

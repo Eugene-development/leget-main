@@ -114,6 +114,8 @@
 				>
 					<div class="aspect-[4/3] overflow-hidden">
 						<ImageFallback
+							imagePath={['categories', categories.indexOf(cat), 'image']}
+							imageDefaults={{ categories }}
 							loading="lazy"
 							src={cat.image || undefined}
 							alt={cat.title}

@@ -319,6 +319,7 @@
 					>
 						<div class="relative h-full w-full overflow-hidden rounded-lg bg-ink-950">
 							<ImageFallback
+								imagePath={['renderImage']}
 								src={String(
 									data?.renderImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
 								)}
@@ -350,6 +351,7 @@
 						<!-- Премиум текстура дуба -->
 						<div class="h-[78%] w-full overflow-hidden rounded-lg border border-ink-800 bg-ink-900">
 							<ImageFallback
+								imagePath={['materialImage']}
 								src={String(
 									data?.materialImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg'
 								)}
@@ -419,6 +421,8 @@
 						class="flex items-center justify-center opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
 					>
 						<ImageFallback
+							imagePath={['brands', brands.indexOf(brand), 'logo']}
+							imageDefaults={{ brands }}
 							class="max-h-[14px] max-w-[60px] object-contain {isLight
 								? ''
 								: 'brightness-0 invert filter'}"

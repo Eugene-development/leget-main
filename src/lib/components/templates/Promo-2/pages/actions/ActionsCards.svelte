@@ -192,6 +192,8 @@
 					<!-- Image -->
 					<div class="relative aspect-[3/2] overflow-hidden">
 						<ImageFallback
+							imagePath={['cards', cards.indexOf(card), 'image']}
+							imageDefaults={{ cards }}
 							loading="lazy"
 							src={card.image || undefined}
 							alt={card.title}

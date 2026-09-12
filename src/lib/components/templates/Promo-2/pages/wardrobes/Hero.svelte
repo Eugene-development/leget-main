@@ -132,6 +132,7 @@
 	<!-- Right: image -->
 	<div class="relative hidden overflow-hidden bg-border-light lg:block">
 		<ImageFallback
+			imagePath={['image']}
 			src={String(data?.image ?? '')}
 			alt="Премиальная гардеробная"
 			class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"

@@ -115,15 +115,6 @@
 						{/snippet}
 					</EditableField>
 
-					<div
-						class="it-rule it-d3 mx-auto mt-6 flex max-w-xs items-center gap-3"
-						aria-hidden="true"
-					>
-						<span class="h-px flex-1 bg-on-dark/15"></span>
-						<span class="size-1.5 rotate-45 border border-cat-3-400/80"></span>
-						<span class="h-px flex-1 bg-on-dark/15"></span>
-					</div>
-
 					<EditableField
 						fieldKey="InstallmentCTA.subtitle"
 						label="Подзаголовок"

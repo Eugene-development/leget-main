@@ -111,6 +111,8 @@
 				style="animation-delay: 0.1s"
 			>
 				<ImageFallback
+					imagePath={['factoryImages', 0]}
+					imageDefaults={{ factoryImages }}
 					loading="lazy"
 					src={factoryImages[0] ?? ''}
 					alt="Цех сборки"
@@ -125,6 +127,8 @@
 				style="animation-delay: 0.2s"
 			>
 				<ImageFallback
+					imagePath={['factoryImages', 1]}
+					imageDefaults={{ factoryImages }}
 					loading="lazy"
 					src={factoryImages[1] ?? ''}
 					alt="ЧПУ-станки"
@@ -139,6 +143,8 @@
 				style="animation-delay: 0.3s"
 			>
 				<ImageFallback
+					imagePath={['factoryImages', 2]}
+					imageDefaults={{ factoryImages }}
 					loading="lazy"
 					src={factoryImages[2] ?? ''}
 					alt="Окрасочная камера"
@@ -153,6 +159,8 @@
 				style="animation-delay: 0.4s"
 			>
 				<ImageFallback
+					imagePath={['factoryImages', 3]}
+					imageDefaults={{ factoryImages }}
 					loading="lazy"
 					src={factoryImages[3] ?? ''}
 					alt="Склад"
@@ -167,6 +175,8 @@
 				style="animation-delay: 0.5s"
 			>
 				<ImageFallback
+					imagePath={['factoryImages', 4]}
+					imageDefaults={{ factoryImages }}
 					loading="lazy"
 					src={factoryImages[4] ?? ''}
 					alt="Контроль качества"

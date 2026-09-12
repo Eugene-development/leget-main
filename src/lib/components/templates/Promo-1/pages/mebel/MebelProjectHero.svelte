@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { invalidateAll, goto } from '$app/navigation';
@@ -236,9 +238,10 @@
 			<div
 				class="relative aspect-4/3 overflow-hidden rounded-2xl border border-ink-100 bg-surface-raised shadow-sm"
 			>
-				{#if images.length > 0 && images[selectedImageIndex]?.url}
+				{#if images[selectedImageIndex]?.url || imageEditing?.editable || imageEditing?.read(['projectImages', String(project.id), String(selectedImageIndex)], '')}
 					<ImageFallback
-						src={images[selectedImageIndex].url}
+						imagePath={['projectImages', String(project.id), String(selectedImageIndex)]}
+						src={images[selectedImageIndex]?.url ?? ''}
 						alt={project.value}
 						class="h-full w-full object-cover transition-all duration-500"
 					/>
@@ -308,7 +311,12 @@
 								? 'border-link-500'
 								: 'border-transparent hover:border-ink-200'}"
 						>
-							<ImageFallback src={image.url} alt="" class="h-full w-full object-cover" />
+							<ImageFallback
+								imagePath={['projectImages', String(project.id), String(index)]}
+								src={image.url}
+								alt=""
+								class="h-full w-full object-cover"
+							/>
 						</button>
 					{/each}
 				</div>
@@ -763,7 +771,8 @@
 			>
 				<div class="h-full w-full" in:fly={{ y: 20, duration: 400, easing: cubicOut }}>
 					<ImageFallback
-						src={images[selectedImageIndex].url}
+						imagePath={['projectImages', String(project.id), String(selectedImageIndex)]}
+						src={images[selectedImageIndex]?.url ?? ''}
 						alt=""
 						class="h-full w-full object-cover"
 					/>

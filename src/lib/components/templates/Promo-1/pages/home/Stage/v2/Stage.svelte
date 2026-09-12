@@ -91,6 +91,7 @@
 >
 	<!-- Фоновая картинка с глубоким оверлеем -->
 	<ImageFallback
+		imagePath={['bgImageV2']}
 		src={activeBgImage}
 		alt="Интерьер с мебелью"
 		class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover"

@@ -111,6 +111,8 @@
 	   в полутора процентах светлоты от `surface`, то есть полосой не читается. */
 	--p1-surface-paper: var(--ds-light-surface-paper);
 	--p1-accent: var(--ds-light-accent);
+	--p1-paper-shadow: var(--ds-light-paper-shadow);
+	--p1-paper-surface: var(--ds-light-paper-surface);
 	--p1-field: var(--ds-light-field);
 	--p1-field-border: var(--ds-light-field-border);
 	--p1-field-focus: var(--ds-light-field-focus);
@@ -138,6 +140,8 @@
 	--p1-shadow: var(--ds-dark-shadow);
 	--p1-surface-paper: var(--ds-dark-surface-paper);
 	--p1-accent: var(--ds-dark-accent);
+	--p1-paper-shadow: var(--ds-dark-paper-shadow);
+	--p1-paper-surface: var(--ds-dark-paper-surface);
 	--p1-field: var(--ds-dark-field);
 	--p1-field-border: var(--ds-dark-field-border);
 	--p1-field-focus: var(--ds-dark-field-focus);
@@ -659,5 +663,71 @@
 		.p1-logo {
 			transition: none;
 		}
+	}
+}
+
+/* Стык Hero с соседней секцией. Цвет принадлежит нижнему блоку, темы
+   независимы. :has реагирует и на переключение темы, и на порядок блоков
+   уже при SSR. Для секций без семантической поверхности остаётся palette.wave. */
+.group\/component:has(+ .group\/component > .p1-surface[data-p1-theme='light']) {
+	--p1-next-surface: var(--ds-light-surface);
+}
+
+.group\/component:has(+ .group\/component > .p1-surface[data-p1-theme='dark']) {
+	--p1-next-surface: var(--ds-dark-surface);
+}
+
+.group\/component:has(+ .group\/component > .p1-surface-alt[data-p1-theme='light']) {
+	--p1-next-surface: var(--ds-light-surface-alt);
+}
+
+.group\/component:has(+ .group\/component > .p1-surface-alt[data-p1-theme='dark']) {
+	--p1-next-surface: var(--ds-dark-surface-alt);
+}
+
+.group\/component:has(+ .group\/component > .p1-surface-paper[data-p1-theme='light']) {
+	--p1-next-surface: var(--ds-light-surface-paper);
+}
+
+.group\/component:has(+ .group\/component > .p1-surface-paper[data-p1-theme='dark']) {
+	--p1-next-surface: var(--ds-dark-surface-paper);
+}
+
+/* Старые секции ещё используют утилиты фона вместо семантических ролей. */
+.group\/component:has(+ .group\/component > .bg-ink-50) {
+	--p1-next-surface: var(--color-ink-50);
+}
+
+.group\/component:has(+ .group\/component > .bg-surface) {
+	--p1-next-surface: var(--color-surface);
+}
+
+/* Палитра форматированного текста. prose-slate не реагирует на data-p1-theme.
+   Структуру HTML обслуживает typography plugin, значения — дизайн-система. */
+@layer utilities {
+	.prose.p1-prose {
+		--tw-prose-body: var(--p1-body);
+		--tw-prose-headings: var(--p1-title);
+		--tw-prose-lead: var(--p1-body);
+		--tw-prose-links: var(--p1-accent);
+		--tw-prose-bold: var(--p1-title);
+		--tw-prose-counters: var(--p1-body);
+		--tw-prose-bullets: var(--p1-body);
+		--tw-prose-hr: var(--p1-line);
+		--tw-prose-quotes: var(--p1-title);
+		--tw-prose-quote-borders: var(--p1-line);
+		--tw-prose-captions: var(--p1-body);
+		--tw-prose-code: var(--p1-title);
+		--tw-prose-pre-code: var(--p1-title);
+		--tw-prose-pre-bg: var(--p1-card);
+		--tw-prose-th-borders: var(--p1-line);
+		--tw-prose-td-borders: var(--p1-line);
+	}
+}
+
+@layer components {
+	.p1-paper {
+		background: var(--p1-paper-surface);
+		box-shadow: var(--p1-paper-shadow);
 	}
 }

@@ -101,6 +101,7 @@
 -->
 <section class="p1-stage-screen relative isolate overflow-hidden bg-ink-950 py-section-xs">
 	<ImageFallback
+		imagePath={['bgImage']}
 		src={String(data?.bgImage ?? '')}
 		alt="Интерьер с мебелью"
 		class="absolute inset-0 -z-20 h-full w-full object-cover text-ink-300"

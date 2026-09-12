@@ -76,11 +76,6 @@
 				{/snippet}
 			</EditableField>
 
-			<div class="ct-rule ct-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class={ct.accent.diamond}></span>
-				<span class={ct.accent.ruleOnInk}></span>
-			</div>
-
 			<EditableField
 				fieldKey="ContactsHero.subtitle"
 				label="Подзаголовок"

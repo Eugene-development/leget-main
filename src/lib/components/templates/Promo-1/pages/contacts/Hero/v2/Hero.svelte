@@ -29,8 +29,8 @@
 </script>
 
 <!--
-	Вариант 2 — «editorial»-подача: центральная ось, карточка-паспарту и
-	ромбовидный разделитель под заголовком. Поверхность, палитра, шкала
+	Вариант 2 — «editorial»-подача: центральная ось и карточка-паспарту.
+	Поверхность, палитра, шкала
 	заголовков и высота секции те же, что у варианта 1 (см. ../../theme.ts),
 	поэтому переключение версий не меняет стиль страницы — только композицию.
 -->
@@ -82,12 +82,6 @@
 					<h1 class={ct.title.h1OnInk}>{displayValue}</h1>
 				{/snippet}
 			</EditableField>
-
-			<div class="ct-rule ct-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class={ct.accent.ruleOnInk}></span>
-				<span class={ct.accent.diamond}></span>
-				<span class={ct.accent.ruleOnInk}></span>
-			</div>
 
 			<EditableField
 				fieldKey="ContactsHero.subtitle"

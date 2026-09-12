@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { provideImageEditing } from '$lib/utils/image-editing.svelte';
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
 	import {
@@ -17,7 +18,6 @@
 		type MoveDirection
 	} from '$lib/utils/component-order';
 	import EditModal from '$lib/components/EditModal.svelte';
-	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
 	import PageSeoSettings from '$lib/components/PageSeoSettings.svelte';
 	import YandexDirectGoalsButton from '$lib/components/YandexDirectGoalsButton.svelte';
@@ -112,6 +112,16 @@
 		save: (context, _componentType, next) => saveLayoutData(context, 'Header', next)
 	});
 	setContext(EDITABLE_VISIBILITY_CONTEXT, layoutVisibility);
+	provideImageEditing({
+		getData: () => headerDataState,
+		setData: (next) => (headerDataState = next),
+		getContext: () => editContext,
+		isEditable: () => isEditable,
+		getType: () => 'Header',
+		save: async (context, _type, next) => {
+			await saveLayoutData(context, 'Header', next);
+		}
+	});
 
 	// Зеркало списка блоков — по той же причине, что и headerDataState.
 	// `components` приходит пропсом из серверной загрузки: это обычные объекты, а не
@@ -149,7 +159,8 @@
 		'ContactsHero',
 		'Direction',
 		'PartnerOffers',
-		'ProjectsFeed'
+		'ProjectsFeed',
+		'Text'
 	]);
 	// У сайдбара контрол одноверсионных настроек находится в его собственной шапке:
 	// внешний overlay здесь дал бы кнопку вне fixed-карточки.
@@ -395,24 +406,15 @@
 				<EditableComponent
 					component={Component}
 					componentType={element.type}
+					showSettings={!componentHasOwnSwitcher(element.type) &&
+						!componentHasEmbeddedSingleVersionSettings(element.type)}
+					settingsThemeDefault={singleThemeDefault}
 					bind:data={element.data}
 					{editContext}
 					{isEditable}
 					componentId={String(element.data?._componentId ?? element.id ?? '') || null}
 					sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
 				/>
-
-				{#if !componentHasOwnSwitcher(element.type) && !componentHasEmbeddedSingleVersionSettings(element.type)}
-					<SingleVersionSettings
-						bind:data={element.data}
-						{editContext}
-						{isEditable}
-						componentType={element.type}
-						resetId={String(element.data?._componentId ?? element.id ?? '') || null}
-						themeToggle={singleThemeDefault !== null}
-						themeDefault={singleThemeDefault ?? 'light'}
-					/>
-				{/if}
 			</div>
 		{/if}
 	{/each}

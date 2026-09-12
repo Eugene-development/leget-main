@@ -33,6 +33,7 @@
 	<!-- Background Image -->
 	<div class="absolute inset-0">
 		<ImageFallback
+			imagePath={['bgImage']}
 			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/zovtop/bg/hero-2.jpg')}
 			alt={String(data?.title ?? 'Мебель на заказ')}
 			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible

@@ -164,6 +164,8 @@
 							class="p1-card p1-border group-hover:p1-card rounded-2xl border p-2.5 transition-all duration-300 group-hover:border-link-500/20"
 						>
 							<ImageFallback
+								imagePath={['brands', brands.indexOf(brand), 'logo']}
+								imageDefaults={{ brands }}
 								class="h-8 w-auto brightness-0 invert filter"
 								src={brand.logo}
 								alt={brand.name}
@@ -217,6 +219,8 @@
 						class="group flex items-center justify-center"
 					>
 						<ImageFallback
+							imagePath={['partners', partners.indexOf(partner), 'logo']}
+							imageDefaults={{ partners }}
 							class="h-7 w-auto opacity-80 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 sm:h-8"
 							src={partner.logo}
 							alt={partner.name}

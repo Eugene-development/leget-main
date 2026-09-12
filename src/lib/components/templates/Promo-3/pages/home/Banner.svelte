@@ -46,6 +46,7 @@
 			<div class="relative">
 				<div class="relative aspect-[4/3] overflow-hidden rounded-2xl">
 					<ImageFallback
+						imagePath={['image']}
 						loading="lazy"
 						src={String(data?.image ?? '')}
 						alt={String(data?.heading ?? '')}

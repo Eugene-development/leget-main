@@ -154,11 +154,23 @@
 					class="equip-card p1-border p1-card p1-card-hover relative overflow-hidden rounded-3xl border shadow-lg backdrop-blur-xl transition-colors hover:border-link-500/30 {card.span}"
 				>
 					<div class="relative w-full overflow-hidden {card.frame}">
-						<ImageFallback
-							class="equip-image h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui"
-							src={fieldValue(`item${card.n}Image`, '')}
-							alt={fieldValue(`item${card.n}Title`, card.title)}
-						/>
+						<EditableField
+							fieldKey={`Equipment.item${card.n}Image`}
+							kind="image"
+							label={`Изображение: ${fieldValue(`item${card.n}Title`, card.title)}`}
+							value={fieldValue(`item${card.n}Image`, '')}
+							{isEditable}
+							onSave={(value) => saveField(`item${card.n}Image`, value)}
+							class="h-full"
+						>
+							{#snippet children(displayValue)}
+								<ImageFallback
+									class="equip-image h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui"
+									src={displayValue}
+									alt={fieldValue(`item${card.n}Title`, card.title)}
+								/>
+							{/snippet}
+						</EditableField>
 					</div>
 					<div class={card.pad}>
 						<h3 class="p1-title p1-title-sub {card.heading}">

@@ -29,8 +29,6 @@
 		glowB: 'bg-cat-14-300/25',
 		iconTile:
 			'bg-on-dark/15 ring-1 ring-on-dark/25 shadow-[0_20px_50px_-20px] shadow-cat-14-900/80',
-		rule: 'bg-on-dark/30',
-		diamond: 'border-on-dark/70',
 		text: 'text-cat-7-50/90',
 		wave: 'var(--color-surface, #faf9f7)'
 	};
@@ -38,7 +36,7 @@
 
 <!--
 	Надзаголовок «Отзывы» и кнопка «Оставить отзыв» из Hero убраны: структура Hero
-	внутренних страниц фиксирована (значок → заголовок → линия → текст).
+	внутренних страниц фиксирована (значок → заголовок → текст).
 	Поля `eyebrow`, `buttonText` и `buttonHref` в данных сохраняются.
 -->
 <PageHero

@@ -118,7 +118,13 @@
 		class="tile p1-card p1-border p1-body relative aspect-4/3 overflow-hidden rounded-3xl border"
 		style="animation-delay: {TILE_DELAY[index] ?? '0s'}"
 	>
-		<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover" />
+		<ImageFallback
+			imagePath={['gallery', index, 'src']}
+			imageDefaults={{ gallery }}
+			src={item.src}
+			alt={item.alt}
+			class="h-full w-full object-cover"
+		/>
 		<!--
 			Скрим — роль, а не набор утилит: плотность у основания кадра и доля
 			кадра под затемнением принадлежат системе. Теме блока роль не

@@ -42,6 +42,8 @@
 		{#each items as item}
 			<a href={item.href || '#'} class="group relative overflow-hidden rounded-2xl bg-ink-100">
 				<ImageFallback
+					imagePath={['items', items.indexOf(item), 'image']}
+					imageDefaults={{ items }}
 					loading="lazy"
 					src={item.image}
 					alt={item.title}

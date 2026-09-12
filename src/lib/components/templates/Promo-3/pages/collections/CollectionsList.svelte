@@ -176,6 +176,8 @@
 					>
 						<div class="relative aspect-[4/3] overflow-hidden">
 							<ImageFallback
+								imagePath={['collections', collections.indexOf(item), 'image']}
+								imageDefaults={{ collections }}
 								loading="lazy"
 								src={item.image || undefined}
 								alt={item.name}

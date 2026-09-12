@@ -43,6 +43,7 @@
 <div class="mebel-container">
 	<div class="relative overflow-hidden rounded-2xl bg-ink-900">
 		<ImageFallback
+			imagePath={['bgImage']}
 			src={getHeroImage(data.categorySlug)}
 			alt={data.title}
 			class="absolute inset-0 h-full w-full object-cover opacity-40"

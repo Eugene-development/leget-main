@@ -63,6 +63,7 @@
 	<div class="absolute inset-0">
 		<!-- Mobile: static image -->
 		<ImageFallback
+			imagePath={['mobileImage']}
 			src={String(data?.mobileImage ?? '')}
 			alt={String(data?.title ?? 'Hero')}
 			class="h-full w-full object-cover md:hidden"

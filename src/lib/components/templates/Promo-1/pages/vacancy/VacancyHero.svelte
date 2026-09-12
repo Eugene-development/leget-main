@@ -36,8 +36,6 @@
 		glowB: 'bg-link-400/15',
 		iconTile:
 			'bg-linear-to-br from-cat-4-400 to-cat-4-500 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px] shadow-cat-4-500/90',
-		rule: 'bg-on-dark/15',
-		diamond: 'border-cat-4-400/80',
 		text: 'text-ink-300',
 		wave: 'var(--ds-light-surface-alt)'
 	};
@@ -51,8 +49,6 @@
 		glowB: 'bg-link-400/10',
 		iconTile:
 			'bg-linear-to-br from-cat-4-400 to-cat-4-500 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px] shadow-cat-4-500/90',
-		rule: 'bg-ink-900/15',
-		diamond: 'border-cat-4-500/80',
 		text: 'text-ink-600',
 		title: 'text-ink-900',
 		wave: 'var(--ds-light-surface-alt)'

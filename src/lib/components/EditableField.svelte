@@ -10,7 +10,7 @@
 	/**
 	 * EditableField — обёртка для поля с поддержкой inline-редактирования.
 	 *
-	 * При isEditable=true показывает иконку карандаша при наведении.
+	 * При isEditable=true показывает плюс для изображения и карандаш для текста при наведении.
 	 * Клик открывает EditModal (глобальный, в левом нижнем углу).
 	 * Пока модалка открыта для этого поля — отображает draft вместо value (live preview).
 	 */
@@ -18,6 +18,8 @@
 	interface Props {
 		/** Уникальный ключ поля (например "Hero.title") */
 		fieldKey: string;
+		/** Тип содержимого определяет значок действия. */
+		kind?: 'text' | 'image';
 		/** Человекочитаемое название поля для заголовка модалки */
 		label: string;
 		/** Текущее сохранённое значение */
@@ -49,6 +51,7 @@
 
 	let {
 		fieldKey,
+		kind = 'text',
 		label,
 		value,
 		isEditable = false,
@@ -118,6 +121,7 @@
 	function openModal() {
 		editStore.open({
 			key: fieldKey,
+			kind,
 			label,
 			value,
 			multiline,
@@ -157,10 +161,13 @@
 		<!-- Карандаш и тумблер составляют одну локальную панель поля. -->
 		{#if isEditable && !anyActive}
 			<div
-				class="editable-field-controls absolute -top-3 z-20 flex h-6 items-center gap-1 transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui {pencilPositionClass}"
-				style="opacity: {hovered || isActive || !visible ? 1 : 0}; pointer-events: {hovered ||
-				isActive ||
-				!visible
+				class="editable-field-controls absolute z-20 flex h-6 items-center gap-1 transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui {kind ===
+				'image'
+					? 'top-3 right-3'
+					: `-top-3 ${pencilPositionClass}`}"
+				style="opacity: {kind === 'image' || hovered || isActive || !visible
+					? 1
+					: 0}; pointer-events: {kind === 'image' || hovered || isActive || !visible
 					? 'auto'
 					: 'none'};"
 			>
@@ -184,9 +191,19 @@
 						fill="currentColor"
 						aria-hidden="true"
 					>
-						<path
-							d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-						/>
+						{#if kind === 'image'}
+							<path
+								d="M10 4v12M4 10h12"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+							/>
+						{:else}
+							<path
+								d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+							/>
+						{/if}
 					</svg>
 				</button>
 

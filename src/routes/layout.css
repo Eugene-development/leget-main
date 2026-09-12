@@ -365,6 +365,16 @@
 	/* Типографика */
 	--font-heading: var(--ds-font-heading);
 	--font-body: var(--ds-font-body);
+	--text-prose: var(--ds-font-prose-size);
+	--color-paper-light: var(--ds-light-paper-surface);
+	--color-paper-dark: var(--ds-dark-paper-surface);
+	--spacing-paper-rise: var(--ds-paper-open-rise);
+	--paper-open-angle: var(--ds-paper-open-angle);
+	--shadow-paper-light: var(--ds-light-paper-shadow);
+	--shadow-paper-dark: var(--ds-dark-paper-shadow);
+	--shadow-paper-fold: var(--ds-paper-fold-shadow);
+	--text-prose--line-height: var(--ds-font-prose-leading);
+	--spacing-prose-paragraph: var(--ds-space-prose-paragraph);
 	--text-action-display: var(--ds-font-action-display-size);
 	/**
 	 * `font-sans` — не «ещё одно имя тела», а дыра, через которую блок молча
@@ -1005,4 +1015,24 @@ h6 {
  */
 @utility min-h-hero-fold {
 	min-height: var(--chrome-fold);
+}
+
+/* Rich text: геометрия типографики общая, палитра задаётся ролью шаблона.
+   Краевые отступы сбрасываются внутри явной обёртки HTML-содержимого. */
+@layer utilities {
+	.prose.ds-prose {
+		font-family: var(--ds-font-body);
+		font-size: var(--ds-font-prose-size);
+		line-height: var(--ds-font-prose-leading);
+		overflow-wrap: anywhere;
+	}
+	.prose.ds-prose :where(p):not(:where(.not-prose, .not-prose *)) {
+		margin-block: var(--ds-space-prose-paragraph);
+	}
+	.prose.ds-prose .ds-prose-content > :first-child {
+		margin-top: 0;
+	}
+	.prose.ds-prose .ds-prose-content > :last-child {
+		margin-bottom: 0;
+	}
 }

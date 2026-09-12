@@ -35,6 +35,7 @@
 			     тёмной секции. -->
 			<div class="p1-body w-full shrink-0 overflow-hidden sm:w-[340px]">
 				<ImageFallback
+					imagePath={['projectImages', String(project.id), '0']}
 					src={project.images[0]?.url ?? null}
 					alt="Проект «{project.value}»"
 					loading="lazy"

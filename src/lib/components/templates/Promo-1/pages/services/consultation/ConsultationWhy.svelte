@@ -66,6 +66,7 @@
 					class="relative overflow-hidden rounded-[2.5rem] border border-on-dark/20 shadow-2xl transition duration-500 hover:scale-105"
 				>
 					<ImageFallback
+						imagePath={['imageUrl']}
 						loading="lazy"
 						src={String(
 							data?.imageUrl ??

@@ -134,7 +134,7 @@
 	Отклик на вакансию — закрывающий блок страницы.
 
 	Анатомия закрывающей секции шаблона: метка с выносными линиями → заголовок →
-	линия с ромбом → подзаголовок → действие.
+	подзаголовок → действие.
 -->
 <section
 	class="p1-surface relative isolate overflow-hidden py-section-sm"
@@ -182,12 +182,6 @@
 					<h2 class="p1-title text-4xl text-pretty sm:text-5xl">{displayValue}</h2>
 				{/snippet}
 			</EditableField>
-
-			<div class="vc-rule vc-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="p1-line flex-1 border-t"></span>
-				<span class="size-1.5 rotate-45 border {diamond}"></span>
-				<span class="p1-line flex-1 border-t"></span>
-			</div>
 
 			<EditableField
 				fieldKey="VacancyForm.description"

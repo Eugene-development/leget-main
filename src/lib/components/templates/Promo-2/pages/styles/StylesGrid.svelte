@@ -129,6 +129,8 @@
 					class="relative mb-6 aspect-[4/3] overflow-hidden rounded-sm bg-surface-muted transition-shadow duration-500 group-hover:shadow-elevated"
 				>
 					<ImageFallback
+						imagePath={['styles', i, 'image']}
+						imageDefaults={{ styles }}
 						loading="lazy"
 						src={style.image}
 						alt={style.name}

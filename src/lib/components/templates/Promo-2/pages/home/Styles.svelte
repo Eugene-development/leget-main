@@ -142,6 +142,8 @@
 					<!-- Image -->
 					<div class="relative aspect-[4/3] overflow-hidden">
 						<ImageFallback
+							imagePath={['styles', i, 'image']}
+							imageDefaults={{ styles }}
 							loading="lazy"
 							src={style.image}
 							alt={style.title}

@@ -182,7 +182,7 @@ export function imagePathKey(path: ImagePathPart[]): string {
  * Возвращает все контентные изображения в JSON-данных компонента, включая пустые
  * image/logo-поля. Служебные ссылки и видео намеренно не считаются изображениями.
  */
-function valueAtPath(data: Record<string, unknown>, path: ImagePathPart[]): unknown {
+export function valueAtPath(data: Record<string, unknown>, path: ImagePathPart[]): unknown {
 	let current: unknown = data;
 	for (const part of path) {
 		if (Array.isArray(current) && typeof part === 'number') current = current[part];

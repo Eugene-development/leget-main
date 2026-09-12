@@ -36,6 +36,7 @@
 		<div class="overflow-hidden rounded-3xl">
 			<EditableField
 				fieldKey="ActionsBanner.imageUrl"
+				kind="image"
 				label="URL изображения"
 				value={String(data?.imageUrl ?? '')}
 				{isEditable}

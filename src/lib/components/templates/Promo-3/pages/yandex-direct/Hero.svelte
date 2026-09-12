@@ -38,6 +38,7 @@
 	<!-- Background -->
 	<div class="absolute inset-0">
 		<ImageFallback
+			imagePath={['bgImage']}
 			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')}
 			alt={String(data?.title ?? 'Мебель на заказ')}
 			class="size-full object-cover"

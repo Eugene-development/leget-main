@@ -124,6 +124,7 @@
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
 						<ImageFallback
+							imagePath={['designImage']}
 							loading="lazy"
 							src={String(
 								data?.designImage ??
@@ -145,6 +146,7 @@
 				<div class="lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
 						<ImageFallback
+							imagePath={['productionImage']}
 							loading="lazy"
 							src={String(
 								data?.productionImage ??
@@ -267,6 +269,7 @@
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
 						<ImageFallback
+							imagePath={['assemblyImage']}
 							loading="lazy"
 							src={String(data?.assemblyImage ?? '')}
 							alt="Сборка кухни"

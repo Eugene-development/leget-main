@@ -25,6 +25,7 @@
 	class="relative flex min-h-[70vh] items-center justify-center bg-linear-to-br from-indigo-900 to-purple-800 px-6 py-32 text-center"
 >
 	<ImageFallback
+		imagePath={['backgroundImage']}
 		src={String(data?.backgroundImage ?? '')}
 		alt="Фон первого экрана"
 		class="absolute inset-0 h-full w-full object-cover"

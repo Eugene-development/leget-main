@@ -315,6 +315,7 @@
 								class="group relative aspect-square overflow-hidden rounded-lg border bg-ink-100"
 							>
 								<ImageFallback
+									imageRole="preview"
 									src={URL.createObjectURL(file)}
 									alt="Preview"
 									class="h-full w-full object-cover"

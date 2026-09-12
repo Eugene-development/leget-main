@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { setContext, type Component as SvelteComponent } from 'svelte';
+	import SingleVersionSettings from './SingleVersionSettings.svelte';
+	import { provideImageEditing } from '$lib/utils/image-editing.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 	import type { PageComponentProps } from '$lib/components/templates/types';
 	import {
@@ -14,7 +16,9 @@
 		editContext = null,
 		isEditable = false,
 		componentId = null,
-		sitePhone = null
+		sitePhone = null,
+		showSettings = false,
+		settingsThemeDefault = null
 	}: {
 		component: SvelteComponent<PageComponentProps>;
 		componentType: string;
@@ -23,6 +27,8 @@
 		isEditable: boolean;
 		componentId?: string | null;
 		sitePhone?: string | null;
+		showSettings?: boolean;
+		settingsThemeDefault?: 'light' | 'dark' | null;
 	} = $props();
 
 	const visibility = createEditableVisibility({
@@ -33,6 +39,25 @@
 	});
 
 	setContext(EDITABLE_VISIBILITY_CONTEXT, visibility);
+	provideImageEditing({
+		getData: () => data,
+		setData: (next) => (data = next),
+		getContext: () => editContext,
+		isEditable: () => isEditable,
+		getType: () => componentType
+	});
 </script>
 
 <Component bind:data {editContext} {isEditable} {componentId} {sitePhone} />
+
+{#if showSettings}
+	<SingleVersionSettings
+		bind:data
+		{editContext}
+		{isEditable}
+		{componentType}
+		resetId={componentId}
+		themeToggle={settingsThemeDefault !== null}
+		themeDefault={settingsThemeDefault ?? 'light'}
+	/>
+{/if}

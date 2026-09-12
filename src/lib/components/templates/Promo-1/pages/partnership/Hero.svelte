@@ -38,10 +38,8 @@
 <!--
 	Hero страницы «Партнёрство».
 
-	ВНИМАНИЕ — стык секций: снизу Hero обрезан волной, её заливка обязана
-	совпадать с фоном следующего блока (WhoWeInvite, `bg-ink-50` = #f8fafc).
-	Цвет задан один раз переменной `--ph-wave` ниже: меняешь фон WhoWeInvite —
-	меняешь и её, иначе на границе появится полоса (фон body тут другой, #faf9f7).
+	Цвет волны берётся из поверхности следующего блока через theme.css.
+	Тема Hero и тема соседней секции независимы.
 -->
 <section
 	class="ph-enter relative isolate overflow-hidden {isLight
@@ -129,14 +127,6 @@
 						</h1>
 					{/snippet}
 				</EditableField>
-
-				<div class="ph-rule ph-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class="h-px flex-1 {isLight ? 'bg-ink-900/20' : 'bg-on-dark/30'}"></span>
-					<span
-						class="size-1.5 rotate-45 border {isLight ? 'border-ink-900/40' : 'border-on-dark/70'}"
-					></span>
-					<span class="h-px flex-1 {isLight ? 'bg-ink-900/20' : 'bg-on-dark/30'}"></span>
-				</div>
 
 				<EditableField
 					fieldKey="PartnershipHero.text"
@@ -358,16 +348,9 @@
 </section>
 
 <style>
-	/*
-		Цвет волны = фон следующей секции (WhoWeInvite, bg-ink-50).
-		Держим его в одной переменной, чтобы стык правился в одном месте.
-	*/
-	.ph-wave {
-		--ph-wave: #f8fafc;
-	}
-
 	.ph-wave-front {
-		fill: var(--ph-wave);
+		fill: var(--p1-next-surface, var(--ds-light-surface-alt));
+		transition: fill var(--ds-motion-theme-swap) ease;
 		/* Анимируем только transform — слой уезжает в композитор, без перерисовок. */
 		will-change: transform;
 		/*
@@ -472,6 +455,10 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.ph-wave-front {
+			transition: none;
+		}
+
 		:global(.ph-enter .ph-item),
 		:global(.ph-enter .ph-rule),
 		:global(.ph-enter .ph-card) {

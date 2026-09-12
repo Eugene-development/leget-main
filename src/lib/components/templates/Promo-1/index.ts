@@ -26,7 +26,7 @@ import HomeFAQ from './pages/home/HomeFAQ.svelte';
 
 // About page components
 import AboutHero from './pages/about/Hero.svelte';
-import AboutText from './pages/about/Text.svelte';
+import AboutText from './pages/about/Text/index.svelte';
 import AboutStatistics from './pages/about/Statistics.svelte';
 import AboutMission from './pages/about/Mission.svelte';
 import AboutValues from './pages/about/Values.svelte';

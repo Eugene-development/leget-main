@@ -45,6 +45,7 @@
 >
 	<div class="absolute inset-0 z-0">
 		<ImageFallback
+			imagePath={['image']}
 			src={String(data?.image ?? '')}
 			alt="Премиальные кухни"
 			class="h-full w-full object-cover opacity-30 mix-blend-overlay"

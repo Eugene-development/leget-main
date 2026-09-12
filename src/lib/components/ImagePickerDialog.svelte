@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
 	import ImageWorkspaceDialog from '$lib/components/ImageWorkspaceDialog.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import { validateImageUrl } from '$lib/utils/image-url';
 	import {
 		listBucketFiles,
 		saveComponentData,
@@ -18,6 +20,7 @@
 		aspectRatio = 16 / 9,
 		folder = 'bg',
 		title = 'Фоновое изображение',
+		initialSource = 'library',
 		cropUploads = true,
 		previewFit = 'cover',
 		maxUploadBytes = 10 * 1024 * 1024,
@@ -37,6 +40,7 @@
 		/** Папка внутри бакета. Например: bg, logos или имя компонента. */
 		folder?: string;
 		title?: string;
+		initialSource?: 'library' | 'url';
 		cropUploads?: boolean;
 		previewFit?: 'cover' | 'contain';
 		/** Максимальный размер исходного файла до обработки. */
@@ -75,6 +79,21 @@
 	let selectedIndex = $state(0);
 	let isSaving = $state(false);
 	let saveError = $state('');
+	let source = $state<'library' | 'url'>(untrack(() => initialSource));
+	let urlDraft = $state(untrack(() => currentImage));
+	let urlTouched = $state(false);
+	let urlInput = $state<HTMLInputElement>();
+	const checkedUrl = $derived(validateImageUrl(urlDraft));
+
+	function chooseSource(next: 'library' | 'url') {
+		if (isSaving || isUploading) return;
+		source = next;
+		saveError = '';
+	}
+
+	$effect(() => {
+		if (source === 'url' && urlInput) urlInput.focus();
+	});
 
 	// Upload state
 	let isUploading = $state(false);
@@ -90,6 +109,7 @@
 
 	// ─── Derived ────────────────────────────────────────────────────────────────
 	const selectedImage = $derived(images[selectedIndex] ?? null);
+	const approvedUrl = $derived(source === 'url' ? checkedUrl.url : selectedImage?.url);
 	const previewUrl = $derived(selectedImage?.url ?? currentImage);
 
 	// ─── Load images ────────────────────────────────────────────────────────────
@@ -173,8 +193,15 @@
 	// ─── Keyboard ───────────────────────────────────────────────────────────────
 	function handleKeydown(e: KeyboardEvent) {
 		// Когда открыт кроппер — ImageCropper сам обрабатывает Escape
-		if (cropFile) return;
+		if (cropFile || e.defaultPrevented || isSaving || isUploading) return;
 		if (e.key === 'Escape') onClose();
+		// Не перехватываем стрелки курсора и Enter у поля ссылки и кнопок.
+		if (
+			source === 'url' ||
+			e.target instanceof HTMLInputElement ||
+			e.target instanceof HTMLButtonElement
+		)
+			return;
 		if (e.key === 'ArrowLeft') prev();
 		if (e.key === 'ArrowRight') next();
 		if (e.key === 'Enter' && images.length > 0) handleApprove();
@@ -182,11 +209,14 @@
 
 	// ─── Approve ────────────────────────────────────────────────────────────────
 	async function handleApprove() {
-		if (!selectedImage || isSaving) return;
+		if (isSaving || isUploading) return;
+		urlTouched = true;
+		if (!approvedUrl) return;
+		const url = approvedUrl;
 		isSaving = true;
 		saveError = '';
 		try {
-			await onApprove(selectedImage.url);
+			await onApprove(url);
 		} catch (err) {
 			saveError = err instanceof Error ? err.message : 'Ошибка сохранения';
 		} finally {
@@ -195,7 +225,7 @@
 	}
 
 	async function handleRemove() {
-		if (!onRemove || !currentImage || isSaving) return;
+		if (!onRemove || !currentImage || isSaving || isUploading) return;
 		isSaving = true;
 		saveError = '';
 		try {
@@ -211,6 +241,7 @@
 
 	/** Шаг 1: пользователь выбрал файл → открываем кроппер */
 	function handleUpload(e: Event) {
+		if (isSaving || isUploading) return;
 		const file = (e.target as HTMLInputElement).files?.[0];
 		if (!file) return;
 		uploadError = '';
@@ -323,6 +354,7 @@
 			};
 			images = folder === 'logos' ? [newFile] : [newFile, ...images];
 			selectedIndex = 0;
+			source = 'library';
 		} catch (err) {
 			uploadError = err instanceof Error ? err.message : 'Ошибка загрузки файла';
 		} finally {
@@ -412,13 +444,19 @@
 						type="file"
 						accept={allowedUploadTypes.join(',')}
 						class="sr-only"
-						disabled={isUploading}
+						disabled={isUploading || isSaving}
 						onchange={handleUpload}
 					/>
 				</label>
 
 				<!-- Close -->
-				<button type="button" class="btn-close" onclick={onClose} aria-label="Закрыть">
+				<button
+					type="button"
+					class="btn-close"
+					onclick={onClose}
+					disabled={isSaving || isUploading}
+					aria-label="Закрыть"
+				>
 					<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
@@ -430,6 +468,55 @@
 				</button>
 			</div>
 		</div>
+
+		<div class="source-controls" role="group" aria-label="Способ добавления изображения">
+			<button
+				type="button"
+				class="source-button"
+				aria-pressed={source === 'library'}
+				disabled={isSaving || isUploading}
+				onclick={() => chooseSource('library')}>Из загруженных</button
+			>
+			<button
+				type="button"
+				class="source-button"
+				aria-pressed={source === 'url'}
+				disabled={isSaving || isUploading}
+				onclick={() => chooseSource('url')}>По ссылке</button
+			>
+		</div>
+
+		{#if source === 'url'}
+			<form
+				class="url-form"
+				onsubmit={(event) => {
+					event.preventDefault();
+					handleApprove();
+				}}
+				novalidate
+			>
+				<label for="picker-image-url">Ссылка на изображение</label>
+				<input
+					id="picker-image-url"
+					bind:this={urlInput}
+					bind:value={urlDraft}
+					type="url"
+					placeholder="https://example.com/image.jpg"
+					disabled={isSaving || isUploading}
+					aria-invalid={urlTouched && !!checkedUrl.error}
+					aria-describedby="picker-url-hint"
+					oninput={() => {
+						urlTouched = true;
+						saveError = '';
+					}}
+				/>
+				<p id="picker-url-hint" class:error-text={urlTouched && !!checkedUrl.error}>
+					{urlTouched && checkedUrl.error
+						? checkedUrl.error
+						: 'Вставьте прямую ссылку на картинку и нажмите «Утвердить».'}
+				</p>
+			</form>
+		{/if}
 
 		<!-- Upload error -->
 		{#if uploadError}
@@ -445,7 +532,17 @@
 
 		<!-- Main viewer -->
 		<div class="picker-viewer">
-			{#if isLoading}
+			{#if source === 'url'}
+				<div class="slide-area url-preview">
+					{#key checkedUrl.url}
+						<ImageFallback
+							src={checkedUrl.url}
+							alt="Предпросмотр изображения по ссылке"
+							class="h-full w-full object-contain"
+						/>
+					{/key}
+				</div>
+			{:else if isLoading}
 				<div class="state-center">
 					<div class="spinner"></div>
 					<p>Загрузка изображений...</p>
@@ -566,11 +663,16 @@
 		<!-- Footer -->
 		<div class="picker-footer">
 			{#if saveError}
-				<p class="footer-error">{saveError}</p>
+				<p class="footer-error" role="alert">{saveError}</p>
 			{/if}
 			<div class="footer-actions">
 				{#if onRemove && currentImage}
-					<button type="button" class="btn-remove" onclick={handleRemove} disabled={isSaving}>
+					<button
+						type="button"
+						class="btn-remove"
+						onclick={handleRemove}
+						disabled={isSaving || isUploading}
+					>
 						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 							<path
 								stroke-linecap="round"
@@ -582,12 +684,19 @@
 						Удалить
 					</button>
 				{/if}
-				<button type="button" class="btn-cancel" onclick={onClose}> Отмена </button>
+				<button
+					type="button"
+					class="btn-cancel"
+					onclick={onClose}
+					disabled={isSaving || isUploading}
+				>
+					Отмена
+				</button>
 				<button
 					type="button"
 					class="btn-approve"
 					onclick={handleApprove}
-					disabled={isSaving || images.length === 0 || !selectedImage}
+					disabled={isSaving || isUploading || !approvedUrl}
 				>
 					{#if isSaving}
 						<div class="spinner-sm"></div>
@@ -609,6 +718,80 @@
 </ImageWorkspaceDialog>
 
 <style>
+	.source-controls {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		padding: 0.75rem 1.25rem;
+		border-bottom: 1px solid color-mix(in oklab, var(--color-on-dark) 10%, transparent);
+	}
+	.source-button {
+		min-height: 2.75rem;
+		padding: 0.5rem 0.875rem;
+		border: 1px solid var(--color-ink-600);
+		border-radius: 0.75rem;
+		background: transparent;
+		color: var(--color-ink-200);
+		cursor: pointer;
+	}
+	.source-button[aria-pressed='true'] {
+		background: var(--color-link-500);
+		border-color: var(--color-link-500);
+		color: var(--color-on-accent);
+	}
+	.url-form {
+		display: grid;
+		gap: 0.5rem;
+		padding: 0.75rem 1.25rem;
+		color: var(--color-ink-100);
+	}
+	.url-form label {
+		font-size: var(--text-sm);
+	}
+	.url-form input {
+		min-width: 0;
+		width: 100%;
+		border: 1px solid var(--color-ink-600);
+		border-radius: 0.75rem;
+		padding: 0.75rem;
+		background: var(--color-ink-950);
+		color: var(--color-ink-100);
+		font-size: var(--text-base);
+	}
+	.url-form input::placeholder {
+		color: var(--color-ink-400);
+	}
+	.url-form p {
+		margin: 0;
+		font-size: var(--text-sm);
+		color: var(--color-ink-300);
+	}
+	.url-form .error-text {
+		color: var(--color-cat-6-300);
+	}
+	.url-preview {
+		padding: 1rem;
+		color: var(--color-ink-300);
+	}
+	button:focus-visible,
+	.url-form input:focus-visible,
+	.btn-upload:focus-within {
+		outline: 2px solid var(--color-link-400);
+		outline-offset: 3px;
+	}
+	button:disabled {
+		cursor: wait;
+		opacity: 0.5;
+	}
+	@media (max-width: 40rem) {
+		.picker-header {
+			flex-wrap: wrap;
+			gap: 0.75rem;
+		}
+		.footer-actions {
+			flex-wrap: wrap;
+		}
+	}
 	/*
 	 * Цвет здесь берётся из токенов через `var(--color-*)`: утилит в этом файле
 	 * нет — модалка написана обычным CSS, — но ключи @theme лежат в :root, и
@@ -658,7 +841,7 @@
 	}
 
 	.picker-title {
-		font-size: 0.9375rem;
+		font-size: var(--text-base);
 		font-weight: 700;
 		color: var(--color-ink-100);
 		margin: 0;
@@ -683,7 +866,7 @@
 		gap: 0.375rem;
 		padding: 0.4rem 0.875rem;
 		border-radius: 0.5rem;
-		font-size: 0.8125rem;
+		font-size: var(--text-sm);
 		font-weight: 600;
 		color: var(--color-link-200);
 		border: 1px solid color-mix(in oklab, var(--color-link-400) 30%, transparent);
@@ -732,7 +915,7 @@
 		padding: 0.5rem 1.25rem;
 		background: color-mix(in oklab, var(--color-cat-6-500) 15%, transparent);
 		border-bottom: 1px solid color-mix(in oklab, var(--color-cat-6-500) 30%, transparent);
-		font-size: 0.8125rem;
+		font-size: var(--text-sm);
 		color: var(--color-cat-6-300);
 		flex-shrink: 0;
 	}
@@ -772,7 +955,7 @@
 		gap: 0.75rem;
 		padding: 3rem 1.5rem;
 		color: var(--color-ink-500);
-		font-size: 0.9375rem;
+		font-size: var(--text-base);
 	}
 
 	.state-error {
@@ -791,14 +974,14 @@
 	}
 
 	.state-empty-text {
-		font-size: 1rem;
+		font-size: var(--text-base);
 		font-weight: 600;
 		color: var(--color-ink-400);
 		margin: 0;
 	}
 
 	.state-empty-hint {
-		font-size: 0.8125rem;
+		font-size: var(--text-sm);
 		color: var(--color-ink-600);
 		margin: 0;
 	}
@@ -807,7 +990,7 @@
 		margin-top: 0.25rem;
 		padding: 0.375rem 1rem;
 		border-radius: 0.5rem;
-		font-size: 0.8125rem;
+		font-size: var(--text-sm);
 		font-weight: 600;
 		background: color-mix(in oklab, var(--color-cat-6-500) 15%, transparent);
 		border: 1px solid color-mix(in oklab, var(--color-cat-6-500) 30%, transparent);
@@ -975,7 +1158,7 @@
 
 	.footer-error {
 		flex: 1;
-		font-size: 0.8125rem;
+		font-size: var(--text-sm);
 		color: var(--color-cat-6-300);
 		margin: 0;
 	}
@@ -989,7 +1172,7 @@
 	.btn-cancel {
 		padding: 0.5rem 1.125rem;
 		border-radius: 0.75rem;
-		font-size: 0.875rem;
+		font-size: var(--text-sm);
 		font-weight: 600;
 		border: 1px solid color-mix(in oklab, var(--color-on-dark) 12%, transparent);
 		background: transparent;
@@ -1009,7 +1192,7 @@
 		gap: 0.375rem;
 		padding: 0.5rem 0.875rem;
 		border-radius: 0.75rem;
-		font-size: 0.875rem;
+		font-size: var(--text-sm);
 		font-weight: 600;
 		border: 1px solid color-mix(in oklab, var(--color-cat-6-400) 30%, transparent);
 		background: color-mix(in oklab, var(--color-cat-6-500) 8%, transparent);
@@ -1040,7 +1223,7 @@
 		gap: 0.375rem;
 		padding: 0.5rem 1.375rem;
 		border-radius: 0.75rem;
-		font-size: 0.875rem;
+		font-size: var(--text-sm);
 		font-weight: 700;
 		border: none;
 		/* Был градиент sky-500 → indigo-500 — см. progress-bar-fill. */

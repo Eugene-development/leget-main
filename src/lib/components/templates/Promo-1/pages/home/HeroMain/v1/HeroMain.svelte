@@ -276,6 +276,16 @@
 			>
 				<!-- Новые интерьеры скомпонованы от верхнего края; у остальных фото сохраняем центр. -->
 				<ImageFallback
+					imagePath={[
+						'bgImagesV1',
+						Math.max(
+							0,
+							Array.isArray(data.bgImagesV1) && data.bgImagesV1.includes(bgImage)
+								? data.bgImagesV1.indexOf(bgImage)
+								: getHeroBackgrounds(data).findIndex((item) => item.url === bgImage)
+						)
+					]}
+					imageDefaults={{ bgImagesV1: getHeroBackgrounds(data).map((item) => item.url) }}
 					src={bgImage}
 					alt=""
 					class="h-full w-full object-cover {bgImage.startsWith(
@@ -504,28 +514,12 @@
 																title={`Заменить логотип «${brand.name}»`}
 															>
 																<ImageFallback
+																	imagePath={['brands', index, 'logo']}
+																	imageDefaults={{ brands }}
 																	class="max-h-full max-w-full object-contain"
 																	src={brand.logo}
 																	alt={copyIndex === 1 ? '' : brand.name}
 																/>
-																<span
-																	class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 opacity-80 shadow-sm transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:opacity-100 group-focus-visible:opacity-100"
-																	aria-hidden="true"
-																>
-																	<svg
-																		class="size-3.5"
-																		fill="none"
-																		viewBox="0 0 24 24"
-																		stroke="currentColor"
-																	>
-																		<path
-																			stroke-linecap="round"
-																			stroke-linejoin="round"
-																			stroke-width="1.75"
-																			d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
-																		/>
-																	</svg>
-																</span>
 															</button>
 															<button
 																type="button"
@@ -561,6 +555,8 @@
 															class="brand-logo group flex h-8 w-full items-center justify-center px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:opacity-100"
 														>
 															<ImageFallback
+																imagePath={['brands', index, 'logo']}
+																imageDefaults={{ brands }}
 																class="max-h-full max-w-full object-contain"
 																src={brand.logo}
 																alt={copyIndex === 1 ? '' : brand.name}
@@ -571,6 +567,8 @@
 															class="brand-logo flex h-8 w-full items-center justify-center px-2"
 														>
 															<ImageFallback
+																imagePath={['brands', index, 'logo']}
+																imageDefaults={{ brands }}
 																class="max-h-full max-w-full object-contain"
 																src={brand.logo}
 																alt={copyIndex === 1 ? '' : brand.name}

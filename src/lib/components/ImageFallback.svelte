@@ -1,19 +1,47 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
+	import ImageEditButton from './ImageEditButton.svelte';
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	import { editStore } from '$lib/stores/edit.svelte';
+	import { type ImagePathPart } from '$lib/utils/component-images';
 	import type { HTMLImgAttributes } from 'svelte/elements';
 
 	let {
 		src,
+		imagePath,
+		imageDefaults = {},
+		imageRole,
 		alt = '',
 		class: className = '',
 		onerror,
 		...imgAttributes
-	}: HTMLImgAttributes & { src?: string | null } = $props();
+	}: HTMLImgAttributes & {
+		src?: string | null;
+		imagePath?: ImagePathPart[];
+		imageDefaults?: Record<string, unknown>;
+		imageRole?: 'preview';
+	} = $props();
 
+	const editor = useImageEditing();
+	const registrationId = Symbol('image');
+	let target = $state<HTMLElement>();
+	const fieldKey = $derived(imagePath && editor ? editor.key(imagePath) : '');
+	const savedSrc = $derived(imagePath && editor ? editor.read(imagePath, src ?? '') : src);
+	const active = $derived(
+		imagePath && editStore.activeField?.key === fieldKey && editStore.activeField.kind === 'image'
+	);
+	const displaySrc = $derived(active ? editStore.activeField?.draft : savedSrc);
+	const label = $derived(alt || 'Изображение');
+	$effect(() => {
+		if (!editor?.editable || !imagePath || imageRole === 'preview') return;
+		const field = { path: imagePath, value: savedSrc ?? '', label, defaults: imageDefaults };
+		return untrack(() => editor.register(registrationId, field));
+	});
 	let failed = $state(false);
-	const hasImage = $derived(Boolean(src?.trim()) && !failed);
+	const hasImage = $derived(Boolean(displaySrc?.trim()) && !failed);
 
 	$effect(() => {
-		src;
+		displaySrc;
 		failed = false;
 	});
 </script>
@@ -21,7 +49,9 @@
 {#if hasImage}
 	<img
 		{...imgAttributes}
-		{src}
+		bind:this={target}
+		data-image-field={fieldKey || undefined}
+		src={displaySrc ?? undefined}
 		{alt}
 		class={className}
 		onerror={(event) => {
@@ -50,6 +80,8 @@
 		заглушка растворится в фоне.
 	-->
 	<div
+		bind:this={target}
+		data-image-field={fieldKey || undefined}
 		class={`ph flex items-center justify-center overflow-hidden ${className}`}
 		role="img"
 		aria-label={alt || 'Изображение отсутствует'}
@@ -85,4 +117,15 @@
 			opacity: 0.45;
 		}
 	</style>
+{/if}
+
+{#if editor?.editable && imagePath && target && imageRole !== 'preview' && !editStore.activeField}
+	{#key target}
+		<ImageEditButton
+			{target}
+			{label}
+			onOpen={() =>
+				editor.open({ path: imagePath!, value: savedSrc ?? '', label, defaults: imageDefaults })}
+		/>
+	{/key}
 {/if}

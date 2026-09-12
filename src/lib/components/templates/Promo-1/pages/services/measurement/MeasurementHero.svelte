@@ -40,6 +40,7 @@
 >
 	<div class="absolute inset-0 z-0">
 		<ImageFallback
+			imagePath={['hero_image']}
 			src={String(
 				data?.hero_image ??
 					'https://storage.yandexcloud.net/leget-main/templates/promo-1/measurement_hero.png'

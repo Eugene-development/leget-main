@@ -72,11 +72,6 @@
 					{/snippet}
 				</EditableField>
 
-				<div class="ct-rule ct-d2 mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-					<span class={ct.accent.diamond}></span>
-					<span class={ct.accent.ruleOnLight}></span>
-				</div>
-
 				<EditableField
 					fieldKey="ContactAddress.description"
 					label="Описание"
@@ -271,6 +266,7 @@
 				<div class="{ct.card.onLight} relative overflow-hidden">
 					<EditableField
 						fieldKey="ContactAddress.mapImageUrl"
+						kind="image"
 						label="URL изображения карты"
 						value={String(data?.mapImageUrl || '')}
 						{isEditable}

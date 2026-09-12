@@ -57,6 +57,8 @@
 	{#each directions as dir}
 		<div class="group relative flex min-h-100 overflow-hidden">
 			<ImageFallback
+				imagePath={['directions', directions.indexOf(dir), 'image']}
+				imageDefaults={{ directions }}
 				src={dir.image}
 				alt={dir.alt}
 				class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

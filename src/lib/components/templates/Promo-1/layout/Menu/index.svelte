@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	// Артикулы: 1.М.1.1, 1.М.1.2, 1.М.1.3, 1.М.1.4 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import MenuV1 from './v1/Menu.svelte';
@@ -203,8 +205,9 @@
 				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Логотип</h4>
 				<div class="rounded-2xl border border-on-dark/10 bg-on-dark/5 p-3">
 					<div class="flex min-h-24 items-center justify-center rounded-xl bg-surface-raised p-4">
-						{#if logoUrl}
+						{#if logoUrl || imageEditing?.editable}
 							<ImageFallback
+								imagePath={['logoUrl']}
 								src={logoUrl}
 								alt="Текущий логотип сайта"
 								class="max-h-16 max-w-full object-contain"

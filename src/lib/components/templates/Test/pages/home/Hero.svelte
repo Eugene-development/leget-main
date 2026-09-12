@@ -23,6 +23,7 @@
 
 <section class="relative flex min-h-[60vh] items-center justify-center px-6 py-24 text-center">
 	<ImageFallback
+		imagePath={['backgroundImage']}
 		src={String(data?.backgroundImage ?? '')}
 		alt="Фон первого экрана"
 		class="absolute inset-0 h-full w-full object-cover"

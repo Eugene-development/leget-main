@@ -76,11 +76,6 @@
 					</h2>
 				{/snippet}
 			</EditableField>
-			<div class="it-rule it-d1 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-				<span class="p1-line flex-1 border-t"></span>
-				<span class="size-1.5 rotate-45 border border-brand-500/70"></span>
-				<span class="p1-line flex-1 border-t"></span>
-			</div>
 		</div>
 
 		<!--

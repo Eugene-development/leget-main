@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 3.М.1.1 — см. docs/architecture/component-articles-map.md
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { browser } from '$app/environment';
 	import { auth } from '$lib/stores/auth';
@@ -114,10 +116,11 @@
 	<div class="flex items-center justify-between px-10 lg:px-24 xl:px-32">
 		<!-- Logo -->
 		<a href="/" class="group flex items-center gap-3" onclick={closeMenu}>
-			{#if data?.logoUrl}
+			{#if data?.logoUrl || imageEditing?.editable}
 				<ImageFallback
+					imagePath={['logoUrl']}
 					class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-					src={String(data.logoUrl)}
+					src={String(data.logoUrl ?? '')}
 					alt="Логотип {siteName}"
 				/>
 			{:else}

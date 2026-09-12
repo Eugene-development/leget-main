@@ -19,7 +19,8 @@
 	// подо что блок используется».
 	//
 	// Контент работы блок НЕ редактирует — он приходит из каталога и правится
-	// в карточке проекта, в одной точке (разбор в ProjectsFeed/data.ts).
+	// в карточке проекта. Плюс задаёт только локальную замену изображения блока
+	// (разбор в ProjectsFeed/data.ts).
 	// Редактируется только метка с названием страницы: это текст страницы,
 	// а не текст проекта.
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -114,6 +115,7 @@
 				     тёмной секции. -->
 				<div class="p1-body overflow-hidden">
 					<ImageFallback
+						imagePath={['projectImages', String(latest.id), '0']}
 						src={latest.images[0]?.url ?? null}
 						alt="Проект «{latest.value}»"
 						class="aspect-video h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105 lg:aspect-auto lg:min-h-[360px]"

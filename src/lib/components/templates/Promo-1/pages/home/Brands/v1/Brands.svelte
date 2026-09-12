@@ -284,7 +284,13 @@
 							data-logo-hidden={!visibility.isVisible(`partner:${index}`)}
 						>
 							<div class="p1-logo-slot p1-body justify-center self-center">
-								<ImageFallback class="p1-logo" src={partner.logo} alt={partner.name} />
+								<ImageFallback
+									imagePath={['partners', index, 'logo']}
+									imageDefaults={{ partners }}
+									class="p1-logo"
+									src={partner.logo}
+									alt={partner.name}
+								/>
 							</div>
 							{@render logoToggle(`partner:${index}`, partner.name, 'top-1 right-1')}
 						</svelte:element>
@@ -320,7 +326,13 @@
 									title={brand.name}
 									data-logo-hidden={!visibility.isVisible(`brand:${index}`)}
 								>
-									<ImageFallback class="p1-logo max-h-8" src={brand.logo} alt={brand.name} />
+									<ImageFallback
+										imagePath={['brands', index, 'logo']}
+										imageDefaults={{ brands }}
+										class="p1-logo max-h-8"
+										src={brand.logo}
+										alt={brand.name}
+									/>
 									{@render logoToggle(`brand:${index}`, brand.name, '-top-6 right-0')}
 								</div>
 							{/each}
@@ -344,6 +356,8 @@
 													title={brand.name}
 												>
 													<ImageFallback
+														imagePath={['brands', brands.indexOf(brand), 'logo']}
+														imageDefaults={{ brands }}
 														class="p1-logo max-h-8"
 														src={brand.logo}
 														alt={brand.name}

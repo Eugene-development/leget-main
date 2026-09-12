@@ -27,8 +27,6 @@
 		glowA: 'bg-on-dark/15',
 		glowB: 'bg-cat-4-400/25',
 		iconTile: 'bg-on-dark/15 ring-1 ring-on-dark/25 shadow-[0_20px_50px_-20px] shadow-cat-4-900/90',
-		rule: 'bg-on-dark/30',
-		diamond: 'border-on-dark/70',
 		text: 'text-cat-10-50/90',
 		wave: '#f8fafc'
 	};
@@ -36,7 +34,7 @@
 
 <!--
 	Кнопка «Консультация по рассрочке» из Hero убрана: структура Hero внутренних
-	страниц фиксирована (значок → заголовок → линия → текст). Поле `buttonText`
+	страниц фиксирована (значок → заголовок → текст). Поле `buttonText`
 	в данных сохраняется, а призыв к действию у страницы есть ниже — в InstallmentCTA.
 -->
 <PageHero

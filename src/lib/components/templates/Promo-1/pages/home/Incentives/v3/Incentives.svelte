@@ -149,7 +149,13 @@
 							<div
 								class="specimen p1-card p1-border p1-body ml-auto aspect-square w-20 shrink-0 overflow-hidden rounded-2xl border sm:ml-0 sm:w-24"
 							>
-								<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover" />
+								<ImageFallback
+									imagePath={['gallery', index, 'src']}
+									imageDefaults={{ gallery }}
+									src={item.src}
+									alt={item.alt}
+									class="h-full w-full object-cover"
+								/>
 							</div>
 						</div>
 						<div class="p1-line w-full border-t sm:hidden"></div>

@@ -143,6 +143,7 @@
 		{#key activeSkillIndex}
 			<div class="absolute inset-0" in:fade={{ duration: 800 }}>
 				<ImageFallback
+					imagePath={['skillImages', activeSkill.id]}
 					src={activeSkill.bgImage}
 					alt="Фоновое изображение"
 					class="h-full w-full scale-102 object-cover blur-[2px] transition-all duration-1000"
@@ -172,6 +173,7 @@
 				<div class="w-24 transition-all duration-300 hover:scale-[1.03] md:w-32">
 					<EditableField
 						fieldKey="HeroMain.logoUrl"
+						kind="image"
 						label="Логотип (URL)"
 						value={String(data?.logoUrl ?? '')}
 						{isEditable}
@@ -339,6 +341,8 @@
 									: 'border-on-dark/5 bg-on-dark/5 opacity-60 hover:border-cat-4-500/20 hover:opacity-100'}"
 							>
 								<ImageFallback
+									imagePath={['brands', brands.indexOf(brand), 'logo']}
+									imageDefaults={{ brands }}
 									class="max-h-[16px] max-w-[64px] object-contain transition-all duration-300 {isLight
 										? 'opacity-60 brightness-0 hover:opacity-100'
 										: 'brightness-0 invert filter'}"

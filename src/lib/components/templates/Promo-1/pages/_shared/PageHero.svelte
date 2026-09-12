@@ -57,8 +57,8 @@
 <!--
 	Единый Hero внутренних страниц Promo-1. Эталон структуры — страница «Гарантии».
 
-	Структура фиксированная и состоит РОВНО из четырёх элементов сверху вниз:
-	значок → заголовок → линия → текст. Ничего сюда не добавляется: ни
+	Структура фиксированная и состоит РОВНО из трёх элементов сверху вниз:
+	значок → заголовок → текст. Ничего сюда не добавляется: ни
 	надзаголовков, ни кнопок, ни вторых абзацев, ни дополнительных линий
 	(в том числе по кромке секции). Страницы передают только палитру и значок.
 
@@ -68,11 +68,10 @@
 	остались никому не нужны. Оставлять послабление «на всякий случай» значит
 	держать открытой дверь, в которую однажды войдут пятым элементом.
 
-	ВНИМАНИЕ — стык секций: волна снизу заливается `palette.wave` (в светлой теме —
-	`paletteLight.wave`), и этот цвет обязан совпадать с фоном следующего блока
-	страницы. Тема у блоков независимая: если перекрасить только Hero, на стыке
-	будет видна полоса — переключайте страницу целиком. Слой ровно один:
-	полупрозрачный подслой над градиентом читается как посторонняя полоса.
+	Цвет стыка берётся из поверхности следующего блока через theme.css,
+	независимо от темы Hero. palette.wave — фолбэк для старых секций без
+	семантической поверхности. Слой ровно один: полупрозрачный подслой над
+	градиентом читается как посторонняя полоса.
 
 	Анимация появления стартует сразу (`hr-enter`) — блок находится над сгибом.
 	Никакого backdrop-blur на анимируемых узлах: при активном transform
@@ -116,14 +115,7 @@
 			{/snippet}
 		</EditableField>
 
-		<!-- 3. Линия -->
-		<div class="hr-rule hr-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-			<span class="h-px flex-1 {pal.rule}"></span>
-			<span class="size-1.5 rotate-45 border {pal.diamond}"></span>
-			<span class="h-px flex-1 {pal.rule}"></span>
-		</div>
-
-		<!-- 4. Текст -->
+		<!-- 3. Текст -->
 		<EditableField
 			fieldKey="{componentType}.{text.key}"
 			label={text.label}
@@ -131,7 +123,7 @@
 			{isEditable}
 			multiline
 			onSave={(v) => saveField(text.key, v)}
-			class="hr-item hr-d3 mt-6 block"
+			class="hr-item hr-d2 mt-6 block"
 		>
 			{#snippet children(displayValue)}
 				{#if displayValue}
@@ -177,7 +169,8 @@
 
 <style>
 	.hr-wave-front {
-		fill: var(--hr-wave);
+		fill: var(--p1-next-surface, var(--hr-wave));
+		transition: fill var(--ds-motion-theme-swap) ease;
 		/* Анимируем только transform — слой уезжает в композитор, без перерисовок. */
 		will-change: transform;
 		/*
@@ -233,27 +226,12 @@
 		}
 	}
 
-	@keyframes hr-rule {
-		from {
-			opacity: 0;
-			transform: scaleX(0.4);
-		}
-		to {
-			opacity: 1;
-			transform: scaleX(1);
-		}
-	}
-
 	/*
 		fill-mode = backwards, а не both: при `both` финальный transform анимации
 		остаётся на элементе и перебивает hover-эффекты внутри Hero.
 	*/
 	:global(.hr-enter .hr-item) {
 		animation: hr-rise 780ms cubic-bezier(0.22, 1, 0.36, 1) var(--hr-delay, 0ms) backwards;
-	}
-
-	:global(.hr-enter .hr-rule) {
-		animation: hr-rule 780ms cubic-bezier(0.22, 1, 0.36, 1) var(--hr-delay, 0ms) backwards;
 	}
 
 	/* Ступени задержки через кастомное свойство: shorthand выше не сбрасывает его. */
@@ -263,16 +241,15 @@
 	:global(.hr-d2) {
 		--hr-delay: 160ms;
 	}
-	:global(.hr-d3) {
-		--hr-delay: 240ms;
-	}
-
 	@media (prefers-reduced-motion: reduce) {
-		:global(.hr-enter .hr-item),
-		:global(.hr-enter .hr-rule) {
+		:global(.hr-enter .hr-item) {
 			animation: none;
 			opacity: 1;
 			transform: none;
+		}
+
+		.hr-wave-front {
+			transition: none;
 		}
 
 		/* Волна остаётся статичной, но силуэт и стык секций не меняются. */

@@ -135,6 +135,8 @@
 						style="animation-delay: 0.2s"
 					>
 						<ImageFallback
+							imagePath={['facades', index, 'image']}
+							imageDefaults={{ facades }}
 							loading="lazy"
 							src={facade.image || undefined}
 							alt={facade.title}

@@ -40,6 +40,7 @@
 	<!-- Background -->
 	<div class="absolute inset-0">
 		<ImageFallback
+			imagePath={['image']}
 			src={String(data?.image ?? '')}
 			alt={String(data?.title ?? 'Плитка')}
 			class="size-full object-cover"

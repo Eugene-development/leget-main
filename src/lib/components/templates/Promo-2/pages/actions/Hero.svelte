@@ -33,6 +33,7 @@
 	<!-- Background Image with Overlay -->
 	<div class="absolute inset-0">
 		<ImageFallback
+			imagePath={['image']}
 			src={String(data?.image ?? 'https://storage.yandexcloud.net/zovtop/bg/promosfvmwklfvmk.jpg')}
 			alt={String(data?.title ?? 'Акции')}
 			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible

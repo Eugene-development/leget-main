@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.22.3.1 — см. docs/architecture/component-articles-map.md
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -71,8 +73,10 @@
 								? ''
 								: g.bg}"
 						>
-							{#if shop.logo}
+							{#if shop.logo || imageEditing?.editable}
 								<ImageFallback
+									imagePath={['shops', i, 'logo']}
+									imageDefaults={{ shops }}
 									loading="lazy"
 									src={shop.logo}
 									alt={shop.title ?? shop.value}
@@ -116,8 +120,10 @@
 							<p class="text-xs font-medium tracking-wider text-ink-400 uppercase">Бренды</p>
 							<div class="mt-2 flex flex-wrap gap-2">
 								{#each shop.brands.filter((b: any) => b.is_active !== false) as brand}
-									{#if brand.logo}
+									{#if brand.logo || imageEditing?.editable}
 										<ImageFallback
+											imagePath={['shops', i, 'brands', shop.brands.indexOf(brand), 'logo']}
+											imageDefaults={{ shops }}
 											loading="lazy"
 											src={brand.logo}
 											alt={brand.value}

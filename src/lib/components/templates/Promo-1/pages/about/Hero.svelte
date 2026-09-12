@@ -29,8 +29,6 @@
 		glowB: 'bg-brand-400/15',
 		iconTile:
 			'bg-linear-to-br from-brand-500 to-brand-600 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px] shadow-brand-600/90',
-		rule: 'bg-on-dark/15',
-		diamond: 'border-brand-500/80',
 		text: 'text-ink-300',
 		wave: 'var(--ds-light-surface-alt)'
 	};
@@ -44,8 +42,6 @@
 		glowB: 'bg-brand-400/10',
 		iconTile:
 			'bg-linear-to-br from-brand-500 to-brand-600 ring-1 ring-on-accent/25 shadow-[0_20px_50px_-20px] shadow-brand-600/90',
-		rule: 'bg-ink-900/15',
-		diamond: 'border-brand-500/80',
 		text: 'text-ink-600',
 		title: 'text-ink-900',
 		wave: 'var(--ds-light-surface-alt)'

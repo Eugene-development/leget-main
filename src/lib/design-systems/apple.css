@@ -197,6 +197,17 @@
 	--ds-font-body: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
 	/* 600 — потолок референса для названий продуктов; 700 он оставляет
 	   промо-лозунгам, то есть контенту, а не роли заголовка. */
+	/* Связный rich text: значения прежнего prose-lg, владение — у системы. */
+	--ds-light-paper-surface: var(--ds-light-overlay);
+	--ds-dark-paper-surface: color-mix(in oklab, var(--ds-dark-overlay) 94%, var(--ds-dark-title));
+	--ds-paper-open-angle: 3deg;
+	--ds-paper-open-rise: 1rem;
+	--ds-light-paper-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.24);
+	--ds-dark-paper-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.6);
+	--ds-paper-fold-shadow: 0 18px 24px -12px rgb(0 0 0 / 0.3);
+	--ds-font-prose-size: 1.125rem;
+	--ds-font-prose-leading: 1.7777778;
+	--ds-space-prose-paragraph: 1.5rem;
 	--ds-font-heading-weight: 600;
 	/* Отрицательный трекинг, сжимающийся с кеглем, — то, чем эта типографика
 	   опознаётся. ⚠️ В таблице референса знак у крупных кеглей местами

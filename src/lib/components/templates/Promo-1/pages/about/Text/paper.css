@@ -1,0 +1,170 @@
+/* Композиция двух бумажных версий. Материал и пластика — через p1-paper и --ds-*. */
+.paper-section {
+	padding: var(--ds-spacing-section-sm) 1.5rem;
+	overflow: clip;
+}
+.paper-stage {
+	position: relative;
+	max-width: 64rem;
+	margin-inline: auto;
+	padding-top: 9rem;
+}
+.paper-opening {
+	position: absolute;
+	top: 0;
+	right: 10%;
+	width: 19rem;
+	height: 14rem;
+}
+.paper-leaf {
+	position: relative;
+	padding: 6rem 6rem 10rem;
+	isolation: isolate;
+}
+.paper-leaf::before {
+	content: '';
+	position: absolute;
+	inset: -5rem 0 auto;
+	height: 6rem;
+	background: inherit;
+	clip-path: polygon(0 0, 100% 100%, 0 100%);
+	filter: none;
+}
+.paper-copy {
+	position: relative;
+	max-width: 65ch;
+	margin-inline: auto;
+}
+.paper-closing {
+	position: absolute;
+	bottom: -2rem;
+	right: 6%;
+	width: 12rem;
+	height: 9rem;
+}
+.paper-stack {
+	position: relative;
+	max-width: 66rem;
+	margin-inline: auto;
+	padding: 6rem 0 4rem;
+}
+.stack-opening {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 14rem;
+	height: 10rem;
+}
+.paper-paragraphs {
+	max-width: none;
+	position: relative;
+}
+.paper-cascade .ds-prose-content {
+	display: grid;
+	gap: 1.5rem;
+}
+.paper-cascade .ds-prose-content > * {
+	position: relative;
+	width: 82%;
+	margin: 0 !important;
+	padding: 3rem 4rem;
+	background: var(--p1-paper-surface);
+	box-shadow: var(--p1-paper-shadow);
+	border-radius: 0;
+}
+.paper-cascade .ds-prose-content > :nth-child(3n + 2) {
+	margin-left: 9% !important;
+}
+.paper-cascade .ds-prose-content > :nth-child(3n) {
+	margin-left: 18% !important;
+}
+.paper-cascade .ds-prose-content > *::after {
+	content: '';
+	position: absolute;
+	width: 5rem;
+	height: 5rem;
+	right: 0;
+	bottom: 0;
+	background: var(--p1-surface-alt);
+	clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+.stack-closing {
+	position: relative;
+	width: 9rem;
+	height: 7rem;
+	margin: -1rem 4% 0 auto;
+}
+@media (max-width: 639px) {
+	.paper-section {
+		padding: var(--ds-spacing-section-xs) 1.25rem;
+	}
+	.paper-stage {
+		padding-top: 6rem;
+	}
+	.paper-opening {
+		width: 11rem;
+		height: 8rem;
+		right: 5%;
+	}
+	.paper-leaf {
+		padding: 2.5rem 1.5rem 5rem;
+	}
+	.paper-leaf::before {
+		inset-block-start: -2.5rem;
+		height: 3rem;
+	}
+	.paper-closing {
+		width: 6rem;
+		height: 4.5rem;
+		bottom: -1rem;
+	}
+	.paper-stack {
+		padding-top: 4rem;
+	}
+	.stack-opening {
+		width: 8rem;
+		height: 6rem;
+	}
+	.paper-cascade .ds-prose-content {
+		gap: 1.25rem;
+	}
+	.paper-cascade .ds-prose-content > * {
+		width: 94%;
+		padding: 2rem 1.5rem 2.5rem;
+	}
+	.paper-cascade .ds-prose-content > :nth-child(3n + 2) {
+		margin-left: 3% !important;
+	}
+	.paper-cascade .ds-prose-content > :nth-child(3n) {
+		margin-left: 6% !important;
+	}
+	.paper-cascade .ds-prose-content > *::after {
+		width: 2rem;
+		height: 2rem;
+	}
+	.stack-closing {
+		width: 5rem;
+		height: 4rem;
+	}
+}
+
+@keyframes paper-unfold {
+	from {
+		transform: perspective(1000px) translateY(var(--ds-paper-open-rise))
+			rotateX(var(--ds-paper-open-angle));
+	}
+	to {
+		transform: perspective(1000px) translateY(0) rotateX(0deg);
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	@supports (animation-timeline: view()) {
+		.paper-leaf,
+		.paper-cascade .ds-prose-content > * {
+			transform-origin: center top;
+			animation: paper-unfold linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 100%;
+		}
+	}
+}

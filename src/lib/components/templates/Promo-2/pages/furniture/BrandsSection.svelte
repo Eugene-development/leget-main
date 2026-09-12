@@ -132,6 +132,8 @@
 						style="animation-delay: 0.4s"
 					>
 						<ImageFallback
+							imagePath={['brands', brands.indexOf(brand), 'image']}
+							imageDefaults={{ brands }}
 							loading="lazy"
 							src={brand.image}
 							alt={`Фурнитура ${brand.name}`}

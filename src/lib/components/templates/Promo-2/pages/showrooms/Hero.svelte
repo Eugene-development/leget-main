@@ -47,6 +47,7 @@
 	<!-- Background Image -->
 	<div class="absolute inset-0">
 		<ImageFallback
+			imagePath={['image']}
 			src={String(data?.image ?? '')}
 			alt="Интерьер салона"
 			class="h-full w-full object-cover transition-transform duration-[2s] {visible

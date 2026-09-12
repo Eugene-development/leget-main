@@ -149,15 +149,6 @@
 						{/snippet}
 					</EditableField>
 
-					<div
-						class="pca-rule pca-d3 mx-auto mt-6 flex max-w-xs items-center gap-3"
-						aria-hidden="true"
-					>
-						<span class="p1-line flex-1 border-t"></span>
-						<span class="size-1.5 rotate-45 border border-cat-5-400/80"></span>
-						<span class="p1-line flex-1 border-t"></span>
-					</div>
-
 					<EditableField
 						fieldKey="PartnershipCTA.subtitle"
 						label="Подзаголовок"

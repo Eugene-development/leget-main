@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.18.4.1 — см. docs/architecture/component-articles-map.md
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 
 	let {
@@ -22,10 +24,11 @@
 				class="group relative overflow-hidden rounded-2xl bg-surface-raised shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 			>
 				<div class="relative aspect-4/3 overflow-hidden bg-ink-100">
-					{#if project.images && project.images.length > 0}
+					{#if project.images?.length > 0 || imageEditing?.editable || imageEditing?.read(['projectImages', String(project.id), '0'], '')}
 						<ImageFallback
+							imagePath={['projectImages', String(project.id), '0']}
 							loading="lazy"
-							src={project.images[0].url}
+							src={project.images?.[0]?.url ?? ''}
 							alt={project.value}
 							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 						/>

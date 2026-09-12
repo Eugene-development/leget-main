@@ -42,6 +42,7 @@
 		>
 			<div class="p1-body overflow-hidden">
 				<ImageFallback
+					imagePath={['projectImages', String(project.id), '0']}
 					src={project.images[0]?.url ?? null}
 					alt="Проект «{project.value}»"
 					loading="lazy"

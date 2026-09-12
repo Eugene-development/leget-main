@@ -148,6 +148,8 @@
 						style="animation-delay: {0.1 + i * 0.1}s"
 					>
 						<ImageFallback
+							imagePath={['items', i, 'image']}
+							imageDefaults={{ items }}
 							loading="lazy"
 							src={project.image}
 							alt={project.title}

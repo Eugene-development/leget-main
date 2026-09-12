@@ -79,6 +79,8 @@
 			     не доходила. Кривая приходит из `--default-transition-timing-function`,
 			     поэтому своей `ease-*` здесь нет. -->
 			<ImageFallback
+				imagePath={['directions', directions.indexOf(dir), 'image']}
+				imageDefaults={{ directions }}
 				src={dir.image}
 				alt={dir.alt}
 				class="absolute inset-0 h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] group-hover:scale-105"

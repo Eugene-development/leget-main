@@ -33,6 +33,7 @@
 <div class="mebel-container">
 	<section class="relative overflow-hidden rounded-2xl bg-ink-900">
 		<ImageFallback
+			imagePath={['bgImage']}
 			src={bgImage}
 			alt={title}
 			class="absolute inset-0 h-full w-full object-cover opacity-40"

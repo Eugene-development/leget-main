@@ -59,6 +59,7 @@
 			<div class="relative opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
 				<div class="relative z-40 overflow-hidden">
 					<ImageFallback
+						imagePath={['image']}
 						loading="lazy"
 						src={String(
 							data?.image ?? 'https://storage.yandexcloud.net/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg'

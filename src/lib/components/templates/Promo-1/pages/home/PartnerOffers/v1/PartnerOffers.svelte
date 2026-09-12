@@ -268,6 +268,8 @@
 		     системы (Базовая 500ms, Графит 300ms). Кривая приходит из
 		     `--default-transition-timing-function`, поэтому своей `ease-*` тут нет. -->
 		<ImageFallback
+			imagePath={['offers', offers.indexOf(item), 'image']}
+			imageDefaults={{ offers }}
 			src={item.image}
 			alt={clone ? '' : item.alt}
 			class="absolute inset-0 h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] group-hover:scale-105"

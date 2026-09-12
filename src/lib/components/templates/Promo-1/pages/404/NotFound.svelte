@@ -106,12 +106,6 @@
 			{/snippet}
 		</EditableField>
 
-		<div class="nf-rule nf-d2 mx-auto mt-6 flex max-w-xs items-center gap-3" aria-hidden="true">
-			<span class="h-px flex-1 bg-on-dark/15"></span>
-			<span class="size-1.5 rotate-45 border border-brand-500/80"></span>
-			<span class="h-px flex-1 bg-on-dark/15"></span>
-		</div>
-
 		<EditableField
 			fieldKey="NotFound.subtitle"
 			label="Подзаголовок"

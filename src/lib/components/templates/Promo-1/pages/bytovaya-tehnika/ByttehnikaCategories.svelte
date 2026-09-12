@@ -61,6 +61,8 @@
 		{#each items as item, i}
 			<div class="group relative overflow-hidden rounded-2xl bg-ink-100">
 				<ImageFallback
+					imagePath={['items', i, 'image']}
+					imageDefaults={{ items }}
 					loading="lazy"
 					src={item.image}
 					alt={item.title}

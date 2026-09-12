@@ -195,6 +195,7 @@
 					class="p1-border group relative aspect-square w-full max-w-md overflow-hidden rounded-3xl border shadow-2xl transition-transform duration-500 hover:scale-[1.01]"
 				>
 					<ImageFallback
+						imagePath={['imageV2']}
 						src={activeImage}
 						alt={String(data?.imageAlt ?? 'Промо изображение')}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

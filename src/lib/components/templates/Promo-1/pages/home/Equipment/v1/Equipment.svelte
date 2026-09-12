@@ -71,6 +71,7 @@
 			>
 				<div class="aspect-video w-full overflow-hidden">
 					<ImageFallback
+						imagePath={['item1Image']}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						src={String(data?.item1Image ?? '')}
 						alt="Столешницы"
@@ -116,6 +117,7 @@
 			>
 				<div class="aspect-video w-full overflow-hidden">
 					<ImageFallback
+						imagePath={['item2Image']}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						src={String(data?.item2Image ?? '')}
 						alt="Системы выдвижения"
@@ -161,6 +163,7 @@
 			>
 				<div class="aspect-4/4 w-full overflow-hidden">
 					<ImageFallback
+						imagePath={['item3Image']}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						src={String(data?.item3Image ?? '')}
 						alt="Бытовая техника"
@@ -206,6 +209,7 @@
 			>
 				<div class="aspect-4/4 w-full overflow-hidden">
 					<ImageFallback
+						imagePath={['item4Image']}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						src={String(data?.item4Image ?? '')}
 						alt="Мойки и смесители"
@@ -251,6 +255,7 @@
 			>
 				<div class="aspect-4/4 w-full overflow-hidden">
 					<ImageFallback
+						imagePath={['item5Image']}
 						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						src={String(data?.item5Image ?? '')}
 						alt="Освещение"

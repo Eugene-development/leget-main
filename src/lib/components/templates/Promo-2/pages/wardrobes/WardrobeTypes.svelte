@@ -124,6 +124,8 @@
 							class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/10 to-transparent"
 						></div>
 						<ImageFallback
+							imagePath={['types', i, 'image']}
+							imageDefaults={{ types }}
 							loading="lazy"
 							src={type.image || undefined}
 							alt={type.title}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	import { imagePathKey } from '$lib/utils/component-images';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
@@ -27,7 +29,16 @@
 		onSaveData: (next: Record<string, unknown>) => void | Promise<void>;
 	} = $props();
 
-	const imageSlots = $derived([...componentImageSlots(editContext, componentType, data), ...slots]);
+	const inheritedImageEditing = useImageEditing();
+	const imageEditing = $derived(
+		inheritedImageEditing?.componentType === componentType ? inheritedImageEditing : undefined
+	);
+	const registeredImages = $derived(imageEditing?.fields ?? []);
+	const imageSlots = $derived([
+		...componentImageSlots(editContext, componentType, data),
+		...slots,
+		...registeredImages.map(({ path, label }) => ({ path, label }))
+	]);
 	// Мёртвые легаси-ключи (напр. `bgImage` у HeroMain — вытеснен `bgImageV1`,
 	// но обход находит его прямо в data, минуя реестр слотов) не должны
 	// плодить пустую карточку рядом с актуальным полем. Непустые остаются:
@@ -39,12 +50,30 @@
 				pathKey === prefix || pathKey.startsWith(`${prefix}.`) || pathKey.startsWith(`${prefix}[`)
 		);
 	const images = $derived(
-		collectComponentImages(data, imageSlots).filter(
-			(image) =>
-				!isExcluded(image.pathKey) && (image.value !== '' || !hiddenWhenEmpty.has(image.pathKey))
-		)
+		collectComponentImages(data, imageSlots)
+			.map((image) => {
+				const registered = registeredImages.find(
+					(field) => imagePathKey(field.path) === image.pathKey
+				);
+				return registered
+					? {
+							...image,
+							label: registered.label,
+							value: imageEditing!.read(image.path, registered.value)
+						}
+					: image;
+			})
+			.filter(
+				(image) =>
+					!isExcluded(image.pathKey) && (image.value !== '' || !hiddenWhenEmpty.has(image.pathKey))
+			)
 	);
 	let activePathKey = $state<string | null>(null);
+	let initialSource = $state<'library' | 'url'>('library');
+	function openImage(image: ComponentImageField, source: 'library' | 'url') {
+		initialSource = source;
+		activePathKey = image.pathKey;
+	}
 	let removingPathKey = $state<string | null>(null);
 	let error = $state('');
 	/** Изображение, ожидающее подтверждения удаления — до клика по кнопке
@@ -59,7 +88,12 @@
 	async function persist(image: ComponentImageField, value: string) {
 		error = '';
 		const previous = data;
-		const next = setComponentImage(previous, image.path, value);
+		const registered = registeredImages.find((field) => imagePathKey(field.path) === image.pathKey);
+		const next = setComponentImage(
+			registered && imageEditing ? imageEditing.prepare(registered.defaults) : previous,
+			image.path,
+			value
+		);
 		data = next;
 		try {
 			await onSaveData(next);
@@ -107,7 +141,7 @@
 			<div>
 				<h4 class="text-xs text-on-dark/40 uppercase">Изображения</h4>
 				<p class="mt-1 text-xs leading-relaxed text-ink-400">
-					Добавление, замена и удаление изображений блока.
+					Загрузите файл или укажите ссылку через плюс.
 				</p>
 			</div>
 			<span class="rounded-full bg-on-dark/5 px-2.5 py-1 text-xs text-ink-400">
@@ -146,9 +180,27 @@
 						<button
 							type="button"
 							class="min-h-10 flex-1 rounded-xl border border-link-500/25 bg-link-500/10 px-3 py-2 text-xs font-semibold text-link-200 transition-colors hover:border-link-400/45 hover:bg-link-500/20 focus-visible:ring-2 focus-visible:ring-link-400 focus-visible:outline-none"
-							onclick={() => (activePathKey = image.pathKey)}
+							onclick={() => openImage(image, 'library')}
 						>
 							{image.value ? 'Заменить' : 'Добавить'}
+						</button>
+						<button
+							type="button"
+							class="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-link-500/25 bg-link-500/10 px-3 py-2 text-xs font-semibold text-link-200 hover:bg-link-500/20 focus-visible:ring-2 focus-visible:ring-link-400 focus-visible:outline-none"
+							onclick={() => openImage(image, 'url')}
+							aria-label={`Изменить ссылку: ${image.label}`}
+							title={`Изменить ссылку: ${image.label}`}
+						>
+							<svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+								><path
+									d="M10 4v12M4 10h12"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+								/></svg
+							>
+							По ссылке
 						</button>
 						<button
 							type="button"
@@ -169,6 +221,7 @@
 {#if activeImage}
 	<ImagePickerDialog
 		{editContext}
+		{initialSource}
 		currentImage={activeImage.value}
 		defaultImage={activeImage.value}
 		{folder}

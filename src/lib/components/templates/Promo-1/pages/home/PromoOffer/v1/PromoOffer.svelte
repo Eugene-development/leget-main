@@ -43,8 +43,6 @@
 		await saveComponentData(editContext, 'PromoOffer', updated);
 		data = updated;
 	}
-
-
 </script>
 
 <section class="promo-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
@@ -57,6 +55,7 @@
 		<div class="promo-alt__image-wrapper">
 			<div class="promo-alt__image-frame">
 				<ImageFallback
+					imagePath={['imageV1']}
 					src={activeImage}
 					alt={String(data?.imageAlt ?? 'Промо изображение')}
 					class="promo-alt__image"

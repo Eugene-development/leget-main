@@ -1,13 +1,20 @@
 <script lang="ts">
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	let { data } = $props();
 </script>
 
 <header class="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/90 backdrop-blur">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-		{#if data?.logo}
+		{#if data?.logo || imageEditing?.editable}
 			<a href="/" class="flex items-center gap-2">
-				<ImageFallback src={data.logo} alt={data?.siteName ?? 'Logo'} class="h-8 w-auto" />
+				<ImageFallback
+					imagePath={['logo']}
+					src={data.logo}
+					alt={data?.siteName ?? 'Logo'}
+					class="h-8 w-auto"
+				/>
 			</a>
 		{:else if data?.siteName}
 			<a href="/" class="text-xl font-bold text-gray-900">{data.siteName}</a>

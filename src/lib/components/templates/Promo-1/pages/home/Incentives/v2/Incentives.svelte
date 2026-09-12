@@ -239,7 +239,13 @@
 								: 'scale-[1.03] opacity-0'}"
 							aria-hidden={!isCurrent}
 						>
-							<ImageFallback src={item.src} alt={item.alt} class="h-full w-full object-cover" />
+							<ImageFallback
+								imagePath={['gallery', index, 'src']}
+								imageDefaults={{ gallery }}
+								src={item.src}
+								alt={item.alt}
+								class="h-full w-full object-cover"
+							/>
 						</div>
 					{/each}
 				</div>

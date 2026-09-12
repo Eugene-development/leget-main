@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	// Артикулы: 1.19.8.1, 1.29.3.1, 1.30.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
@@ -40,8 +42,10 @@
 					class="group flex min-h-20 flex-col items-center justify-center gap-1 rounded-xl bg-surface-raised p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600"
 					in:fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 				>
-					{#if brand.logo}
+					{#if brand.logo || imageEditing?.editable}
 						<ImageFallback
+							imagePath={['brands', data.brands.indexOf(brand), 'logo']}
+							imageDefaults={{ brands }}
 							loading="lazy"
 							src={brand.logo}
 							alt={brand.title ?? brand.value}

@@ -46,6 +46,7 @@
 			class:animate-scale-in={visible}
 		>
 			<ImageFallback
+				imagePath={['image']}
 				loading="lazy"
 				src={String(data?.image ?? '')}
 				alt={String(data?.title ?? '')}

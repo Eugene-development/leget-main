@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { useImageEditing } from '$lib/utils/image-editing.svelte';
+	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -326,10 +328,11 @@
 				class="group relative z-30 -m-1.5 -mb-10 hidden min-w-[140px] flex-col items-center justify-center rounded-b-2xl bg-surface-raised px-6 py-4 shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl lg:flex"
 			>
 				<span class="sr-only">{siteName}</span>
-				{#if data?.logoUrl}
+				{#if data?.logoUrl || imageEditing?.editable}
 					<ImageFallback
+						imagePath={['logoUrl']}
 						class="h-16 w-auto transition-transform duration-300 group-hover:scale-105"
-						src={String(data.logoUrl)}
+						src={String(data.logoUrl ?? '')}
 						alt="Логотип {siteName}"
 					/>
 				{:else}
@@ -597,7 +600,7 @@
 			class="flex min-w-0 shrink items-center gap-2 focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 		>
 			<span class="sr-only">{logoLabel}</span>
-			{#if data?.logoUrl}
+			{#if data?.logoUrl || imageEditing?.editable}
 				<!--
 					36 из 56, а не 28: замер на живом логотипе (512×175) дал на 28px
 					подпись под знаком в 4px — нечитаемую. Верхняя граница здесь
@@ -606,8 +609,9 @@
 					то есть широкий знак ужимается, а не выдавливает действия.
 				-->
 				<ImageFallback
+					imagePath={['logoUrl']}
 					class="h-9 w-auto max-w-full object-contain"
-					src={String(data.logoUrl)}
+					src={String(data.logoUrl ?? '')}
 					alt="Логотип {logoLabel}"
 				/>
 			{:else}

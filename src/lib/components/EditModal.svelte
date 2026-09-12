@@ -44,9 +44,19 @@
 					fill="currentColor"
 					aria-hidden="true"
 				>
-					<path
-						d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-					/>
+					{#if field.kind === 'image'}
+						<path
+							d="M10 4v12M4 10h12"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					{:else}
+						<path
+							d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+						/>
+					{/if}
 				</svg>
 				<span class="text-sm font-semibold text-ink-800">{field.label}</span>
 			</div>

@@ -78,6 +78,7 @@
 						class="absolute -right-6 -bottom-6 h-12 w-12 border-r border-b border-accent/40 lg:h-16 lg:w-16"
 					></div>
 					<ImageFallback
+						imagePath={['image']}
 						loading="lazy"
 						src={String(
 							data?.image ??

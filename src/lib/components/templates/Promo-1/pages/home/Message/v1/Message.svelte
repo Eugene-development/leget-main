@@ -163,27 +163,18 @@
 								title={`${card.image ? 'Заменить' : 'Добавить'} фотографию проекта «${card.title}»`}
 							>
 								<ImageFallback
+									imagePath={['cards', i, 'image']}
+									imageDefaults={{ cards: projects }}
 									src={card.image}
 									alt={card.alt}
 									class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover/image:scale-105"
 								/>
-								<span
-									class="absolute top-3 right-3 flex size-7 items-center justify-center rounded-full border border-ink-300 bg-surface-raised text-ink-700 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui group-hover/image:border-link-500 group-hover/image:text-link-600"
-									aria-hidden="true"
-								>
-									<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="1.75"
-											d="M16.862 3.487a2.25 2.25 0 113.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z"
-										/>
-									</svg>
-								</span>
 							</button>
 						{:else}
 							<div class="p1-body aspect-[4/3] w-full overflow-hidden">
 								<ImageFallback
+									imagePath={['cards', i, 'image']}
+									imageDefaults={{ cards: projects }}
 									src={card.image}
 									alt={card.alt}
 									class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
