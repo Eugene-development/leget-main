@@ -6,6 +6,7 @@
 		type EditContext,
 		type ComponentArticleLookup
 	} from '$lib/utils/page-edit';
+	import ComponentOrderControls from '$lib/components/ComponentOrderControls.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import ComponentSettingsDrawer from '$lib/components/ComponentSettingsDrawer.svelte';
 	import { createThemeToggle, isLightBlock, type BlockTheme } from '$lib/utils/block-theme';
@@ -196,6 +197,8 @@
 		{#if themeVersions.includes(selectedVersion)}
 			<ThemeToggle {isLight} onToggle={toggleTheme} class="order-first" />
 		{/if}
+
+		<ComponentOrderControls {componentType} {editContext} />
 
 		<!-- Контейнер для кнопки Варианты и выпадающего списка -->
 		{#if showVersionMenu}

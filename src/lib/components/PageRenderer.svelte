@@ -9,7 +9,13 @@
 		type EditContext,
 		type PageSeoData
 	} from '$lib/utils/page-edit';
-	import { setContext } from 'svelte';
+	import { setContext, tick } from 'svelte';
+	import {
+		COMPONENT_ORDER_CONTEXT,
+		movePageComponent,
+		type ComponentOrderController,
+		type MoveDirection
+	} from '$lib/utils/component-order';
 	import EditModal from '$lib/components/EditModal.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
@@ -124,6 +130,7 @@
 	let componentsState = $state<PageComponent[]>(components ?? []);
 	$effect(() => {
 		componentsState = components ?? [];
+		orderError = null;
 	});
 
 	// Единственные многоверсионные компоненты Promo-1 (ground truth совпадает с
@@ -257,6 +264,82 @@
 	);
 	// Компоненты текущей страницы без футера — он рендерится отдельно (внизу).
 	const pageComponents = $derived(componentsState.filter((c) => c.type !== 'Footer'));
+	let orderBusy = $state(false);
+	let orderError = $state<{ type: string; message: string } | null>(null);
+	const blockElements = new Map<string, HTMLElement>();
+
+	function trackBlock(node: HTMLElement, type: string) {
+		blockElements.set(type, node);
+		return {
+			destroy: () => {
+				blockElements.delete(type);
+			}
+		};
+	}
+
+	async function moveBlock(type: string, direction: MoveDirection) {
+		if (!isEditable || !editContext || orderBusy) return;
+		const index = pageComponents.findIndex((component) => component.type === type);
+		const target = index + (direction === 'up' ? -1 : 1);
+		if (index < 0 || target < 0 || target >= pageComponents.length) return;
+		const source = components;
+		const context = editContext;
+		const previousOrder = componentsState.map((component) => component.type);
+		const next = [...componentsState];
+		const from = next.findIndex((component) => component.type === type);
+		const to = next.findIndex((component) => component.type === pageComponents[target].type);
+		[next[from], next[to]] = [next[to], next[from]];
+		orderBusy = true;
+		orderError = null;
+		componentsState = next;
+
+		// Reorder references only, so simultaneous content edits survive a rollback.
+		function applyOrder(types: string[]) {
+			const positions = new Map(types.map((value, index) => [value, index]));
+			componentsState = [...componentsState].sort(
+				(a, b) => (positions.get(a.type) ?? types.length) - (positions.get(b.type) ?? types.length)
+			);
+		}
+		try {
+			await tick();
+			if (components === source) blockElements.get(type)?.scrollIntoView({ block: 'nearest' });
+			const saved = await movePageComponent(context, type, direction);
+			if (components === source) applyOrder(saved);
+		} catch (error) {
+			if (components === source) {
+				applyOrder(previousOrder);
+				orderError = {
+					type,
+					message:
+						error instanceof Error
+							? error.message
+							: 'Не удалось сохранить порядок блоков. Повторите попытку.'
+				};
+				await tick();
+				blockElements.get(type)?.scrollIntoView({ block: 'nearest' });
+			}
+		} finally {
+			orderBusy = false;
+		}
+	}
+
+	setContext<ComponentOrderController>(COMPONENT_ORDER_CONTEXT, {
+		position(type, context) {
+			if (
+				!isEditable ||
+				!context ||
+				context.pageId !== editContext?.pageId ||
+				context.licenseId !== editContext.licenseId
+			)
+				return null;
+			const index = pageComponents.findIndex((component) => component.type === type);
+			return index < 0 ? null : { index, count: pageComponents.length };
+		},
+		get busy() {
+			return orderBusy;
+		},
+		move: moveBlock
+	});
 </script>
 
 <div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
@@ -299,6 +382,7 @@
 		{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
 		{#if Component && (isEditable || !isSingleVersionDisabled(element))}
 			<div
+				use:trackBlock={element.type}
 				class="group/component relative {isSingleVersionDisabled(element)
 					? 'opacity-40 grayscale'
 					: ''}"
@@ -332,6 +416,15 @@
 			</div>
 		{/if}
 	{/each}
+
+	{#if isEditable && orderError}
+		<p
+			role="alert"
+			class="fixed right-4 bottom-4 left-4 z-[110] rounded-xl border border-on-dark/20 bg-ink-950 p-4 text-sm text-on-dark shadow-lg sm:left-auto sm:max-w-sm"
+		>
+			{orderError.message}
+		</p>
+	{/if}
 
 	{#if Footer}
 		{#snippet pageSettings(triggerClass: string)}
