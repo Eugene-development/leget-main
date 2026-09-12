@@ -7,7 +7,7 @@
 	import MenuV4 from './v4/Menu.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
+	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import {
 		saveLayoutData,
 		getLayoutComponentArticle,
@@ -92,9 +92,8 @@
 	}
 
 	function openLogoPicker() {
-		// BgImagePicker и SideDrawer используют полноэкранные слои. Закрываем drawer,
-		// чтобы пикер оказался единственным активным диалогом и корректно получил фокус.
-		drawerOpen = false;
+		// Общий ImageWorkspaceDialog сохраняет drawer справа и центрирует picker
+		// в оставшейся рабочей области, как во всех остальных редакторах компонентов.
 		logoPickerOpen = true;
 	}
 
@@ -315,7 +314,7 @@
 {/if}
 
 {#if logoPickerOpen && editContext}
-	<BgImagePicker
+	<ImagePickerDialog
 		{editContext}
 		currentImage={logoUrl}
 		defaultImage={logoUrl}

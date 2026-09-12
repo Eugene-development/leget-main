@@ -5,7 +5,7 @@
 	// открывает свой проект. Роль блока и контракт данных — в ../data.ts.
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
+	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import {
@@ -85,7 +85,7 @@
 </script>
 
 {#if editingCard && editContext}
-	<BgImagePicker
+	<ImagePickerDialog
 		{editContext}
 		currentImage={editingCard.image ?? ''}
 		folder="message"

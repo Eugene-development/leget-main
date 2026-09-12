@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import type Cropper from 'cropperjs';
 	import 'cropperjs/dist/cropper.css';
+	import ImageWorkspaceDialog from '$lib/components/ImageWorkspaceDialog.svelte';
 
 	let {
 		imageFile = null,
@@ -322,18 +323,14 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<!-- Modal Backdrop -->
-<div
-	class="fixed inset-0 z-[100] flex items-center justify-center bg-scrim/70 backdrop-blur-sm"
+<ImageWorkspaceDialog
+	variant="cropper"
+	ariaLabelledby="cropper-title"
 	onkeydown={(e) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			if (e.target === e.currentTarget) onCancel();
 		}
 	}}
-	role="dialog"
-	aria-modal="true"
-	aria-labelledby="cropper-title"
-	tabindex="0"
 >
 	<!-- Modal Content -->
 	<div
@@ -530,7 +527,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</ImageWorkspaceDialog>
 
 <style>
 	/* Cropper.js базовые стили.

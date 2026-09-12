@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
+	import ImageWorkspaceDialog from '$lib/components/ImageWorkspaceDialog.svelte';
 	import {
 		listBucketFiles,
 		saveComponentData,
@@ -86,31 +87,6 @@
 
 	// Thumbnail strip
 	let thumbStrip = $state<HTMLDivElement>();
-
-	/**
-	 * Picker может открываться из SideDrawer. У drawer есть transform/backdrop-filter
-	 * и overflow-контейнер, поэтому вложенный `position: fixed` становится привязанным
-	 * к панели и обрезается ею. Портал возвращает модалку в viewport и отдельный
-	 * stacking context; фокус уходит из родительской focus trap в дочерний диалог.
-	 */
-	function portal(node: HTMLElement) {
-		const previousFocus =
-			document.activeElement instanceof HTMLElement ? document.activeElement : null;
-		document.body.appendChild(node);
-		queueMicrotask(() => {
-			const dialog = node.matches('[role="dialog"]')
-				? node
-				: node.querySelector<HTMLElement>('[role="dialog"]');
-			dialog?.focus();
-		});
-
-		return {
-			destroy() {
-				node.parentNode?.removeChild(node);
-				previousFocus?.focus();
-			}
-		};
-	}
 
 	// ─── Derived ────────────────────────────────────────────────────────────────
 	const selectedImage = $derived(images[selectedIndex] ?? null);
@@ -370,34 +346,23 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<!-- Оба полноэкранных слоя портируются в body. Кроппер с z-index:300 остаётся
-     поверх picker с z-index:200 даже когда владелец живёт внутри sticky/drawer. -->
+<!-- Оба шага используют общий ImageWorkspaceDialog. Кроппер с уровнем 300
+     остаётся поверх picker с уровнем 200. -->
 {#if cropFile}
-	<div use:portal style="position:fixed;inset:0;z-index:300;">
-		<ImageCropper
-			imageFile={cropFile}
-			{aspectRatio}
-			maxOutputWidth={cropMaxWidth}
-			maxOutputHeight={cropMaxHeight}
-			outputMimeType={cropOutputMimeType}
-			outputQuality={cropOutputQuality}
-			maxOutputBytes={cropMaxOutputBytes}
-			onCrop={handleCropDone}
-			onCancel={handleCropCancel}
-		/>
-	</div>
+	<ImageCropper
+		imageFile={cropFile}
+		{aspectRatio}
+		maxOutputWidth={cropMaxWidth}
+		maxOutputHeight={cropMaxHeight}
+		outputMimeType={cropOutputMimeType}
+		outputQuality={cropOutputQuality}
+		maxOutputBytes={cropMaxOutputBytes}
+		onCrop={handleCropDone}
+		onCancel={handleCropCancel}
+	/>
 {/if}
 
-<!-- Backdrop -->
-<div
-	use:portal
-	class="picker-backdrop"
-	role="dialog"
-	aria-modal="true"
-	aria-label={`Выбор: ${title.toLocaleLowerCase('ru-RU')}`}
-	tabindex="-1"
-	transition:fade={{ duration: 200 }}
->
+<ImageWorkspaceDialog variant="picker" ariaLabel={`Выбор: ${title.toLocaleLowerCase('ru-RU')}`}>
 	<!-- Modal -->
 	<div class="picker-modal" transition:fly={{ y: 24, duration: 250 }}>
 		<!-- Header -->
@@ -641,7 +606,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</ImageWorkspaceDialog>
 
 <style>
 	/*
@@ -651,20 +616,6 @@
 	 * Полупрозрачные значения — доля одного токена через `color-mix`, как в
 	 * ImageFallback: `rgba()` с сырыми каналами вернуло бы хардкод обратно.
 	 */
-
-	/* ── Backdrop ── */
-	.picker-backdrop {
-		position: fixed;
-		inset: 0;
-		z-index: 200;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 1rem;
-		background: color-mix(in oklab, var(--color-scrim) 75%, transparent);
-		backdrop-filter: blur(6px);
-		-webkit-backdrop-filter: blur(6px);
-	}
 
 	/* ── Modal ── */
 	.picker-modal {

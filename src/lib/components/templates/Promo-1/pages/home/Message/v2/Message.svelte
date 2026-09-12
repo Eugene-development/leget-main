@@ -17,7 +17,7 @@
 	// Правило впервые записано в `Direction/v2`, с 19.08.2026 — роль в theme.css.
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
+	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import {
@@ -117,7 +117,7 @@
 </script>
 
 {#if editingCard && editContext}
-	<BgImagePicker
+	<ImagePickerDialog
 		{editContext}
 		currentImage={editingCard.image ?? ''}
 		folder="message"

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
+	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 	import {
@@ -167,7 +167,7 @@
 {/if}
 
 {#if activeImage}
-	<BgImagePicker
+	<ImagePickerDialog
 		{editContext}
 		currentImage={activeImage.value}
 		defaultImage={activeImage.value}

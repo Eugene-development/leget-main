@@ -71,14 +71,28 @@
 		const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 		const previousBodyOverflow = document.body.style.overflow;
 		const previousDocumentOverflow = document.documentElement.style.overflow;
+		const previousWorkspaceInset = document.documentElement.style.getPropertyValue(
+			'--side-drawer-workspace-inset'
+		);
 		document.body.style.overflow = 'hidden';
 		document.documentElement.style.overflow = 'hidden';
+		// Портированные диалоги выбора и кадрирования изображения читают этот inset,
+		// чтобы на desktop центрироваться в свободной области слева от панели.
+		document.documentElement.style.setProperty('--side-drawer-workspace-inset', '28rem');
 		const focusTimer = setTimeout(() => panelEl?.focus(), 0);
 
 		return () => {
 			clearTimeout(focusTimer);
 			document.body.style.overflow = previousBodyOverflow;
 			document.documentElement.style.overflow = previousDocumentOverflow;
+			if (previousWorkspaceInset) {
+				document.documentElement.style.setProperty(
+					'--side-drawer-workspace-inset',
+					previousWorkspaceInset
+				);
+			} else {
+				document.documentElement.style.removeProperty('--side-drawer-workspace-inset');
+			}
 			trigger?.focus();
 		};
 	});

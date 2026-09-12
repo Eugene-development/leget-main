@@ -3,7 +3,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
+	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { createEditableVisibility } from '$lib/utils/editable-visibility.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -290,7 +290,7 @@
 	</div>
 
 	{#if editingBrand && editContext}
-		<BgImagePicker
+		<ImagePickerDialog
 			{editContext}
 			currentImage={editingBrand.logo}
 			folder="logos"

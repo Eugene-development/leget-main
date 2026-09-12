@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BgImagePicker from '$lib/components/BgImagePicker.svelte';
+	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { getHeroBackgrounds, backgroundFields } from './backgrounds';
@@ -102,6 +102,12 @@
 		} catch {
 			// Сообщение уже показано в секции; оставляем текущий список на месте.
 		}
+	}
+
+	async function removeActiveImage() {
+		if (activeImageIndex === null) return;
+		await removeImage(activeImageIndex);
+		closePicker();
 	}
 
 	async function saveInterval() {
@@ -246,7 +252,7 @@
 </section>
 
 {#if isAdding || activeImageIndex !== null}
-	<BgImagePicker
+	<ImagePickerDialog
 		{editContext}
 		currentImage={pickerImage}
 		defaultImage={pickerImage}
@@ -262,6 +268,7 @@
 		cropOutputQuality={0.86}
 		cropMaxOutputBytes={4 * 1024 * 1024}
 		onApprove={approveImage}
+		onRemove={!isAdding && backgrounds.length > 1 ? removeActiveImage : null}
 		onClose={closePicker}
 	/>
 {/if}

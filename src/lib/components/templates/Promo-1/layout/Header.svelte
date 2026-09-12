@@ -328,7 +328,7 @@
 				<span class="sr-only">{siteName}</span>
 				{#if data?.logoUrl}
 					<ImageFallback
-						class="h-14 w-auto transition-transform duration-300 group-hover:scale-105"
+						class="h-16 w-auto transition-transform duration-300 group-hover:scale-105"
 						src={String(data.logoUrl)}
 						alt="Логотип {siteName}"
 					/>
@@ -865,7 +865,7 @@
 		   (--ds-link-300 = sky-300), но на «Охре» засветка становится
 		   золотой, а на «Ирисе» — сиреневой, вместо чужого голубого пятна.
 		   Сырой CSS берёт ключ @theme через var(--color-*) — тот же приём,
-		   что у модалок BgImagePicker/ImageCropper. */
+		   что у модалок ImagePickerDialog/ImageCropper. */
 		background: linear-gradient(
 			135deg,
 			transparent 40%,
