@@ -18,7 +18,7 @@
 export type BannerLink = { href: string; label: string };
 
 export const bannerDefaultLinks: readonly BannerLink[] = [
-	{ href: '/about', label: 'О компании' },
+	{ href: '/about', label: 'О нас' },
 	{ href: '/partnership', label: 'Партнёрство' },
 	{ href: '/testimonials', label: 'Отзывы' },
 	{ href: '/installment', label: 'Рассрочка' },

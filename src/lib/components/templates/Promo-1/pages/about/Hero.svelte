@@ -32,7 +32,7 @@
 		rule: 'bg-on-dark/15',
 		diamond: 'border-brand-500/80',
 		text: 'text-ink-300',
-		wave: '#f8fafc'
+		wave: 'var(--ds-light-surface-alt)'
 	};
 
 	// Светлый вариант: та же композиция и тот же красный акцент, светлая поверхность.
@@ -48,7 +48,7 @@
 		diamond: 'border-brand-500/80',
 		text: 'text-ink-600',
 		title: 'text-ink-900',
-		wave: '#f8fafc'
+		wave: 'var(--ds-light-surface-alt)'
 	};
 
 	/** Стартовый текст под заголовком: в данных `lead` и `text` по умолчанию пустые. */
