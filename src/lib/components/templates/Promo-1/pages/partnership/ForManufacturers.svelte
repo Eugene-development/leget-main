@@ -100,9 +100,8 @@
 			aria-hidden="true"
 		></div>
 	{/if}
-	<!-- Декор: сетка, красное свечение-акцент, волосяные линии по краям -->
+	<!-- Декор: красное свечение-акцент и волосяные линии по краям -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="fm-grid"></div>
 		<div class="fm-glow absolute -top-40 -left-24 size-112 bg-brand-500/15"></div>
 		<div class="fm-glow absolute -right-32 bottom-0 size-96 bg-ink-400/10"></div>
 		<div
@@ -200,30 +199,6 @@
 						</div>
 					{/each}
 				</div>
-
-				<div class="fm-item fm-d4 mt-9 flex flex-wrap gap-4">
-					<a
-						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/95 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
-					>
-						<EditableField
-							fieldKey="ForManufacturers.buttonText"
-							label="Текст кнопки"
-							value={String(data?.buttonText ?? 'Оставить заявку')}
-							{isEditable}
-							onSave={(v) => saveField('buttonText', v)}
-							class="inline"
-						>
-							{#snippet children(displayValue)}
-								<RichText value={displayValue} />
-							{/snippet}
-						</EditableField>
-						<span
-							class="transition-transform duration-300 group-hover:translate-x-1"
-							aria-hidden="true">&rarr;</span
-						>
-					</a>
-				</div>
 			</div>
 
 			<!-- Статистика: плитки с градиентной каймой и акцентной линией -->
@@ -282,17 +257,6 @@
 <style>
 	/* Классы глобальные: часть анимируемых узлов — обёртки <EditableField>. */
 
-	:global(.fm-grid) {
-		position: absolute;
-		inset: 0;
-		background-image:
-			linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
-		background-size: 56px 56px;
-		opacity: 0.05;
-		mask-image: radial-gradient(circle at 30% 20%, black, transparent 70%);
-	}
-
 	:global(.fm-glow) {
 		filter: blur(80px);
 		border-radius: 9999px;
@@ -333,10 +297,6 @@
 	:global(.fm-d3) {
 		--fm-delay: 240ms;
 	}
-	:global(.fm-d4) {
-		--fm-delay: 320ms;
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		:global(.fm-reveal .fm-item),
 		:global(.fm-reveal .fm-tile),

@@ -250,7 +250,7 @@
 		<!-- Платформа: отдельная панель, чтобы блок не читался как продолжение карточек -->
 		<div use:revealOnScroll class="wi-reveal mt-12">
 			<div
-				class="wi-item p1-border p1-card relative overflow-hidden rounded-4xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 sm:px-12 sm:py-12"
+				class="wi-item p1-border p1-card relative overflow-hidden rounded-3xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 sm:px-12 sm:py-12"
 			>
 				<div
 					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent"

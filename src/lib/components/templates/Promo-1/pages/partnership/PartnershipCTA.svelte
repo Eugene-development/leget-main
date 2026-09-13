@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
+	import PartnershipDrawer from './PartnershipDrawer.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -18,6 +19,12 @@
 		isEditable?: boolean;
 		sitePhone?: string | null;
 	} = $props();
+	let partnershipOpen = $state(false);
+	const buttonText = $derived(
+		!data?.buttonText || data.buttonText === 'Обсудить сотрудничество'
+			? 'Узнать условия'
+			: String(data.buttonText)
+	);
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
@@ -65,9 +72,8 @@
 	class="p1-surface relative isolate overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<!-- Декор: сетка, свечения, волосяные линии по краям секции -->
+	<!-- Декор: свечения и волосяные линии по краям секции -->
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="pca-grid"></div>
 		<div class="pca-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-cat-5-500/20"></div>
 		<div class="pca-glow absolute -right-24 -bottom-40 size-112 bg-cat-9-400/15"></div>
 		<div
@@ -82,10 +88,10 @@
 		<!-- Паспарту с градиентной каймой в 1px -->
 		<div
 			use:revealOnScroll
-			class="pca-reveal pca-frame rounded-4xl bg-linear-to-br from-link-400/40 via-cat-5-300/25 to-cat-9-400/40 p-px shadow-[0_50px_120px_-60px] shadow-cat-5-500/55"
+			class="pca-reveal pca-frame rounded-3xl bg-linear-to-br from-link-400/40 via-cat-5-300/25 to-cat-9-400/40 p-px shadow-[0_50px_120px_-60px] shadow-cat-5-500/55"
 		>
 			<div
-				class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] {isLight
+				class="relative overflow-hidden rounded-[calc(var(--radius-3xl)-1px)] {isLight
 					? 'bg-surface-raised/85'
 					: 'bg-ink-950/85'} px-6 py-14 text-center backdrop-blur-sm sm:px-12 sm:py-16 lg:px-16"
 			>
@@ -169,14 +175,19 @@
 					<div
 						class="pca-item pca-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
 					>
-						<a
-							href="/contact"
+						<button
+							type="button"
+							aria-haspopup="dialog"
+							aria-label={buttonText}
+							onclick={() => {
+								if (!isEditable) partnershipOpen = true;
+							}}
 							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-link-500/95 transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-5-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
 						>
 							<EditableField
 								fieldKey="PartnershipCTA.buttonText"
 								label="Текст кнопки"
-								value={String(data?.buttonText ?? 'Обсудить сотрудничество')}
+								value={buttonText}
 								{isEditable}
 								onSave={(v) => saveField('buttonText', v)}
 								class="inline"
@@ -189,7 +200,7 @@
 								class="transition-transform duration-300 group-hover:translate-x-1"
 								aria-hidden="true">&rarr;</span
 							>
-						</a>
+						</button>
 
 						<EditableField
 							richText={false}
@@ -232,23 +243,13 @@
 	</div>
 </section>
 
+<PartnershipDrawer bind:open={partnershipOpen} />
+
 <style>
 	/*
 		Классы глобальные: часть анимируемых узлов — обёртки <EditableField>,
 		до них scoped-стили Svelte не доходят.
 	*/
-
-	/* Текстуры фона */
-	:global(.pca-grid) {
-		position: absolute;
-		inset: 0;
-		background-image:
-			linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
-		background-size: 56px 56px;
-		opacity: 0.04;
-		mask-image: radial-gradient(circle at 50% 40%, black, transparent 72%);
-	}
 
 	:global(.pca-glow) {
 		filter: blur(80px);

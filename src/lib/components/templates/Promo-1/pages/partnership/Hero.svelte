@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.1.1 — см. docs/architecture/component-articles-map.md
+	import PartnershipDrawer from './PartnershipDrawer.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -24,6 +25,13 @@
 		await saveComponentData(editContext, 'PartnershipHero', updated);
 		data = updated;
 	}
+
+	let partnershipOpen = $state(false);
+	const buttonText = $derived(
+		!data?.buttonText || data.buttonText === 'Обсудить сотрудничество'
+			? 'Узнать условия'
+			: String(data.buttonText)
+	);
 
 	const quoteName = $derived(String(data?.quoteName ?? '').trim());
 	const quoteRole = $derived(String(data?.quoteRole ?? '').trim());
@@ -153,14 +161,19 @@
 				</EditableField>
 
 				<div class="ph-item ph-d4 mt-10">
-					<a
-						href="/contact"
+					<button
+						type="button"
+						aria-haspopup="dialog"
+						aria-label={buttonText}
+						onclick={() => {
+							if (!isEditable) partnershipOpen = true;
+						}}
 						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-surface-raised px-7 py-3.5 text-sm font-semibold text-link-700 shadow-[0_20px_50px_-20px] shadow-link-950/65 transition duration-300 hover:bg-link-50 hover:shadow-[0_26px_60px_-18px] hover:shadow-link-950/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="PartnershipHero.buttonText"
 							label="Текст кнопки"
-							value={String(data?.buttonText ?? 'Обсудить сотрудничество')}
+							value={buttonText}
 							{isEditable}
 							onSave={(v) => saveField('buttonText', v)}
 							class="inline"
@@ -173,14 +186,14 @@
 							class="transition-transform duration-300 group-hover:translate-x-1"
 							aria-hidden="true">&rarr;</span
 						>
-					</a>
+					</button>
 				</div>
 			</div>
 
 			<!-- Цитата: паспарту с градиентной каймой в 1px -->
 			<div class="ph-card ph-d3 mt-12 lg:mt-0">
 				<div
-					class="rounded-4xl bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40 p-px shadow-[0_50px_120px_-60px] shadow-link-950/80"
+					class="rounded-3xl bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40 p-px shadow-[0_50px_120px_-60px] shadow-link-950/80"
 				>
 					<!--
 						Без backdrop-blur: пока на карточке висит transform от анимации
@@ -190,7 +203,7 @@
 						карточкой только градиент секции, размывать нечего.
 					-->
 					<div
-						class="relative overflow-hidden rounded-[calc(var(--radius-4xl)-1px)] bg-linear-to-br {isLight
+						class="relative overflow-hidden rounded-[calc(var(--radius-3xl)-1px)] bg-linear-to-br {isLight
 							? 'from-surface-raised/80 via-surface-raised/70 to-surface-raised/60'
 							: 'from-on-dark/20 via-on-dark/12 to-on-dark/5'} p-8 ring-1 ring-on-dark/10 ring-inset sm:p-10"
 					>
@@ -347,6 +360,8 @@
 		</svg>
 	</div>
 </section>
+
+<PartnershipDrawer bind:open={partnershipOpen} />
 
 <style>
 	.ph-wave-front {
