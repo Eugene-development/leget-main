@@ -369,6 +369,16 @@
 	.p1-title {
 		color: var(--p1-title);
 	}
+	/* Связный тезис: сохраняет семантику абзаца при дисплейном масштабе. */
+	.p1-statement {
+		color: var(--p1-title);
+		font-family: var(--ds-font-statement);
+		font-size: var(--ds-font-statement-size);
+		font-weight: var(--ds-font-statement-weight);
+		line-height: var(--ds-font-statement-leading);
+		letter-spacing: var(--ds-font-statement-tracking);
+		text-wrap: pretty;
+	}
 	.p1-body {
 		color: var(--p1-body);
 	}

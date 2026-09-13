@@ -2,7 +2,7 @@ import type { ComponentMap } from '../../../types';
 import Hero from './Hero.svelte';
 import Text from './Text/index.svelte';
 import Statistics from './Statistics.svelte';
-import Mission from './Mission.svelte';
+import Mission from './Mission/index.svelte';
 import Values from './Values.svelte';
 import WhyUs from './WhyUs.svelte';
 import AboutCTA from './AboutCTA.svelte';

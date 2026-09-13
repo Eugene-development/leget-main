@@ -4,10 +4,10 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import { revealOnScroll } from './theme';
-	import './theme.css';
-	import { isLightBlock } from '$lib/utils/block-theme';
+	import { revealOnScroll } from '../../theme';
 	import '../../theme.css';
+	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 
 	let {
 		data = $bindable(),

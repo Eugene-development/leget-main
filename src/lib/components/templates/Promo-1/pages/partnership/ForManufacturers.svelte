@@ -125,7 +125,7 @@
 				>
 					{#snippet children(displayValue)}
 						<div
-							class="p1-accent inline-flex items-center gap-2.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
+							class="p1-accent inline-flex items-center gap-2.5 rounded-2xl border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
 						>
 							<span
 								class="size-1.5 rounded-full bg-brand-400 shadow-[0_0_12px_2px] shadow-brand-400/70"
@@ -203,7 +203,7 @@
 				<div class="fm-item fm-d4 mt-9 flex flex-wrap gap-4">
 					<a
 						href="/contact"
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/95 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-2xl bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/95 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="ForManufacturers.buttonText"

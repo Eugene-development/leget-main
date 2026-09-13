@@ -150,6 +150,7 @@
 		'HeroMain',
 		'ActionsCTA',
 		'Message',
+		'Mission',
 		'PromoOffer',
 		'Equipment',
 		'Stage',

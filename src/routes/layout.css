@@ -365,6 +365,11 @@
 	/* Типографика */
 	--font-heading: var(--ds-font-heading);
 	--font-body: var(--ds-font-body);
+	--font-statement: var(--ds-font-statement);
+	--text-statement: var(--ds-font-statement-size);
+	--text-statement--line-height: var(--ds-font-statement-leading);
+	--font-weight-statement: var(--ds-font-statement-weight);
+	--tracking-statement: var(--ds-font-statement-tracking);
 	--text-prose: var(--ds-font-prose-size);
 	--color-paper-light: var(--ds-light-paper-surface);
 	--color-paper-dark: var(--ds-dark-paper-surface);

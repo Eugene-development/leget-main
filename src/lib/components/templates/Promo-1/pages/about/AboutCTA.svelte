@@ -6,6 +6,7 @@
 	import './theme.css';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import '../../theme.css';
 
 	let {
@@ -129,8 +130,9 @@
 				</EditableField>
 
 				<div class="ab-item ab-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-					<a
-						href="/contact"
+					<button
+						type="button"
+						onclick={() => serviceOrderStore.open('consultation')}
 						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
@@ -149,7 +151,7 @@
 							class="transition-transform duration-300 group-hover:translate-x-1"
 							aria-hidden="true">&rarr;</span
 						>
-					</a>
+					</button>
 
 					<EditableField
 						fieldKey="AboutCTA.phone"

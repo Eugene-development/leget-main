@@ -298,6 +298,12 @@
 	--ds-light-paper-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.24);
 	--ds-dark-paper-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.6);
 	--ds-paper-fold-shadow: 0 18px 24px -12px rgb(0 0 0 / 0.3);
+	/* Крупное связное высказывание, не заголовок и не подпись. */
+	--ds-font-statement: var(--ds-font-body);
+	--ds-font-statement-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.5rem);
+	--ds-font-statement-leading: 1.2;
+	--ds-font-statement-weight: 400;
+	--ds-font-statement-tracking: -0.025em;
 	--ds-font-prose-size: 1.125rem;
 	--ds-font-prose-leading: 1.7777778;
 	--ds-space-prose-paragraph: 1.5rem;
