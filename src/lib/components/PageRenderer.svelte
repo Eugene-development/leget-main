@@ -395,6 +395,7 @@
 		{#if Component && (isEditable || !isSingleVersionDisabled(element))}
 			<div
 				use:trackBlock={element.type}
+				data-field-toolbar-scope
 				class="group/component relative {isSingleVersionDisabled(element)
 					? 'opacity-40 grayscale'
 					: ''}"
@@ -435,7 +436,7 @@
 			<YandexDirectGoalsButton {isEditable} {triggerClass} />
 			<SiteSettingsButton {isEditable} {triggerClass} licenseId={editContext?.licenseId ?? null} />
 		{/snippet}
-		<div class="relative">
+		<div class="relative" data-field-toolbar-scope>
 			<Footer
 				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
 				data={footerComponent

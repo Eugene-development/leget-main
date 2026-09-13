@@ -29,24 +29,31 @@
 	     ⚠️ Та же обёртка стоит ещё в 13 `index.svelte` шаблона — там скролл-
 	     связанная анимация по-прежнему не заработает. Ретрофит не сделан. -->
 	<div
+		data-field-toolbar-scope
 		class="relative w-full overflow-clip {selectedVersion === 'disabled'
 			? 'opacity-40 grayscale'
 			: ''}"
 	>
 		<!-- Версия одна, поэтому `versions` задан явно: дефолт свитчера — ['v1','v2'],
 		     и без этого он предложил бы несуществующую вторую. -->
-		<VersionSwitcher
-			bind:data
-			{editContext}
-			{isEditable}
-			componentType="PartnerOffers"
-			versionKey="partnerOffersVersion"
-			versions={['v1']}
-			themeVersions={['v1']}
-			themeDefault="dark"
-			title="Спецпредложения партнёров"
-			bind:selectedVersion
-		/>
+		{#if isEditable && editContext}
+			<div class="absolute top-2 right-2 z-[100] flex flex-col items-end gap-3 sm:top-6 sm:right-6">
+				<VersionSwitcher
+					placement="inline"
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="PartnerOffers"
+					versionKey="partnerOffersVersion"
+					versions={['v1']}
+					themeVersions={['v1']}
+					themeDefault="dark"
+					title="Спецпредложения партнёров"
+					bind:selectedVersion
+				/>
+				<div data-field-toolbar-host></div>
+			</div>
+		{/if}
 
 		{#if selectedVersion === 'disabled'}
 			<div
@@ -71,7 +78,7 @@
 			</div>
 		{/if}
 
-		<div class="w-full">
+		<div class="w-full {isEditable && editContext ? 'pt-14 sm:pt-0' : ''}">
 			<PartnerOffersV1 bind:data {editContext} {isEditable} />
 		</div>
 	</div>

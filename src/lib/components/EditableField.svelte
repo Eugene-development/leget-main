@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { getContext, onMount, tick } from 'svelte';
+	import FieldToolbar from './FieldToolbar.svelte';
+	import FieldVisibilityToggle from './FieldVisibilityToggle.svelte';
+	import { getContext } from 'svelte';
 	import { editStore } from '$lib/stores/edit.svelte';
 	import {
 		EDITABLE_VISIBILITY_CONTEXT,
@@ -10,7 +12,7 @@
 	/**
 	 * EditableField — обёртка для поля с поддержкой inline-редактирования.
 	 *
-	 * При isEditable=true показывает плюс для изображения и карандаш для текста при наведении.
+	 * При isEditable=true клик по полю открывает панель действий под настройками блока.
 	 * Клик открывает EditModal (глобальный, в левом нижнем углу).
 	 * Пока модалка открыта для этого поля — отображает draft вместо value (live preview).
 	 */
@@ -90,9 +92,7 @@
 		explicitVisibilityPending ?? visibilityContext?.isPending(visibilityKey) ?? false
 	);
 
-	let hovered = $state(false);
-	let wrapperEl: HTMLElement | null = $state(null);
-	let pencilAlign: 'left' | 'center' | 'right' = $state('center');
+	let wrapperEl = $state<HTMLElement | null>(null);
 
 	// Это поле активно в модалке?
 	const isActive = $derived(editStore.activeField?.key === fieldKey);
@@ -102,27 +102,6 @@
 
 	// Отображаемое значение: draft (live preview) когда активно, иначе сохранённое
 	const displayValue = $derived(isActive ? (editStore.activeField?.draft ?? value) : value);
-	const pencilPositionClass = $derived.by(() => {
-		if (pencilAlign === 'left') return 'left-0 -translate-x-0';
-		if (pencilAlign === 'right') return 'right-0 translate-x-0';
-		return 'left-1/2 -translate-x-1/2';
-	});
-	const visibilityTitle = $derived(`${visible ? 'Скрыть' : 'Показать'} ${visibilityLabel}`);
-
-	async function updatePencilAlignment() {
-		await tick();
-		if (!wrapperEl) return;
-		const textAlign = getComputedStyle(wrapperEl).textAlign;
-		if (textAlign === 'center') {
-			pencilAlign = 'center';
-			return;
-		}
-		if (textAlign === 'right' || textAlign === 'end') {
-			pencilAlign = 'right';
-			return;
-		}
-		pencilAlign = 'left';
-	}
 
 	function openModal() {
 		editStore.open({
@@ -136,20 +115,54 @@
 			onSave
 		});
 	}
-
-	onMount(() => {
-		updatePencilAlignment();
-		const onResize = () => updatePencilAlignment();
-		window.addEventListener('resize', onResize);
-		return () => window.removeEventListener('resize', onResize);
-	});
-
-	$effect(() => {
-		className;
-		inline;
-		updatePencilAlignment();
-	});
 </script>
+
+{#snippet fieldActions()}
+	<button
+		type="button"
+		onclick={openModal}
+		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-surface-raised/90 shadow-md ring-1 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-link-50 hover:ring-link-400 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
+		class:ring-link-400={isActive}
+		class:bg-link-50={isActive}
+		class:ring-ink-200={!isActive}
+		title="Редактировать: {label}"
+		aria-label="Редактировать: {label}"
+		aria-pressed={isActive}
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="h-3.5 w-3.5 transition-colors"
+			class:text-link-600={isActive}
+			class:text-ink-500={!isActive}
+			viewBox="0 0 20 20"
+			fill="currentColor"
+			aria-hidden="true"
+		>
+			{#if kind === 'image'}
+				<path
+					d="M10 4v12M4 10h12"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+				/>
+			{:else}
+				<path
+					d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+				/>
+			{/if}
+		</svg>
+	</button>
+
+	{#if onToggleVisibility}
+		<FieldVisibilityToggle
+			{visible}
+			label={visibilityLabel}
+			pending={visibilityPending}
+			onToggle={onToggleVisibility}
+		/>
+	{/if}
+{/snippet}
 
 {#if visible || isEditable}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -157,86 +170,15 @@
 		this={inline ? 'span' : 'div'}
 		class="editable-field-wrapper relative {inline ? 'inline-block' : 'block'} {className}"
 		data-hidden={!visible}
+		style:min-height={isEditable && !displayValue.trim() ? '1.5rem' : undefined}
+		style:min-width={isEditable && !displayValue.trim() ? '1.5rem' : undefined}
 		bind:this={wrapperEl}
 		role="group"
-		onmouseenter={() => {
-			hovered = true;
-		}}
-		onmouseleave={() => {
-			hovered = false;
-		}}
 	>
-		<!-- Карандаш и тумблер составляют одну локальную панель поля. -->
-		{#if isEditable && !anyActive}
-			<div
-				class="editable-field-controls absolute z-20 flex h-6 items-center gap-1 transition-opacity duration-[var(--ds-motion-duration-ui)] ease-ui {kind ===
-				'image'
-					? 'top-3 right-3'
-					: `-top-3 ${pencilPositionClass}`}"
-				style="opacity: {kind === 'image' || hovered || isActive || !visible
-					? 1
-					: 0}; pointer-events: {kind === 'image' || hovered || isActive || !visible
-					? 'auto'
-					: 'none'};"
-			>
-				<button
-					type="button"
-					onclick={openModal}
-					class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-surface-raised/90 shadow-md ring-1 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-link-50 hover:ring-link-400 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
-					class:ring-link-400={isActive}
-					class:bg-link-50={isActive}
-					class:ring-ink-200={!isActive}
-					title="Редактировать: {label}"
-					aria-label="Редактировать: {label}"
-					aria-pressed={isActive}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-3.5 w-3.5 transition-colors"
-						class:text-link-600={isActive}
-						class:text-ink-500={!isActive}
-						viewBox="0 0 20 20"
-						fill="currentColor"
-						aria-hidden="true"
-					>
-						{#if kind === 'image'}
-							<path
-								d="M10 4v12M4 10h12"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-							/>
-						{:else}
-							<path
-								d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-							/>
-						{/if}
-					</svg>
-				</button>
-
-				{#if onToggleVisibility}
-					<button
-						type="button"
-						role="switch"
-						aria-checked={visible}
-						aria-label={visibilityTitle}
-						aria-busy={visibilityPending}
-						title={visibilityTitle}
-						disabled={visibilityPending}
-						onclick={(event) => onToggleVisibility?.(event)}
-						class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer rounded-full border-2 border-surface-raised/80 shadow-md transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60 {visible
-							? 'bg-link-500'
-							: 'bg-ink-400'}"
-					>
-						<span
-							class="pointer-events-none inline-block size-5 rounded-full bg-surface-raised shadow-sm transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui {visible
-								? 'translate-x-4'
-								: 'translate-x-0'}"
-						></span>
-					</button>
-				{/if}
-			</div>
+		{#if isEditable && !anyActive && wrapperEl}
+			<FieldToolbar target={wrapperEl} {label}>
+				{@render fieldActions()}
+			</FieldToolbar>
 		{/if}
 
 		<!-- Контент: передаём displayValue в snippet -->

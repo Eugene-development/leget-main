@@ -25,6 +25,7 @@
 
 {#if isEditable && editContext}
 	<button
+		data-field-toolbar-anchor
 		type="button"
 		class="flex cursor-pointer items-center justify-center rounded-2xl border border-on-dark/10 bg-ink-950/75 p-2.5 text-on-dark shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
 		onclick={() => (open = true)}

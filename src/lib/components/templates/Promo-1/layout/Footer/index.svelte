@@ -162,10 +162,16 @@
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
-	<div class="relative w-full {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}">
+	<div
+		data-field-toolbar-scope
+		class="relative w-full {selectedVersion === 'disabled' ? 'opacity-40 grayscale' : ''}"
+	>
 		{#if isEditable && editContext}
 			<!-- Общая панель редактора: варианты + настройки, как у основных компонентов. -->
-			<div class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
+			<div
+				data-field-toolbar-anchor
+				class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none"
+			>
 				<div class="relative">
 					<button
 						type="button"

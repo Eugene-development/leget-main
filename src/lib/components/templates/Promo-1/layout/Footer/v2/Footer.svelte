@@ -353,6 +353,9 @@
 											<EditableField
 												richText={false}
 												fieldKey="Footer.email"
+												visible={contacts.isVisible('email')}
+												visibilityLabel={contacts.label('email') + ' в футере'}
+												onToggleVisibility={(event) => contacts.toggle('email', event)}
 												label="Email"
 												value={email}
 												onSave={(val) => saveField('email', val)}
@@ -367,12 +370,6 @@
 												{/snippet}
 											</EditableField>
 										</div>
-
-										{#if isEditable}<ContactToggle
-												{contacts}
-												contactKey="email"
-												class="ml-auto self-start"
-											/>{/if}
 									</div>
 								{/if}
 
@@ -413,6 +410,9 @@
 											</div>
 											<EditableField
 												fieldKey="Footer.address"
+												visible={contacts.isVisible('address')}
+												visibilityLabel={contacts.label('address') + ' в футере'}
+												onToggleVisibility={(event) => contacts.toggle('address', event)}
 												label="Адрес"
 												value={address}
 												onSave={(val) => saveField('address', val)}
@@ -426,12 +426,6 @@
 												{/snippet}
 											</EditableField>
 										</div>
-
-										{#if isEditable}<ContactToggle
-												{contacts}
-												contactKey="address"
-												class="ml-auto self-start"
-											/>{/if}
 									</div>
 								{/if}
 
@@ -465,6 +459,9 @@
 											</div>
 											<EditableField
 												fieldKey="Footer.hours"
+												visible={contacts.isVisible('hours')}
+												visibilityLabel={contacts.label('hours') + ' в футере'}
+												onToggleVisibility={(event) => contacts.toggle('hours', event)}
 												label="Режим работы"
 												value={hours}
 												onSave={(val) => saveField('hours', val)}
@@ -477,12 +474,6 @@
 												{/snippet}
 											</EditableField>
 										</div>
-
-										{#if isEditable}<ContactToggle
-												{contacts}
-												contactKey="hours"
-												class="ml-auto self-start"
-											/>{/if}
 									</div>
 								{/if}
 							</div>

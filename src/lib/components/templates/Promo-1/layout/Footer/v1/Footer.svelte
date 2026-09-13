@@ -185,6 +185,9 @@
 									<EditableField
 										richText={false}
 										fieldKey="Footer.email"
+										visible={contacts.isVisible('email')}
+										visibilityLabel={contacts.label('email') + ' в футере'}
+										onToggleVisibility={(event) => contacts.toggle('email', event)}
 										label="Email"
 										value={String(data?.email ?? 'info@site.ru')}
 										onSave={(val) => saveField('email', val)}
@@ -199,11 +202,6 @@
 											</a>
 										{/snippet}
 									</EditableField>
-									{#if isEditable}<ContactToggle
-											{contacts}
-											contactKey="email"
-											class="ml-auto self-center"
-										/>{/if}
 								</dd>
 							</div>
 						{/if}
@@ -220,6 +218,9 @@
 								<dd class="flex items-baseline gap-3">
 									<EditableField
 										fieldKey="Footer.address"
+										visible={contacts.isVisible('address')}
+										visibilityLabel={contacts.label('address') + ' в футере'}
+										onToggleVisibility={(event) => contacts.toggle('address', event)}
 										label="Адрес"
 										value={String(data?.address ?? 'г. Москва, ул. Ленина, д. 10')}
 										onSave={(val) => saveField('address', val)}
@@ -230,11 +231,6 @@
 											<span class="p1-title leading-snug"><RichText value={displayValue} /></span>
 										{/snippet}
 									</EditableField>
-									{#if isEditable}<ContactToggle
-											{contacts}
-											contactKey="address"
-											class="ml-auto self-center"
-										/>{/if}
 								</dd>
 							</div>
 						{/if}
@@ -251,6 +247,9 @@
 								<dd class="flex items-baseline gap-3">
 									<EditableField
 										fieldKey="Footer.hours"
+										visible={contacts.isVisible('hours')}
+										visibilityLabel={contacts.label('hours') + ' в футере'}
+										onToggleVisibility={(event) => contacts.toggle('hours', event)}
 										label="Режим работы"
 										value={String(data?.hours ?? 'Пн–Вс: 9:00 — 21:00')}
 										onSave={(val) => saveField('hours', val)}
@@ -260,11 +259,6 @@
 											<span class="p1-title"><RichText value={displayValue} /></span>
 										{/snippet}
 									</EditableField>
-									{#if isEditable}<ContactToggle
-											{contacts}
-											contactKey="hours"
-											class="ml-auto self-center"
-										/>{/if}
 								</dd>
 							</div>
 						{/if}

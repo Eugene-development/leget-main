@@ -137,7 +137,7 @@
 	}
 </script>
 
-<div class="relative">
+<div class="relative" data-field-toolbar-scope>
 	{#if selectedVersion === 'disabled'}
 		{#if isEditable}
 			<!-- Редактор: тонкая индикация, что полоса отключена -->
@@ -183,6 +183,7 @@
 				? 'right-14 lg:right-16'
 				: 'right-1.5'}"
 			title="Варианты полосы акций"
+			data-field-toolbar-anchor
 			aria-label="Варианты полосы акций"
 		>
 			<svg

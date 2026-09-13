@@ -130,7 +130,7 @@
 	}
 </script>
 
-<div bind:this={bannerEl} class="relative">
+<div data-field-toolbar-scope bind:this={bannerEl} class="relative">
 	{#if selectedVersion === 'disabled'}
 		{#if isEditable}
 			<!-- Редактор: тонкая индикация, что баннер отключён -->
@@ -158,6 +158,7 @@
 			onclick={() => (drawerOpen = true)}
 			class="absolute top-1/2 right-1.5 z-[100] hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/10 bg-ink-950/80 text-on-dark/80 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-link-400/40 hover:bg-ink-900 hover:text-on-dark active:scale-95 lg:flex"
 			title="Варианты и сброс"
+			data-field-toolbar-anchor
 			aria-label="Варианты и сброс баннера"
 		>
 			<svg

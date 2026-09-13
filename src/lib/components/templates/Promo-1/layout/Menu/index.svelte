@@ -170,6 +170,7 @@
 			onclick={() => (drawerOpen = true)}
 			class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-surface-raised text-ink-500 shadow-sm transition-all duration-300 hover:border-link-300 hover:text-link-600 active:scale-95"
 			title="Настройки меню"
+			data-field-toolbar-anchor
 			aria-label="Настройки меню"
 		>
 			<svg

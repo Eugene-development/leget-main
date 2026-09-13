@@ -301,6 +301,7 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <header
+	data-field-toolbar-scope
 	bind:this={headerEl}
 	class="sticky top-0 z-[150] w-full lg:bg-surface-raised/95 lg:shadow-lg lg:backdrop-blur"
 >

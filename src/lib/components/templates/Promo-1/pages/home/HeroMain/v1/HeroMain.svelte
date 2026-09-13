@@ -501,51 +501,27 @@
 														: 'brand-item-static'}"
 												>
 													{#if isEditable && editContext}
-														<div class="brand-logo relative h-10 w-full">
-															<button
-																type="button"
-																onclick={() => openBrandLogoPicker(index)}
-																tabindex={copyIndex === 1 ? -1 : undefined}
-																class="group flex h-full w-full cursor-pointer items-center justify-center rounded-lg border border-transparent px-2 opacity-90 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:border-ink-400/40 hover:bg-surface-raised/40 hover:opacity-100 focus-visible:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none {visibility.isVisible(
-																	`brand:${index}`
-																)
-																	? ''
-																	: 'opacity-45 grayscale'}"
-																aria-label={`Заменить логотип «${brand.name}»`}
-																title={`Заменить логотип «${brand.name}»`}
-															>
-																<ImageFallback
-																	imagePath={['brands', index, 'logo']}
-																	imageDefaults={{ brands }}
-																	class="max-h-full max-w-full object-contain"
-																	src={brand.logo}
-																	alt={copyIndex === 1 ? '' : brand.name}
-																/>
-															</button>
-															<button
-																type="button"
-																role="switch"
-																aria-checked={visibility.isVisible(`brand:${index}`)}
-																aria-busy={visibility.isPending(`brand:${index}`)}
-																aria-label={`${visibility.isVisible(`brand:${index}`) ? 'Скрыть' : 'Показать'} логотип «${brand.name}»`}
-																title={`${visibility.isVisible(`brand:${index}`) ? 'Скрыть' : 'Показать'} логотип «${brand.name}»`}
-																tabindex={copyIndex === 1 ? -1 : undefined}
-																disabled={visibility.isPending(`brand:${index}`)}
-																onclick={(event) => visibility.toggle(`brand:${index}`, event)}
-																class="absolute -top-2 right-8 inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-surface-raised/80 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60 {visibility.isVisible(
-																	`brand:${index}`
-																)
-																	? 'bg-link-500'
-																	: 'bg-ink-400'}"
-															>
-																<span
-																	class="pointer-events-none inline-block size-4 rounded-full bg-surface-raised shadow-sm transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui {visibility.isVisible(
-																		`brand:${index}`
-																	)
-																		? 'translate-x-4'
-																		: 'translate-x-0'}"
-																></span>
-															</button>
+														<div
+															class="brand-logo flex h-10 w-full items-center justify-center px-2 {visibility.isVisible(
+																`brand:${index}`
+															)
+																? ''
+																: 'opacity-45 grayscale'}"
+														>
+															<ImageFallback
+																imagePath={['brands', index, 'logo']}
+																onImageEdit={() => openBrandLogoPicker(index)}
+																imageVisibility={{
+																	visible: visibility.isVisible(`brand:${index}`),
+																	pending: visibility.isPending(`brand:${index}`),
+																	label: `логотип «${brand.name}»`,
+																	onToggle: (event) => visibility.toggle(`brand:${index}`, event)
+																}}
+																imageDefaults={{ brands }}
+																class="max-h-full max-w-full object-contain"
+																src={brand.logo}
+																alt={copyIndex === 1 ? '' : brand.name}
+															/>
 														</div>
 													{:else if brand.url}
 														<a

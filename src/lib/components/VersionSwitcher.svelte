@@ -189,6 +189,7 @@
 
 {#if isEditable && editContext}
 	<div
+		data-field-toolbar-anchor
 		class="font-sans-premium z-[100] flex items-center gap-1.5 select-none sm:gap-2 {placement ===
 		'overlay'
 			? 'absolute top-2 left-1/2 -translate-x-1/2 sm:top-6 sm:right-6 sm:left-auto sm:translate-x-0'

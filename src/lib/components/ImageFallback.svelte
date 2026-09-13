@@ -11,6 +11,8 @@
 		imagePath,
 		imageDefaults = {},
 		imageRole,
+		imageVisibility,
+		onImageEdit,
 		alt = '',
 		class: className = '',
 		onerror,
@@ -20,6 +22,13 @@
 		imagePath?: ImagePathPart[];
 		imageDefaults?: Record<string, unknown>;
 		imageRole?: 'preview';
+		onImageEdit?: () => void;
+		imageVisibility?: {
+			visible: boolean;
+			pending?: boolean;
+			label: string;
+			onToggle: (event: MouseEvent) => void | Promise<void>;
+		};
 	} = $props();
 
 	const editor = useImageEditing();
@@ -124,8 +133,10 @@
 		<ImageEditButton
 			{target}
 			{label}
-			onOpen={() =>
-				editor.open({ path: imagePath!, value: savedSrc ?? '', label, defaults: imageDefaults })}
+			visibility={imageVisibility}
+			onOpen={onImageEdit ??
+				(() =>
+					editor.open({ path: imagePath!, value: savedSrc ?? '', label, defaults: imageDefaults }))}
 		/>
 	{/key}
 {/if}

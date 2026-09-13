@@ -249,6 +249,9 @@
 								<EditableField
 									richText={false}
 									fieldKey="Footer.email"
+									visible={contacts.isVisible('email')}
+									visibilityLabel={contacts.label('email') + ' в футере'}
+									onToggleVisibility={(event) => contacts.toggle('email', event)}
 									label="Email"
 									value={email}
 									onSave={(value) => saveField('email', value)}
@@ -263,11 +266,6 @@
 										</a>
 									{/snippet}
 								</EditableField>
-								{#if isEditable}<ContactToggle
-										{contacts}
-										contactKey="email"
-										class="self-start"
-									/>{/if}
 							</div>
 						{/if}
 
@@ -282,6 +280,9 @@
 								>
 								<EditableField
 									fieldKey="Footer.address"
+									visible={contacts.isVisible('address')}
+									visibilityLabel={contacts.label('address') + ' в футере'}
+									onToggleVisibility={(event) => contacts.toggle('address', event)}
 									label="Адрес"
 									value={address}
 									onSave={(value) => saveField('address', value)}
@@ -294,11 +295,6 @@
 										>
 									{/snippet}
 								</EditableField>
-								{#if isEditable}<ContactToggle
-										{contacts}
-										contactKey="address"
-										class="self-start"
-									/>{/if}
 							</div>
 						{/if}
 
@@ -313,6 +309,9 @@
 								>
 								<EditableField
 									fieldKey="Footer.hours"
+									visible={contacts.isVisible('hours')}
+									visibilityLabel={contacts.label('hours') + ' в футере'}
+									onToggleVisibility={(event) => contacts.toggle('hours', event)}
 									label="Режим работы"
 									value={hours}
 									onSave={(value) => saveField('hours', value)}
@@ -324,11 +323,6 @@
 										>
 									{/snippet}
 								</EditableField>
-								{#if isEditable}<ContactToggle
-										{contacts}
-										contactKey="hours"
-										class="self-start"
-									/>{/if}
 							</div>
 						{/if}
 					</div>

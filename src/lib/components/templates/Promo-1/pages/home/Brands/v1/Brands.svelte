@@ -158,39 +158,6 @@
 	}
 </script>
 
-{#snippet logoToggle(key: string, name: string, position: string)}
-	{#if isEditable && editContext}
-		<button
-			type="button"
-			role="switch"
-			aria-checked={visibility.isVisible(key)}
-			aria-busy={visibility.isPending(key)}
-			aria-label={`${visibility.isVisible(key) ? 'Скрыть' : 'Показать'} логотип «${name}»`}
-			title={`${visibility.isVisible(key) ? 'Скрыть' : 'Показать'} логотип «${name}»`}
-			disabled={visibility.isPending(key)}
-			onclick={(event) => visibility.toggle(key, event)}
-			class="absolute z-10 flex size-11 cursor-pointer items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60 {position}"
-		>
-			<span
-				aria-hidden="true"
-				class="inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-surface-raised/80 shadow-sm transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui {visibility.isVisible(
-					key
-				)
-					? 'bg-link-500'
-					: 'bg-ink-400'}"
-			>
-				<span
-					class="inline-block size-4 rounded-full bg-surface-raised shadow-sm transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui {visibility.isVisible(
-						key
-					)
-						? 'translate-x-4'
-						: 'translate-x-0'}"
-				></span>
-			</span>
-		</button>
-	{/if}
-{/snippet}
-
 <!--
 	Бренды материалов (Brands), версия 1 — «логотипная стена».
 
@@ -287,13 +254,18 @@
 							<div class="p1-logo-slot p1-body justify-center self-center">
 								<ImageFallback
 									imagePath={['partners', index, 'logo']}
+									imageVisibility={{
+										visible: visibility.isVisible(`partner:${index}`),
+										pending: visibility.isPending(`partner:${index}`),
+										label: `логотип «${partner.name}»`,
+										onToggle: (event) => visibility.toggle(`partner:${index}`, event)
+									}}
 									imageDefaults={{ partners }}
 									class="p1-logo"
 									src={partner.logo}
 									alt={partner.name}
 								/>
 							</div>
-							{@render logoToggle(`partner:${index}`, partner.name, 'top-1 right-1')}
 						</svelte:element>
 					{/each}
 				</div>
@@ -329,12 +301,17 @@
 								>
 									<ImageFallback
 										imagePath={['brands', index, 'logo']}
+										imageVisibility={{
+											visible: visibility.isVisible(`brand:${index}`),
+											pending: visibility.isPending(`brand:${index}`),
+											label: `логотип «${brand.name}»`,
+											onToggle: (event) => visibility.toggle(`brand:${index}`, event)
+										}}
 										imageDefaults={{ brands }}
 										class="p1-logo max-h-8"
 										src={brand.logo}
 										alt={brand.name}
 									/>
-									{@render logoToggle(`brand:${index}`, brand.name, '-top-6 right-0')}
 								</div>
 							{/each}
 						</div>
