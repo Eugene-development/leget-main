@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.4.3.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -39,7 +40,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}<h2 class="text-4xl text-white lg:text-5xl">
-					{displayValue}
+					<RichText value={displayValue} />
 				</h2>{/snippet}
 		</EditableField>
 		<EditableField
@@ -55,7 +56,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}<p class="mx-auto mt-6 max-w-xl text-lg text-surface-300">
-					{displayValue}
+					<RichText value={displayValue} />
 				</p>{/snippet}
 		</EditableField>
 		<div class="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -71,7 +72,7 @@
 						href={String(data?.ctaPrimaryLink ?? '/contacts')}
 						class="inline-flex items-center gap-3 rounded-xl bg-accent-500 px-8 py-4 text-sm font-bold tracking-wide text-surface-900 uppercase transition-all duration-300 hover:bg-accent-400 hover:shadow-2xl hover:shadow-accent-500/30"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 						<svg viewBox="0 0 20 20" class="size-4 fill-current"
 							><path
 								fill-rule="evenodd"
@@ -93,7 +94,7 @@
 					<a
 						href={String(data?.ctaSecondaryLink ?? '/brands')}
 						class="inline-flex items-center gap-2 rounded-xl border border-surface-500 px-8 py-4 text-sm font-semibold tracking-wide text-surface-200 transition-all duration-300 hover:border-surface-300 hover:text-white"
-						>{displayValue}</a
+						><RichText value={displayValue} /></a
 					>
 				{/snippet}
 			</EditableField>

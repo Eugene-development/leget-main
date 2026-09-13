@@ -15,6 +15,7 @@
 	// FORM: опись направлений — первая в списке структур, выбрана пользователем.
 	// FINISH: unreviewed and undocumented is unfinished; this build ends with the
 	//   finish review, the verdict, and DESIGN.md.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -90,12 +91,13 @@
 					     и при одинаковой антикве заголовок переставал читаться главным.
 					     48 против 30 держит ту же полуторную ступень, что и на широком
 					     экране (60 против 30). -->
-					<h2 class="p1-title text-5xl lg:text-6xl">{displayValue}</h2>
+					<h2 class="p1-title text-5xl lg:text-6xl"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
 			<div class="p1-body mt-6 text-lg leading-8">
 				<EditableField
+					legacyHtml
 					fieldKey="Incentives.text"
 					label="Текст"
 					value={String(data?.text ?? INCENTIVES_DEFAULT_TEXT)}
@@ -105,7 +107,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						{@html displayValue}
+						<RichText value={displayValue} legacyHtml />
 					{/snippet}
 				</EditableField>
 			</div>
@@ -136,7 +138,7 @@
 							>
 								{#snippet children(displayValue)}
 									<p class="p1-title p1-title-display text-3xl break-words">
-										{displayValue}
+										<RichText value={displayValue} />
 									</p>
 								{/snippet}
 							</EditableField>
@@ -177,7 +179,7 @@
 						onSave={(v) => saveField('ctaText', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 					<svg
 						class="h-4 w-4 shrink-0"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -55,7 +56,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-4xl sm:text-5xl">{displayValue}</h2>
+					<h2 class="text-4xl sm:text-5xl"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -70,7 +71,9 @@
 			>
 				{#snippet children(displayValue)}
 					{#if displayValue}
-						<p class="mx-auto mt-4 max-w-2xl text-xl text-stone-300">{displayValue}</p>
+						<p class="mx-auto mt-4 max-w-2xl text-xl text-stone-300">
+							<RichText value={displayValue} />
+						</p>
 					{/if}
 				{/snippet}
 			</EditableField>
@@ -94,7 +97,9 @@
 							class="block"
 						>
 							{#snippet children(displayValue)}
-								<div class="text-4xl font-light text-amber-400 sm:text-5xl">{displayValue}</div>
+								<div class="text-4xl font-light text-amber-400 sm:text-5xl">
+									<RichText value={displayValue} />
+								</div>
 							{/snippet}
 						</EditableField>
 
@@ -107,7 +112,9 @@
 							class="mt-3 block"
 						>
 							{#snippet children(displayValue)}
-								<p class="text-sm tracking-wide text-stone-300 uppercase">{displayValue}</p>
+								<p class="text-sm tracking-wide text-stone-300 uppercase">
+									<RichText value={displayValue} />
+								</p>
 							{/snippet}
 						</EditableField>
 					</div>

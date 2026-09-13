@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.5.1.2 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct } from '../../theme';
@@ -64,7 +65,7 @@
 				{#snippet children(displayValue)}
 					<p class={ct.eyebrow.onInk}>
 						<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
-						{displayValue}
+						<RichText value={displayValue} />
 						<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
 					</p>
 				{/snippet}
@@ -79,7 +80,7 @@
 				class="ct-item ct-d1 mt-5 block"
 			>
 				{#snippet children(displayValue)}
-					<h1 class={ct.title.h1OnInk}>{displayValue}</h1>
+					<h1 class={ct.title.h1OnInk}><RichText value={displayValue} /></h1>
 				{/snippet}
 			</EditableField>
 
@@ -96,7 +97,7 @@
 				class="ct-item ct-d3 mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="{ct.body.onInk} mx-auto max-w-xl">{displayValue}</p>
+					<p class="{ct.body.onInk} mx-auto max-w-xl"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>

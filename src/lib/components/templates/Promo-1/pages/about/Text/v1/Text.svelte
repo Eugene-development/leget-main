@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.2.7.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -36,6 +37,7 @@
 		<div class="mx-auto max-w-3xl px-6 lg:px-8">
 			<div class="ds-prose p1-prose mx-auto prose max-w-[65ch]">
 				<EditableField
+					legacyHtml
 					fieldKey="Text.content"
 					label="Текст"
 					value={String(data?.content ?? '')}
@@ -45,7 +47,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<div class="ds-prose-content">{@html displayValue}</div>
+						<div class="ds-prose-content"><RichText value={displayValue} legacyHtml /></div>
 					{/snippet}
 				</EditableField>
 			</div>

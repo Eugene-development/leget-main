@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.4.1.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -92,7 +93,7 @@
 									class="h-px w-8 {isLight ? 'bg-brand-600/60' : 'bg-brand-500/80'}"
 									aria-hidden="true"
 								></span>
-								{displayValue}
+								<RichText value={displayValue} />
 							</p>
 						{/snippet}
 					</EditableField>
@@ -113,7 +114,7 @@
 									? 'text-ink-900'
 									: 'text-on-dark'}"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 							</h1>
 						{/snippet}
 					</EditableField>
@@ -148,7 +149,7 @@
 								? 'text-ink-600'
 								: 'text-ink-400'}"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -160,6 +161,7 @@
 	     В обычном потоке последним элементом секции: обёртка EditableField всегда
 	     `relative`, поэтому позиционировать её через `absolute` бесполезно. -->
 	<EditableField
+		richText={false}
 		fieldKey="Hero.highlights"
 		label="Бегущая строка (разделитель «·»)"
 		value={String(data?.highlights ?? DEFAULT_HIGHLIGHTS)}

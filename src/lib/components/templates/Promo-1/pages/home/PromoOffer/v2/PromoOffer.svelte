@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.3.2 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -63,7 +64,7 @@
 							onSave={(v) => saveField('badge', v)}
 							class="inline"
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</span>
 				</div>
@@ -80,7 +81,7 @@
 						{#snippet children(displayValue)}
 							<span
 								class="bg-gradient-to-r from-cat-8-400 via-cat-1-400 to-cat-13-400 bg-clip-text text-transparent"
-								>{displayValue}</span
+								><RichText value={displayValue} /></span
 							>
 						{/snippet}
 					</EditableField>
@@ -97,7 +98,9 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-body text-base leading-relaxed font-medium md:text-lg">{displayValue}</p>
+							<p class="p1-body text-base leading-relaxed font-medium md:text-lg">
+								<RichText value={displayValue} />
+							</p>
 						{/snippet}
 					</EditableField>
 
@@ -110,7 +113,9 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-muted text-sm leading-relaxed md:text-base">{displayValue}</p>
+							<p class="p1-muted text-sm leading-relaxed md:text-base">
+								<RichText value={displayValue} />
+							</p>
 						{/snippet}
 					</EditableField>
 				</div>
@@ -157,7 +162,7 @@
 							onSave={(v) => saveField('primaryButton', v)}
 							class="inline"
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 						<svg
 							class="h-4 w-4"
@@ -183,7 +188,7 @@
 							onSave={(v) => saveField('secondaryButton', v)}
 							class="inline"
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</a>
 				</div>

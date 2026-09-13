@@ -12,6 +12,7 @@ declare global {
 		smartCaptcha?: {
 			render: (container: HTMLElement, options: Record<string, unknown>) => number;
 			reset: (widgetId: number) => void;
+			destroy: (widgetId: number) => void;
 		};
 		onloadSmartCaptchaScript?: () => void;
 	}

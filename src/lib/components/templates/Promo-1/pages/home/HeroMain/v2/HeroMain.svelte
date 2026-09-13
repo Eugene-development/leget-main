@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.1.1.2 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -404,7 +405,7 @@
 									></span>
 									<span class="relative inline-flex h-2 w-2 rounded-full bg-link-400"></span>
 								</span>
-								{displayValue}
+								<RichText value={displayValue} />
 							</span>
 						{/snippet}
 					</EditableField>
@@ -425,7 +426,7 @@
 								? 'via-slate-850 from-ink-900 to-ink-700'
 								: 'hero-title from-surface-raised via-ink-100 to-ink-400'}"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
 				</EditableField>
@@ -446,7 +447,7 @@
 								? 'text-ink-600'
 								: 'hero-description text-ink-300'}"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>

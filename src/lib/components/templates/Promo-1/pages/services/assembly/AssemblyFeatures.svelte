@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.15.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -85,7 +86,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="text-base/7 font-semibold text-cat-6-600">{displayValue}</p>
+					<p class="text-base/7 font-semibold text-cat-6-600"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 
@@ -99,7 +100,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
 			</EditableField>
@@ -138,7 +139,7 @@
 							class="mt-8 block"
 						>
 							{#snippet children(displayValue)}
-								<h3 class="p1-title-sub text-xl text-ink-900">{displayValue}</h3>
+								<h3 class="p1-title-sub text-xl text-ink-900"><RichText value={displayValue} /></h3>
 							{/snippet}
 						</EditableField>
 
@@ -152,7 +153,7 @@
 							class="mt-4 block"
 						>
 							{#snippet children(displayValue)}
-								<p class="text-base/7 text-ink-600">{displayValue}</p>
+								<p class="text-base/7 text-ink-600"><RichText value={displayValue} /></p>
 							{/snippet}
 						</EditableField>
 					</div>

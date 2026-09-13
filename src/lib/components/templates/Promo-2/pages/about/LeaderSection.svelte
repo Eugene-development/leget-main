@@ -2,6 +2,7 @@
 	// Артикул: 2.2.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -121,7 +122,7 @@
 							class="text-3xl text-primary md:text-4xl lg:text-[2.5rem]"
 							style="font-family: var(--font-heading);"
 						>
-							<span class="text-secondary italic">{displayValue}</span>
+							<span class="text-secondary italic"><RichText value={displayValue} /></span>
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -148,7 +149,9 @@
 							onSave={(v) => saveField('name', v)}
 						>
 							{#snippet children(displayValue)}
-								<p class="text-sm font-medium tracking-[0.1em] text-primary">{displayValue}</p>
+								<p class="text-sm font-medium tracking-[0.1em] text-primary">
+									<RichText value={displayValue} />
+								</p>
 							{/snippet}
 						</EditableField>
 						<EditableField
@@ -159,7 +162,9 @@
 							onSave={(v) => saveField('role', v)}
 						>
 							{#snippet children(displayValue)}
-								<p class="mt-1 text-[11px] tracking-wider text-muted uppercase">{displayValue}</p>
+								<p class="mt-1 text-[11px] tracking-wider text-muted uppercase">
+									<RichText value={displayValue} />
+								</p>
 							{/snippet}
 						</EditableField>
 					</div>

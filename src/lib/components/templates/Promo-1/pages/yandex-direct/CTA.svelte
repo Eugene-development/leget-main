@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.10.7.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
@@ -38,7 +39,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="yd-cta__title">{displayValue}</h2>
+					<h2 class="yd-cta__title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -55,7 +56,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="yd-cta__subtitle">{displayValue}</p>
+					<p class="yd-cta__subtitle"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 
@@ -69,7 +70,7 @@
 						onSave={(v) => saveField('primaryButton', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</a>
 				<a href={phoneHref} class="yd-cta__btn yd-cta__btn--secondary">
@@ -93,7 +94,7 @@
 						onSave={(v) => saveField('phoneButton', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</a>
 			</div>

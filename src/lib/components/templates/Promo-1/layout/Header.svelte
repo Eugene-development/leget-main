@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -360,7 +361,7 @@
 								<span
 									class="p1-label text-link-900 transition-transform duration-300 group-hover:scale-105"
 								>
-									{displayValue}
+									<RichText value={displayValue} />
 								</span>
 							{/snippet}
 						</EditableField>

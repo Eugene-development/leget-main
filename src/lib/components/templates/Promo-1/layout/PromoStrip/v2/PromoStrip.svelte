@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.П.1.2 — см. docs/architecture/component-articles.md
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import type { ActiveAction } from '../../../pages/actions/actionCards';
@@ -101,7 +102,7 @@
 					href={String(data?.promoLinkHref ?? '/actions')}
 					class="promo-all-link p1-accent flex origin-left items-center gap-1.5 text-xs whitespace-nowrap transition-[color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600 motion-reduce:transition-none"
 				>
-					{displayValue}
+					<RichText value={displayValue} />
 					<svg
 						class="h-3 w-3 [stroke-width:var(--ds-icon-stroke)]"
 						viewBox="0 0 24 24"

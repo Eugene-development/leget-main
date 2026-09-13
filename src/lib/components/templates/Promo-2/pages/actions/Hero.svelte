@@ -2,6 +2,7 @@
 	// Артикул: 2.8.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -86,7 +87,7 @@
 					{isEditable}
 					onSave={(v) => saveField('discountBadge', v)}
 				>
-					{#snippet children(displayValue)}{displayValue}{/snippet}
+					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</span>
 			<span class="mt-0.5 text-[9px] tracking-[0.15em] text-muted uppercase">скидка</span>
@@ -113,7 +114,7 @@
 							{isEditable}
 							onSave={(v) => saveField('label', v)}
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</span>
 				</div>
@@ -133,7 +134,7 @@
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
 				</EditableField>
@@ -188,7 +189,7 @@
 							class:animate-fade-up={heroVisible}
 							style="animation-delay: 0.7s"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -211,7 +212,7 @@
 								href={String(data?.ctaLink ?? '/contact')}
 								class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-primary bg-primary px-8 py-4 text-xs tracking-[0.15em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 								<svg
 									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"

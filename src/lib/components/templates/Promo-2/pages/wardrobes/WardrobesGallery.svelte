@@ -2,6 +2,7 @@
 	// Артикул: 2.10.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -89,7 +90,7 @@
 				>
 					{#snippet children(displayValue)}
 						<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
-							{displayValue}
+							<RichText value={displayValue} />
 						</div>
 					{/snippet}
 				</EditableField>
@@ -107,7 +108,7 @@
 							class="mb-6 text-3xl text-primary uppercase lg:text-4xl"
 							style="font-family: var(--font-heading);"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>

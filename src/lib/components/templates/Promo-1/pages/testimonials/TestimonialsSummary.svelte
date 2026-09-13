@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.7.3.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -91,7 +92,7 @@
 								inline
 								onSave={(v) => saveField('rating', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</span>
 						<span class="text-lg text-ink-400">/ 5</span>
@@ -143,7 +144,7 @@
 						class="mt-4 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="text-sm/6 text-ink-500">{displayValue}</p>
+							<p class="text-sm/6 text-ink-500"><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 				</div>
@@ -160,7 +161,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h2 class="text-2xl text-pretty text-ink-900 sm:text-3xl">
-								{displayValue}
+								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
 					</EditableField>
@@ -177,7 +178,7 @@
 						class="mt-3 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="max-w-xl text-sm/6 text-ink-600">{displayValue}</p>
+							<p class="max-w-xl text-sm/6 text-ink-600"><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 
@@ -195,7 +196,7 @@
 										inline
 										onSave={(v) => updateStat(i, 'value', v)}
 									>
-										{#snippet children(val)}{val}{/snippet}
+										{#snippet children(val)}<RichText value={val} />{/snippet}
 									</EditableField>
 								</dt>
 								<dd class="mt-1 text-[11px] font-semibold tracking-[0.16em] text-ink-500 uppercase">
@@ -207,7 +208,7 @@
 										inline
 										onSave={(v) => updateStat(i, 'label', v)}
 									>
-										{#snippet children(val)}{val}{/snippet}
+										{#snippet children(val)}<RichText value={val} />{/snippet}
 									</EditableField>
 								</dd>
 							</div>

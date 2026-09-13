@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.12.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -90,7 +91,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2 class="text-4xl text-pretty text-ink-900 sm:text-5xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -113,7 +114,7 @@
 									class="block"
 								>
 									{#snippet children(displayValue)}
-										<p class="text-xl font-bold text-ink-900">{displayValue}</p>
+										<p class="text-xl font-bold text-ink-900"><RichText value={displayValue} /></p>
 									{/snippet}
 								</EditableField>
 
@@ -128,7 +129,7 @@
 								>
 									{#snippet children(displayValue)}
 										<p class="text-base/7 font-medium text-ink-600">
-											{displayValue}
+											<RichText value={displayValue} />
 										</p>
 									{/snippet}
 								</EditableField>

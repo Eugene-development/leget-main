@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.5.5.3 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -69,7 +70,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-4xl text-balance break-words sm:text-5xl">{displayValue}</h2>
+						<h2 class="p1-title text-4xl text-balance break-words sm:text-5xl">
+							<RichText value={displayValue} />
+						</h2>
 					{/snippet}
 				</EditableField>
 				<EditableField
@@ -84,7 +87,9 @@
 					class="mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="p1-muted max-w-md text-base/7 break-words">{displayValue}</p>
+						<p class="p1-muted max-w-md text-base/7 break-words">
+							<RichText value={displayValue} />
+						</p>
 					{/snippet}
 				</EditableField>
 			</div>
@@ -109,6 +114,7 @@
 				</a>
 
 				<EditableField
+					richText={false}
 					fieldKey="ContactCTA.telegramUrl"
 					label="Ссылка на Telegram"
 					value={String(data?.telegramUrl ?? '')}

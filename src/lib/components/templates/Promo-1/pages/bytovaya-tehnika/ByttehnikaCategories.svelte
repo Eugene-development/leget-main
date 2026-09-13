@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.20.5.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -53,7 +54,7 @@
 			inline
 			onSave={(value) => saveField('title', value)}
 		>
-			{#snippet children(value)}{value}{/snippet}
+			{#snippet children(value)}<RichText {value} />{/snippet}
 		</EditableField>
 	</h2>
 
@@ -81,7 +82,7 @@
 							inline
 							onSave={(value) => updateItem(i, 'title', value)}
 						>
-							{#snippet children(value)}{value}{/snippet}
+							{#snippet children(value)}<RichText {value} />{/snippet}
 						</EditableField>
 					</h3>
 					<p class="mt-1 text-sm text-ink-300">
@@ -94,7 +95,7 @@
 							multiline
 							onSave={(value) => updateItem(i, 'desc', value)}
 						>
-							{#snippet children(value)}{value}{/snippet}
+							{#snippet children(value)}<RichText {value} />{/snippet}
 						</EditableField>
 					</p>
 				</div>

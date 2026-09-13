@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.2.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -87,7 +88,8 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{displayValue}</span
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase"
+							><RichText value={displayValue} /></span
 						>
 					{/snippet}
 				</EditableField>
@@ -105,7 +107,7 @@
 							class="mt-3 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>

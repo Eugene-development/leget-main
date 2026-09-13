@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.10.1.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
@@ -44,7 +45,7 @@
 				onSave={(v) => saveField('badge', v)}
 				class="inline"
 			>
-				{#snippet children(displayValue)}{displayValue}{/snippet}
+				{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 			</EditableField>
 		</div>
 
@@ -58,7 +59,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="yd-hero__title">{displayValue}</h1>
+				<h1 class="yd-hero__title"><RichText value={displayValue} /></h1>
 			{/snippet}
 		</EditableField>
 
@@ -76,7 +77,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="yd-hero__subtitle">{displayValue}</p>
+				<p class="yd-hero__subtitle"><RichText value={displayValue} /></p>
 			{/snippet}
 		</EditableField>
 
@@ -91,7 +92,7 @@
 					onSave={(v) => saveField('primaryButton', v)}
 					class="inline"
 				>
-					{#snippet children(displayValue)}{displayValue}{/snippet}
+					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</a>
 			<a href={phoneHref} class="yd-hero__btn yd-hero__btn--secondary">
@@ -116,7 +117,7 @@
 					onSave={(v) => saveField('secondaryButton', v)}
 					class="inline"
 				>
-					{#snippet children(displayValue)}{displayValue}{/snippet}
+					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</a>
 		</div>

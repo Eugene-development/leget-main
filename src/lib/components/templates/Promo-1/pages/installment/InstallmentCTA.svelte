@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.8.7.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -94,7 +95,7 @@
 								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-cat-3-300 uppercase sm:text-xs"
 							>
 								<span class="h-px w-8 bg-cat-3-400/80" aria-hidden="true"></span>
-								{displayValue}
+								<RichText value={displayValue} />
 								<span class="h-px w-8 bg-cat-3-400/80" aria-hidden="true"></span>
 							</p>
 						{/snippet}
@@ -110,7 +111,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h2 class="text-3xl text-pretty text-on-dark sm:text-4xl lg:text-5xl">
-								{displayValue}
+								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
 					</EditableField>
@@ -128,7 +129,9 @@
 						class="it-item it-d3 mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mx-auto max-w-xl text-sm/6 text-ink-300 sm:text-base/7">{displayValue}</p>
+							<p class="mx-auto max-w-xl text-sm/6 text-ink-300 sm:text-base/7">
+								<RichText value={displayValue} />
+							</p>
 						{/snippet}
 					</EditableField>
 
@@ -148,7 +151,7 @@
 								class="inline"
 							>
 								{#snippet children(displayValue)}
-									{displayValue}
+									<RichText value={displayValue} />
 								{/snippet}
 							</EditableField>
 							<span
@@ -158,6 +161,7 @@
 						</a>
 
 						<EditableField
+							richText={false}
 							fieldKey="InstallmentCTA.phone"
 							label="Телефон"
 							value={phone}

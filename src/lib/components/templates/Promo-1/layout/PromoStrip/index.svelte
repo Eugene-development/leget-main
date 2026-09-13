@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import PromoStripV1 from './v1/PromoStrip.svelte';
 	import PromoStripV2 from './v2/PromoStrip.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
@@ -237,7 +238,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p class="text-xs text-ink-300">Адрес ссылки «Все акции»</p>
-						<p class="mt-1 text-sm break-all text-on-dark">{displayValue}</p>
+						<p class="mt-1 text-sm break-all text-on-dark"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 			{/if}

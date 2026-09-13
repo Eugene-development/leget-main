@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.15.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -79,7 +80,7 @@
 				class="inline-block"
 			>
 				{#snippet children(displayValue)}
-					<span class="p1-label p1-accent">{displayValue}</span>
+					<span class="p1-label p1-accent"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -93,7 +94,7 @@
 					class="inline-block"
 				>
 					{#snippet children(displayValue)}
-						{displayValue}
+						<RichText value={displayValue} />
 					{/snippet}
 				</EditableField>
 				<EditableField
@@ -105,7 +106,7 @@
 					class="inline-block"
 				>
 					{#snippet children(displayValue)}
-						<span class="p1-accent">{displayValue}</span>
+						<span class="p1-accent"><RichText value={displayValue} /></span>
 					{/snippet}
 				</EditableField>
 			</h1>
@@ -123,7 +124,7 @@
 				class="mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body max-w-xl text-lg leading-relaxed">{displayValue}</p>
+					<p class="p1-body max-w-xl text-lg leading-relaxed"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 

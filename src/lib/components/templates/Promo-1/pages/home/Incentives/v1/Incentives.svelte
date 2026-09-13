@@ -48,6 +48,7 @@
 	// Разметка плитки была написана дважды — по разу на колонку, с ручной
 	// арифметикой индексов (`slice(2, 4)` и `index + 2`). Теперь это сниппет:
 	// один источник, индекс приходит снаружи.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -148,7 +149,7 @@
 						крупный кегль. Предмет этой версии — сам коллаж, подпись к кадру
 						служебная, и голос у неё служебный.
 					-->
-					<p class="p1-title-sub text-lg break-words">{displayValue}</p>
+					<p class="p1-title-sub text-lg break-words"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -180,12 +181,15 @@
 						<!-- Кегль сведён с остальными версиями блока (`5xl`/`6xl`): на 3xl
 						     заголовок был на ступень тише коллажа справа и проигрывал ему
 						     первый взгляд, хотя предмет блока называет именно он. -->
-						<h2 class="p1-title text-4xl sm:text-5xl lg:text-6xl">{displayValue}</h2>
+						<h2 class="p1-title text-4xl sm:text-5xl lg:text-6xl">
+							<RichText value={displayValue} />
+						</h2>
 					{/snippet}
 				</EditableField>
 
 				<div class="p1-body mt-8 space-y-2 text-base leading-7">
 					<EditableField
+						legacyHtml
 						fieldKey="Incentives.text"
 						label="Текст"
 						value={String(data?.text ?? INCENTIVES_DEFAULT_TEXT)}
@@ -195,7 +199,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							{@html displayValue}
+							<RichText value={displayValue} legacyHtml />
 						{/snippet}
 					</EditableField>
 				</div>
@@ -228,7 +232,7 @@
 							onSave={(v) => saveField('ctaText', v)}
 							class="inline"
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 						<svg
 							class="h-4 w-4 shrink-0"

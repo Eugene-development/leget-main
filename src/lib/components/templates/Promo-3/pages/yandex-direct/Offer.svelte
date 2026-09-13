@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.9.6.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -62,7 +63,7 @@
 					>
 						{#snippet children(displayValue)}
 							<span class="text-xs font-semibold tracking-wider text-accent-500 uppercase"
-								>{displayValue}</span
+								><RichText value={displayValue} /></span
 							>
 						{/snippet}
 					</EditableField>
@@ -78,7 +79,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2 class="text-4xl text-white lg:text-5xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -96,7 +97,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-6 max-w-md text-lg leading-relaxed text-surface-300">{displayValue}</p>
+						<p class="mt-6 max-w-md text-lg leading-relaxed text-surface-300">
+							<RichText value={displayValue} />
+						</p>
 					{/snippet}
 				</EditableField>
 
@@ -112,7 +115,7 @@
 							{isEditable}
 							onSave={(v) => saveField('buttonText', v)}
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 						<svg
 							viewBox="0 0 20 20"

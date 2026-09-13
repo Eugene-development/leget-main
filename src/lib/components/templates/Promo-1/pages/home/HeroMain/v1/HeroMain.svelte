@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.1.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -344,7 +345,7 @@
 				>
 					{#snippet children(displayValue)}
 						<span class="ds-label text-ink-700">
-							{displayValue}
+							<RichText value={displayValue} />
 						</span>
 					{/snippet}
 				</EditableField>
@@ -364,7 +365,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1 class="hero-title text-4xl text-ink-900 md:text-5xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
 				</EditableField>
@@ -385,7 +386,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p class="hero-description text-sm text-ink-900 md:text-base">
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -436,7 +437,7 @@
 								onclick={() => serviceOrderStore.open('promo')}
 								class="cursor-pointer rounded-xl px-1 py-3 text-center text-sm font-semibold text-ink-900 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 							</button>
 						{/snippet}
 					</EditableField>
@@ -466,7 +467,7 @@
 											? 'block'
 											: 'hidden md:block'}"
 									>
-										{displayValue}
+										<RichText value={displayValue} />
 									</p>
 								{/if}
 							{/snippet}

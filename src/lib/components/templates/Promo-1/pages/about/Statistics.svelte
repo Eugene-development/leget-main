@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.2.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -131,7 +132,7 @@
 								inline
 								onSave={(v) => updateStat(i, 'value', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</div>
 						<div
@@ -145,7 +146,7 @@
 								inline
 								onSave={(v) => updateStat(i, 'label', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</div>
 						<div

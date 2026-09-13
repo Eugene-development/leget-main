@@ -13,6 +13,7 @@
 	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
@@ -182,6 +183,7 @@
 								<dt class="p1-label p1-muted uppercase">Почта</dt>
 								<dd class="flex items-baseline gap-3">
 									<EditableField
+										richText={false}
 										fieldKey="Footer.email"
 										label="Email"
 										value={String(data?.email ?? 'info@site.ru')}
@@ -225,7 +227,7 @@
 										multiline
 									>
 										{#snippet children(displayValue)}
-											<span class="p1-title leading-snug">{displayValue}</span>
+											<span class="p1-title leading-snug"><RichText value={displayValue} /></span>
 										{/snippet}
 									</EditableField>
 									{#if isEditable}<ContactToggle
@@ -255,7 +257,7 @@
 										{isEditable}
 									>
 										{#snippet children(displayValue)}
-											<span class="p1-title">{displayValue}</span>
+											<span class="p1-title"><RichText value={displayValue} /></span>
 										{/snippet}
 									</EditableField>
 									{#if isEditable}<ContactToggle
@@ -278,6 +280,7 @@
 				{#if data?.telegram || data?.whatsapp || isEditable}
 					<div class="mt-6 flex gap-3">
 						<EditableField
+							richText={false}
 							fieldKey="Footer.telegram"
 							label="Telegram (ссылка)"
 							value={String(data?.telegram ?? '')}
@@ -305,6 +308,7 @@
 						</EditableField>
 
 						<EditableField
+							richText={false}
 							fieldKey="Footer.whatsapp"
 							label="WhatsApp (ссылка)"
 							value={String(data?.whatsapp ?? '')}
@@ -344,7 +348,9 @@
 					{isEditable}
 				>
 					{#snippet children(displayValue)}
-						<h3 class="p1-title-sub p1-title text-2xl sm:text-3xl">{displayValue}</h3>
+						<h3 class="p1-title-sub p1-title text-2xl sm:text-3xl">
+							<RichText value={displayValue} />
+						</h3>
 					{/snippet}
 				</EditableField>
 
@@ -359,7 +365,7 @@
 					multiline
 				>
 					{#snippet children(displayValue)}
-						<p class="p1-muted mt-3 max-w-md text-sm/6">{displayValue}</p>
+						<p class="p1-muted mt-3 max-w-md text-sm/6"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 
@@ -532,7 +538,8 @@
 					onSave={(val) => saveField('siteName', val)}
 					{isEditable}
 					inline
-					>{#snippet children(displayValue)}<span>{displayValue}</span>{/snippet}</EditableField
+					>{#snippet children(displayValue)}<span><RichText value={displayValue} /></span
+						>{/snippet}</EditableField
 				>". Все права защищены.
 			</p>
 
@@ -552,9 +559,7 @@
 	</div>
 </footer>
 
-{#if showLoginModal}
-	<LoginModal onClose={() => (showLoginModal = false)} />
-{/if}
+<LoginModal open={showLoginModal} onClose={() => (showLoginModal = false)} />
 
 <style>
 	/* Штрих иконки принадлежит системе (`--ds-icon-stroke`). Презентационный

@@ -18,6 +18,8 @@ export interface EditField {
 	draft: string;
 	/** Многострочное поле */
 	multiline: boolean;
+	richText?: boolean;
+	legacyHtml?: boolean;
 	/** Callback сохранения */
 	onSave: (value: string) => Promise<void>;
 }
@@ -40,6 +42,7 @@ function createEditStore() {
 
 		/** Открыть модалку для редактирования поля */
 		open(field: Omit<EditField, 'draft'>) {
+			if (isSaving) return;
 			activeField = { ...field, draft: field.value };
 			isSaving = false;
 			saveError = '';
@@ -47,13 +50,14 @@ function createEditStore() {
 
 		/** Обновить черновик (live preview) */
 		setDraft(value: string) {
-			if (activeField) {
+			if (activeField && !isSaving) {
 				activeField.draft = value;
 			}
 		},
 
 		/** Закрыть без сохранения */
 		close() {
+			if (isSaving) return;
 			activeField = null;
 			saveError = '';
 		},

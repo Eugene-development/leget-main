@@ -2,6 +2,7 @@
 	// Артикул: 1.19.4.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -63,7 +64,7 @@
 			onSave={(v) => saveField('title', v)}
 		>
 			{#snippet children(val)}
-				{val}
+				<RichText value={val} />
 			{/snippet}
 		</EditableField>
 	</h2>

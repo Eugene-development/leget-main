@@ -25,8 +25,9 @@
 	onMount(() => {
 		if (!SITE_KEY) return;
 
+		let disposed = false;
 		loadCaptchaScript().then(() => {
-			if (container && window.smartCaptcha) {
+			if (!disposed && container && window.smartCaptcha) {
 				widgetId = window.smartCaptcha.render(container, {
 					sitekey: SITE_KEY,
 					callback: (token: string) => onverify(token),
@@ -34,6 +35,14 @@
 				});
 			}
 		});
+
+		return () => {
+			disposed = true;
+			if (widgetId !== null) {
+				window.smartCaptcha?.destroy(widgetId);
+				widgetId = null;
+			}
+		};
 	});
 
 	/** Сбрасывает виджет — токен аннулируется, юзер может пройти проверку заново. */

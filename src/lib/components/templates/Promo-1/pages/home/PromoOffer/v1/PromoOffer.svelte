@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.3.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -93,7 +94,7 @@
 					onSave={(v) => saveField('badge', v)}
 					class="inline"
 				>
-					{#snippet children(displayValue)}{displayValue}{/snippet}
+					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</div>
 
@@ -107,7 +108,7 @@
 					class="inline"
 				>
 					{#snippet children(displayValue)}
-						<span class="promo-alt__title-accent">{displayValue}</span>
+						<span class="promo-alt__title-accent"><RichText value={displayValue} /></span>
 					{/snippet}
 				</EditableField>
 			</h2>
@@ -122,7 +123,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="promo-alt__text-primary">{displayValue}</p>
+						<p class="promo-alt__text-primary"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 
@@ -135,7 +136,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="promo-alt__text-secondary">{displayValue}</p>
+						<p class="promo-alt__text-secondary"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 			</div>
@@ -174,7 +175,7 @@
 						onSave={(v) => saveField('primaryButton', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 					<svg
 						width="18"
@@ -200,7 +201,7 @@
 						onSave={(v) => saveField('secondaryButton', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</a>
 			</div>

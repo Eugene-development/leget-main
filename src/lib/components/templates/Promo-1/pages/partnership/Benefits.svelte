@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.4.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -165,7 +166,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2 class="p1-title text-3xl sm:text-4xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
 			</EditableField>
@@ -178,7 +179,7 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto mt-4 max-w-2xl">{displayValue}</p>
+					<p class="p1-body mx-auto mt-4 max-w-2xl"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -236,7 +237,7 @@
 								inline
 								onSave={(v) => updateItem(i, 'title', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</h3>
 						<p class="p1-body mt-3 text-sm/6">
@@ -248,7 +249,7 @@
 								inline
 								onSave={(v) => updateItem(i, 'text', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</p>
 					</div>

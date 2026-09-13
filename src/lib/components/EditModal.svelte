@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichTextEditor from './RichTextEditor.svelte';
 	import { editStore } from '$lib/stores/edit.svelte';
 
 	const field = $derived(editStore.activeField);
@@ -9,18 +10,26 @@
 	let textareaEl: HTMLTextAreaElement | null = $state(null);
 	let inputEl: HTMLInputElement | null = $state(null);
 
-	// Фокус при открытии
 	$effect(() => {
-		if (field) {
-			setTimeout(() => {
-				textareaEl?.focus();
-				inputEl?.focus();
-			}, 50);
-		}
+		const key = field?.key;
+		if (!key) return;
+		const previous = document.activeElement;
+		const timer = setTimeout(() => {
+			textareaEl?.focus();
+			inputEl?.focus();
+		}, 0);
+		return () => {
+			clearTimeout(timer);
+			if (previous instanceof HTMLElement && previous.isConnected) previous.focus();
+		};
 	});
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') editStore.close();
+		if (field && (e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+			e.preventDefault();
+			void editStore.save();
+		}
 	}
 </script>
 
@@ -29,10 +38,10 @@
 {#if field}
 	<!-- Модальное окно в левом нижнем углу -->
 	<div
-		class="fixed bottom-6 left-6 z-50 w-80 rounded-2xl bg-surface-raised shadow-2xl ring-1 ring-ink-200"
+		class="fixed bottom-4 left-4 z-[150] max-h-[calc(100dvh-2rem)] w-[min(680px,calc(100vw-2rem))] overflow-y-auto rounded-2xl bg-surface-raised shadow-2xl ring-1 ring-ink-200"
 		role="dialog"
-		aria-modal="true"
-		aria-label="Редактирование поля"
+		aria-modal="false"
+		aria-label={`Редактирование: ${field.label}`}
 	>
 		<!-- Заголовок -->
 		<div class="flex items-center justify-between border-b border-ink-100 px-4 py-3">
@@ -63,6 +72,7 @@
 			<button
 				type="button"
 				onclick={() => editStore.close()}
+				disabled={isSaving}
 				class="rounded-lg p-1 text-ink-400 transition hover:bg-ink-100 hover:text-ink-600"
 				aria-label="Закрыть"
 			>
@@ -84,9 +94,21 @@
 
 		<!-- Форма -->
 		<div class="p-4">
-			{#if field.multiline}
+			{#if field.richText}
+				{#key field.key}
+					<RichTextEditor
+						value={field.value}
+						label={field.label}
+						legacyHtml={field.legacyHtml}
+						disabled={isSaving}
+						onchange={(value) => editStore.setDraft(value)}
+					/>
+				{/key}
+			{:else if field.multiline}
 				<textarea
 					bind:this={textareaEl}
+					aria-label={field.label}
+					disabled={isSaving}
 					class="w-full resize-none rounded-xl border border-ink-200 px-3 py-2.5 text-sm text-ink-900 transition focus:border-link-400 focus:ring-2 focus:ring-link-100 focus:outline-none"
 					rows={5}
 					value={field.draft}
@@ -96,6 +118,8 @@
 			{:else}
 				<input
 					bind:this={inputEl}
+					aria-label={field.label}
+					disabled={isSaving}
 					type="text"
 					class="w-full rounded-xl border border-ink-200 px-3 py-2.5 text-sm text-ink-900 transition focus:border-link-400 focus:ring-2 focus:ring-link-100 focus:outline-none"
 					value={field.draft}
@@ -105,7 +129,7 @@
 			{/if}
 
 			{#if saveError}
-				<p class="mt-2 text-xs text-cat-6-500">{saveError}</p>
+				<p role="alert" class="mt-2 text-xs text-cat-6-500">{saveError}</p>
 			{/if}
 
 			<!-- Кнопки -->
@@ -121,6 +145,7 @@
 				<button
 					type="button"
 					onclick={() => editStore.close()}
+					disabled={isSaving}
 					class="rounded-xl border border-ink-200 bg-surface-raised px-4 py-2 text-sm font-medium text-ink-600 transition hover:border-ink-300 hover:bg-ink-50"
 				>
 					Отмена

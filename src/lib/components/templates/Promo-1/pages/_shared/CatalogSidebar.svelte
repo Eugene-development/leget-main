@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	/**
 	 * Общий сайдбар рубрик каталога Promo-1.
 	 *
@@ -469,7 +470,7 @@
 			onSave={saveTitle}
 		>
 			{#snippet children(val)}
-				{val}
+				<RichText value={val} />
 			{/snippet}
 		</EditableField>
 	</h3>

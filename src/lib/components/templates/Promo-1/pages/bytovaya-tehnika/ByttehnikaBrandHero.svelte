@@ -7,6 +7,7 @@
 	// блок страницы и с этого момента побеждают справочник — так же, как у
 	// остальных блоков рубрики.
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -63,7 +64,7 @@
 					inline
 					onSave={(v) => saveField('title', v)}
 				>
-					{#snippet children(val)}{val}{/snippet}
+					{#snippet children(val)}<RichText value={val} />{/snippet}
 				</EditableField>
 			</h1>
 
@@ -78,7 +79,7 @@
 						multiline
 						onSave={(v) => saveField('description', v)}
 					>
-						{#snippet children(val)}{val}{/snippet}
+						{#snippet children(val)}<RichText value={val} />{/snippet}
 					</EditableField>
 				</p>
 			{/if}
@@ -97,7 +98,7 @@
 						inline
 						onSave={(v) => saveField('buttonText', v)}
 					>
-						{#snippet children(val)}{val}{/snippet}
+						{#snippet children(val)}<RichText value={val} />{/snippet}
 					</EditableField>
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path

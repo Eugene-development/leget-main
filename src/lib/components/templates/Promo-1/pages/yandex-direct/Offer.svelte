@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.10.6.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -51,7 +52,7 @@
 						onSave={(v) => saveField('badge', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</div>
 
@@ -64,7 +65,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="yd-offer__title">{displayValue}</h2>
+						<h2 class="yd-offer__title"><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
@@ -81,7 +82,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="yd-offer__subtitle">{displayValue}</p>
+						<p class="yd-offer__subtitle"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 
@@ -115,7 +116,7 @@
 						onSave={(v) => saveField('buttonText', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 					<svg
 						width="18"

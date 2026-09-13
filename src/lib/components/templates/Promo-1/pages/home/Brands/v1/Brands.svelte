@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.8.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { getContext } from 'svelte';
@@ -240,7 +241,7 @@
 						onSave={(v) => saveField('badge', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</span>
 				<EditableField
@@ -253,7 +254,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2 class="p1-title mt-3 text-3xl sm:text-4xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -311,7 +312,7 @@
 							inline
 							class="inline"
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</div>
 					{#if isEditable}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -47,7 +48,7 @@
 						class="text-4xl text-red-700 sm:text-5xl md:text-6xl"
 						class:text-white={data?.backgroundImage}
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</h1>
 				{/snippet}
 			</EditableField>
@@ -69,7 +70,7 @@
 						class:text-gray-200={data?.backgroundImage}
 						class:text-gray-600={!data?.backgroundImage}
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</p>
 				{/snippet}
 			</EditableField>

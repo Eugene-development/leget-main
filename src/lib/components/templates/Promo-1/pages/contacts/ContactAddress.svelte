@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.5.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
@@ -54,7 +55,7 @@
 					{#snippet children(displayValue)}
 						<p class={ct.eyebrow.onLight}>
 							<span class={ct.eyebrow.dashOnLight} aria-hidden="true"></span>
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -68,7 +69,7 @@
 					class="ct-item ct-d1 mt-5 block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class={ct.title.h2OnLight}>{displayValue}</h2>
+						<h2 class={ct.title.h2OnLight}><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
@@ -85,7 +86,7 @@
 					class="ct-item ct-d3 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="{ct.body.onLight} max-w-xl">{displayValue}</p>
+						<p class="{ct.body.onLight} max-w-xl"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 
@@ -100,7 +101,7 @@
 							class="inline"
 						>
 							{#snippet children(displayValue)}
-								{displayValue}
+								<RichText value={displayValue} />
 							{/snippet}
 						</EditableField>
 						<span class={ct.arrow} aria-hidden="true">&rarr;</span>
@@ -141,7 +142,7 @@
 								class="block"
 							>
 								{#snippet children(displayValue)}
-									<p class={ct.body.labelOnLight}>{displayValue}</p>
+									<p class={ct.body.labelOnLight}><RichText value={displayValue} /></p>
 								{/snippet}
 							</EditableField>
 							<EditableField
@@ -153,7 +154,7 @@
 								class="mt-1 block"
 							>
 								{#snippet children(displayValue)}
-									<p class={ct.body.onLight}>{displayValue}</p>
+									<p class={ct.body.onLight}><RichText value={displayValue} /></p>
 								{/snippet}
 							</EditableField>
 						</dd>
@@ -187,7 +188,7 @@
 								class="block"
 							>
 								{#snippet children(displayValue)}
-									<p class={ct.body.labelOnLight}>{displayValue}</p>
+									<p class={ct.body.labelOnLight}><RichText value={displayValue} /></p>
 								{/snippet}
 							</EditableField>
 							<EditableField
@@ -199,7 +200,7 @@
 								class="mt-1 block"
 							>
 								{#snippet children(displayValue)}
-									<p class={ct.body.onLight}>{displayValue}</p>
+									<p class={ct.body.onLight}><RichText value={displayValue} /></p>
 								{/snippet}
 							</EditableField>
 						</dd>
@@ -233,7 +234,7 @@
 								class="block"
 							>
 								{#snippet children(displayValue)}
-									<p class={ct.body.labelOnLight}>{displayValue}</p>
+									<p class={ct.body.labelOnLight}><RichText value={displayValue} /></p>
 								{/snippet}
 							</EditableField>
 							<EditableField
@@ -245,7 +246,7 @@
 								class="mt-1 block"
 							>
 								{#snippet children(displayValue)}
-									<p class={ct.body.onLight}>{displayValue}</p>
+									<p class={ct.body.onLight}><RichText value={displayValue} /></p>
 								{/snippet}
 							</EditableField>
 						</dd>

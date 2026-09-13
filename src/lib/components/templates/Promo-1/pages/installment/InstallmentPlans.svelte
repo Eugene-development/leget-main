@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.8.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -117,7 +118,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
 			</EditableField>
@@ -130,7 +131,9 @@
 				class="it-item it-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-sm/6 text-ink-600 sm:text-base/7">{displayValue}</p>
+					<p class="mx-auto max-w-2xl text-sm/6 text-ink-600 sm:text-base/7">
+						<RichText value={displayValue} />
+					</p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -174,7 +177,7 @@
 								inline
 								onSave={(v) => updatePlan(i, 'badge', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</div>
 
@@ -192,7 +195,7 @@
 									inline
 									onSave={(v) => updatePlan(i, 'months', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</span>
 							<span class="text-base {plan.featured ? 'text-brand-100' : 'text-ink-500'}">
@@ -204,7 +207,7 @@
 									inline
 									onSave={(v) => updatePlan(i, 'unit', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</span>
 						</div>
@@ -227,7 +230,7 @@
 									inline
 									onSave={(v) => updatePlan(i, 'rate', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</span>
 							<span
@@ -243,7 +246,7 @@
 									inline
 									onSave={(v) => updatePlan(i, 'rateLabel', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</span>
 						</div>
@@ -279,7 +282,7 @@
 										inline
 										onSave={(v) => updatePlanFeature(i, fi, v)}
 									>
-										{#snippet children(val)}{val}{/snippet}
+										{#snippet children(val)}<RichText value={val} />{/snippet}
 									</EditableField>
 								</div>
 							{/each}

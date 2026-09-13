@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.10.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -72,7 +73,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<span class="yd-usp__label">{displayValue}</span>
+					<span class="yd-usp__label"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -85,7 +86,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="yd-usp__title">{displayValue}</h2>
+					<h2 class="yd-usp__title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -102,7 +103,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="yd-usp__subtitle">{displayValue}</p>
+					<p class="yd-usp__subtitle"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>

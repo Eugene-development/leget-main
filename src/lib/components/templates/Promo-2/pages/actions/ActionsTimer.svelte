@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.8.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -87,7 +88,7 @@
 							{isEditable}
 							onSave={(v) => saveField('badge', v)}
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</span>
 				</div>
@@ -105,7 +106,7 @@
 							class="text-4xl text-primary md:text-5xl lg:text-6xl"
 							style="font-family: var(--font-heading);"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -121,7 +122,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p class="mx-auto mt-6 max-w-md text-base leading-relaxed text-secondary lg:mx-0">
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -139,7 +140,7 @@
 								href={String(data?.ctaLink ?? '/contact')}
 								class="group inline-flex cursor-pointer items-center gap-3 rounded-sm bg-primary px-8 py-4 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:bg-secondary"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 								<svg
 									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"

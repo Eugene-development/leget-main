@@ -2,6 +2,7 @@
 	// Артикул: 2.9.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -65,7 +66,9 @@
 				onSave={(v) => saveField('label', v)}
 			>
 				{#snippet children(displayValue)}
-					<span class="text-[11px] tracking-[0.3em] text-white/70 uppercase">{displayValue}</span>
+					<span class="text-[11px] tracking-[0.3em] text-white/70 uppercase"
+						><RichText value={displayValue} /></span
+					>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -84,7 +87,7 @@
 						class="mb-6 text-4xl text-white uppercase lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</h1>
 				{/snippet}
 			</EditableField>
@@ -105,7 +108,7 @@
 			>
 				{#snippet children(displayValue)}
 					<p class="mx-auto max-w-3xl text-lg leading-relaxed font-light text-white/80 lg:text-xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</p>
 				{/snippet}
 			</EditableField>
@@ -124,7 +127,7 @@
 					onSave={(v) => saveField('ctaText', v)}
 				>
 					{#snippet children(displayValue)}
-						{displayValue}
+						<RichText value={displayValue} />
 					{/snippet}
 				</EditableField>
 				<svg

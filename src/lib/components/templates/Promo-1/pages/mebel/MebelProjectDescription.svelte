@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.18.3.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -30,6 +31,7 @@
 		<div class="prose mt-8 max-w-none leading-relaxed text-ink-600 prose-slate">
 			{#if isEditable}
 				<EditableField
+					legacyHtml
 					fieldKey="MebelProjectDescription.description"
 					label="Описание"
 					value={description}
@@ -38,7 +40,7 @@
 					onSave={(v) => saveField('description', v)}
 				>
 					{#snippet children(val)}
-						{@html val || 'Добавьте описание проекта...'}
+						<RichText value={val || 'Добавьте описание проекта...'} legacyHtml />
 					{/snippet}
 				</EditableField>
 			{:else}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.1.5.2 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -117,7 +118,7 @@
 						onSave={(v) => saveField('badge', v)}
 						class="inline"
 					>
-						{#snippet children(displayValue)}{displayValue}{/snippet}
+						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</span>
 
@@ -131,7 +132,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2 class="p1-title mt-4 text-3xl md:text-4xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -149,7 +150,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="p1-body mt-6 text-sm leading-relaxed md:text-base">{displayValue}</p>
+						<p class="p1-body mt-6 text-sm leading-relaxed md:text-base">
+							<RichText value={displayValue} />
+						</p>
 					{/snippet}
 				</EditableField>
 			</div>
@@ -198,7 +201,7 @@
 											onSave={(v) => saveStepField(i, 'title', v)}
 											class="inline"
 										>
-											{#snippet children(displayValue)}{displayValue}{/snippet}
+											{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 										</EditableField>
 									</h3>
 								</div>
@@ -215,7 +218,7 @@
 										onSave={(v) => saveStepField(i, 'description', v)}
 										class="inline"
 									>
-										{#snippet children(displayValue)}{displayValue}{/snippet}
+										{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 									</EditableField>
 								</p>
 							</div>

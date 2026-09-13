@@ -105,6 +105,7 @@
 					{#if phone}
 						<div class="flex items-center justify-center px-2 py-1 text-xs xl:px-4">
 							<EditableField
+								richText={false}
 								fieldKey="Banner.phone"
 								label="Телефон"
 								value={phone}
@@ -137,6 +138,7 @@
 					{#if email}
 						<div class="flex items-center justify-center px-2 py-1 text-xs xl:px-4">
 							<EditableField
+								richText={false}
 								fieldKey="Banner.email"
 								label="Email"
 								value={email}

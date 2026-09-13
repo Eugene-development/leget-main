@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.3.1.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -42,7 +43,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl text-ink-900">{displayValue}</h2>
+				<h2 class="text-3xl text-ink-900"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 

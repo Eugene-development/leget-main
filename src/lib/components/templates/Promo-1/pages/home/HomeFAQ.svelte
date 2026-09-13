@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.1.10.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -112,7 +113,7 @@
 					inline
 					onSave={(v) => saveField('title', v)}
 				>
-					{#snippet children(value)}{value}{/snippet}
+					{#snippet children(value)}<RichText {value} />{/snippet}
 				</EditableField>
 			</h2>
 		</header>
@@ -133,7 +134,7 @@
 									inline
 									onSave={(v) => updateItem(i, 'question', v)}
 								>
-									{#snippet children(value)}{value}{/snippet}
+									{#snippet children(value)}<RichText {value} />{/snippet}
 								</EditableField>
 							</div>
 						{:else}
@@ -182,7 +183,7 @@
 										multiline
 										onSave={(v) => updateItem(i, 'answer', v)}
 									>
-										{#snippet children(value)}{value}{/snippet}
+										{#snippet children(value)}<RichText {value} />{/snippet}
 									</EditableField>
 								</p>
 							</div>

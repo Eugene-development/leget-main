@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.12.4.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -38,7 +39,7 @@
 				class="inline-block"
 			>
 				{#snippet children(displayValue)}
-					{displayValue}
+					<RichText value={displayValue} />
 				{/snippet}
 			</EditableField>
 			<br />
@@ -52,7 +53,7 @@
 			>
 				{#snippet children(displayValue)}
 					<span class="bg-gradient-to-r from-cat-2-400 to-cat-9-300 bg-clip-text text-transparent"
-						>{displayValue}</span
+						><RichText value={displayValue} /></span
 					>
 				{/snippet}
 			</EditableField>
@@ -71,7 +72,7 @@
 						type="button"
 						class="inline-flex items-center gap-4 rounded-full bg-cat-2-500 px-12 py-6 text-lg font-black text-on-accent shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-cat-2-400 active:scale-95"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</button>
 				{/snippet}
 			</EditableField>

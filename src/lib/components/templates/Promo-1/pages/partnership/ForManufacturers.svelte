@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.3.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -131,7 +132,7 @@
 								class="size-1.5 rounded-full bg-brand-400 shadow-[0_0_12px_2px] shadow-brand-400/70"
 								aria-hidden="true"
 							></span>
-							{displayValue}
+							<RichText value={displayValue} />
 						</div>
 					{/snippet}
 				</EditableField>
@@ -146,7 +147,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -193,7 +194,7 @@
 									inline
 									onSave={(v) => updateBenefit(i, v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</span>
 						</div>
@@ -214,7 +215,7 @@
 							class="inline"
 						>
 							{#snippet children(displayValue)}
-								{displayValue}
+								<RichText value={displayValue} />
 							{/snippet}
 						</EditableField>
 						<span
@@ -253,7 +254,7 @@
 									inline
 									onSave={(v) => updateStat(i, 'value', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</div>
 							<div
@@ -267,7 +268,7 @@
 									inline
 									onSave={(v) => updateStat(i, 'label', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</div>
 						</div>

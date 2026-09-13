@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.2.3.2 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -45,7 +46,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="p1-title text-3xl text-pretty sm:text-4xl">{displayValue}</h2>
+				<h2 class="p1-title text-3xl text-pretty sm:text-4xl"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 		{#if String(data?.text1 ?? '').trim() || isEditable}
@@ -60,7 +61,7 @@
 			>
 				{#snippet children(displayValue)}
 					<p class="p1-statement max-w-[34ch]">
-						{displayValue || (isEditable ? 'Добавьте первый абзац' : '')}
+						<RichText value={displayValue || (isEditable ? 'Добавьте первый абзац' : '')} />
 					</p>
 				{/snippet}
 			</EditableField>
@@ -112,8 +113,10 @@
 							>
 								{#snippet children(displayValue)}
 									<p class="p1-body text-prose">
-										{displayValue ||
-											(isEditable ? `Добавьте ${paragraph.label.toLowerCase()}` : '')}
+										<RichText
+											value={displayValue ||
+												(isEditable ? `Добавьте ${paragraph.label.toLowerCase()}` : '')}
+										/>
 									</p>
 								{/snippet}
 							</EditableField>

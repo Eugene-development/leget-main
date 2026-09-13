@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
@@ -174,7 +175,7 @@
 						{#snippet children(displayValue)}
 							<span
 								class="bg-gradient-to-b from-surface-raised to-surface-raised/70 bg-clip-text text-transparent"
-								>{displayValue}</span
+								><RichText value={displayValue} /></span
 							>
 						{/snippet}
 					</EditableField>
@@ -209,6 +210,7 @@
 				<!-- Соцсети: glass-капсулы -->
 				<div class="mt-8 flex items-center gap-3">
 					<EditableField
+						richText={false}
 						fieldKey="Footer.telegram"
 						label="Telegram (ссылка)"
 						value={telegram}
@@ -235,6 +237,7 @@
 					</EditableField>
 
 					<EditableField
+						richText={false}
 						fieldKey="Footer.whatsapp"
 						label="WhatsApp (ссылка)"
 						value={whatsapp}
@@ -348,6 +351,7 @@
 												Почта
 											</div>
 											<EditableField
+												richText={false}
 												fieldKey="Footer.email"
 												label="Email"
 												value={email}
@@ -416,7 +420,9 @@
 												multiline
 											>
 												{#snippet children(displayValue)}
-													<span class="text-sm leading-snug text-on-dark/85">{displayValue}</span>
+													<span class="text-sm leading-snug text-on-dark/85"
+														><RichText value={displayValue} /></span
+													>
 												{/snippet}
 											</EditableField>
 										</div>
@@ -465,7 +471,9 @@
 												{isEditable}
 											>
 												{#snippet children(displayValue)}
-													<span class="text-sm text-on-dark/85">{displayValue}</span>
+													<span class="text-sm text-on-dark/85"
+														><RichText value={displayValue} /></span
+													>
 												{/snippet}
 											</EditableField>
 										</div>
@@ -680,9 +688,7 @@
 	</div>
 </footer>
 
-{#if showLoginModal}
-	<LoginModal onClose={() => (showLoginModal = false)} />
-{/if}
+<LoginModal open={showLoginModal} onClose={() => (showLoginModal = false)} />
 
 <style>
 	/* Точечная сетка с мягким затуханием к краям — «технологичная» текстура фона. */

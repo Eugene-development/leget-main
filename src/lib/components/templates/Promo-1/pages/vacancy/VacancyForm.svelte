@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.27.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -164,7 +165,7 @@
 				{#snippet children(displayValue)}
 					<span class="p1-label p1-muted inline-flex items-center gap-4">
 						<span class="w-8 border-t {diamond}" aria-hidden="true"></span>
-						{displayValue}
+						<RichText value={displayValue} />
 						<span class="w-8 border-t {diamond}" aria-hidden="true"></span>
 					</span>
 				{/snippet}
@@ -179,7 +180,9 @@
 				class="vc-item vc-d1 mt-5 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-4xl text-pretty sm:text-5xl">{displayValue}</h2>
+					<h2 class="p1-title text-4xl text-pretty sm:text-5xl">
+						<RichText value={displayValue} />
+					</h2>
 				{/snippet}
 			</EditableField>
 
@@ -196,7 +199,9 @@
 				class="vc-item vc-d3 mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto max-w-lg text-base/7 text-pretty">{displayValue}</p>
+					<p class="p1-body mx-auto max-w-lg text-base/7 text-pretty">
+						<RichText value={displayValue} />
+					</p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -294,7 +299,7 @@
 						class="max-w-xs"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-note p1-muted">{displayValue}</p>
+							<p class="p1-note p1-muted"><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 

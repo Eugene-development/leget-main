@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -31,7 +32,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl sm:text-4xl">{displayValue}</h2>
+				<h2 class="text-3xl sm:text-4xl"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 
@@ -48,7 +49,7 @@
 					href="/contact"
 					class="mt-8 inline-block rounded-xl bg-surface-raised px-8 py-4 text-base font-semibold text-ink-900 shadow-lg transition hover:bg-ink-100"
 				>
-					{displayValue}
+					<RichText value={displayValue} />
 				</a>
 			{/snippet}
 		</EditableField>

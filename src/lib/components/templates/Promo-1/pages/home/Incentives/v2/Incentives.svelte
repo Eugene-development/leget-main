@@ -21,6 +21,7 @@
 	// FORM: выбор из четырёх — направление выбрано пользователем.
 	// FINISH: unreviewed and undocumented is unfinished; this build ends with
 	//   the finish review, the verdict, and DESIGN.md.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -132,12 +133,13 @@
 						     антиквенные, и если ступень между ними мала, иерархия держится
 						     на одном лишь размере и читается вяло. Ступени мобильного
 						     кегля нет по той же причине: 36 против 30 — это 1,2×. -->
-						<h2 class="p1-title text-5xl lg:text-6xl">{displayValue}</h2>
+						<h2 class="p1-title text-5xl lg:text-6xl"><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
 				<div class="p1-body mt-6 max-w-lg text-base leading-relaxed">
 					<EditableField
+						legacyHtml
 						fieldKey="Incentives.text"
 						label="Текст"
 						value={String(data?.text ?? INCENTIVES_DEFAULT_TEXT)}
@@ -147,7 +149,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							{@html displayValue}
+							<RichText value={displayValue} legacyHtml />
 						{/snippet}
 					</EditableField>
 				</div>
@@ -209,7 +211,7 @@
 									<span
 										class="choice-name p1-title-display block text-3xl transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui"
 									>
-										{displayValue}
+										<RichText value={displayValue} />
 									</span>
 								{/snippet}
 							</EditableField>

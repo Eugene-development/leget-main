@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.16.3.2, 1.17.4.2 — см. docs/architecture/component-articles-map.md
 	//
 	// THESIS: выгоды — это ОБЯЗАТЕЛЬСТВА, а не рекламные плашки. v1 подаёт их
@@ -89,7 +90,7 @@
 						onSave={(v) => saveField('title', v)}
 					>
 						{#snippet children(val)}
-							{val}
+							<RichText value={val} />
 						{/snippet}
 					</EditableField>
 				</h2>
@@ -140,7 +141,7 @@
 									onSave={(v) => updateItem(i, 'title', v)}
 								>
 									{#snippet children(val)}
-										{val}
+										<RichText value={val} />
 									{/snippet}
 								</EditableField>
 							</dt>
@@ -157,7 +158,7 @@
 								onSave={(v) => updateItem(i, 'desc', v)}
 							>
 								{#snippet children(val)}
-									{val}
+									<RichText value={val} />
 								{/snippet}
 							</EditableField>
 						</dd>

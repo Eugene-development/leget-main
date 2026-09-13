@@ -28,6 +28,10 @@
 		isEditable?: boolean;
 		/** Многострочное поле */
 		multiline?: boolean;
+		/** Disable formatting for URLs, email and other machine-readable values. */
+		richText?: boolean;
+		/** Existing field intentionally stored HTML before the rich-text editor. */
+		legacyHtml?: boolean;
 		/** Отображать как инлайновый элемент */
 		inline?: boolean;
 		/** Callback сохранения */
@@ -56,6 +60,8 @@
 		value,
 		isEditable = false,
 		multiline = false,
+		richText = true,
+		legacyHtml = false,
 		inline = false,
 		onSave,
 		visible: explicitVisible,
@@ -125,6 +131,8 @@
 			label,
 			value,
 			multiline,
+			richText: kind === 'text' && richText,
+			legacyHtml,
 			onSave
 		});
 	}

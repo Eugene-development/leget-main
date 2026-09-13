@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.14.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -74,7 +75,7 @@
 							class="inline-flex items-center gap-2 text-[11px] tracking-[0.3em] text-accent uppercase"
 						>
 							<span class="inline-block h-1.5 w-1.5 rounded-full bg-accent"></span>
-							{displayValue}
+							<RichText value={displayValue} />
 						</span>
 					{/snippet}
 				</EditableField>
@@ -92,7 +93,7 @@
 							class="mt-4 text-4xl text-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -110,7 +111,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-6 max-w-md text-base leading-relaxed text-secondary">{displayValue}</p>
+						<p class="mt-6 max-w-md text-base leading-relaxed text-secondary">
+							<RichText value={displayValue} />
+						</p>
 					{/snippet}
 				</EditableField>
 
@@ -126,7 +129,7 @@
 							{isEditable}
 							onSave={(v) => saveField('buttonText', v)}
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 						<svg
 							class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"

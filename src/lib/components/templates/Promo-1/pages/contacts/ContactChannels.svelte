@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.5.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
@@ -76,7 +77,7 @@
 						class="mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<h3 class={ct.title.h3OnLight}>{displayValue}</h3>
+							<h3 class={ct.title.h3OnLight}><RichText value={displayValue} /></h3>
 						{/snippet}
 					</EditableField>
 
@@ -92,11 +93,12 @@
 						class="mt-3 block"
 					>
 						{#snippet children(displayValue)}
-							<p class={ct.body.onLight}>{displayValue}</p>
+							<p class={ct.body.onLight}><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 
 					<EditableField
+						richText={false}
 						fieldKey="ContactChannels.phone"
 						label="Номер телефона"
 						value={phone}
@@ -157,7 +159,7 @@
 						class="mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<h3 class={ct.title.h3OnLight}>{displayValue}</h3>
+							<h3 class={ct.title.h3OnLight}><RichText value={displayValue} /></h3>
 						{/snippet}
 					</EditableField>
 
@@ -173,11 +175,12 @@
 						class="mt-3 block"
 					>
 						{#snippet children(displayValue)}
-							<p class={ct.body.onLight}>{displayValue}</p>
+							<p class={ct.body.onLight}><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 
 					<EditableField
+						richText={false}
 						fieldKey="ContactChannels.email"
 						label="Email"
 						value={String(data?.email || 'info@leget.ru')}
@@ -238,7 +241,7 @@
 						class="mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<h3 class={ct.title.h3OnLight}>{displayValue}</h3>
+							<h3 class={ct.title.h3OnLight}><RichText value={displayValue} /></h3>
 						{/snippet}
 					</EditableField>
 
@@ -254,7 +257,7 @@
 						class="mt-3 block"
 					>
 						{#snippet children(displayValue)}
-							<p class={ct.body.onLight}>{displayValue}</p>
+							<p class={ct.body.onLight}><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 
@@ -268,7 +271,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p class={ct.btn.link}>
-								{displayValue}
+								<RichText value={displayValue} />
 								<span class="relative flex size-2.5" aria-hidden="true">
 									<span
 										class="absolute inline-flex size-full animate-ping rounded-full bg-brand-500 opacity-60 motion-reduce:animate-none"

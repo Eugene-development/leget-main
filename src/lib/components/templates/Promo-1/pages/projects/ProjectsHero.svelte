@@ -23,6 +23,7 @@
 	// (разбор в ProjectsFeed/data.ts).
 	// Редактируется только метка с названием страницы: это текст страницы,
 	// а не текст проекта.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
@@ -95,7 +96,7 @@
 				class="inline"
 			>
 				{#snippet children(displayValue)}
-					<h1 class="p1-label p1-muted">{displayValue}</h1>
+					<h1 class="p1-label p1-muted"><RichText value={displayValue} /></h1>
 				{/snippet}
 			</EditableField>
 			{#if total > 0}

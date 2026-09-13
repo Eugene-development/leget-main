@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.7.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -168,7 +169,7 @@
 				onSave={(v) => updateReview(globalIdx, 'text', v)}
 			>
 				{#snippet children(val)}
-					<p>{val}</p>
+					<p><RichText value={val} /></p>
 				{/snippet}
 			</EditableField>
 		</blockquote>
@@ -190,7 +191,7 @@
 						inline
 						onSave={(v) => updateReview(globalIdx, 'name', v)}
 					>
-						{#snippet children(val)}{val}{/snippet}
+						{#snippet children(val)}<RichText value={val} />{/snippet}
 					</EditableField>
 				</div>
 				<div class="text-[11px] font-semibold tracking-[0.16em] text-ink-500 uppercase">
@@ -202,7 +203,7 @@
 						inline
 						onSave={(v) => updateReview(globalIdx, 'location', v)}
 					>
-						{#snippet children(val)}{val}{/snippet}
+						{#snippet children(val)}<RichText value={val} />{/snippet}
 					</EditableField>
 				</div>
 			</div>
@@ -249,7 +250,7 @@
 							onSave={(v) => updateFeatured('text', v)}
 						>
 							{#snippet children(val)}
-								<p>{val}</p>
+								<p><RichText value={val} /></p>
 							{/snippet}
 						</EditableField>
 					</div>
@@ -274,7 +275,7 @@
 								inline
 								onSave={(v) => updateFeatured('name', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</div>
 						<div class="text-[11px] font-semibold tracking-[0.16em] text-ink-500 uppercase">
@@ -286,7 +287,7 @@
 								inline
 								onSave={(v) => updateFeatured('location', v)}
 							>
-								{#snippet children(val)}{val}{/snippet}
+								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</div>
 					</div>

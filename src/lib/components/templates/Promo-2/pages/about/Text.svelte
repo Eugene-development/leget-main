@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -23,6 +24,7 @@
 <div class="bg-white px-6 py-16">
 	<div class="mx-auto prose prose-lg max-w-3xl text-stone-700">
 		<EditableField
+			legacyHtml
 			fieldKey="Text.content"
 			label="Текст"
 			value={String(data?.content ?? '')}
@@ -32,7 +34,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				{@html displayValue}
+				<RichText value={displayValue} legacyHtml />
 			{/snippet}
 		</EditableField>
 	</div>

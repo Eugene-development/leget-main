@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.8.6.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
@@ -72,7 +73,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
 			</EditableField>
@@ -110,7 +111,7 @@
 									inline
 									onSave={(v) => updateItem(i, 'question', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</h3>
 							<p class="mt-2 text-sm/6 text-ink-600">
@@ -123,7 +124,7 @@
 									multiline
 									onSave={(v) => updateItem(i, 'answer', v)}
 								>
-									{#snippet children(val)}{val}{/snippet}
+									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</p>
 						</div>

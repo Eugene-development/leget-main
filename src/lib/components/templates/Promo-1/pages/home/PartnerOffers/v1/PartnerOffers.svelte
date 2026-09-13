@@ -37,6 +37,7 @@
 	// кадра свои в обеих раскладках, потому что живут на самом кадре. Порог
 	// «больше двух», а не «больше одного»: пара ложится в `md:grid-cols-2`
 	// без остатка, и катать её лентой незачем.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -368,7 +369,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="p1-title text-3xl sm:text-5xl">{displayValue}</h2>
+				<h2 class="p1-title text-3xl sm:text-5xl"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 
@@ -382,7 +383,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="p1-body mt-5 text-base leading-7">{displayValue}</p>
+				<p class="p1-body mt-5 text-base leading-7"><RichText value={displayValue} /></p>
 			{/snippet}
 		</EditableField>
 	</div>

@@ -2,6 +2,7 @@
 	// Артикул: 2.14.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -78,7 +79,7 @@
 							{isEditable}
 							onSave={(v) => saveField('badge', v)}
 						>
-							{#snippet children(displayValue)}{displayValue}{/snippet}
+							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</span>
 				</div>
@@ -98,7 +99,7 @@
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
 				</EditableField>
@@ -122,7 +123,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p class="text-sm leading-relaxed font-light text-primary md:text-lg">
-								{displayValue}
+								<RichText value={displayValue} />
 							</p>
 						{/snippet}
 					</EditableField>
@@ -160,7 +161,7 @@
 								href={String(data?.primaryHref ?? '/contact')}
 								class="group inline-flex items-center gap-3 rounded-sm border border-primary bg-primary px-8 py-4 text-xs tracking-[0.15em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 								<svg
 									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"
@@ -203,7 +204,7 @@
 										d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
 									/>
 								</svg>
-								{displayValue}
+								<RichText value={displayValue} />
 							</a>
 						{/snippet}
 					</EditableField>

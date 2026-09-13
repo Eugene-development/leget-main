@@ -2,6 +2,7 @@
 	// Артикул: 1.2.3.1 — см. docs/architecture/component-articles-map.md
 	import { tick } from 'svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from '../../theme';
@@ -100,7 +101,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -126,7 +127,7 @@
 							>
 								{#snippet children(displayValue)}
 									{#if displayValue.trim()}
-										<p class="p1-body text-prose">{displayValue}</p>
+										<p class="p1-body text-prose"><RichText value={displayValue} /></p>
 									{:else if isEditable}
 										<p
 											class="p1-muted max-w-xl rounded-xl border border-dashed border-ink-400/50 px-4 py-3 text-sm/6"

@@ -2,6 +2,7 @@
 	// Артикул: 2.1.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -108,7 +109,7 @@
 							onSave={(v) => saveField('label', v)}
 						>
 							{#snippet children(displayValue)}
-								{displayValue}
+								<RichText value={displayValue} />
 							{/snippet}
 						</EditableField>
 					</span>
@@ -129,7 +130,7 @@
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
 				</EditableField>
@@ -150,7 +151,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p class="text-sm leading-relaxed font-light text-primary md:text-lg lg:text-xl">
-								{displayValue}
+								<RichText value={displayValue} />
 							</p>
 						{/snippet}
 					</EditableField>
@@ -174,7 +175,7 @@
 								href={String(data?.ctaPrimaryLink ?? '#')}
 								class="group inline-flex items-center gap-3 rounded-sm border border-primary bg-primary px-8 py-4 text-xs tracking-[0.15em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 								<svg
 									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"
@@ -204,7 +205,7 @@
 								href={String(data?.ctaSecondaryLink ?? '#')}
 								class="group inline-flex items-center gap-3 rounded-sm border border-border-medium bg-white/60 px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase backdrop-blur-sm transition-all duration-500 hover:border-secondary hover:text-secondary"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 							</a>
 						{/snippet}
 					</EditableField>

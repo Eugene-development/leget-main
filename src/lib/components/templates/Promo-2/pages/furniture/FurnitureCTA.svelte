@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.6.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -56,7 +57,9 @@
 				onSave={(v) => saveField('eyebrow', v)}
 			>
 				{#snippet children(displayValue)}
-					<span class="text-[11px] tracking-[0.3em] text-accent uppercase">{displayValue}</span>
+					<span class="text-[11px] tracking-[0.3em] text-accent uppercase"
+						><RichText value={displayValue} /></span
+					>
 				{/snippet}
 			</EditableField>
 
@@ -73,7 +76,7 @@
 						class="mx-auto mt-6 max-w-2xl text-3xl text-white lg:text-5xl"
 						style="font-family: var(--font-heading);"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
 			</EditableField>
@@ -96,7 +99,7 @@
 						onSave={(v) => saveField('ctaText', v)}
 					>
 						{#snippet children(displayValue)}
-							{displayValue}
+							<RichText value={displayValue} />
 						{/snippet}
 					</EditableField>
 					<svg

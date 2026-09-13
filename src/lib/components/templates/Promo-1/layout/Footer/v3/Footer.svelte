@@ -2,6 +2,7 @@
 	// Артикул: 1.Ф.1.3 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -174,7 +175,7 @@
 						{isEditable}
 					>
 						{#snippet children(displayValue)}
-							<span>{displayValue}</span>
+							<span><RichText value={displayValue} /></span>
 						{/snippet}
 					</EditableField>
 				</h2>
@@ -246,6 +247,7 @@
 									>Почта</span
 								>
 								<EditableField
+									richText={false}
 									fieldKey="Footer.email"
 									label="Email"
 									value={email}
@@ -287,7 +289,9 @@
 									multiline
 								>
 									{#snippet children(displayValue)}
-										<span class="text-sm leading-relaxed font-medium">{displayValue}</span>
+										<span class="text-sm leading-relaxed font-medium"
+											><RichText value={displayValue} /></span
+										>
 									{/snippet}
 								</EditableField>
 								{#if isEditable}<ContactToggle
@@ -315,7 +319,9 @@
 									{isEditable}
 								>
 									{#snippet children(displayValue)}
-										<span class="text-sm leading-relaxed font-medium">{displayValue}</span>
+										<span class="text-sm leading-relaxed font-medium"
+											><RichText value={displayValue} /></span
+										>
 									{/snippet}
 								</EditableField>
 								{#if isEditable}<ContactToggle
@@ -342,6 +348,7 @@
 
 				<div class="mt-7 flex flex-wrap gap-2">
 					<EditableField
+						richText={false}
 						fieldKey="Footer.telegram"
 						label="Telegram (ссылка)"
 						value={telegram}
@@ -372,6 +379,7 @@
 					</EditableField>
 
 					<EditableField
+						richText={false}
 						fieldKey="Footer.whatsapp"
 						label="WhatsApp (ссылка)"
 						value={whatsapp}
@@ -555,9 +563,7 @@
 	</div>
 </footer>
 
-{#if showLoginModal}
-	<LoginModal onClose={() => (showLoginModal = false)} />
-{/if}
+<LoginModal open={showLoginModal} onClose={() => (showLoginModal = false)} />
 
 <style>
 	.footer-v3-grid {

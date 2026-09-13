@@ -2,6 +2,7 @@
 	// Артикул: 1.20.6.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -51,7 +52,7 @@
 				inline
 				onSave={(v) => saveField('title', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</h2>
 		<p class="mt-3 leading-relaxed text-ink-600">
@@ -67,7 +68,7 @@
 				multiline
 				onSave={(v) => saveField('description', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</p>
 
@@ -98,7 +99,7 @@
 						inline
 						onSave={(value) => updatePerk(i, value)}
 					>
-						{#snippet children(value)}{value}{/snippet}
+						{#snippet children(value)}<RichText {value} />{/snippet}
 					</EditableField>
 				</li>
 			{/each}

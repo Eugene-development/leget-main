@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.1.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -104,7 +105,7 @@
 									d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
 								/>
 							</svg>
-							{displayValue}
+							<RichText value={displayValue} />
 						</div>
 					{/snippet}
 				</EditableField>
@@ -123,7 +124,7 @@
 								? 'text-ink-900'
 								: 'text-on-dark'}"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
 				</EditableField>
@@ -146,7 +147,7 @@
 								? 'text-ink-600'
 								: 'text-cat-5-50/90'}"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -165,7 +166,7 @@
 							class="inline"
 						>
 							{#snippet children(displayValue)}
-								{displayValue}
+								<RichText value={displayValue} />
 							{/snippet}
 						</EditableField>
 						<span
@@ -235,7 +236,7 @@
 											? 'text-ink-900'
 											: 'text-on-dark'}"
 									>
-										{displayValue}
+										<RichText value={displayValue} />
 									</blockquote>
 								{/snippet}
 							</EditableField>
@@ -261,7 +262,7 @@
 												<div
 													class="text-sm font-semibold {isLight ? 'text-ink-900' : 'text-on-dark'}"
 												>
-													{displayValue}
+													<RichText value={displayValue} />
 												</div>
 											{/if}
 										{/snippet}
@@ -281,7 +282,7 @@
 														? 'text-ink-500'
 														: 'text-cat-5-100/80'}"
 												>
-													{displayValue}
+													<RichText value={displayValue} />
 												</div>
 											{/if}
 										{/snippet}
@@ -301,7 +302,7 @@
 													? 'text-ink-900'
 													: 'text-on-dark'}"
 											>
-												{displayValue}
+												<RichText value={displayValue} />
 											</div>
 										{/snippet}
 									</EditableField>

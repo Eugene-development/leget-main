@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -128,7 +129,7 @@
 									: 'text-cat-5-300'} uppercase sm:text-xs"
 							>
 								<span class="h-px w-8 bg-cat-5-400/80" aria-hidden="true"></span>
-								{displayValue}
+								<RichText value={displayValue} />
 								<span class="h-px w-8 bg-cat-5-400/80" aria-hidden="true"></span>
 							</p>
 						{/snippet}
@@ -144,7 +145,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
-								{displayValue}
+								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
 					</EditableField>
@@ -159,7 +160,9 @@
 						class="pca-item pca-d3 mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-body mx-auto max-w-xl text-sm/6 sm:text-base/7">{displayValue}</p>
+							<p class="p1-body mx-auto max-w-xl text-sm/6 sm:text-base/7">
+								<RichText value={displayValue} />
+							</p>
 						{/snippet}
 					</EditableField>
 
@@ -179,7 +182,7 @@
 								class="inline"
 							>
 								{#snippet children(displayValue)}
-									{displayValue}
+									<RichText value={displayValue} />
 								{/snippet}
 							</EditableField>
 							<span
@@ -189,6 +192,7 @@
 						</a>
 
 						<EditableField
+							richText={false}
 							fieldKey="PartnershipCTA.phone"
 							label="Телефон"
 							value={phone}

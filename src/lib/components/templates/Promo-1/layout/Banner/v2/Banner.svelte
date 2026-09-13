@@ -112,6 +112,7 @@
 		<div class="hidden flex-1 items-center justify-end gap-3 py-1.5 lg:flex">
 			{#if phone}
 				<EditableField
+					richText={false}
 					fieldKey="Banner.phone"
 					label="Телефон"
 					value={phone}
@@ -144,6 +145,7 @@
 
 			{#if email}
 				<EditableField
+					richText={false}
 					fieldKey="Banner.email"
 					label="Email"
 					value={email}

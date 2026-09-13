@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.4.5.2 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -102,7 +103,7 @@
 						>
 							{#snippet children(displayValue)}
 								<h2 class="text-3xl text-balance text-on-dark sm:text-4xl lg:text-5xl">
-									{displayValue}
+									<RichText value={displayValue} />
 								</h2>
 							{/snippet}
 						</EditableField>
@@ -119,7 +120,9 @@
 							class="mt-6 block"
 						>
 							{#snippet children(displayValue)}
-								<p class="p1-body mx-auto mt-5 max-w-lg text-lg/8 lg:mx-0">{displayValue}</p>
+								<p class="p1-body mx-auto mt-5 max-w-lg text-lg/8 lg:mx-0">
+									<RichText value={displayValue} />
+								</p>
 							{/snippet}
 						</EditableField>
 					</div>
@@ -144,7 +147,7 @@
 										class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-on-dark/40 to-transparent transition-transform duration-700 group-hover:translate-x-full"
 										aria-hidden="true"
 									></span>
-									<span class="relative">{displayValue}</span>
+									<span class="relative"><RichText value={displayValue} /></span>
 									<svg
 										class="relative size-5 transition-transform duration-300 group-hover:translate-x-1"
 										fill="none"
@@ -164,6 +167,7 @@
 						</EditableField>
 
 						<EditableField
+							richText={false}
 							fieldKey="ActionsCTA.phone"
 							label="Телефон"
 							value={phone}

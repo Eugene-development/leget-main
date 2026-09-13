@@ -2,6 +2,7 @@
 	// Артикул: 2.8.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -67,7 +68,9 @@
 						onSave={(v) => saveField('eyebrow', v)}
 					>
 						{#snippet children(displayValue)}
-							<span class="text-[11px] tracking-[0.3em] text-accent uppercase">{displayValue}</span>
+							<span class="text-[11px] tracking-[0.3em] text-accent uppercase"
+								><RichText value={displayValue} /></span
+							>
 						{/snippet}
 					</EditableField>
 
@@ -84,7 +87,7 @@
 								class="mt-4 text-3xl text-white lg:text-5xl"
 								style="font-family: var(--font-heading);"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
 					</EditableField>
@@ -100,7 +103,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p class="mt-4 max-w-md text-sm leading-relaxed text-white/75 lg:text-base">
-								{displayValue}
+								<RichText value={displayValue} />
 							</p>
 						{/snippet}
 					</EditableField>
@@ -118,7 +121,7 @@
 									href={String(data?.ctaLink ?? '/contact')}
 									class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-accent bg-accent px-7 py-3.5 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-300 hover:bg-accent-light"
 								>
-									{displayValue}
+									<RichText value={displayValue} />
 									<svg
 										class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 										fill="none"

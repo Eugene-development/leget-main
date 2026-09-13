@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 3.5.3.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -72,7 +73,7 @@
 				>
 					{#snippet children(displayValue)}<span
 							class="text-xs font-semibold tracking-[0.3em] text-accent-500 uppercase"
-							>{displayValue}</span
+							><RichText value={displayValue} /></span
 						>{/snippet}
 				</EditableField>
 				<EditableField
@@ -84,7 +85,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}<h2 class="mt-4 text-4xl text-white lg:text-5xl">
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>{/snippet}
 				</EditableField>
 				<EditableField
@@ -100,7 +101,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}<p class="mt-6 text-lg leading-relaxed text-surface-300">
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>{/snippet}
 				</EditableField>
 				<ul class="mt-8 flex flex-col gap-4">
@@ -131,7 +132,7 @@
 							href={String(data?.ctaLink ?? '/contacts')}
 							class="mt-10 inline-flex items-center gap-3 rounded-xl bg-accent-500 px-8 py-4 text-sm font-bold tracking-wide text-surface-900 uppercase transition-all duration-300 hover:bg-accent-400 hover:shadow-2xl hover:shadow-accent-500/30"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 							<svg viewBox="0 0 20 20" class="size-4 fill-current"
 								><path
 									fill-rule="evenodd"

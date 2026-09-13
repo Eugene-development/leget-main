@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.12.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { getAuthApiUrl } from '$lib/utils/config';
@@ -111,7 +112,9 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-accent uppercase">{displayValue}</span>
+						<span class="text-[11px] tracking-[0.3em] text-accent uppercase"
+							><RichText value={displayValue} /></span
+						>
 					{/snippet}
 				</EditableField>
 
@@ -128,7 +131,7 @@
 							class="mt-4 text-4xl text-white lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
-							{displayValue}
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
@@ -146,7 +149,9 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-6 text-base leading-relaxed text-white/55">{displayValue}</p>
+						<p class="mt-6 text-base leading-relaxed text-white/55">
+							<RichText value={displayValue} />
+						</p>
 					{/snippet}
 				</EditableField>
 

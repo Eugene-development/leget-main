@@ -15,6 +15,7 @@
 	// фотография, а не поверхность секции. Поэтому там роли `p1-scrim`,
 	// `text-on-dark`, `text-shadow-media`, а не `p1-title` / `p1-border`.
 	// Правило впервые записано в `Direction/v2`, с 19.08.2026 — роль в theme.css.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
@@ -154,7 +155,9 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-4xl sm:text-5xl lg:text-6xl">{displayValue}</h2>
+					<h2 class="p1-title text-4xl sm:text-5xl lg:text-6xl">
+						<RichText value={displayValue} />
+					</h2>
 				{/snippet}
 			</EditableField>
 
@@ -169,7 +172,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p>{displayValue}</p>
+						<p><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 			</div>
@@ -231,7 +234,7 @@
 								onSave={(v) => saveCardField(i, 'title', v)}
 								class="pointer-events-auto inline"
 							>
-								{#snippet children(displayValue)}{displayValue}{/snippet}
+								{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 							</EditableField>
 						</h3>
 					</div>
@@ -249,7 +252,7 @@
 								onSave={(v) => saveCardField(i, 'description', v)}
 								class="block"
 							>
-								{#snippet children(displayValue)}{displayValue}{/snippet}
+								{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 							</EditableField>
 						</p>
 
@@ -271,7 +274,7 @@
 												onSave={(v) => saveSpecField(i, s, 'label', v)}
 												class="inline"
 											>
-												{#snippet children(displayValue)}{displayValue}{/snippet}
+												{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 											</EditableField>
 										</dt>
 										<dd class="p1-numeric p1-title mt-1 text-lg">
@@ -284,7 +287,7 @@
 												onSave={(v) => saveSpecField(i, s, 'value', v)}
 												class="inline"
 											>
-												{#snippet children(displayValue)}{displayValue}{/snippet}
+												{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 											</EditableField>
 										</dd>
 									</div>
@@ -294,6 +297,7 @@
 
 						{#if isEditable}
 							<EditableField
+								richText={false}
 								fieldKey={`Message.cards.${i}.link`}
 								label="Ссылка на проект"
 								value={card.link}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.5.4.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from './theme';
@@ -65,7 +66,7 @@
 					{#snippet children(displayValue)}
 						<p class={ct.eyebrow.onInk}>
 							<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
-							{displayValue}
+							<RichText value={displayValue} />
 						</p>
 					{/snippet}
 				</EditableField>
@@ -79,7 +80,7 @@
 					class="ct-item ct-d1 mt-5 block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="{ct.title.h2OnInk} max-w-xl">{displayValue}</h2>
+						<h2 class="{ct.title.h2OnInk} max-w-xl"><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
@@ -96,6 +97,7 @@
 
 			<div class="relative z-10 mt-14 flex justify-center lg:mt-0 lg:justify-end lg:pr-16">
 				<EditableField
+					richText={false}
 					fieldKey="ContactMessengers.telegramUrl"
 					label="Ссылка на Telegram"
 					value={String(data?.telegramUrl || 'https://t.me/')}

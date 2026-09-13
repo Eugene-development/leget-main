@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	/**
 	 * Подпись кнопки, которая по наведению подменяется другим текстом
 	 * (CTA дизайн-проекта: «Дизайн-проект с расчётом стоимости» → «Это бесплатно»).
@@ -30,7 +31,7 @@
 			? ''
 			: 'delay-150 group-hover:opacity-0 group-hover:delay-0'}"
 	>
-		{text}
+		<RichText value={text} />
 	</span>
 	{#if !disabled}
 		<span

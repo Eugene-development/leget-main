@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.21.8.1, 1.31.4.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -39,7 +40,7 @@
 				inline
 				onSave={(v) => saveField('title', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</h2>
 
@@ -56,7 +57,7 @@
 				multiline
 				onSave={(v) => saveField('description', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</p>
 
@@ -72,7 +73,7 @@
 					inline
 					onSave={(v) => saveField('buttonText', v)}
 				>
-					{#snippet children(val)}{val}{/snippet}
+					{#snippet children(val)}<RichText value={val} />{/snippet}
 				</EditableField>
 			</button>
 			<a

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.27.2.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -241,7 +242,7 @@
 				inline
 				onSave={(v) => updateVacancy(i, 'title', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</span>
 		<span class="p1-muted p1-note">
@@ -253,7 +254,7 @@
 				inline
 				onSave={(v) => updateVacancy(i, 'type', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 			·
 			<EditableField
@@ -264,7 +265,7 @@
 				inline
 				onSave={(v) => updateVacancy(i, 'location', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</span>
 	</span>
@@ -285,7 +286,7 @@
 				inline
 				onSave={(v) => updateVacancy(i, 'salary', v)}
 			>
-				{#snippet children(val)}{val}{/snippet}
+				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</span>
 	</span>
@@ -342,7 +343,7 @@
 				class="vc-item block"
 			>
 				{#snippet children(displayValue)}
-					<span class="p1-label {accent.text}">{displayValue}</span>
+					<span class="p1-label {accent.text}"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -355,7 +356,9 @@
 				class="vc-item vc-d1 mt-5 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl text-pretty sm:text-4xl">{displayValue}</h2>
+					<h2 class="p1-title text-3xl text-pretty sm:text-4xl">
+						<RichText value={displayValue} />
+					</h2>
 				{/snippet}
 			</EditableField>
 
@@ -371,7 +374,9 @@
 				class="vc-item vc-d3 mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto max-w-xl text-base/7 text-pretty">{displayValue}</p>
+					<p class="p1-body mx-auto max-w-xl text-base/7 text-pretty">
+						<RichText value={displayValue} />
+					</p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -417,7 +422,7 @@
 										multiline
 										onSave={(v) => updateVacancy(i, 'description', v)}
 									>
-										{#snippet children(val)}{val}{/snippet}
+										{#snippet children(val)}<RichText value={val} />{/snippet}
 									</EditableField>
 								</p>
 
@@ -447,7 +452,7 @@
 															multiline
 															onSave={(v) => updateBullet(i, 'duties', j, v)}
 														>
-															{#snippet children(val)}{val}{/snippet}
+															{#snippet children(val)}<RichText value={val} />{/snippet}
 														</EditableField>
 													</span>
 												</li>
@@ -474,7 +479,7 @@
 															multiline
 															onSave={(v) => updateBullet(i, 'requirements', j, v)}
 														>
-															{#snippet children(val)}{val}{/snippet}
+															{#snippet children(val)}<RichText value={val} />{/snippet}
 														</EditableField>
 													</span>
 												</li>

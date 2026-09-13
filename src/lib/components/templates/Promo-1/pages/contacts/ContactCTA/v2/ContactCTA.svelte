@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.5.5.2 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct, revealOnScroll } from '../../theme';
@@ -75,7 +76,7 @@
 						class="ct-item ct-d1 mt-5 block"
 					>
 						{#snippet children(displayValue)}
-							<h2 class={ct.title.h2OnInk}>{displayValue}</h2>
+							<h2 class={ct.title.h2OnInk}><RichText value={displayValue} /></h2>
 						{/snippet}
 					</EditableField>
 
@@ -91,7 +92,9 @@
 						class="ct-item ct-d3 mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="{ct.body.onInkMuted} mx-auto max-w-md lg:mx-0">{displayValue}</p>
+							<p class="{ct.body.onInkMuted} mx-auto max-w-md lg:mx-0">
+								<RichText value={displayValue} />
+							</p>
 						{/snippet}
 					</EditableField>
 				</div>
@@ -108,6 +111,7 @@
 
 				<div class="flex flex-col gap-3">
 					<EditableField
+						richText={false}
 						fieldKey="ContactCTA.phone"
 						label="Телефон"
 						value={phone}
@@ -142,6 +146,7 @@
 					</EditableField>
 
 					<EditableField
+						richText={false}
 						fieldKey="ContactCTA.telegramUrl"
 						label="Ссылка на Telegram"
 						value={String(data?.telegramUrl ?? '')}

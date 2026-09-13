@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -46,7 +47,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h1 class="text-5xl text-white drop-shadow-lg sm:text-6xl md:text-7xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</h1>
 				{/snippet}
 			</EditableField>
@@ -64,7 +65,7 @@
 			>
 				{#snippet children(displayValue)}
 					<p class="mt-6 text-xl text-indigo-200 sm:text-2xl">
-						{displayValue}
+						<RichText value={displayValue} />
 					</p>
 				{/snippet}
 			</EditableField>
@@ -84,7 +85,7 @@
 						href={String(data?.ctaUrl ?? '#')}
 						class="mt-10 inline-block rounded-full bg-white px-8 py-3 text-lg font-semibold text-indigo-900 shadow-lg transition hover:bg-indigo-50"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</a>
 				{/snippet}
 			</EditableField>

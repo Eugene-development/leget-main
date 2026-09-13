@@ -3,6 +3,7 @@
 	//
 	// Опись выполненных работ: заголовок, пояснение и сетка превью, каждое
 	// открывает свой проект. Роль блока и контракт данных — в ../data.ts.
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
@@ -119,7 +120,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-4xl sm:text-5xl">{displayValue}</h2>
+						<h2 class="p1-title text-4xl sm:text-5xl"><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
@@ -134,7 +135,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p>{displayValue}</p>
+							<p><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 				</div>
@@ -193,7 +194,7 @@
 									onSave={(v) => saveCardField(i, 'title', v)}
 									class="inline"
 								>
-									{#snippet children(displayValue)}{displayValue}{/snippet}
+									{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 								</EditableField>
 							</h3>
 							<!-- Описание работы — роль `p1-body`, а не `p1-muted`: это содержание
@@ -212,12 +213,13 @@
 									onSave={(v) => saveCardField(i, 'description', v)}
 									class="block"
 								>
-									{#snippet children(displayValue)}{displayValue}{/snippet}
+									{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 								</EditableField>
 							</p>
 
 							{#if isEditable}
 								<EditableField
+									richText={false}
 									fieldKey={`Message.cards.${i}.link`}
 									label="Ссылка на проект"
 									value={card.link}

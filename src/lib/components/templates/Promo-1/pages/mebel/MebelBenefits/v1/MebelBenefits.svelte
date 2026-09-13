@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.16.3.1, 1.17.4.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -49,7 +50,7 @@
 			onSave={(v) => saveField('title', v)}
 		>
 			{#snippet children(val)}
-				{val}
+				<RichText value={val} />
 			{/snippet}
 		</EditableField>
 	</h2>
@@ -108,7 +109,7 @@
 						onSave={(v) => updateItem(i, 'title', v)}
 					>
 						{#snippet children(val)}
-							{val}
+							<RichText value={val} />
 						{/snippet}
 					</EditableField>
 				</h3>
@@ -124,7 +125,7 @@
 						onSave={(v) => updateItem(i, 'desc', v)}
 					>
 						{#snippet children(val)}
-							{val}
+							<RichText value={val} />
 						{/snippet}
 					</EditableField>
 				</div>

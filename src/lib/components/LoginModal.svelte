@@ -3,7 +3,7 @@
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 
-	let { onClose }: { onClose: () => void } = $props();
+	let { open = true, onClose }: { open?: boolean; onClose: () => void } = $props();
 
 	let email = $state('');
 	let password = $state('');
@@ -14,6 +14,19 @@
 	// SmartCaptcha (защита от ботов)
 	let captchaToken = $state<string | null>(null);
 	let captchaRef = $state<{ reset: () => void } | undefined>();
+
+	// Окно остаётся смонтированным: капча готовится до нажатия «Админ».
+	// При закрытии очищаем данные, сохраняя уже загруженный виджет.
+	$effect(() => {
+		if (!open) {
+			email = '';
+			password = '';
+			errors = { email: '', password: '' };
+			submitError = '';
+			captchaToken = null;
+			captchaRef?.reset();
+		}
+	});
 
 	function isValidEmail(value: string) {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -73,7 +86,7 @@
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') onClose();
+		if (open && event.key === 'Escape') onClose();
 	}
 </script>
 
@@ -85,6 +98,9 @@
 <div
 	class="fixed inset-0 z-50 flex items-center justify-center bg-scrim/50 p-4"
 	onclick={handleBackdropClick}
+	style:visibility={open ? 'visible' : 'hidden'}
+	inert={!open}
+	aria-hidden={!open}
 >
 	<div
 		class="w-full max-w-md rounded-2xl bg-surface-raised p-8 shadow-2xl"

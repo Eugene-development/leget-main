@@ -2,6 +2,7 @@
 	// Артикул: 1.2.7.3 — см. docs/architecture/component-articles-map.md
 	import QuoteMark from '../QuoteMark.svelte';
 	import '../paper.css';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -38,6 +39,7 @@
 			<div class="stack-opening p1-title"><QuoteMark /></div>
 			<div class="paper-paragraphs ds-prose p1-prose prose">
 				<EditableField
+					legacyHtml
 					fieldKey="Text.content"
 					label="Текст"
 					value={String(data?.content ?? '')}
@@ -47,7 +49,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<div class="ds-prose-content">{@html displayValue}</div>
+						<div class="ds-prose-content"><RichText value={displayValue} legacyHtml /></div>
 					{/snippet}
 				</EditableField>
 			</div>

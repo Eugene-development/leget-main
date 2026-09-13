@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.20.4.1, 1.28.3.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -68,7 +69,7 @@
 			inline
 			onSave={(value) => saveField('title', value)}
 		>
-			{#snippet children(value)}{value}{/snippet}
+			{#snippet children(value)}<RichText {value} />{/snippet}
 		</EditableField>
 	</h2>
 
@@ -124,7 +125,7 @@
 						inline
 						onSave={(value) => updateItem(i, 'title', value)}
 					>
-						{#snippet children(value)}{value}{/snippet}
+						{#snippet children(value)}<RichText {value} />{/snippet}
 					</EditableField>
 				</h3>
 				<p class="mt-2 text-sm leading-relaxed text-ink-600">
@@ -137,7 +138,7 @@
 						multiline
 						onSave={(value) => updateItem(i, 'desc', value)}
 					>
-						{#snippet children(value)}{value}{/snippet}
+						{#snippet children(value)}<RichText {value} />{/snippet}
 					</EditableField>
 				</p>
 			</div>

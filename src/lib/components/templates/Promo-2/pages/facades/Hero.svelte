@@ -2,6 +2,7 @@
 	// Артикул: 2.5.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -58,7 +59,7 @@
 							<span
 								class="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-4 py-2 text-[11px] tracking-[0.25em] text-white/70 uppercase backdrop-blur-sm"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 							</span>
 						{/snippet}
 					</EditableField>
@@ -79,7 +80,7 @@
 								class="text-5xl text-white md:text-6xl lg:text-7xl"
 								style="font-family: var(--font-heading);"
 							>
-								{displayValue}
+								<RichText value={displayValue} />
 							</h1>
 						{/snippet}
 					</EditableField>
@@ -100,7 +101,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p class="mt-8 max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
-								{displayValue}
+								<RichText value={displayValue} />
 							</p>
 						{/snippet}
 					</EditableField>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 3.1.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -74,7 +75,7 @@
 			>
 				{#snippet children(displayValue)}
 					<span class="text-xs font-semibold tracking-wider text-accent-500 uppercase"
-						>{displayValue}</span
+						><RichText value={displayValue} /></span
 					>
 				{/snippet}
 			</EditableField>
@@ -91,7 +92,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h1 class="text-5xl text-white sm:text-6xl lg:text-7xl">
-					{displayValue}
+					<RichText value={displayValue} />
 				</h1>
 			{/snippet}
 		</EditableField>
@@ -110,7 +111,9 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mt-6 max-w-2xl text-lg leading-relaxed text-surface-300">{displayValue}</p>
+				<p class="mt-6 max-w-2xl text-lg leading-relaxed text-surface-300">
+					<RichText value={displayValue} />
+				</p>
 			{/snippet}
 		</EditableField>
 
@@ -128,7 +131,7 @@
 						href={String(data?.ctaPrimaryLink ?? '/contacts')}
 						class="group inline-flex items-center gap-3 rounded-xl bg-accent-500 px-8 py-4 text-sm font-bold tracking-wide text-surface-900 uppercase transition-all duration-300 hover:bg-accent-400 hover:shadow-2xl hover:shadow-accent-500/30"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 						<svg
 							viewBox="0 0 20 20"
 							class="size-4 fill-current transition-transform duration-300 group-hover:translate-x-1"
@@ -153,7 +156,7 @@
 						href={String(data?.ctaSecondaryLink ?? '/contacts')}
 						class="inline-flex items-center gap-2 rounded-xl border border-surface-500 px-8 py-4 text-sm font-semibold tracking-wide text-surface-200 transition-all duration-300 hover:border-surface-300 hover:text-white"
 					>
-						{displayValue}
+						<RichText value={displayValue} />
 					</a>
 				{/snippet}
 			</EditableField>

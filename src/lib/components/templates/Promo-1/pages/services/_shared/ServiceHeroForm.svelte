@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { cityStore } from '$lib/stores/city.svelte';
 	import type { ServiceType } from '$lib/stores/serviceOrder.svelte';
@@ -177,7 +178,7 @@
 					disabled={isSubmitting}
 					class="w-full cursor-pointer rounded-3xl bg-accent-surface px-7 py-4 text-base font-semibold text-on-accent transition-colors ease-ui hover:bg-accent-surface-deep disabled:cursor-wait disabled:opacity-65"
 				>
-					{isSubmitting ? 'Отправка…' : displayValue}
+					<RichText value={isSubmitting ? 'Отправка…' : displayValue} />
 				</button>
 			{/snippet}
 		</EditableField>
