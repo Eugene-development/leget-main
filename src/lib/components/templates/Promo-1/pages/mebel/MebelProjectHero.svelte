@@ -752,7 +752,8 @@
 <!-- Lightbox -->
 {#if isLightboxOpen}
 	<div
-		class="fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/95 backdrop-blur-xl"
+		use:portal
+		class="fixed inset-0 z-[200] flex items-center justify-center bg-ink-950/95 backdrop-blur-xl"
 		onclick={(e) => {
 			if (e.target === e.currentTarget) isLightboxOpen = false;
 		}}

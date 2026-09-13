@@ -202,10 +202,23 @@
 		processedFiles = [];
 		filesToProcess = [];
 	}
+
+	/**
+	 * Модалка должна жить вне контекста наложения page-компонента: sticky-хэдер
+	 * Promo-1 находится на z-150 и иначе перекрывает верх формы.
+	 */
+	function portal(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node);
+			}
+		};
+	}
 </script>
 
 {#if isOpen}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-scrim/50 p-4">
+	<div use:portal class="fixed inset-0 z-[200] flex items-center justify-center bg-scrim/50 p-4">
 		<div
 			class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-surface-raised p-6 shadow-xl"
 		>

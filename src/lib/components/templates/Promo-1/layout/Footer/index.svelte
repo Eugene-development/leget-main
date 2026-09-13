@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ComponentControlsPopover from '$lib/components/ComponentControlsPopover.svelte';
 	import FooterV1 from './v1/Footer.svelte';
 	import FooterV2 from './v2/Footer.svelte';
 	import FooterV3 from './v3/Footer.svelte';
@@ -53,6 +54,7 @@
 		(data?.footerVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
 	);
 	let isOpen = $state(false);
+	let versionMenu = $state<HTMLElement>();
 	let settingsOpen = $state(false);
 	let hasManuallySelected = $state(false);
 	let lastEnabledVersion = $state<'v1' | 'v2' | 'v3'>('v1');
@@ -161,6 +163,13 @@
 	}
 </script>
 
+<svelte:window
+	onclick={(event) => {
+		if (isOpen && event.target instanceof Node && !versionMenu?.contains(event.target))
+			isOpen = false;
+	}}
+/>
+
 {#if selectedVersion !== 'disabled' || isEditable}
 	<div
 		data-field-toolbar-scope
@@ -168,103 +177,98 @@
 	>
 		{#if isEditable && editContext}
 			<!-- Общая панель редактора: варианты + настройки, как у основных компонентов. -->
-			<div
-				data-field-toolbar-anchor
-				class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none"
-			>
-				<div class="relative">
-					<button
-						type="button"
-						class="flex cursor-pointer items-center gap-2 rounded-2xl border border-on-dark/10 bg-ink-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
-						onclick={() => (isOpen = !isOpen)}
-					>
-						<span>Варианты</span>
-						<svg
-							class="h-3 w-3 transition-transform duration-300 {isOpen ? 'rotate-180' : ''}"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2.5"
-								d="M19 9l-7 7-7-7"
-							/>
-						</svg>
-					</button>
-
-					{#if isOpen}
+			<div class="absolute top-6 right-6 z-[100] flex items-center gap-2 select-none">
+				<ComponentControlsPopover
+					label="Футер"
+					onClose={() => {
+						isOpen = false;
+						settingsOpen = false;
+					}}
+				>
+					<div class="relative" bind:this={versionMenu}>
 						<button
 							type="button"
-							tabindex="-1"
-							class="fixed inset-0 z-40 h-full w-full cursor-default bg-transparent outline-none"
-							onclick={() => (isOpen = false)}
-							aria-label="Закрыть меню"
-						></button>
-					{/if}
-
-					{#if isOpen}
-						<div
-							class="absolute top-12 left-0 z-50 flex w-48 flex-col gap-1 rounded-2xl border border-on-dark/10 bg-ink-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
-							transition:fly={{ y: -10, duration: 200 }}
+							class="flex cursor-pointer items-center gap-2 rounded-2xl border border-on-dark/10 bg-ink-950/75 px-4 py-2.5 text-xs font-bold tracking-wider text-on-dark uppercase shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
+							onclick={() => (isOpen = !isOpen)}
 						>
-							<button
-								type="button"
-								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-								'v1'
-									? 'scale-[1.02] border border-on-dark/20 bg-on-dark/15 text-on-dark shadow-md'
-									: 'border border-transparent text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
-								onclick={() => {
-									selectVersion('v1');
-									isOpen = false;
-								}}
+							<span>Варианты</span>
+							<svg
+								class="h-3 w-3 transition-transform duration-300 {isOpen ? 'rotate-180' : ''}"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
 							>
-								Вариант 1
-							</button>
-							<button
-								type="button"
-								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-								'v2'
-									? 'scale-[1.02] border border-link-500/30 bg-gradient-to-r from-link-500/20 to-cat-4-500/20 text-link-200 shadow-md'
-									: 'border border-transparent text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
-								onclick={() => {
-									selectVersion('v2');
-									isOpen = false;
-								}}
-							>
-								Вариант 2
-							</button>
-							<button
-								type="button"
-								class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
-								'v3'
-									? 'scale-[1.02] border border-cat-8-400/30 bg-cat-8-400/15 text-cat-8-100 shadow-md'
-									: 'border border-transparent text-ink-400 hover:bg-cat-8-400/5 hover:text-cat-8-100'}"
-								onclick={() => {
-									selectVersion('v3');
-									isOpen = false;
-								}}
-							>
-								Вариант 3
-							</button>
-						</div>
-					{/if}
-				</div>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2.5"
+									d="M19 9l-7 7-7-7"
+								/>
+							</svg>
+						</button>
 
-				<ComponentSettingsDrawer
-					bind:open={settingsOpen}
-					title="Футер"
-					article={footerArticle}
-					articleSectionHint="__global__"
-					articleComponentHint="Footer"
-					canReset
-					{isResetting}
-					onReset={handleReset}
-					isDisabled={selectedVersion === 'disabled'}
-					enabledVersionLabel={lastEnabledVersion.replace('v', '')}
-					onToggleDisabled={toggleDisabled}
-				/>
+						{#if isOpen}
+							<div
+								class="absolute top-12 left-0 z-50 flex w-48 flex-col gap-1 rounded-2xl border border-on-dark/10 bg-ink-950/90 p-1.5 shadow-2xl backdrop-blur-2xl"
+								transition:fly={{ y: -10, duration: 200 }}
+							>
+								<button
+									type="button"
+									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+									'v1'
+										? 'scale-[1.02] border border-on-dark/20 bg-on-dark/15 text-on-dark shadow-md'
+										: 'border border-transparent text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
+									onclick={() => {
+										selectVersion('v1');
+										isOpen = false;
+									}}
+								>
+									Вариант 1
+								</button>
+								<button
+									type="button"
+									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+									'v2'
+										? 'scale-[1.02] border border-link-500/30 bg-gradient-to-r from-link-500/20 to-cat-4-500/20 text-link-200 shadow-md'
+										: 'border border-transparent text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
+									onclick={() => {
+										selectVersion('v2');
+										isOpen = false;
+									}}
+								>
+									Вариант 2
+								</button>
+								<button
+									type="button"
+									class="w-full cursor-pointer rounded-xl px-3 py-2.5 text-left text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {selectedVersion ===
+									'v3'
+										? 'scale-[1.02] border border-cat-8-400/30 bg-cat-8-400/15 text-cat-8-100 shadow-md'
+										: 'border border-transparent text-ink-400 hover:bg-cat-8-400/5 hover:text-cat-8-100'}"
+									onclick={() => {
+										selectVersion('v3');
+										isOpen = false;
+									}}
+								>
+									Вариант 3
+								</button>
+							</div>
+						{/if}
+					</div>
+
+					<ComponentSettingsDrawer
+						bind:open={settingsOpen}
+						title="Футер"
+						article={footerArticle}
+						articleSectionHint="__global__"
+						articleComponentHint="Footer"
+						canReset
+						{isResetting}
+						onReset={handleReset}
+						isDisabled={selectedVersion === 'disabled'}
+						enabledVersionLabel={lastEnabledVersion.replace('v', '')}
+						onToggleDisabled={toggleDisabled}
+					/>
+				</ComponentControlsPopover>
 			</div>
 		{/if}
 

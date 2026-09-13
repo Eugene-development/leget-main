@@ -48,8 +48,6 @@
 	});
 </script>
 
-<Component bind:data {editContext} {isEditable} {componentId} {sitePhone} />
-
 {#if showSettings}
 	<SingleVersionSettings
 		bind:data
@@ -61,3 +59,5 @@
 		themeDefault={settingsThemeDefault ?? 'light'}
 	/>
 {/if}
+
+<Component bind:data {editContext} {isEditable} {componentId} {sitePhone} />

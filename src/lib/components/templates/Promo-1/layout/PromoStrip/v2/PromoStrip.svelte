@@ -100,7 +100,7 @@
 			{#snippet children(displayValue)}
 				<a
 					href={String(data?.promoLinkHref ?? '/actions')}
-					class="promo-all-link p1-accent flex origin-left items-center gap-1.5 text-xs whitespace-nowrap transition-[color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600 motion-reduce:transition-none"
+					class="promo-all-link flex origin-left items-center gap-1.5 text-xs whitespace-nowrap text-cat-6-500 transition-[color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-cat-7-500 focus-visible:text-cat-7-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600 motion-reduce:transition-none"
 				>
 					<RichText value={displayValue} />
 					<svg
@@ -123,7 +123,7 @@
 <style>
 	.promo-all-link:hover,
 	.promo-all-link:focus-visible {
-		color: color-mix(in oklab, var(--p1-accent) 65%, var(--p1-title));
+		color: var(--color-cat-7-500);
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

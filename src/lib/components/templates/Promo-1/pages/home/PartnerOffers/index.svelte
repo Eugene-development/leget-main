@@ -51,7 +51,6 @@
 					title="Спецпредложения партнёров"
 					bind:selectedVersion
 				/>
-				<div data-field-toolbar-host></div>
 			</div>
 		{/if}
 

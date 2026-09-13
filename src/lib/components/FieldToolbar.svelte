@@ -11,7 +11,6 @@
 		children: Snippet;
 	} = $props();
 	let open = $state(false);
-	let docked = $state(false);
 	let panel = $state<HTMLElement>();
 	const id = $props.id();
 
@@ -20,18 +19,19 @@
 			target.closest<HTMLElement>('[data-field-toolbar-scope]') ??
 			target.closest<HTMLElement>('header, footer, section, aside, [role="dialog"]') ??
 			target.parentElement;
-		const host = scope?.querySelector('[data-field-toolbar-host]');
-		docked = Boolean(host);
-		(host ?? document.body).appendChild(node);
+		document.body.appendChild(node);
 		let frame = 0;
 		function position() {
-			if (!scope || host) return;
+			if (!scope) return;
 			// The portal escapes clipping, transforms and dimming of the content,
 			// but follows the component's controls when the page scrolls.
 			const anchor = [...scope.querySelectorAll<HTMLElement>('[data-field-toolbar-anchor]')].find(
 				(item) => item.getClientRects().length && getComputedStyle(item).visibility !== 'hidden'
 			);
-			const rect = (anchor ?? scope).getBoundingClientRect();
+			const controls = anchor?.dataset.controlsPanel
+				? document.getElementById(anchor.dataset.controlsPanel)
+				: null;
+			const rect = (controls ?? anchor ?? scope).getBoundingClientRect();
 			const right = anchor ? rect.right : rect.right - 16;
 			node.style.left = `${Math.max(8, Math.min(right - node.offsetWidth, window.innerWidth - node.offsetWidth - 8))}px`;
 			node.style.top = `${anchor ? rect.bottom + 12 : rect.top + 16}px`;
@@ -124,9 +124,7 @@
 		{id}
 		role="group"
 		aria-label={`Инструменты редактирования: ${label}`}
-		class="field-toolbar {docked
-			? 'relative'
-			: 'fixed z-[180]'} flex max-w-[calc(100vw-2rem)] items-center gap-3 rounded-xl border border-on-dark/10 bg-ink-950/75 px-3 py-2 font-sans text-on-dark shadow-2xl backdrop-blur-xl"
+		class="field-toolbar fixed z-[180] flex max-w-[calc(100vw-2rem)] items-center gap-3 rounded-xl border border-on-dark/10 bg-ink-950/75 px-3 py-2 font-sans text-on-dark shadow-2xl backdrop-blur-xl"
 	>
 		<span class="max-w-48 truncate text-sm">{label}</span>
 		{@render children()}

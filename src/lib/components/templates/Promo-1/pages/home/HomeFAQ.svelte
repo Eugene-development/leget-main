@@ -3,9 +3,8 @@
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
-	import BlockThemeToggle from '$lib/components/BlockThemeToggle.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
+	import { isLightBlock } from '$lib/utils/block-theme';
 
 	let {
 		data = $bindable(),
@@ -24,14 +23,6 @@
 	let opened = $state<number[]>([0]);
 	const items = $derived((Array.isArray(data?.items) ? data.items : []) as FAQItem[]);
 	const isLight = $derived(isLightBlock(data, 'light'));
-	const toggleTheme = createThemeToggle({
-		type: 'HomeFAQ',
-		fallback: 'light',
-		getData: () => data,
-		setData: (next) => (data = next),
-		getContext: () => editContext
-	});
-
 	onMount(() => {
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			symbolVisible = true;
@@ -193,7 +184,6 @@
 			{/each}
 		</div>
 	</div>
-	<BlockThemeToggle {isLight} onToggle={toggleTheme} {isEditable} {editContext} />
 </section>
 
 <style>

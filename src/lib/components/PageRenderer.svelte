@@ -143,11 +143,12 @@
 		orderError = null;
 	});
 
-	// Единственные многоверсионные компоненты Promo-1 (ground truth совпадает с
-	// leget-api/config/component_variants.php). Они уже рендерят VersionSwitcher
-	// внутри своих index.svelte; всем остальным нужен одноверсионный контрол ниже.
+	// Компоненты со своей панелью: PageRenderer не добавляет им вторую.
+	// Реестр сверяется с Svelte-разметкой всех шаблонов через check:component-controls.
 	const promo1ComponentsWithSwitcher = new Set([
 		'HeroMain',
+		'MebelProcess',
+		'MebelBenefits',
 		'ActionsCTA',
 		'Message',
 		'Mission',
@@ -200,6 +201,7 @@
 	}
 
 	const SINGLE_VERSION_THEME_DEFAULTS: Record<string, 'light' | 'dark'> = {
+		'/:HomeFAQ': 'light',
 		'/actions:Hero': 'dark',
 		'/actions:ActionsCards': 'light',
 		'/actions:ActionsCardsExtra': 'light',
@@ -422,12 +424,33 @@
 	{/each}
 
 	{#if isEditable && orderError}
-		<p
+		<div
 			role="alert"
-			class="fixed right-4 bottom-4 left-4 z-[110] rounded-xl border border-on-dark/20 bg-ink-950 p-4 text-sm text-on-dark shadow-lg sm:left-auto sm:max-w-sm"
+			class="fixed right-4 bottom-4 left-4 z-[110] flex items-start gap-3 rounded-xl border border-on-dark/20 bg-ink-950 p-4 text-sm text-on-dark shadow-lg sm:left-auto sm:max-w-sm"
 		>
-			{orderError.message}
-		</p>
+			<p class="min-w-0 flex-1">{orderError.message}</p>
+			<button
+				type="button"
+				class="-mt-1 -mr-1 inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-on-dark/70 transition-colors hover:bg-on-dark/10 hover:text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500"
+				aria-label="Закрыть уведомление"
+				title="Закрыть"
+				onclick={() => (orderError = null)}
+			>
+				<svg
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="m6 6 12 12M18 6 6 18" />
+				</svg>
+			</button>
+		</div>
 	{/if}
 
 	{#if Footer}
