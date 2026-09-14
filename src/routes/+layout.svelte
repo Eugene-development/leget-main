@@ -5,6 +5,8 @@
 	import ServiceOrderIsland from '$lib/components/ServiceOrderIsland.svelte';
 	import ClientAuthModal from '$lib/components/ClientAuthModal.svelte';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
+	import SiteSearchModal from '$lib/components/SiteSearchModal.svelte';
+	import { siteSearch } from '$lib/stores/site-search.svelte';
 
 	let { children } = $props();
 </script>
@@ -12,6 +14,10 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 {@render children()}
+
+{#if siteSearch.open}
+	<SiteSearchModal />
+{/if}
 
 <!--
 	Форма входа и регистрации клиента рендерится здесь, а не рядом с кнопками

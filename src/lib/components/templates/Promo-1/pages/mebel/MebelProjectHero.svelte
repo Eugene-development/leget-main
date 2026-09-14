@@ -274,7 +274,7 @@
 								onclick={openEditPanel}
 								title="Редактировать проект"
 								aria-label="Редактировать проект"
-								class="flex min-h-11 shrink-0 items-center gap-1.5 rounded-lg bg-cat-1-50 px-3 py-2 text-xs font-semibold text-cat-1-700 ring-1 ring-cat-1-200 transition-all hover:bg-cat-1-100 hover:ring-cat-1-300"
+								class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-cat-1-50 text-cat-1-700 ring-1 ring-cat-1-200 transition-all hover:bg-cat-1-100 hover:ring-cat-1-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500"
 							>
 								<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path
@@ -284,7 +284,6 @@
 										d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
 									/>
 								</svg>
-								Редактировать
 							</button>
 
 							<button
@@ -295,7 +294,7 @@
 								title={project.can_delete === false
 									? 'Общий проект каталога недоступен для удаления'
 									: 'Удалить проект'}
-								class="flex min-h-11 shrink-0 items-center gap-1.5 rounded-lg border border-cat-6-300 bg-cat-6-50 px-3 py-2 text-xs font-semibold text-cat-6-600 hover:bg-cat-6-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500 disabled:cursor-not-allowed disabled:opacity-50"
+								class="flex size-11 shrink-0 items-center justify-center rounded-lg border border-cat-6-300 bg-cat-6-50 text-cat-6-600 hover:bg-cat-6-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500 disabled:cursor-not-allowed disabled:opacity-50"
 							>
 								<svg
 									width="16"
@@ -309,7 +308,6 @@
 									aria-hidden="true"
 									><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg
 								>
-								Удалить
 							</button>
 						</div>
 					{/if}

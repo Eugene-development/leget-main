@@ -9,6 +9,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ClientAuthButtons from '$lib/components/ClientAuthButtons.svelte';
 	import IconHint from '$lib/components/IconHint.svelte';
+	import { siteSearch } from '$lib/stores/site-search.svelte';
 	import { readFavoriteProjectIds, subscribeToFavoriteProjects } from '$lib/utils/favorites';
 	import { editStore } from '$lib/stores/edit.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
@@ -571,6 +572,28 @@
 				</svg>
 			</a>
 
+			<button
+				type="button"
+				aria-label="Поиск по сайту"
+				aria-haspopup="dialog"
+				onclick={() => {
+					uiStore.closeMenu();
+					siteSearch.open = true;
+				}}
+				class="group relative flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-ink-50 text-ink-500 ring-1 ring-ink-200/50 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-link-600"
+			>
+				<svg
+					class="size-5"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4.5 4.5" /></svg
+				>
+				<IconHint text="Поиск по сайту" />
+			</button>
+
 			<!-- Вход и регистрация клиента: значками, в одном ряду с «Избранным».
 			     До 24.08.2026 стояли надписями в полосе баннера — там они были
 			     единственной кнопкой среди строки контактов и читались как текст,
@@ -699,6 +722,27 @@
 					/><path d="M5.5 9a2.5 2.5 0 0 1 3-2.5" class="icon-shine" /></svg
 				>
 			</a>
+
+			<button
+				type="button"
+				aria-label="Поиск по сайту"
+				aria-haspopup="dialog"
+				onclick={() => {
+					uiStore.closeMenu();
+					siteSearch.open = true;
+				}}
+				class="p1-title flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+			>
+				<svg
+					class="size-5"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4.5 4.5" /></svg
+				>
+			</button>
 
 			<button
 				bind:this={burgerEl}
