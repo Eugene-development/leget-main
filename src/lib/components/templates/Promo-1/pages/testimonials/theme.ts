@@ -11,7 +11,9 @@
  * Появление блока при попадании во вьюпорт: узел получает `.tm-visible`,
  * дальше ступени `.tm-d*` (или инлайновая `--tm-delay`) разводят элементы по времени.
  */
-export function revealOnScroll(node: HTMLElement) {
+type RevealOptions = IntersectionObserverInit;
+
+export function revealOnScroll(node: HTMLElement, options: RevealOptions = {}) {
 	if (typeof IntersectionObserver === 'undefined') {
 		node.classList.add('tm-visible');
 		return;
@@ -23,7 +25,7 @@ export function revealOnScroll(node: HTMLElement) {
 			node.classList.add('tm-visible');
 			observer.unobserve(node);
 		},
-		{ threshold: 0.1 }
+		{ threshold: 0.1, ...options }
 	);
 
 	observer.observe(node);

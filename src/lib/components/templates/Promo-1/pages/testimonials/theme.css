@@ -9,21 +9,7 @@
 	и scoped-стили до них не доходят.
 */
 
-/* ─────────────────────────── Текстуры фона ─────────────────────────── */
-
-.tm-grid {
-	position: absolute;
-	inset: 0;
-	background-image:
-		linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(255, 255, 255, 0.8) 1px, transparent 1px);
-	background-size: 56px 56px;
-	opacity: 0.05;
-}
-
-.tm-grid--fade-center {
-	mask-image: radial-gradient(circle at 50% 40%, black, transparent 72%);
-}
+/* ──────────────────────── Фоновые направляющие ──────────────────────── */
 
 /*
 	Вертикальные линии-колонки для светлых секций. Маска гасит текстуру у кромок,
