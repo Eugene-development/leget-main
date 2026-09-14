@@ -132,6 +132,9 @@ import MebelProjectSimilar from './pages/mebel/MebelProjectSimilar.svelte';
 import ProjectsHero from './pages/projects/ProjectsHero.svelte';
 import ProjectsFeed from './pages/projects/ProjectsFeed/index.svelte';
 
+// Browser-local favorites page
+import FavoritesPage from './pages/favorites/FavoritesPage.svelte';
+
 // Vacancy page components
 import VacancyHero from './pages/vacancy/VacancyHero.svelte';
 import VacancyList from './pages/vacancy/VacancyList.svelte';
@@ -325,6 +328,9 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/projects': {
 		ProjectsHero,
 		ProjectsFeed
+	},
+	'/favorites': {
+		FavoritesPage
 	},
 	// Страница «Вакансии». Слаг — `/vacancy`: именно на него ведёт ссылка
 	// «Вакансии» в подвале всех трёх версий Footer шаблона.

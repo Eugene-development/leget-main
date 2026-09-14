@@ -26,6 +26,7 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -105,74 +106,78 @@
 		</div>
 
 		{#if latest}
-			<!-- Ссылка одна на весь разворот: зона нажатия — сам разворот. -->
-			<a
-				class="group p1-card p1-border p1-card-hover mt-4 grid animate-fade-up-in overflow-hidden rounded-3xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none lg:grid-cols-[7fr_5fr] lg:gap-10"
-				href={projectHref(latest)}
-				aria-label="{FEED_LINK_LABEL}: {latest.value}"
+			<article
+				class="group p1-card p1-border p1-card-hover relative mt-4 animate-fade-up-in overflow-hidden rounded-3xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg"
 			>
-				<!-- `p1-body` на обёртке кадра несущий: заглушка `ImageFallback`
+				<FavoriteProjectButton projectId={latest.id} class="absolute top-4 right-4 z-10" />
+				<a
+					class="grid focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset lg:grid-cols-[7fr_5fr] lg:gap-10"
+					href={projectHref(latest)}
+					aria-label="{FEED_LINK_LABEL}: {latest.value}"
+				>
+					<!-- `p1-body` на обёртке кадра несущий: заглушка `ImageFallback`
 				     берёт цвет текста родителя и без роли растворилась бы в
 				     тёмной секции. -->
-				<div class="p1-body overflow-hidden">
-					<ImageFallback
-						imagePath={['projectImages', String(latest.id), '0']}
-						src={latest.images[0]?.url ?? null}
-						alt="Проект «{latest.value}»"
-						class="aspect-video h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105 lg:aspect-auto lg:min-h-[360px]"
-					/>
-				</div>
+					<div class="p1-body overflow-hidden">
+						<ImageFallback
+							imagePath={['projectImages', String(latest.id), '0']}
+							src={latest.images[0]?.url ?? null}
+							alt="Проект «{latest.value}»"
+							class="aspect-video h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105 lg:aspect-auto lg:min-h-[360px]"
+						/>
+					</div>
 
-				<div class="flex flex-col justify-center p-6 sm:p-8 lg:py-10 lg:pr-11 lg:pl-0">
-					<span class="p1-label p1-accent">
-						Последняя работа{latest.categoryValue ? ` · ${latest.categoryValue}` : ''}
-					</span>
-					<!-- Название работы набрано дисплейной ролью и крупно: на этой
+					<div class="flex flex-col justify-center p-6 sm:p-8 lg:py-10 lg:pr-20 lg:pl-0">
+						<span class="p1-label p1-accent">
+							Последняя работа{latest.categoryValue ? ` · ${latest.categoryValue}` : ''}
+						</span>
+						<!-- Название работы набрано дисплейной ролью и крупно: на этой
 					     странице оно и есть заголовок первого экрана. Ниже, в
 					     ленте, те же названия идут ролью `p1-title-sub` — там они
 					     пункты списка, а не заголовок. -->
-					<p class="p1-title p1-title-display mt-3.5 text-3xl sm:text-4xl">{latest.value}</p>
+						<p class="p1-title p1-title-display mt-3.5 text-3xl sm:text-4xl">{latest.value}</p>
 
-					<dl class="mt-6 flex flex-col">
-						{#if latest.objectAddress}
-							<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
-								<dt class="p1-label p1-body">Адрес объекта</dt>
-								<dd class="p1-title text-right text-[0.9375rem]">{latest.objectAddress}</dd>
-							</div>
-						{/if}
-						{#if completed}
-							<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
-								<dt class="p1-label p1-body">Сдан</dt>
-								<dd class="p1-title p1-numeric text-right text-[0.9375rem]">{completed}</dd>
-							</div>
-						{/if}
-						{#if latest.maker}
-							<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
-								<dt class="p1-label p1-body">Изготовление</dt>
-								<dd class="p1-title text-right text-[0.9375rem]">{latest.maker}</dd>
-							</div>
-						{/if}
-					</dl>
+						<dl class="mt-6 flex flex-col">
+							{#if latest.objectAddress}
+								<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
+									<dt class="p1-label p1-body">Адрес объекта</dt>
+									<dd class="p1-title text-right text-[0.9375rem]">{latest.objectAddress}</dd>
+								</div>
+							{/if}
+							{#if completed}
+								<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
+									<dt class="p1-label p1-body">Сдан</dt>
+									<dd class="p1-title p1-numeric text-right text-[0.9375rem]">{completed}</dd>
+								</div>
+							{/if}
+							{#if latest.maker}
+								<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
+									<dt class="p1-label p1-body">Изготовление</dt>
+									<dd class="p1-title text-right text-[0.9375rem]">{latest.maker}</dd>
+								</div>
+							{/if}
+						</dl>
 
-					<span class="p1-accent p1-label mt-6 inline-flex items-center gap-1.5 self-start">
-						{FEED_LINK_LABEL}
-						<svg
-							class="size-3.5 transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:translate-x-1"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-hidden="true"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2.5"
-								d="M9 5l7 7-7 7"
-							/>
-						</svg>
-					</span>
-				</div>
-			</a>
+						<span class="p1-accent p1-label mt-6 inline-flex items-center gap-1.5 self-start">
+							{FEED_LINK_LABEL}
+							<svg
+								class="size-3.5 transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:translate-x-1"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2.5"
+									d="M9 5l7 7-7 7"
+								/>
+							</svg>
+						</span>
+					</div>
+				</a>
+			</article>
 		{/if}
 	</div>
 </section>

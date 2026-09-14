@@ -9,6 +9,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ClientAuthButtons from '$lib/components/ClientAuthButtons.svelte';
 	import IconHint from '$lib/components/IconHint.svelte';
+	import { readFavoriteProjectIds, subscribeToFavoriteProjects } from '$lib/utils/favorites';
 	import { editStore } from '$lib/stores/edit.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import { catalogItems } from './catalogItems';
@@ -180,6 +181,14 @@
 	// Ссылка «Избранное» лежит в том же header_data blob'е, что и контакты баннера
 	// (ключ favoritesHref) — сам значок переехал из баннера в строку меню, правее города.
 	const favoritesHref = $derived(String(data?.favoritesHref ?? '/favorites'));
+	let favoriteCount = $state(0);
+	const displayedFavoriteCount = $derived(favoriteCount > 99 ? '99+' : String(favoriteCount));
+
+	$effect(() => {
+		const sync = (ids: string[]) => (favoriteCount = ids.length);
+		sync(readFavoriteProjectIds());
+		return subscribeToFavoriteProjects(sync);
+	});
 
 	// Подпись логотипа в мобильной строке: та же подмена, что в десктопном
 	// замке, — «Новострой» осталось дефолтом старых лицензий и названием
@@ -290,6 +299,17 @@
 		data = updated;
 	}
 </script>
+
+{#snippet favoritesBadge()}
+	{#if favoriteCount > 0}
+		<span
+			aria-hidden="true"
+			class="absolute top-0 right-0 flex h-5 min-w-5 translate-x-1/3 -translate-y-1/3 items-center justify-center rounded-full bg-favorite-badge px-1 text-xs leading-none font-bold text-on-dark shadow-sm"
+		>
+			{displayedFavoriteCount}
+		</span>
+	{/if}
+{/snippet}
 
 <!--
 	Гарнитур здесь больше нет. До 26.08.2026 отсюда блокирующей ссылкой на
@@ -530,9 +550,10 @@
 			<!-- Избранное -->
 			<a
 				href={favoritesHref}
+				aria-label={`Избранное: ${favoriteCount}`}
 				class="group relative flex items-center justify-center rounded-xl bg-linear-to-r from-ink-100/20 to-ink-50/80 p-3 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 hover:ring-brand-200"
 			>
-				<span class="sr-only">Избранное</span>
+				{@render favoritesBadge()}
 				<IconHint text="Избранное" />
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -654,9 +675,10 @@
 
 			<a
 				href={favoritesHref}
-				class="mobile-action mobile-favorite p1-title flex size-11 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				aria-label={`Избранное: ${favoriteCount}`}
+				class="mobile-action mobile-favorite p1-title relative flex size-11 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
-				<span class="sr-only">Избранное</span>
+				{@render favoritesBadge()}
 				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
 					><defs
 						><linearGradient id={`${mobileIconId}-heart`} x1="0" y1="0" x2="0.8" y2="1"

@@ -3,6 +3,7 @@
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
 	import { fly } from 'svelte/transition';
 	import { invalidateAll, goto } from '$app/navigation';
 	import { cubicOut } from 'svelte/easing';
@@ -280,6 +281,11 @@
 						</svg>
 					</div>
 				{/if}
+
+				<FavoriteProjectButton
+					projectId={String(project.id ?? '')}
+					class="absolute top-4 right-4 z-10"
+				/>
 
 				<!-- Метки -->
 				<div class="absolute top-4 left-4 flex gap-2">

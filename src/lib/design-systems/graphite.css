@@ -312,6 +312,7 @@
 	   синяя кнопка требует максимального контраста. */
 	--ds-on-dark: #f8fafc;
 	--ds-on-accent: #ffffff;
+	--ds-favorite-badge: #b91c1c;
 	--ds-surface-raised: #ffffff;
 	--ds-scrim: #020617;
 	/* Скрим короче и плотнее базового — та же правка, что у теней и движения:

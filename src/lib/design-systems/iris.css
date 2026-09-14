@@ -410,6 +410,7 @@
 	   то разведение ролей, ради которого они заведены раздельно. */
 	--ds-on-dark: #fafafa;
 	--ds-on-accent: #ffffff;
+	--ds-favorite-badge: #b91c1c;
 	--ds-surface-raised: #ffffff;
 	/* Затемнение поверх медиа — #0a0a0a, а не #000000: «Do not use pure
 	   #000000». */

@@ -3,6 +3,7 @@
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 
 	let {
@@ -62,6 +63,10 @@
 					<article
 						class="group relative overflow-hidden rounded-2xl bg-surface-raised shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 					>
+						<FavoriteProjectButton
+							projectId={String(project.id)}
+							class="absolute top-3 right-3 z-20"
+						/>
 						<a href="/mebel/{categorySlug}/{project.slug}" class="block h-full">
 							<!-- Метки -->
 							<div class="absolute top-3 left-3 z-10 flex gap-1.5">

@@ -492,6 +492,7 @@
 	/* Контент поверх поверхностей: бывшие white/black. */
 	--color-on-dark: var(--ds-on-dark);
 	--color-on-accent: var(--ds-on-accent);
+	--color-favorite-badge: var(--ds-favorite-badge);
 	--color-surface-raised: var(--ds-surface-raised);
 	--color-scrim: var(--ds-scrim);
 
