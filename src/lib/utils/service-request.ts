@@ -9,6 +9,11 @@ export type ServiceRequestInput = {
 	message?: string | null;
 	city: string;
 	sourceUrl?: string | null;
+	attachments?: {
+		passportMain: File;
+		passportRegistration: File;
+		clientPhoto: File;
+	};
 };
 
 type ServiceRequestResult = {
@@ -53,10 +58,23 @@ export async function submitServiceRequest(
 		throw new Error(SUBMIT_ERROR);
 	}
 
+	const notificationBody = input.attachments
+		? (() => {
+				const formData = new FormData();
+				for (const [key, value] of Object.entries(payload)) {
+					if (value !== null) formData.append(key, value);
+				}
+				formData.append('passport_main', input.attachments.passportMain);
+				formData.append('passport_registration', input.attachments.passportRegistration);
+				formData.append('client_photo', input.attachments.clientPhoto);
+				return formData;
+			})()
+		: JSON.stringify(payload);
+
 	const authResponse = await fetch(`${getAuthApiUrl()}/notify/service-request`, {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(payload)
+		headers: input.attachments ? undefined : { 'Content-Type': 'application/json' },
+		body: notificationBody
 	});
 
 	if (!authResponse.ok) {

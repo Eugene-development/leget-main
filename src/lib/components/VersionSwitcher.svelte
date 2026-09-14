@@ -31,6 +31,7 @@
 		title = '',
 		placement = 'overlay',
 		settings = null,
+		controlActions = null,
 		imageManagerExcludePaths = []
 	}: {
 		data: Record<string, unknown>;
@@ -54,6 +55,8 @@
 		placement?: 'overlay' | 'inline';
 		/** Специализированная секция внутри панели настроек блока. */
 		settings?: Snippet | null;
+		/** Дополнительные действия в меню шестерёнки. */
+		controlActions?: Snippet | null;
 		/** Image-пути, которыми управляет специализированная секция. */
 		imageManagerExcludePaths?: string[];
 	} = $props();
@@ -215,6 +218,7 @@
 			{/if}
 
 			<ComponentOrderControls {componentType} {editContext} />
+			{#if controlActions}{@render controlActions()}{/if}
 
 			<!-- Контейнер для кнопки Варианты и выпадающего списка -->
 			{#if showVersionMenu}

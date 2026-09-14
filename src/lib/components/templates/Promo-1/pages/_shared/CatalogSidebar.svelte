@@ -1105,7 +1105,8 @@
 	.ms-sheet-root {
 		position: fixed;
 		inset: 0;
-		z-index: 200;
+		/* Меню шестерёнки портируется в body на z-180, формы — на z-200. */
+		z-index: 175;
 		display: flex;
 		align-items: flex-end;
 	}

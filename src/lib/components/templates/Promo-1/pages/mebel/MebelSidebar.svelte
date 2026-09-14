@@ -10,6 +10,7 @@
 	import { type EditContext } from '$lib/utils/page-edit';
 	import CatalogSidebar from '../_shared/CatalogSidebar.svelte';
 	import MebelProjectModal from './MebelProjectModal.svelte';
+	import MebelTagModal from './MebelTagModal.svelte';
 
 	let {
 		data = $bindable(),
@@ -26,6 +27,7 @@
 	const categories = $derived(data.categories || []);
 
 	let isModalOpen = $state(false);
+	let isTagModalOpen = $state(false);
 	let addCategoryId = $state('');
 
 	function openAddModal(categoryId: string, e: Event) {
@@ -48,6 +50,10 @@
 		{ value: 'Офисная мебель', slug: 'ofisnaya-mebel' }
 	];
 </script>
+
+{#if isEditable && isTagModalOpen}
+	<MebelTagModal onClose={() => (isTagModalOpen = false)} />
+{/if}
 
 <MebelProjectModal
 	isOpen={isModalOpen}
@@ -84,7 +90,17 @@
 		componentType="MebelSidebar"
 		resetId={componentId}
 		placement="inline"
+		controlActions={tagActions}
 	/>
+{/snippet}
+
+{#snippet tagActions()}
+	<button
+		type="button"
+		onclick={() => (isTagModalOpen = true)}
+		class="min-h-11 rounded-lg border border-on-dark/20 px-3 py-2 text-sm text-on-dark hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-link-500"
+		>Добавить тег</button
+	>
 {/snippet}
 
 {#snippet categoryActions(category: any)}

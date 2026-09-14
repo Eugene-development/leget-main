@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 
@@ -11,7 +12,8 @@
 		themeToggle = false,
 		themeDefault = 'light',
 		title = '',
-		placement = 'overlay'
+		placement = 'overlay',
+		controlActions = null
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
@@ -22,6 +24,7 @@
 		themeDefault?: 'light' | 'dark';
 		title?: string;
 		placement?: 'overlay' | 'inline';
+		controlActions?: Snippet | null;
 	} = $props();
 
 	const versionKey = $derived(
@@ -46,4 +49,5 @@
 	{themeDefault}
 	title={title || componentType}
 	{placement}
+	{controlActions}
 />
