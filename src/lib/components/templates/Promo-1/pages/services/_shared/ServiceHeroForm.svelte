@@ -109,6 +109,8 @@
 			Спасибо! Специалист свяжется с вами в ближайшее время.
 		</p>
 		<button
+			data-metrika-goal="pages_services_shared_serviceheroform_reset_1"
+			data-goal-action="reset"
 			type="button"
 			onclick={resetForm}
 			class="p1-body mt-5 cursor-pointer text-sm underline decoration-current/35 underline-offset-4 transition-opacity ease-ui hover:opacity-70"
@@ -174,6 +176,9 @@
 		>
 			{#snippet children(displayValue)}
 				<button
+					data-metrika-goal="pages_services_shared_serviceheroform_submit_click_1"
+					data-goal-label="Отправить заявку на услугу"
+					data-goal-action="submit_click"
 					type="submit"
 					disabled={isSubmitting}
 					class="w-full cursor-pointer rounded-3xl bg-accent-surface px-7 py-4 text-base font-semibold text-on-accent transition-colors ease-ui hover:bg-accent-surface-deep disabled:cursor-wait disabled:opacity-65"

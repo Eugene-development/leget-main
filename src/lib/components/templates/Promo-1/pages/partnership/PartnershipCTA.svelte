@@ -176,6 +176,9 @@
 						class="pca-item pca-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
 					>
 						<button
+							data-metrika-goal="pages_partnership_partnershipcta_open_1"
+							data-goal-label="Стать партнёром (текст кнопки настраивается)"
+							data-goal-action="open"
 							type="button"
 							aria-haspopup="dialog"
 							aria-label={buttonText}

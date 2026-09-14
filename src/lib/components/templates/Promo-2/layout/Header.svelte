@@ -171,6 +171,8 @@
 					<span class="h-3 w-px bg-border-medium"></span>
 				{/if}
 				<button
+					data-metrika-goal="layout_header_open_1"
+					data-goal-action="open"
 					type="button"
 					onclick={handleAuthClick}
 					class="text-xs tracking-wide text-secondary transition-colors duration-300 hover:text-primary"
@@ -377,6 +379,8 @@
 				</a>
 			{/if}
 			<button
+				data-metrika-goal="layout_header_open_2"
+				data-goal-action="open"
 				type="button"
 				onclick={() => {
 					handleAuthClick();

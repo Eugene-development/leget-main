@@ -172,6 +172,8 @@
 				</p>
 			</div>
 			<button
+				data-metrika-goal="clientauthmodal_close_1"
+				data-goal-action="close"
 				type="button"
 				onclick={onClose}
 				class="rounded-lg p-1 text-ink-400 transition hover:text-ink-700"
@@ -327,6 +329,9 @@
 			{/if}
 
 			<button
+				data-metrika-goal="clientauthmodal_submit_click_1"
+				data-goal-label="Войти / Зарегистрироваться"
+				data-goal-action="submit_click"
 				type="submit"
 				disabled={isSubmitting}
 				class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-sm font-semibold text-on-dark transition hover:bg-ink-800 disabled:opacity-60"

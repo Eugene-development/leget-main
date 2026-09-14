@@ -150,6 +150,9 @@
 				<!-- Действия -->
 				<div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
 					<button
+						data-metrika-goal="pages_home_promooffer_v2_promooffer_open_1"
+						data-goal-label="Консультация (текст кнопки настраивается)"
+						data-goal-action="open"
 						type="button"
 						onclick={() => serviceOrderStore.open('consultation')}
 						class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cat-8-500 to-cat-1-600 px-10 py-4.5 text-center text-base font-bold text-on-accent shadow-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-cat-8-500/20 active:scale-[0.98] sm:w-auto"

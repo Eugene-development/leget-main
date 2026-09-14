@@ -348,6 +348,8 @@
 		{:else}
 			<div class="flex gap-2 px-3 pb-2">
 				<button
+					data-metrika-goal="layout_menu_v2_mobilemenu_open_1"
+					data-goal-action="open"
 					type="button"
 					onclick={account.openLogin}
 					class="h-12 flex-1 cursor-pointer rounded-2xl bg-link-50 text-[13px] font-semibold tracking-wide text-link-600 ring-1 ring-link-200 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
@@ -355,6 +357,8 @@
 					Войти
 				</button>
 				<button
+					data-metrika-goal="layout_menu_v2_mobilemenu_open_2"
+					data-goal-action="open"
 					type="button"
 					onclick={account.openRegister}
 					class="h-12 flex-1 cursor-pointer rounded-2xl bg-ink-100/70 text-[13px] font-semibold tracking-wide text-ink-600 ring-1 ring-ink-900/5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"

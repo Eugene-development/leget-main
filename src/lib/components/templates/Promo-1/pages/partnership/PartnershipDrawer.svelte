@@ -69,7 +69,7 @@
 	}
 </script>
 
-<SideDrawer bind:open title="Партнёрство">
+<SideDrawer goalPrefix="partnership_drawer" bind:open title="Партнёрство">
 	{#if sent}
 		<div class="space-y-5 text-on-dark" role="status">
 			<p class="text-xl font-semibold">Заявка отправлена</p>
@@ -77,6 +77,8 @@
 				Свяжемся с вами, чтобы обсудить условия партнёрства.
 			</p>
 			<button
+				data-metrika-goal="pages_partnership_partnershipdrawer_close_1"
+				data-goal-action="close"
 				type="button"
 				class="min-h-11 rounded-lg border border-on-dark/30 px-5 py-3 focus-visible:outline-2 focus-visible:outline-link-400"
 				onclick={() => {
@@ -187,6 +189,8 @@
 						{error}
 					</p>{/if}
 				<button
+					data-metrika-goal="pages_partnership_partnershipdrawer_submit_click_1"
+					data-goal-action="submit_click"
 					type="submit"
 					disabled={sending}
 					class="min-h-12 w-full rounded-lg bg-link-600 px-5 py-3 text-base font-semibold text-on-accent transition-colors hover:bg-link-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-400 disabled:cursor-wait disabled:opacity-60"

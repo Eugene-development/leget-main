@@ -491,6 +491,8 @@
 						</div>
 
 						<button
+							data-metrika-goal="pages_installment_installmentplans_open_1"
+							data-goal-action="open"
 							type="button"
 							onclick={(event) => openApplication(i, event)}
 							class="group/btn mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 {plan.featured
@@ -540,6 +542,8 @@
 					</h2>
 				</div>
 				<button
+					data-metrika-goal="pages_installment_installmentplans_close_1"
+					data-goal-action="close"
 					type="button"
 					onclick={closeApplication}
 					disabled={isSubmitting}
@@ -580,6 +584,8 @@
 						Мы проверим данные и свяжемся с вами по указанному телефону.
 					</p>
 					<button
+						data-metrika-goal="pages_installment_installmentplans_close_2"
+						data-goal-action="close"
 						bind:this={successCloseButton}
 						type="button"
 						onclick={closeApplication}
@@ -752,6 +758,8 @@
 					{/if}
 
 					<button
+						data-metrika-goal="pages_installment_installmentplans_submit_click_1"
+						data-goal-action="submit_click"
 						type="submit"
 						disabled={isSubmitting}
 						class="mt-7 inline-flex min-h-12 w-full cursor-pointer items-center justify-center rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-on-accent transition duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-brand-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600 disabled:cursor-wait disabled:opacity-60"

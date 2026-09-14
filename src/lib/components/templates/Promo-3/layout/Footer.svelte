@@ -163,6 +163,8 @@
 						'rounded-lg border border-surface-600/60 bg-surface-800/70 text-surface-300 hover:border-accent-500/60 hover:text-accent-500'
 					)}
 					<button
+						data-metrika-goal="layout_footer_open_1"
+						data-goal-action="open"
 						type="button"
 						onclick={handleAuthClick}
 						class="h-9 rounded-lg border border-surface-600/60 bg-surface-800/70 px-4 text-xs font-semibold text-surface-300 transition-colors hover:border-accent-500/60 hover:text-accent-500"

@@ -281,6 +281,8 @@
 	{:else}
 		<div class="flex gap-2 px-4 pt-5 pb-6">
 			<button
+				data-metrika-goal="layout_menu_v1_mobilemenu_open_1"
+				data-goal-action="open"
 				type="button"
 				onclick={account.openLogin}
 				class="p1-accent flex h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[var(--p1-accent)] text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
@@ -302,6 +304,8 @@
 			</button>
 
 			<button
+				data-metrika-goal="layout_menu_v1_mobilemenu_open_2"
+				data-goal-action="open"
 				type="button"
 				onclick={account.openRegister}
 				class="p1-title p1-border p1-card-hover flex h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"

@@ -57,6 +57,8 @@
 					'rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900'
 				)}
 				<button
+					data-metrika-goal="layout_footer_open_1"
+					data-goal-action="open"
 					type="button"
 					onclick={handleAuthClick}
 					class="h-9 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:text-gray-900"

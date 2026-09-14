@@ -167,6 +167,9 @@
 
 			<div class="mt-10 flex justify-start sm:mt-12">
 				<button
+					data-metrika-goal="pages_home_incentives_v3_incentives_open_1"
+					data-goal-label="Консультация (текст кнопки настраивается)"
+					data-goal-action="open"
 					type="button"
 					onclick={() => serviceOrderStore.open('consultation')}
 					class="inline-flex cursor-pointer items-center justify-center gap-3 rounded-full bg-accent-surface px-7 py-4 text-base font-semibold text-on-accent shadow-[0_8px_30px] shadow-brand-500/25 transition-[transform,background-color,box-shadow] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-accent-surface-deep hover:shadow-brand-500/35 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 active:translate-y-0"

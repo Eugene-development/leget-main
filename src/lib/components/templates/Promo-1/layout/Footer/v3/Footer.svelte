@@ -502,6 +502,8 @@
 						{:else}
 							<li>
 								<button
+									data-metrika-goal="layout_footer_v3_footer_open_1"
+									data-goal-action="open"
 									type="button"
 									onclick={() => clientAuthModal.open('login')}
 									class="p1-accent-hover rounded-sm text-left transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
@@ -511,6 +513,8 @@
 							</li>
 							<li>
 								<button
+									data-metrika-goal="layout_footer_v3_footer_open_2"
+									data-goal-action="open"
 									type="button"
 									onclick={() => clientAuthModal.open('register')}
 									class="p1-accent-hover rounded-sm text-left transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
@@ -545,6 +549,8 @@
 						'rounded-full p1-border border p1-title p1-accent-border-hover p1-accent-hover focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none'
 					)}
 					<button
+						data-metrika-goal="layout_footer_v3_footer_open_3"
+						data-goal-action="open"
 						type="button"
 						onclick={handleAuthClick}
 						class="p1-border p1-title p1-accent-border-hover p1-accent-hover h-9 rounded-full border px-4 font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none active:scale-[0.98]"

@@ -290,6 +290,8 @@
 	{:else}
 		<div class="p1-overlay flex gap-2 px-5 py-4">
 			<button
+				data-metrika-goal="layout_menu_v4_mobilemenu_open_1"
+				data-goal-action="open"
 				type="button"
 				onclick={account.openLogin}
 				class="p1-accent-bg h-11 flex-1 cursor-pointer rounded-md text-xs font-semibold text-on-accent transition-colors"
@@ -297,6 +299,8 @@
 				Войти
 			</button>
 			<button
+				data-metrika-goal="layout_menu_v4_mobilemenu_open_2"
+				data-goal-action="open"
 				type="button"
 				onclick={account.openRegister}
 				class="p1-line p1-body h-11 flex-1 cursor-pointer rounded-md border text-xs font-semibold transition-colors"

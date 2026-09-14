@@ -162,6 +162,9 @@
 
 				<div class="ph-item ph-d4 mt-10">
 					<button
+						data-metrika-goal="pages_partnership_hero_open_1"
+						data-goal-label="Стать партнёром (текст кнопки настраивается)"
+						data-goal-action="open"
 						type="button"
 						aria-haspopup="dialog"
 						aria-label={buttonText}

@@ -300,6 +300,9 @@
 						{/if}
 
 						<button
+							data-metrika-goal="pages_careers_careersform_submit_click_1"
+							data-goal-label="Отправить резюме"
+							data-goal-action="submit_click"
 							type="submit"
 							disabled={isSubmitting}
 							class="group flex w-full items-center justify-center gap-3 border border-accent bg-accent py-4 text-xs tracking-[0.2em] text-primary uppercase transition-all duration-500 hover:border-accent hover:bg-transparent hover:text-accent disabled:opacity-70"

@@ -220,6 +220,9 @@
 				     поправки кнопка стала бы 58px против 56px у залитых кнопок шаблона. -->
 				<div class="mt-10 flex justify-start">
 					<button
+						data-metrika-goal="pages_home_incentives_v1_incentives_open_1"
+						data-goal-label="Консультация (текст кнопки настраивается)"
+						data-goal-action="open"
 						type="button"
 						onclick={() => serviceOrderStore.open('consultation')}
 						class="inline-flex cursor-pointer items-center justify-center gap-3 rounded-full border border-accent-ink/35 px-[27px] py-[15px] text-base font-medium text-accent-ink transition-[background-color,border-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:border-accent-ink hover:bg-accent-ink-wash focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2"

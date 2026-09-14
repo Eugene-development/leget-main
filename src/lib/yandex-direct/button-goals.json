@@ -1,0 +1,641 @@
+[
+	{
+		"id": "clientauthbuttons_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthButtons.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "clientauthbuttons_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthButtons.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "clientauthmodal_close_1",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthModal.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "clientauthmodal_submit_click_1",
+		"action": "submit_click",
+		"label": "Войти / Зарегистрироваться",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthModal.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "loginmodal_close_1",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
+		"source": "LoginModal.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "loginmodal_submit_click_1",
+		"action": "submit_click",
+		"label": "Войти",
+		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
+		"source": "LoginModal.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "serviceorderisland_close_1",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "serviceorderisland_close_2",
+		"action": "close",
+		"label": "Отлично",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "serviceorderisland_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v1_footer_reset_1",
+		"action": "reset",
+		"label": "Подписать другой адрес",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v1/Footer.svelte",
+		"route": null,
+		"mock": true
+	},
+	{
+		"id": "layout_footer_v1_footer_submit_click_1",
+		"action": "submit_click",
+		"label": "Подписаться",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v1/Footer.svelte",
+		"route": null,
+		"mock": true
+	},
+	{
+		"id": "layout_footer_v1_footer_open_1",
+		"action": "open",
+		"label": "Логин",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v1/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v1_footer_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v1/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v1_footer_open_3",
+		"action": "open",
+		"label": "Админ",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v1/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v2_footer_open_1",
+		"action": "open",
+		"label": "Логин",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v2/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v2_footer_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v2/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v2_footer_open_3",
+		"action": "open",
+		"label": "Админ",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v2/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v3_footer_open_1",
+		"action": "open",
+		"label": "Логин",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v3/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v3_footer_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v3/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_footer_v3_footer_open_3",
+		"action": "open",
+		"label": "Админ",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Footer/v3/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v1_mobilemenu_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v1_mobilemenu_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v2_mobilemenu_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v2_mobilemenu_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v3_mobilemenu_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v3_mobilemenu_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v4_mobilemenu_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_menu_v4_mobilemenu_open_2",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "pages_shared_catalogsidebar_open_1",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "pages_about_aboutcta_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/about/AboutCTA.svelte",
+		"route": "/about",
+		"mock": false
+	},
+	{
+		"id": "pages_bytovaya_tehnika_byttehnikabrandhero_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaBrandHero.svelte",
+		"route": "/bytovaya-tehnika",
+		"mock": false
+	},
+	{
+		"id": "pages_contact_contactform_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/contact/ContactForm.svelte",
+		"route": "/contact",
+		"mock": true
+	},
+	{
+		"id": "pages_home_heromain_v1_heromain_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroMain.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_heromain_v1_heromain_open_2",
+		"action": "open",
+		"label": "Получить промокод",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroMain.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_heromain_v2_heromain_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/HeroMain/v2/HeroMain.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_heromain_v3_heromain_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/HeroMain/v3/HeroMain.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_heromain_v4_heromain_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/HeroMain/v4/HeroMain.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_incentives_v1_incentives_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/Incentives/v1/Incentives.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_incentives_v3_incentives_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/Incentives/v3/Incentives.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_promooffer_v1_promooffer_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/PromoOffer/v1/PromoOffer.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_home_promooffer_v2_promooffer_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/PromoOffer/v2/PromoOffer.svelte",
+		"route": "/",
+		"mock": false
+	},
+	{
+		"id": "pages_installment_installmentplans_open_1",
+		"action": "open",
+		"label": "Оформить →",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/installment/InstallmentPlans.svelte",
+		"route": "/installment",
+		"mock": false
+	},
+	{
+		"id": "pages_installment_installmentplans_close_1",
+		"action": "close",
+		"label": "Закрыть форму",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/installment/InstallmentPlans.svelte",
+		"route": "/installment",
+		"mock": false
+	},
+	{
+		"id": "pages_installment_installmentplans_close_2",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/installment/InstallmentPlans.svelte",
+		"route": "/installment",
+		"mock": false
+	},
+	{
+		"id": "pages_installment_installmentplans_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/installment/InstallmentPlans.svelte",
+		"route": "/installment",
+		"mock": false
+	},
+	{
+		"id": "pages_partnership_hero_open_1",
+		"action": "open",
+		"label": "Стать партнёром (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/partnership/Hero.svelte",
+		"route": "/partnership",
+		"mock": false
+	},
+	{
+		"id": "pages_partnership_partnershipcta_open_1",
+		"action": "open",
+		"label": "Стать партнёром (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/partnership/PartnershipCTA.svelte",
+		"route": "/partnership",
+		"mock": false
+	},
+	{
+		"id": "pages_partnership_partnershipdrawer_close_1",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/partnership/PartnershipDrawer.svelte",
+		"route": "/partnership",
+		"mock": false
+	},
+	{
+		"id": "pages_partnership_partnershipdrawer_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/partnership/PartnershipDrawer.svelte",
+		"route": "/partnership",
+		"mock": false
+	},
+	{
+		"id": "pages_santehnika_santehnikabrandhero_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaBrandHero.svelte",
+		"route": "/santehnika",
+		"mock": false
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_reset_1",
+		"action": "reset",
+		"label": "Отправить ещё одну заявку",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку на услугу",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "pages_stoleshnica_stoleshnicabrandhero_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrandHero.svelte",
+		"route": "/stoleshnica",
+		"mock": false
+	},
+	{
+		"id": "pages_vacancy_vacancyform_reset_1",
+		"action": "reset",
+		"label": "Отправить ещё один",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/vacancy/VacancyForm.svelte",
+		"route": "/vacancy",
+		"mock": false
+	},
+	{
+		"id": "pages_vacancy_vacancyform_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить отклик →",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/vacancy/VacancyForm.svelte",
+		"route": "/vacancy",
+		"mock": false
+	},
+	{
+		"id": "layout_footer_open_1",
+		"action": "open",
+		"label": "Админ",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/layout/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_header_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_header_open_2",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "pages_careers_careersform_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить резюме",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/careers/CareersForm.svelte",
+		"route": "/careers",
+		"mock": false
+	},
+	{
+		"id": "pages_contact_contactform_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/contact/ContactForm.svelte",
+		"route": "/contact",
+		"mock": true
+	},
+	{
+		"id": "pages_designers_designersform_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/designers/DesignersForm.svelte",
+		"route": "/designers",
+		"mock": false
+	},
+	{
+		"id": "layout_footer_open_1",
+		"action": "open",
+		"label": "Админ",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/layout/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_header_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "layout_header_open_2",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "pages_contacts_form_reset_1",
+		"action": "reset",
+		"label": "← Вернуться",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/pages/contacts/Form.svelte",
+		"route": "/contacts",
+		"mock": true
+	},
+	{
+		"id": "pages_contacts_form_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку (текст кнопки настраивается)",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/pages/contacts/Form.svelte",
+		"route": "/contacts",
+		"mock": true
+	},
+	{
+		"id": "pages_vacancies_form_reset_1",
+		"action": "reset",
+		"label": "← К вакансиям",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/pages/vacancies/Form.svelte",
+		"route": "/vacancies",
+		"mock": true
+	},
+	{
+		"id": "pages_vacancies_form_submit_click_1",
+		"action": "submit_click",
+		"label": "Откликнуться (текст кнопки настраивается)",
+		"templates": ["Promo-3"],
+		"source": "templates/Promo-3/pages/vacancies/Form.svelte",
+		"route": "/vacancies",
+		"mock": true
+	},
+	{
+		"id": "layout_footer_open_1",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Test"],
+		"source": "templates/Test/layout/Footer.svelte",
+		"route": null,
+		"mock": false
+	},
+	{
+		"id": "partnership_drawer_close",
+		"action": "close",
+		"label": "Закрыть панель партнёрства",
+		"templates": ["Promo-1"],
+		"source": "SideDrawer.svelte",
+		"route": "/partnership",
+		"mock": false
+	},
+	{
+		"id": "partnership_drawer_backdrop_close",
+		"action": "close",
+		"label": "Закрыть партнёрство по фону",
+		"templates": ["Promo-1"],
+		"source": "SideDrawer.svelte",
+		"route": "/partnership",
+		"mock": false
+	}
+]

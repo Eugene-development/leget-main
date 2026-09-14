@@ -84,7 +84,13 @@
 		</svg>
 	</button>
 {:else}
-	<button type="button" onclick={account.openLogin} class={iconClass}>
+	<button
+		data-metrika-goal="clientauthbuttons_open_1"
+		data-goal-action="open"
+		type="button"
+		onclick={account.openLogin}
+		class={iconClass}
+	>
 		<span class="sr-only">Войти</span>
 		<IconHint text="Войти" />
 		<svg
@@ -101,7 +107,13 @@
 			/>
 		</svg>
 	</button>
-	<button type="button" onclick={account.openRegister} class={iconClass}>
+	<button
+		data-metrika-goal="clientauthbuttons_open_2"
+		data-goal-action="open"
+		type="button"
+		onclick={account.openRegister}
+		class={iconClass}
+	>
 		<span class="sr-only">Регистрация</span>
 		<IconHint text="Регистрация" align="right" />
 		<svg

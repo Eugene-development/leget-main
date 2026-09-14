@@ -409,6 +409,9 @@
 					>
 						{#snippet children(displayValue)}
 							<button
+								data-metrika-goal="pages_home_heromain_v1_heromain_open_1"
+								data-goal-label="Консультация (текст кнопки настраивается)"
+								data-goal-action="open"
 								type="button"
 								onclick={() => serviceOrderStore.open('consultation')}
 								class="hero-primary group cursor-pointer rounded-xl border border-ink-900 bg-ink-900 px-5 py-3 text-center text-sm font-semibold text-on-dark shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-ink-800 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
@@ -433,6 +436,9 @@
 					>
 						{#snippet children(displayValue)}
 							<button
+								data-metrika-goal="pages_home_heromain_v1_heromain_open_2"
+								data-goal-label="Получить промокод"
+								data-goal-action="open"
 								type="button"
 								onclick={() => serviceOrderStore.open('promo')}
 								class="cursor-pointer rounded-xl px-1 py-3 text-center text-sm font-semibold text-ink-900 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"

@@ -117,6 +117,8 @@
 						{serviceOrderStore.title}
 					</h2>
 					<button
+						data-metrika-goal="serviceorderisland_close_1"
+						data-goal-action="close"
 						type="button"
 						onclick={handleClose}
 						class="cursor-pointer rounded-full border border-ink-700/50 bg-ink-800/40 p-2 text-ink-400 transition duration-300 hover:bg-ink-800 hover:text-on-dark"
@@ -169,6 +171,8 @@
 							деталей.
 						</p>
 						<button
+							data-metrika-goal="serviceorderisland_close_2"
+							data-goal-action="close"
 							type="button"
 							onclick={handleClose}
 							class="w-full cursor-pointer rounded-full border border-ink-700/80 bg-ink-800 px-8 py-3.5 text-base font-bold text-on-dark transition duration-300 hover:bg-ink-700"
@@ -252,6 +256,9 @@
 						{/if}
 
 						<button
+							data-metrika-goal="serviceorderisland_submit_click_1"
+							data-goal-label="Отправить заявку"
+							data-goal-action="submit_click"
 							type="submit"
 							disabled={isSubmitting}
 							class="group relative mt-8 inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-gradient-to-r from-link-500 to-link-600 px-8 py-4 text-base font-bold text-on-dark shadow-xl shadow-link-500/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-link-500/40 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"

@@ -10,6 +10,12 @@ FRONTEND_URL_VALUE=""
 API_BASE_URL_VALUE=""
 AUTH_API_URL_VALUE=""
 
+# Private Management API credential. Never include this in config.js or logs.
+if [ -z "${YANDEX_METRIKA_OAUTH_TOKEN:-}" ] && [ -f "/run/secrets/yandex_metrika_oauth_token" ]; then
+    YANDEX_METRIKA_OAUTH_TOKEN=$(tr -d '\r\n' < /run/secrets/yandex_metrika_oauth_token)
+    export YANDEX_METRIKA_OAUTH_TOKEN
+fi
+
 if [ -f "/run/secrets/frontend_url" ]; then
     FRONTEND_URL_VALUE=$(tr -d '[:space:]' < /run/secrets/frontend_url)
     echo "✅ FRONTEND_URL set from secret: $FRONTEND_URL_VALUE"

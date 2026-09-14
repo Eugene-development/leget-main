@@ -1,3 +1,6 @@
+import buttons from './button-goals.json';
+import { templateGoalName } from './tracking';
+
 export type GoalType = 'click' | 'compound';
 export type GoalPriority = 'high' | 'medium' | 'low';
 
@@ -18,7 +21,7 @@ export interface GoalDefinition {
 	id: string;
 	name: string;
 	type: GoalType;
-	status: 'draft';
+	status: 'draft' | 'implemented';
 	priority: GoalPriority;
 	description: string;
 	eventName: string;
@@ -148,3 +151,38 @@ export const goalDefinitions: GoalDefinition[] = [
 		dependsOn: ['click_phone ИЛИ любой коммерческий CTA', 'Глубина просмотра ≥ 2']
 	}
 ];
+
+export const goalTemplates = [...new Set(buttons.flatMap((button) => button.templates))].sort();
+
+export function goalsForTemplate(template: string): GoalDefinition[] {
+	const actions: Record<string, string> = {
+		open: 'Открытие формы',
+		close: 'Закрытие формы',
+		submit_click: 'Нажатие отправки',
+		reset: 'Повторное заполнение'
+	};
+	const implemented: GoalDefinition[] = buttons
+		.filter((button) => button.templates.includes(template))
+		.map((button) => ({
+			id: templateGoalName(template, button.id),
+			name: `${actions[button.action]} — ${button.label}`,
+			type: 'click',
+			status: 'implemented',
+			priority: button.action === 'submit_click' ? 'high' : 'medium',
+			description: `${button.source}${button.mock ? ' · Демонстрационная форма: серверная отправка не реализована.' : ''}`,
+			eventName: templateGoalName(template, button.id),
+			condition:
+				button.action === 'submit_click'
+					? 'Нажатие кнопки отправки. Не подтверждает валидацию или приём данных сервером.'
+					: `${actions[button.action]}: нажатие отмеченной кнопки.`,
+			pages: button.route
+				? [{ scope: 'route', label: button.route, path: button.route }]
+				: [{ scope: 'sitewide', label: 'Общий компонент' }],
+			buttonLabel: button.label,
+			selector: `[data-metrika-goal="${button.id}"]`
+		}));
+	return [
+		...implemented,
+		...(template === 'Promo-1' ? goalDefinitions.filter((goal) => goal.type === 'compound') : [])
+	];
+}

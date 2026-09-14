@@ -89,6 +89,8 @@
 					></textarea>
 				</div>
 				<button
+					data-metrika-goal="pages_contact_contactform_submit_click_1"
+					data-goal-action="submit_click"
 					type="submit"
 					class="w-full rounded-xl bg-ink-900 px-6 py-4 text-base font-semibold text-on-dark shadow-sm transition hover:bg-ink-700 focus:ring-2 focus:ring-link-600 focus:ring-offset-2 focus:outline-none"
 				>

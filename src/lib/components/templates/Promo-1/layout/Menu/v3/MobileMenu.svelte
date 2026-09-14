@@ -355,6 +355,8 @@
 		{:else}
 			<div class="mt-3 flex gap-2">
 				<button
+					data-metrika-goal="layout_menu_v3_mobilemenu_open_1"
+					data-goal-action="open"
 					type="button"
 					onclick={account.openLogin}
 					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950 px-4 text-[13px] font-medium tracking-[-0.01em] text-on-dark shadow-[0_10px_28px_-18px] shadow-alt-petrol-950/70 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
@@ -362,6 +364,8 @@
 					Войти
 				</button>
 				<button
+					data-metrika-goal="layout_menu_v3_mobilemenu_open_2"
+					data-goal-action="open"
 					type="button"
 					onclick={account.openRegister}
 					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950/5 px-4 text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-700 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"

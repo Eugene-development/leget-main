@@ -1,6 +1,132 @@
 <script lang="ts">
+	import { onMount, untrack } from 'svelte';
+	import type { GoalRemoteState } from '$lib/server/metrika-api';
+	let {
+		data
+	}: {
+		data: {
+			metrikaConfigured: boolean;
+			goalsSite: { domain: string; template: string; counterId: string };
+		};
+	} = $props();
+	let selectedTemplate = $state(untrack(() => data.goalsSite.template));
+	const goalDefinitions = $derived(goalsForTemplate(selectedTemplate));
+	let counterId = $state(untrack(() => data.goalsSite.counterId));
+	let selectedCounter = $state(untrack(() => data.goalsSite.counterId));
+	let counters = $state<{ id: string; name: string }[]>([]);
+	let remoteStates = $state<Record<string, GoalRemoteState>>({});
+	let statesLoaded = $state(false);
+	let busy = $state('');
+	let integrationMessage = $state('');
+	let integrationError = $state('');
+	let cancelled = $state(false);
+	const ownTemplate = $derived(selectedTemplate === data.goalsSite.template);
+	const missingGoals = $derived(
+		goalDefinitions.filter(
+			(goal) => goal.status === 'implemented' && remoteStates[goal.eventName]?.state === 'missing'
+		)
+	);
+	const canCreate = $derived(
+		data.metrikaConfigured && !!counterId && ownTemplate && statesLoaded && !busy
+	);
+
+	async function metrikaRequest(operation: string, extra: Record<string, string> = {}) {
+		const response = await fetch('/goals/metrika', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ operation, ...extra }),
+			signal: AbortSignal.timeout(45000)
+		});
+		const result = await response.json().catch(() => ({}));
+		if (!response.ok)
+			throw new Error(result.message || 'Не удалось выполнить запрос. Обновите статусы.');
+		return result;
+	}
+	async function readRemoteState() {
+		const result = await metrikaRequest('status');
+		counters = result.counters;
+		counterId = result.counterId;
+		selectedCounter = counterId || counters[0]?.id || '';
+		remoteStates = result.states;
+		statesLoaded = !!counterId && !result.counterError;
+		integrationError = result.counterError || '';
+	}
+	async function refreshMetrika() {
+		if (busy) return;
+		busy = 'refresh';
+		integrationError = '';
+		integrationMessage = '';
+		statesLoaded = false;
+		try {
+			await readRemoteState();
+		} catch (error) {
+			integrationError =
+				error instanceof Error ? error.message : 'Не удалось проверить подключение.';
+		} finally {
+			busy = '';
+		}
+	}
+	async function connectCounter() {
+		if (busy || !selectedCounter) return;
+		busy = 'connect';
+		integrationError = '';
+		integrationMessage = '';
+		statesLoaded = false;
+		remoteStates = {};
+		try {
+			const result = await metrikaRequest('connect', { counterId: selectedCounter });
+			counterId = result.counterId;
+			integrationMessage = 'Счётчик сохранён в настройках сайта.';
+			await readRemoteState();
+		} catch (error) {
+			integrationError = error instanceof Error ? error.message : 'Не удалось подключить счётчик.';
+		} finally {
+			busy = '';
+		}
+	}
+	async function createGoals(goals: GoalDefinition[]) {
+		if (!canCreate) return;
+		busy = 'create';
+		integrationError = '';
+		integrationMessage = '';
+		cancelled = false;
+		let completed = 0;
+		const template = selectedTemplate;
+		const targetCounter = counterId;
+		try {
+			for (const goal of goals) {
+				if (cancelled) break;
+				integrationMessage = `Обработка ${completed + 1} из ${goals.length}: ${goal.buttonLabel || goal.name}`;
+				const result = await metrikaRequest('create', {
+					template,
+					counterId: targetCounter,
+					eventName: goal.eventName
+				});
+				remoteStates = { ...remoteStates, [goal.eventName]: { state: 'created', id: result.id } };
+				completed++;
+			}
+			integrationMessage = `${cancelled ? 'Остановлено.' : 'Готово.'} Подтверждено целей: ${completed} из ${goals.length}.`;
+		} catch (error) {
+			statesLoaded = false;
+			integrationMessage = `Подтверждено целей: ${completed} из ${goals.length}.`;
+			integrationError =
+				error instanceof Error
+					? error.message
+					: 'Не удалось создать цель. Обновите статусы перед повтором.';
+		} finally {
+			busy = '';
+		}
+	}
+	onMount(() => {
+		if (data.metrikaConfigured) void refreshMetrika();
+		return () => {
+			cancelled = true;
+		};
+	});
+
 	import {
-		goalDefinitions,
+		goalsForTemplate,
+		goalTemplates,
 		type GoalDefinition,
 		type GoalPage,
 		type GoalPriority,
@@ -93,12 +219,11 @@
 </script>
 
 <svelte:head>
-	<title>Карта целей — Яндекс Директ</title>
+	<title>Карта целей — Яндекс Метрика</title>
 	<meta name="description" content="Карта триггерных и составных целей сайта" />
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-{@html '<!-- THESIS: Карта целей читается по страницам сайта, а не как безликий список метрик. OWN-WORLD: Светлая инструментальная поверхность LEGET, строгие строки, тонкие разделители и один красный сигнал статуса. STORY: Владелец видит будущие кликовые и составные цели, находит страницу срабатывания и копирует имя события. FIRST VIEWPORT: Слева маршруты и фильтры, справа полный реестр целей; возврат на сайт всегда виден в шапке. FORM: Матрица «страница → цель», кандидат 5, seed bccb761c. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md -->'}
 <main class="min-h-screen bg-ink-50 text-text-primary">
 	<header class="border-b border-border-light bg-surface-card">
 		<div class="mx-auto max-w-[1500px] px-5 py-7 sm:px-8 lg:px-10">
@@ -124,11 +249,11 @@
 						</svg>
 						На главную страницу сайта
 					</a>
-					<h1 class="text-4xl text-balance sm:text-5xl">Карта целей Яндекс Директа</h1>
+					<h1 class="text-4xl text-balance sm:text-5xl">Карта целей Яндекс Метрики</h1>
 					<p class="mt-4 max-w-[70ch] text-sm text-text-secondary sm:text-base">
-						Здесь собран проект конверсионной карты: клики по коммерческим кнопкам и поведенческие
-						составные сценарии. Цели ещё не опубликованы — имена событий и условия зафиксированы для
-						следующего этапа.
+						Выберите шаблон, чтобы увидеть его кнопки и идентификаторы целей. Подключите счётчик и
+						создавайте цели прямо из карты. Нажатие «Отправить» не означает успешную отправку
+						данных.
 					</p>
 				</div>
 
@@ -140,16 +265,116 @@
 					<span
 						><strong>{goalDefinitions.filter((goal) => goal.type === 'compound').length}</strong> составных</span
 					>
-					<span class="text-brand-600"><strong>0</strong> опубликовано</span>
+					<span class="text-brand-600"
+						><strong
+							>{goalDefinitions.filter((goal) => goal.status === 'implemented').length}</strong
+						> подключено в коде</span
+					>
 				</div>
 			</div>
 		</div>
 	</header>
 
+	<section
+		class="mx-auto max-w-[1500px] px-5 pt-8 sm:px-8 lg:px-10"
+		aria-label="Подключение Яндекс Метрики"
+	>
+		<div class="rounded-xl border border-border-light bg-surface-card p-5 sm:p-6">
+			<h2 class="text-2xl">Счётчик сайта</h2>
+			<p class="mt-2 text-sm text-text-secondary">
+				{data.goalsSite.domain} · {data.goalsSite.template}{counterId
+					? ` · Счётчик № ${counterId}`
+					: ''}
+			</p>
+			{#if !data.metrikaConfigured}
+				<p class="mt-4 text-sm text-text-secondary">
+					Подключение пока не настроено. Администратору нужно добавить токен Яндекс Метрики на
+					сервер. После подключения здесь появятся доступные счётчики и создание целей.
+				</p>
+			{:else}
+				<div class="mt-5 flex flex-wrap items-end gap-3">
+					<div class="min-w-0 flex-1 basis-72">
+						<label for="metrika-counter" class="mb-2 block text-sm"
+							>Доступные счётчики этого домена</label
+						>
+						<select
+							id="metrika-counter"
+							bind:value={selectedCounter}
+							disabled={!!busy || !counters.length}
+							class="w-full rounded-xl border-border-light bg-surface-card p-3 text-sm disabled:opacity-60"
+						>
+							{#if !counters.some((counter) => counter.id === selectedCounter)}<option value=""
+									>Выберите счётчик</option
+								>{/if}
+							{#each counters as counter (counter.id)}<option value={counter.id}
+									>{counter.name} · № {counter.id}</option
+								>{/each}
+						</select>
+					</div>
+					<button
+						type="button"
+						onclick={connectCounter}
+						disabled={!!busy || !selectedCounter || selectedCounter === counterId}
+						class="min-h-11 rounded-xl bg-ink-900 px-4 py-3 text-sm text-on-dark disabled:opacity-50"
+						>{busy === 'connect' ? 'Подключение…' : 'Подключить счётчик'}</button
+					>
+					<button
+						type="button"
+						onclick={refreshMetrika}
+						disabled={!!busy}
+						class="min-h-11 rounded-xl border border-border-medium px-4 py-3 text-sm disabled:opacity-50"
+						>{busy === 'refresh' ? 'Проверка…' : 'Обновить статусы'}</button
+					>
+					<button
+						type="button"
+						onclick={() => createGoals(missingGoals)}
+						disabled={!canCreate || !missingGoals.length}
+						class="min-h-11 rounded-xl border border-link-600 px-4 py-3 text-sm text-link-600 disabled:opacity-50"
+						>Создать все цели {selectedTemplate} ({missingGoals.length})</button
+					>
+					{#if busy === 'create'}<button
+							type="button"
+							onclick={() => (cancelled = true)}
+							disabled={cancelled}
+							class="min-h-11 rounded-xl border border-border-medium px-4 py-3 text-sm"
+							>{cancelled ? 'Остановка…' : 'Остановить после текущей цели'}</button
+						>{/if}
+				</div>
+				{#if !ownTemplate}<p class="mt-4 text-sm text-text-secondary">
+						Это карта другого шаблона. Для счётчика текущего сайта создаются только цели {data
+							.goalsSite.template}.
+					</p>{/if}
+				{#if !busy && !counters.length && !integrationError}<p
+						class="mt-4 text-sm text-text-secondary"
+					>
+						Счётчики с полным доступом для этого домена не найдены. Проверьте основной адрес или
+						зеркала счётчика в Метрике.
+					</p>{/if}
+			{/if}
+			<p class="mt-3 text-sm text-text-secondary" role="status" aria-live="polite">
+				{integrationMessage}
+			</p>
+			{#if integrationError}<p class="mt-3 text-sm text-brand-600" role="alert">
+					{integrationError} Нажмите «Обновить статусы» перед повтором.
+				</p>{/if}
+		</div>
+	</section>
+
 	<div
 		class="mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[260px_minmax(0,1fr)] lg:px-10 lg:py-10"
 	>
 		<aside class="lg:sticky lg:top-8 lg:self-start" aria-label="Фильтры целей">
+			<label for="goal-template" class="mb-2 block text-sm">Шаблон сайта</label>
+			<select
+				id="goal-template"
+				bind:value={selectedTemplate}
+				disabled={!!busy}
+				onchange={resetFilters}
+				class="mb-6 w-full rounded-xl border-border-light bg-surface-card p-3"
+			>
+				{#each goalTemplates as template (template)}<option value={template}>{template}</option
+					>{/each}
+			</select>
 			<div class="border-b border-border-medium pb-6">
 				<label for="goal-search" class="mb-2 block text-sm text-text-primary">Поиск</label>
 				<div class="relative">
@@ -248,7 +473,7 @@
 				</p>
 				<span class="inline-flex items-center gap-2 text-xs text-text-secondary">
 					<span class="h-2 w-2 rounded-full bg-brand-500"></span>
-					Все записи пока в черновике
+					Статусы Метрики — для счётчика текущего сайта
 				</span>
 			</div>
 
@@ -441,12 +666,42 @@
 				<p class="text-xs text-text-muted">Готовность</p>
 				<dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-sm">
 					<dt class="text-text-secondary">Статус</dt>
-					<dd class="text-brand-600">Черновик</dd>
+					<dd class="text-brand-600">
+						{goal.status === 'implemented' ? 'Подключена в коде' : 'Черновик'}
+					</dd>
 					<dt class="text-text-secondary">Приоритет</dt>
 					<dd>{priorityLabel(goal.priority)}</dd>
 					<dt class="text-text-secondary">Отправка</dt>
-					<dd>Не подключена</dd>
+					<dd>
+						{goal.status === 'implemented'
+							? 'reachGoal · при настроенном счётчике'
+							: 'Не подключена'}
+					</dd>
 				</dl>
+				{#if goal.status === 'implemented'}
+					{@const remote = ownTemplate ? remoteStates[goal.eventName] : undefined}
+					<p class="mt-4 text-sm text-text-secondary">
+						{remote?.state === 'created'
+							? `Создана в Метрике · № ${remote.id}`
+							: remote?.state === 'conflict'
+								? 'Конфликт условий — проверьте цель в Метрике'
+								: remote?.state === 'missing'
+									? 'Не создана в Метрике'
+									: 'Статус Метрики не проверен'}
+					</p>
+					<button
+						type="button"
+						onclick={() => createGoals([goal])}
+						disabled={!canCreate || remote?.state !== 'missing'}
+						class="mt-3 min-h-11 rounded-xl border border-border-medium px-4 py-2 text-sm text-link-600 disabled:opacity-50"
+					>
+						{remote?.state === 'created'
+							? 'Уже создана'
+							: busy === 'create'
+								? 'Создание…'
+								: 'Создать в Метрике'}
+					</button>
+				{/if}
 			</div>
 		</div>
 	</details>

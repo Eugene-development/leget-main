@@ -163,6 +163,9 @@
 
 			<div class="promo-alt__actions">
 				<button
+					data-metrika-goal="pages_home_promooffer_v1_promooffer_open_1"
+					data-goal-label="Консультация (текст кнопки настраивается)"
+					data-goal-action="open"
 					type="button"
 					onclick={() => serviceOrderStore.open('consultation')}
 					class="promo-alt__btn promo-alt__btn--primary text-center"

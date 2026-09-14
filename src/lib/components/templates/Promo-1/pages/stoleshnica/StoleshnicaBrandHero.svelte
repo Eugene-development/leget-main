@@ -86,6 +86,9 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
+					data-metrika-goal="pages_stoleshnica_stoleshnicabrandhero_open_1"
+					data-goal-label="Консультация (текст кнопки настраивается)"
+					data-goal-action="open"
 					type="button"
 					class="inline-flex items-center gap-2 rounded-lg bg-cat-1-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-cat-1-600"
 					onclick={() => serviceOrderStore.open('consultation')}

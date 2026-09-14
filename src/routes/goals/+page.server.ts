@@ -1,26 +1,14 @@
+import { env } from '$env/dynamic/private';
 import { redirect } from '@sveltejs/kit';
-import { adminAuthApi } from '$lib/server/admin-api';
+import { GOALS_COOKIE, requireGoalsSite, siteTemplate } from '$lib/server/goals-access';
 import type { PageServerLoad } from './$types';
 
-const COOKIE_NAME = 'leget_goals_jwt';
-
-export const load: PageServerLoad = async ({ cookies }) => {
-	const token = cookies.get(COOKIE_NAME);
-	if (!token) redirect(303, '/');
-
-	try {
-		const response = await adminAuthApi('/auth/me', {
-			headers: { Authorization: `Bearer ${token}` }
-		});
-
-		if (!response.ok) {
-			cookies.delete(COOKIE_NAME, { path: '/goals' });
-			redirect(303, '/');
-		}
-	} catch {
-		cookies.delete(COOKIE_NAME, { path: '/goals' });
-		redirect(303, '/');
-	}
-
-	return {};
+export const load: PageServerLoad = async ({ cookies, url, setHeaders }) => {
+	setHeaders({ 'Cache-Control': 'private, no-store' });
+	if (!cookies.get(GOALS_COOKIE)) redirect(303, '/');
+	const { site, counterId } = await requireGoalsSite(cookies, url.hostname);
+	return {
+		metrikaConfigured: !!env.YANDEX_METRIKA_OAUTH_TOKEN?.trim(),
+		goalsSite: { domain: site.domain, template: siteTemplate(site), counterId }
+	};
 };

@@ -12,11 +12,13 @@
 	let {
 		open = $bindable(false),
 		title = '',
+		goalPrefix = '',
 		titleContent,
 		children
 	}: {
 		open?: boolean;
 		title?: string;
+		goalPrefix?: string;
 		/** Заменяет заголовок произвольной разметкой (напр. интерактивным бейджем артикула). `title` при этом остаётся источником aria-label. */
 		titleContent?: Snippet;
 		children?: Snippet;
@@ -122,6 +124,7 @@
 			type="button"
 			tabindex="-1"
 			class="fixed inset-0 z-200 h-full w-full cursor-default border-none bg-ink-950/55 backdrop-blur-[2px] outline-none"
+			data-metrika-goal={goalPrefix ? `${goalPrefix}_backdrop_close` : undefined}
 			onclick={close}
 			aria-label="Закрыть панель"
 			transition:fade={{ duration: 200 }}
@@ -150,6 +153,7 @@
 				<button
 					type="button"
 					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-on-dark/3 text-on-dark/60 transition-all duration-300 hover:bg-on-dark/10 hover:text-on-dark active:scale-95"
+					data-metrika-goal={goalPrefix ? `${goalPrefix}_close` : undefined}
 					onclick={close}
 					aria-label="Закрыть"
 				>

@@ -1,0 +1,742 @@
+[
+	{
+		"source": "ClientAuthButtons.svelte",
+		"handler": "onclick={account.logout}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "ClientAuthModal.svelte",
+		"handler": "onclick={switchMode}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Banner/index.svelte",
+		"handler": "onclick={() => (drawerOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Banner/index.svelte",
+		"handler": "onclick={() => selectVersion('v1')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Banner/index.svelte",
+		"handler": "onclick={() => selectVersion('v2')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Banner/index.svelte",
+		"handler": "onclick={() => selectVersion('disabled')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Banner/index.svelte",
+		"handler": "onclick={confirmReset}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={() => (isOpen = !isOpen)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={() => { selectVersion('v1'); isOpen = false; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={() => { selectVersion('v2'); isOpen = false; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={() => { selectVersion('v3'); isOpen = false; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={() => (showConfirmModal = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={() => (showConfirmModal = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Footer/index.svelte",
+		"handler": "onclick={confirmReset}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Header.svelte",
+		"handler": "onclick={() => { cityStore.set(city.label); visibleCityMenu = false; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Header.svelte",
+		"handler": "onclick={() => { editStore.open({ key: 'Header.cities', label: 'Список городов (каждый с новой строки)', value: citiesRaw, multiline: true, onSave: (val) => saveField('cities', val) }); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Header.svelte",
+		"handler": "onclick={() => { uiStore.closeMenu(); siteSearch.open = true; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Header.svelte",
+		"handler": "onclick={() => { uiStore.closeMenu(); siteSearch.open = true; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Header.svelte",
+		"handler": "onclick={() => uiStore.toggleMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/index.svelte",
+		"handler": "onclick={() => (drawerOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/index.svelte",
+		"handler": "onclick={openLogoPicker}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/index.svelte",
+		"handler": "onclick={() => selectVersion('v1')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/index.svelte",
+		"handler": "onclick={() => selectVersion('v2')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/index.svelte",
+		"handler": "onclick={() => selectVersion('v3')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/index.svelte",
+		"handler": "onclick={() => selectVersion('v4')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/Menu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } close(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/Menu.svelte",
+		"handler": "onclick={(e) => onToggle(item.href, isEnabled, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/Menu.svelte",
+		"handler": "onclick={() => toggle(kind)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } uiStore.closeMenu(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={(e) => onToggle(item.href, isEnabled, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => toggleSection(kind)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={account.logout}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => toggleSection(kind)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => cityStore.set(city.label)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v1/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/Menu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } closeMenu(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/Menu.svelte",
+		"handler": "onclick={(e) => onToggle(item.href, isEnabled, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } uiStore.closeMenu(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={(e) => onToggle(item.href, isEnabled, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={() => toggleSection(kind)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "{onclick}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={account.logout}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v2/MobileMenu.svelte",
+		"handler": "onclick={() => cityStore.set(city.label)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/Menu.svelte",
+		"handler": "onclick={() => (openMenu === kind ? closeMenu() : showMenu(kind))}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/Menu.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/Menu.svelte",
+		"handler": "onclick={(event) => onToggle(item.href, isEnabled, event)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/Menu.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={(event) => onToggle(item.href, isEnabled, event)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={() => toggleSection(kind)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "{onclick}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={account.logout}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v3/MobileMenu.svelte",
+		"handler": "onclick={() => cityStore.set(city.label)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/Menu.svelte",
+		"handler": "onclick={(e) => onToggle(href, isEnabled, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/Menu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } close(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/Menu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } close(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/Menu.svelte",
+		"handler": "onclick={() => toggle(kind)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={(e) => onToggle(href, isEnabled, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } uiStore.closeMenu(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={(e) => { if (isComingSoon) { e.preventDefault(); return; } uiStore.closeMenu(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "{onclick}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={account.logout}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={() => uiStore.closeMenu()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/Menu/v4/MobileMenu.svelte",
+		"handler": "onclick={() => cityStore.set(city.label)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/PromoStrip/index.svelte",
+		"handler": "onclick={() => (drawerOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/PromoStrip/index.svelte",
+		"handler": "onclick={() => selectVersion('v1')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/PromoStrip/index.svelte",
+		"handler": "onclick={() => selectVersion('v2')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/PromoStrip/index.svelte",
+		"handler": "onclick={() => selectVersion('disabled')}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/PromoStrip/v1/PromoStrip.svelte",
+		"handler": "onclick={() => (active = i)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/layout/PromoStrip/v1/PromoStrip.svelte",
+		"handler": "onclick={close}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/404/NotFound.svelte",
+		"handler": "onclick={() => window.history.back()}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={() => (expandedMaterials[`${activeMaterial}:${item.slug}`] = !expanded)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={() => (isSheetOpen = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={(e) => handleToggleItem(item, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={() => (isSheetOpen = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={() => (isSheetOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={() => (isSheetOpen = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"handler": "onclick={() => (isSheetOpen = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroBackgroundSettings.svelte",
+		"handler": "onclick={() => toggleImage(index)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroBackgroundSettings.svelte",
+		"handler": "onclick={() => openReplace(index)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroBackgroundSettings.svelte",
+		"handler": "onclick={() => removeImage(index)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroBackgroundSettings.svelte",
+		"handler": "onclick={openAdd}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroMain.svelte",
+		"handler": "onclick={openNewBrandPicker}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v2/HeroMain.svelte",
+		"handler": "onclick={() => { activeStyleIndex = idx; activeHotspot = null; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v2/HeroMain.svelte",
+		"handler": "onclick={() => { if (activeHotspot?.label === hs.label) { activeHotspot = null; } else { activeHotspot = hs; } }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v3/HeroMain.svelte",
+		"handler": "onclick={() => (activeSkillIndex = idx)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HeroMain/v4/HeroMain.svelte",
+		"handler": "onclick={() => (activeSwatchIndex = idx)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/HomeFAQ.svelte",
+		"handler": "onclick={() => toggle(i)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/Message/v1/Message.svelte",
+		"handler": "onclick={() => openCardImagePicker(i)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/Message/v2/Message.svelte",
+		"handler": "onclick={() => openCardImagePicker(i)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/PartnerOffers/v1/PartnerOffers.svelte",
+		"handler": "onclick={() => step(-1)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/PartnerOffers/v1/PartnerOffers.svelte",
+		"handler": "onclick={() => goToOffer(i)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/home/PartnerOffers/v1/PartnerOffers.svelte",
+		"handler": "onclick={() => step(1)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={() => (isLightboxOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={() => (selectedImageIndex = index)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={openEditPanel}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={() => (isDeleteDialogOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={() => selectedImageIndex--}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={() => selectedImageIndex++}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"handler": "onclick={() => (isLightboxOpen = false)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectsGrid.svelte",
+		"handler": "onclick={() => currentPage--}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectsGrid.svelte",
+		"handler": "onclick={() => (currentPage = i + 1)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelProjectsGrid.svelte",
+		"handler": "onclick={() => currentPage++}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelSidebar.svelte",
+		"handler": "onclick={() => (isTagModalOpen = true)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelSidebar.svelte",
+		"handler": "onclick={(e) => openAddModal(category.id, e)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelTagPicker.svelte",
+		"handler": "onclick={() => { open = !open; if (open) void load(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/mebel/MebelTagPicker.svelte",
+		"handler": "onclick={load}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/projects/ProjectsFeed/FeedPager.svelte",
+		"handler": "onclick={() => goTo(Math.max(1, page - 1))}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/projects/ProjectsFeed/FeedPager.svelte",
+		"handler": "onclick={() => goTo(n)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/projects/ProjectsFeed/FeedPager.svelte",
+		"handler": "onclick={() => goTo(Math.min(last, page + 1))}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/projects/ProjectsFeed/FeedViewToggle.svelte",
+		"handler": "onclick={() => onpick(mode.id)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/vacancy/VacancyList.svelte",
+		"handler": "onclick={() => toggle(vacancy.id)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-1/pages/vacancy/VacancyList.svelte",
+		"handler": "onclick={() => requestApply(vacancy.title)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"handler": "onclick={toggleMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/actions/ActionsCards.svelte",
+		"handler": "onclick={() => (activeFilter = filter.key)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/careers/CareersVacancies.svelte",
+		"handler": "onclick={() => { activeDept = dept; expandedId = null; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/careers/CareersVacancies.svelte",
+		"handler": "onclick={() => (expandedId = expandedId === vac.id ? null : vac.id)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/designers/DesignersTracks.svelte",
+		"handler": "onclick={() => (activeTrack = track.id)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/kitchens/KitchensGallery.svelte",
+		"handler": "onclick={scrollRight}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/news/NewsList.svelte",
+		"handler": "onclick={() => (activeCategory = cat)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/showrooms/ShowroomsMap.svelte",
+		"handler": "onclick={() => { selectedPlace = selectedPlace === place ? null : place; }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-2/pages/wardrobes/WardrobesGallery.svelte",
+		"handler": "onclick={scrollRight}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"handler": "onclick={toggleMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/layout/Header.svelte",
+		"handler": "onclick={closeMenu}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/brands/BrandsList.svelte",
+		"handler": "onclick={() => (selectedBrands = new Set())}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/brands/BrandsList.svelte",
+		"handler": "onclick={() => toggleBrand(name)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/brands/BrandsList.svelte",
+		"handler": "onclick={() => { searchQuery = ''; selectedBrands = new Set(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/collections/CollectionsList.svelte",
+		"handler": "onclick={() => (selectedBrands = new Set())}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/collections/CollectionsList.svelte",
+		"handler": "onclick={() => toggleBrand(brand)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/collections/CollectionsList.svelte",
+		"handler": "onclick={() => { searchQuery = ''; selectedBrands = new Set(); }}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	},
+	{
+		"source": "templates/Promo-3/pages/vacancies/VacanciesList.svelte",
+		"handler": "onclick={() => openVacancy(vacancy.id)}",
+		"reason": "Навигация, выбор, редактор или сброс интерфейса; не открывает и не отправляет форму посетителя."
+	}
+]

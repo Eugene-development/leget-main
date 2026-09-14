@@ -452,7 +452,14 @@
 		<div class="relative">
 			<h4 class="p1-title-sub ms-cta-title">{ctaContent.title}</h4>
 			<p class="ms-cta-text">{ctaContent.text}</p>
-			<button type="button" class="ms-cta-btn" onclick={openCta}>
+			<button
+				data-metrika-goal="pages_shared_catalogsidebar_open_1"
+				data-goal-label="Заказать услугу — кнопка каталога"
+				data-goal-action="open"
+				type="button"
+				class="ms-cta-btn"
+				onclick={openCta}
+			>
 				<span>{ctaContent.button}</span>
 			</button>
 		</div>

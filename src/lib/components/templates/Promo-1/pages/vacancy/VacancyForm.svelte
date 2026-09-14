@@ -227,6 +227,8 @@
 					Мы прочитаем его в ближайший рабочий день и позвоним по указанному номеру.
 				</p>
 				<button
+					data-metrika-goal="pages_vacancy_vacancyform_reset_1"
+					data-goal-action="reset"
 					type="button"
 					class="p1-border p1-title mt-7 inline-flex cursor-pointer items-center rounded-full border px-6 py-3 text-sm font-semibold transition duration-300 hover:border-cat-4-500"
 					onclick={() => (sent = false)}
@@ -304,6 +306,8 @@
 					</EditableField>
 
 					<button
+						data-metrika-goal="pages_vacancy_vacancyform_submit_click_1"
+						data-goal-action="submit_click"
 						type="submit"
 						class="p1-border p1-title inline-flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full border px-8 py-3.5 text-sm font-semibold transition duration-300 hover:border-cat-4-500 disabled:cursor-default disabled:opacity-60"
 						disabled={sending}

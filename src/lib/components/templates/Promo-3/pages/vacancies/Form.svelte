@@ -124,6 +124,8 @@
 							>.
 						</p>
 						<button
+							data-metrika-goal="pages_vacancies_form_reset_1"
+							data-goal-action="reset"
 							onclick={resetForm}
 							class="mt-8 text-sm font-medium text-surface-300 transition-colors hover:text-surface-200"
 							>← К вакансиям</button
@@ -163,6 +165,9 @@
 							>.
 						</p>
 						<button
+							data-metrika-goal="pages_vacancies_form_submit_click_1"
+							data-goal-label="Откликнуться (текст кнопки настраивается)"
+							data-goal-action="submit_click"
 							type="submit"
 							disabled={loading}
 							class="group relative overflow-hidden rounded-xl bg-accent-500 px-8 py-4 text-sm font-bold tracking-wide text-surface-900 uppercase transition-all duration-300 hover:bg-accent-400 hover:shadow-2xl hover:shadow-accent-500/30 disabled:cursor-not-allowed disabled:opacity-70"

@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { page } from '$app/state';
+	import { installGoalTracking } from '$lib/yandex-direct/tracking';
 	import { afterNavigate } from '$app/navigation';
 	import { normalizeGoogleTagId, normalizeYandexCounterId } from '$lib/site-settings/analytics';
 
@@ -12,7 +15,22 @@
 		__legetGoogleTags?: Record<string, boolean>;
 	};
 
-	let { data = null }: { data?: Record<string, unknown> | null } = $props();
+	let {
+		data = null,
+		enabled = true
+	}: { data?: Record<string, unknown> | null; enabled?: boolean } = $props();
+	const template = $derived((page.data as { site?: { templateId?: number } }).site?.templateId);
+	onMount(() =>
+		installGoalTracking(
+			document,
+			() => ({
+				counterId: yandexId,
+				template: template && [1, 2, 3].includes(template) ? `Promo-${template}` : 'Test',
+				enabled
+			}),
+			(counter, method, goal) => (window as AnalyticsWindow).ym?.(counter, method, goal)
+		)
+	);
 
 	const yandexId = $derived(normalizeYandexCounterId(data?.yandexMetrica));
 	const googleId = $derived(normalizeGoogleTagId(data?.googleAnalytics));

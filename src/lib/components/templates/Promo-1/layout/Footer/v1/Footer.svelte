@@ -367,6 +367,8 @@
 					<p class="p1-title mt-7 text-sm/6" role="status">
 						Готово — письма пойдут на <span class="p1-accent">{subscribedTo}</span>.
 						<button
+							data-metrika-goal="layout_footer_v1_footer_reset_1"
+							data-goal-action="reset"
 							type="button"
 							class="p1-muted p1-accent-hover underline underline-offset-4 transition-colors"
 							onclick={() => (formState = 'idle')}
@@ -404,6 +406,8 @@
 								class="p1-field w-full rounded-xl border px-4 py-3 text-base sm:max-w-sm sm:text-sm"
 							/>
 							<button
+								data-metrika-goal="layout_footer_v1_footer_submit_click_1"
+								data-goal-action="submit_click"
 								type="submit"
 								class="group flex items-center justify-center gap-2 rounded-xl bg-accent-surface px-6 py-3 text-sm font-semibold text-on-accent transition-colors ease-ui hover:bg-accent-surface-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--p1-field-focus)]"
 							>
@@ -497,6 +501,8 @@
 					{:else}
 						<li>
 							<button
+								data-metrika-goal="layout_footer_v1_footer_open_1"
+								data-goal-action="open"
 								type="button"
 								onclick={() => clientAuthModal.open('login')}
 								class="p1-muted p1-accent-hover text-left text-sm/6 transition-colors"
@@ -506,6 +512,8 @@
 						</li>
 						<li>
 							<button
+								data-metrika-goal="layout_footer_v1_footer_open_2"
+								data-goal-action="open"
 								type="button"
 								onclick={() => clientAuthModal.open('register')}
 								class="p1-muted p1-accent-hover text-left text-sm/6 transition-colors"
@@ -542,6 +550,8 @@
 					'rounded-xl border p1-border p1-muted p1-accent-hover p1-accent-border-hover transition-colors'
 				)}
 				<button
+					data-metrika-goal="layout_footer_v1_footer_open_3"
+					data-goal-action="open"
 					type="button"
 					onclick={handleAuthClick}
 					class="p1-border p1-muted p1-accent-hover p1-accent-border-hover h-9 rounded-xl border px-3 text-xs font-semibold transition-colors"

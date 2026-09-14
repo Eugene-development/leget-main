@@ -269,6 +269,8 @@
 
 			<!-- Auth -->
 			<button
+				data-metrika-goal="layout_header_open_1"
+				data-goal-action="open"
 				type="button"
 				onclick={handleAuthClick}
 				class="text-xs tracking-wide text-surface-300 transition-colors hover:text-surface-50"
@@ -403,6 +405,8 @@
 				</a>
 			{/if}
 			<button
+				data-metrika-goal="layout_header_open_2"
+				data-goal-action="open"
 				type="button"
 				onclick={() => {
 					handleAuthClick();

@@ -187,6 +187,8 @@
 						'rounded-full border border-white/15 bg-white/5 text-white/65 hover:border-white/35 hover:bg-white/10 hover:text-white'
 					)}
 					<button
+						data-metrika-goal="layout_footer_open_1"
+						data-goal-action="open"
 						type="button"
 						onclick={handleAuthClick}
 						class="h-9 rounded-full border border-white/15 bg-white/5 px-4 text-xs font-semibold text-white/65 transition-colors hover:border-white/35 hover:bg-white/10 hover:text-white"

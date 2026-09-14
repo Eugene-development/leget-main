@@ -357,7 +357,7 @@
 </script>
 
 <div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
-	<SiteAnalytics data={headerDataState} />
+	<SiteAnalytics data={headerDataState} enabled={!isEditable} />
 
 	{#if PromoStrip}
 		<!-- Полоса акций — над баннером. bind по той же причине, что у баннера:
