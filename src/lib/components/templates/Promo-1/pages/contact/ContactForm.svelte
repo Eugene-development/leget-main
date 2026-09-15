@@ -1,5 +1,8 @@
 <script lang="ts">
 	// Артикул: 1.3.1.1 — см. docs/architecture/component-articles-map.md
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('promo1-contact');
+	let formError = $state('');
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -25,10 +28,26 @@
 	let phone = $state('');
 	let message = $state('');
 	let submitted = $state(false);
+	let loading = $state(false);
 
-	function handleSubmit(e: Event) {
-		e.preventDefault();
-		submitted = true;
+	async function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		if (loading) return;
+		loading = true;
+		formError = '';
+		try {
+			await sendForm({
+				service_type: 'contact',
+				name: name.trim(),
+				phone: phone.trim(),
+				message: message
+			});
+			submitted = true;
+		} catch (error) {
+			formError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+		} finally {
+			loading = false;
+		}
 	}
 </script>
 
@@ -58,7 +77,7 @@
 				Спасибо! Мы свяжемся с вами в ближайшее время.
 			</div>
 		{:else}
-			<form onsubmit={handleSubmit} class="mt-10 space-y-6">
+			<form aria-busy={loading} onsubmit={handleSubmit} class="mt-10 space-y-6">
 				<div>
 					<label for="name" class="block text-sm font-medium text-ink-700">Имя</label>
 					<input
@@ -92,10 +111,12 @@
 					data-metrika-goal="pages_contact_contactform_submit_click_1"
 					data-goal-action="submit_click"
 					type="submit"
+					disabled={loading}
 					class="w-full rounded-xl bg-ink-900 px-6 py-4 text-base font-semibold text-on-dark shadow-sm transition hover:bg-ink-700 focus:ring-2 focus:ring-link-600 focus:ring-offset-2 focus:outline-none"
 				>
 					Отправить
 				</button>
+				{#if formError}<p role="alert">{formError}</p>{/if}
 			</form>
 		{/if}
 	</div>

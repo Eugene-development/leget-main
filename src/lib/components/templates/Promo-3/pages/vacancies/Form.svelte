@@ -1,5 +1,8 @@
 <script lang="ts">
 	// Артикул: 3.8.3.1 — см. docs/architecture/component-articles-map.md
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('promo3-vacancy');
+	let formError = $state('');
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -26,12 +29,24 @@
 	let submitted = $state(false);
 	let loading = $state(false);
 
-	async function handleApply(e: SubmitEvent) {
-		e.preventDefault();
+	async function handleApply(event: SubmitEvent) {
+		event.preventDefault();
+		if (loading) return;
 		loading = true;
-		await new Promise((r) => setTimeout(r, 1200));
-		loading = false;
-		submitted = true;
+		formError = '';
+		try {
+			await sendForm({
+				service_type: 'vacancy',
+				name: formName.trim(),
+				phone: formPhone.trim(),
+				message: ''
+			});
+			submitted = true;
+		} catch (error) {
+			formError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+		} finally {
+			loading = false;
+		}
 	}
 
 	function resetForm() {
@@ -132,7 +147,7 @@
 						>
 					</div>
 				{:else}
-					<form onsubmit={handleApply} class="flex flex-col gap-6">
+					<form aria-busy={loading} onsubmit={handleApply} class="flex flex-col gap-6">
 						<div class="flex flex-col gap-2">
 							<label for="apply-name" class="text-sm font-medium text-surface-300">Ваше имя</label>
 							<input
@@ -187,6 +202,7 @@
 								{String(data?.buttonText ?? 'Отправить отклик')}
 							{/if}
 						</button>
+						{#if formError}<p role="alert">{formError}</p>{/if}
 					</form>
 				{/if}
 			</div>

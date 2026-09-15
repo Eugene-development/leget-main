@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
-	import { getAuthApiUrl } from '$lib/utils/config';
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('promo1-warranty');
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 	const id = $props.id();
@@ -93,20 +94,8 @@
 
 		sending = true;
 		try {
-			const response = await fetch(`${getAuthApiUrl()}/notify/service-request`, {
-				method: 'POST',
-				headers: { Accept: 'application/json' },
-				body: formData,
-				signal: AbortSignal.timeout(20000)
-			});
-			const result = await response.json().catch(() => null);
-			if (!response.ok || !result?.success) {
-				error =
-					response.status === 429
-						? 'Слишком много попыток. Подождите минуту и отправьте заявку ещё раз.'
-						: 'Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.';
-				return;
-			}
+			await sendForm(formData);
+
 			sent = true;
 		} catch {
 			error = 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.';
@@ -128,7 +117,7 @@
 				</svg>
 			</div>
 			<div>
-				<p class="p1-title-sub text-xl">Заявка отправлена</p>
+				<p class="p1-title-sub text-xl">Заявка принята</p>
 				<p class="mt-2 text-sm/6 text-on-dark/80">
 					Мы получили обращение по договору и свяжемся с вами после проверки информации.
 				</p>

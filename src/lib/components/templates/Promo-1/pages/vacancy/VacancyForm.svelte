@@ -5,7 +5,8 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
-	import { getAuthApiUrl } from '$lib/utils/config';
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('promo1-vacancy');
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { cleanPhone } from '$lib/utils/phone';
 	import { onApplyRequest, VACANCY_FORM_ID } from './apply';
@@ -79,18 +80,6 @@
 		data = updated;
 	}
 
-	/**
-	 * Отправка отклика.
-	 *
-	 * Отклик уходит письмом на почту сайта (`/notify/service-request`) и в CRM
-	 * НЕ попадает: строку там заводит `submitServiceRequest`, а его тип заявки —
-	 * закрытый перечень из шести услуг, и вакансия услугой не является.
-	 * Заводить её седьмой означало бы смешать отклики соискателей с заявками
-	 * клиентов в одной таблице — это решение продукта, а не блока.
-	 *
-	 * Ключ поля — `service_type`, как требует контроллер; `form_type` он не
-	 * знает и отклоняет заявку с 422.
-	 */
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
 		if (sending) return;
@@ -99,25 +88,18 @@
 		errorMessage = '';
 
 		try {
-			const response = await fetch(`${getAuthApiUrl()}/notify/service-request`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				body: JSON.stringify({
-					service_type: 'vacancy',
-					name: name.trim(),
-					phone: cleanPhone(phone),
-					// Позиция и рассказ о себе — одно поле: своего места под вакансию
-					// у заявки нет, а письмо читает человек.
-					message: [`Вакансия: ${position || 'любая подходящая позиция'}`, about.trim()]
-						.filter(Boolean)
-						.join('\n\n')
-						.slice(0, 2000),
-					source_url: typeof window === 'undefined' ? null : window.location.href
-				})
+			await sendForm({
+				service_type: 'vacancy',
+				position: position || null,
+				name: name.trim(),
+				phone: cleanPhone(phone),
+				// Позиция также включена в текст для удобства получателя.
+				message: [`Вакансия: ${position || 'любая подходящая позиция'}`, about.trim()]
+					.filter(Boolean)
+					.join('\n\n')
+					.slice(0, 2000),
+				source_url: typeof window === 'undefined' ? null : window.location.href
 			});
-
-			const result = await response.json().catch(() => null);
-			if (!response.ok || !result?.success) throw new Error('reject');
 
 			sent = true;
 			name = '';
@@ -222,7 +204,7 @@
 						<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 					</svg>
 				</div>
-				<p class="p1-title-sub p1-title mt-5 text-xl">Отклик отправлен</p>
+				<p class="p1-title-sub p1-title mt-5 text-xl">Отклик принят</p>
 				<p class="p1-body mt-2.5 text-sm/6">
 					Мы прочитаем его в ближайший рабочий день и позвоним по указанному номеру.
 				</p>

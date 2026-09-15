@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
-	import { getAuthApiUrl } from '$lib/utils/config';
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('promo1-partnership');
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 	const id = $props.id();
 	let status = $state('');
@@ -35,30 +36,18 @@
 		}
 		sending = true;
 		try {
-			const response = await fetch(`${getAuthApiUrl()}/notify/service-request`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-				signal: AbortSignal.timeout(20000),
-				body: JSON.stringify({
-					service_type: 'partnership',
-					partnership_status: status,
-					name: name.trim(),
-					phone: normalizedPhone || null,
-					email: supplier ? email.trim() || null : null,
-					company: supplier ? company.trim() : null,
-					city: supplier ? null : city.trim(),
-					message: supplier ? null : comment.trim(),
-					source_url: window.location.href.slice(0, 500)
-				})
+			await sendForm({
+				service_type: 'partnership',
+				partnership_status: status,
+				name: name.trim(),
+				phone: normalizedPhone || null,
+				email: supplier ? email.trim() || null : null,
+				company: supplier ? company.trim() : null,
+				city: supplier ? null : city.trim(),
+				message: supplier ? null : comment.trim(),
+				source_url: window.location.href.slice(0, 500)
 			});
-			const result = await response.json().catch(() => null);
-			if (!response.ok || !result?.success) {
-				error =
-					response.status === 429
-						? 'Слишком много попыток. Подождите минуту и отправьте заявку ещё раз.'
-						: 'Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.';
-				return;
-			}
+
 			sent = true;
 			name = company = phone = email = city = comment = '';
 		} catch {
@@ -72,7 +61,7 @@
 <SideDrawer goalPrefix="partnership_drawer" bind:open title="Партнёрство">
 	{#if sent}
 		<div class="space-y-5 text-on-dark" role="status">
-			<p class="text-xl font-semibold">Заявка отправлена</p>
+			<p class="text-xl font-semibold">Заявка принята</p>
 			<p class="text-sm leading-relaxed text-on-dark/80">
 				Свяжемся с вами, чтобы обсудить условия партнёрства.
 			</p>

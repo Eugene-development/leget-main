@@ -126,11 +126,7 @@ for (const file of [
 				: slug === 'home'
 					? '/'
 					: `/${slug}`;
-		const mock =
-			['submit_click', 'reset'].includes(action) &&
-			(/ContactForm.svelte$/.test(path) ||
-				/Promo-3\/pages\/(contacts|vacancies)\/Form/.test(path) ||
-				/Footer\/v1\/Footer/.test(path));
+		const mock = false;
 		records.push({ id, action, label, templates, source: path, route, mock });
 	});
 }

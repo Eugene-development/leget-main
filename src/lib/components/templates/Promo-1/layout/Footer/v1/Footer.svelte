@@ -10,6 +10,10 @@
 	// ролями (`p1-surface`, `p1-title`, `p1-field`), а не абсолютной шкалой
 	// `ink-*`. Собственный дефолт темы — тёмный: блок задуман ink-секцией,
 	// и переключатель обязан инвертировать исходный вид, а не ломать его.
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('promo1-footer-subscription');
+	let sending = $state(false);
+	let sendError = $state('');
 	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
@@ -107,22 +111,26 @@
 	];
 	const otherItems = [{ href: '/partnership', label: 'Партнёрство' }];
 
-	// Подписка живёт на клиенте: приёмника у форм в продукте пока нет вообще —
-	// главная форма шаблона (`ContactForm`, 1.3.1.1) тоже только выставляет флаг.
-	// Поэтому здесь честная проверка ввода и явные состояния, а не имитация
-	// отправки: показывать «отправляем…» там, где никто ничего не отправляет,
-	// хуже, чем не показывать ничего.
-	function handleSubmit(event: SubmitEvent) {
+	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
-		if (testbot) return;
+		if (testbot || sending) return;
 		const value = email.trim();
 		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
 			formState = 'error';
 			return;
 		}
-		subscribedTo = value;
-		formState = 'done';
-		email = '';
+		sending = true;
+		sendError = '';
+		try {
+			await sendForm({ service_type: 'subscription', email: value });
+			subscribedTo = value;
+			formState = 'done';
+			email = '';
+		} catch (error) {
+			sendError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+		} finally {
+			sending = false;
+		}
 	}
 
 	async function saveField(field: string, value: string) {
@@ -365,7 +373,7 @@
 
 				{#if formState === 'done'}
 					<p class="p1-title mt-7 text-sm/6" role="status">
-						Готово — письма пойдут на <span class="p1-accent">{subscribedTo}</span>.
+						Заявка на подписку принята для адреса <span class="p1-accent">{subscribedTo}</span>.
 						<button
 							data-metrika-goal="layout_footer_v1_footer_reset_1"
 							data-goal-action="reset"
@@ -409,6 +417,7 @@
 								data-metrika-goal="layout_footer_v1_footer_submit_click_1"
 								data-goal-action="submit_click"
 								type="submit"
+								disabled={sending}
 								class="group flex items-center justify-center gap-2 rounded-xl bg-accent-surface px-6 py-3 text-sm font-semibold text-on-accent transition-colors ease-ui hover:bg-accent-surface-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--p1-field-focus)]"
 							>
 								Подписаться
@@ -429,6 +438,7 @@
 								Адрес не похож на почтовый — проверьте, есть ли в нём «@» и домен.
 							</p>
 						{/if}
+						{#if sendError}<p role="alert">{sendError}</p>{/if}
 					</form>
 				{/if}
 			</div>

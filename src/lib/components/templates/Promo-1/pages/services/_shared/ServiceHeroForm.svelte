@@ -71,6 +71,7 @@
 		try {
 			await submitServiceRequest({
 				serviceType,
+				formId: 'service-hero-' + serviceType,
 				name,
 				phone,
 				city: cityStore.city,
@@ -104,7 +105,7 @@
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12 4 4L19 6" />
 			</svg>
 		</div>
-		<p class="p1-title p1-title-sub text-xl">Заявка отправлена</p>
+		<p class="p1-title p1-title-sub text-xl">Заявка принята</p>
 		<p class="p1-body mt-2 max-w-lg text-sm">
 			Спасибо! Специалист свяжется с вами в ближайшее время.
 		</p>

@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "npm run check:goals && vite build",
+		"build": "npm run check:forms && npm run check:goals && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -14,14 +14,16 @@
 		"check:images": "node ../../scripts/check-component-images.mjs",
 		"check:phone": "node scripts/check-site-phone.mjs",
 		"check:ds-tokens": "node scripts/check-ds-tokens.mjs",
-		"lint": "npm run check:goals && npm run check:component-controls && npm run check:typography && npm run check:images && npm run check:phone && npm run check:ds-tokens && npm run check:rich-text && prettier --check .",
+		"lint": "npm run check:forms && npm run check:goals && npm run check:component-controls && npm run check:typography && npm run check:images && npm run check:phone && npm run check:ds-tokens && npm run check:rich-text && prettier --check .",
 		"format": "prettier --write .",
 		"check:rich-text": "node scripts/check-rich-text.mjs",
 		"check:component-controls": "node scripts/check-component-controls.mjs",
 		"check:goals": "node scripts/goals-catalog.mjs",
 		"goals:generate": "node scripts/goals-catalog.mjs --write",
 		"test:goals": "node scripts/test-goals.mjs",
-		"test:metrika": "node --test scripts/test-metrika.mjs"
+		"test:metrika": "node --test scripts/test-metrika.mjs",
+		"check:forms": "node scripts/check-forms.mjs",
+		"test:forms": "node scripts/test-form-submission.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^5.5.4",

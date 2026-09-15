@@ -37,7 +37,7 @@
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
-		if (!validate()) return;
+		if (isSubmitting || !validate()) return;
 
 		isSubmitting = true;
 		generalError = '';
@@ -165,7 +165,7 @@
 								/>
 							</svg>
 						</div>
-						<h3 class="mb-3 text-xl text-on-dark">Заявка успешно отправлена!</h3>
+						<h3 class="mb-3 text-xl text-on-dark">Заявка принята!</h3>
 						<p class="mb-8 max-w-sm text-sm leading-relaxed text-ink-400">
 							Спасибо за обращение. Наш специалист свяжется с вами в течение 15 минут для уточнения
 							деталей.

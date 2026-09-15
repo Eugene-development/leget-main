@@ -1,9 +1,10 @@
 import type { ServiceType } from '$lib/stores/serviceOrder.svelte';
-import { getAuthApiUrl, getGraphQLUrl } from '$lib/utils/config';
+import { createFormSender } from '$lib/utils/form-submission';
 import { cleanPhone } from '$lib/utils/phone';
 
 export type ServiceRequestInput = {
 	serviceType: ServiceType;
+	formId?: string;
 	name: string;
 	phone: string;
 	message?: string | null;
@@ -21,65 +22,24 @@ type ServiceRequestResult = {
 	status: string;
 };
 
-const SUBMIT_ERROR = 'Не удалось отправить заявку. Попробуйте ещё раз.';
+const senders = new Map<string, ReturnType<typeof createFormSender>>();
 
 export async function submitServiceRequest(
 	input: ServiceRequestInput
 ): Promise<ServiceRequestResult> {
-	const payload = {
-		service_type: input.serviceType,
-		name: input.name.trim(),
-		phone: cleanPhone(input.phone),
-		message: input.message?.trim() || null,
-		source_url: input.sourceUrl ?? null,
-		city: input.city
-	};
-
-	const graphqlResponse = await fetch(getGraphQLUrl(), {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			query: `
-				mutation CreateServiceRequest($input: CreateServiceRequestInput!) {
-					createServiceRequest(input: $input) {
-						id
-						status
-					}
-				}
-			`,
-			variables: { input: payload }
-		})
-	});
-
-	const graphqlResult = await graphqlResponse.json().catch(() => null);
-	const request = graphqlResult?.data?.createServiceRequest as ServiceRequestResult | undefined;
-
-	if (!graphqlResponse.ok || graphqlResult?.errors || !request) {
-		throw new Error(SUBMIT_ERROR);
+	const formId = input.formId ?? 'service-order';
+	if (!senders.has(formId)) senders.set(formId, createFormSender(formId));
+	const payload = new FormData();
+	payload.set('service_type', input.serviceType);
+	payload.set('name', input.name.trim());
+	payload.set('phone', cleanPhone(input.phone));
+	payload.set('city', input.city);
+	if (input.message) payload.set('message', input.message.trim());
+	if (input.sourceUrl) payload.set('source_url', input.sourceUrl.slice(0, 500));
+	if (input.attachments) {
+		payload.set('passport_main', input.attachments.passportMain);
+		payload.set('passport_registration', input.attachments.passportRegistration);
+		payload.set('client_photo', input.attachments.clientPhoto);
 	}
-
-	const notificationBody = input.attachments
-		? (() => {
-				const formData = new FormData();
-				for (const [key, value] of Object.entries(payload)) {
-					if (value !== null) formData.append(key, value);
-				}
-				formData.append('passport_main', input.attachments.passportMain);
-				formData.append('passport_registration', input.attachments.passportRegistration);
-				formData.append('client_photo', input.attachments.clientPhoto);
-				return formData;
-			})()
-		: JSON.stringify(payload);
-
-	const authResponse = await fetch(`${getAuthApiUrl()}/notify/service-request`, {
-		method: 'POST',
-		headers: input.attachments ? undefined : { 'Content-Type': 'application/json' },
-		body: notificationBody
-	});
-
-	if (!authResponse.ok) {
-		throw new Error(SUBMIT_ERROR);
-	}
-
-	return request;
+	return senders.get(formId)!(payload);
 }

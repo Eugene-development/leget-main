@@ -257,6 +257,7 @@
 		try {
 			await submitServiceRequest({
 				serviceType: 'installment',
+				formId: 'promo1-installment',
 				name: fullName,
 				phone,
 				city: cityStore.city,
@@ -579,7 +580,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 						</svg>
 					</div>
-					<h3 class="p1-title-sub mt-5 text-xl text-ink-900">Заявка отправлена</h3>
+					<h3 class="p1-title-sub mt-5 text-xl text-ink-900">Заявка принята</h3>
 					<p class="mx-auto mt-2 max-w-md text-sm/6 text-ink-600">
 						Мы проверим данные и свяжемся с вами по указанному телефону.
 					</p>
