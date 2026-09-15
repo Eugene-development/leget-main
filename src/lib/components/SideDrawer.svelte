@@ -67,6 +67,19 @@
 	}
 
 	let panelEl: HTMLElement | null = $state(null);
+	let reducedMotion = $state(false);
+
+	$effect(() => {
+		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const syncPreference = () => {
+			reducedMotion = mediaQuery.matches;
+		};
+		syncPreference();
+		mediaQuery.addEventListener('change', syncPreference);
+
+		return () => mediaQuery.removeEventListener('change', syncPreference);
+	});
+
 	$effect(() => {
 		if (!open) return;
 
@@ -125,9 +138,10 @@
 			tabindex="-1"
 			class="fixed inset-0 z-200 h-full w-full cursor-default border-none bg-ink-950/55 backdrop-blur-[2px] outline-none"
 			data-metrika-goal={goalPrefix ? `${goalPrefix}_backdrop_close` : undefined}
+			data-goal-action={goalPrefix ? 'close' : undefined}
 			onclick={close}
 			aria-label="Закрыть панель"
-			transition:fade={{ duration: 200 }}
+			transition:fade={{ duration: reducedMotion ? 0 : 200 }}
 		></button>
 
 		<!-- Панель справа -->
@@ -138,7 +152,7 @@
 			aria-label={title || 'Панель настроек'}
 			tabindex="-1"
 			class="side-drawer font-sans-premium fixed top-0 right-0 z-210 flex h-full w-[88vw] max-w-md flex-col overflow-y-auto overscroll-contain border-l border-on-dark/10 bg-ink-950/95 shadow-2xl backdrop-blur-2xl"
-			transition:fly={{ x: 420, duration: 350, opacity: 1 }}
+			transition:fly={{ x: 420, duration: reducedMotion ? 0 : 350, opacity: 1 }}
 		>
 			<header
 				class="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b border-on-dark/10 bg-ink-950/95 px-5 py-4 backdrop-blur-2xl"
@@ -152,8 +166,9 @@
 				</div>
 				<button
 					type="button"
-					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-on-dark/3 text-on-dark/60 transition-all duration-300 hover:bg-on-dark/10 hover:text-on-dark active:scale-95"
+					class="flex size-11 shrink-0 items-center justify-center rounded-full border border-on-dark/10 bg-on-dark/3 text-on-dark/60 transition-all duration-300 hover:bg-on-dark/10 hover:text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400 active:scale-95"
 					data-metrika-goal={goalPrefix ? `${goalPrefix}_close` : undefined}
+					data-goal-action={goalPrefix ? 'close' : undefined}
 					onclick={close}
 					aria-label="Закрыть"
 				>

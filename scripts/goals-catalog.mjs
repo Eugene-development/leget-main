@@ -146,6 +146,20 @@ records.push(
 		mock: false
 	}))
 );
+records.push(
+	...['close', 'backdrop_close'].map((action) => ({
+		id: `guarantees_warranty_drawer_${action}`,
+		action: 'close',
+		label:
+			action === 'close'
+				? 'Закрыть гарантийное обращение'
+				: 'Закрыть гарантийное обращение по фону',
+		templates: ['Promo-1'],
+		source: 'SideDrawer.svelte',
+		route: '/guarantees',
+		mock: false
+	}))
+);
 const locate = goalLocations(root, write);
 for (const record of records) record.locations = locate(record);
 const unique = new Set();

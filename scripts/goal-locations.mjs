@@ -83,6 +83,8 @@ export function goalLocations(root, write = false) {
 				.flatMap(([path]) => owners(path));
 		else if (button.id.startsWith('partnership_drawer_'))
 			locations = owners('templates/Promo-1/pages/partnership/PartnershipDrawer.svelte');
+		else if (button.id.startsWith('guarantees_warranty_drawer_'))
+			locations = owners('templates/Promo-1/pages/guarantees/WarrantyRequestDrawer.svelte');
 		else locations = owners(button.source);
 		return [
 			...new Map(

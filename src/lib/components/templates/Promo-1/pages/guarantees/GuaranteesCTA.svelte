@@ -5,6 +5,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { revealOnScroll } from './theme';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
+	import WarrantyRequestDrawer from './WarrantyRequestDrawer.svelte';
 	import './theme.css';
 
 	let {
@@ -20,6 +21,7 @@
 	} = $props();
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
+	let warrantyOpen = $state(false);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -137,8 +139,16 @@
 					<div
 						class="gt-item gt-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
 					>
-						<a
-							href="/contact"
+						<button
+							type="button"
+							data-metrika-goal="pages_guarantees_guaranteescta_open_1"
+							data-goal-label="Оставить заявку по гарантии (текст кнопки настраивается)"
+							data-goal-action="open"
+							aria-haspopup="dialog"
+							aria-expanded={warrantyOpen}
+							onclick={() => {
+								if (!isEditable) warrantyOpen = true;
+							}}
 							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-cat-2-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-cat-2-500/95 transition duration-300 hover:from-cat-2-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-2-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-2-300 motion-safe:hover:-translate-y-0.5"
 						>
 							<EditableField
@@ -157,7 +167,7 @@
 								class="transition-transform duration-300 group-hover:translate-x-1"
 								aria-hidden="true">&rarr;</span
 							>
-						</a>
+						</button>
 
 						<EditableField
 							richText={false}
@@ -199,3 +209,5 @@
 		</div>
 	</div>
 </section>
+
+<WarrantyRequestDrawer bind:open={warrantyOpen} />

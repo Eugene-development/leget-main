@@ -455,6 +455,36 @@
 		"locations": [{ "template": "Promo-1", "page": "/contact", "article": "1.3.1.1" }]
 	},
 	{
+		"id": "pages_guarantees_guaranteescta_open_1",
+		"action": "open",
+		"label": "Оставить заявку по гарантии (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/guarantees/GuaranteesCTA.svelte",
+		"route": "/guarantees",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/guarantees", "article": "1.9.5.1" }]
+	},
+	{
+		"id": "pages_guarantees_warrantyrequestdrawer_close_1",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/guarantees/WarrantyRequestDrawer.svelte",
+		"route": "/guarantees",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/guarantees", "article": "1.9.5.1" }]
+	},
+	{
+		"id": "pages_guarantees_warrantyrequestdrawer_submit_click_1",
+		"action": "submit_click",
+		"label": "Отправить заявку",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/guarantees/WarrantyRequestDrawer.svelte",
+		"route": "/guarantees",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/guarantees", "article": "1.9.5.1" }]
+	},
+	{
 		"id": "pages_home_heromain_v1_heromain_open_1",
 		"action": "open",
 		"label": "Консультация (текст кнопки настраивается)",
@@ -870,5 +900,25 @@
 			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
 			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
 		]
+	},
+	{
+		"id": "guarantees_warranty_drawer_close",
+		"action": "close",
+		"label": "Закрыть гарантийное обращение",
+		"templates": ["Promo-1"],
+		"source": "SideDrawer.svelte",
+		"route": "/guarantees",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/guarantees", "article": "1.9.5.1" }]
+	},
+	{
+		"id": "guarantees_warranty_drawer_backdrop_close",
+		"action": "close",
+		"label": "Закрыть гарантийное обращение по фону",
+		"templates": ["Promo-1"],
+		"source": "SideDrawer.svelte",
+		"route": "/guarantees",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/guarantees", "article": "1.9.5.1" }]
 	}
 ]
