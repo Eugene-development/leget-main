@@ -1,0 +1,1712 @@
+[
+	{
+		"article": "1.1.1.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroMain.svelte"
+	},
+	{
+		"article": "1.1.1.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/HeroMain/v2/HeroMain.svelte"
+	},
+	{
+		"article": "1.1.1.3",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/HeroMain/v3/HeroMain.svelte"
+	},
+	{
+		"article": "1.1.1.4",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/HeroMain/v4/HeroMain.svelte"
+	},
+	{
+		"article": "1.1.2.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Message/v1/Message.svelte"
+	},
+	{
+		"article": "1.1.2.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Message/v2/Message.svelte"
+	},
+	{
+		"article": "1.1.3.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/PromoOffer/v1/PromoOffer.svelte"
+	},
+	{
+		"article": "1.1.3.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/PromoOffer/v2/PromoOffer.svelte"
+	},
+	{
+		"article": "1.1.4.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Equipment/v1/Equipment.svelte"
+	},
+	{
+		"article": "1.1.4.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Equipment/v2/Equipment.svelte"
+	},
+	{
+		"article": "1.1.5.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Stage/v1/Stage.svelte"
+	},
+	{
+		"article": "1.1.5.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Stage/v2/Stage.svelte"
+	},
+	{
+		"article": "1.1.6.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Incentives/v1/Incentives.svelte"
+	},
+	{
+		"article": "1.1.6.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Incentives/v2/Incentives.svelte"
+	},
+	{
+		"article": "1.1.6.3",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Incentives/v3/Incentives.svelte"
+	},
+	{
+		"article": "1.1.7.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Direction/v1/Direction.svelte"
+	},
+	{
+		"article": "1.1.7.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Direction/v2/Direction.svelte"
+	},
+	{
+		"article": "1.1.8.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Brands/v1/Brands.svelte"
+	},
+	{
+		"article": "1.1.8.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Brands/v2/Brands.svelte"
+	},
+	{
+		"article": "1.1.9.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/PartnerOffers/v1/PartnerOffers.svelte"
+	},
+	{
+		"article": "1.1.10.1",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/HomeFAQ.svelte"
+	},
+	{
+		"article": "1.2.1.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Hero.svelte"
+	},
+	{
+		"article": "1.2.2.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Statistics.svelte"
+	},
+	{
+		"article": "1.2.3.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Mission/v1/Mission.svelte"
+	},
+	{
+		"article": "1.2.3.2",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Mission/v2/Mission.svelte"
+	},
+	{
+		"article": "1.2.4.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Values.svelte"
+	},
+	{
+		"article": "1.2.5.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/WhyUs.svelte"
+	},
+	{
+		"article": "1.2.6.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/AboutCTA.svelte"
+	},
+	{
+		"article": "1.2.7.1",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Text/v1/Text.svelte"
+	},
+	{
+		"article": "1.2.7.2",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Text/v2/Text.svelte"
+	},
+	{
+		"article": "1.2.7.3",
+		"template": "Promo-1",
+		"page": "/about",
+		"source": "templates/Promo-1/pages/about/Text/v3/Text.svelte"
+	},
+	{
+		"article": "1.3.1.1",
+		"template": "Promo-1",
+		"page": "/contact",
+		"source": "templates/Promo-1/pages/contact/ContactForm.svelte"
+	},
+	{
+		"article": "1.4.1.1",
+		"template": "Promo-1",
+		"page": "/actions",
+		"source": "templates/Promo-1/pages/actions/Hero.svelte"
+	},
+	{
+		"article": "1.4.2.1",
+		"template": "Promo-1",
+		"page": "/actions",
+		"source": "templates/Promo-1/pages/actions/ActionsCards.svelte"
+	},
+	{
+		"article": "1.4.3.1",
+		"template": "Promo-1",
+		"page": "/actions",
+		"source": "templates/Promo-1/pages/actions/ActionsCardsExtra.svelte"
+	},
+	{
+		"article": "1.4.4.1",
+		"template": "Promo-1",
+		"page": "/actions",
+		"source": "templates/Promo-1/pages/actions/ActionsBanner.svelte"
+	},
+	{
+		"article": "1.4.5.1",
+		"template": "Promo-1",
+		"page": "/actions",
+		"source": "templates/Promo-1/pages/actions/ActionsCTA/v1/ActionsCTA.svelte"
+	},
+	{
+		"article": "1.4.5.2",
+		"template": "Promo-1",
+		"page": "/actions",
+		"source": "templates/Promo-1/pages/actions/ActionsCTA/v2/ActionsCTA.svelte"
+	},
+	{
+		"article": "1.5.1.1",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/Hero/v1/Hero.svelte"
+	},
+	{
+		"article": "1.5.1.2",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/Hero/v2/Hero.svelte"
+	},
+	{
+		"article": "1.5.2.1",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/ContactChannels.svelte"
+	},
+	{
+		"article": "1.5.3.1",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/ContactAddress.svelte"
+	},
+	{
+		"article": "1.5.4.1",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/ContactMessengers.svelte"
+	},
+	{
+		"article": "1.5.5.1",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/ContactCTA/v1/ContactCTA.svelte"
+	},
+	{
+		"article": "1.5.5.2",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/ContactCTA/v2/ContactCTA.svelte"
+	},
+	{
+		"article": "1.5.5.3",
+		"template": "Promo-1",
+		"page": "/contacts",
+		"source": "templates/Promo-1/pages/contacts/ContactCTA/v3/ContactCTA.svelte"
+	},
+	{
+		"article": "1.6.1.1",
+		"template": "Promo-1",
+		"page": "/partnership",
+		"source": "templates/Promo-1/pages/partnership/Hero.svelte"
+	},
+	{
+		"article": "1.6.2.1",
+		"template": "Promo-1",
+		"page": "/partnership",
+		"source": "templates/Promo-1/pages/partnership/WhoWeInvite.svelte"
+	},
+	{
+		"article": "1.6.3.1",
+		"template": "Promo-1",
+		"page": "/partnership",
+		"source": "templates/Promo-1/pages/partnership/ForManufacturers.svelte"
+	},
+	{
+		"article": "1.6.4.1",
+		"template": "Promo-1",
+		"page": "/partnership",
+		"source": "templates/Promo-1/pages/partnership/Benefits.svelte"
+	},
+	{
+		"article": "1.6.5.1",
+		"template": "Promo-1",
+		"page": "/partnership",
+		"source": "templates/Promo-1/pages/partnership/HowToStart.svelte"
+	},
+	{
+		"article": "1.6.6.1",
+		"template": "Promo-1",
+		"page": "/partnership",
+		"source": "templates/Promo-1/pages/partnership/PartnershipCTA.svelte"
+	},
+	{
+		"article": "1.7.1.1",
+		"template": "Promo-1",
+		"page": "/testimonials",
+		"source": "templates/Promo-1/pages/testimonials/Hero.svelte"
+	},
+	{
+		"article": "1.7.2.1",
+		"template": "Promo-1",
+		"page": "/testimonials",
+		"source": "templates/Promo-1/pages/testimonials/TestimonialsGrid.svelte"
+	},
+	{
+		"article": "1.7.3.1",
+		"template": "Promo-1",
+		"page": "/testimonials",
+		"source": "templates/Promo-1/pages/testimonials/TestimonialsSummary.svelte"
+	},
+	{
+		"article": "1.8.1.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/Hero.svelte"
+	},
+	{
+		"article": "1.8.2.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/InstallmentPlans.svelte"
+	},
+	{
+		"article": "1.8.3.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/InstallmentRequirements.svelte"
+	},
+	{
+		"article": "1.8.4.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/InstallmentSteps.svelte"
+	},
+	{
+		"article": "1.8.5.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/InstallmentBanks.svelte"
+	},
+	{
+		"article": "1.8.6.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/InstallmentFAQ.svelte"
+	},
+	{
+		"article": "1.8.7.1",
+		"template": "Promo-1",
+		"page": "/installment",
+		"source": "templates/Promo-1/pages/installment/InstallmentCTA.svelte"
+	},
+	{
+		"article": "1.9.1.1",
+		"template": "Promo-1",
+		"page": "/guarantees",
+		"source": "templates/Promo-1/pages/guarantees/Hero.svelte"
+	},
+	{
+		"article": "1.9.2.1",
+		"template": "Promo-1",
+		"page": "/guarantees",
+		"source": "templates/Promo-1/pages/guarantees/GuaranteeTerms.svelte"
+	},
+	{
+		"article": "1.9.3.1",
+		"template": "Promo-1",
+		"page": "/guarantees",
+		"source": "templates/Promo-1/pages/guarantees/WhatsCovered.svelte"
+	},
+	{
+		"article": "1.9.4.1",
+		"template": "Promo-1",
+		"page": "/guarantees",
+		"source": "templates/Promo-1/pages/guarantees/HowToApply.svelte"
+	},
+	{
+		"article": "1.9.5.1",
+		"template": "Promo-1",
+		"page": "/guarantees",
+		"source": "templates/Promo-1/pages/guarantees/GuaranteesCTA.svelte"
+	},
+	{
+		"article": "1.10.1.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/Hero.svelte"
+	},
+	{
+		"article": "1.10.2.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/USP.svelte"
+	},
+	{
+		"article": "1.10.3.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/Advantages.svelte"
+	},
+	{
+		"article": "1.10.4.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/Steps.svelte"
+	},
+	{
+		"article": "1.10.5.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/SocialProof.svelte"
+	},
+	{
+		"article": "1.10.6.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/Offer.svelte"
+	},
+	{
+		"article": "1.10.7.1",
+		"template": "Promo-1",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-1/pages/yandex-direct/CTA.svelte"
+	},
+	{
+		"article": "1.11.1.1",
+		"template": "Promo-1",
+		"page": "/consultation",
+		"source": "templates/Promo-1/pages/services/consultation/ConsultationHero.svelte"
+	},
+	{
+		"article": "1.11.2.1",
+		"template": "Promo-1",
+		"page": "/consultation",
+		"source": "templates/Promo-1/pages/services/consultation/ConsultationFeatures.svelte"
+	},
+	{
+		"article": "1.11.3.1",
+		"template": "Promo-1",
+		"page": "/consultation",
+		"source": "templates/Promo-1/pages/services/consultation/ConsultationWhy.svelte"
+	},
+	{
+		"article": "1.11.4.1",
+		"template": "Promo-1",
+		"page": "/consultation",
+		"source": "templates/Promo-1/pages/services/consultation/ConsultationCTA.svelte"
+	},
+	{
+		"article": "1.12.1.1",
+		"template": "Promo-1",
+		"page": "/design-project",
+		"source": "templates/Promo-1/pages/services/design-project/DesignProjectHero.svelte"
+	},
+	{
+		"article": "1.12.2.1",
+		"template": "Promo-1",
+		"page": "/design-project",
+		"source": "templates/Promo-1/pages/services/design-project/DesignProjectFeatures.svelte"
+	},
+	{
+		"article": "1.12.3.1",
+		"template": "Promo-1",
+		"page": "/design-project",
+		"source": "templates/Promo-1/pages/services/design-project/DesignProjectWhy.svelte"
+	},
+	{
+		"article": "1.12.4.1",
+		"template": "Promo-1",
+		"page": "/design-project",
+		"source": "templates/Promo-1/pages/services/design-project/DesignProjectCTA.svelte"
+	},
+	{
+		"article": "1.13.1.1",
+		"template": "Promo-1",
+		"page": "/measurement",
+		"source": "templates/Promo-1/pages/services/measurement/MeasurementHero.svelte"
+	},
+	{
+		"article": "1.13.2.1",
+		"template": "Promo-1",
+		"page": "/measurement",
+		"source": "templates/Promo-1/pages/services/measurement/MeasurementFeatures.svelte"
+	},
+	{
+		"article": "1.13.3.1",
+		"template": "Promo-1",
+		"page": "/measurement",
+		"source": "templates/Promo-1/pages/services/measurement/MeasurementWhy.svelte"
+	},
+	{
+		"article": "1.13.4.1",
+		"template": "Promo-1",
+		"page": "/measurement",
+		"source": "templates/Promo-1/pages/services/measurement/MeasurementCTA.svelte"
+	},
+	{
+		"article": "1.14.1.1",
+		"template": "Promo-1",
+		"page": "/furniture-project",
+		"source": "templates/Promo-1/pages/services/furniture-project/FurnitureProjectHero.svelte"
+	},
+	{
+		"article": "1.14.2.1",
+		"template": "Promo-1",
+		"page": "/furniture-project",
+		"source": "templates/Promo-1/pages/services/furniture-project/FurnitureProjectFeatures.svelte"
+	},
+	{
+		"article": "1.14.3.1",
+		"template": "Promo-1",
+		"page": "/furniture-project",
+		"source": "templates/Promo-1/pages/services/furniture-project/FurnitureProjectWhy.svelte"
+	},
+	{
+		"article": "1.14.4.1",
+		"template": "Promo-1",
+		"page": "/furniture-project",
+		"source": "templates/Promo-1/pages/services/furniture-project/FurnitureProjectCTA.svelte"
+	},
+	{
+		"article": "1.15.1.1",
+		"template": "Promo-1",
+		"page": "/assembly",
+		"source": "templates/Promo-1/pages/services/assembly/AssemblyHero.svelte"
+	},
+	{
+		"article": "1.15.2.1",
+		"template": "Promo-1",
+		"page": "/assembly",
+		"source": "templates/Promo-1/pages/services/assembly/AssemblyFeatures.svelte"
+	},
+	{
+		"article": "1.15.3.1",
+		"template": "Promo-1",
+		"page": "/assembly",
+		"source": "templates/Promo-1/pages/services/assembly/AssemblyWhy.svelte"
+	},
+	{
+		"article": "1.15.4.1",
+		"template": "Promo-1",
+		"page": "/assembly",
+		"source": "templates/Promo-1/pages/services/assembly/AssemblyCTA.svelte"
+	},
+	{
+		"article": "1.16.1.1",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelSidebar.svelte"
+	},
+	{
+		"article": "1.16.2.1",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelHero.svelte"
+	},
+	{
+		"article": "1.16.3.1",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelBenefits/v1/MebelBenefits.svelte"
+	},
+	{
+		"article": "1.16.3.2",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelBenefits/v2/MebelBenefits.svelte"
+	},
+	{
+		"article": "1.16.4.1",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelSolutions.svelte"
+	},
+	{
+		"article": "1.16.5.1",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelProcess/v1/MebelProcess.svelte"
+	},
+	{
+		"article": "1.16.5.2",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelProcess/v2/MebelProcess.svelte"
+	},
+	{
+		"article": "1.16.6.1",
+		"template": "Promo-1",
+		"page": "/mebel",
+		"source": "templates/Promo-1/pages/mebel/MebelCTA.svelte"
+	},
+	{
+		"article": "1.17.1.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}",
+		"source": "templates/Promo-1/pages/mebel/MebelSidebar.svelte"
+	},
+	{
+		"article": "1.17.2.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}",
+		"source": "templates/Promo-1/pages/mebel/MebelCategoryHero.svelte"
+	},
+	{
+		"article": "1.17.3.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}",
+		"source": "templates/Promo-1/pages/mebel/MebelProjectsGrid.svelte"
+	},
+	{
+		"article": "1.17.4.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}",
+		"source": "templates/Promo-1/pages/mebel/MebelBenefits/v1/MebelBenefits.svelte"
+	},
+	{
+		"article": "1.17.4.2",
+		"template": "Promo-1",
+		"page": "/mebel/{category}",
+		"source": "templates/Promo-1/pages/mebel/MebelBenefits/v2/MebelBenefits.svelte"
+	},
+	{
+		"article": "1.17.5.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}",
+		"source": "templates/Promo-1/pages/mebel/MebelCTA.svelte"
+	},
+	{
+		"article": "1.18.1.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}/{project}",
+		"source": "templates/Promo-1/pages/mebel/MebelSidebar.svelte"
+	},
+	{
+		"article": "1.18.2.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}/{project}",
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte"
+	},
+	{
+		"article": "1.18.3.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}/{project}",
+		"source": "templates/Promo-1/pages/mebel/MebelProjectDescription.svelte"
+	},
+	{
+		"article": "1.18.4.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}/{project}",
+		"source": "templates/Promo-1/pages/mebel/MebelProjectSimilar.svelte"
+	},
+	{
+		"article": "1.18.5.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}/{project}",
+		"source": "templates/Promo-1/pages/mebel/MebelCTA.svelte"
+	},
+	{
+		"article": "1.19.1.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaSidebar.svelte"
+	},
+	{
+		"article": "1.19.2.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaHero.svelte"
+	},
+	{
+		"article": "1.19.3.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaMaterials.svelte"
+	},
+	{
+		"article": "1.19.4.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBenefits.svelte"
+	},
+	{
+		"article": "1.19.5.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaSolutions.svelte"
+	},
+	{
+		"article": "1.19.6.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaServices.svelte"
+	},
+	{
+		"article": "1.19.7.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaCTA.svelte"
+	},
+	{
+		"article": "1.19.8.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrands.svelte"
+	},
+	{
+		"article": "1.20.1.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaSidebar.svelte"
+	},
+	{
+		"article": "1.20.2.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaHero.svelte"
+	},
+	{
+		"article": "1.20.3.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaBrands.svelte"
+	},
+	{
+		"article": "1.20.4.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaBenefits.svelte"
+	},
+	{
+		"article": "1.20.5.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaCategories.svelte"
+	},
+	{
+		"article": "1.20.6.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaComplex.svelte"
+	},
+	{
+		"article": "1.20.7.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaCTA.svelte"
+	},
+	{
+		"article": "1.21.1.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaSidebar.svelte"
+	},
+	{
+		"article": "1.21.2.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaHero.svelte"
+	},
+	{
+		"article": "1.21.3.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaBrands.svelte"
+	},
+	{
+		"article": "1.21.4.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaSinkTypes.svelte"
+	},
+	{
+		"article": "1.21.5.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaCategories.svelte"
+	},
+	{
+		"article": "1.21.6.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaBenefits.svelte"
+	},
+	{
+		"article": "1.21.7.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaComplex.svelte"
+	},
+	{
+		"article": "1.21.8.1",
+		"template": "Promo-1",
+		"page": "/santehnika",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaCTA.svelte"
+	},
+	{
+		"article": "1.22.1.1",
+		"template": "Promo-1",
+		"page": "/furnitura",
+		"source": "templates/Promo-1/pages/furnitura/FurnituraSidebar.svelte"
+	},
+	{
+		"article": "1.22.2.1",
+		"template": "Promo-1",
+		"page": "/furnitura",
+		"source": "templates/Promo-1/pages/furnitura/FurnituraHero.svelte"
+	},
+	{
+		"article": "1.22.3.1",
+		"template": "Promo-1",
+		"page": "/furnitura",
+		"source": "templates/Promo-1/pages/furnitura/FurnituraShops.svelte"
+	},
+	{
+		"article": "1.22.4.1",
+		"template": "Promo-1",
+		"page": "/furnitura",
+		"source": "templates/Promo-1/pages/furnitura/FurnituraCTA.svelte"
+	},
+	{
+		"article": "1.23.1.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaSidebar.svelte"
+	},
+	{
+		"article": "1.23.2.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaHero.svelte"
+	},
+	{
+		"article": "1.23.3.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaBrands.svelte"
+	},
+	{
+		"article": "1.23.4.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaBenefits.svelte"
+	},
+	{
+		"article": "1.23.5.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaCategories.svelte"
+	},
+	{
+		"article": "1.23.6.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaComplex.svelte"
+	},
+	{
+		"article": "1.23.7.1",
+		"template": "Promo-1",
+		"page": "/plitka",
+		"source": "templates/Promo-1/pages/plitka/PliitkaCTA.svelte"
+	},
+	{
+		"article": "1.25.1.1",
+		"template": "Promo-1",
+		"page": "/404",
+		"source": "templates/Promo-1/pages/404/NotFound.svelte"
+	},
+	{
+		"article": "1.26.1.1",
+		"template": "Promo-1",
+		"page": "/projects",
+		"source": "templates/Promo-1/pages/projects/ProjectsHero.svelte"
+	},
+	{
+		"article": "1.26.2.1",
+		"template": "Promo-1",
+		"page": "/projects",
+		"source": "templates/Promo-1/pages/projects/ProjectsFeed/v1/ProjectsFeed.svelte"
+	},
+	{
+		"article": "1.26.2.2",
+		"template": "Promo-1",
+		"page": "/projects",
+		"source": "templates/Promo-1/pages/projects/ProjectsFeed/v2/ProjectsFeed.svelte"
+	},
+	{
+		"article": "1.27.1.1",
+		"template": "Promo-1",
+		"page": "/vacancy",
+		"source": "templates/Promo-1/pages/vacancy/VacancyHero.svelte"
+	},
+	{
+		"article": "1.27.2.1",
+		"template": "Promo-1",
+		"page": "/vacancy",
+		"source": "templates/Promo-1/pages/vacancy/VacancyList.svelte"
+	},
+	{
+		"article": "1.27.3.1",
+		"template": "Promo-1",
+		"page": "/vacancy",
+		"source": "templates/Promo-1/pages/vacancy/VacancyForm.svelte"
+	},
+	{
+		"article": "1.28.1.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika/{brand}",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaSidebar.svelte"
+	},
+	{
+		"article": "1.28.2.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika/{brand}",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaBrandHero.svelte"
+	},
+	{
+		"article": "1.28.3.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika/{brand}",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaBenefits.svelte"
+	},
+	{
+		"article": "1.28.4.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika/{brand}",
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaCTA.svelte"
+	},
+	{
+		"article": "1.29.1.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaSidebar.svelte"
+	},
+	{
+		"article": "1.29.2.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrandHero.svelte"
+	},
+	{
+		"article": "1.29.3.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrands.svelte"
+	},
+	{
+		"article": "1.29.4.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaServices.svelte"
+	},
+	{
+		"article": "1.30.1.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}/{brand}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaSidebar.svelte"
+	},
+	{
+		"article": "1.30.2.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}/{brand}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrandHero.svelte"
+	},
+	{
+		"article": "1.30.3.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}/{brand}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrands.svelte"
+	},
+	{
+		"article": "1.30.4.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}/{brand}",
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaServices.svelte"
+	},
+	{
+		"article": "1.31.1.1",
+		"template": "Promo-1",
+		"page": "/santehnika/{brand}",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaSidebar.svelte"
+	},
+	{
+		"article": "1.31.2.1",
+		"template": "Promo-1",
+		"page": "/santehnika/{brand}",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaBrandHero.svelte"
+	},
+	{
+		"article": "1.31.3.1",
+		"template": "Promo-1",
+		"page": "/santehnika/{brand}",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaBenefits.svelte"
+	},
+	{
+		"article": "1.31.4.1",
+		"template": "Promo-1",
+		"page": "/santehnika/{brand}",
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaCTA.svelte"
+	},
+	{
+		"article": "1.Б.1.1",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Banner/v1/Banner.svelte"
+	},
+	{
+		"article": "1.Б.1.2",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Banner/v2/Banner.svelte"
+	},
+	{
+		"article": "1.М.1.1",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Menu/index.svelte"
+	},
+	{
+		"article": "1.М.1.2",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Menu/index.svelte"
+	},
+	{
+		"article": "1.М.1.3",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Menu/index.svelte"
+	},
+	{
+		"article": "1.М.1.4",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Menu/index.svelte"
+	},
+	{
+		"article": "1.Ф.1.1",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Footer/v1/Footer.svelte"
+	},
+	{
+		"article": "1.Ф.1.2",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Footer/v2/Footer.svelte"
+	},
+	{
+		"article": "1.Ф.1.3",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Footer/v3/Footer.svelte"
+	},
+	{
+		"article": "2.1.1.1",
+		"template": "Promo-2",
+		"page": "/",
+		"source": "templates/Promo-2/pages/home/Hero.svelte"
+	},
+	{
+		"article": "2.1.2.1",
+		"template": "Promo-2",
+		"page": "/",
+		"source": "templates/Promo-2/pages/home/Styles.svelte"
+	},
+	{
+		"article": "2.1.3.1",
+		"template": "Promo-2",
+		"page": "/",
+		"source": "templates/Promo-2/pages/home/Advantages.svelte"
+	},
+	{
+		"article": "2.1.4.1",
+		"template": "Promo-2",
+		"page": "/",
+		"source": "templates/Promo-2/pages/home/Details.svelte"
+	},
+	{
+		"article": "2.1.5.1",
+		"template": "Promo-2",
+		"page": "/",
+		"source": "templates/Promo-2/pages/home/CTA.svelte"
+	},
+	{
+		"article": "2.2.1.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/Hero.svelte"
+	},
+	{
+		"article": "2.2.2.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/LeaderSection.svelte"
+	},
+	{
+		"article": "2.2.3.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/Mission.svelte"
+	},
+	{
+		"article": "2.2.4.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/Factory.svelte"
+	},
+	{
+		"article": "2.2.5.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/Video.svelte"
+	},
+	{
+		"article": "2.2.6.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/Principles.svelte"
+	},
+	{
+		"article": "2.2.7.1",
+		"template": "Promo-2",
+		"page": "/about",
+		"source": "templates/Promo-2/pages/about/AboutCTA.svelte"
+	},
+	{
+		"article": "2.3.1.1",
+		"template": "Promo-2",
+		"page": "/news",
+		"source": "templates/Promo-2/pages/news/Hero.svelte"
+	},
+	{
+		"article": "2.3.2.1",
+		"template": "Promo-2",
+		"page": "/news",
+		"source": "templates/Promo-2/pages/news/NewsList.svelte"
+	},
+	{
+		"article": "2.3.3.1",
+		"template": "Promo-2",
+		"page": "/news",
+		"source": "templates/Promo-2/pages/news/NewsCTA.svelte"
+	},
+	{
+		"article": "2.4.1.1",
+		"template": "Promo-2",
+		"page": "/styles",
+		"source": "templates/Promo-2/pages/styles/Hero.svelte"
+	},
+	{
+		"article": "2.4.2.1",
+		"template": "Promo-2",
+		"page": "/styles",
+		"source": "templates/Promo-2/pages/styles/StylesGrid.svelte"
+	},
+	{
+		"article": "2.4.3.1",
+		"template": "Promo-2",
+		"page": "/styles",
+		"source": "templates/Promo-2/pages/styles/StylesCTA.svelte"
+	},
+	{
+		"article": "2.5.1.1",
+		"template": "Promo-2",
+		"page": "/facades",
+		"source": "templates/Promo-2/pages/facades/Hero.svelte"
+	},
+	{
+		"article": "2.5.2.1",
+		"template": "Promo-2",
+		"page": "/facades",
+		"source": "templates/Promo-2/pages/facades/FacadesCatalog.svelte"
+	},
+	{
+		"article": "2.5.3.1",
+		"template": "Promo-2",
+		"page": "/facades",
+		"source": "templates/Promo-2/pages/facades/FacadesCTA.svelte"
+	},
+	{
+		"article": "2.6.1.1",
+		"template": "Promo-2",
+		"page": "/furniture",
+		"source": "templates/Promo-2/pages/furniture/Hero.svelte"
+	},
+	{
+		"article": "2.6.2.1",
+		"template": "Promo-2",
+		"page": "/furniture",
+		"source": "templates/Promo-2/pages/furniture/FurnitureIntro.svelte"
+	},
+	{
+		"article": "2.6.3.1",
+		"template": "Promo-2",
+		"page": "/furniture",
+		"source": "templates/Promo-2/pages/furniture/BrandsSection.svelte"
+	},
+	{
+		"article": "2.6.4.1",
+		"template": "Promo-2",
+		"page": "/furniture",
+		"source": "templates/Promo-2/pages/furniture/FurnitureCTA.svelte"
+	},
+	{
+		"article": "2.7.1.1",
+		"template": "Promo-2",
+		"page": "/contact",
+		"source": "templates/Promo-2/pages/contact/ContactForm.svelte"
+	},
+	{
+		"article": "2.7.2.1",
+		"template": "Promo-2",
+		"page": "/contact",
+		"source": "templates/Promo-2/pages/contact/Map.svelte"
+	},
+	{
+		"article": "2.8.1.1",
+		"template": "Promo-2",
+		"page": "/actions",
+		"source": "templates/Promo-2/pages/actions/Hero.svelte"
+	},
+	{
+		"article": "2.8.2.1",
+		"template": "Promo-2",
+		"page": "/actions",
+		"source": "templates/Promo-2/pages/actions/ActionsTimer.svelte"
+	},
+	{
+		"article": "2.8.3.1",
+		"template": "Promo-2",
+		"page": "/actions",
+		"source": "templates/Promo-2/pages/actions/ActionsCards.svelte"
+	},
+	{
+		"article": "2.8.4.1",
+		"template": "Promo-2",
+		"page": "/actions",
+		"source": "templates/Promo-2/pages/actions/ActionsBanner.svelte"
+	},
+	{
+		"article": "2.8.5.1",
+		"template": "Promo-2",
+		"page": "/actions",
+		"source": "templates/Promo-2/pages/actions/ActionsSteps.svelte"
+	},
+	{
+		"article": "2.8.6.1",
+		"template": "Promo-2",
+		"page": "/actions",
+		"source": "templates/Promo-2/pages/actions/ActionsCTA.svelte"
+	},
+	{
+		"article": "2.9.1.1",
+		"template": "Promo-2",
+		"page": "/kitchens",
+		"source": "templates/Promo-2/pages/kitchens/Hero.svelte"
+	},
+	{
+		"article": "2.9.2.1",
+		"template": "Promo-2",
+		"page": "/kitchens",
+		"source": "templates/Promo-2/pages/kitchens/KitchensGallery.svelte"
+	},
+	{
+		"article": "2.9.3.1",
+		"template": "Promo-2",
+		"page": "/kitchens",
+		"source": "templates/Promo-2/pages/kitchens/ProductionCycle.svelte"
+	},
+	{
+		"article": "2.9.4.1",
+		"template": "Promo-2",
+		"page": "/kitchens",
+		"source": "templates/Promo-2/pages/kitchens/KitchenStyles.svelte"
+	},
+	{
+		"article": "2.9.5.1",
+		"template": "Promo-2",
+		"page": "/kitchens",
+		"source": "templates/Promo-2/pages/kitchens/KitchensCTA.svelte"
+	},
+	{
+		"article": "2.10.1.1",
+		"template": "Promo-2",
+		"page": "/wardrobes",
+		"source": "templates/Promo-2/pages/wardrobes/Hero.svelte"
+	},
+	{
+		"article": "2.10.2.1",
+		"template": "Promo-2",
+		"page": "/wardrobes",
+		"source": "templates/Promo-2/pages/wardrobes/WardrobesGallery.svelte"
+	},
+	{
+		"article": "2.10.3.1",
+		"template": "Promo-2",
+		"page": "/wardrobes",
+		"source": "templates/Promo-2/pages/wardrobes/WardrobeFeatures.svelte"
+	},
+	{
+		"article": "2.10.4.1",
+		"template": "Promo-2",
+		"page": "/wardrobes",
+		"source": "templates/Promo-2/pages/wardrobes/WardrobeTypes.svelte"
+	},
+	{
+		"article": "2.10.5.1",
+		"template": "Promo-2",
+		"page": "/wardrobes",
+		"source": "templates/Promo-2/pages/wardrobes/WardrobesCTA.svelte"
+	},
+	{
+		"article": "2.11.1.1",
+		"template": "Promo-2",
+		"page": "/showrooms",
+		"source": "templates/Promo-2/pages/showrooms/Hero.svelte"
+	},
+	{
+		"article": "2.11.2.1",
+		"template": "Promo-2",
+		"page": "/showrooms",
+		"source": "templates/Promo-2/pages/showrooms/ShowroomsMap.svelte"
+	},
+	{
+		"article": "2.11.3.1",
+		"template": "Promo-2",
+		"page": "/showrooms",
+		"source": "templates/Promo-2/pages/showrooms/ShowroomsCTA.svelte"
+	},
+	{
+		"article": "2.12.1.1",
+		"template": "Promo-2",
+		"page": "/careers",
+		"source": "templates/Promo-2/pages/careers/Hero.svelte"
+	},
+	{
+		"article": "2.12.2.1",
+		"template": "Promo-2",
+		"page": "/careers",
+		"source": "templates/Promo-2/pages/careers/CareersPerks.svelte"
+	},
+	{
+		"article": "2.12.3.1",
+		"template": "Promo-2",
+		"page": "/careers",
+		"source": "templates/Promo-2/pages/careers/CareersVacancies.svelte"
+	},
+	{
+		"article": "2.12.4.1",
+		"template": "Promo-2",
+		"page": "/careers",
+		"source": "templates/Promo-2/pages/careers/CareersForm.svelte"
+	},
+	{
+		"article": "2.13.1.1",
+		"template": "Promo-2",
+		"page": "/designers",
+		"source": "templates/Promo-2/pages/designers/Hero.svelte"
+	},
+	{
+		"article": "2.13.2.1",
+		"template": "Promo-2",
+		"page": "/designers",
+		"source": "templates/Promo-2/pages/designers/DesignersBenefits.svelte"
+	},
+	{
+		"article": "2.13.3.1",
+		"template": "Promo-2",
+		"page": "/designers",
+		"source": "templates/Promo-2/pages/designers/DesignersTracks.svelte"
+	},
+	{
+		"article": "2.13.4.1",
+		"template": "Promo-2",
+		"page": "/designers",
+		"source": "templates/Promo-2/pages/designers/DesignersSteps.svelte"
+	},
+	{
+		"article": "2.13.5.1",
+		"template": "Promo-2",
+		"page": "/designers",
+		"source": "templates/Promo-2/pages/designers/DesignersForm.svelte"
+	},
+	{
+		"article": "2.14.1.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/Hero.svelte"
+	},
+	{
+		"article": "2.14.2.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/USP.svelte"
+	},
+	{
+		"article": "2.14.3.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/Advantages.svelte"
+	},
+	{
+		"article": "2.14.4.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/Steps.svelte"
+	},
+	{
+		"article": "2.14.5.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/SocialProof.svelte"
+	},
+	{
+		"article": "2.14.6.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/Offer.svelte"
+	},
+	{
+		"article": "2.14.7.1",
+		"template": "Promo-2",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-2/pages/yandex-direct/CTA.svelte"
+	},
+	{
+		"article": "2.М.1.1",
+		"template": "Promo-2",
+		"page": "(layout)",
+		"source": "templates/Promo-2/layout/Header.svelte"
+	},
+	{
+		"article": "2.Ф.1.1",
+		"template": "Promo-2",
+		"page": "(layout)",
+		"source": "templates/Promo-2/layout/Footer.svelte"
+	},
+	{
+		"article": "3.1.1.1",
+		"template": "Promo-3",
+		"page": "/",
+		"source": "templates/Promo-3/pages/home/Hero.svelte"
+	},
+	{
+		"article": "3.1.2.1",
+		"template": "Promo-3",
+		"page": "/",
+		"source": "templates/Promo-3/pages/home/Categories.svelte"
+	},
+	{
+		"article": "3.1.3.1",
+		"template": "Promo-3",
+		"page": "/",
+		"source": "templates/Promo-3/pages/home/Banner.svelte"
+	},
+	{
+		"article": "3.1.4.1",
+		"template": "Promo-3",
+		"page": "/",
+		"source": "templates/Promo-3/pages/home/Collections.svelte"
+	},
+	{
+		"article": "3.1.5.1",
+		"template": "Promo-3",
+		"page": "/",
+		"source": "templates/Promo-3/pages/home/Advantages.svelte"
+	},
+	{
+		"article": "3.1.6.1",
+		"template": "Promo-3",
+		"page": "/",
+		"source": "templates/Promo-3/pages/home/CTA.svelte"
+	},
+	{
+		"article": "3.2.1.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/Hero.svelte"
+	},
+	{
+		"article": "3.2.2.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/Mission.svelte"
+	},
+	{
+		"article": "3.2.3.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/Values.svelte"
+	},
+	{
+		"article": "3.2.4.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/Timeline.svelte"
+	},
+	{
+		"article": "3.2.5.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/Team.svelte"
+	},
+	{
+		"article": "3.2.6.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/Brands.svelte"
+	},
+	{
+		"article": "3.2.7.1",
+		"template": "Promo-3",
+		"page": "/about",
+		"source": "templates/Promo-3/pages/about/CTA.svelte"
+	},
+	{
+		"article": "3.3.1.1",
+		"template": "Promo-3",
+		"page": "/brands",
+		"source": "templates/Promo-3/pages/brands/Hero.svelte"
+	},
+	{
+		"article": "3.3.2.1",
+		"template": "Promo-3",
+		"page": "/brands",
+		"source": "templates/Promo-3/pages/brands/BrandsList.svelte"
+	},
+	{
+		"article": "3.3.3.1",
+		"template": "Promo-3",
+		"page": "/brands",
+		"source": "templates/Promo-3/pages/brands/CTA.svelte"
+	},
+	{
+		"article": "3.4.1.1",
+		"template": "Promo-3",
+		"page": "/collections",
+		"source": "templates/Promo-3/pages/collections/Hero.svelte"
+	},
+	{
+		"article": "3.4.2.1",
+		"template": "Promo-3",
+		"page": "/collections",
+		"source": "templates/Promo-3/pages/collections/CollectionsList.svelte"
+	},
+	{
+		"article": "3.4.3.1",
+		"template": "Promo-3",
+		"page": "/collections",
+		"source": "templates/Promo-3/pages/collections/CTA.svelte"
+	},
+	{
+		"article": "3.5.1.1",
+		"template": "Promo-3",
+		"page": "/contacts",
+		"source": "templates/Promo-3/pages/contacts/Hero.svelte"
+	},
+	{
+		"article": "3.5.2.1",
+		"template": "Promo-3",
+		"page": "/contacts",
+		"source": "templates/Promo-3/pages/contacts/Salons.svelte"
+	},
+	{
+		"article": "3.5.3.1",
+		"template": "Promo-3",
+		"page": "/contacts",
+		"source": "templates/Promo-3/pages/contacts/Courier.svelte"
+	},
+	{
+		"article": "3.5.4.1",
+		"template": "Promo-3",
+		"page": "/contacts",
+		"source": "templates/Promo-3/pages/contacts/Form.svelte"
+	},
+	{
+		"article": "3.6.1.1",
+		"template": "Promo-3",
+		"page": "/materials",
+		"source": "templates/Promo-3/pages/materials/Hero.svelte"
+	},
+	{
+		"article": "3.6.2.1",
+		"template": "Promo-3",
+		"page": "/materials",
+		"source": "templates/Promo-3/pages/materials/Categories.svelte"
+	},
+	{
+		"article": "3.6.3.1",
+		"template": "Promo-3",
+		"page": "/materials",
+		"source": "templates/Promo-3/pages/materials/HowWeWork.svelte"
+	},
+	{
+		"article": "3.6.4.1",
+		"template": "Promo-3",
+		"page": "/materials",
+		"source": "templates/Promo-3/pages/materials/CTA.svelte"
+	},
+	{
+		"article": "3.7.1.1",
+		"template": "Promo-3",
+		"page": "/services",
+		"source": "templates/Promo-3/pages/services/Hero.svelte"
+	},
+	{
+		"article": "3.7.2.1",
+		"template": "Promo-3",
+		"page": "/services",
+		"source": "templates/Promo-3/pages/services/ServicesGrid.svelte"
+	},
+	{
+		"article": "3.7.3.1",
+		"template": "Promo-3",
+		"page": "/services",
+		"source": "templates/Promo-3/pages/services/CTA.svelte"
+	},
+	{
+		"article": "3.8.1.1",
+		"template": "Promo-3",
+		"page": "/vacancies",
+		"source": "templates/Promo-3/pages/vacancies/Hero.svelte"
+	},
+	{
+		"article": "3.8.2.1",
+		"template": "Promo-3",
+		"page": "/vacancies",
+		"source": "templates/Promo-3/pages/vacancies/VacanciesList.svelte"
+	},
+	{
+		"article": "3.8.3.1",
+		"template": "Promo-3",
+		"page": "/vacancies",
+		"source": "templates/Promo-3/pages/vacancies/Form.svelte"
+	},
+	{
+		"article": "3.9.1.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/Hero.svelte"
+	},
+	{
+		"article": "3.9.2.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/USP.svelte"
+	},
+	{
+		"article": "3.9.3.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/Advantages.svelte"
+	},
+	{
+		"article": "3.9.4.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/Steps.svelte"
+	},
+	{
+		"article": "3.9.5.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/SocialProof.svelte"
+	},
+	{
+		"article": "3.9.6.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/Offer.svelte"
+	},
+	{
+		"article": "3.9.7.1",
+		"template": "Promo-3",
+		"page": "/yandex-direct",
+		"source": "templates/Promo-3/pages/yandex-direct/CTA.svelte"
+	},
+	{
+		"article": "3.М.1.1",
+		"template": "Promo-3",
+		"page": "(layout)",
+		"source": "templates/Promo-3/layout/Header.svelte"
+	},
+	{
+		"article": "3.Ф.1.1",
+		"template": "Promo-3",
+		"page": "(layout)",
+		"source": "templates/Promo-3/layout/Footer.svelte"
+	}
+]

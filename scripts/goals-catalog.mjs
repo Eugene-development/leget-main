@@ -3,6 +3,7 @@ import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'svelte/compiler';
 import { format, resolveConfig } from 'prettier';
+import { goalLocations } from './goal-locations.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const base = join(root, 'src/lib/components');
@@ -145,6 +146,8 @@ records.push(
 		mock: false
 	}))
 );
+const locate = goalLocations(root, write);
+for (const record of records) record.locations = locate(record);
 const unique = new Set();
 for (const r of records)
 	for (const t of r.templates) {

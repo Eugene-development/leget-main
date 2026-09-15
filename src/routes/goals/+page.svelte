@@ -361,9 +361,12 @@
 	</section>
 
 	<div
-		class="mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[260px_minmax(0,1fr)] lg:px-10 lg:py-10"
+		class="mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-12 lg:px-10 lg:py-10"
 	>
-		<aside class="lg:sticky lg:top-8 lg:self-start" aria-label="Фильтры целей">
+		<aside
+			class="w-full max-w-full min-w-0 lg:sticky lg:top-8 lg:self-start"
+			aria-label="Фильтры целей"
+		>
 			<label for="goal-template" class="mb-2 block text-sm">Шаблон сайта</label>
 			<select
 				id="goal-template"
@@ -398,7 +401,7 @@
 				</div>
 			</div>
 
-			<fieldset class="border-b border-border-medium py-6">
+			<fieldset class="w-full min-w-0 border-b border-border-medium py-6">
 				<legend class="mb-3 text-sm text-text-primary">Тип цели</legend>
 				<div class="flex flex-wrap gap-2 lg:flex-col">
 					{#each [{ value: 'all', label: 'Все цели' }, { value: 'click', label: 'Клик по кнопке' }, { value: 'compound', label: 'Составная' }] as option}
@@ -445,7 +448,7 @@
 				</div>
 			</details>
 
-			<fieldset class="hidden py-6 lg:block">
+			<fieldset class="hidden w-full min-w-0 py-6 lg:block">
 				<legend class="mb-3 text-sm text-text-primary">Страница срабатывания</legend>
 				<div class="flex max-h-72 flex-col gap-1 overflow-y-auto pr-1">
 					{@render routeFilterList()}
@@ -463,7 +466,7 @@
 			{/if}
 		</aside>
 
-		<section aria-live="polite">
+		<section class="w-full max-w-full min-w-0" aria-live="polite">
 			<span class="sr-only" aria-live="polite">{copyMessage}</span>
 			<div
 				class="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-border-medium pb-4"
@@ -525,7 +528,7 @@
 </main>
 
 {#snippet goalRow(goal: GoalDefinition)}
-	<details class="group px-4 py-5 sm:px-6">
+	<details class="group max-w-full min-w-0 px-4 py-5 wrap-anywhere sm:px-6">
 		<summary
 			class="flex cursor-pointer list-none items-start gap-4 focus-visible:ring-2 focus-visible:ring-link-600"
 		>
@@ -551,7 +554,7 @@
 								href={page.path}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="inline-flex items-center gap-1.5 rounded-lg border border-border-light bg-surface px-2.5 py-1 text-xs text-link-600 transition hover:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600"
+								class="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-lg border border-border-light bg-surface px-2.5 py-1 text-xs text-link-600 transition hover:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600"
 								onclick={(event) => event.stopPropagation()}
 							>
 								{page.label}
@@ -559,7 +562,7 @@
 							</a>
 						{:else}
 							<span
-								class="inline-flex items-center gap-1.5 rounded-lg border border-border-light bg-surface px-2.5 py-1 text-xs text-text-secondary"
+								class="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-lg border border-border-light bg-surface px-2.5 py-1 text-xs text-text-secondary"
 							>
 								{page.label}
 								<code class="text-text-muted">*</code>
@@ -585,7 +588,7 @@
 		</summary>
 
 		<div
-			class="mt-5 grid gap-5 border-t border-border-light pt-5 sm:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]"
+			class="mt-5 grid gap-5 border-t border-border-light pt-5 sm:grid-cols-2 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] [&>div]:min-w-0"
 		>
 			<div>
 				<p class="text-xs text-text-muted">Условие</p>
@@ -724,15 +727,15 @@
 		{@const key = pageKey(route)}
 		<button
 			type="button"
-			class="flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm transition focus-visible:ring-2 focus-visible:ring-link-600 {routeFilter ===
+			class="flex w-full min-w-0 flex-col items-start gap-1 rounded-lg px-3 py-2 text-left text-sm transition focus-visible:ring-2 focus-visible:ring-link-600 {routeFilter ===
 			key
 				? 'bg-surface-muted text-text-primary'
 				: 'text-text-secondary hover:bg-surface-card hover:text-text-primary'}"
 			onclick={() => (routeFilter = key)}
 			aria-pressed={routeFilter === key}
 		>
-			<span class="min-w-0 truncate">{route.label}</span>
-			<code class="shrink-0 text-xs text-text-muted">
+			<span class="max-w-full break-words whitespace-normal">{route.label}</span>
+			<code class="max-w-full min-w-0 text-xs break-all whitespace-normal text-text-muted">
 				{route.scope === 'sitewide' ? '*' : route.path}
 			</code>
 		</button>

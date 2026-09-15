@@ -154,6 +154,45 @@ export const goalDefinitions: GoalDefinition[] = [
 
 export const goalTemplates = [...new Set(buttons.flatMap((button) => button.templates))].sort();
 
+const pageNames: Record<string, string> = {
+	'/': 'Главная',
+	'/about': 'О компании',
+	'/contact': 'Обратная связь',
+	'/contacts': 'Контакты',
+	'/partnership': 'Партнёрство',
+	'/installment': 'Рассрочка',
+	'/vacancy': 'Вакансии',
+	'/vacancies': 'Вакансии',
+	'/careers': 'Карьера',
+	'/designers': 'Дизайнерам',
+	'/mebel': 'Мебель',
+	'/bytovaya-tehnika': 'Бытовая техника',
+	'/santehnika': 'Сантехника',
+	'/stoleshnica': 'Столешницы'
+};
+function locationLabel(path: string): string {
+	return path === '(layout)' ? 'Все страницы' : `${pageNames[path] || 'Страница'} (${path})`;
+}
+function describeLocations(button: (typeof buttons)[number], template: string): string {
+	const groups = new Map<string, string[]>();
+	for (const location of button.locations.filter((location) => location.template === template)) {
+		const articles = groups.get(location.page) ?? [];
+		if (!articles.includes(location.article)) articles.push(location.article);
+		groups.set(location.page, articles);
+	}
+	const location = [...groups]
+		.map(
+			([page, articles]) =>
+				`${locationLabel(page)} · ${articles.length === 1 ? 'Артикул' : 'Артикулы'}: ${articles.join(', ')}`
+		)
+		.join('; ');
+	return (
+		(location ||
+			`${locationLabel(button.route || '(layout)')} · Общая форма, отдельный артикул не назначен`) +
+		(button.mock ? ' · Демонстрационная форма: серверная отправка не реализована.' : '')
+	);
+}
+
 export function goalsForTemplate(template: string): GoalDefinition[] {
 	const actions: Record<string, string> = {
 		open: 'Открытие формы',
@@ -169,15 +208,28 @@ export function goalsForTemplate(template: string): GoalDefinition[] {
 			type: 'click',
 			status: 'implemented',
 			priority: button.action === 'submit_click' ? 'high' : 'medium',
-			description: `${button.source}${button.mock ? ' · Демонстрационная форма: серверная отправка не реализована.' : ''}`,
+			description: describeLocations(button, template),
 			eventName: templateGoalName(template, button.id),
 			condition:
 				button.action === 'submit_click'
 					? 'Нажатие кнопки отправки. Не подтверждает валидацию или приём данных сервером.'
 					: `${actions[button.action]}: нажатие отмеченной кнопки.`,
-			pages: button.route
-				? [{ scope: 'route', label: button.route, path: button.route }]
-				: [{ scope: 'sitewide', label: 'Общий компонент' }],
+			pages: [
+				...new Set(
+					button.locations
+						.filter((location) => location.template === template)
+						.map((location) => location.page)
+						.concat(
+							button.locations.some((location) => location.template === template)
+								? []
+								: [button.route || '(layout)']
+						)
+				)
+			].map((path) =>
+				path === '(layout)'
+					? { scope: 'sitewide' as const, label: 'Все страницы' }
+					: { scope: 'route' as const, label: pageNames[path] || 'Страница', path }
+			),
 			buttonLabel: button.label,
 			selector: `[data-metrika-goal="${button.id}"]`
 		}));
