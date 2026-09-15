@@ -5,6 +5,7 @@ import { cleanPhone } from '$lib/utils/phone';
 export type ServiceRequestInput = {
 	serviceType: ServiceType;
 	formId?: string;
+	formTitle?: string;
 	name: string;
 	phone: string;
 	message?: string | null;
@@ -31,6 +32,7 @@ export async function submitServiceRequest(
 	if (!senders.has(formId)) senders.set(formId, createFormSender(formId));
 	const payload = new FormData();
 	payload.set('service_type', input.serviceType);
+	if (input.formTitle) payload.set('form_title', input.formTitle);
 	payload.set('name', input.name.trim());
 	payload.set('phone', cleanPhone(input.phone));
 	payload.set('city', input.city);

@@ -94,7 +94,7 @@
 
 		sending = true;
 		try {
-			await sendForm(formData);
+			await sendForm(formData, 'service-request', event);
 
 			sent = true;
 		} catch {

@@ -8,6 +8,7 @@
 	import { cityStore } from '$lib/stores/city.svelte';
 	import { formatPhone, isValidPhone } from '$lib/utils/phone';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { formHeading } from '$lib/utils/form-submission';
 	import { submitServiceRequest } from '$lib/utils/service-request';
 	import { revealOnScroll } from './theme';
 	import './theme.css';
@@ -256,6 +257,7 @@
 
 		try {
 			await submitServiceRequest({
+				formTitle: formHeading(event),
 				serviceType: 'installment',
 				formId: 'promo1-installment',
 				name: fullName,

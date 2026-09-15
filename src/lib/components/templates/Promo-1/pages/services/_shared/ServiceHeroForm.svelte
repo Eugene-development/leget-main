@@ -4,6 +4,7 @@
 	import { cityStore } from '$lib/stores/city.svelte';
 	import type { ServiceType } from '$lib/stores/serviceOrder.svelte';
 	import { formatPhone, isValidPhone } from '$lib/utils/phone';
+	import { formHeading } from '$lib/utils/form-submission';
 	import { submitServiceRequest } from '$lib/utils/service-request';
 
 	let {
@@ -70,6 +71,7 @@
 
 		try {
 			await submitServiceRequest({
+				formTitle: formHeading(event),
 				serviceType,
 				formId: 'service-hero-' + serviceType,
 				name,

@@ -35,12 +35,16 @@
 		loading = true;
 		formError = '';
 		try {
-			await sendForm({
-				service_type: 'contact',
-				name: name.trim(),
-				phone: phone.trim(),
-				message: ''
-			});
+			await sendForm(
+				{
+					service_type: 'contact',
+					name: name.trim(),
+					phone: phone.trim(),
+					message: ''
+				},
+				'service-request',
+				event
+			);
 			submitted = true;
 		} catch (error) {
 			formError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';

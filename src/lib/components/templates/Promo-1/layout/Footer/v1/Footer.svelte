@@ -122,7 +122,7 @@
 		sending = true;
 		sendError = '';
 		try {
-			await sendForm({ service_type: 'subscription', email: value });
+			await sendForm({ service_type: 'subscription', email: value }, 'service-request', event);
 			subscribedTo = value;
 			formState = 'done';
 			email = '';

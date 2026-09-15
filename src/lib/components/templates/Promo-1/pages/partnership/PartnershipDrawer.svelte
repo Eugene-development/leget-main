@@ -36,17 +36,21 @@
 		}
 		sending = true;
 		try {
-			await sendForm({
-				service_type: 'partnership',
-				partnership_status: status,
-				name: name.trim(),
-				phone: normalizedPhone || null,
-				email: supplier ? email.trim() || null : null,
-				company: supplier ? company.trim() : null,
-				city: supplier ? null : city.trim(),
-				message: supplier ? null : comment.trim(),
-				source_url: window.location.href.slice(0, 500)
-			});
+			await sendForm(
+				{
+					service_type: 'partnership',
+					partnership_status: status,
+					name: name.trim(),
+					phone: normalizedPhone || null,
+					email: supplier ? email.trim() || null : null,
+					company: supplier ? company.trim() : null,
+					city: supplier ? null : city.trim(),
+					message: supplier ? null : comment.trim(),
+					source_url: window.location.href.slice(0, 500)
+				},
+				'service-request',
+				event
+			);
 
 			sent = true;
 			name = company = phone = email = city = comment = '';

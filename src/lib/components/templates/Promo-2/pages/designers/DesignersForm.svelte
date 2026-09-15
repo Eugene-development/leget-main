@@ -41,22 +41,26 @@
 		try {
 			const sourceUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-			await sendForm({
-				// Ключ поля — `service_type`, как требует контроллер: `form_type`
-				// он не знает, и валидация отклоняла каждую заявку с 422.
-				email: formEmail.trim(),
-				service_type: 'partnership',
-				name: formName.trim(),
-				phone: formPhone.replace(/[\s()\-]/g, ''),
-				// Тип партнёрства сохраняется в сообщении.
-				message: [
-					`Тип партнерства: ${formType === 'studio' ? 'Студия' : 'Фрилансер'}`,
-					`E-mail: ${formEmail.trim()}`
-				]
-					.join('\n')
-					.slice(0, 2000),
-				source_url: sourceUrl
-			});
+			await sendForm(
+				{
+					// Ключ поля — `service_type`, как требует контроллер: `form_type`
+					// он не знает, и валидация отклоняла каждую заявку с 422.
+					email: formEmail.trim(),
+					service_type: 'partnership',
+					name: formName.trim(),
+					phone: formPhone.replace(/[\s()\-]/g, ''),
+					// Тип партнёрства сохраняется в сообщении.
+					message: [
+						`Тип партнерства: ${formType === 'studio' ? 'Студия' : 'Фрилансер'}`,
+						`E-mail: ${formEmail.trim()}`
+					]
+						.join('\n')
+						.slice(0, 2000),
+					source_url: sourceUrl
+				},
+				'service-request',
+				e
+			);
 
 			formSent = true;
 		} catch (err) {

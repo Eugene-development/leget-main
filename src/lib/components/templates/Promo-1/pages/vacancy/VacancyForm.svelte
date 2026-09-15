@@ -88,18 +88,22 @@
 		errorMessage = '';
 
 		try {
-			await sendForm({
-				service_type: 'vacancy',
-				position: position || null,
-				name: name.trim(),
-				phone: cleanPhone(phone),
-				// Позиция также включена в текст для удобства получателя.
-				message: [`Вакансия: ${position || 'любая подходящая позиция'}`, about.trim()]
-					.filter(Boolean)
-					.join('\n\n')
-					.slice(0, 2000),
-				source_url: typeof window === 'undefined' ? null : window.location.href
-			});
+			await sendForm(
+				{
+					service_type: 'vacancy',
+					position: position || null,
+					name: name.trim(),
+					phone: cleanPhone(phone),
+					// Позиция также включена в текст для удобства получателя.
+					message: [`Вакансия: ${position || 'любая подходящая позиция'}`, about.trim()]
+						.filter(Boolean)
+						.join('\n\n')
+						.slice(0, 2000),
+					source_url: typeof window === 'undefined' ? null : window.location.href
+				},
+				'service-request',
+				event
+			);
 
 			sent = true;
 			name = '';

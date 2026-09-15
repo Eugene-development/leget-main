@@ -41,20 +41,24 @@
 		try {
 			const sourceUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-			await sendForm({
-				// Ключ поля — `service_type`, как требует контроллер: `form_type`
-				// он не знает, и валидация отклоняла каждый отклик с 422.
-				email: resumeEmail.trim(),
-				service_type: 'careers',
-				name: resumeName.trim(),
-				phone: resumePhone.trim(),
-				// Сопроводительное сообщение соискателя.
-				message: [`E-mail: ${resumeEmail.trim()}`, resumeMessage.trim()]
-					.filter(Boolean)
-					.join('\n\n')
-					.slice(0, 2000),
-				source_url: sourceUrl
-			});
+			await sendForm(
+				{
+					// Ключ поля — `service_type`, как требует контроллер: `form_type`
+					// он не знает, и валидация отклоняла каждый отклик с 422.
+					email: resumeEmail.trim(),
+					service_type: 'careers',
+					name: resumeName.trim(),
+					phone: resumePhone.trim(),
+					// Сопроводительное сообщение соискателя.
+					message: [`E-mail: ${resumeEmail.trim()}`, resumeMessage.trim()]
+						.filter(Boolean)
+						.join('\n\n')
+						.slice(0, 2000),
+					source_url: sourceUrl
+				},
+				'service-request',
+				e
+			);
 
 			resumeSent = true;
 		} catch (err) {

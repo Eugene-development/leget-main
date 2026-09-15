@@ -5,6 +5,7 @@
 	import { cityStore } from '$lib/stores/city.svelte';
 	import PhoneInput from './PhoneInput.svelte';
 	import { isValidPhone } from '$lib/utils/phone';
+	import { formHeading } from '$lib/utils/form-submission';
 	import { submitServiceRequest } from '$lib/utils/service-request';
 
 	let name = $state('');
@@ -44,6 +45,7 @@
 
 		try {
 			await submitServiceRequest({
+				formTitle: formHeading(event),
 				serviceType: serviceOrderStore.serviceType,
 				name,
 				phone,

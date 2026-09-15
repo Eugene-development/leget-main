@@ -9,11 +9,26 @@ export type FormResult = {
 	message: string;
 };
 type Pending = { key: string; promise: Promise<FormResult> | null };
+/** Read the visible heading while the submit event still has its currentTarget. */
+export function formHeading(event?: Event): string | undefined {
+	if (typeof HTMLElement === 'undefined') return undefined;
+	let element: HTMLElement | null =
+		event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+	while (element && element !== document.body) {
+		const heading = element.querySelector('h1, h2, h3, h4, h5, h6');
+		const text = heading?.textContent?.replace(/\s+/g, ' ').trim();
+		if (text) return text.slice(0, 160);
+		element = element.parentElement;
+	}
+	return undefined;
+}
+
 export function createFormSender(formId: string) {
 	const pending = new Map<string, Pending>();
 	return async function sendForm(
 		payload: FormData | Record<string, string | number | null | undefined>,
-		endpoint = 'service-request'
+		endpoint = 'service-request',
+		event?: Event
 	): Promise<FormResult> {
 		const body = payload instanceof FormData ? payload : new FormData();
 		if (!(payload instanceof FormData)) {
@@ -22,6 +37,8 @@ export function createFormSender(formId: string) {
 			}
 		}
 		body.set('form_id', formId);
+		const title = formHeading(event);
+		if (title) body.set('form_title', title);
 		if (!body.has('source_url') && typeof window !== 'undefined')
 			body.set('source_url', window.location.href.slice(0, 500));
 		const signature: [string, string][] = [];

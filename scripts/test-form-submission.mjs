@@ -50,3 +50,37 @@ await assert.rejects(send(payload), 'success without database id is not acceptan
 console.log(
 	'PASS: single request, double click, network retry, changed data, accepted-pending response, required database receipt.'
 );
+
+// A tenant's edited heading must be captured at submit time, not frozen on component mount.
+const { formHeading } = await import(
+	`data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`
+);
+class HeadingElement {
+	constructor(text = '', parent = null) {
+		this.text = text;
+		this.parentElement = parent;
+	}
+	querySelector() {
+		return this.text ? { textContent: this.text } : null;
+	}
+}
+globalThis.HTMLElement = HeadingElement;
+globalThis.document = { body: new HeadingElement() };
+const section = new HeadingElement('  Закажите\n кухню мечты  ', document.body);
+const form = new HeadingElement('', section);
+assert.equal(formHeading({ currentTarget: form }), 'Закажите кухню мечты');
+section.text = 'Обновлённый заголовок';
+assert.equal(formHeading({ currentTarget: form }), 'Обновлённый заголовок');
+assert.equal(formHeading(), undefined);
+let capturedTitle;
+globalThis.fetch = async (_url, options) => {
+	capturedTitle = options.body.get('form_title');
+	return new Response(
+		JSON.stringify({ success: true, id: 'title-test', status: 'new', mail_status: 'sent' })
+	);
+};
+await createFormSender('heading-test')({ service_type: 'contact' }, 'service-request', {
+	currentTarget: form
+});
+assert.equal(capturedTitle, 'Обновлённый заголовок');
+console.log('PASS: current visible form heading is included in the submission.');
