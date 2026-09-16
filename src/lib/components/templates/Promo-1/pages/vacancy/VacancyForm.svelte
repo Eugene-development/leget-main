@@ -1,6 +1,11 @@
 <script lang="ts">
 	// Артикул: 1.27.3.1 — см. docs/architecture/component-articles-map.md
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
+	import {
+		PAGE_COMPONENT_DATA_CONTEXT,
+		type PageComponentDataLookup
+	} from '$lib/utils/page-component-data';
+	import { richTextToPlainText } from '$lib/utils/rich-text';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
@@ -30,28 +35,22 @@
 	const accent = $derived(isLight ? 'text-cat-4-600' : 'text-cat-4-300');
 	const diamond = $derived(isLight ? 'border-cat-4-500/70' : 'border-cat-4-400/70');
 
-	/**
-	 * Список позиций для выбора.
-	 *
-	 * ⚠️ Он живёт в данных ЭТОГО блока, а не берётся из VacancyList: блоки
-	 * страницы независимы, у каждого свой blob, и тенант вправе поставить
-	 * форму без описи. Плата за независимость — два списка: правя вакансии
-	 * в описи, названия здесь тоже надо обновить. Позиция, пришедшая по
-	 * «Откликнуться» и отсутствующая в списке, добавляется на лету — то есть
-	 * расхождение мешает выбрать руками, но отклик не ломает.
-	 */
-	const defaultPositions = [
-		'Плиточник',
-		'Менеджер по продажам',
-		'Дизайнер мебели',
-		'Куратор проектов'
-	];
-
-	const positions = $derived(
-		Array.isArray(data?.positions) && (data.positions as unknown[]).length > 0
-			? (data.positions as string[])
-			: defaultPositions
-	);
+	// При наличии списка на странице используем только опубликованные вакансии.
+	// Getter из PageRenderer изолирован между SSR-запросами и обновляется при правке.
+	const lookup = getContext<PageComponentDataLookup | undefined>(PAGE_COMPONENT_DATA_CONTEXT);
+	const vacancyList = $derived(lookup?.('VacancyList') ?? null);
+	const positions = $derived.by(() => {
+		if (vacancyList) {
+			if (vacancyList.vacancyListVersion === 'disabled') return [];
+			const rows = Array.isArray(vacancyList.vacancies) ? vacancyList.vacancies : [];
+			return rows
+				.filter((row) => !row.hidden)
+				.map((row) => richTextToPlainText(String(row.title ?? '')))
+				.filter(Boolean);
+		}
+		// Самостоятельная форма сохраняет собственный список позиций.
+		return Array.isArray(data?.positions) ? (data.positions as string[]) : [];
+	});
 
 	let name = $state('');
 	let phone = $state('');
@@ -63,12 +62,18 @@
 
 	/** Позиция, выбранная по «Откликнуться» и отсутствующая в описи. */
 	const options = $derived(
-		position && !positions.includes(position) ? [...positions, position] : positions
+		!vacancyList && position && !positions.includes(position) ? [...positions, position] : positions
 	);
+
+	$effect(() => {
+		if (vacancyList && position && !positions.includes(position)) position = '';
+	});
 
 	onMount(() =>
 		onApplyRequest((title) => {
-			position = title;
+			const plainTitle = richTextToPlainText(title);
+			if (vacancyList && !positions.includes(plainTitle)) return;
+			position = plainTitle;
 			sent = false;
 		})
 	);

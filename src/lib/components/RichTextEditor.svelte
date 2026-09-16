@@ -136,7 +136,8 @@
 				});
 				editor.commands.focus('end');
 			})
-			.catch(() => {
+			.catch((error: unknown) => {
+				console.error('Failed to initialize the rich text editor.', error);
 				if (!disposed)
 					loadError = 'Не удалось загрузить редактор. Закройте окно и попробуйте ещё раз.';
 			});

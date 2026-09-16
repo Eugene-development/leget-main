@@ -12,6 +12,10 @@
 	} from '$lib/utils/page-edit';
 	import { setContext, tick } from 'svelte';
 	import {
+		PAGE_COMPONENT_DATA_CONTEXT,
+		type PageComponentDataLookup
+	} from '$lib/utils/page-component-data';
+	import {
 		COMPONENT_ORDER_CONTEXT,
 		movePageComponent,
 		type ComponentOrderController,
@@ -138,6 +142,10 @@
 	// svelte-ignore state_referenced_locally — начальный SSR-снимок намеренный;
 	// последующие изменения входного prop синхронизирует $effect ниже.
 	let componentsState = $state<PageComponent[]>(components ?? []);
+	setContext<PageComponentDataLookup>(
+		PAGE_COMPONENT_DATA_CONTEXT,
+		(type) => componentsState.find((component) => component.type === type)?.data ?? null
+	);
 	$effect(() => {
 		componentsState = components ?? [];
 		orderError = null;

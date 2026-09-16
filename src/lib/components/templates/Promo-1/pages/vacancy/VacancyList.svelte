@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.27.2.1 — см. docs/architecture/component-articles-map.md
+	import { editStore } from '$lib/stores/edit.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
@@ -48,6 +49,7 @@
 
 	type Vacancy = {
 		id: string;
+		hidden?: boolean;
 		title: string;
 		type: string;
 		location: string;
@@ -59,98 +61,16 @@
 		requirements: string[];
 	};
 
-	/**
-	 * Стартовые позиции. Текст перенесён из `Promo-3/pages/vacancies` дословно:
-	 * он уже написан и согласован, а шаблон задаёт оформление, не содержание.
-	 */
-	const defaultVacancies: Vacancy[] = [
-		{
-			id: 'tiler',
-			title: 'Плиточник',
-			type: 'Полная занятость',
-			location: 'Москва и МО',
-			salary: 'от 90 000 ₽',
-			icon: 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',
-			description:
-				'Занимаемся профессиональной укладкой плитки в жилых и коммерческих объектах. Ищем профессионала с безупречным качеством работы.',
-			duties: [
-				'Укладка настенной и напольной плитки, керамогранита и мозаики',
-				'Подготовка поверхностей (штукатурка, выравнивание, гидроизоляция)',
-				'Работа с погонажем, порогами и декоративными элементами'
-			],
-			requirements: [
-				'Опыт укладки плитки от 3 лет',
-				'Умение работать с крупноформатными плитами (60×120 и более)',
-				'Аккуратность, ответственность, работа в команде'
-			]
-		},
-		{
-			id: 'sales',
-			title: 'Менеджер по продажам',
-			type: 'Полная занятость',
-			location: 'Москва, офис / гибрид',
-			salary: 'от 70 000 ₽ + бонусы',
-			icon: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
-			description:
-				'Продажи — сердце нашего бизнеса. Мы ищем энергичного консультанта, который умеет слушать клиентов и подбирать решения.',
-			duties: [
-				'Консультирование клиентов в шоуруме и по телефону',
-				'Подбор коллекций плитки под проект и бюджет клиента',
-				'Ведение CRM, выставление счетов, контроль отгрузки'
-			],
-			requirements: [
-				'Опыт продаж в сфере строительных материалов или интерьера от 1 года',
-				'Умение работать с возражениями и вести переговоры',
-				'Грамотная речь, презентабельный внешний вид'
-			]
-		},
-		{
-			id: 'designer',
-			title: 'Дизайнер мебели',
-			type: 'Полная занятость / Проектная работа',
-			location: 'Москва, гибридный формат',
-			salary: 'от 80 000 ₽',
-			icon: 'M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z',
-			description:
-				'Создаём интерьеры, в которых плитка и мебель дополняют друг друга. Ищем дизайнера, способного мыслить пространством и деталями одновременно.',
-			duties: [
-				'Разработка концепций меблировки для жилых и коммерческих интерьеров',
-				'Создание 3D-визуализаций в сочетании с нашими коллекциями плитки',
-				'Сопровождение проекта от эскиза до монтажа'
-			],
-			requirements: [
-				'Профессиональное образование в области дизайна интерьеров',
-				'Уверенное владение 3ds Max / SketchUp / Revit, Photoshop',
-				'Портфолио выполненных проектов — обязательно'
-			]
-		},
-		{
-			id: 'curator',
-			title: 'Куратор проектов',
-			type: 'Полная занятость',
-			location: 'Москва и МО',
-			salary: 'от 85 000 ₽',
-			icon: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 12l2 2 4-4',
-			description:
-				'Координируем ремонтные проекты от замера до сдачи объекта. Ищем человека, который умеет держать всё под контролем.',
-			duties: [
-				'Координация взаимодействия между клиентами, дизайнерами и бригадами монтажников',
-				'Составление и ведение проектных планов, контроль сроков и бюджетов',
-				'Выезд на объекты для приёмки работ и консультаций'
-			],
-			requirements: [
-				'Опыт управления строительными или ремонтными проектами от 2 лет',
-				'Умение работать в режиме многозадачности',
-				'Знание строительных технологий и материалов'
-			]
-		}
-	];
-
-	const vacancies = $derived(
-		Array.isArray(data?.vacancies) && (data.vacancies as unknown[]).length > 0
-			? (data.vacancies as Vacancy[])
-			: defaultVacancies
-	);
+	// Стартовое наполнение приходит из API; пустой массив означает удалённый список.
+	const vacancies = $derived(Array.isArray(data?.vacancies) ? (data.vacancies as Vacancy[]) : []);
+	const publishedVacancies = $derived(vacancies.filter((vacancy) => !vacancy.hidden));
+	const controlClass =
+		'p1-title p1-border min-h-11 cursor-pointer rounded-lg border px-4 py-2 text-sm transition hover:bg-ink-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-wait disabled:opacity-50';
+	let saving = $state(false);
+	let actionError = $state('');
+	let actionStatus = $state('');
+	let deletingId = $state<string | null>(null);
+	const controlsDisabled = $derived(saving || editStore.activeField !== null);
 
 	/**
 	 * Раскрыта одна позиция за раз: список остаётся описью, а не разъезжается
@@ -161,7 +81,7 @@
 	 * и других посетителей не касается.
 	 */
 	let openId = $state<string | null>(null);
-	const activeId = $derived(openId ?? vacancies[0]?.id ?? '');
+	const activeId = $derived(openId ?? publishedVacancies[0]?.id ?? '');
 
 	/**
 	 * В режиме правки раскрыты все и строка перестаёт быть кнопкой.
@@ -181,11 +101,31 @@
 		openId = activeId === id ? '' : id;
 	}
 
-	async function saveField(field: string, value: unknown) {
-		if (!editContext) return;
-		const updated = { ...data, [field]: value };
-		await saveComponentData(editContext, 'VacancyList', updated);
-		data = updated;
+	async function saveField(field: string, value: unknown, hiddenFields?: string[]) {
+		if (!isEditable || !editContext)
+			throw new Error('Войдите как владелец сайта для редактирования.');
+		if (saving) throw new Error('Дождитесь завершения сохранения.');
+		saving = true;
+		try {
+			const updated = { ...data, [field]: value };
+			// Ключи скрытых полей используют индекс строки: при удалении переносим
+			// их вместе с вакансией, чтобы не скрыть поля соседней позиции.
+			if (field === 'vacancies' && Array.isArray(value) && Array.isArray(data.hiddenFields)) {
+				updated.hiddenFields = data.hiddenFields.flatMap((key: string) => {
+					const match = /^(\d+)\.(.+)$/.exec(key);
+					if (!match) return [key];
+					const id = vacancies[Number(match[1])]?.id;
+					const nextIndex = value.findIndex((vacancy: Vacancy) => vacancy.id === id);
+					return nextIndex < 0 ? [] : [`${nextIndex}.${match[2]}`];
+				});
+			}
+			if (hiddenFields) updated.hiddenFields = hiddenFields;
+			const id = await saveComponentData(editContext, 'VacancyList', updated);
+			if (!id) throw new Error('Сервер не подтвердил сохранение. Повторите попытку.');
+			data = updated;
+		} finally {
+			saving = false;
+		}
 	}
 
 	/** Правка поля позиции: список позиций хранится целиком в `data.vacancies`. */
@@ -207,6 +147,77 @@
 				: v
 		);
 		await saveField('vacancies', updated);
+	}
+	async function changeList(next: Vacancy[], message: string, hiddenFields?: string[]) {
+		if (controlsDisabled) return;
+		actionError = '';
+		actionStatus = '';
+		try {
+			await saveField('vacancies', next, hiddenFields);
+			deletingId = null;
+			actionStatus = message;
+		} catch (error) {
+			actionError =
+				error instanceof Error ? error.message : 'Не удалось сохранить. Повторите попытку.';
+		}
+	}
+
+	async function addVacancy() {
+		const vacancy: Vacancy = {
+			id: crypto.randomUUID(),
+			hidden: true,
+			title: 'Новая вакансия',
+			type: 'Полная занятость',
+			location: 'Укажите город',
+			salary: 'Укажите зарплату',
+			icon: 'M4 7h16v14H4zM9 7V3h6v4',
+			description: 'Расскажите о вакансии',
+			duties: ['Укажите обязанности'],
+			requirements: ['Укажите требования']
+		};
+		await changeList(
+			[...vacancies, vacancy],
+			'Вакансия добавлена и скрыта от посетителей. Заполните поля и нажмите «Опубликовать».'
+		);
+	}
+
+	function toggleVacancy(index: number) {
+		const hidden = !vacancies[index].hidden;
+		return changeList(
+			vacancies.map((v, i) => (i === index ? { ...v, hidden } : v)),
+			hidden ? 'Вакансия скрыта от посетителей.' : 'Вакансия опубликована.'
+		);
+	}
+
+	async function deleteVacancy(id: string) {
+		await changeList(
+			vacancies.filter((v) => v.id !== id),
+			'Вакансия удалена.'
+		);
+		if (!vacancies.some((v) => v.id === openId)) openId = null;
+	}
+
+	function changeBullets(index: number, field: 'duties' | 'requirements', removeIndex?: number) {
+		const lines = vacancies[index][field];
+		const next =
+			removeIndex === undefined
+				? [...lines, 'Новый пункт']
+				: lines.filter((_, j) => j !== removeIndex);
+		const hiddenFields =
+			removeIndex !== undefined && Array.isArray(data.hiddenFields)
+				? (data.hiddenFields as string[]).flatMap((key) => {
+						const prefix = `${index}.${field}.`;
+						if (!key.startsWith(prefix)) return [key];
+						const bulletIndex = Number(key.slice(prefix.length));
+						if (bulletIndex === removeIndex) return [];
+						return [bulletIndex > removeIndex ? `${prefix}${bulletIndex - 1}` : key];
+					})
+				: undefined;
+		return changeList(
+			vacancies.map((v, i) => (i === index ? { ...v, [field]: next } : v)),
+			'Список сохранён.',
+			hiddenFields
+		);
 	}
 </script>
 
@@ -313,18 +324,30 @@
 	появится полоса.
 -->
 <section
-	class="p1-surface-alt relative isolate overflow-hidden py-section-sm"
+	class="p1-surface-alt relative isolate overflow-clip py-section-sm"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<SingleVersionSettings
-		bind:data
-		{editContext}
-		{isEditable}
-		componentType="VacancyList"
-		themeToggle
-		themeDefault="light"
-		title="Открытые позиции"
-	/>
+	{#if isEditable && editContext}
+		<!-- Full-height rail keeps the controls within this section. overflow-clip
+		     above preserves decoration clipping without creating a scroll container. -->
+		<div class="pointer-events-none absolute inset-0 z-[100] p-2 sm:p-6">
+			<div
+				class="pointer-events-auto sticky ml-auto w-fit"
+				style="top: calc(var(--header-h, 0px) + 0.75rem)"
+			>
+				<SingleVersionSettings
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="VacancyList"
+					placement="inline"
+					themeToggle
+					themeDefault="light"
+					title="Открытые позиции"
+				/>
+			</div>
+		</div>
+	{/if}
 
 	{#if isLight}
 		<div class="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -382,132 +405,232 @@
 		</div>
 
 		<div use:revealOnScroll class="vc-reveal mt-14 flex flex-col gap-4">
-			{#each vacancies as vacancy, i (vacancy.id ?? i)}
-				<div
-					class="vc-card p1-card p1-card-hover overflow-hidden rounded-3xl border transition duration-300"
-					style="--vc-delay: {i * 70}ms"
-				>
-					{#if isEditable}
-						<div class="flex flex-wrap items-center gap-x-4 gap-y-4 p-6 sm:gap-x-6 sm:p-7">
-							{@render row(vacancy, i)}
-						</div>
-					{:else}
-						<button
-							type="button"
-							class="flex w-full cursor-pointer flex-wrap items-center gap-x-4 gap-y-4 p-6 text-left sm:gap-x-6 sm:p-7"
-							aria-expanded={isOpen(vacancy.id)}
-							aria-controls="vacancy-panel-{vacancy.id ?? i}"
-							onclick={() => toggle(vacancy.id)}
-						>
-							{@render row(vacancy, i)}
-						</button>
-					{/if}
-
-					<div
-						class="vc-fold"
-						data-open={isOpen(vacancy.id) ? 'true' : 'false'}
-						id="vacancy-panel-{vacancy.id ?? i}"
+			{#if isEditable}
+				<div class="p1-body flex flex-wrap items-center gap-4">
+					<button
+						type="button"
+						class={controlClass}
+						disabled={controlsDisabled}
+						data-goal-ignore="Редактор: добавление вакансии"
+						onclick={addVacancy}>Добавить вакансию</button
 					>
-						<div>
-							<div class="px-6 pb-7 sm:px-7 sm:pb-8">
-								<div class="p1-line mb-6 border-t"></div>
-
-								<p class="p1-body max-w-3xl text-base/7">
-									<EditableField
-										fieldKey="VacancyList.{i}.description"
-										label="Описание позиции"
-										value={vacancy.description}
-										{isEditable}
-										inline
-										multiline
-										onSave={(v) => updateVacancy(i, 'description', v)}
+					<span class="text-sm"
+						>Новые вакансии скрыты до публикации. Текст можно изменить через карандаш.</span
+					>
+				</div>
+				<p class="p1-body text-sm" role="status">{saving ? 'Сохранение…' : actionStatus}</p>
+				{#if actionError}<p class="p1-title" role="alert">{actionError}</p>{/if}
+			{/if}
+			{#if (isEditable ? vacancies : publishedVacancies).length === 0}
+				<p class="p1-body py-8 text-center">
+					{isEditable ? 'Вакансий пока нет. Добавьте первую.' : 'Сейчас открытых вакансий нет.'}
+				</p>
+			{/if}
+			{#each vacancies as vacancy, i (vacancy.id ?? i)}
+				{#if isEditable || !vacancy.hidden}
+					<div
+						inert={saving}
+						class="vc-card p1-card p1-card-hover overflow-hidden rounded-3xl border transition duration-300"
+						style="--vc-delay: {i * 70}ms"
+					>
+						{#if isEditable}
+							<div
+								class="p1-line p1-body flex flex-wrap items-center gap-3 border-b px-6 py-4 sm:px-7"
+							>
+								<span class="mr-auto text-sm"
+									>{vacancy.hidden ? 'Скрыта от посетителей' : 'Опубликована'}</span
+								>
+								<button
+									type="button"
+									class={controlClass}
+									disabled={controlsDisabled}
+									data-goal-ignore="Редактор: видимость вакансии"
+									onclick={() => toggleVacancy(i)}
+									>{vacancy.hidden ? 'Опубликовать' : 'Скрыть'}</button
+								>
+								{#if deletingId === vacancy.id}
+									<span class="text-sm">Удалить вакансию без возможности восстановления?</span>
+									<button
+										type="button"
+										class={controlClass}
+										disabled={controlsDisabled}
+										data-goal-ignore="Редактор: подтверждение удаления вакансии"
+										onclick={() => deleteVacancy(vacancy.id)}>Да, удалить</button
 									>
-										{#snippet children(val)}<RichText value={val} />{/snippet}
-									</EditableField>
-								</p>
+									<button
+										type="button"
+										class={controlClass}
+										disabled={controlsDisabled}
+										data-goal-ignore="Редактор: отмена удаления вакансии"
+										onclick={() => (deletingId = null)}>Отмена</button
+									>
+								{:else}
+									<button
+										type="button"
+										class={controlClass}
+										disabled={controlsDisabled}
+										data-goal-ignore="Редактор: удаление вакансии"
+										onclick={() => (deletingId = vacancy.id)}>Удалить</button
+									>
+								{/if}
+							</div>
+							<div class="flex flex-wrap items-center gap-x-4 gap-y-4 p-6 sm:gap-x-6 sm:p-7">
+								{@render row(vacancy, i)}
+							</div>
+						{:else}
+							<button
+								type="button"
+								class="flex w-full cursor-pointer flex-wrap items-center gap-x-4 gap-y-4 p-6 text-left sm:gap-x-6 sm:p-7"
+								aria-expanded={isOpen(vacancy.id)}
+								aria-controls="vacancy-panel-{vacancy.id ?? i}"
+								onclick={() => toggle(vacancy.id)}
+							>
+								{@render row(vacancy, i)}
+							</button>
+						{/if}
 
-								<!--
+						<div
+							class="vc-fold"
+							data-open={isOpen(vacancy.id) ? 'true' : 'false'}
+							id="vacancy-panel-{vacancy.id ?? i}"
+						>
+							<div>
+								<div class="px-6 pb-7 sm:px-7 sm:pb-8">
+									<div class="p1-line mb-6 border-t"></div>
+
+									<p class="p1-body max-w-3xl text-base/7">
+										<EditableField
+											fieldKey="VacancyList.{i}.description"
+											label="Описание позиции"
+											value={vacancy.description}
+											{isEditable}
+											inline
+											multiline
+											onSave={(v) => updateVacancy(i, 'description', v)}
+										>
+											{#snippet children(val)}<RichText value={val} />{/snippet}
+										</EditableField>
+									</p>
+
+									<!--
 									Обязанности и требования: на широком экране две колонки,
-									на узком одна. Перечни правятся построчно; добавить или
-									убрать строку можно в данных блока — как и везде в шаблоне,
-									инструмента для правки состава списка на странице нет.
+									на узком одна. Владелец может править и состав перечней.
 								-->
-								<div class="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-10">
-									<div>
-										<span class="p1-label p1-muted">Обязанности</span>
-										<ul class="mt-4 flex flex-col gap-3">
-											{#each vacancy.duties as duty, j (j)}
-												<li class="p1-body flex gap-3 text-sm/6">
-													<span
-														class="mt-2 size-1.5 shrink-0 rounded-full {accent.dot}"
-														aria-hidden="true"
-													></span>
-													<span>
-														<EditableField
-															fieldKey="VacancyList.{i}.duties.{j}"
-															label="Обязанность"
-															value={duty}
-															{isEditable}
-															inline
-															multiline
-															onSave={(v) => updateBullet(i, 'duties', j, v)}
-														>
-															{#snippet children(val)}<RichText value={val} />{/snippet}
-														</EditableField>
-													</span>
-												</li>
-											{/each}
-										</ul>
+									<div class="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-10">
+										<div>
+											<span class="p1-label p1-muted">Обязанности</span>
+											<ul class="mt-4 flex flex-col gap-3">
+												{#each vacancy.duties as duty, j (j)}
+													<li class="p1-body flex gap-3 text-sm/6">
+														<span
+															class="mt-2 size-1.5 shrink-0 rounded-full {accent.dot}"
+															aria-hidden="true"
+														></span>
+														<span>
+															<EditableField
+																fieldKey="VacancyList.{i}.duties.{j}"
+																label="Обязанность"
+																value={duty}
+																{isEditable}
+																inline
+																multiline
+																onSave={(v) => updateBullet(i, 'duties', j, v)}
+															>
+																{#snippet children(val)}<RichText value={val} />{/snippet}
+															</EditableField>
+														</span>
+														{#if isEditable}
+															<button
+																type="button"
+																class="{controlClass} shrink-0 self-start"
+																disabled={controlsDisabled}
+																aria-label="Удалить пункт"
+																data-goal-ignore="Редактор: удаление пункта вакансии"
+																onclick={() => changeBullets(i, 'duties', j)}>Удалить</button
+															>
+														{/if}
+													</li>
+												{/each}
+											</ul>
+											{#if isEditable}
+												<button
+													type="button"
+													class="{controlClass} mt-4"
+													disabled={controlsDisabled}
+													data-goal-ignore="Редактор: добавление пункта вакансии"
+													onclick={() => changeBullets(i, 'duties')}>Добавить пункт</button
+												>
+											{/if}
+										</div>
+
+										<div>
+											<span class="p1-label p1-muted">Требования</span>
+											<ul class="mt-4 flex flex-col gap-3">
+												{#each vacancy.requirements as requirement, j (j)}
+													<li class="p1-body flex gap-3 text-sm/6">
+														<span
+															class="p1-rail mt-2 size-1.5 shrink-0 rounded-full"
+															aria-hidden="true"
+														></span>
+														<span>
+															<EditableField
+																fieldKey="VacancyList.{i}.requirements.{j}"
+																label="Требование"
+																value={requirement}
+																{isEditable}
+																inline
+																multiline
+																onSave={(v) => updateBullet(i, 'requirements', j, v)}
+															>
+																{#snippet children(val)}<RichText value={val} />{/snippet}
+															</EditableField>
+														</span>
+														{#if isEditable}
+															<button
+																type="button"
+																class="{controlClass} shrink-0 self-start"
+																disabled={controlsDisabled}
+																aria-label="Удалить пункт"
+																data-goal-ignore="Редактор: удаление пункта вакансии"
+																onclick={() => changeBullets(i, 'requirements', j)}>Удалить</button
+															>
+														{/if}
+													</li>
+												{/each}
+											</ul>
+											{#if isEditable}
+												<button
+													type="button"
+													class="{controlClass} mt-4"
+													disabled={controlsDisabled}
+													data-goal-ignore="Редактор: добавление пункта вакансии"
+													onclick={() => changeBullets(i, 'requirements')}>Добавить пункт</button
+												>
+											{/if}
+										</div>
 									</div>
 
-									<div>
-										<span class="p1-label p1-muted">Требования</span>
-										<ul class="mt-4 flex flex-col gap-3">
-											{#each vacancy.requirements as requirement, j (j)}
-												<li class="p1-body flex gap-3 text-sm/6">
-													<span
-														class="p1-rail mt-2 size-1.5 shrink-0 rounded-full"
-														aria-hidden="true"
-													></span>
-													<span>
-														<EditableField
-															fieldKey="VacancyList.{i}.requirements.{j}"
-															label="Требование"
-															value={requirement}
-															{isEditable}
-															inline
-															multiline
-															onSave={(v) => updateBullet(i, 'requirements', j, v)}
-														>
-															{#snippet children(val)}<RichText value={val} />{/snippet}
-														</EditableField>
-													</span>
-												</li>
-											{/each}
-										</ul>
-									</div>
-								</div>
-
-								<!--
+									<!--
 									«Откликнуться» — ссылка на якорь формы, а не кнопка со
 									скриптом: форма стоит отдельным блоком ниже, и посетитель
 									обязан попадать к ней даже без JS. Событие лишь подставляет
 									позицию в поле (см. ./apply.ts).
 								-->
-								<div class="mt-8">
-									<a
-										class="p1-border p1-title inline-flex items-center gap-2.5 rounded-full border px-7 py-3 text-sm font-semibold transition duration-300 {accent.link}"
-										href="#{VACANCY_FORM_ID}"
-										onclick={() => requestApply(vacancy.title)}
-									>
-										Откликнуться
-										<span aria-hidden="true">→</span>
-									</a>
+									<div class="mt-8">
+										<a
+											class="p1-border p1-title inline-flex items-center gap-2.5 rounded-full border px-7 py-3 text-sm font-semibold transition duration-300 {accent.link}"
+											href="#{VACANCY_FORM_ID}"
+											onclick={() => requestApply(vacancy.title)}
+										>
+											Откликнуться
+											<span aria-hidden="true">→</span>
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				{/if}
 			{/each}
 		</div>
 	</div>
