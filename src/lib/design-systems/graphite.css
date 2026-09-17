@@ -312,6 +312,9 @@
 	   синяя кнопка требует максимального контраста. */
 	--ds-on-dark: #f8fafc;
 	--ds-on-accent: #ffffff;
+	--ds-university-link-surface: oklch(39.6% 0.141 25.723);
+	--ds-university-link-surface-hover: oklch(44.4% 0.177 26.899);
+	--ds-on-university-link: #ffffff;
 	--ds-favorite-badge: #b91c1c;
 	--ds-surface-raised: #ffffff;
 	--ds-scrim: #020617;
@@ -332,6 +335,8 @@
 	   `--ds-accent-ink` на `--ds-surface-raised` — 6,83:1. */
 	--ds-accent-surface: #1447e6;
 	--ds-accent-surface-deep: #193cb8;
+	--ds-accent-panel: #173ea5;
+	--ds-accent-panel-deep: #122b73;
 	--ds-on-accent-muted: #dbeafe;
 	--ds-accent-ink: #1447e6;
 	/* Заливка ховера светлой кнопки на акцентной плашке, см. базовую систему.

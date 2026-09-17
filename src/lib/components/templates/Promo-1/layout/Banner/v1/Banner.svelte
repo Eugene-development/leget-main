@@ -80,11 +80,11 @@
 						href={link.href}
 						aria-current={$page.url.pathname === link.href ? 'page' : undefined}
 						class={link.href === '/university'
-							? 'university-link text-xs whitespace-nowrap'
+							? 'bg-university-link text-on-university-link hover:bg-university-link-hover focus-visible:outline-university-link rounded-sm px-3 py-1 text-xs whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2'
 							: $page.url.pathname === link.href
 								? 'p1-accent text-xs whitespace-nowrap'
 								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-xs whitespace-nowrap transition-colors`}
-						class:brightness-90={isLight}
+						class:brightness-90={isLight && link.href !== '/university'}
 					>
 						{link.label}
 					</a>
@@ -165,20 +165,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	.university-link {
-		background: var(--ds-brand-600);
-		color: var(--ds-on-accent);
-		padding: 0.4rem 0.7rem;
-		border-radius: var(--ds-radius-sm);
-		transition: background var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
-	}
-	.university-link:hover {
-		background: var(--ds-brand-700);
-	}
-	.university-link:focus-visible {
-		outline: 2px solid currentColor;
-		outline-offset: 3px;
-	}
-</style>

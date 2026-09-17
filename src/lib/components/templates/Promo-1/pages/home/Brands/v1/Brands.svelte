@@ -278,7 +278,7 @@
 						<EditableField
 							fieldKey="Brands.partnersLabel"
 							label="Подпись брендов"
-							value={String(data?.partnersLabel ?? 'Поставщики техники')}
+							value={String(data?.partnersLabel ?? 'Поставщики фурнитуры и техники')}
 							{isEditable}
 							onSave={(v) => saveField('partnersLabel', v)}
 							inline

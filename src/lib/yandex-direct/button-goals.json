@@ -132,6 +132,9 @@
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.2" },
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" }
@@ -168,6 +171,9 @@
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.2" },
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" }
@@ -204,6 +210,9 @@
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.2" },
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" }
@@ -613,6 +622,20 @@
 		"route": "/installment",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/installment", "article": "1.8.2.1" }]
+	},
+	{
+		"id": "pages_mebel_mebelcta_open_1",
+		"action": "open",
+		"label": "Получить консультацию — CTA мебели",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelCTA.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" }
+		]
 	},
 	{
 		"id": "pages_partnership_hero_open_1",

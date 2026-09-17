@@ -2,6 +2,7 @@
 	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.16.6.1, 1.17.5.1, 1.18.5.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
 
@@ -30,9 +31,9 @@
 
 <div class="p1-catalog-container mt-12 mb-12">
 	<div
-		class="rounded-2xl bg-linear-to-r from-accent-surface to-accent-surface-deep p-8 text-center text-on-accent sm:p-12"
+		class="relative isolate overflow-hidden rounded-2xl bg-linear-to-br from-accent-panel to-accent-panel-deep px-6 py-10 text-center text-on-accent shadow-xl ring-1 ring-on-accent/10 ring-inset sm:px-12 sm:py-14"
 	>
-		<h2 class="text-2xl sm:text-3xl">
+		<h2 class="mx-auto max-w-2xl text-2xl text-balance sm:text-3xl">
 			<EditableField
 				fieldKey="MebelCTA.title"
 				label="Заголовок"
@@ -47,7 +48,7 @@
 			</EditableField>
 		</h2>
 
-		<p class="mx-auto mt-3 max-w-md text-on-accent-muted">
+		<p class="mx-auto mt-4 max-w-xl text-pretty text-on-accent-muted">
 			<EditableField
 				fieldKey="MebelCTA.description"
 				label="Описание"
@@ -66,9 +67,14 @@
 			</EditableField>
 		</p>
 
-		<div class="mt-6 flex flex-wrap justify-center gap-4">
+		<div class="mx-auto mt-8 flex max-w-xl flex-col justify-center gap-3 sm:flex-row">
 			<button
-				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-accent-ink transition-colors hover:bg-accent-ink-wash"
+				data-metrika-goal="pages_mebel_mebelcta_open_1"
+				data-goal-label="Получить консультацию — CTA мебели"
+				data-goal-action="open"
+				type="button"
+				onclick={() => serviceOrderStore.open('consultation')}
+				class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-surface-raised px-7 py-3 font-medium text-accent-ink shadow-sm transition-[transform,background-color,box-shadow] ease-ui hover:-translate-y-0.5 hover:bg-accent-ink-wash hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-accent active:translate-y-0 sm:w-auto"
 			>
 				<EditableField
 					fieldKey="MebelCTA.buttonText"
@@ -86,9 +92,15 @@
 
 			<a
 				href={phoneHref}
-				class="inline-flex items-center gap-2 rounded-lg bg-on-accent/10 px-6 py-3 font-medium text-on-accent backdrop-blur transition-colors hover:bg-on-accent/20"
+				class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-on-accent/20 bg-on-accent/10 px-7 py-3 font-medium text-on-accent transition-[transform,background-color,border-color] ease-ui hover:-translate-y-0.5 hover:border-on-accent/30 hover:bg-on-accent/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-accent active:translate-y-0 sm:hidden"
 			>
-				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<svg
+					class="h-[18px] w-[18px]"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					aria-hidden="true"
+				>
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"

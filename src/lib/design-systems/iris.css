@@ -410,6 +410,9 @@
 	   то разведение ролей, ради которого они заведены раздельно. */
 	--ds-on-dark: #fafafa;
 	--ds-on-accent: #ffffff;
+	--ds-university-link-surface: oklch(39.6% 0.141 25.723);
+	--ds-university-link-surface-hover: oklch(44.4% 0.177 26.899);
+	--ds-on-university-link: #ffffff;
 	--ds-favorite-badge: #b91c1c;
 	--ds-surface-raised: #ffffff;
 	/* Затемнение поверх медиа — #0a0a0a, а не #000000: «Do not use pure
@@ -432,6 +435,8 @@
 	   `--ds-accent-ink` на `--ds-surface-raised` — 8,09:1. */
 	--ds-accent-surface: #432dd7;
 	--ds-accent-surface-deep: #312c85;
+	--ds-accent-panel: #3827a6;
+	--ds-accent-panel-deep: #282071;
 	--ds-on-accent-muted: #d7defd;
 	--ds-accent-ink: #432dd7;
 	/* Заливка ховера светлой кнопки на акцентной плашке: непрозрачная, не

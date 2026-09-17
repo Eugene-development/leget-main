@@ -91,8 +91,8 @@
 
 		<EditableField
 			fieldKey="PromoStrip.promoLinkText"
-			label="Текст ссылки «Все акции»"
-			value={String(data?.promoLinkText ?? 'Все акции')}
+			label="Текст ссылки «Все акции партнёров»"
+			value={String(data?.promoLinkText ?? 'Все акции партнёров')}
 			isEditable={isEditable && !!editContext}
 			onSave={saveLinkText}
 			class="hidden shrink-0 pl-3.5 lg:block {isEditable && editContext ? 'lg:mr-9' : ''}"
@@ -100,7 +100,7 @@
 			{#snippet children(displayValue)}
 				<a
 					href={String(data?.promoLinkHref ?? '/actions')}
-					class="promo-all-link flex origin-left items-center gap-1.5 text-xs whitespace-nowrap text-cat-6-500 transition-[color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-cat-7-500 focus-visible:text-cat-7-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600 motion-reduce:transition-none"
+					class="promo-all-link flex h-[26px] origin-left items-center gap-1.5 rounded-sm bg-surface-raised px-3 text-xs whitespace-nowrap text-ink-900 transition-[background-color,color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-ink-100 hover:text-ink-950 focus-visible:bg-ink-100 focus-visible:text-ink-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600 motion-reduce:transition-none"
 				>
 					<RichText value={displayValue} />
 					<svg
@@ -121,11 +121,6 @@
 </div>
 
 <style>
-	.promo-all-link:hover,
-	.promo-all-link:focus-visible {
-		color: var(--color-cat-7-500);
-	}
-
 	@media (prefers-reduced-motion: no-preference) {
 		.promo-all-link:hover,
 		.promo-all-link:focus-visible {

@@ -492,6 +492,9 @@
 	/* Контент поверх поверхностей: бывшие white/black. */
 	--color-on-dark: var(--ds-on-dark);
 	--color-on-accent: var(--ds-on-accent);
+	--color-university-link: var(--ds-university-link-surface);
+	--color-university-link-hover: var(--ds-university-link-surface-hover);
+	--color-on-university-link: var(--ds-on-university-link);
 	--color-favorite-badge: var(--ds-favorite-badge);
 	--color-surface-raised: var(--ds-surface-raised);
 	--color-scrim: var(--ds-scrim);
@@ -501,6 +504,8 @@
 	   себе фон сами — 51 разное выражение из сырых шкал. */
 	--color-accent-surface: var(--ds-accent-surface);
 	--color-accent-surface-deep: var(--ds-accent-surface-deep);
+	--color-accent-panel: var(--ds-accent-panel);
+	--color-accent-panel-deep: var(--ds-accent-panel-deep);
 	--color-on-accent-muted: var(--ds-on-accent-muted);
 	--color-accent-ink: var(--ds-accent-ink);
 	--color-accent-ink-wash: var(--ds-accent-ink-wash);

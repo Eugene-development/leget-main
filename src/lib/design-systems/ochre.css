@@ -404,6 +404,9 @@
 	   значило бы получить нечитаемый белый текст на золотой кнопке. */
 	--ds-on-dark: #faf0dd;
 	--ds-on-accent: #281006;
+	--ds-university-link-surface: oklch(39.6% 0.141 25.723);
+	--ds-university-link-surface-hover: oklch(44.4% 0.177 26.899);
+	--ds-on-university-link: #ffffff;
 	--ds-favorite-badge: #b91c1c;
 	/* Выпадающие меню, чипы, ручки тумблеров, липкая шапка. Не следует теме блока
 	   и всплывает над страницей.
@@ -432,6 +435,8 @@
 	     surface 9,57:1 · deep 6,51:1 · muted на surface 7,07:1 · на deep 4,82:1 */
 	--ds-accent-surface: #faae33;
 	--ds-accent-surface-deep: #d98a1c;
+	--ds-accent-panel: #e39a24;
+	--ds-accent-panel-deep: #d7891c;
 	--ds-on-accent-muted: #4a2614;
 	/* Акцент в роли ЧЕРНИЛ: текст и иконка акцентного цвета на всплывающей
 	   поверхности. Она светлая (см. выше), поэтому чернила — не золото, а саффрон:

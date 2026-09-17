@@ -22,22 +22,34 @@
 		data = updated;
 	}
 
-	// Fallback images for categories (only files that actually exist in static/)
+	const categoryHeroBaseUrl = 'https://storage.yandexcloud.net/leget-main/templates/promo-1';
+	const categoryHeroImages = {
+		kitchens: `${categoryHeroBaseUrl}/kitchen-category-hero-v3.webp`,
+		wardrobes: `${categoryHeroBaseUrl}/wardrobes-category-hero-v3.webp`,
+		dressingRooms: `${categoryHeroBaseUrl}/dressing-rooms-category-hero-v3.webp`,
+		hallways: `${categoryHeroBaseUrl}/hallways-category-hero-v3.webp`,
+		kidsFurniture: `${categoryHeroBaseUrl}/kids-furniture-category-hero-v3.webp`,
+		officeFurniture: `${categoryHeroBaseUrl}/office-furniture-category-hero-v3.webp`
+	};
+
+	// Fallback images for categories (only files published in Object Storage)
 	const categoryImages: Record<string, string> = {
-		kitchens: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/kuhni_hero.png',
-		wardrobes:
-			'https://storage.yandexcloud.net/leget-main/templates/promo-1/wardrobe_project_no_text.png',
-		'dressing-rooms':
-			'https://storage.yandexcloud.net/leget-main/templates/promo-1/dressing_room_hero.png',
-		hallways: '',
-		'kids-furniture': '',
-		'office-furniture': ''
+		kuhni: categoryHeroImages.kitchens,
+		kitchens: categoryHeroImages.kitchens,
+		shkafy: categoryHeroImages.wardrobes,
+		wardrobes: categoryHeroImages.wardrobes,
+		garderobnye: categoryHeroImages.dressingRooms,
+		'dressing-rooms': categoryHeroImages.dressingRooms,
+		prihozhie: categoryHeroImages.hallways,
+		hallways: categoryHeroImages.hallways,
+		'detskaya-mebel': categoryHeroImages.kidsFurniture,
+		'kids-furniture': categoryHeroImages.kidsFurniture,
+		'ofisnaya-mebel': categoryHeroImages.officeFurniture,
+		'office-furniture': categoryHeroImages.officeFurniture
 	};
 
 	function getHeroImage(slug: string) {
-		return (
-			categoryImages[slug] || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200'
-		);
+		return categoryImages[slug] || categoryHeroImages.kitchens;
 	}
 </script>
 
@@ -47,7 +59,7 @@
 			imagePath={['bgImage']}
 			src={getHeroImage(data.categorySlug)}
 			alt={data.title}
-			class="absolute inset-0 h-full w-full object-cover opacity-40"
+			class="absolute inset-0 h-full w-full object-cover object-top opacity-40"
 		/>
 		<div class="relative px-8 py-12 sm:px-12 sm:py-16">
 			<!-- Breadcrumb -->

@@ -1,3 +1,8 @@
+<script module lang="ts">
+	// Browser module memory survives client navigation, but resets on a full reload.
+	let noticeDismissed = false;
+</script>
+
 <script lang="ts">
 	// Артикул: 1.1.1.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
@@ -8,7 +13,9 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { createEditableVisibility } from '$lib/utils/editable-visibility.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
+	import { fly, slide } from 'svelte/transition';
 	import { getHeroBackgrounds } from './backgrounds';
 
 	type PartnerBrand = {
@@ -49,6 +56,54 @@
 	let pageVisible = $state(true);
 	let reducedMotion = $state(false);
 	let glassPanel = $state<HTMLDivElement>();
+	let noticeVisible = $state(false);
+	let noticeExpanded = $state(false);
+	const noticeId = $props.id();
+	let noticeHeaderBottom = $state(0);
+
+	function closeNotice() {
+		noticeDismissed = true;
+		noticeVisible = false;
+	}
+
+	onMount(() => {
+		const header = document.querySelector('header[data-field-toolbar-scope]');
+		if (!header) return;
+		const update = () => {
+			noticeHeaderBottom = Math.max(0, header.getBoundingClientRect().bottom);
+		};
+		update();
+		const observer = new ResizeObserver(update);
+		observer.observe(header);
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+		return () => {
+			observer.disconnect();
+			window.removeEventListener('scroll', update);
+			window.removeEventListener('resize', update);
+		};
+	});
+
+	let noticeTimer: ReturnType<typeof setTimeout>;
+	const scheduleNotice = () => {
+		clearTimeout(noticeTimer);
+		noticeTimer = setTimeout(() => (noticeVisible = true), 2000);
+	};
+
+	afterNavigate(({ to }) => {
+		clearTimeout(noticeTimer);
+		window.removeEventListener('load', scheduleNotice);
+		noticeVisible = false;
+		noticeExpanded = false;
+		if (to?.url.pathname !== '/' || noticeDismissed) return;
+		if (document.readyState === 'complete') scheduleNotice();
+		else window.addEventListener('load', scheduleNotice, { once: true });
+	});
+
+	onDestroy(() => {
+		clearTimeout(noticeTimer);
+		if (typeof window !== 'undefined') window.removeEventListener('load', scheduleNotice);
+	});
 
 	// Decorative pointer response never moves the text or click targets.
 	$effect(() => {
@@ -264,6 +319,73 @@
 		data = updated;
 	}
 </script>
+
+<div aria-live="polite" aria-atomic="true">
+	{#if noticeVisible}
+		<aside
+			class="free-services-notice glass-panel rounded-3xl"
+			style:--notice-header-bottom={`${noticeHeaderBottom}px`}
+			aria-label="Об услугах компании"
+			transition:fly={{ y: -12, duration: reducedMotion ? 0 : 480 }}
+		>
+			<button
+				type="button"
+				class="notice-close"
+				aria-label="Закрыть уведомление"
+				data-goal-ignore="Закрытие информационного уведомления без формы"
+				onclick={closeNotice}
+			>
+				<svg
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					aria-hidden="true"
+				>
+					<path d="m6 6 12 12M18 6 6 18" stroke-linecap="round" />
+				</svg>
+			</button>
+			<p class="notice-title">Наши услуги бесплатны</p>
+			<button
+				type="button"
+				class="notice-details"
+				aria-expanded={noticeExpanded}
+				aria-controls={noticeId}
+				data-goal-ignore="Раскрытие пояснения о бесплатных услугах, не форма"
+				onclick={() => (noticeExpanded = !noticeExpanded)}
+			>
+				{noticeExpanded ? 'Свернуть' : 'Подробнее'}
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					aria-hidden="true"
+					class:notice-chevron-open={noticeExpanded}
+				>
+					<path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+			</button>
+			<div id={noticeId}>
+				{#if noticeExpanded}
+					<div transition:slide={{ duration: reducedMotion ? 0 : 260 }}>
+						<p class="notice-comment text-sm">
+							Наш сервис — место, где встречаются покупатели и поставщики товаров и услуг.
+						</p>
+						<p class="notice-comment text-sm">
+							Проект «Новострой» даёт полезные бесплатные рекомендации, которые ни к чему вас не
+							обязывают.
+						</p>
+					</div>
+				{/if}
+			</div>
+		</aside>
+	{/if}
+</div>
 
 <section class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900">
 	<!-- Фоновое изображение -->
@@ -592,6 +714,70 @@
 </section>
 
 <style>
+	.free-services-notice {
+		position: fixed;
+		top: calc(max(var(--notice-header-bottom), env(safe-area-inset-top)) + 1rem);
+		right: max(1rem, env(safe-area-inset-right));
+		z-index: 160;
+		width: min(23rem, calc(100vw - 2rem));
+		max-height: calc(100dvh - max(var(--notice-header-bottom), env(safe-area-inset-top)) - 2rem);
+		overflow-y: auto;
+		padding: 1.25rem;
+		color: var(--ds-light-title);
+		border: 1px solid color-mix(in srgb, var(--ds-on-dark) 55%, transparent);
+	}
+	.free-services-notice.glass-panel {
+		background: color-mix(
+			in srgb,
+			var(--ds-light-surface) calc(var(--ds-liquid-glass-fill) - 24%),
+			transparent
+		);
+	}
+	.notice-title {
+		padding-right: 2rem;
+		font-weight: 700;
+		line-height: 1.45;
+		text-wrap: balance;
+	}
+	.notice-close,
+	.notice-details {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 44px;
+		cursor: pointer;
+		border-radius: var(--ds-radius-lg);
+	}
+	.notice-close {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		width: 44px;
+	}
+	.notice-details {
+		gap: 0.375rem;
+	}
+	.notice-close:hover {
+		background: color-mix(in srgb, var(--ds-light-title) 8%, transparent);
+	}
+	.notice-close:focus-visible,
+	.notice-details:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
+	}
+	.notice-chevron-open {
+		transform: rotate(180deg);
+	}
+	.notice-comment {
+		line-height: 1.65;
+		padding-top: 0.75rem;
+	}
+	@supports not (backdrop-filter: blur(1px)) {
+		.free-services-notice.glass-panel {
+			background: var(--ds-light-surface);
+		}
+	}
+
 	.hero-bg-slide {
 		opacity: 0;
 		transition-property: opacity;
