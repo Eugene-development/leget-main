@@ -27,6 +27,17 @@
 	const page = $derived(data.pageData?.page);
 	const pageSlug = $derived(page?.slug ?? null);
 	const seo = $derived((page?.seo as PageSeoData | undefined) ?? null);
+	const isUniversity = $derived(templateId === 1 && pageSlug === '/university');
+	const metaTitle = $derived(
+		isUniversity && !seo?.rawTitle
+			? 'Университет — о дизайне, ремонте и доме'
+			: (seo?.title ?? site?.name)
+	);
+	const metaDescription = $derived(
+		isUniversity && !seo?.rawDescription
+			? 'Универ: разбираемся в дизайне, ремонте, мебели, фурнитуре, технике, сантехнике и аксессуарах. Начните с интересной вам дисциплины.'
+			: (seo?.description ?? site?.metaDescription)
+	);
 
 	// Try both camelCase and snake_case for licenseId to be resilient to GraphQL mapping
 	const pageId = $derived(page?.id ?? null);
@@ -34,11 +45,11 @@
 </script>
 
 <svelte:head>
-	{#if seo?.title ?? site?.name}
-		<title>{seo?.title ?? site?.name}</title>
+	{#if metaTitle}
+		<title>{metaTitle}</title>
 	{/if}
-	{#if seo?.description ?? site?.metaDescription}
-		<meta name="description" content={seo?.description ?? site?.metaDescription} />
+	{#if metaDescription}
+		<meta name="description" content={metaDescription} />
 	{/if}
 	{#if seo?.keywords}
 		<meta name="keywords" content={seo.keywords} />

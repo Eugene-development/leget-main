@@ -1020,6 +1020,24 @@
 		"source": "templates/Promo-1/pages/santehnika/SantehnikaCTA.svelte"
 	},
 	{
+		"article": "1.32.1.1",
+		"template": "Promo-1",
+		"page": "/university",
+		"source": "templates/Promo-1/pages/university/UniversityHero.svelte"
+	},
+	{
+		"article": "1.32.2.1",
+		"template": "Promo-1",
+		"page": "/university",
+		"source": "templates/Promo-1/pages/university/UniversityJournal.svelte"
+	},
+	{
+		"article": "1.32.3.1",
+		"template": "Promo-1",
+		"page": "/university",
+		"source": "templates/Promo-1/pages/university/UniversityApproach.svelte"
+	},
+	{
 		"article": "1.Б.1.1",
 		"template": "Promo-1",
 		"page": "(layout)",

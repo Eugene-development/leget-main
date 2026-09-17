@@ -23,15 +23,18 @@ export const bannerDefaultLinks: readonly BannerLink[] = [
 	{ href: '/testimonials', label: 'Отзывы' },
 	{ href: '/installment', label: 'Рассрочка' },
 	{ href: '/guarantees', label: 'Гарантии' },
-	{ href: '/contacts', label: 'Контакты' }
+	{ href: '/contacts', label: 'Контакты' },
+	{ href: '/university', label: 'Универ' }
 ];
 
 /** Список баннера из данных шапки; пустой или отсутствующий — значит дефолт. */
 export function resolveBannerLinks(data: Record<string, unknown> | undefined): BannerLink[] {
 	const links = data?.links;
-	return Array.isArray(links) && links.length > 0
-		? (links as BannerLink[])
-		: [...bannerDefaultLinks];
+	const resolved =
+		Array.isArray(links) && links.length > 0 ? (links as BannerLink[]) : [...bannerDefaultLinks];
+	return resolved.some((link) => link.href === '/university')
+		? resolved
+		: [...resolved, { href: '/university', label: 'Универ' }];
 }
 
 /**

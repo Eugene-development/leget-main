@@ -1,3 +1,6 @@
+import UniversityHero from './pages/university/UniversityHero.svelte';
+import UniversityJournal from './pages/university/UniversityJournal.svelte';
+import UniversityApproach from './pages/university/UniversityApproach.svelte';
 import type { Component } from 'svelte';
 
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
@@ -189,6 +192,7 @@ import PliitkaCTA from './pages/plitka/PliitkaCTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/university': { UniversityHero, UniversityJournal, UniversityApproach },
 	// Страница 404. Рендерится и по прямому адресу /404, и как тело ошибки
 	// в src/routes/+error.svelte — см. loadRenderPage().
 	'/404': {

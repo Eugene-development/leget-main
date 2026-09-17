@@ -228,6 +228,9 @@
 		'/partnership:WhoWeInvite': 'light',
 		'/partnership:ForManufacturers': 'dark',
 		'/partnership:Benefits': 'light',
+		'/university:UniversityHero': 'light',
+		'/university:UniversityJournal': 'light',
+		'/university:UniversityApproach': 'light',
 		'/partnership:HowToStart': 'light',
 		'/partnership:PartnershipCTA': 'dark'
 	};
