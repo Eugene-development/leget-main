@@ -948,6 +948,12 @@
 		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaCTA.svelte"
 	},
 	{
+		"article": "1.28.5.1",
+		"template": "Promo-1",
+		"page": "/bytovaya-tehnika/{brand}",
+		"source": "templates/Promo-1/pages/_shared/BrandAbout.svelte"
+	},
+	{
 		"article": "1.29.1.1",
 		"template": "Promo-1",
 		"page": "/stoleshnica/{material}",
@@ -1018,6 +1024,12 @@
 		"template": "Promo-1",
 		"page": "/santehnika/{brand}",
 		"source": "templates/Promo-1/pages/santehnika/SantehnikaCTA.svelte"
+	},
+	{
+		"article": "1.31.5.1",
+		"template": "Promo-1",
+		"page": "/santehnika/{brand}",
+		"source": "templates/Promo-1/pages/_shared/BrandAbout.svelte"
 	},
 	{
 		"article": "1.32.1.1",

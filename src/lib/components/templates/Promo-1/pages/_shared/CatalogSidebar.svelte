@@ -196,7 +196,8 @@
 	 * его родитель по высоте равен ему самому).
 	 *
 	 * Что считаем каждый кадр:
-	 *  - top: выравниваем по верху контента (.mebel-container), но не выше,
+	 *  - top: выравниваем по верху первого каталожного контейнера
+	 *    (`.p1-catalog-container`, с fallback на legacy `.mebel-container`), но не выше,
 	 *    чем на 16px под липким хэдером. Нижнюю границу хэдера меряем, а не
 	 *    хардкодим, и учитываем логотип: он висит на -mb-10 и выступает ниже
 	 *    самого хэдера ровно над сайдбаром — иначе карточка на него наезжает;
@@ -234,7 +235,7 @@
 
 			const header = document.querySelector('header');
 			const footer = document.querySelector('footer');
-			const container = document.querySelector('.mebel-container');
+			const container = document.querySelector('.p1-catalog-container, .mebel-container');
 
 			let headerBottom = header ? header.getBoundingClientRect().bottom : 96;
 			// Логотип вынесен из потока хэдера вниз (-mb-10) и висит прямо над

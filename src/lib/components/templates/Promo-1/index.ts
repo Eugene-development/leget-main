@@ -157,6 +157,7 @@ import StoleshnicaSidebar from './pages/stoleshnica/StoleshnicaSidebar.svelte';
 // Bytovaya-tehnika page components
 import ByttehnikaSidebar from './pages/bytovaya-tehnika/ByttehnikaSidebar.svelte';
 import ByttehnikaBrandHero from './pages/bytovaya-tehnika/ByttehnikaBrandHero.svelte';
+import BrandAbout from './pages/_shared/BrandAbout.svelte';
 import ByttehnikaHero from './pages/bytovaya-tehnika/ByttehnikaHero.svelte';
 import ByttehnikaBrands from './pages/bytovaya-tehnika/ByttehnikaBrands.svelte';
 import ByttehnikaBenefits from './pages/bytovaya-tehnika/ByttehnikaBenefits.svelte';
@@ -381,6 +382,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/bytovaya-tehnika/{brand}': {
 		ByttehnikaSidebar,
 		ByttehnikaBrandHero,
+		BrandAbout,
 		ByttehnikaBenefits,
 		ByttehnikaCTA
 	},
@@ -401,6 +403,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/santehnika/{brand}': {
 		SantehnikaSidebar,
 		SantehnikaBrandHero,
+		BrandAbout,
 		SantehnikaBenefits,
 		SantehnikaCTA
 	},

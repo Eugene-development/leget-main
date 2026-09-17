@@ -311,7 +311,7 @@
 				"Brands": {
 					"badge": "Партнёры",
 					"title": "Фабрики изготовители мебели",
-					"partnersLabel": "Поставщики техники"
+					"partnersLabel": "Поставщики фурнитуры и техники"
 				},
 				"HomeFAQ": {
 					"title": "Ваши частые вопросы",
@@ -1272,6 +1272,10 @@
 					"buttonText": "Подобрать технику",
 					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/appliances_hero.png"
 				},
+				"BrandAbout": {
+					"title": "О бренде",
+					"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+				},
 				"ByttehnikaBenefits": {
 					"title": "Почему покупают у нас",
 					"items": [
@@ -1475,6 +1479,10 @@
 					"description": "Сантехника бренда: подберём мойку и смеситель под ваш проект кухни и рассчитаем комплект.",
 					"buttonText": "Подобрать комплект",
 					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/plumbing_hero.png"
+				},
+				"BrandAbout": {
+					"title": "О бренде",
+					"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 				},
 				"SantehnikaBenefits": {
 					"title": "Почему покупают у нас",
