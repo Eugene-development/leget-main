@@ -341,12 +341,12 @@
 				<!-- Особенности -->
 				<div class="mt-10 grid grid-cols-2 gap-4">
 					<div
-						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
+						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised px-4 py-3 shadow-sm"
 					>
 						<div
-							class="flex h-10 w-10 items-center justify-center rounded-xl bg-cat-2-50 text-cat-2-600"
+							class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-cat-2-50 text-cat-2-600"
 						>
-							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -357,16 +357,15 @@
 						</div>
 						<div class="text-sm">
 							<div class="font-bold text-ink-900">Бесплатный замер</div>
-							<div class="text-ink-500">Выезд специалиста</div>
 						</div>
 					</div>
 					<div
-						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
+						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised px-4 py-3 shadow-sm"
 					>
 						<div
-							class="flex h-10 w-10 items-center justify-center rounded-xl bg-link-50 text-link-600"
+							class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-link-50 text-link-600"
 						>
-							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -376,17 +375,16 @@
 							</svg>
 						</div>
 						<div class="text-sm">
-							<div class="font-bold text-ink-900">Гарантия 5 лет</div>
-							<div class="text-ink-500">На все изделия</div>
+							<div class="font-bold text-ink-900">Гарантия от 2 до 15 лет</div>
 						</div>
 					</div>
 					<div
-						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
+						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised px-4 py-3 shadow-sm"
 					>
 						<div
-							class="flex h-10 w-10 items-center justify-center rounded-xl bg-cat-1-50 text-cat-1-600"
+							class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-cat-1-50 text-cat-1-600"
 						>
-							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -397,16 +395,15 @@
 						</div>
 						<div class="text-sm">
 							<div class="font-bold text-ink-900">Доставка и монтаж</div>
-							<div class="text-ink-500">Установка под ключ</div>
 						</div>
 					</div>
 					<div
-						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised p-4 shadow-sm"
+						class="flex items-center gap-3 rounded-2xl border border-ink-50 bg-surface-raised px-4 py-3 shadow-sm"
 					>
 						<div
-							class="flex h-10 w-10 items-center justify-center rounded-xl bg-cat-10-50 text-cat-10-600"
+							class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-cat-10-50 text-cat-10-600"
 						>
-							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -417,10 +414,34 @@
 						</div>
 						<div class="text-sm">
 							<div class="font-bold text-ink-900">Рассрочка 0%</div>
-							<div class="text-ink-500">До 12 месяцев</div>
 						</div>
 					</div>
 				</div>
+
+				{#if project.tags?.length}
+					<section class="mt-6 border-t border-ink-200 pt-4" aria-label="Теги проекта">
+						<h2 class="p1-title-sub mb-2 text-sm text-ink-800">Теги:</h2>
+						<ul class="flex flex-wrap gap-x-4 gap-y-1" aria-label="Бренды и материалы проекта">
+							{#each project.tags as tag (tag.id)}
+								{#if tag.name}
+									<li class="max-w-full min-w-0">
+										{#if tag.href}
+											<a
+												href={tag.href}
+												class="inline-block py-1 text-sm wrap-anywhere text-ink-600 no-underline underline-offset-4 transition-colors hover:text-link-700 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-500"
+												>{tag.name}</a
+											>
+										{:else}
+											<span class="inline-block py-1 text-sm wrap-anywhere text-ink-500"
+												>{tag.name}</span
+											>
+										{/if}
+									</li>
+								{/if}
+							{/each}
+						</ul>
+					</section>
+				{/if}
 			</div>
 		</div>
 	</div>

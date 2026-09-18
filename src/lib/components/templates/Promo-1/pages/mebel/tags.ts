@@ -4,6 +4,8 @@ export interface ProjectTag {
 	id: string;
 	name: string;
 	tag_group_id: string;
+	href?: string | null;
+	managed?: boolean;
 }
 
 export interface TagGroup {
@@ -38,9 +40,10 @@ async function request<T>(query: string, variables: Record<string, unknown> = {}
 	return result.data;
 }
 
-export async function loadTagGroups(): Promise<TagGroup[]> {
+export async function loadTagGroups(rubric?: string): Promise<TagGroup[]> {
 	const data = await request<{ tagGroups: TagGroup[] }>(
-		`query ProjectTagGroups { tagGroups { id name slug tags { id name tag_group_id } } }`
+		`query ProjectTagGroups($rubric: String) { tagGroups(rubric: $rubric) { id name slug tags { id name tag_group_id href managed } } }`,
+		{ rubric }
 	);
 	return data.tagGroups;
 }

@@ -31,6 +31,15 @@
 	let nameInput = $state<HTMLInputElement>();
 	let editingId = $state('');
 	let deleting = $state<ProjectTag | null>(null);
+	const brandRubric = $derived(
+		(
+			{
+				'appliance-brand': '/bytovaya-tehnika',
+				'plumbing-brand': '/santehnika',
+				'countertop-brand': '/stoleshnica'
+			} as Record<string, string>
+		)[groups.find((group) => group.id === groupId)?.slug ?? '']
+	);
 	const currentTags = $derived(groups.find((group) => group.id === groupId)?.tags ?? []);
 	const id = $props.id();
 
@@ -76,7 +85,7 @@
 		loading = true;
 		error = '';
 		try {
-			groups = (await loadTagGroups()).filter((group) =>
+			groups = (await loadTagGroups(groupSlugs.length ? undefined : 'mebel')).filter((group) =>
 				groupSlugs.length
 					? groupSlugs.includes(group.slug)
 					: !['appliance-type', 'plumbing-type'].includes(group.slug)
@@ -152,7 +161,8 @@
 		<div>
 			<h2 id={`${id}-title`} class="text-xl">{title}</h2>
 			<p class="mt-2 text-sm text-ink-600">
-				Общий справочник тегов. Изменение названия применяется везде, где выбран этот тег.
+				Теги брендов появляются автоматически. Их названия меняются на странице бренда. Остальные
+				теги можно добавить здесь.
 			</p>
 		</div>
 		<button
@@ -197,16 +207,25 @@
 						{#each groups as group (group.id)}<option value={group.id}>{group.name}</option>{/each}
 					</select>
 				</label>
-				<label class="block text-sm font-medium"
-					>{editingId ? 'Новое название тега' : 'Название нового тега'}
-					<input
-						bind:this={nameInput}
-						bind:value={name}
-						required
-						maxlength="120"
-						class="mt-1 min-h-11 w-full rounded-lg border border-ink-300 bg-surface-raised px-3 text-ink-800 focus-visible:outline-link-500"
-					/>
-				</label>
+				{#if brandRubric && !editingId}
+					<p class="text-sm text-ink-600">
+						Создайте бренд в его рубрике — тег появится здесь автоматически. <a
+							href={brandRubric}
+							class="text-link-700 underline">Открыть рубрику</a
+						>
+					</p>
+				{:else}
+					<label class="block text-sm font-medium"
+						>{editingId ? 'Новое название тега' : 'Название нового тега'}
+						<input
+							bind:this={nameInput}
+							bind:value={name}
+							required
+							maxlength="120"
+							class="mt-1 min-h-11 w-full rounded-lg border border-ink-300 bg-surface-raised px-3 text-ink-800 focus-visible:outline-link-500"
+						/>
+					</label>
+				{/if}
 			</fieldset>
 			{#if success}<p role="status" class="text-sm text-ink-700">{success}</p>{/if}
 			<div class="flex flex-wrap justify-end gap-3 pt-2">
@@ -228,7 +247,7 @@
 				<button
 					data-goal-ignore="Управление справочником тегов в редакторе"
 					type="submit"
-					disabled={saving || !name.trim() || !groupId}
+					disabled={saving || !name.trim() || !groupId || (!!brandRubric && !editingId)}
 					class="min-h-11 rounded-lg bg-link-600 px-4 text-sm font-medium text-on-accent hover:bg-link-700 disabled:opacity-50"
 					>{saving ? 'Сохраняем…' : editingId ? 'Сохранить название' : 'Добавить тег'}</button
 				>
@@ -244,27 +263,34 @@
 					<li class="py-2">
 						<div class="flex flex-wrap items-center gap-x-3">
 							<span class="min-w-0 flex-1 text-sm wrap-anywhere">{tag.name}</span>
-							<button
-								data-goal-ignore="Управление справочником тегов в редакторе"
-								type="button"
-								onclick={() => edit(tag)}
-								disabled={saving}
-								aria-label={`Изменить тег «${tag.name}»`}
-								class="min-h-11 px-2 text-sm text-link-700 underline disabled:opacity-50"
-								>Изменить</button
-							>
-							<button
-								data-goal-ignore="Управление справочником тегов в редакторе"
-								type="button"
-								onclick={() => {
-									resetEdit();
-									deleting = tag;
-								}}
-								disabled={saving}
-								aria-label={`Удалить тег «${tag.name}»`}
-								class="min-h-11 px-2 text-sm text-ink-700 underline disabled:opacity-50"
-								>Удалить</button
-							>
+							{#if tag.managed}
+								{#if tag.href}<a
+										href={tag.href}
+										class="min-h-11 content-center text-sm text-link-700 underline">К бренду</a
+									>{/if}
+							{:else}
+								<button
+									data-goal-ignore="Управление справочником тегов в редакторе"
+									type="button"
+									onclick={() => edit(tag)}
+									disabled={saving}
+									aria-label={`Изменить тег «${tag.name}»`}
+									class="min-h-11 px-2 text-sm text-link-700 underline disabled:opacity-50"
+									>Изменить</button
+								>
+								<button
+									data-goal-ignore="Управление справочником тегов в редакторе"
+									type="button"
+									onclick={() => {
+										resetEdit();
+										deleting = tag;
+									}}
+									disabled={saving}
+									aria-label={`Удалить тег «${tag.name}»`}
+									class="min-h-11 px-2 text-sm text-ink-700 underline disabled:opacity-50"
+									>Удалить</button
+								>
+							{/if}
 						</div>
 						{#if deleting?.id === tag.id}
 							<div

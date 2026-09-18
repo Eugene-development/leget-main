@@ -5,7 +5,7 @@
 		selected = $bindable([]),
 		disabled = false,
 		groupSlugs = [],
-		helpText = 'Новые теги можно добавить через шестерёнку в блоке «Категории мебели».'
+		helpText = 'Бренды из техники, сантехники и столешниц добавляются автоматически. В проекте эти теги ведут на страницы брендов.'
 	}: {
 		selected: string[];
 		disabled?: boolean;
@@ -30,7 +30,7 @@
 		loading = true;
 		error = '';
 		try {
-			groups = (await loadTagGroups()).filter((group) =>
+			groups = (await loadTagGroups(groupSlugs.length ? undefined : 'mebel')).filter((group) =>
 				groupSlugs.length
 					? groupSlugs.includes(group.slug)
 					: !['appliance-type', 'plumbing-type'].includes(group.slug)
@@ -104,7 +104,11 @@
 												}}
 												class="size-4 shrink-0 rounded border-ink-400 text-link-600 focus:ring-link-500"
 											/>
-											<span class="min-w-0 text-sm wrap-anywhere">{tag.name}</span>
+											<span class="min-w-0 text-sm wrap-anywhere"
+												>{tag.name}{#if tag.href}<span class="mt-0.5 block text-xs text-ink-500"
+														>{tag.href}</span
+													>{/if}</span
+											>
 										</label>
 									{/each}
 								</div>
