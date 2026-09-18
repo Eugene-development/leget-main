@@ -3,10 +3,14 @@
 
 	let {
 		selected = $bindable([]),
-		disabled = false
+		disabled = false,
+		groupSlugs = [],
+		helpText = 'Новые теги можно добавить через шестерёнку в блоке «Категории мебели».'
 	}: {
 		selected: string[];
 		disabled?: boolean;
+		groupSlugs?: string[];
+		helpText?: string;
 	} = $props();
 	const id = $props.id();
 	let open = $state(false);
@@ -26,7 +30,11 @@
 		loading = true;
 		error = '';
 		try {
-			groups = await loadTagGroups();
+			groups = (await loadTagGroups()).filter((group) =>
+				groupSlugs.length
+					? groupSlugs.includes(group.slug)
+					: !['appliance-type', 'plumbing-type'].includes(group.slug)
+			);
 		} catch (cause) {
 			error = cause instanceof Error ? cause.message : 'Не удалось загрузить теги.';
 		} finally {
@@ -109,7 +117,7 @@
 					{/each}
 				</div>
 				<p class="text-xs text-ink-600">
-					Новые теги можно добавить через шестерёнку в блоке «Категории мебели».
+					{helpText}
 				</p>
 			{/if}
 		</div>

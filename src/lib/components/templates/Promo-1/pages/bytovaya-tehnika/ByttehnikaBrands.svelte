@@ -1,7 +1,5 @@
 <script lang="ts">
 	// Артикул: 1.20.3.1 — см. docs/architecture/component-articles-map.md
-	import { useImageEditing } from '$lib/utils/image-editing.svelte';
-	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -39,12 +37,12 @@
 			{#each brands as brand, i (brand.slug)}
 				<a
 					href="/bytovaya-tehnika/{brand.slug}"
-					class="group flex h-20 items-center justify-center rounded-xl bg-surface-raised p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+					class="group flex min-h-28 flex-col items-center justify-center gap-3 rounded-xl bg-surface-raised p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
 					in:fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 				>
-					{#if brand.logo || imageEditing?.editable}
+					{#if brand.logo}
 						<ImageFallback
-							imagePath={['brands', data.brands.indexOf(brand), 'logo']}
+							imagePath={undefined}
 							imageDefaults={{ brands }}
 							loading="lazy"
 							src={brand.logo}
@@ -58,6 +56,16 @@
 							{brand.title ?? brand.value ?? brand.name}
 						</span>
 					{/if}
+					{#if brand.tags?.length}<ul
+							aria-label="Теги бренда"
+							class="flex flex-wrap justify-center gap-1"
+						>
+							{#each brand.tags as tag (tag.id)}<li
+									class="rounded-full bg-ink-100 px-2 py-1 text-xs text-ink-700"
+								>
+									{tag.name}
+								</li>{/each}
+						</ul>{/if}
 				</a>
 			{/each}
 		</div>

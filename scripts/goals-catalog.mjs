@@ -14,7 +14,9 @@ const reviewedPath = join(root, 'scripts/goals-reviewed-controls.json');
 const reviewed = JSON.parse(readFileSync(reviewedPath, 'utf8'));
 const errors = [];
 const shared = ['ServiceOrderIsland', 'ClientAuthModal', 'ClientAuthButtons', 'LoginModal'];
-const ownerOnly = /Mebel(ProjectModal|ProjectEditModal|ProjectDeleteDialog|TagModal)/;
+// Content CRUD is owner-only, not a visitor conversion (see metrika-goals.md).
+const ownerOnly =
+	/Mebel(ProjectModal|ProjectEditModal|ProjectDeleteDialog|TagModal)|^templates\/Promo-1\/pages\/bytovaya-tehnika\/BrandModal\.svelte$/;
 function walk(node, visit) {
 	if (!node || typeof node !== 'object') return;
 	if (node.type) visit(node);

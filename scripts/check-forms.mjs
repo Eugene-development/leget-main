@@ -8,6 +8,7 @@ const exceptions = new Map([
 	['ClientAuthModal.svelte', 'Client authentication'],
 	['ImagePickerDialog.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelTagModal.svelte', 'Content editor'],
+	['templates/Promo-1/pages/bytovaya-tehnika/BrandModal.svelte', 'Owner-only brand CRUD, not a service request'],
 	['templates/Promo-1/pages/mebel/MebelProjectDeleteDialog.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelProjectEditModal.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelProjectModal.svelte', 'Content editor']

@@ -65,7 +65,7 @@
 						fieldKey="SantehnikaBrandHero.title"
 						label="Заголовок"
 						value={title}
-						{isEditable}
+						isEditable={isEditable && !data.managedBrand}
 						inline
 						onSave={(v) => saveField('title', v)}
 					>
@@ -89,6 +89,15 @@
 					</p>
 				{/if}
 
+				{#if data.tags?.length}
+					<ul aria-label="Теги бренда" class="mt-5 flex flex-wrap gap-2">
+						{#each data.tags as tag (tag.id)}<li
+								class="rounded-full border border-on-dark/20 px-3 py-1 text-sm text-on-dark"
+							>
+								{tag.name}
+							</li>{/each}
+					</ul>
+				{/if}
 				<div class="mt-9 flex flex-wrap gap-4">
 					<button
 						data-metrika-goal="pages_santehnika_santehnikabrandhero_open_1"
@@ -129,7 +138,7 @@
 							class="p1-logo-slot w-full max-w-md justify-center [--p1-logo-plate-pad:0px] [--p1-logo-slot:112px] sm:[--p1-logo-slot:136px]"
 						>
 							<ImageFallback
-								imagePath={['logo']}
+								imagePath={data.managedBrand ? undefined : ['logo']}
 								src={logo}
 								alt="Логотип {title}"
 								class="p1-logo max-h-full max-w-full"

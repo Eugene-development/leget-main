@@ -52,7 +52,12 @@
 </script>
 
 {#if isEditable && isTagModalOpen}
-	<MebelTagModal onClose={() => (isTagModalOpen = false)} />
+	<MebelTagModal
+		onChanged={() => {
+			void invalidateAll();
+		}}
+		onClose={() => (isTagModalOpen = false)}
+	/>
 {/if}
 
 <MebelProjectModal
@@ -98,8 +103,9 @@
 	<button
 		type="button"
 		onclick={() => (isTagModalOpen = true)}
+		data-goal-ignore="Управление справочником тегов в редакторе"
 		class="min-h-11 rounded-lg border border-on-dark/20 px-3 py-2 text-sm text-on-dark hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-link-500"
-		>Добавить тег</button
+		>Управление тегами</button
 	>
 {/snippet}
 

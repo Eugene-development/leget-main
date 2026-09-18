@@ -58,6 +58,7 @@
 		itemNoun = 'пункт',
 		cta,
 		itemActions,
+		headerActions,
 		settings
 	}: {
 		data: any;
@@ -92,6 +93,7 @@
 		itemActions?: Snippet<[SidebarItem]>;
 		/** Контрол настроек блока, встроенный в шапку сайдбара. */
 		settings?: Snippet;
+		headerActions?: Snippet;
 	} = $props();
 
 	const title = $derived(String(data?.title || defaultTitle));
@@ -500,6 +502,7 @@
 			<div class="ms-head">
 				<div class="ms-head-row">
 					{@render heading()}
+					{#if isEditable && editContext && headerActions}{@render headerActions()}{/if}
 					{#if isEditable && editContext && settings}
 						<div class="ms-settings">{@render settings()}</div>
 					{/if}
@@ -554,6 +557,7 @@
 						{@render heading()}
 					</div>
 					<div class="ms-sheet-actions">
+						{#if isEditable && editContext && headerActions}{@render headerActions()}{/if}
 						{#if isEditable && editContext && settings}
 							<div class="ms-settings">{@render settings()}</div>
 						{/if}
