@@ -8,12 +8,18 @@
 		label,
 		legacyHtml = false,
 		disabled = false,
+		autofocus = true,
+		invalid = false,
+		describedBy,
 		onchange
 	}: {
 		value: string;
 		label: string;
 		legacyHtml?: boolean;
 		disabled?: boolean;
+		autofocus?: boolean;
+		invalid?: boolean;
+		describedBy?: string;
 		onchange: (value: string) => void;
 	} = $props();
 	let element: HTMLDivElement;
@@ -134,7 +140,7 @@
 					onTransaction: () => revision++,
 					onUpdate: ({ editor }) => onchange(serializeRichText(editor.getHTML()))
 				});
-				editor.commands.focus('end');
+				if (autofocus) editor.commands.focus('end');
 			})
 			.catch((error: unknown) => {
 				console.error('Failed to initialize the rich text editor.', error);
@@ -149,6 +155,11 @@
 
 	$effect(() => {
 		editor?.setEditable(!disabled, false);
+		if (editor) {
+			editor.view.dom.setAttribute('aria-invalid', String(invalid));
+			if (describedBy) editor.view.dom.setAttribute('aria-describedby', describedBy);
+			else editor.view.dom.removeAttribute('aria-describedby');
+		}
 	});
 </script>
 
@@ -197,7 +208,7 @@
 
 <style>
 	:global(.rich-text-input) {
-		min-height: 220px;
+		min-height: var(--rich-text-min-height, 220px);
 		max-height: 42dvh;
 		overflow-y: auto;
 		padding: 1rem;
@@ -231,7 +242,7 @@
 	}
 	@media (max-width: 640px) {
 		:global(.rich-text-input) {
-			min-height: 160px;
+			min-height: var(--rich-text-min-height, 160px);
 			max-height: 36dvh;
 		}
 	}

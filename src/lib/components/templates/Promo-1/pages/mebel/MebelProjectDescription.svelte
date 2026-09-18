@@ -44,7 +44,7 @@
 					{/snippet}
 				</EditableField>
 			{:else}
-				{@html description}
+				<RichText value={description} legacyHtml />
 			{/if}
 		</div>
 	</div>

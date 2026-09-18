@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { untrack, tick } from 'svelte';
+	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
 	import MebelTagPicker from './MebelTagPicker.svelte';
 	import { ProjectRequestError, projectRequest } from './project-request';
 	import {
@@ -202,12 +203,12 @@
 							>{@render fieldError('category_id')}
 						</div>
 					</div>
-					<div class="grid gap-4 sm:grid-cols-2">
+					<div class="grid grid-cols-1 gap-4">
 						<div>
 							<label for={`${uid}-short`} class="field-label">Краткое описание</label><textarea
 								id={`${uid}-short`}
 								name="short_description"
-								rows="3"
+								rows="2"
 								maxlength="1000"
 								bind:value={form.short_description}
 								aria-invalid={!!errors.short_description}
@@ -218,16 +219,20 @@
 							></textarea>{@render fieldError('short_description')}
 						</div>
 						<div>
-							<label for={`${uid}-description`} class="field-label">Полное описание</label><textarea
-								id={`${uid}-description`}
-								name="description"
-								rows="3"
-								maxlength="20000"
-								bind:value={form.description}
-								aria-invalid={!!errors.description}
-								aria-describedby={errors.description ? `${uid}-description-error` : undefined}
-								class="field resize-y"
-							></textarea>{@render fieldError('description')}
+							<p class="field-label">Полное описание</p>
+							<RichTextEditor
+								--rich-text-min-height="120px"
+								value={form.description}
+								label="Полное описание"
+								invalid={!!errors.description}
+								describedBy={errors.description ? `${uid}-description-error` : undefined}
+								legacyHtml
+								autofocus={false}
+								disabled={saving}
+								onchange={(value) => (form.description = value)}
+							/>
+
+							{@render fieldError('description')}
 						</div>
 					</div>
 					<div class="grid grid-cols-2 gap-4">
