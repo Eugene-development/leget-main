@@ -9,23 +9,26 @@
 	// поверхность», заведённой в пару к `--ds-on-accent`: на «Охре» её значение
 	// золотое по тёмно-коричневому, а `link-500` там ржавый и от неактивной
 	// кнопки почти не отличался (1,2:1 против 7,8:1 у роли).
+	import { tick } from 'svelte';
 	import { pageNumbers } from './data';
 	import '../../../theme.css';
 
 	let {
 		page = $bindable(),
-		total
+		total,
+		scrollTarget
 	}: {
 		page: number;
 		/** Всего работ в ленте, а не страниц: число страниц считает `pageNumbers`. */
 		total: number;
+		scrollTarget: HTMLElement | undefined;
 	} = $props();
 
 	const pages = $derived(pageNumbers(total));
 	const last = $derived(pages.length);
 
 	/**
-	 * Смена страницы уводит к началу страницы.
+	 * Смена страницы уводит к началу компонента со списком проектов.
 	 *
 	 * Пагинация стоит под последней карточкой, то есть в момент нажатия
 	 * посетитель находится в самом низу: без прокрутки он получил бы новую
@@ -35,18 +38,19 @@
 	 * номер страницы: это поведение пагинации, и разъехаться между вариантами
 	 * оно не должно.
 	 */
-	function goTo(next: number) {
+	async function goTo(next: number) {
 		// Нажатие на текущую страницу ничего не меняет — и прокручивать в этом
 		// случае нечего: список остался тем же, а экран бы дёрнулся.
 		if (next === page) return;
 
 		page = next;
+		await tick();
 
 		// `behavior: smooth` не переопределяется медиазапросом, поэтому уважение
 		// к prefers-reduced-motion приходится выражать явно: тем, кто просил
 		// меньше движения, страница переставляется мгновенно.
 		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+		scrollTarget?.scrollIntoView({ block: 'start', behavior: reduced ? 'instant' : 'smooth' });
 	}
 </script>
 

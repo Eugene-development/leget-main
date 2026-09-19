@@ -7,6 +7,9 @@
 	import { revealOnScroll } from './theme';
 	import './theme.css';
 
+	const defaultImageUrl =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/guarantees/whats-covered-craftsmanship-20260918.png';
+
 	let {
 		data = $bindable(),
 		editContext = null,
@@ -152,7 +155,7 @@
 						fieldKey="WhatsCovered.imageUrl"
 						kind="image"
 						label="URL изображения"
-						value={String(data?.imageUrl ?? '')}
+						value={String(data?.imageUrl || defaultImageUrl)}
 						{isEditable}
 						onSave={(v) => saveField('imageUrl', v)}
 						class="block"
@@ -162,7 +165,7 @@
 								<ImageFallback
 									loading="lazy"
 									src={displayValue}
-									alt="Гарантия качества"
+									alt="Мастер регулирует металлическую петлю дубового кухонного фасада"
 									class="aspect-4/3 w-full rounded-[calc(var(--radius-4xl)-1px)] object-cover"
 								/>
 							{:else}

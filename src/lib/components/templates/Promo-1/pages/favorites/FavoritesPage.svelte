@@ -1,4 +1,17 @@
 <script lang="ts">
+	import FeedViewToggle from '../projects/ProjectsFeed/FeedViewToggle.svelte';
+	import FeedRows from '../projects/ProjectsFeed/FeedRows.svelte';
+	import { readStoredView, storeView, type FeedView } from '../projects/ProjectsFeed/data';
+
+	let view = $state<FeedView>('tiles');
+	$effect(() => {
+		view = readStoredView() ?? 'tiles';
+	});
+	function pickView(next: FeedView) {
+		view = next;
+		storeView(next);
+	}
+
 	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { readFavoriteProjectIds, subscribeToFavoriteProjects } from '$lib/utils/favorites';
@@ -26,7 +39,7 @@
 	);
 </script>
 
-<section class="p1-surface-alt min-h-[55vh]">
+<section class="p1-surface-alt min-h-[55vh]" data-p1-theme="light">
 	<div class="mx-auto max-w-7xl px-6 pt-10 pb-section-sm sm:pt-14 sm:pb-section lg:px-8">
 		<div class="flex items-end justify-between gap-6">
 			<div>
@@ -41,38 +54,45 @@
 		</div>
 
 		{#if favoriteProjects.length > 0}
-			<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{#each favoriteProjects as project (project.id)}
-					<article
-						class="p1-card p1-border p1-card-hover relative overflow-hidden rounded-2xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg"
-					>
-						<FavoriteProjectButton projectId={project.id} class="absolute top-3 right-3 z-10" />
-						<a
-							href={projectHref(project)}
-							class="group block h-full focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset"
-							aria-label="Смотреть проект: {project.value}"
-						>
-							<div class="p1-body overflow-hidden">
-								<ImageFallback
-									src={project.images[0]?.url ?? null}
-									alt="Проект «{project.value}»"
-									loading="lazy"
-									class="aspect-video w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
-								/>
-							</div>
-							<div class="p-5">
-								{#if project.categoryValue}
-									<span class="p1-label p1-accent">{project.categoryValue}</span>
-								{/if}
-								<h2 class="p1-title p1-title-sub mt-2 text-lg">{project.value}</h2>
-								{#if project.shortDescription}
-									<p class="p1-body mt-2 line-clamp-2 text-sm">{project.shortDescription}</p>
-								{/if}
-							</div>
-						</a>
-					</article>
-				{/each}
+			<div class="mt-8 flex justify-end">
+				<FeedViewToggle {view} onpick={pickView} />
 			</div>
+			{#if view === 'list'}
+				<FeedRows projects={favoriteProjects} />
+			{:else}
+				<div class="mt-7 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					{#each favoriteProjects as project (project.id)}
+						<article
+							class="p1-card p1-border p1-card-hover relative overflow-hidden rounded-2xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg"
+						>
+							<FavoriteProjectButton projectId={project.id} class="absolute top-3 right-3 z-10" />
+							<a
+								href={projectHref(project)}
+								class="group block h-full focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset"
+								aria-label="Смотреть проект: {project.value}"
+							>
+								<div class="p1-body overflow-hidden">
+									<ImageFallback
+										src={project.images[0]?.url ?? null}
+										alt="Проект «{project.value}»"
+										loading="lazy"
+										class="aspect-video w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
+									/>
+								</div>
+								<div class="p-5">
+									{#if project.categoryValue}
+										<span class="p1-label p1-accent">{project.categoryValue}</span>
+									{/if}
+									<h2 class="p1-title p1-title-sub mt-2 text-lg">{project.value}</h2>
+									{#if project.shortDescription}
+										<p class="p1-body mt-2 line-clamp-2 text-sm">{project.shortDescription}</p>
+									{/if}
+								</div>
+							</a>
+						</article>
+					{/each}
+				</div>
+			{/if}
 		{:else}
 			<div
 				class="p1-card p1-border mt-8 flex flex-col items-center gap-3 rounded-2xl border px-6 py-12 text-center"

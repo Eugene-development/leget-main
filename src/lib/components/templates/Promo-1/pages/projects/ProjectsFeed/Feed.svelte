@@ -69,6 +69,7 @@
 	});
 
 	let page = $state(1);
+	let feedElement = $state<HTMLElement>();
 
 	// Страница не сбрасывается на первую, а поджимается до последней
 	// существующей: сброс срабатывал бы на любое обновление `data` — например
@@ -102,7 +103,13 @@
 	отступами оставляла бы 160px мёртвого поля между разворотом и подвалом.
 -->
 {#if nothingAtAll || projects.length > 0}
-	<section class="p1-surface-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
+	<!-- Компенсируем зазор 1.5rem из глобального scroll-padding-top:
+	     граница секции должна встать прямо под меню, без полосы предыдущего блока. -->
+	<section
+		bind:this={feedElement}
+		class="p1-surface-alt -scroll-mt-6"
+		data-p1-theme={isLight ? 'light' : 'dark'}
+	>
 		<div class="pt-10 pb-section-sm sm:pb-section">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
 				<!-- Ни названия, ни счётчика: и то и другое стоит в метке над
@@ -125,7 +132,7 @@
 				{/if}
 
 				{#if projects.length > 0}
-					<FeedPager bind:page total={projects.length} />
+					<FeedPager bind:page total={projects.length} scrollTarget={feedElement} />
 				{/if}
 			</div>
 		</div>
