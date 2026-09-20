@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.23.6.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -94,6 +95,10 @@
 
 			<div class="mt-8 flex shrink-0 lg:mt-0">
 				<button
+					data-metrika-goal="pages_plitka_pliitkacomplex_open_1"
+					data-goal-action="open"
+					onclick={() => serviceOrderStore.open('design-project')}
+					type="button"
 					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					<EditableField

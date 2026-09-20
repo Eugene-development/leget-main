@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.21.7.1 — см. docs/architecture/component-articles-map.md
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -95,7 +96,11 @@
 
 			<div class="mt-8 flex shrink-0 lg:mt-0">
 				<button
-					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
+					data-metrika-goal="pages_santehnika_santehnikacomplex_open_1"
+					data-goal-action="open"
+					onclick={() => serviceOrderStore.open('plumbing-selection')}
+					type="button"
+					class="inline-flex items-center gap-2 rounded-lg bg-link-700 px-6 py-3 font-medium text-on-dark transition-all hover:brightness-90"
 				>
 					<EditableField
 						fieldKey="SantehnikaComplex.buttonText"

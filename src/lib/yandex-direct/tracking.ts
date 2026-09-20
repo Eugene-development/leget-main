@@ -18,10 +18,17 @@ export function installGoalTracking(
 		const id = button.dataset.metrikaGoal;
 		const config = getConfig();
 		if (!id || !config.enabled || !config.counterId) return;
-		if (!buttonGoals.some((goal) => goal.id === id && goal.templates.includes(config.template)))
-			return;
+		// Resolve only registered variants; never send visitor input or arbitrary DOM values.
+		const goal = buttonGoals.find(
+			(goal) =>
+				goal.templates.includes(config.template) &&
+				('baseId' in goal
+					? goal.baseId === id && goal.variant === button.dataset.goalVariant
+					: goal.id === id && !button.dataset.goalVariant)
+		);
+		if (!goal) return;
 		try {
-			send(Number(config.counterId), 'reachGoal', templateGoalName(config.template, id));
+			send(Number(config.counterId), 'reachGoal', templateGoalName(config.template, goal.id));
 		} catch {
 			// Аналитика не должна прерывать открытие, отправку или закрытие формы.
 		}

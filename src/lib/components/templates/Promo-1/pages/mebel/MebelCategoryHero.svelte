@@ -4,6 +4,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	let {
 		data = $bindable(),
@@ -51,6 +52,15 @@
 	function getHeroImage(slug: string) {
 		return categoryImages[slug] || categoryHeroImages.kitchens;
 	}
+
+	const primaryButton = $derived(
+		!data.primaryButton || data.primaryButton === 'Создать проект'
+			? data.buttonText && data.buttonText !== 'Создать проект'
+				? String(data.buttonText)
+				: 'Составить проект мебели'
+			: String(data.primaryButton)
+	);
+	const secondaryButton = $derived(String(data.secondaryButton || 'Заказать замер помещения'));
 </script>
 
 <div class="mebel-container">
@@ -106,15 +116,20 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
-					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
+					data-metrika-goal="pages_mebel_mebelcategoryhero_open_1"
+					data-goal-label="Составить проект мебели — герой категории мебели"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('furniture-project')}
+					class="inline-flex items-center gap-2 rounded-lg bg-link-700 px-6 py-3 font-medium text-on-dark transition-all hover:brightness-90"
 				>
 					<EditableField
-						fieldKey="MebelCategoryHero.buttonText"
-						label="Текст кнопки"
-						value={String(data.buttonText || 'Создать проект')}
+						fieldKey="MebelCategoryHero.primaryButton"
+						label="Текст кнопки 1"
+						value={primaryButton}
 						{isEditable}
 						inline
-						onSave={(v) => saveField('buttonText', v)}
+						onSave={(v) => saveField('primaryButton', v)}
 					>
 						{#snippet children(val)}
 							<RichText value={val} />
@@ -128,6 +143,28 @@
 							d="M17 8l4 4m0 0l-4 4m4-4H3"
 						/>
 					</svg>
+				</button>
+
+				<button
+					data-metrika-goal="pages_mebel_mebelcategoryhero_open_2"
+					data-goal-label="Заказать замер помещения — герой категории мебели"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('measurement')}
+					class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
+				>
+					<EditableField
+						fieldKey="MebelCategoryHero.secondaryButton"
+						label="Текст кнопки 2"
+						value={secondaryButton}
+						{isEditable}
+						inline
+						onSave={(v) => saveField('secondaryButton', v)}
+					>
+						{#snippet children(val)}
+							<RichText value={val} />
+						{/snippet}
+					</EditableField>
 				</button>
 			</div>
 		</div>

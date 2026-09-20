@@ -231,7 +231,10 @@ export function goalsForTemplate(template: string): GoalDefinition[] {
 					: { scope: 'route' as const, label: pageNames[path] || 'Страница', path }
 			),
 			buttonLabel: button.label,
-			selector: `[data-metrika-goal="${button.id}"]`
+			selector:
+				'baseId' in button
+					? `[data-metrika-goal="${button.baseId}"][data-goal-variant="${button.variant}"]`
+					: `[data-metrika-goal="${button.id}"]`
 		}));
 	return [
 		...implemented,

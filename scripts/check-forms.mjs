@@ -8,7 +8,10 @@ const exceptions = new Map([
 	['ClientAuthModal.svelte', 'Client authentication'],
 	['ImagePickerDialog.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelTagModal.svelte', 'Content editor'],
-	['templates/Promo-1/pages/bytovaya-tehnika/BrandModal.svelte', 'Owner-only brand CRUD, not a service request'],
+	[
+		'templates/Promo-1/pages/bytovaya-tehnika/BrandModal.svelte',
+		'Owner-only brand CRUD, not a service request'
+	],
 	['templates/Promo-1/pages/mebel/MebelProjectDeleteDialog.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelProjectEditModal.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelProjectModal.svelte', 'Content editor']
@@ -36,6 +39,22 @@ for (const file of files(components).filter((file) => file.endsWith('.svelte')))
 	const forms = [];
 	walk(ast.fragment, (node) => {
 		if (node.type === 'RegularElement' && node.name === 'form') forms.push(node);
+		// A decorative CTA without onclick never reaches the form checks below.
+		if (
+			!exceptions.has(path) &&
+			/^templates\/Promo-1\/pages\/(services|mebel|stoleshnica|bytovaya-tehnika|santehnika|furnitura|plitka)\//.test(
+				path
+			) &&
+			node.type === 'RegularElement' &&
+			node.name === 'button'
+		) {
+			const attr = (name) => node.attributes.find((a) => a.name === name);
+			const type = attr('type')?.value?.[0]?.data;
+			if (!attr('onclick') && !attr('data-goal-ignore') && type !== 'submit' && type !== 'reset')
+				errors.push(
+					`${path}: button without an action; connect the form or document data-goal-ignore`
+				);
+		}
 	});
 	if (!forms.length || exceptions.has(path)) continue;
 	const senders = new Set();

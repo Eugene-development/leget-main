@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import FeedViewToggle from '../projects/ProjectsFeed/FeedViewToggle.svelte';
 	import FeedRows from '../projects/ProjectsFeed/FeedRows.svelte';
 	import { readStoredView, storeView, type FeedView } from '../projects/ProjectsFeed/data';
@@ -86,6 +87,10 @@
 				<h3 class="p1-title-sub mt-4 text-lg text-ink-900">Проектов не найдено</h3>
 				<p class="mt-2 text-ink-600">В данной категории пока нет проектов</p>
 				<button
+					data-metrika-goal="pages_mebel_mebelprojectsgrid_open_1"
+					data-goal-action="open"
+					onclick={() => serviceOrderStore.open('furniture-project')}
+					type="button"
 					class="mt-6 inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					Заказать индивидуальный проект

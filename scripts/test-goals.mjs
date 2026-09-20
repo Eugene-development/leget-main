@@ -96,6 +96,44 @@ const ids = registry.flatMap((goal) =>
 );
 assert.equal(new Set(ids).size, ids.length);
 assert.ok(ids.every((id) => /^[a-z0-9_]+$/.test(id) && id.length < 255));
+
+config = { counterId: '123', template: 'Promo-1', enabled: true };
+const removeVariants = installGoalTracking(
+	doc,
+	() => config,
+	(...args) => calls.push(args)
+);
+for (const goal of registry.filter((goal) => goal.baseId)) {
+	const variantButton = new TestElement(goal.baseId);
+	variantButton.dataset.goalVariant = goal.variant;
+	click(new TestElement(null, variantButton));
+	assert.deepEqual(
+		calls.splice(0),
+		[[123, 'reachGoal', templateGoalName('Promo-1', goal.id)]],
+		'one event per variant click'
+	);
+	variantButton.dataset.goalVariant = 'unregistered-sensitive-value';
+	click(variantButton);
+	delete variantButton.dataset.goalVariant;
+	click(variantButton);
+	assert.equal(calls.length, 0, 'missing/unknown variants must never reach analytics');
+}
+removeVariants();
+const heroGoals = registry.filter(
+	(goal) => goal.baseId === 'pages_services_shared_serviceheroform_submit_click_1'
+);
+assert.equal(heroGoals.length, 5);
+for (const goal of heroGoals) {
+	assert.ok(goal.locations.length > 0, `${goal.id}: location missing`);
+	assert.ok(goal.locations.every((location) => location.page === '/' + goal.variant));
+}
+const sidebarGoals = registry.filter((goal) => goal.source.endsWith('/CatalogSidebar.svelte'));
+assert.equal(new Set(sidebarGoals.map((goal) => goal.variant)).size, 6);
+for (const goal of sidebarGoals)
+	assert.ok(goal.locations.every((location) => location.page.startsWith('/' + goal.variant)));
+console.log(
+	'PASS: per-form and per-rubric goals, no duplicate events, no unregistered context, accurate service locations.'
+);
 console.log(
 	'PASS: nested targets, template/counter switching, disabled/inert/editor/no-counter, unknown/wrong-template goals, cleanup, exception isolation, unique IDs.'
 );

@@ -103,11 +103,11 @@
 				<div class="mt-9 flex flex-wrap gap-4">
 					<button
 						data-metrika-goal="pages_bytovaya_tehnika_byttehnikabrandhero_open_1"
-						data-goal-label="Консультация (текст кнопки настраивается)"
+						data-goal-label="Подобрать технику — страница бренда"
 						data-goal-action="open"
 						type="button"
-						class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
-						onclick={() => serviceOrderStore.open('consultation')}
+						class="inline-flex items-center gap-2 rounded-lg bg-link-700 px-6 py-3 font-medium text-on-dark transition-all hover:brightness-90"
+						onclick={() => serviceOrderStore.open('appliance-selection')}
 					>
 						<EditableField
 							fieldKey="ByttehnikaBrandHero.buttonText"

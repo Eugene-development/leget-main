@@ -102,13 +102,16 @@
 		]
 	},
 	{
-		"id": "serviceorderisland_close_1",
+		"id": "serviceorderisland_close_1_consultation",
 		"action": "close",
-		"label": "Закрыть",
+		"label": "Закрыть — Консультация дизайнера",
 		"templates": ["Promo-1"],
 		"source": "ServiceOrderIsland.svelte",
 		"route": null,
 		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "consultation",
+		"serviceType": "consultation",
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
@@ -123,8 +126,8 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.2.1" },
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.2" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.3" },
@@ -136,22 +139,159 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
+			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_1_design_project",
+		"action": "close",
+		"label": "Закрыть — Дизайн-проект",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "design-project",
+		"serviceType": "design-project",
+		"locations": [
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" },
+			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_1_furniture_project",
+		"action": "close",
+		"label": "Закрыть — Проектирование мебели",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "furniture-project",
+		"serviceType": "furniture-project",
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" },
-			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
-			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.3.1" },
+			{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_1_assembly",
+		"action": "close",
+		"label": "Закрыть — Сборка и монтаж",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "assembly",
+		"serviceType": "assembly",
+		"locations": [{ "template": "Promo-1", "page": "/assembly", "article": "1.15.4.1" }]
+	},
+	{
+		"id": "serviceorderisland_close_1_measurement",
+		"action": "close",
+		"label": "Закрыть — Заказ замера",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "measurement",
+		"serviceType": "measurement",
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" },
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" },
+			{ "template": "Promo-1", "page": "/measurement", "article": "1.13.4.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }
 		]
 	},
 	{
-		"id": "serviceorderisland_close_2",
+		"id": "serviceorderisland_close_1_countertop_estimate",
 		"action": "close",
-		"label": "Отлично",
+		"label": "Закрыть — Просчёт столешницы",
 		"templates": ["Promo-1"],
 		"source": "ServiceOrderIsland.svelte",
 		"route": null,
 		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "countertop-estimate",
+		"serviceType": "countertop-estimate",
+		"locations": [
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.7.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_1_appliance_selection",
+		"action": "close",
+		"label": "Закрыть — Подбор техники",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "appliance-selection",
+		"serviceType": "appliance-selection",
+		"locations": [
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.7.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.4.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_1_plumbing_selection",
+		"action": "close",
+		"label": "Закрыть — Подбор сантехники",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "plumbing-selection",
+		"serviceType": "plumbing-selection",
+		"locations": [
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.8.1" },
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.4.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.7.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_1_promo",
+		"action": "close",
+		"label": "Закрыть — Промокод",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_1",
+		"variant": "promo",
+		"serviceType": "promo",
+		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+	},
+	{
+		"id": "serviceorderisland_close_2_consultation",
+		"action": "close",
+		"label": "Отлично — Консультация дизайнера",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "consultation",
+		"serviceType": "consultation",
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
@@ -166,8 +306,8 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.2.1" },
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.2" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.3" },
@@ -179,22 +319,159 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
+			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_2_design_project",
+		"action": "close",
+		"label": "Отлично — Дизайн-проект",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "design-project",
+		"serviceType": "design-project",
+		"locations": [
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" },
+			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_2_furniture_project",
+		"action": "close",
+		"label": "Отлично — Проектирование мебели",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "furniture-project",
+		"serviceType": "furniture-project",
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" },
-			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
-			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.3.1" },
+			{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_2_assembly",
+		"action": "close",
+		"label": "Отлично — Сборка и монтаж",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "assembly",
+		"serviceType": "assembly",
+		"locations": [{ "template": "Promo-1", "page": "/assembly", "article": "1.15.4.1" }]
+	},
+	{
+		"id": "serviceorderisland_close_2_measurement",
+		"action": "close",
+		"label": "Отлично — Заказ замера",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "measurement",
+		"serviceType": "measurement",
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" },
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" },
+			{ "template": "Promo-1", "page": "/measurement", "article": "1.13.4.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }
 		]
 	},
 	{
-		"id": "serviceorderisland_submit_click_1",
+		"id": "serviceorderisland_close_2_countertop_estimate",
+		"action": "close",
+		"label": "Отлично — Просчёт столешницы",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "countertop-estimate",
+		"serviceType": "countertop-estimate",
+		"locations": [
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.7.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_2_appliance_selection",
+		"action": "close",
+		"label": "Отлично — Подбор техники",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "appliance-selection",
+		"serviceType": "appliance-selection",
+		"locations": [
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.7.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.4.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_2_plumbing_selection",
+		"action": "close",
+		"label": "Отлично — Подбор сантехники",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "plumbing-selection",
+		"serviceType": "plumbing-selection",
+		"locations": [
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.8.1" },
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.4.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.7.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_close_2_promo",
+		"action": "close",
+		"label": "Отлично — Промокод",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_close_2",
+		"variant": "promo",
+		"serviceType": "promo",
+		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_consultation",
 		"action": "submit_click",
-		"label": "Отправить заявку",
+		"label": "Отправить заявку — Консультация дизайнера",
 		"templates": ["Promo-1"],
 		"source": "ServiceOrderIsland.svelte",
 		"route": null,
 		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "consultation",
+		"serviceType": "consultation",
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
@@ -209,8 +486,8 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.2.1" },
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.2" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.3" },
@@ -222,13 +499,147 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
+			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_design_project",
+		"action": "submit_click",
+		"label": "Отправить заявку — Дизайн-проект",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "design-project",
+		"serviceType": "design-project",
+		"locations": [
+			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" },
+			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_furniture_project",
+		"action": "submit_click",
+		"label": "Отправить заявку — Проектирование мебели",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "furniture-project",
+		"serviceType": "furniture-project",
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" },
-			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
-			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.3.1" },
+			{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.4.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_assembly",
+		"action": "submit_click",
+		"label": "Отправить заявку — Сборка и монтаж",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "assembly",
+		"serviceType": "assembly",
+		"locations": [{ "template": "Promo-1", "page": "/assembly", "article": "1.15.4.1" }]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_measurement",
+		"action": "submit_click",
+		"label": "Отправить заявку — Заказ замера",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "measurement",
+		"serviceType": "measurement",
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" },
+			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" },
+			{ "template": "Promo-1", "page": "/measurement", "article": "1.13.4.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }
 		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_countertop_estimate",
+		"action": "submit_click",
+		"label": "Отправить заявку — Просчёт столешницы",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "countertop-estimate",
+		"serviceType": "countertop-estimate",
+		"locations": [
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.7.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_appliance_selection",
+		"action": "submit_click",
+		"label": "Отправить заявку — Подбор техники",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "appliance-selection",
+		"serviceType": "appliance-selection",
+		"locations": [
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.7.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.4.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_plumbing_selection",
+		"action": "submit_click",
+		"label": "Отправить заявку — Подбор сантехники",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "plumbing-selection",
+		"serviceType": "plumbing-selection",
+		"locations": [
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.8.1" },
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.4.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.7.1" },
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" }
+		]
+	},
+	{
+		"id": "serviceorderisland_submit_click_1_promo",
+		"action": "submit_click",
+		"label": "Отправить заявку — Промокод",
+		"templates": ["Promo-1"],
+		"source": "ServiceOrderIsland.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "serviceorderisland_submit_click_1",
+		"variant": "promo",
+		"serviceType": "promo",
+		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
 	},
 	{
 		"id": "layout_footer_v1_footer_reset_1",
@@ -421,27 +832,96 @@
 		"locations": [{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" }]
 	},
 	{
-		"id": "pages_shared_catalogsidebar_open_1",
+		"id": "pages_shared_catalogsidebar_open_1_mebel",
 		"action": "open",
-		"label": "Заказать услугу — кнопка каталога",
+		"label": "Заказать услугу — кнопка каталога — Мебель",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
-		"route": null,
+		"route": "/mebel",
 		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "mebel",
+		"serviceType": null,
 		"locations": [
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
-			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
-			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
-			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
-			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
-			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
-			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" }
+		]
+	},
+	{
+		"id": "pages_shared_catalogsidebar_open_1_stoleshnica",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога — Столешницы",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": "/stoleshnica",
+		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "stoleshnica",
+		"serviceType": null,
+		"locations": [
 			{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" }
 		]
+	},
+	{
+		"id": "pages_shared_catalogsidebar_open_1_bytovaya_tehnika",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога — Бытовая техника",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": "/bytovaya-tehnika",
+		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "bytovaya-tehnika",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" }
+		]
+	},
+	{
+		"id": "pages_shared_catalogsidebar_open_1_santehnika",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога — Сантехника",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": "/santehnika",
+		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "santehnika",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" }
+		]
+	},
+	{
+		"id": "pages_shared_catalogsidebar_open_1_furnitura",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога — Фурнитура",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": "/furnitura",
+		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "furnitura",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" }]
+	},
+	{
+		"id": "pages_shared_catalogsidebar_open_1_plitka",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога — Плитка",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": "/plitka",
+		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "plitka",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" }]
 	},
 	{
 		"id": "pages_about_aboutcta_open_1",
@@ -456,13 +936,26 @@
 	{
 		"id": "pages_bytovaya_tehnika_byttehnikabrandhero_open_1",
 		"action": "open",
-		"label": "Консультация (текст кнопки настраивается)",
+		"label": "Подобрать технику — страница бренда",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaBrandHero.svelte",
 		"route": "/bytovaya-tehnika",
 		"mock": false,
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.2.1" }
+		]
+	},
+	{
+		"id": "pages_bytovaya_tehnika_byttehnikacta_open_1",
+		"action": "open",
+		"label": "ByttehnikaCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/bytovaya-tehnika/ByttehnikaCTA.svelte",
+		"route": "/bytovaya-tehnika",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.7.1" },
+			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.4.1" }
 		]
 	},
 	{
@@ -484,6 +977,26 @@
 		"route": "/contact",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/contact", "article": "1.3.1.1" }]
+	},
+	{
+		"id": "pages_furnitura_furnituracta_open_1",
+		"action": "open",
+		"label": "FurnituraCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/furnitura/FurnituraCTA.svelte",
+		"route": "/furnitura",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" }]
+	},
+	{
+		"id": "pages_furnitura_furniturahero_open_1",
+		"action": "open",
+		"label": "FurnituraHero",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/furnitura/FurnituraHero.svelte",
+		"route": "/furnitura",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" }]
 	},
 	{
 		"id": "pages_guarantees_guaranteescta_open_1",
@@ -660,6 +1173,26 @@
 		]
 	},
 	{
+		"id": "pages_mebel_mebelcategoryhero_open_1",
+		"action": "open",
+		"label": "Составить проект мебели — герой категории мебели",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelCategoryHero.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" }]
+	},
+	{
+		"id": "pages_mebel_mebelcategoryhero_open_2",
+		"action": "open",
+		"label": "Заказать замер помещения — герой категории мебели",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelCategoryHero.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.2.1" }]
+	},
+	{
 		"id": "pages_mebel_mebelhero_open_1",
 		"action": "open",
 		"label": "Составить проект мебели — герой каталога мебели",
@@ -678,6 +1211,40 @@
 		"route": "/mebel",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/mebel", "article": "1.16.2.1" }]
+	},
+	{
+		"id": "pages_mebel_mebelprojecthero_open_1",
+		"action": "open",
+		"label": "Составить проект мебели — карточка проекта",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" }
+		]
+	},
+	{
+		"id": "pages_mebel_mebelprojecthero_open_2",
+		"action": "open",
+		"label": "Заказать замер помещения — карточка проекта",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectHero.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.2.1" }
+		]
+	},
+	{
+		"id": "pages_mebel_mebelprojectsgrid_open_1",
+		"action": "open",
+		"label": "Заказать индивидуальный проект",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectsGrid.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.3.1" }]
 	},
 	{
 		"id": "pages_partnership_hero_open_1",
@@ -726,14 +1293,67 @@
 		]
 	},
 	{
+		"id": "pages_plitka_pliitkacta_open_1",
+		"action": "open",
+		"label": "PliitkaCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/plitka/PliitkaCTA.svelte",
+		"route": "/plitka",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" }]
+	},
+	{
+		"id": "pages_plitka_pliitkacomplex_open_1",
+		"action": "open",
+		"label": "PliitkaComplex",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/plitka/PliitkaComplex.svelte",
+		"route": "/plitka",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" }]
+	},
+	{
+		"id": "pages_plitka_pliitkahero_open_1",
+		"action": "open",
+		"label": "PliitkaHero",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/plitka/PliitkaHero.svelte",
+		"route": "/plitka",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" }]
+	},
+	{
 		"id": "pages_santehnika_santehnikabrandhero_open_1",
 		"action": "open",
-		"label": "Консультация (текст кнопки настраивается)",
+		"label": "Подобрать сантехнику — страница бренда",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/santehnika/SantehnikaBrandHero.svelte",
 		"route": "/santehnika",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.2.1" }]
+	},
+	{
+		"id": "pages_santehnika_santehnikacta_open_1",
+		"action": "open",
+		"label": "SantehnikaCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaCTA.svelte",
+		"route": "/santehnika",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.8.1" },
+			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.4.1" }
+		]
+	},
+	{
+		"id": "pages_santehnika_santehnikacomplex_open_1",
+		"action": "open",
+		"label": "SantehnikaComplex",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/santehnika/SantehnikaComplex.svelte",
+		"route": "/santehnika",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.7.1" }]
 	},
 	{
 		"id": "pages_santehnika_santehnikahero_open_1",
@@ -746,41 +1366,189 @@
 		"locations": [{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.2.1" }]
 	},
 	{
-		"id": "pages_services_shared_serviceheroform_reset_1",
+		"id": "pages_services_shared_serviceheroform_reset_1_consultation",
 		"action": "reset",
-		"label": "Отправить ещё одну заявку",
+		"label": "Отправить ещё одну заявку — Консультация дизайнера",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
-		"route": null,
+		"route": "/consultation",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/assembly", "article": "1.15.1.1" },
-			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.1.1" },
-			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.1.1" },
-			{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.1.1" },
-			{ "template": "Promo-1", "page": "/measurement", "article": "1.13.1.1" }
-		]
+		"baseId": "pages_services_shared_serviceheroform_reset_1",
+		"variant": "consultation",
+		"serviceType": "consultation",
+		"locations": [{ "template": "Promo-1", "page": "/consultation", "article": "1.11.1.1" }]
 	},
 	{
-		"id": "pages_services_shared_serviceheroform_submit_click_1",
-		"action": "submit_click",
-		"label": "Отправить заявку на услугу",
+		"id": "pages_services_shared_serviceheroform_reset_1_design_project",
+		"action": "reset",
+		"label": "Отправить ещё одну заявку — Дизайн-проект",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
-		"route": null,
+		"route": "/design-project",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/assembly", "article": "1.15.1.1" },
-			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.1.1" },
-			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.1.1" },
-			{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.1.1" },
-			{ "template": "Promo-1", "page": "/measurement", "article": "1.13.1.1" }
-		]
+		"baseId": "pages_services_shared_serviceheroform_reset_1",
+		"variant": "design-project",
+		"serviceType": "design-project",
+		"locations": [{ "template": "Promo-1", "page": "/design-project", "article": "1.12.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_reset_1_furniture_project",
+		"action": "reset",
+		"label": "Отправить ещё одну заявку — Проектирование мебели",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/furniture-project",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_reset_1",
+		"variant": "furniture-project",
+		"serviceType": "furniture-project",
+		"locations": [{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_reset_1_assembly",
+		"action": "reset",
+		"label": "Отправить ещё одну заявку — Сборка и монтаж",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/assembly",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_reset_1",
+		"variant": "assembly",
+		"serviceType": "assembly",
+		"locations": [{ "template": "Promo-1", "page": "/assembly", "article": "1.15.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_reset_1_measurement",
+		"action": "reset",
+		"label": "Отправить ещё одну заявку — Заказ замера",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/measurement",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_reset_1",
+		"variant": "measurement",
+		"serviceType": "measurement",
+		"locations": [{ "template": "Promo-1", "page": "/measurement", "article": "1.13.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_submit_click_1_consultation",
+		"action": "submit_click",
+		"label": "Отправить заявку на услугу — Консультация дизайнера",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/consultation",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_submit_click_1",
+		"variant": "consultation",
+		"serviceType": "consultation",
+		"locations": [{ "template": "Promo-1", "page": "/consultation", "article": "1.11.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_submit_click_1_design_project",
+		"action": "submit_click",
+		"label": "Отправить заявку на услугу — Дизайн-проект",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/design-project",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_submit_click_1",
+		"variant": "design-project",
+		"serviceType": "design-project",
+		"locations": [{ "template": "Promo-1", "page": "/design-project", "article": "1.12.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_submit_click_1_furniture_project",
+		"action": "submit_click",
+		"label": "Отправить заявку на услугу — Проектирование мебели",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/furniture-project",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_submit_click_1",
+		"variant": "furniture-project",
+		"serviceType": "furniture-project",
+		"locations": [{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_submit_click_1_assembly",
+		"action": "submit_click",
+		"label": "Отправить заявку на услугу — Сборка и монтаж",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/assembly",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_submit_click_1",
+		"variant": "assembly",
+		"serviceType": "assembly",
+		"locations": [{ "template": "Promo-1", "page": "/assembly", "article": "1.15.1.1" }]
+	},
+	{
+		"id": "pages_services_shared_serviceheroform_submit_click_1_measurement",
+		"action": "submit_click",
+		"label": "Отправить заявку на услугу — Заказ замера",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte",
+		"route": "/measurement",
+		"mock": false,
+		"baseId": "pages_services_shared_serviceheroform_submit_click_1",
+		"variant": "measurement",
+		"serviceType": "measurement",
+		"locations": [{ "template": "Promo-1", "page": "/measurement", "article": "1.13.1.1" }]
+	},
+	{
+		"id": "pages_services_assembly_assemblycta_open_1",
+		"action": "open",
+		"label": "AssemblyCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/assembly/AssemblyCTA.svelte",
+		"route": "/services",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/assembly", "article": "1.15.4.1" }]
+	},
+	{
+		"id": "pages_services_consultation_consultationcta_open_1",
+		"action": "open",
+		"label": "ConsultationCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/consultation/ConsultationCTA.svelte",
+		"route": "/services",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }]
+	},
+	{
+		"id": "pages_services_design_project_designprojectcta_open_1",
+		"action": "open",
+		"label": "DesignProjectCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/design-project/DesignProjectCTA.svelte",
+		"route": "/services",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }]
+	},
+	{
+		"id": "pages_services_furniture_project_furnitureprojectcta_open_1",
+		"action": "open",
+		"label": "FurnitureProjectCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/furniture-project/FurnitureProjectCTA.svelte",
+		"route": "/services",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/furniture-project", "article": "1.14.4.1" }]
+	},
+	{
+		"id": "pages_services_measurement_measurementcta_open_1",
+		"action": "open",
+		"label": "MeasurementCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/services/measurement/MeasurementCTA.svelte",
+		"route": "/services",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/measurement", "article": "1.13.4.1" }]
 	},
 	{
 		"id": "pages_stoleshnica_stoleshnicabrandhero_open_1",
 		"action": "open",
-		"label": "Консультация (текст кнопки настраивается)",
+		"label": "Рассчитать стоимость — вложенная страница столешниц",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrandHero.svelte",
 		"route": "/stoleshnica",
@@ -789,6 +1557,29 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" }
 		]
+	},
+	{
+		"id": "pages_stoleshnica_stoleshnicabrandhero_open_2",
+		"action": "open",
+		"label": "Заказать замер столешницы — вложенная страница столешниц",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaBrandHero.svelte",
+		"route": "/stoleshnica",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.2.1" },
+			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.2.1" }
+		]
+	},
+	{
+		"id": "pages_stoleshnica_stoleshnicacta_open_1",
+		"action": "open",
+		"label": "StoleshnicaCTA",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaCTA.svelte",
+		"route": "/stoleshnica",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.7.1" }]
 	},
 	{
 		"id": "pages_stoleshnica_stoleshnicahero_open_1",

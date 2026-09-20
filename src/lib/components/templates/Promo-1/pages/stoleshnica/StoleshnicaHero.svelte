@@ -92,7 +92,7 @@
 					data-goal-action="open"
 					type="button"
 					onclick={() => serviceOrderStore.open('countertop-estimate')}
-					class="inline-flex items-center gap-2 rounded-lg bg-cat-1-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-cat-1-600"
+					class="inline-flex items-center gap-2 rounded-lg bg-link-700 px-6 py-3 font-medium text-on-dark transition-all hover:brightness-90"
 				>
 					<EditableField
 						fieldKey="StoleshnicaHero.primaryButton"

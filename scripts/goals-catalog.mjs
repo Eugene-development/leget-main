@@ -12,6 +12,7 @@ const write = process.argv.includes('--write');
 const records = [];
 const reviewedPath = join(root, 'scripts/goals-reviewed-controls.json');
 const reviewed = JSON.parse(readFileSync(reviewedPath, 'utf8'));
+const variants = JSON.parse(readFileSync(join(root, 'scripts/goal-variants.json'), 'utf8'));
 const errors = [];
 const shared = ['ServiceOrderIsland', 'ClientAuthModal', 'ClientAuthButtons', 'LoginModal'];
 // Content CRUD is owner-only, not a visitor conversion (see metrika-goals.md).
@@ -129,7 +130,26 @@ for (const file of [
 					? '/'
 					: `/${slug}`;
 		const mock = false;
-		records.push({ id, action, label, templates, source: path, route, mock });
+		const record = { id, action, label, templates, source: path, route, mock };
+		if (attr('data-goal-variant')) {
+			if (!variants[path]?.length) {
+				errors.push(`${path}: зарегистрируйте варианты цели в goal-variants.json`);
+				return;
+			}
+			for (const variant of variants[path])
+				records.push({
+					...record,
+					id: `${id}_${variant.value.replaceAll('-', '_')}`,
+					baseId: id,
+					variant: variant.value,
+					serviceType: variant.serviceType ?? null,
+					label: `${label} — ${variant.label}`,
+					route: variant.route ?? route
+				});
+		} else {
+			if (variants[path]) errors.push(`${path}: для общей формы нужен data-goal-variant`);
+			records.push(record);
+		}
 	});
 }
 // SideDrawer has a caller-supplied goal: its settings drawers must not emit partnership events.

@@ -817,7 +817,8 @@
 				"MebelCategoryHero": {
 					"title": "Категория",
 					"description": "Описание категории",
-					"buttonText": "Создать проект"
+					"primaryButton": "Составить проект мебели",
+					"secondaryButton": "Заказать замер помещения"
 				},
 				"MebelProjectsGrid": {
 					"projects": []
@@ -1098,7 +1099,8 @@
 				"StoleshnicaBrandHero": {
 					"title": "Столешницы",
 					"description": "Подберём столешницу под ваш проект кухни и рассчитаем стоимость.",
-					"buttonText": "Подобрать столешницу",
+					"primaryButton": "Рассчитать стоимость",
+					"secondaryButton": "Заказать замер столешницы",
 					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/countertops_hero.png"
 				},
 				"StoleshnicaBrands": {
@@ -1127,7 +1129,8 @@
 				"StoleshnicaBrandHero": {
 					"title": "Столешницы",
 					"description": "Подберём столешницу под ваш проект кухни и рассчитаем стоимость.",
-					"buttonText": "Подобрать столешницу",
+					"primaryButton": "Рассчитать стоимость",
+					"secondaryButton": "Заказать замер столешницы",
 					"bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/countertops_hero.png"
 				},
 				"StoleshnicaBrands": {

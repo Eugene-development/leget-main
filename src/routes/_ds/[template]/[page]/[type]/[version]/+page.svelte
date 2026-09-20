@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import { resolveComponent } from '$lib/ds/registry';
+	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	// load уже проверил, что компонент существует, — иначе была бы 404.
 	const Block = $derived(resolveComponent(data.templateId, data.pageSlug, data.type)!);
+	const catalogRubric = $derived(catalogRubricFromSlug(data.templateId, data.pageSlug));
 
 	/**
 	 * Замер блока против липкого хрома сайта.
@@ -73,7 +75,7 @@
 	будет только при редактировании, которого здесь нет. Своя копия в $state тут лишь
 	мешала бы — при переходе между карточками она бы залипала на первом значении.
 -->
-<div bind:this={blockEl}>
+<div bind:this={blockEl} data-catalog-rubric={catalogRubric}>
 	<Block data={data.data} editContext={null} isEditable={false} />
 </div>
 

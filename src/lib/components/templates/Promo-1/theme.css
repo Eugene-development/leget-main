@@ -63,6 +63,83 @@
 }
 
 /**
+ * Цветовой голос каталожных рубрик.
+ *
+ * Рубрика выбирает не литералы, а одну из хроматических шкал действующей
+ * дизайн-системы. Поэтому «мебель / столешницы / техника / сантехника»
+ * различаются во всех системах, но остаются Базовой, Графитом, Купертино,
+ * Охрой или Ирисом — какая система выбрана у сайта.
+ *
+ * `link` здесь переопределён намеренно: в каталожных блоках это устоявшаяся
+ * роль основного действия, фокуса и интерактивной иконки. Семантические
+ * success/error и разноцветные контентные метки `cat-*` не трогаем.
+ */
+[data-catalog-rubric] {
+	--color-link-50: var(--p1-catalog-accent-50);
+	--color-link-100: var(--p1-catalog-accent-100);
+	--color-link-200: var(--p1-catalog-accent-200);
+	--color-link-300: var(--p1-catalog-accent-300);
+	--color-link-400: var(--p1-catalog-accent-400);
+	--color-link-500: var(--p1-catalog-accent-500);
+	--color-link-600: var(--p1-catalog-accent-600);
+	--color-link-700: var(--p1-catalog-accent-700);
+}
+
+/* Мебель: тёплая древесно-коралловая шкала. */
+[data-catalog-rubric='mebel'] {
+	--p1-catalog-accent-50: var(--ds-brand-50);
+	--p1-catalog-accent-100: var(--ds-brand-100);
+	--p1-catalog-accent-200: var(--ds-brand-200);
+	--p1-catalog-accent-300: var(--ds-brand-300);
+	--p1-catalog-accent-400: var(--ds-brand-400);
+	--p1-catalog-accent-500: var(--ds-brand-500);
+	--p1-catalog-accent-600: var(--ds-brand-600);
+	--p1-catalog-accent-700: var(--ds-brand-700);
+}
+
+/* Столешницы: минеральный янтарный акцент. */
+[data-catalog-rubric='stoleshnica'] {
+	--p1-catalog-accent-50: var(--ds-cat-1-50);
+	--p1-catalog-accent-100: var(--ds-cat-1-100);
+	--p1-catalog-accent-200: var(--ds-cat-1-200);
+	--p1-catalog-accent-300: var(--ds-cat-1-300);
+	--p1-catalog-accent-400: var(--ds-cat-1-400);
+	--p1-catalog-accent-500: var(--ds-cat-1-500);
+	--p1-catalog-accent-600: var(--ds-cat-1-600);
+	--p1-catalog-accent-700: var(--ds-cat-1-700);
+}
+
+/* Бытовая техника: точный холодный индиго. */
+[data-catalog-rubric='bytovaya-tehnika'] {
+	--p1-catalog-accent-50: var(--ds-cat-4-50);
+	--p1-catalog-accent-100: var(--ds-cat-4-100);
+	--p1-catalog-accent-200: var(--ds-cat-4-200);
+	--p1-catalog-accent-300: var(--ds-cat-4-300);
+	--p1-catalog-accent-400: var(--ds-cat-4-400);
+	--p1-catalog-accent-500: var(--ds-cat-4-500);
+	--p1-catalog-accent-600: var(--ds-cat-4-600);
+	--p1-catalog-accent-700: var(--ds-cat-4-700);
+}
+
+/* Сантехника: водный бирюзовый акцент. */
+[data-catalog-rubric='santehnika'] {
+	--p1-catalog-accent-50: var(--ds-cat-5-50);
+	--p1-catalog-accent-100: var(--ds-cat-5-100);
+	/* У cat-5 исторически нет ступени 200; строим её из соседних токенов системы. */
+	--p1-catalog-accent-200: color-mix(in oklab, var(--ds-cat-5-100) 58%, var(--ds-cat-5-300));
+	--p1-catalog-accent-300: var(--ds-cat-5-300);
+	--p1-catalog-accent-400: var(--ds-cat-5-400);
+	--p1-catalog-accent-500: var(--ds-cat-5-500);
+	--p1-catalog-accent-600: var(--ds-cat-5-600);
+	--p1-catalog-accent-700: var(--ds-cat-5-700);
+}
+
+/* Текстовые/декоративные акценты тематических блоков следуют той же рубрике. */
+[data-catalog-rubric] [data-p1-theme] {
+	--p1-accent: var(--p1-catalog-accent-600);
+}
+
+/**
  * Роли типографики — `p1-title-sub`, `p1-title-display`, `p1-label`, `p1-note`,
  * `p1-numeric` — **переехали в `src/routes/layout.css` 26.08.2026**.
  *

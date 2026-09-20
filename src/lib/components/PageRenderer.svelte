@@ -33,6 +33,7 @@
 		EDITABLE_VISIBILITY_CONTEXT
 	} from '$lib/utils/editable-visibility.svelte';
 	import { siteAppearanceStyle } from '$lib/site-settings/appearance';
+	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 
 	interface PageComponent {
@@ -274,6 +275,8 @@
 		browser && $auth.isAuthenticated && isOwner && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
+	const catalogRubric = $derived(catalogRubricFromSlug(editContext?.templateId, slug));
+
 	const PromoStrip = $derived(layout.PromoStrip ?? null);
 	const Banner = $derived(layout.Banner ?? null);
 	const Header = $derived(layout.Header ?? null);
@@ -367,7 +370,11 @@
 	});
 </script>
 
-<div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
+<div
+	class="contents"
+	style={siteAppearanceStyle(headerDataState.siteAppearance)}
+	data-catalog-rubric={catalogRubric}
+>
 	<SiteAnalytics data={headerDataState} enabled={!isEditable} />
 
 	{#if PromoStrip}

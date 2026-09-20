@@ -22,6 +22,12 @@
 	);
 
 	const title = $derived(String(data.title || 'Бренд'));
+	const primaryButton = $derived(
+		!data.primaryButton && (!data.buttonText || data.buttonText === 'Подобрать столешницу')
+			? 'Рассчитать стоимость'
+			: String(data.primaryButton || data.buttonText)
+	);
+	const secondaryButton = $derived(String(data.secondaryButton || 'Заказать замер столешницы'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -87,19 +93,19 @@
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
 					data-metrika-goal="pages_stoleshnica_stoleshnicabrandhero_open_1"
-					data-goal-label="Консультация (текст кнопки настраивается)"
+					data-goal-label="Рассчитать стоимость — вложенная страница столешниц"
 					data-goal-action="open"
 					type="button"
-					class="inline-flex items-center gap-2 rounded-lg bg-cat-1-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-cat-1-600"
-					onclick={() => serviceOrderStore.open('consultation')}
+					class="inline-flex items-center gap-2 rounded-lg bg-link-700 px-6 py-3 font-medium text-on-dark transition-all hover:brightness-90"
+					onclick={() => serviceOrderStore.open('countertop-estimate')}
 				>
 					<EditableField
-						fieldKey="StoleshnicaBrandHero.buttonText"
-						label="Текст кнопки"
-						value={String(data.buttonText || 'Подобрать столешницу')}
+						fieldKey="StoleshnicaBrandHero.primaryButton"
+						label="Текст кнопки 1"
+						value={primaryButton}
 						{isEditable}
 						inline
-						onSave={(v) => saveField('buttonText', v)}
+						onSave={(v) => saveField('primaryButton', v)}
 					>
 						{#snippet children(val)}<RichText value={val} />{/snippet}
 					</EditableField>
@@ -111,6 +117,26 @@
 							d="M17 8l4 4m0 0l-4 4m4-4H3"
 						/>
 					</svg>
+				</button>
+
+				<button
+					data-metrika-goal="pages_stoleshnica_stoleshnicabrandhero_open_2"
+					data-goal-label="Заказать замер столешницы — вложенная страница столешниц"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('measurement')}
+					class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
+				>
+					<EditableField
+						fieldKey="StoleshnicaBrandHero.secondaryButton"
+						label="Текст кнопки 2"
+						value={secondaryButton}
+						{isEditable}
+						inline
+						onSave={(v) => saveField('secondaryButton', v)}
+					>
+						{#snippet children(val)}<RichText value={val} />{/snippet}
+					</EditableField>
 				</button>
 			</div>
 		</div>

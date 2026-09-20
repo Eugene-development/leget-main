@@ -113,6 +113,7 @@
 		</p>
 		<button
 			data-metrika-goal="pages_services_shared_serviceheroform_reset_1"
+			data-goal-variant={serviceType}
 			data-goal-action="reset"
 			type="button"
 			onclick={resetForm}
@@ -180,6 +181,7 @@
 			{#snippet children(displayValue)}
 				<button
 					data-metrika-goal="pages_services_shared_serviceheroform_submit_click_1"
+					data-goal-variant={serviceType}
 					data-goal-label="Отправить заявку на услугу"
 					data-goal-action="submit_click"
 					type="submit"

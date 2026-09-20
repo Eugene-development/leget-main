@@ -495,6 +495,8 @@
 	--color-university-link: var(--ds-university-link-surface);
 	--color-university-link-hover: var(--ds-university-link-surface-hover);
 	--color-on-university-link: var(--ds-on-university-link);
+	--color-university-link-highlight: var(--ds-university-link-highlight);
+	--color-university-link-shade: var(--ds-university-link-shade);
 	--color-favorite-badge: var(--ds-favorite-badge);
 	--color-surface-raised: var(--ds-surface-raised);
 	--color-scrim: var(--ds-scrim);

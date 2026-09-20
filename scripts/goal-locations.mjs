@@ -75,7 +75,14 @@ export function goalLocations(root, write = false) {
 		let locations;
 		if (button.source === 'ServiceOrderIsland.svelte')
 			locations = [...sources]
-				.filter(([, text]) => text.includes('serviceOrderStore.open('))
+				.filter(
+					([, text]) =>
+						text.includes('serviceOrderStore.open(') &&
+						(!button.serviceType ||
+							text.includes(`serviceOrderStore.open('${button.serviceType}')`) ||
+							(button.serviceType === 'consultation' &&
+								text.includes('serviceOrderStore.open(ctaContent.serviceType)')))
+				)
 				.flatMap(([path]) => owners(path));
 		else if (button.source === 'ClientAuthModal.svelte')
 			locations = [...sources]
@@ -86,6 +93,10 @@ export function goalLocations(root, write = false) {
 		else if (button.id.startsWith('guarantees_warranty_drawer_'))
 			locations = owners('templates/Promo-1/pages/guarantees/WarrantyRequestDrawer.svelte');
 		else locations = owners(button.source);
+		if (button.variant && button.route)
+			locations = locations.filter(
+				(row) => row.page === button.route || row.page.startsWith(button.route + '/')
+			);
 		return [
 			...new Map(
 				locations

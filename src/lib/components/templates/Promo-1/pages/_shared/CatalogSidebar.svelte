@@ -457,6 +457,7 @@
 			<p class="ms-cta-text">{ctaContent.text}</p>
 			<button
 				data-metrika-goal="pages_shared_catalogsidebar_open_1"
+				data-goal-variant={basePath.slice(1)}
 				data-goal-label="Заказать услугу — кнопка каталога"
 				data-goal-action="open"
 				type="button"
@@ -654,17 +655,17 @@
 	 * ---------------------------------------------------------------- */
 	[data-accent] {
 		font-family: var(--ds-font-body);
-		--ms-accent: var(--ds-link-500);
-		--ms-accent-deep: var(--ds-link-700);
-		--ms-accent-light: var(--ds-link-400);
-		--ms-accent-wash: var(--ds-link-50);
+		--ms-accent: var(--p1-catalog-accent-500, var(--ds-link-500));
+		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-link-700));
+		--ms-accent-light: var(--p1-catalog-accent-400, var(--ds-link-400));
+		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-link-50));
 	}
 
 	[data-accent='amber'] {
-		--ms-accent: var(--ds-cat-1-500);
-		--ms-accent-deep: var(--ds-cat-1-700);
-		--ms-accent-light: var(--ds-cat-1-400);
-		--ms-accent-wash: var(--ds-cat-1-50);
+		--ms-accent: var(--p1-catalog-accent-500, var(--ds-cat-1-500));
+		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-cat-1-700));
+		--ms-accent-light: var(--p1-catalog-accent-400, var(--ds-cat-1-400));
+		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-cat-1-50));
 	}
 
 	/* ---------------------------------------------------------------- *

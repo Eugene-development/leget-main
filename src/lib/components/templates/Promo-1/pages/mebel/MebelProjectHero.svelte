@@ -13,6 +13,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 
 	let {
 		data = $bindable(),
@@ -318,9 +319,24 @@
 				<!-- Кнопки -->
 				<div class="mt-8 flex flex-col gap-4 sm:flex-row">
 					<button
-						class="flex-1 rounded-xl bg-link-500 px-8 py-4 font-bold text-on-accent shadow-lg shadow-link-200 transition-all hover:bg-link-600 hover:shadow-xl"
+						data-metrika-goal="pages_mebel_mebelprojecthero_open_1"
+						data-goal-label="Составить проект мебели — карточка проекта"
+						data-goal-action="open"
+						type="button"
+						onclick={() => serviceOrderStore.open('furniture-project')}
+						class="flex-1 rounded-xl bg-link-700 px-8 py-4 font-bold text-on-dark shadow-lg shadow-link-200 transition-all hover:shadow-xl hover:brightness-90"
 					>
-						Создать проект и узнать цену
+						Составить проект мебели
+					</button>
+					<button
+						data-metrika-goal="pages_mebel_mebelprojecthero_open_2"
+						data-goal-label="Заказать замер помещения — карточка проекта"
+						data-goal-action="open"
+						type="button"
+						onclick={() => serviceOrderStore.open('measurement')}
+						class="flex-1 rounded-xl bg-ink-100 px-8 py-4 font-bold text-ink-700 transition-all hover:bg-ink-200"
+					>
+						Заказать замер помещения
 					</button>
 					<a
 						href={phoneHref}

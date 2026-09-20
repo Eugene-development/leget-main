@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.20.7.1, 1.28.4.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -62,6 +63,10 @@
 
 		<div class="mt-6 flex flex-wrap justify-center gap-4">
 			<button
+				data-metrika-goal="pages_bytovaya_tehnika_byttehnikacta_open_1"
+				data-goal-action="open"
+				onclick={() => serviceOrderStore.open('appliance-selection')}
+				type="button"
 				class="inline-flex items-center gap-2 rounded-lg bg-surface-raised px-6 py-3 font-medium text-ink-800 transition-all hover:bg-ink-100"
 			>
 				<EditableField

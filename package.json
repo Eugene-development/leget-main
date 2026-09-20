@@ -18,6 +18,7 @@
 		"format": "prettier --write .",
 		"check:rich-text": "node scripts/check-rich-text.mjs",
 		"check:component-controls": "node scripts/check-component-controls.mjs",
+		"test:component-images": "node --experimental-strip-types --test scripts/test-component-images.mjs",
 		"check:goals": "node scripts/goals-catalog.mjs",
 		"goals:generate": "node scripts/goals-catalog.mjs --write",
 		"test:goals": "node scripts/test-goals.mjs",

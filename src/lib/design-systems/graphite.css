@@ -312,9 +312,11 @@
 	   синяя кнопка требует максимального контраста. */
 	--ds-on-dark: #f8fafc;
 	--ds-on-accent: #ffffff;
-	--ds-university-link-surface: oklch(39.6% 0.141 25.723);
-	--ds-university-link-surface-hover: oklch(44.4% 0.177 26.899);
-	--ds-on-university-link: #ffffff;
+	--ds-university-link-surface: #e2e7ed;
+	--ds-university-link-surface-hover: #f2f5f8;
+	--ds-on-university-link: #454e5c;
+	--ds-university-link-highlight: #ffffff;
+	--ds-university-link-shade: #738394;
 	--ds-favorite-badge: #b91c1c;
 	--ds-surface-raised: #ffffff;
 	--ds-scrim: #020617;

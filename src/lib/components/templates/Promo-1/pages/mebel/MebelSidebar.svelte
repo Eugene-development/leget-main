@@ -135,18 +135,18 @@
 		width: 28px;
 		height: 28px;
 		border-radius: 999px;
-		background: #ffffff;
-		color: #0ea5e9;
+		background: var(--ds-surface-raised);
+		color: var(--p1-catalog-accent-600, var(--ds-link-600));
 		box-shadow:
-			0 1px 2px rgb(15 23 42 / 0.08),
-			0 0 0 1px rgb(15 23 42 / 0.08);
+			0 1px 2px color-mix(in srgb, var(--ds-ink-900) 8%, transparent),
+			0 0 0 1px color-mix(in srgb, var(--ds-ink-900) 8%, transparent);
 		transition:
 			transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
 			background-color 0.2s ease;
 	}
 
 	.ms-add:hover {
-		background: #f0f9ff;
+		background: var(--p1-catalog-accent-50, var(--ds-link-50));
 		transform: scale(1.08) rotate(90deg);
 	}
 

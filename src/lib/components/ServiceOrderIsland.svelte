@@ -17,6 +17,19 @@
 	let submitSuccess = $state(false);
 	let generalError = $state('');
 
+	$effect(() => {
+		// A reopened drawer is a new form, even while an older request is in flight.
+		void serviceOrderStore.session;
+		name = '';
+		phone = '';
+		message = '';
+		dimensions = [''];
+		errors = { name: '', phone: '', dimensions: '' };
+		generalError = '';
+		submitSuccess = false;
+		isSubmitting = false;
+	});
+
 	function validate() {
 		errors = { name: '', phone: '', dimensions: '' };
 		let valid = true;
@@ -51,6 +64,7 @@
 
 		isSubmitting = true;
 		generalError = '';
+		const session = serviceOrderStore.session;
 
 		try {
 			await submitServiceRequest({
@@ -63,26 +77,28 @@
 							? 'promo1-appliance-selection'
 							: serviceOrderStore.serviceType === 'plumbing-selection'
 								? 'promo1-plumbing-selection'
-								: undefined,
+								: `service-order-${serviceOrderStore.serviceType}`,
 				name,
 				phone,
-				message,
+				message: serviceOrderStore.serviceType === 'countertop-estimate' ? undefined : message,
 				dimensions:
 					serviceOrderStore.serviceType === 'countertop-estimate' ? dimensions : undefined,
 				city: cityStore.city,
 				sourceUrl: typeof window !== 'undefined' ? window.location.href : null
 			});
 
+			if (session !== serviceOrderStore.session) return;
 			submitSuccess = true;
 			name = '';
 			phone = '';
 			message = '';
 			dimensions = [''];
 		} catch (err) {
+			if (session !== serviceOrderStore.session) return;
 			console.error('Service request submission error:', err);
 			generalError = err instanceof Error ? err.message : 'Произошла непредвиденная ошибка';
 		} finally {
-			isSubmitting = false;
+			if (session === serviceOrderStore.session) isSubmitting = false;
 		}
 	}
 
@@ -151,6 +167,7 @@
 					</h2>
 					<button
 						data-metrika-goal="serviceorderisland_close_1"
+						data-goal-variant={serviceOrderStore.serviceType}
 						data-goal-action="close"
 						type="button"
 						onclick={handleClose}
@@ -205,6 +222,7 @@
 						</p>
 						<button
 							data-metrika-goal="serviceorderisland_close_2"
+							data-goal-variant={serviceOrderStore.serviceType}
 							data-goal-action="close"
 							type="button"
 							onclick={handleClose}
@@ -223,6 +241,7 @@
 							</label>
 							<input
 								id="client-name"
+								maxlength="255"
 								type="text"
 								bind:value={name}
 								class="w-full rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
@@ -316,10 +335,11 @@
 								</label>
 								<textarea
 									id="client-message"
+									maxlength="2000"
 									rows="4"
 									bind:value={message}
 									class="w-full resize-none rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
-									placeholder="Расскажите немного о вашем проекте или задайте вопрос..."
+									placeholder={serviceOrderStore.messagePlaceholder}
 								></textarea>
 							</div>
 						{/if}
@@ -363,6 +383,7 @@
 
 						<button
 							data-metrika-goal="serviceorderisland_submit_click_1"
+							data-goal-variant={serviceOrderStore.serviceType}
 							data-goal-label="Отправить заявку"
 							data-goal-action="submit_click"
 							type="submit"

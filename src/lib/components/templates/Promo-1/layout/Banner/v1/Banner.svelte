@@ -80,7 +80,7 @@
 						href={link.href}
 						aria-current={$page.url.pathname === link.href ? 'page' : undefined}
 						class={link.href === '/university'
-							? 'bg-university-link text-on-university-link hover:bg-university-link-hover focus-visible:outline-university-link rounded-sm px-3 py-1 text-xs whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2'
+							? 'university-link text-xs whitespace-nowrap'
 							: $page.url.pathname === link.href
 								? 'p1-accent text-xs whitespace-nowrap'
 								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-xs whitespace-nowrap transition-colors`}
@@ -165,3 +165,81 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.university-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		isolation: isolate;
+		padding: 0.375rem 1.125rem;
+		border: 1px solid var(--ds-university-link-highlight);
+		border-radius: 0.625rem;
+		color: var(--ds-on-university-link);
+		font-weight: 600;
+		letter-spacing: normal;
+		background: linear-gradient(
+			160deg,
+			color-mix(in srgb, var(--ds-university-link-highlight) 80%, transparent),
+			color-mix(in srgb, var(--ds-university-link-surface) 55%, transparent) 38%,
+			color-mix(in srgb, var(--ds-university-link-surface-hover) 85%, transparent) 75%,
+			color-mix(in srgb, var(--ds-university-link-highlight) 95%, transparent)
+		);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		box-shadow:
+			inset 0 1px 1px var(--ds-university-link-highlight),
+			inset 1px 2px 3px color-mix(in srgb, var(--ds-university-link-shade) 55%, transparent),
+			inset -1px -2px 2px var(--ds-university-link-highlight),
+			0 1px 1px color-mix(in srgb, var(--ds-university-link-shade) 65%, transparent),
+			2px 5px 8px -2px color-mix(in srgb, var(--ds-university-link-shade) 40%, transparent);
+		transition:
+			transform 160ms ease,
+			background-color 160ms ease;
+	}
+
+	.university-link::before,
+	.university-link::after {
+		content: '';
+		position: absolute;
+		pointer-events: none;
+		border-radius: inherit;
+	}
+
+	.university-link::before {
+		inset: 2px;
+		border: 1px solid color-mix(in srgb, var(--ds-university-link-highlight) 85%, transparent);
+		box-shadow:
+			0 0 1px var(--ds-university-link-shade),
+			inset 1px 1px 2px color-mix(in srgb, var(--ds-university-link-shade) 35%, transparent),
+			inset -1px -1px 2px var(--ds-university-link-highlight);
+	}
+
+	.university-link::after {
+		inset: 0;
+		background:
+			radial-gradient(ellipse at 12% 95%, var(--ds-university-link-highlight), transparent 22%),
+			radial-gradient(ellipse at 90% 8%, var(--ds-university-link-highlight), transparent 20%);
+	}
+
+	.university-link:hover {
+		background-color: var(--ds-university-link-surface-hover);
+		transform: translateY(-1px);
+	}
+
+	.university-link:active {
+		transform: translateY(1px);
+	}
+
+	.university-link:focus-visible {
+		outline: 2px solid var(--ds-university-link-shade);
+		outline-offset: 4px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.university-link {
+			transition: none;
+		}
+	}
+</style>

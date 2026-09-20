@@ -251,6 +251,11 @@ export function collectComponentImages(
 			label: slot.label ?? fieldLabel(slot.path),
 			value: typeof value === 'string' ? value : ''
 		});
+		// Один путь может одновременно прийти из статического реестра слотов и
+		// регистрации ImageFallback. Без обновления known второй пустой слот
+		// попадал в результат с тем же pathKey и ронял keyed each при открытии
+		// настроек компонента.
+		known.add(pathKey);
 	}
 
 	return result.sort((a, b) => a.pathKey.localeCompare(b.pathKey, 'ru'));

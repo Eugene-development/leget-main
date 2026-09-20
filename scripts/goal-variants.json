@@ -1,0 +1,113 @@
+{
+	"ServiceOrderIsland.svelte": [
+		{
+			"value": "consultation",
+			"label": "Консультация дизайнера",
+			"serviceType": "consultation"
+		},
+		{
+			"value": "design-project",
+			"label": "Дизайн-проект",
+			"serviceType": "design-project"
+		},
+		{
+			"value": "furniture-project",
+			"label": "Проектирование мебели",
+			"serviceType": "furniture-project"
+		},
+		{
+			"value": "assembly",
+			"label": "Сборка и монтаж",
+			"serviceType": "assembly"
+		},
+		{
+			"value": "measurement",
+			"label": "Заказ замера",
+			"serviceType": "measurement"
+		},
+		{
+			"value": "countertop-estimate",
+			"label": "Просчёт столешницы",
+			"serviceType": "countertop-estimate"
+		},
+		{
+			"value": "appliance-selection",
+			"label": "Подбор техники",
+			"serviceType": "appliance-selection"
+		},
+		{
+			"value": "plumbing-selection",
+			"label": "Подбор сантехники",
+			"serviceType": "plumbing-selection"
+		},
+		{
+			"value": "promo",
+			"label": "Промокод",
+			"serviceType": "promo"
+		}
+	],
+	"templates/Promo-1/pages/services/_shared/ServiceHeroForm.svelte": [
+		{
+			"value": "consultation",
+			"label": "Консультация дизайнера",
+			"serviceType": "consultation",
+			"route": "/consultation"
+		},
+		{
+			"value": "design-project",
+			"label": "Дизайн-проект",
+			"serviceType": "design-project",
+			"route": "/design-project"
+		},
+		{
+			"value": "furniture-project",
+			"label": "Проектирование мебели",
+			"serviceType": "furniture-project",
+			"route": "/furniture-project"
+		},
+		{
+			"value": "assembly",
+			"label": "Сборка и монтаж",
+			"serviceType": "assembly",
+			"route": "/assembly"
+		},
+		{
+			"value": "measurement",
+			"label": "Заказ замера",
+			"serviceType": "measurement",
+			"route": "/measurement"
+		}
+	],
+	"templates/Promo-1/pages/_shared/CatalogSidebar.svelte": [
+		{
+			"value": "mebel",
+			"label": "Мебель",
+			"route": "/mebel"
+		},
+		{
+			"value": "stoleshnica",
+			"label": "Столешницы",
+			"route": "/stoleshnica"
+		},
+		{
+			"value": "bytovaya-tehnika",
+			"label": "Бытовая техника",
+			"route": "/bytovaya-tehnika"
+		},
+		{
+			"value": "santehnika",
+			"label": "Сантехника",
+			"route": "/santehnika"
+		},
+		{
+			"value": "furnitura",
+			"label": "Фурнитура",
+			"route": "/furnitura"
+		},
+		{
+			"value": "plitka",
+			"label": "Плитка",
+			"route": "/plitka"
+		}
+	]
+}
