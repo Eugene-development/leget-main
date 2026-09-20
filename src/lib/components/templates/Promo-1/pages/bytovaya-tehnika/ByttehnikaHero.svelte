@@ -3,6 +3,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -76,6 +77,11 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
+					data-metrika-goal="pages_bytovaya_tehnika_byttehnikahero_open_1"
+					data-goal-label="Подобрать технику — герой бытовой техники"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('appliance-selection')}
 					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					<EditableField

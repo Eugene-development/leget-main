@@ -3,6 +3,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -25,6 +26,16 @@
 	const bgImage = $derived(
 		data.bgImage ||
 			'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png'
+	);
+	const primaryButton = $derived(
+		!data.primaryButton || data.primaryButton === 'Ваш проект'
+			? 'Составить проект мебели'
+			: String(data.primaryButton)
+	);
+	const secondaryButton = $derived(
+		!data.secondaryButton || data.secondaryButton === 'Бесплатный замер'
+			? 'Заказать замер помещения'
+			: String(data.secondaryButton)
 	);
 </script>
 
@@ -81,12 +92,17 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
+					data-metrika-goal="pages_mebel_mebelhero_open_1"
+					data-goal-label="Составить проект мебели — герой каталога мебели"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('furniture-project')}
 					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					<EditableField
 						fieldKey="MebelHero.primaryButton"
 						label="Текст кнопки 1"
-						value={String(data.primaryButton || 'Ваш проект')}
+						value={primaryButton}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('primaryButton', v)}
@@ -106,12 +122,17 @@
 				</button>
 
 				<button
+					data-metrika-goal="pages_mebel_mebelhero_open_2"
+					data-goal-label="Заказать замер помещения — герой каталога мебели"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('measurement')}
 					class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
 				>
 					<EditableField
 						fieldKey="MebelHero.secondaryButton"
 						label="Текст кнопки 2"
-						value={String(data.secondaryButton || 'Бесплатный замер')}
+						value={secondaryButton}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('secondaryButton', v)}

@@ -3,6 +3,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -18,6 +19,11 @@
 	const bgImage = $derived(
 		data.bgImage ||
 			'https://storage.yandexcloud.net/leget-main/templates/promo-1/countertops_hero.png'
+	);
+	const secondaryButton = $derived(
+		!data.secondaryButton || data.secondaryButton === 'Вызвать замерщика'
+			? 'Заказать замер столешницы'
+			: String(data.secondaryButton)
 	);
 
 	async function saveField(field: string, value: string) {
@@ -81,6 +87,11 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
+					data-metrika-goal="pages_stoleshnica_stoleshnicahero_open_1"
+					data-goal-label="Рассчитать стоимость — герой столешниц"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('countertop-estimate')}
 					class="inline-flex items-center gap-2 rounded-lg bg-cat-1-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-cat-1-600"
 				>
 					<EditableField
@@ -106,12 +117,17 @@
 				</button>
 
 				<button
+					data-metrika-goal="pages_stoleshnica_stoleshnicahero_open_2"
+					data-goal-label="Заказать замер столешницы — герой столешниц"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('measurement')}
 					class="inline-flex items-center gap-2 rounded-lg bg-on-dark/10 px-6 py-3 font-medium text-on-dark backdrop-blur transition-all hover:bg-on-dark/20"
 				>
 					<EditableField
 						fieldKey="StoleshnicaHero.secondaryButton"
 						label="Текст кнопки 2"
-						value={String(data.secondaryButton || 'Вызвать замерщика')}
+						value={secondaryButton}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('secondaryButton', v)}

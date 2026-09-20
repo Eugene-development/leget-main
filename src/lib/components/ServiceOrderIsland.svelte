@@ -11,13 +11,14 @@
 	let name = $state('');
 	let phone = $state('');
 	let message = $state('');
-	let errors = $state({ name: '', phone: '' });
+	let dimensions = $state<string[]>(['']);
+	let errors = $state({ name: '', phone: '', dimensions: '' });
 	let isSubmitting = $state(false);
 	let submitSuccess = $state(false);
 	let generalError = $state('');
 
 	function validate() {
-		errors = { name: '', phone: '' };
+		errors = { name: '', phone: '', dimensions: '' };
 		let valid = true;
 
 		if (!name.trim()) {
@@ -30,6 +31,14 @@
 			valid = false;
 		} else if (!isValidPhone(phone)) {
 			errors.phone = 'Пожалуйста, введите корректный номер телефона';
+			valid = false;
+		}
+
+		if (
+			serviceOrderStore.serviceType === 'countertop-estimate' &&
+			(dimensions.length === 0 || dimensions.some((value) => !value.trim()))
+		) {
+			errors.dimensions = 'Укажите каждый добавленный размер или удалите пустое поле';
 			valid = false;
 		}
 
@@ -47,9 +56,19 @@
 			await submitServiceRequest({
 				formTitle: formHeading(event),
 				serviceType: serviceOrderStore.serviceType,
+				formId:
+					serviceOrderStore.serviceType === 'countertop-estimate'
+						? 'promo1-countertop-estimate'
+						: serviceOrderStore.serviceType === 'appliance-selection'
+							? 'promo1-appliance-selection'
+							: serviceOrderStore.serviceType === 'plumbing-selection'
+								? 'promo1-plumbing-selection'
+								: undefined,
 				name,
 				phone,
 				message,
+				dimensions:
+					serviceOrderStore.serviceType === 'countertop-estimate' ? dimensions : undefined,
 				city: cityStore.city,
 				sourceUrl: typeof window !== 'undefined' ? window.location.href : null
 			});
@@ -58,6 +77,7 @@
 			name = '';
 			phone = '';
 			message = '';
+			dimensions = [''];
 		} catch (err) {
 			console.error('Service request submission error:', err);
 			generalError = err instanceof Error ? err.message : 'Произошла непредвиденная ошибка';
@@ -70,6 +90,17 @@
 		serviceOrderStore.close();
 		submitSuccess = false;
 		generalError = '';
+		dimensions = [''];
+	}
+
+	function addDimension() {
+		if (dimensions.length >= 10) return;
+		dimensions = [...dimensions, ''];
+	}
+
+	function removeDimension(index: number) {
+		if (dimensions.length === 1) return;
+		dimensions = dimensions.filter((_, itemIndex) => itemIndex !== index);
 	}
 
 	function handleBackdropClick(event: MouseEvent) {
@@ -206,19 +237,92 @@
 						<!-- Phone (custom masked component) -->
 						<PhoneInput bind:value={phone} error={errors.phone} />
 
-						<!-- Message -->
-						<div class="flex flex-col gap-1.5">
-							<label for="client-message" class="text-sm font-semibold text-ink-300">
-								Сообщение или пожелания
-							</label>
-							<textarea
-								id="client-message"
-								rows="4"
-								bind:value={message}
-								class="w-full resize-none rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
-								placeholder="Расскажите немного о вашем проекте или задайте вопрос..."
-							></textarea>
-						</div>
+						{#if serviceOrderStore.serviceType === 'countertop-estimate'}
+							<fieldset class="flex flex-col gap-3">
+								<legend class="text-sm font-semibold text-ink-300">
+									Размеры <span class="text-cat-6-400">*</span>
+								</legend>
+								<p class="text-sm leading-relaxed text-ink-400">
+									Укажите длину и ширину каждого участка столешницы, например 2400 × 600 мм.
+								</p>
+								{#each dimensions as _, index (index)}
+									<div class="flex items-center gap-2">
+										<label class="sr-only" for="countertop-dimension-{index}">
+											Размер участка {index + 1}
+										</label>
+										<input
+											id="countertop-dimension-{index}"
+											type="text"
+											bind:value={dimensions[index]}
+											maxlength="120"
+											required
+											aria-invalid={errors.dimensions ? 'true' : undefined}
+											aria-describedby={errors.dimensions
+												? 'countertop-dimensions-error'
+												: undefined}
+											placeholder="Участок {index + 1}: 2400 × 600 мм"
+											class="min-w-0 flex-1 rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
+											class:border-cat-6-400={errors.dimensions}
+										/>
+										{#if dimensions.length > 1}
+											<button
+												type="button"
+												onclick={() => removeDimension(index)}
+												data-goal-ignore="Удаление поля размера внутри формы"
+												aria-label="Удалить размер {index + 1}"
+												class="flex size-11 shrink-0 items-center justify-center rounded-xl border border-ink-700/80 text-ink-400 transition-colors hover:border-cat-6-400 hover:text-cat-6-400 focus-visible:outline-2 focus-visible:outline-link-500"
+											>
+												<svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+													<path
+														d="M5 12h14"
+														stroke="currentColor"
+														stroke-width="2"
+														stroke-linecap="round"
+													/>
+												</svg>
+											</button>
+										{/if}
+									</div>
+								{/each}
+								{#if errors.dimensions}
+									<span id="countertop-dimensions-error" class="text-xs font-medium text-cat-6-400">
+										{errors.dimensions}
+									</span>
+								{/if}
+								<button
+									type="button"
+									onclick={addDimension}
+									disabled={dimensions.length >= 10}
+									data-goal-ignore="Добавление поля размера внутри формы"
+									class="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-xl border border-ink-700/80 px-4 py-2.5 text-sm font-semibold text-ink-300 transition-colors hover:border-link-500 hover:text-on-dark focus-visible:outline-2 focus-visible:outline-link-500 disabled:pointer-events-none disabled:opacity-50"
+								>
+									<svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+										<path
+											d="M12 5v14M5 12h14"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+										/>
+									</svg>
+									Добавить размер
+									<span class="font-normal text-ink-500">{dimensions.length}/10</span>
+								</button>
+							</fieldset>
+						{:else}
+							<!-- Message -->
+							<div class="flex flex-col gap-1.5">
+								<label for="client-message" class="text-sm font-semibold text-ink-300">
+									Сообщение или пожелания
+								</label>
+								<textarea
+									id="client-message"
+									rows="4"
+									bind:value={message}
+									class="w-full resize-none rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
+									placeholder="Расскажите немного о вашем проекте или задайте вопрос..."
+								></textarea>
+							</div>
+						{/if}
 
 						<!-- City and URL context (Read-only badge info for premium feeling) -->
 						<div class="flex flex-wrap items-center gap-2 pt-2">

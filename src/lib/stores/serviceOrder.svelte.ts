@@ -8,6 +8,9 @@ export type ServiceType =
 	| 'furniture-project'
 	| 'assembly'
 	| 'measurement'
+	| 'countertop-estimate'
+	| 'appliance-selection'
+	| 'plumbing-selection'
 	| 'installment'
 	| 'partnership'
 	| 'promo';
@@ -18,6 +21,9 @@ export const SERVICE_TITLES: Record<ServiceType, string> = {
 	'furniture-project': 'Проектирование мебели',
 	assembly: 'Сборка и монтаж',
 	measurement: 'Замер помещения',
+	'countertop-estimate': 'Просчёт столешницы',
+	'appliance-selection': 'Подбор техники',
+	'plumbing-selection': 'Подбор сантехники',
 	installment: 'Заявка на рассрочку',
 	partnership: 'Заявка на сотрудничество',
 	promo: 'Получить промокод'

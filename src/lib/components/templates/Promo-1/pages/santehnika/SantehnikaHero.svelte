@@ -3,6 +3,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -17,6 +18,11 @@
 
 	const bgImage = $derived(
 		data.bgImage || 'https://storage.yandexcloud.net/leget-main/templates/promo-1/plumbing_hero.png'
+	);
+	const primaryButton = $derived(
+		!data.primaryButton || data.primaryButton === 'Подобрать комплект'
+			? 'Подобрать сантехнику'
+			: String(data.primaryButton)
 	);
 
 	async function saveField(field: string, value: string) {
@@ -75,12 +81,17 @@
 
 			<div class="mt-8 flex flex-wrap gap-4">
 				<button
+					data-metrika-goal="pages_santehnika_santehnikahero_open_1"
+					data-goal-label="Подобрать сантехнику — герой сантехники"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('plumbing-selection')}
 					class="inline-flex items-center gap-2 rounded-lg bg-link-500 px-6 py-3 font-medium text-on-accent transition-all hover:bg-link-600"
 				>
 					<EditableField
 						fieldKey="SantehnikaHero.primaryButton"
 						label="Кнопка"
-						value={String(data.primaryButton || 'Подобрать комплект')}
+						value={primaryButton}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('primaryButton', v)}

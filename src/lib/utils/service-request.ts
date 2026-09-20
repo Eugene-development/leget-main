@@ -9,6 +9,7 @@ export type ServiceRequestInput = {
 	name: string;
 	phone: string;
 	message?: string | null;
+	dimensions?: string[];
 	city: string;
 	sourceUrl?: string | null;
 	attachments?: {
@@ -37,6 +38,7 @@ export async function submitServiceRequest(
 	payload.set('phone', cleanPhone(input.phone));
 	payload.set('city', input.city);
 	if (input.message) payload.set('message', input.message.trim());
+	for (const dimension of input.dimensions ?? []) payload.append('dimensions[]', dimension.trim());
 	if (input.sourceUrl) payload.set('source_url', input.sourceUrl.slice(0, 500));
 	if (input.attachments) {
 		payload.set('passport_main', input.attachments.passportMain);
