@@ -370,11 +370,7 @@
 	});
 </script>
 
-<div
-	class="contents"
-	style={siteAppearanceStyle(headerDataState.siteAppearance)}
-	data-catalog-rubric={catalogRubric}
->
+<div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
 	<SiteAnalytics data={headerDataState} enabled={!isEditable} />
 
 	{#if PromoStrip}
@@ -409,37 +405,41 @@
 		{/if}
 	{/if}
 
-	{#each pageComponents as element (element.type)}
-		{@const Component = componentMap[element.type] ?? null}
-		{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
-		{#if Component && (isEditable || !isSingleVersionDisabled(element))}
-			<div
-				use:trackBlock={element.type}
-				data-field-toolbar-scope
-				class="group/component relative {isSingleVersionDisabled(element)
-					? 'opacity-40 grayscale'
-					: ''}"
-			>
-				<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
-			     с кнопкой «Позвонить» нужен тот же номер, что в баннере хэдера. Отдельным
-			     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
-			     целиком, и подмешанный номер осел бы копией в данных блока при первой же
-			     правке любого поля — после смены номера в баннере копии разошлись бы. -->
-				<EditableComponent
-					component={Component}
-					componentType={element.type}
-					showSettings={!componentHasOwnSwitcher(element.type) &&
-						!componentHasEmbeddedSingleVersionSettings(element.type)}
-					settingsThemeDefault={singleThemeDefault}
-					bind:data={element.data}
-					{editContext}
-					{isEditable}
-					componentId={String(element.data?._componentId ?? element.id ?? '') || null}
-					sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
-				/>
-			</div>
-		{/if}
-	{/each}
+	<!-- Акцент рубрики ограничен телом страницы: layout-хром выше и Footer ниже
+	     остаются в общей палитре сайта. `contents` не добавляет геометрию. -->
+	<div class="contents" data-catalog-rubric={catalogRubric}>
+		{#each pageComponents as element (element.type)}
+			{@const Component = componentMap[element.type] ?? null}
+			{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
+			{#if Component && (isEditable || !isSingleVersionDisabled(element))}
+				<div
+					use:trackBlock={element.type}
+					data-field-toolbar-scope
+					class="group/component relative {isSingleVersionDisabled(element)
+						? 'opacity-40 grayscale'
+						: ''}"
+				>
+					<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
+				     с кнопкой «Позвонить» нужен тот же номер, что в баннере хэдера. Отдельным
+				     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
+				     целиком, и подмешанный номер осел бы копией в данных блока при первой же
+				     правке любого поля — после смены номера в баннере копии разошлись бы. -->
+					<EditableComponent
+						component={Component}
+						componentType={element.type}
+						showSettings={!componentHasOwnSwitcher(element.type) &&
+							!componentHasEmbeddedSingleVersionSettings(element.type)}
+						settingsThemeDefault={singleThemeDefault}
+						bind:data={element.data}
+						{editContext}
+						{isEditable}
+						componentId={String(element.data?._componentId ?? element.id ?? '') || null}
+						sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
+					/>
+				</div>
+			{/if}
+		{/each}
+	</div>
 
 	{#if isEditable && orderError}
 		<div

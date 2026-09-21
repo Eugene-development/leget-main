@@ -404,11 +404,10 @@
 	   значило бы получить нечитаемый белый текст на золотой кнопке. */
 	--ds-on-dark: #faf0dd;
 	--ds-on-accent: #281006;
-	--ds-university-link-surface: #e2e7ed;
-	--ds-university-link-surface-hover: #f2f5f8;
-	--ds-on-university-link: #454e5c;
-	--ds-university-link-highlight: #ffffff;
-	--ds-university-link-shade: #738394;
+	--ds-university-link-surface: #8f2039;
+	--ds-university-link-surface-hover: #ad344f;
+	--ds-on-university-link: #fff5f7;
+	--ds-university-link-shade: #4b1025;
 	--ds-favorite-badge: #b91c1c;
 	/* Выпадающие меню, чипы, ручки тумблеров, липкая шапка. Не следует теме блока
 	   и всплывает над страницей.

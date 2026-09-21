@@ -410,11 +410,10 @@
 	   то разведение ролей, ради которого они заведены раздельно. */
 	--ds-on-dark: #fafafa;
 	--ds-on-accent: #ffffff;
-	--ds-university-link-surface: #e2e7ed;
-	--ds-university-link-surface-hover: #f2f5f8;
-	--ds-on-university-link: #454e5c;
-	--ds-university-link-highlight: #ffffff;
-	--ds-university-link-shade: #738394;
+	--ds-university-link-surface: #8f2039;
+	--ds-university-link-surface-hover: #ad344f;
+	--ds-on-university-link: #fff5f7;
+	--ds-university-link-shade: #4b1025;
 	--ds-favorite-badge: #b91c1c;
 	--ds-surface-raised: #ffffff;
 	/* Затемнение поверх медиа — #0a0a0a, а не #000000: «Do not use pure

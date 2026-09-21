@@ -80,10 +80,10 @@
 						href={link.href}
 						aria-current={$page.url.pathname === link.href ? 'page' : undefined}
 						class={link.href === '/university'
-							? 'university-link text-xs whitespace-nowrap'
+							? 'university-link my-1.5 text-[13px] whitespace-nowrap'
 							: $page.url.pathname === link.href
-								? 'p1-accent text-xs whitespace-nowrap'
-								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-xs whitespace-nowrap transition-colors`}
+								? 'p1-accent text-[13px] whitespace-nowrap'
+								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-[13px] whitespace-nowrap transition-colors`}
 						class:brightness-90={isLight && link.href !== '/university'}
 					>
 						{link.label}
@@ -91,7 +91,7 @@
 					{#if i < links.length - 1}
 						<svg
 							viewBox="0 0 2 2"
-							class="p1-muted inline h-0.5 w-0.5 shrink-0 fill-current opacity-60"
+							class="inline h-0.5 w-0.5 shrink-0 fill-current text-university-link"
 							aria-hidden="true"
 						>
 							<circle cx={1} cy={1} r={1} />
@@ -106,7 +106,7 @@
 			<div class="flex flex-1">
 				<div class="items-center py-1.5 lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
 					{#if phone}
-						<div class="flex items-center justify-center px-2 py-1 text-xs xl:px-4">
+						<div class="flex items-center justify-center px-2 py-1 text-[13px] xl:px-4">
 							<EditableField
 								richText={false}
 								fieldKey="Banner.phone"
@@ -118,7 +118,7 @@
 								{#snippet children(displayValue)}
 									<a
 										href="tel:{displayValue}"
-										class="p1-title p1-accent-hover text-xs font-normal tracking-wide antialiased transition-colors"
+										class="p1-title p1-accent-hover text-[13px] font-normal tracking-wide antialiased transition-colors"
 										class:brightness-90={isLight}
 									>
 										{displayValue}
@@ -131,7 +131,7 @@
 					{#if phone && email}
 						<svg
 							viewBox="0 0 2 2"
-							class="p1-muted mx-1 inline h-0.5 w-0.5 shrink-0 fill-current opacity-60"
+							class="mx-1 inline h-0.5 w-0.5 shrink-0 fill-current text-university-link"
 							aria-hidden="true"
 						>
 							<circle cx={1} cy={1} r={1} />
@@ -139,7 +139,7 @@
 					{/if}
 
 					{#if email}
-						<div class="flex items-center justify-center px-2 py-1 text-xs xl:px-4">
+						<div class="flex items-center justify-center px-2 py-1 text-[13px] xl:px-4">
 							<EditableField
 								richText={false}
 								fieldKey="Banner.email"
@@ -151,7 +151,7 @@
 								{#snippet children(displayValue)}
 									<a
 										href="mailto:{displayValue}"
-										class="p1-title p1-accent-hover text-xs font-normal tracking-wide antialiased transition-colors"
+										class="p1-title p1-accent-hover text-[13px] font-normal tracking-wide antialiased transition-colors"
 										class:brightness-90={isLight}
 									>
 										{displayValue}
@@ -171,56 +171,17 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		position: relative;
-		isolation: isolate;
-		padding: 0.375rem 1.125rem;
-		border: 1px solid var(--ds-university-link-highlight);
+		padding: 0.25rem 1.125rem;
+		border: 1px solid transparent;
 		border-radius: 0.625rem;
 		color: var(--ds-on-university-link);
 		font-weight: 600;
 		letter-spacing: normal;
-		background: linear-gradient(
-			160deg,
-			color-mix(in srgb, var(--ds-university-link-highlight) 80%, transparent),
-			color-mix(in srgb, var(--ds-university-link-surface) 55%, transparent) 38%,
-			color-mix(in srgb, var(--ds-university-link-surface-hover) 85%, transparent) 75%,
-			color-mix(in srgb, var(--ds-university-link-highlight) 95%, transparent)
-		);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		box-shadow:
-			inset 0 1px 1px var(--ds-university-link-highlight),
-			inset 1px 2px 3px color-mix(in srgb, var(--ds-university-link-shade) 55%, transparent),
-			inset -1px -2px 2px var(--ds-university-link-highlight),
-			0 1px 1px color-mix(in srgb, var(--ds-university-link-shade) 65%, transparent),
-			2px 5px 8px -2px color-mix(in srgb, var(--ds-university-link-shade) 40%, transparent);
+		background: var(--ds-university-link-surface);
+		box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-on-university-link) 32%, transparent);
 		transition:
 			transform 160ms ease,
 			background-color 160ms ease;
-	}
-
-	.university-link::before,
-	.university-link::after {
-		content: '';
-		position: absolute;
-		pointer-events: none;
-		border-radius: inherit;
-	}
-
-	.university-link::before {
-		inset: 2px;
-		border: 1px solid color-mix(in srgb, var(--ds-university-link-highlight) 85%, transparent);
-		box-shadow:
-			0 0 1px var(--ds-university-link-shade),
-			inset 1px 1px 2px color-mix(in srgb, var(--ds-university-link-shade) 35%, transparent),
-			inset -1px -1px 2px var(--ds-university-link-highlight);
-	}
-
-	.university-link::after {
-		inset: 0;
-		background:
-			radial-gradient(ellipse at 12% 95%, var(--ds-university-link-highlight), transparent 22%),
-			radial-gradient(ellipse at 90% 8%, var(--ds-university-link-highlight), transparent 20%);
 	}
 
 	.university-link:hover {
