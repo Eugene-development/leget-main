@@ -145,7 +145,7 @@
 			<EditableField
 				fieldKey="WhoWeInvite.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Кого мы приглашаем')}
+				value={String(data?.title ?? 'У вас есть клиент?')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="wi-item block"

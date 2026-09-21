@@ -1280,6 +1280,19 @@
 		]
 	},
 	{
+		"id": "pages_partnership_partnershipdrawer_status_back",
+		"action": "reset",
+		"label": "Назад к выбору статуса",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/partnership/PartnershipDrawer.svelte",
+		"route": "/partnership",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
+			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
+		]
+	},
+	{
 		"id": "pages_partnership_partnershipdrawer_submit_click_1",
 		"action": "submit_click",
 		"label": "Отправить заявку",

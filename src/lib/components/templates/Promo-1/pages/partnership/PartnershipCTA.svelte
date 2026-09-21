@@ -21,8 +21,9 @@
 	} = $props();
 	let partnershipOpen = $state(false);
 	const buttonText = $derived(
-		!data?.buttonText || data.buttonText === 'Обсудить сотрудничество'
-			? 'Узнать условия'
+		!data?.buttonText ||
+			['Обсудить сотрудничество', 'Узнать условия'].includes(String(data.buttonText))
+			? 'Стать партнёром'
 			: String(data.buttonText)
 	);
 	const phone = $derived(resolveSitePhone(sitePhone));
@@ -183,7 +184,7 @@
 							aria-haspopup="dialog"
 							aria-label={buttonText}
 							onclick={() => {
-								if (!isEditable) partnershipOpen = true;
+								partnershipOpen = true;
 							}}
 							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-link-500/95 transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-5-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
 						>

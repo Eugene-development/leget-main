@@ -674,7 +674,7 @@
 			<!-- Телефон: цель 44, номер остаётся в дереве доступности. -->
 			<a
 				href={phoneHref}
-				class="mobile-action mobile-phone p1-accent flex size-11 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				class="mobile-action mobile-phone p1-accent flex size-11 items-center justify-center rounded-lg ring-1 ring-[var(--p1-line)] ring-inset focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
 				<span class="sr-only">Позвонить: {sitePhone}</span>
 				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
@@ -700,8 +700,10 @@
 
 			<a
 				href={favoritesHref}
+				onclick={() => uiStore.closeMenu()}
+				data-goal-ignore="Закрытие мобильного меню перед навигацией в избранное"
 				aria-label={`Избранное: ${favoriteCount}`}
-				class="mobile-action mobile-favorite p1-title relative flex size-11 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				class="mobile-action mobile-favorite p1-title relative flex size-11 items-center justify-center rounded-lg ring-1 ring-[var(--p1-line)] ring-inset focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
 				{@render favoritesBadge(true)}
 				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
@@ -733,7 +735,7 @@
 					uiStore.closeMenu();
 					siteSearch.open = true;
 				}}
-				class="p1-title flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+				class="p1-title flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-lg ring-1 ring-[var(--p1-line)] ring-inset focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 			>
 				<svg
 					class="size-6"
@@ -753,7 +755,7 @@
 				aria-expanded={uiStore.menuOpen}
 				aria-controls="p1-mobile-menu"
 				aria-label={uiStore.menuOpen ? 'Закрыть меню' : 'Меню'}
-				class="mobile-action mobile-burger p1-title flex size-11 cursor-pointer items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+				class="mobile-action mobile-burger p1-title flex size-11 cursor-pointer items-center justify-center rounded-lg ring-1 ring-[var(--p1-line)] ring-inset focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
 			>
 				<svg class="mobile-icon" viewBox="0 0 24 26" fill="none" aria-hidden="true"
 					><defs

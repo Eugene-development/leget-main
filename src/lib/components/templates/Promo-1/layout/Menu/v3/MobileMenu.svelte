@@ -102,7 +102,7 @@
 						count: visibleCatalogItems.length
 					}
 				: {
-						eyebrow: 'Навигация',
+						eyebrow: null,
 						title: 'Меню',
 						description: 'Все разделы сайта — в одном списке.',
 						rootHref: null,
@@ -438,11 +438,13 @@
 
 					<div class="relative">
 						<div class="flex items-start justify-between gap-4">
-							<p
-								class="text-[8px] font-semibold tracking-[0.24em] text-alt-petrol-accent-300 uppercase"
-							>
-								{heading.eyebrow}
-							</p>
+							{#if heading.eyebrow}
+								<p
+									class="text-[8px] font-semibold tracking-[0.24em] text-alt-petrol-accent-300 uppercase"
+								>
+									{heading.eyebrow}
+								</p>
+							{/if}
 							<span
 								class="flex h-7 min-w-7 items-center justify-center rounded-full bg-on-dark/9 px-2 text-[10px] font-semibold text-on-dark/80"
 								aria-label="Количество разделов"
@@ -450,7 +452,7 @@
 								{heading.count}
 							</span>
 						</div>
-						<p class="p1-title-display mt-3 text-[1.75rem]">
+						<p class="p1-title-display text-[1.75rem]" class:mt-3={heading.eyebrow}>
 							{heading.title}
 						</p>
 						<p class="mt-3 max-w-[18rem] text-[11px] leading-relaxed text-on-dark/55">

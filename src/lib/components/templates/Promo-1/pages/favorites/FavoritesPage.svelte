@@ -44,9 +44,6 @@
 		<div class="flex items-end justify-between gap-6">
 			<div>
 				<h1 class="p1-title p1-title-display text-4xl sm:text-5xl">Избранное</h1>
-				<p class="p1-body mt-3 max-w-2xl text-base">
-					Сохранённые проекты доступны в этом браузере.
-				</p>
 			</div>
 			{#if favoriteProjects.length > 0}
 				<span class="p1-note p1-numeric p1-muted shrink-0">{favoriteProjects.length}</span>
@@ -54,7 +51,7 @@
 		</div>
 
 		{#if favoriteProjects.length > 0}
-			<div class="mt-8 flex justify-end">
+			<div class="mt-8 hidden justify-end sm:flex">
 				<FeedViewToggle {view} onpick={pickView} />
 			</div>
 			{#if view === 'list'}

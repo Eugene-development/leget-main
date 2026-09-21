@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('promo1-partnership');
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 	const id = $props.id();
 	let status = $state('');
+	let statusFields = $state<HTMLFieldSetElement>();
 	let name = $state('');
 	let company = $state('');
 	let phone = $state('');
@@ -14,7 +16,13 @@
 	let sending = $state(false);
 	let sent = $state(false);
 	let error = $state('');
-	const supplier = $derived(status === 'supplier');
+	const business = $derived(status === 'manufacturer' || status === 'supplier');
+	const statusOptions = [
+		{ value: 'referral', label: 'Вы приводите клиентов' },
+		{ value: 'manufacturer', label: 'Вы фабрика изготовитель' },
+		{ value: 'supplier', label: 'Вы поставщик' },
+		{ value: 'other', label: 'Иное' }
+	];
 	const inputClass =
 		'mt-2 block w-full rounded-lg border border-on-dark/25 bg-ink-900 px-3 py-3 text-base text-on-dark focus:border-link-400 focus:outline-2 focus:outline-offset-2 focus:outline-link-400';
 	async function submit(event: SubmitEvent) {
@@ -26,12 +34,12 @@
 			error = 'Проверьте телефон: укажите от 7 до 15 цифр с кодом страны.';
 			return;
 		}
-		if ((!supplier && !normalizedPhone) || (supplier && !normalizedPhone && !email.trim())) {
-			error = supplier ? 'Укажите телефон или почту для связи.' : 'Укажите телефон для связи.';
+		if ((!business && !normalizedPhone) || (business && !normalizedPhone && !email.trim())) {
+			error = business ? 'Укажите телефон или почту для связи.' : 'Укажите телефон для связи.';
 			return;
 		}
-		if (!name.trim() || (supplier && !company.trim())) {
-			error = supplier ? 'Укажите наименование компании и контактное лицо.' : 'Укажите ваше имя.';
+		if (!name.trim() || (business && !company.trim())) {
+			error = business ? 'Укажите наименование компании и контактное лицо.' : 'Укажите ваше имя.';
 			return;
 		}
 		sending = true;
@@ -42,10 +50,10 @@
 					partnership_status: status,
 					name: name.trim(),
 					phone: normalizedPhone || null,
-					email: supplier ? email.trim() || null : null,
-					company: supplier ? company.trim() : null,
-					city: supplier ? null : city.trim(),
-					message: supplier ? null : comment.trim(),
+					email: business ? email.trim() || null : null,
+					company: business ? company.trim() : null,
+					city: business ? null : city.trim(),
+					message: comment.trim(),
 					source_url: window.location.href.slice(0, 500)
 				},
 				'service-request',
@@ -83,9 +91,37 @@
 		</div>
 	{:else}
 		<form onsubmit={submit} class="space-y-6 text-sm text-on-dark" aria-busy={sending}>
-			<fieldset disabled={sending} class="space-y-3">
-				<legend class="mb-3 text-base font-semibold">Выберите ваш статус</legend>
-				{#each [{ value: 'referral', label: 'Вы приводите клиентов' }, { value: 'supplier', label: 'Вы фабрика или поставщик' }] as option}
+			<input type="hidden" name="partnership_status" value={status} />
+			<fieldset bind:this={statusFields} disabled={sending} class="space-y-3">
+				<legend class="mb-3 text-base font-semibold text-link-400">Выберите ваш статус</legend>
+				{#if status}
+					<button
+						type="button"
+						aria-label="Назад к выбору статуса"
+						title="Назад к выбору статуса"
+						data-metrika-goal="pages_partnership_partnershipdrawer_status_back"
+						data-goal-action="reset"
+						class="flex size-11 items-center justify-center rounded-lg text-link-400 transition-colors hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-link-400"
+						onclick={async () => {
+							status = '';
+							error = '';
+							await tick();
+							statusFields?.querySelector<HTMLInputElement>('input[type="radio"]')?.focus();
+						}}
+					>
+						<svg
+							aria-hidden="true"
+							class="size-5"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14" /></svg
+						>
+					</button>
+				{/if}
+				{#each statusOptions.filter((option) => !status || option.value === status) as option (option.value)}
 					<label
 						class="flex min-h-14 cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors {status ===
 						option.value
@@ -108,8 +144,8 @@
 			</fieldset>
 			{#if status}
 				<fieldset disabled={sending} class="space-y-5">
-					<legend class="mb-4 text-base font-semibold">Контактные данные</legend>
-					{#if supplier}<label class="block"
+					<legend class="mb-4 text-base font-semibold text-link-400">Контактные данные</legend>
+					{#if business}<label class="block"
 							>Наименование компании *<input
 								name="company"
 								autocomplete="organization"
@@ -120,7 +156,7 @@
 							/></label
 						>{/if}
 					<label class="block"
-						>{supplier ? 'Контактное лицо' : 'Ваше имя'} *<input
+						>{business ? 'Контактное лицо' : 'Ваше имя'} *<input
 							name="name"
 							autocomplete="name"
 							bind:value={name}
@@ -129,22 +165,18 @@
 							class={inputClass}
 						/></label
 					>
-					{#if supplier}<p id={`${id}-contact-hint`} class="text-on-dark/80">
-							Заполните телефон или почту — достаточно одного способа связи.
-						</p>{/if}
 					<label class="block"
-						>Телефон{supplier ? '' : ' *'}<input
+						>Телефон{business ? '' : ' *'}<input
 							name="phone"
 							type="tel"
 							autocomplete="tel"
 							bind:value={phone}
-							required={!supplier || !email.trim()}
+							required={!business || !email.trim()}
 							maxlength="50"
-							aria-describedby={supplier ? `${id}-contact-hint` : undefined}
 							class={inputClass}
 						/></label
 					>
-					{#if supplier}
+					{#if business}
 						<label class="block"
 							>Почта<input
 								name="email"
@@ -153,7 +185,6 @@
 								bind:value={email}
 								required={!phone.trim()}
 								maxlength="255"
-								aria-describedby={`${id}-contact-hint`}
 								class={inputClass}
 							/></label
 						>
@@ -167,16 +198,16 @@
 								class={inputClass}
 							/></label
 						>
-						<label class="block"
-							>Комментарий<textarea
-								name="comment"
-								bind:value={comment}
-								maxlength="2000"
-								rows="3"
-								class={`${inputClass} resize-y`}
-							></textarea></label
-						>
 					{/if}
+					<label class="block"
+						>Комментарий<textarea
+							name="comment"
+							bind:value={comment}
+							maxlength="2000"
+							rows="3"
+							class={`${inputClass} resize-y`}
+						></textarea></label
+					>
 				</fieldset>
 				{#if error}<p role="alert" class="rounded-lg border border-on-dark/30 p-3 text-on-dark">
 						{error}

@@ -28,8 +28,9 @@
 
 	let partnershipOpen = $state(false);
 	const buttonText = $derived(
-		!data?.buttonText || data.buttonText === 'Обсудить сотрудничество'
-			? 'Узнать условия'
+		!data?.buttonText ||
+			['Обсудить сотрудничество', 'Узнать условия'].includes(String(data.buttonText))
+			? 'Стать партнёром'
 			: String(data.buttonText)
 	);
 
@@ -169,7 +170,7 @@
 						aria-haspopup="dialog"
 						aria-label={buttonText}
 						onclick={() => {
-							if (!isEditable) partnershipOpen = true;
+							partnershipOpen = true;
 						}}
 						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-surface-raised px-7 py-3.5 text-sm font-semibold text-link-700 shadow-[0_20px_50px_-20px] shadow-link-950/65 transition duration-300 hover:bg-link-50 hover:shadow-[0_26px_60px_-18px] hover:shadow-link-950/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark motion-safe:hover:-translate-y-0.5"
 					>
@@ -307,7 +308,7 @@
 									<EditableField
 										fieldKey="PartnershipHero.quoteAuthor"
 										label="Подпись автора цитаты"
-										value={String(data?.quoteAuthor ?? 'Директор компании Иванов Иван Иванович')}
+										value={String(data?.quoteAuthor ?? 'Коллектив компании Новострой')}
 										{isEditable}
 										onSave={(v) => saveField('quoteAuthor', v)}
 										class="block"

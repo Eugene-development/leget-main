@@ -97,7 +97,7 @@
 				</button>
 			</div>
 		{:else}
-			<div class="mb-7 flex justify-end">
+			<div class="mb-7 hidden justify-end sm:flex">
 				<FeedViewToggle {view} onpick={pickView} />
 			</div>
 			{#if view === 'list'}
