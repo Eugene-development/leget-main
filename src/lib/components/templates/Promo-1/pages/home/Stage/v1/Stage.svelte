@@ -4,6 +4,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { onMount } from 'svelte';
 
 	let {
 		data = $bindable(),
@@ -61,6 +62,33 @@
 		'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z',
 		'M5 13l4 4L19 7'
 	];
+
+	let stageGrid = $state<HTMLOListElement | null>(null);
+	let revealArmed = $state(false);
+	let revealVisible = $state(false);
+
+	onMount(() => {
+		if (
+			!stageGrid ||
+			!('IntersectionObserver' in window) ||
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			return;
+		}
+
+		revealArmed = true;
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (!entry?.isIntersecting) return;
+				revealVisible = true;
+				observer.disconnect();
+			},
+			{ threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+		);
+
+		observer.observe(stageGrid);
+		return () => observer.disconnect();
+	});
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -171,13 +199,15 @@
 			а маркер убирает preflight Tailwind.
 		-->
 		<ol
+			bind:this={stageGrid}
 			role="list"
 			class="p1-stage-grid mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:mt-24 lg:grid-cols-3"
+			class:p1-stage-reveal-armed={revealArmed}
+			class:p1-stage-reveal-visible={revealVisible}
 		>
 			{#each steps as step, i}
 				<li
 					class="p1-stage-step group flex flex-col rounded-3xl bg-scrim/35 p-5 ring-1 ring-on-dark/15 backdrop-blur-md transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui hover:ring-on-dark/30"
-					style="--stage-i: {i}"
 				>
 					<!--
 						Полоса шага: номер — линия — знак. Три полосы одного ряда
@@ -303,37 +333,50 @@
 	}
 
 	/*
-	   Один авторский момент на блок: шаг встаёт на место, и его шкала
-	   дочерчивается. Пацинг задаёт прокрутка, поэтому длительности нет —
-	   есть доля входа (`--ds-motion-range-enter`), как у `p1-settle`
-	   в `PartnerOffers/v1`. Лесенка набирается сдвигом НАЧАЛА диапазона
-	   (`--stage-i`), а не задержкой: у скролл-связанной анимации задержки
-	   во времени не существует.
+	   Один авторский момент на блок: шесть шагов последовательно встают на
+	   место, а их шкалы дочерчиваются. Один IntersectionObserver наблюдает весь
+	   список, после первого входа отключается и больше не держит работу в фоне.
+	   JS только меняет фазу; движение и лесенка целиком принадлежат CSS.
 
-	   Оба гейта — на включение: без поддержки `animation-timeline` и при
-	   `prefers-reduced-motion: reduce` шаг просто стоит на месте, а шкала
-	   нарисована целиком. Умолчание — конечный вид.
+	   Умолчание — конечный вид. Класс начального кадра появляется только после
+	   успешного запуска observer, поэтому без JS, без IntersectionObserver и
+	   при `prefers-reduced-motion: reduce` контент не исчезает.
 	*/
-	@supports (animation-timeline: view()) {
-		@media (prefers-reduced-motion: no-preference) {
-			.p1-stage-step {
-				animation-name: p1-stage-settle;
-				animation-duration: auto;
-				animation-fill-mode: both;
-				animation-timing-function: var(--ds-motion-ease);
-				animation-timeline: view();
-				animation-range: entry calc(var(--stage-i, 0) * 3%) entry var(--ds-motion-range-enter);
-			}
+	@media (prefers-reduced-motion: no-preference) {
+		.p1-stage-step:nth-child(2) {
+			--stage-delay: var(--ds-motion-stagger-1);
+		}
+		.p1-stage-step:nth-child(3) {
+			--stage-delay: var(--ds-motion-stagger-2);
+		}
+		.p1-stage-step:nth-child(4) {
+			--stage-delay: var(--ds-motion-stagger-3);
+		}
+		.p1-stage-step:nth-child(5) {
+			--stage-delay: var(--ds-motion-stagger-4);
+		}
+		.p1-stage-step:nth-child(6) {
+			--stage-delay: var(--ds-motion-stagger-5);
+		}
 
-			.p1-stage-rule {
-				transform-origin: left center;
-				animation-name: p1-stage-draw;
-				animation-duration: auto;
-				animation-fill-mode: both;
-				animation-timing-function: var(--ds-motion-ease);
-				animation-timeline: view();
-				animation-range: entry calc(var(--stage-i, 0) * 3%) entry var(--ds-motion-range-enter);
-			}
+		.p1-stage-reveal-armed .p1-stage-step {
+			opacity: 0;
+			transform: translateY(var(--ds-motion-lift));
+		}
+
+		.p1-stage-reveal-armed .p1-stage-rule {
+			transform: scaleX(0);
+			transform-origin: left center;
+		}
+
+		.p1-stage-reveal-armed.p1-stage-reveal-visible .p1-stage-step {
+			animation: p1-stage-settle var(--ds-motion-duration-fast) var(--ds-motion-ease) both;
+			animation-delay: var(--stage-delay, 0ms);
+		}
+
+		.p1-stage-reveal-armed.p1-stage-reveal-visible .p1-stage-rule {
+			animation: p1-stage-draw var(--ds-motion-duration-fast) var(--ds-motion-ease) both;
+			animation-delay: var(--stage-delay, 0ms);
 		}
 	}
 
