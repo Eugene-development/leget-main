@@ -143,7 +143,7 @@
 								imagePath={data.managedBrand ? undefined : ['logo']}
 								src={logo}
 								alt="Логотип {title}"
-								class="p1-logo max-h-full max-w-full"
+								class="p1-logo p1-brand-hero-logo max-h-full max-w-full"
 							/>
 						</div>
 					{:else}
@@ -159,3 +159,26 @@
 		</div>
 	</section>
 </div>
+
+<style>
+	/* Логотип бренда — сам контент страницы: не приглушаем его, а откликаемся на карточку. */
+	:global(.p1-brand-hero-logo) {
+		filter: none;
+		opacity: 1;
+		transition: transform var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+	}
+
+	:global(.group:hover .p1-brand-hero-logo) {
+		transform: scale(1.04);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.p1-brand-hero-logo) {
+			transition: none;
+		}
+
+		:global(.group:hover .p1-brand-hero-logo) {
+			transform: none;
+		}
+	}
+</style>

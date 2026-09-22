@@ -36,7 +36,7 @@
 			<EditableField
 				fieldKey="ByttehnikaCTA.title"
 				label="Заголовок CTA"
-				value={String(data.title || 'Нужна помощь с выбором?')}
+				value={String(data.title || 'Нужна помощь в выборе?')}
 				{isEditable}
 				inline
 				onSave={(v) => saveField('title', v)}

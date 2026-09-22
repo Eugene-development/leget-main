@@ -28,11 +28,7 @@
 	 * API остаётся пустым; тумблер работает только у записей с id.
 	 */
 	const DEFAULT_BRANDS = [
-		{ title: 'Bosch', slug: 'bosch' },
-		{ title: 'Siemens', slug: 'siemens' },
-		{ title: 'Electrolux', slug: 'electrolux' },
-		{ title: 'Hansa', slug: 'hansa' },
-		{ title: 'Gorenje', slug: 'gorenje' }
+		{ title: 'Bosch', slug: 'bosch' }
 	];
 	let modalOpen = $state(false);
 	let tagModalOpen = $state(false);
