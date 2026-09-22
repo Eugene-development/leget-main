@@ -318,6 +318,7 @@
 			)}
 			<div
 				class="ms-item"
+				class:ms-item--link={!nestedBrands}
 				class:ms-item--active={isActive}
 				class:ms-item--off={isEditable && !isEnabled}
 				style="--i: {i}"
@@ -795,25 +796,26 @@
 		animation-delay: calc(var(--i) * 45ms);
 	}
 
-	/* Подложка-заливка: уезжает влево и «наливается» при наведении. */
+	/* Подложка-заливка принадлежит ссылке, а не кнопке раскрытия списка. */
 	.ms-item::before {
 		content: '';
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
 		background: linear-gradient(90deg, var(--ms-accent-wash) 0%, transparent 100%);
-		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
 		opacity: 0;
 		transform: translateX(-6px);
 		transition:
 			opacity 0.28s ease,
-			transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+			transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 0.22s ease;
 		pointer-events: none;
 	}
 
-	.ms-item:hover::before {
+	.ms-item--link:has(> a.ms-link:hover)::before {
 		opacity: 1;
 		transform: translateX(0);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
 	}
 
 	/* Акцентная полоса активного пункта. */
@@ -835,7 +837,7 @@
 		pointer-events: none;
 	}
 
-	.ms-item--active::before {
+	.ms-item--link.ms-item--active::before {
 		opacity: 1;
 		transform: translateX(0);
 	}
