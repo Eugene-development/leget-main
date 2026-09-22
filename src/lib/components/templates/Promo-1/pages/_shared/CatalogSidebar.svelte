@@ -635,6 +635,16 @@
 		border-radius: var(--ds-radius-lg);
 		font-size: var(--text-sm);
 		color: var(--ds-light-body);
+		transform-origin: left center;
+		transition:
+			background-color 0.22s ease,
+			color 0.22s ease,
+			transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 0.22s ease;
+	}
+	.ms-brand-link:hover {
+		transform: scale(1.02);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
 	}
 	.ms-brand-link:hover,
 	.ms-brand-link[aria-current='page'] {
@@ -792,6 +802,7 @@
 		inset: 0;
 		border-radius: inherit;
 		background: linear-gradient(90deg, var(--ms-accent-wash) 0%, transparent 100%);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
 		opacity: 0;
 		transform: translateX(-6px);
 		transition:
@@ -850,7 +861,10 @@
 		font-size: var(--text-sm);
 		font-weight: 500;
 		color: var(--ds-light-body);
-		transition: color 0.22s ease;
+		transform-origin: left center;
+		transition:
+			color 0.22s ease,
+			transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.ms-item:hover .ms-link,
@@ -860,6 +874,10 @@
 
 	.ms-item--active .ms-link {
 		font-weight: 600;
+	}
+
+	a.ms-link:hover {
+		transform: scale(1.02);
 	}
 
 	.ms-label {
@@ -979,6 +997,11 @@
 	@media (prefers-reduced-motion: reduce) {
 		.ms-knob {
 			transition-duration: 0.01ms;
+		}
+
+		a.ms-link:hover,
+		.ms-brand-link:hover {
+			transform: none;
 		}
 	}
 

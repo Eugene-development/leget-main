@@ -36,7 +36,8 @@
 		{ title: 'EMAR', slug: 'emar' },
 		{ title: 'Florentina', slug: 'florentina' },
 		{ title: 'Paulmark', slug: 'paulmark' },
-		{ title: 'Pereal', slug: 'pereal' }
+		{ title: 'Pureal', slug: 'pureal' },
+		{ title: 'Granula', slug: 'granula' }
 	];
 	let modalOpen = $state(false);
 	let tagModalOpen = $state(false);

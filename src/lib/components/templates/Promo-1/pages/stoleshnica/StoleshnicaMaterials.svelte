@@ -40,6 +40,14 @@
 				careColor: 'emerald'
 			},
 			{
+				material: 'Компакт плита',
+				price: 'Средняя',
+				strength: 'Высокая',
+				care: 'Простой',
+				strengthColor: 'emerald',
+				careColor: 'emerald'
+			},
+			{
 				material: 'ДСП / Постформинг',
 				price: 'Низкая',
 				strength: 'Средняя',

@@ -29,7 +29,7 @@
 {#if brands.length > 0}
 	<div class="mebel-container mt-12 mb-12">
 		<h2 class="mb-6 text-2xl text-ink-900">
-			{data.title || 'Бренды столешниц'}
+			{data.title || 'Другие бренды материала'}
 		</h2>
 
 		<div
@@ -58,7 +58,6 @@
 							{brand.title ?? brand.value ?? brand.name}
 						</span>
 					{/if}
-					<span class="text-center text-xs text-ink-500">{brand.materialTitle}</span>
 				</a>
 			{/each}
 		</div>
