@@ -135,8 +135,6 @@
 									>{@render arrow()}</span
 								>
 							</a>
-						{:else if isEditable}
-							<p class="p1-muted p1-line border-b py-7 text-sm">Добавить ссылку на Telegram</p>
 						{/if}
 					{/snippet}
 				</EditableField>

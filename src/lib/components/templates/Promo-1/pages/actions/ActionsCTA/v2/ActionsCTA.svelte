@@ -20,7 +20,6 @@
 	} = $props();
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
-
 	const isLight = $derived(isLightBlock(data, 'dark'));
 
 	async function saveField(field: string, value: string) {
@@ -31,199 +30,113 @@
 	}
 </script>
 
-<!-- Премиальный тёмный CTA: split-layout, золотые акценты, стекло. -->
 <section
 	class="p1-surface relative overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<!-- Глубокий фоновый градиент -->
-	{#if !isLight}
-		<div class="absolute inset-0 bg-linear-to-br from-ink-950 via-ink-900 to-ink-950"></div>
-	{/if}
-	<!-- Тёплые световые пятна -->
 	<div
-		class="absolute -top-24 -left-24 size-96 rounded-full bg-cat-1-500/15 blur-[120px]"
+		class="pointer-events-none absolute inset-y-0 right-0 w-[70%] bg-brand-500/10 lg:w-[45%]"
+		style="clip-path: polygon(72% 0, 100% 0, 100% 100%, 12% 100%)"
 		aria-hidden="true"
 	></div>
-	<div
-		class="absolute -right-24 -bottom-24 size-112 rounded-full bg-cat-6-500/10 blur-[130px]"
-		aria-hidden="true"
-	></div>
-	<!-- Тонкая декоративная сетка -->
-	<div
-		class="absolute inset-0 opacity-[0.05]"
-		style="background-image: linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);"
-		aria-hidden="true"
-	></div>
-
-	<div class="relative mx-auto max-w-6xl px-6 lg:px-8">
-		<!-- Стеклянная панель с градиентной рамкой -->
+	<div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+		<div class="h-1 w-full bg-brand-500"></div>
 		<div
-			class="relative rounded-4xl bg-linear-to-br from-cat-1-400/40 via-on-accent/10 to-cat-6-500/30 p-px shadow-2xl shadow-scrim/40"
+			class="relative grid gap-12 border-b border-[var(--p1-border)] py-12 sm:py-16 lg:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.7fr)] lg:gap-16 lg:py-20"
 		>
+			<div class="relative z-10">
+				<EditableField
+					fieldKey="ActionsCTA.title"
+					label="Заголовок"
+					value={String(data?.title ?? 'Хотите узнать больше об акциях?')}
+					{isEditable}
+					onSave={(v) => saveField('title', v)}
+					class="block"
+				>
+					{#snippet children(displayValue)}
+						<h2
+							class="p1-title p1-title-display max-w-[12ch] text-5xl text-balance sm:text-6xl lg:text-7xl"
+						>
+							<RichText value={displayValue} />
+						</h2>
+					{/snippet}
+				</EditableField>
+				<div class="mt-8 h-1 w-24 origin-left -skew-x-24 bg-brand-500" aria-hidden="true"></div>
+				<EditableField
+					fieldKey="ActionsCTA.subtitle"
+					label="Подзаголовок"
+					value={String(
+						data?.subtitle ?? 'Свяжитесь с нами и мы расскажем обо всех актуальных предложениях'
+					)}
+					{isEditable}
+					multiline
+					onSave={(v) => saveField('subtitle', v)}
+					class="mt-8 block"
+				>
+					{#snippet children(displayValue)}
+						<p class="p1-body max-w-xl text-lg/8 sm:text-xl/9"><RichText value={displayValue} /></p>
+					{/snippet}
+				</EditableField>
+			</div>
 			<div
-				class="relative overflow-hidden rounded-[calc(2rem-1px)] {isLight
-					? 'bg-surface-raised/80'
-					: 'bg-ink-900/80'} px-6 py-14 backdrop-blur-xl sm:px-12 sm:py-16 lg:px-16"
+				class="relative z-10 flex flex-col justify-end gap-6 lg:border-l lg:border-[var(--p1-border)] lg:pl-10"
 			>
-				<!-- Внутреннее золотое свечение сверху -->
-				<div
-					class="absolute inset-x-0 -top-px h-px bg-linear-to-r from-transparent via-cat-1-300/70 to-transparent"
-					aria-hidden="true"
-				></div>
-				<div
-					class="absolute -top-16 left-1/2 h-32 w-2/3 -translate-x-1/2 rounded-full bg-cat-1-400/20 blur-3xl"
-					aria-hidden="true"
-				></div>
-
-				<div class="relative grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-					<!-- Левая колонка: текст -->
-					<div class="text-center lg:text-left">
-						<!-- Бейдж-надголовок -->
-						<span
-							class="inline-flex items-center gap-2 rounded-full border border-cat-1-400/30 bg-cat-1-400/10 px-4 py-1.5 text-sm font-semibold {isLight
-								? 'text-cat-1-600'
-								: 'text-cat-1-300'} backdrop-blur-sm"
+				<EditableField
+					fieldKey="ActionsCTA.buttonText"
+					label="Текст кнопки"
+					value={String(data?.buttonText ?? 'Связаться с нами')}
+					{isEditable}
+					onSave={(v) => saveField('buttonText', v)}
+					class="block"
+				>
+					{#snippet children(displayValue)}
+						<a
+							href="/contact"
+							class="group flex min-h-20 items-center justify-between gap-5 bg-brand-600 px-6 py-5 text-lg font-semibold text-on-accent transition-colors hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500 sm:px-8"
 						>
-							<svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-								<path
-									d="M12 2l2.4 4.86L20 7.6l-3.9 3.8L17 17l-5-2.6L7 17l.9-5.6L4 7.6l5.6-.74L12 2z"
-								/>
-							</svg>
-							Эксклюзивные предложения
-						</span>
-
-						<EditableField
-							fieldKey="ActionsCTA.title"
-							label="Заголовок"
-							value={String(data?.title ?? 'Хотите узнать больше об акциях?')}
-							{isEditable}
-							onSave={(v) => saveField('title', v)}
-							class="mt-6 block"
-						>
-							{#snippet children(displayValue)}
-								<h2 class="text-3xl text-balance text-on-dark sm:text-4xl lg:text-5xl">
-									<RichText value={displayValue} />
-								</h2>
-							{/snippet}
-						</EditableField>
-
-						<EditableField
-							fieldKey="ActionsCTA.subtitle"
-							label="Подзаголовок"
-							value={String(
-								data?.subtitle ?? 'Свяжитесь с нами и мы расскажем обо всех актуальных предложениях'
-							)}
-							{isEditable}
-							multiline
-							onSave={(v) => saveField('subtitle', v)}
-							class="mt-6 block"
-						>
-							{#snippet children(displayValue)}
-								<p class="p1-body mx-auto mt-5 max-w-lg text-lg/8 lg:mx-0">
-									<RichText value={displayValue} />
-								</p>
-							{/snippet}
-						</EditableField>
-					</div>
-
-					<!-- Правая колонка: действия -->
-					<div class="flex flex-col gap-4">
-						<EditableField
-							fieldKey="ActionsCTA.buttonText"
-							label="Текст кнопки"
-							value={String(data?.buttonText ?? 'Связаться с нами')}
-							{isEditable}
-							onSave={(v) => saveField('buttonText', v)}
-							class="block"
-						>
-							{#snippet children(displayValue)}
-								<a
-									href="/contact"
-									class="group p1-title relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-linear-to-r from-cat-1-400 to-cat-1-500 px-8 py-5 text-base font-semibold shadow-lg shadow-cat-1-500/25 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cat-1-500/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cat-1-300"
+							<RichText value={displayValue} />
+							<svg
+								class="size-8 shrink-0 transition-transform group-hover:translate-x-1"
+								viewBox="0 0 32 32"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								aria-hidden="true"><path d="M4 16h23m-9-9 9 9-9 9" /></svg
+							>
+						</a>
+					{/snippet}
+				</EditableField>
+				<EditableField
+					richText={false}
+					fieldKey="ActionsCTA.phone"
+					label="Телефон"
+					value={phone}
+					isEditable={false}
+					onSave={(v) => saveField('phone', v)}
+					class="block"
+				>
+					{#snippet children(displayValue)}
+						{#if displayValue}
+							<a
+								href={phoneHref}
+								class="p1-body inline-flex min-h-11 items-center gap-3 text-base font-semibold underline decoration-brand-500 underline-offset-8 transition-colors hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500"
+							>
+								<svg
+									class="size-5 shrink-0"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									aria-hidden="true"
+									><path
+										d="M6 3h3l1.5 4-2 2a15 15 0 0 0 6.5 6.5l2-2 4 1.5v3a2 2 0 0 1-2 2C10.2 20 4 13.8 4 5a2 2 0 0 1 2-2Z"
+									/></svg
 								>
-									<!-- Блик при наведении -->
-									<span
-										class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-on-dark/40 to-transparent transition-transform duration-700 group-hover:translate-x-full"
-										aria-hidden="true"
-									></span>
-									<span class="relative"><RichText value={displayValue} /></span>
-									<svg
-										class="relative size-5 transition-transform duration-300 group-hover:translate-x-1"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="2"
-										aria-hidden="true"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M17 8l4 4m0 0l-4 4m4-4H3"
-										/>
-									</svg>
-								</a>
-							{/snippet}
-						</EditableField>
-
-						<EditableField
-							richText={false}
-							fieldKey="ActionsCTA.phone"
-							label="Телефон"
-							value={phone}
-							isEditable={false}
-							onSave={(v) => saveField('phone', v)}
-							class="block"
-						>
-							{#snippet children(displayValue)}
-								{#if displayValue}
-									<a
-										href={phoneHref}
-										class="group inline-flex items-center gap-4 rounded-2xl border border-on-dark/10 bg-on-dark/5 px-6 py-4 text-on-dark backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-cat-1-400/40 hover:bg-on-dark/10"
-									>
-										<span
-											class="group-hover:p1-title flex size-11 items-center justify-center rounded-full bg-cat-1-400/15 {isLight
-												? 'text-cat-1-600'
-												: 'text-cat-1-300'} ring-1 ring-cat-1-400/20 transition-colors duration-300 group-hover:bg-cat-1-400"
-										>
-											<svg
-												class="size-5"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-												stroke-width="2"
-												aria-hidden="true"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-												/>
-											</svg>
-										</span>
-										<span class="flex flex-col items-start leading-tight">
-											<span class="p1-muted text-xs font-normal">Или позвоните нам</span>
-											<span class="text-base font-semibold tracking-tight">{displayValue}</span>
-										</span>
-									</a>
-								{/if}
-							{/snippet}
-						</EditableField>
-
-						<!-- Тонкая подсказка -->
-						<p
-							class="p1-muted mt-1 flex items-center justify-center gap-2 text-sm lg:justify-start"
-						>
-							<span class="relative flex size-2">
-								<span
-									class="absolute inline-flex size-full animate-ping rounded-full bg-cat-2-400 opacity-75"
-								></span>
-								<span class="relative inline-flex size-2 rounded-full bg-cat-2-500"></span>
-							</span>
-							Ответим в течение дня · Консультация бесплатна
-						</p>
-					</div>
-				</div>
+								{displayValue}
+							</a>
+						{/if}
+					{/snippet}
+				</EditableField>
 			</div>
 		</div>
 	</div>

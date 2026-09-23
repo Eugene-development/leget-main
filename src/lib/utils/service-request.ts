@@ -9,6 +9,8 @@ export type ServiceRequestInput = {
 	name: string;
 	phone: string;
 	message?: string | null;
+	objectAddress?: string;
+	visitTime?: string;
 	dimensions?: string[];
 	city: string;
 	sourceUrl?: string | null;
@@ -38,6 +40,8 @@ export async function submitServiceRequest(
 	payload.set('phone', cleanPhone(input.phone));
 	payload.set('city', input.city);
 	if (input.message) payload.set('message', input.message.trim());
+	if (input.objectAddress) payload.set('object_address', input.objectAddress.trim());
+	if (input.visitTime) payload.set('visit_time', input.visitTime.trim());
 	for (const dimension of input.dimensions ?? []) payload.append('dimensions[]', dimension.trim());
 	if (input.sourceUrl) payload.set('source_url', input.sourceUrl.slice(0, 500));
 	if (input.attachments) {

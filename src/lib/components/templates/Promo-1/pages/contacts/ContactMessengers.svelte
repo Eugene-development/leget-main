@@ -84,15 +84,6 @@
 					{/snippet}
 				</EditableField>
 
-				<p class="ct-item ct-d3 mt-6 flex items-center gap-3 {ct.body.onInkMuted}">
-					<span class="relative flex size-2.5" aria-hidden="true">
-						<span
-							class="absolute inline-flex size-full animate-ping rounded-full bg-brand-500 opacity-50 motion-reduce:animate-none"
-						></span>
-						<span class="relative inline-flex size-2.5 rounded-full bg-brand-600"></span>
-					</span>
-					Обычно отвечаем в течение нескольких минут
-				</p>
 			</div>
 
 			<div class="relative z-10 mt-14 flex justify-center lg:mt-0 lg:justify-end lg:pr-16">
@@ -111,7 +102,7 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Открыть Telegram в новой вкладке"
-							class="telegram-button group relative flex size-40 items-center justify-center rounded-full text-on-dark ring-1 ring-telegram/50 transition duration-500 focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-telegram motion-safe:hover:scale-105 sm:size-48"
+							class="telegram-button group relative flex size-32 items-center justify-center rounded-full text-on-dark ring-1 ring-telegram/50 transition duration-500 focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-telegram motion-safe:hover:scale-105 sm:size-40"
 						>
 							<span
 								class="pointer-events-none absolute -inset-6 rounded-full border border-telegram/35"

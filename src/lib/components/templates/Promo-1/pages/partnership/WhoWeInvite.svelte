@@ -285,7 +285,7 @@
 						richText={false}
 						fieldKey="WhoWeInvite.platformUrl"
 						label="Ссылка на платформу"
-						value={String(data?.platformUrl ?? '')}
+						value={String(data?.platformUrl || 'https://rubonus.pro/')}
 						{isEditable}
 						onSave={(v) => saveField('platformUrl', v)}
 						class="mt-8 inline-block"

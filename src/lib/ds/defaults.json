@@ -451,7 +451,7 @@
                     "subtitle": "Партнёрство для профессионалов в сфере интерьера и ремонта",
                     "cards": [],
                     "platformText": "Профессиональная платформа для автоматизации партнёрских продаж.",
-                    "platformUrl": "",
+                    "platformUrl": "https://rubonus.pro/",
                     "platformButtonText": "Перейти на платформу"
                 },
                 "ForManufacturers": {
@@ -2291,8 +2291,9 @@
     "_versions": {
         "1": {
             "HeroMain": 4,
-            "ActionsCTA": 2,
+            "ActionsCTA": 4,
             "Brands": 2,
+            "ContactAddress": 2,
             "ContactCTA": 3,
             "ContactsHero": 2,
             "Direction": 2,

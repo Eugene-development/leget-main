@@ -167,6 +167,7 @@
 		'Incentives',
 		'Brands',
 		'ContactCTA',
+		'ContactAddress',
 		'ContactsHero',
 		'Direction',
 		'PartnerOffers',

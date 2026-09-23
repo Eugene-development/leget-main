@@ -82,9 +82,9 @@
 						class={link.href === '/university'
 							? 'university-link my-1.5 text-[13px] whitespace-nowrap'
 							: $page.url.pathname === link.href
-								? 'p1-accent text-[13px] whitespace-nowrap'
+								? 'text-university-link text-[13px] whitespace-nowrap'
 								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-[13px] whitespace-nowrap transition-colors`}
-						class:brightness-90={isLight && link.href !== '/university'}
+						class:brightness-90={isLight && link.href !== '/university' && $page.url.pathname !== link.href}
 					>
 						{link.label}
 					</a>

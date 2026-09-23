@@ -4,10 +4,10 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import { ct, revealOnScroll } from './theme';
+	import { ct, revealOnScroll } from '../../theme';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import '../../../../theme.css';
 	import '../../theme.css';
-	import './theme.css';
 
 	let {
 		data = $bindable(),
