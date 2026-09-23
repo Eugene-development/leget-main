@@ -1002,6 +1002,12 @@
 		"source": "templates/Promo-1/pages/stoleshnica/StoleshnicaServices.svelte"
 	},
 	{
+		"article": "1.30.5.1",
+		"template": "Promo-1",
+		"page": "/stoleshnica/{material}/{brand}",
+		"source": "templates/Promo-1/pages/_shared/BrandAbout.svelte"
+	},
+	{
 		"article": "1.31.1.1",
 		"template": "Promo-1",
 		"page": "/santehnika/{brand}",

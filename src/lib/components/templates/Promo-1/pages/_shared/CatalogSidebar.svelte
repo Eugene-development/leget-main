@@ -645,12 +645,19 @@
 	}
 	.ms-brand-link:hover {
 		transform: scale(1.02);
+	}
+	.ms-brand-link:hover,
+	.ms-brand-link[aria-current='page'] {
 		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
 	}
 	.ms-brand-link:hover,
 	.ms-brand-link[aria-current='page'] {
 		background: var(--ms-accent-wash);
 		color: var(--ms-accent-deep);
+	}
+	.ms-nav:has(a:hover) .ms-brand-link[aria-current='page']:not(:hover) {
+		background: transparent;
+		box-shadow: none;
 	}
 	.ms-expand:focus-visible,
 	.ms-brand-link:focus-visible {
@@ -840,6 +847,11 @@
 	.ms-item--link.ms-item--active::before {
 		opacity: 1;
 		transform: translateX(0);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
+	}
+	.ms-nav:has(a:hover) .ms-item--link.ms-item--active:not(:has(> a.ms-link:hover))::before {
+		opacity: 0;
+		box-shadow: none;
 	}
 
 	.ms-item--active::after {

@@ -1146,6 +1146,10 @@
                     "secondaryButton": "Заказать замер столешницы",
                     "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/countertops_hero.png"
                 },
+                "BrandAbout": {
+                    "title": "О бренде",
+                    "description": ""
+                },
                 "StoleshnicaBrands": {
                     "title": "Бренды материала",
                     "brands": []

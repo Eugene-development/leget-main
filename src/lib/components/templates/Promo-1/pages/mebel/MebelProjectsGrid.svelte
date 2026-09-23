@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.17.3.1 — см. docs/architecture/component-articles-map.md
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import FeedViewToggle from '../projects/ProjectsFeed/FeedViewToggle.svelte';
 	import FeedRows from '../projects/ProjectsFeed/FeedRows.svelte';

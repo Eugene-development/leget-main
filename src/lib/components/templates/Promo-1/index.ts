@@ -363,6 +363,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/stoleshnica/{material}/{brand}': {
 		StoleshnicaSidebar,
 		StoleshnicaBrandHero,
+		BrandAbout,
 		StoleshnicaBrands,
 		StoleshnicaServices
 	},
