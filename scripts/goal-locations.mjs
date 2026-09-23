@@ -92,6 +92,18 @@ export function goalLocations(root, write = false) {
 			locations = owners('templates/Promo-1/pages/partnership/PartnershipDrawer.svelte');
 		else if (button.id.startsWith('guarantees_warranty_drawer_'))
 			locations = owners('templates/Promo-1/pages/guarantees/WarrantyRequestDrawer.svelte');
+		else if (button.source.startsWith('../university/'))
+			locations = [
+				{
+					template: 'Promo-1',
+					page: button.source.includes('Admission')
+						? '/university/auth'
+						: button.source.includes('Classroom')
+							? '/university/learn/[slug]'
+							: '/university',
+					article: ''
+				}
+			];
 		else locations = owners(button.source);
 		if (button.variant && button.route)
 			locations = locations.filter(

@@ -80,14 +80,22 @@
 					<div class="uni-note-body">
 						<h3 class="uni-note-title p1-title p1-title-sub">{@render noteField(i, 'title')}</h3>
 						<p class="p1-body">{@render noteField(i, 'intro')}</p>
-						<details class="uni-reading" open={isEditable}>
-							<summary class="p1-title"
-								>Читать заметку <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
-									><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" /></svg
-								></summary
-							>
-							<div class="uni-reading-text p1-body">{@render noteField(i, 'text')}</div>
-						</details>
+						{#if isEditable}<details class="uni-reading" open>
+								<summary class="p1-title"
+									>Читать заметку <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
+										><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" /></svg
+									></summary
+								>
+								<div class="uni-reading-text p1-body">{@render noteField(i, 'text')}</div>
+							</details>{:else}<a
+								class="uni-text-link p1-title"
+								href="/university/learn/{[
+									'design-planning',
+									'furniture-storage',
+									'renovation-plan'
+								][i] ?? 'design-planning'}"
+								>Изучить тему и пройти тест <span aria-hidden="true">→</span></a
+							>{/if}
 					</div>
 				</article>
 			{/each}

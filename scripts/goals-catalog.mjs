@@ -38,6 +38,7 @@ function files(dir) {
 }
 for (const file of [
 	...files(join(base, 'templates')),
+	...files(join(root, 'src/lib/university')),
 	...shared.map((n) => join(base, n + '.svelte'))
 ].sort()) {
 	const source = readFileSync(file, 'utf8');
@@ -122,7 +123,9 @@ for (const file of [
 			: path.startsWith('LoginModal')
 				? ['Promo-1', 'Promo-2', 'Promo-3', 'Test']
 				: ['Promo-1'];
-		const slug = path.match(/\/pages\/([^/]+)/)?.[1];
+		const slug = path.startsWith('../university/')
+			? 'university'
+			: path.match(/\/pages\/([^/]+)/)?.[1];
 		const route =
 			!slug || slug === '_shared' || path.includes('/services/_shared/')
 				? null

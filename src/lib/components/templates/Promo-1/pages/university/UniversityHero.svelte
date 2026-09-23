@@ -6,6 +6,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import UniversityMark from './UniversityMark.svelte';
+	import Catalog from '$lib/university/Catalog.svelte';
 	import { universityHero as defaults } from './content';
 	import '../../theme.css';
 	import './university.css';
@@ -73,96 +74,101 @@
 			<h1 class="uni-headline p1-title">{@render field('title', 'Заголовок')}</h1>
 			<div class="uni-intro-copy">
 				<p class="p1-body">{@render field('description', 'Описание')}</p>
-				<a class="uni-text-link p1-title" href="#university-reading"
+				<a class="uni-text-link p1-title" href="#university-program"
 					>{@render field('buttonText', 'Текст ссылки')}<span aria-hidden="true">↗</span></a
 				>
 			</div>
 		</div>
-		<div class="uni-studio">
-			<div class="uni-curriculum">
-				<h2 class="uni-menu-title p1-title p1-title-sub">
-					{@render field('menuTitle', 'Заголовок списка')}
-				</h2>
-				<div class="uni-discipline-list" aria-label="Дисциплины Универа">
-					{#each disciplines as discipline, i}
-						<div class="uni-discipline p1-line" class:is-selected={active === i}>
-							<button
-								class="uni-discipline-button"
-								type="button"
-								aria-expanded={active === i}
-								aria-controls="{uid}-discipline-{i}"
-								onclick={() => (selected = i)}
-								data-goal-ignore="Просмотр дисциплины внутри Hero"
-							>
-								<span>{discipline.title}</span>
-								<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
-									><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" /></svg
+		{#if !isEditable}<Catalog />{:else}<div class="uni-studio">
+				<div class="uni-curriculum">
+					<h2 class="uni-menu-title p1-title p1-title-sub">
+						{@render field('menuTitle', 'Заголовок списка')}
+					</h2>
+					<div class="uni-discipline-list" aria-label="Дисциплины Универа">
+						{#each disciplines as discipline, i}
+							<div class="uni-discipline p1-line" class:is-selected={active === i}>
+								<button
+									class="uni-discipline-button"
+									type="button"
+									aria-expanded={active === i}
+									aria-controls="{uid}-discipline-{i}"
+									onclick={() => (selected = i)}
+									data-goal-ignore="Просмотр дисциплины внутри Hero"
 								>
-							</button>
-							<div
-								id="{uid}-discipline-{i}"
-								class="uni-discipline-detail"
-								inert={active !== i}
-								aria-hidden={active !== i}
-							>
-								<div>
-									<div class="uni-discipline-inner">
-										{#if isEditable}
-											<EditableField
-												fieldKey="UniversityHero.disciplines.{i}.title"
-												label="Название дисциплины"
-												value={discipline.title}
-												{isEditable}
-												richText={false}
-												onSave={(v) => saveDiscipline(i, 'title', v)}
-												>{#snippet children(value)}{value}{/snippet}</EditableField
-											>
-										{/if}
-										{#each ['question', 'text', 'topics'] as key}
-											<div
-												class:uni-question={key === 'question'}
-												class:uni-topics={key === 'topics'}
-												class="p1-body"
-											>
+									<span>{discipline.title}</span>
+									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
+										><path
+											d="M5 12h14m-6-6 6 6-6 6"
+											stroke="currentColor"
+											stroke-width="1.5"
+										/></svg
+									>
+								</button>
+								<div
+									id="{uid}-discipline-{i}"
+									class="uni-discipline-detail"
+									inert={active !== i}
+									aria-hidden={active !== i}
+								>
+									<div>
+										<div class="uni-discipline-inner">
+											{#if isEditable}
 												<EditableField
-													fieldKey="UniversityHero.disciplines.{i}.{key}"
-													label={key === 'question'
-														? 'Вопрос дисциплины'
-														: key === 'topics'
-															? 'Темы дисциплины'
-															: 'Описание дисциплины'}
-													value={discipline[key as keyof typeof discipline]}
+													fieldKey="UniversityHero.disciplines.{i}.title"
+													label="Название дисциплины"
+													value={discipline.title}
 													{isEditable}
-													inline
-													onSave={(v) => saveDiscipline(i, key, v)}
+													richText={false}
+													onSave={(v) => saveDiscipline(i, 'title', v)}
+													>{#snippet children(value)}{value}{/snippet}</EditableField
 												>
-													{#snippet children(value)}<RichText {value} />{/snippet}
-												</EditableField>
-											</div>
-										{/each}
+											{/if}
+											{#each ['question', 'text', 'topics'] as key}
+												<div
+													class:uni-question={key === 'question'}
+													class:uni-topics={key === 'topics'}
+													class="p1-body"
+												>
+													<EditableField
+														fieldKey="UniversityHero.disciplines.{i}.{key}"
+														label={key === 'question'
+															? 'Вопрос дисциплины'
+															: key === 'topics'
+																? 'Темы дисциплины'
+																: 'Описание дисциплины'}
+														value={discipline[key as keyof typeof discipline]}
+														{isEditable}
+														inline
+														onSave={(v) => saveDiscipline(i, key, v)}
+													>
+														{#snippet children(value)}<RichText {value} />{/snippet}
+													</EditableField>
+												</div>
+											{/each}
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					{/each}
+						{/each}
+					</div>
+					<p class="uni-menu-hint p1-body">{@render field('disciplineHint', 'Подсказка меню')}</p>
 				</div>
-				<p class="uni-menu-hint p1-body">{@render field('disciplineHint', 'Подсказка меню')}</p>
+				<figure class="uni-portrait p1-body">
+					<div class="uni-portrait-image">
+						<ImageFallback
+							src={String(data.image ?? defaults.image)}
+							imagePath={['image']}
+							alt={String(data.imageAlt ?? defaults.imageAlt)}
+							class="h-full w-full object-cover"
+							loading="eager"
+							fetchpriority="high"
+							width="1024"
+							height="1024"
+						/>
+					</div>
+					<figcaption class="p1-title">{@render field('caption', 'Подпись фотографии')}</figcaption>
+				</figure>
 			</div>
-			<figure class="uni-portrait p1-body">
-				<div class="uni-portrait-image">
-					<ImageFallback
-						src={String(data.image ?? defaults.image)}
-						imagePath={['image']}
-						alt={String(data.imageAlt ?? defaults.imageAlt)}
-						class="h-full w-full object-cover"
-						loading="eager"
-						fetchpriority="high"
-						width="1024"
-						height="1024"
-					/>
-				</div>
-				<figcaption class="p1-title">{@render field('caption', 'Подпись фотографии')}</figcaption>
-			</figure>
-		</div>
+		{/if}
 	</div>
 </section>

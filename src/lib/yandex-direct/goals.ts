@@ -164,6 +164,9 @@ const pageNames: Record<string, string> = {
 	'/vacancy': 'Вакансии',
 	'/vacancies': 'Вакансии',
 	'/careers': 'Карьера',
+	'/university': 'Университет',
+	'/university/auth': 'Регистрация студента',
+	'/university/learn/[slug]': 'Учебный курс',
 	'/designers': 'Дизайнерам',
 	'/mebel': 'Мебель',
 	'/bytovaya-tehnika': 'Бытовая техника',
@@ -177,13 +180,14 @@ function describeLocations(button: (typeof buttons)[number], template: string): 
 	const groups = new Map<string, string[]>();
 	for (const location of button.locations.filter((location) => location.template === template)) {
 		const articles = groups.get(location.page) ?? [];
-		if (!articles.includes(location.article)) articles.push(location.article);
+		if (location.article && !articles.includes(location.article)) articles.push(location.article);
 		groups.set(location.page, articles);
 	}
 	const location = [...groups]
-		.map(
-			([page, articles]) =>
-				`${locationLabel(page)} · ${articles.length === 1 ? 'Артикул' : 'Артикулы'}: ${articles.join(', ')}`
+		.map(([page, articles]) =>
+			articles.length
+				? `${locationLabel(page)} · ${articles.length === 1 ? 'Артикул' : 'Артикулы'}: ${articles.join(', ')}`
+				: `${locationLabel(page)} · Общая форма, отдельный артикул не назначен`
 		)
 		.join('; ');
 	return (

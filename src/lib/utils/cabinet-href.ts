@@ -12,6 +12,7 @@
  */
 const CABINETS: Record<string, string> = {
 	client: '/cabinet',
+	student: '/university/student',
 	partner: '/partner',
 	curator: '/curator'
 };

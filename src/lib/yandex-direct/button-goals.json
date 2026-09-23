@@ -1775,6 +1775,66 @@
 		"locations": []
 	},
 	{
+		"id": "university_registration_tab",
+		"action": "open",
+		"label": "Регистрация",
+		"templates": ["Promo-1"],
+		"source": "../university/Admission.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
+	},
+	{
+		"id": "university_login_tab",
+		"action": "open",
+		"label": "Уже учусь",
+		"templates": ["Promo-1"],
+		"source": "../university/Admission.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
+	},
+	{
+		"id": "university_auth_submit",
+		"action": "submit_click",
+		"label": "Регистрация или вход студента",
+		"templates": ["Promo-1"],
+		"source": "../university/Admission.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
+	},
+	{
+		"id": "university_register_open",
+		"action": "open",
+		"label": "Стать студентом",
+		"templates": ["Promo-1"],
+		"source": "../university/Catalog.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
+	},
+	{
+		"id": "university_assessment_submit",
+		"action": "submit_click",
+		"label": "Отправить учебную работу",
+		"templates": ["Promo-1"],
+		"source": "../university/Classroom.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/learn/[slug]", "article": "" }]
+	},
+	{
+		"id": "university_assessment_retry",
+		"action": "reset",
+		"label": "Пройти ещё раз",
+		"templates": ["Promo-1"],
+		"source": "../university/Classroom.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/learn/[slug]", "article": "" }]
+	},
+	{
 		"id": "partnership_drawer_close",
 		"action": "close",
 		"label": "Закрыть панель партнёрства",
