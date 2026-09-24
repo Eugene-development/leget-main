@@ -38,7 +38,7 @@ assert.equal(calls.length, 2, 'double click must share a request');
 assert.equal(calls[0].key, calls[1].key, 'retry must retain idempotency key');
 assert.equal(results[0].mail_status, 'pending');
 assert.equal(calls[1].form, 'test-form');
-assert.equal(calls[1].url, 'https://auth.example/api/notify/service-request');
+assert.equal(calls[1].url, '/forms/service-request');
 await send(payload);
 assert.notEqual(calls[2].key, calls[1].key, 'new accepted submission gets a fresh key');
 fail = true;

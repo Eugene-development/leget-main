@@ -61,6 +61,11 @@
 
 				<div class="flex items-center gap-3">
 					<a
+						href="/crm"
+						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700"
+						>CRM / доступ менеджера</a
+					>
+					<a
 						href="/"
 						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700 transition hover:bg-surface-muted"
 					>

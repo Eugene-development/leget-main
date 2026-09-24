@@ -44,6 +44,10 @@
 
 			<div class="flex items-center gap-3">
 				<a
+					href="/admin/crm"
+					class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary">CRM</a
+				>
+				<a
 					href="/admin"
 					class="rounded-xl border border-border-medium bg-white px-5 py-3 text-xs font-bold tracking-wider text-text-primary uppercase transition hover:bg-surface"
 				>

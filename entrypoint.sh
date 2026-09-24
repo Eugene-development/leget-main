@@ -5,6 +5,15 @@
 
 echo "🚀 SvelteKit LEGET Frontend starting with domain secrets resolution..."
 
+# Private key for the durable form gateway; never expose through browser config.
+if [ -z "${FORM_CONTEXT_SECRET:-}" ] && [ -f "/run/secrets/form_context_secret" ]; then
+    FORM_CONTEXT_SECRET=$(tr -d '\r\n' < /run/secrets/form_context_secret)
+    export FORM_CONTEXT_SECRET
+fi
+export BODY_SIZE_LIMIT="${BODY_SIZE_LIMIT:-20971520}"
+# The app is reachable only through its nginx proxy, which overwrites X-Real-IP.
+export ADDRESS_HEADER="${ADDRESS_HEADER:-x-real-ip}"
+
 # Read secret values for configuration
 FRONTEND_URL_VALUE=""
 API_BASE_URL_VALUE=""

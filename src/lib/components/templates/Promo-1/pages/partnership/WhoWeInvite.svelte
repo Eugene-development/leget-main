@@ -18,6 +18,11 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
+	const platformButtonText = $derived(
+		data?.platformButtonText === 'Перейти на платформу'
+			? 'RUBONUS.PRO'
+			: String(data?.platformButtonText || 'RUBONUS.PRO')
+	);
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -301,7 +306,7 @@
 									<EditableField
 										fieldKey="WhoWeInvite.platformButtonText"
 										label="Текст кнопки платформы"
-										value={String(data?.platformButtonText ?? 'Перейти на платформу')}
+										value={platformButtonText}
 										{isEditable}
 										onSave={(v) => saveField('platformButtonText', v)}
 										class="inline"

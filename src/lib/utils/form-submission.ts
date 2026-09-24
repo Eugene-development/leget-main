@@ -1,5 +1,3 @@
-import { getAuthApiUrl } from '$lib/utils/config';
-
 /** One instance per form. A retry keeps its key; a changed payload gets a new key. */
 export type FormResult = {
 	success: true;
@@ -63,7 +61,10 @@ export function createFormSender(formId: string) {
 		body.set('submission_key', state.key);
 		state.promise = (async () => {
 			try {
-				const response = await fetch(`${getAuthApiUrl()}/notify/${endpoint}`, {
+				const target = endpoint.startsWith('crm-')
+					? `${typeof window !== 'undefined' && window.location.pathname.startsWith('/admin/crm') ? '/admin/crm' : '/crm'}/api/intake/${endpoint === 'crm-offline' ? 'offline' : 'apply'}`
+					: `/forms/${endpoint}`;
+				const response = await fetch(target, {
 					method: 'POST',
 					headers: { Accept: 'application/json' },
 					body,
