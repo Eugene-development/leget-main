@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.22.1.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.22.1.1, 1.36.1.1 — см. docs/architecture/component-articles-map.md
 	// Разметку и поведение отдаёт общий CatalogSidebar.
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { type EditContext } from '$lib/utils/page-edit';
@@ -17,9 +17,7 @@
 		componentId?: string | null;
 	} = $props();
 
-	// Статики нет намеренно: справочник магазинов в БД пуст, и придумывать
-	// записи здесь значило бы наплодить ссылки на несуществующие страницы.
-	// До наполнения справочника сайдбар показывает пустое состояние.
+	// Список магазинов приходит из справочника рубрики furnitura через RenderPage.
 </script>
 
 <CatalogSidebar

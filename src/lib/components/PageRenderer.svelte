@@ -181,6 +181,7 @@
 		'ByttehnikaSidebar',
 		'StoleshnicaSidebar',
 		'SantehnikaSidebar',
+		'OsveshchenieSidebar',
 		'FurnituraSidebar',
 		'PliitkaSidebar',
 		'ProjectsHero',

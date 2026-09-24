@@ -25,6 +25,19 @@
  */
 
 :root[data-ds='graphite'] {
+	/* Крупный заголовок каталога и спектр отражения: значения принадлежат системе. */
+	--ds-font-catalog-display: var(--ds-font-body);
+	--ds-font-catalog-display-size: clamp(3.25rem, 6.6vw, 6.5rem);
+	--ds-font-catalog-display-weight: 300;
+	--ds-font-catalog-display-leading: 1.02;
+	--ds-font-catalog-display-tracking: -0.04em;
+	--ds-glass-spectrum: linear-gradient(
+		125deg,
+		var(--ds-cat-2-200),
+		var(--ds-cat-1-300) 48%,
+		var(--ds-cat-6-500)
+	);
+
 	/* ─── Палитра бренда ────────────────────────────────────────────────────── */
 	--ds-color-primary: #1e293b;
 	--ds-color-primary-light: #334155;

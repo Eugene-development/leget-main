@@ -7,9 +7,11 @@
 
 	let {
 		projectId,
+		compact = false,
 		class: className = ''
 	}: {
 		projectId: string;
+		compact?: boolean;
 		class?: string;
 	} = $props();
 
@@ -34,12 +36,14 @@
 	aria-label={isFavorite ? 'Удалить проект из избранного' : 'Добавить проект в избранное'}
 	title={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
 	aria-pressed={isFavorite}
-	class="flex size-11 shrink-0 items-center justify-center rounded-full shadow-lg backdrop-blur-sm transition-[transform,background-color,color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:scale-105 focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95 {isFavorite
+	class="flex {compact
+		? 'size-9'
+		: 'size-11'} shrink-0 items-center justify-center rounded-full shadow-lg backdrop-blur-sm transition-[transform,background-color,color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:scale-105 focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95 {isFavorite
 		? 'bg-link-500 text-on-accent'
 		: 'bg-surface-raised/90 text-ink-600 hover:bg-surface-raised hover:text-link-600'} {className}"
 >
 	<svg
-		class="size-5"
+		class={compact ? 'size-4' : 'size-5'}
 		viewBox="0 0 24 24"
 		fill={isFavorite ? 'currentColor' : 'none'}
 		stroke="currentColor"

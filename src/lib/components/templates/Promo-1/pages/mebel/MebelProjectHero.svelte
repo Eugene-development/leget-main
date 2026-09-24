@@ -4,9 +4,8 @@
 	import MebelProjectDeleteDialog from './MebelProjectDeleteDialog.svelte';
 	import type { SavedProject, ProjectUpdateInput } from './project-form';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
-	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
+	import ProjectImageActions from '$lib/components/ProjectImageActions.svelte';
 	import { fly } from 'svelte/transition';
 	import { invalidateAll, goto } from '$app/navigation';
 	import { cubicOut } from 'svelte/easing';
@@ -14,6 +13,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
+	const imageEditing = useImageEditing();
 
 	let {
 		data = $bindable(),
@@ -40,8 +40,6 @@
 	// вошедшего пользователя платформы на ЧУЖОМ сайте. isEditable уже означает
 	// «владелец этой лицензии в браузере» (см. PageRenderer.svelte).
 	let isAdmin = $derived(isEditable);
-
-	// Локальное состояние галереи
 	let selectedImageIndex = $state(0);
 	let isLightboxOpen = $state(false);
 
@@ -59,10 +57,6 @@
 		isEditPanelOpen = true;
 	}
 
-	/**
-	 * Панель редактирования должна жить на верхнем уровне документа: иначе любой
-	 * stacking context страницы может запереть fixed-слои под sticky-меню.
-	 */
 	function portal(node: HTMLElement) {
 		document.body.appendChild(node);
 		return {
@@ -87,18 +81,20 @@
 		const oldCategoryId = project.category_id || category.id;
 		const oldSlug = project.slug;
 		const newCategory = categories.find((item: any) => item.id === input.category_id);
-		const { maker, hardware_brands, appliance_brands, tag_ids, ...fields } = input;
+		const { maker, tag_ids, image_urls, ...fields } = input;
 		data = {
 			...data,
 			project: {
 				...project,
 				...fields,
 				...saved,
-				meta: { ...(project.meta ?? {}), maker, hardware_brands, appliance_brands },
+				...(image_urls ? { images: image_urls.map((url) => ({ url })) } : {}),
+				meta: { ...(project.meta ?? {}), maker },
 				...(tag_ids ? { tags: tag_ids.map((id) => ({ id })) } : {})
 			},
 			category: newCategory ?? category
 		};
+		selectedImageIndex = 0;
 		try {
 			const catSlug =
 				newCategory?.slug || (input.category_id === oldCategoryId ? category.slug : '');
@@ -126,21 +122,21 @@
 		data = updated;
 	}
 
-	// Закрытие лайтбокса по Escape
 	$effect(() => {
-		if (isLightboxOpen) {
-			const handleKey = (e: KeyboardEvent) => {
-				if (e.key === 'Escape') isLightboxOpen = false;
-				if (e.key === 'ArrowLeft' && selectedImageIndex > 0) selectedImageIndex--;
-				if (e.key === 'ArrowRight' && selectedImageIndex < images.length - 1) selectedImageIndex++;
-			};
-			window.addEventListener('keydown', handleKey);
-			document.body.style.overflow = 'hidden';
-			return () => {
-				window.removeEventListener('keydown', handleKey);
-				document.body.style.overflow = '';
-			};
-		}
+		if (!isLightboxOpen) return;
+		const handleKey = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') isLightboxOpen = false;
+			if (event.key === 'ArrowLeft' && selectedImageIndex > 0) selectedImageIndex--;
+			if (event.key === 'ArrowRight' && selectedImageIndex < images.length - 1)
+				selectedImageIndex++;
+		};
+		window.addEventListener('keydown', handleKey);
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		return () => {
+			window.removeEventListener('keydown', handleKey);
+			document.body.style.overflow = previousOverflow;
+		};
 	});
 </script>
 
@@ -162,29 +158,19 @@
 					class="relative aspect-4/3 overflow-hidden rounded-2xl border border-ink-100 bg-surface-raised shadow-sm"
 				>
 					{#if images[selectedImageIndex]?.url || imageEditing?.editable || imageEditing?.read(['projectImages', String(project.id), String(selectedImageIndex)], '')}
-						<ImageFallback
-							imagePath={['projectImages', String(project.id), String(selectedImageIndex)]}
-							src={images[selectedImageIndex]?.url ?? ''}
-							alt={project.value}
-							class="h-full w-full object-cover transition-all duration-500"
-						/>
-
-						<!-- Кнопка увеличения -->
 						<button
 							type="button"
+							aria-label="Увеличить изображение проекта"
+							data-goal-ignore="Просмотр фотографии проекта не является заявкой"
+							class="block h-full w-full cursor-zoom-in focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:outline-none focus-visible:ring-inset"
 							onclick={() => (isLightboxOpen = true)}
-							aria-label="Открыть галерею"
-							title="Открыть галерею"
-							class="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full bg-surface-raised/90 text-ink-700 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-surface-raised"
 						>
-							<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-								/>
-							</svg>
+							<ImageFallback
+								imagePath={['projectImages', String(project.id), String(selectedImageIndex)]}
+								src={images[selectedImageIndex]?.url ?? ''}
+								alt={project.value}
+								class="h-full w-full object-cover transition-all duration-500"
+							/>
 						</button>
 					{:else}
 						<div class="flex h-full w-full items-center justify-center bg-ink-50">
@@ -193,6 +179,7 @@
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
+								aria-hidden="true"
 							>
 								<path
 									stroke-linecap="round"
@@ -203,30 +190,7 @@
 							</svg>
 						</div>
 					{/if}
-
-					<FavoriteProjectButton
-						projectId={String(project.id ?? '')}
-						class="absolute top-4 right-4 z-10"
-					/>
-
-					<!-- Метки -->
-					<div class="absolute top-4 left-4 flex gap-2">
-						{#if project.is_new}
-							<span
-								class="rounded-full bg-cat-2-500 px-3 py-1 text-xs font-bold text-on-accent shadow-md"
-								>Новинка</span
-							>
-						{/if}
-						{#if project.is_featured}
-							<span
-								class="rounded-full bg-cat-1-500 px-3 py-1 text-xs font-bold text-on-accent shadow-md"
-								>Хит</span
-							>
-						{/if}
-					</div>
 				</div>
-
-				<!-- Миниатюры -->
 				{#if images.length > 1}
 					<div class="mt-4 grid grid-cols-4 gap-3">
 						{#each images.slice(0, 8) as image, index}
@@ -250,7 +214,6 @@
 					</div>
 				{/if}
 			</div>
-
 			<!-- Информация -->
 			<div class="mt-8 lg:mt-0">
 				<!-- Хлебные крошки -->
@@ -264,12 +227,31 @@
 					{/if}
 				</nav>
 
-				<div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-					<h1 class="text-3xl text-ink-900 sm:text-4xl">
+				{#if project.is_new || project.is_featured}
+					<div class="mb-3 flex flex-wrap gap-2">
+						{#if project.is_new}<span
+								class="rounded-full bg-cat-2-500 px-3 py-1 text-xs font-bold text-on-accent"
+								>Новинка</span
+							>{/if}
+						{#if project.is_featured}<span
+								class="rounded-full bg-cat-1-500 px-3 py-1 text-xs font-bold text-on-accent"
+								>Хит</span
+							>{/if}
+					</div>
+				{/if}
+				<div class="flex flex-wrap items-center justify-between gap-4">
+					<h1 class="min-w-0 text-3xl text-ink-900 sm:text-4xl">
 						{project.value}
 					</h1>
-					{#if isAdmin}
-						<div class="flex shrink-0 items-center gap-2">
+					<div class="flex flex-wrap items-center gap-2">
+						<ProjectImageActions
+							compact
+							horizontal
+							projectId={String(project.id ?? '')}
+							imageUrl={images[selectedImageIndex]?.url}
+							projectName={String(project.value ?? '')}
+						/>
+						{#if isAdmin}
 							<button
 								type="button"
 								onclick={openEditPanel}
@@ -310,8 +292,8 @@
 									><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg
 								>
 							</button>
-						</div>
-					{/if}
+						{/if}
+					</div>
 				</div>
 
 				{#if refreshError}<p role="status" class="mt-4 text-sm text-ink-700">{refreshError}</p>{/if}
@@ -500,6 +482,12 @@
 		tabindex="-1"
 	>
 		<div class="relative max-h-screen max-w-screen-xl p-4">
+			<ProjectImageActions
+				projectId={String(project.id ?? '')}
+				imageUrl={images[selectedImageIndex]?.url}
+				projectName={String(project.value ?? '')}
+				class="absolute top-8 left-8 z-10"
+			/>
 			<div
 				class="relative flex h-[85vh] w-[90vw] max-w-5xl items-center justify-center overflow-hidden rounded-xl bg-ink-900/50 shadow-2xl"
 			>

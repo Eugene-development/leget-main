@@ -7,17 +7,22 @@
 	//
 	// Редактора контента здесь нет — см. ./data.ts.
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
+	import ProjectImageActions from '$lib/components/ProjectImageActions.svelte';
 	import {
 		FEED_LINK_LABEL,
 		formatBrands,
 		formatCompletedAt,
 		projectHref,
+		projectTitle,
 		type FeedProject
 	} from './data';
 	import '../../../theme.css';
 
-	let { projects }: { projects: FeedProject[] } = $props();
+	let {
+		projects,
+		actionsBelowTitle = false,
+		actionsAtBottom = false
+	}: { projects: FeedProject[]; actionsBelowTitle?: boolean; actionsAtBottom?: boolean } = $props();
 </script>
 
 <div class="mt-7 flex flex-col gap-5">
@@ -27,30 +32,60 @@
 			class="group p1-card p1-border p1-card-hover relative flex animate-fade-up-in flex-col overflow-hidden rounded-2xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg"
 			style="animation-delay: calc({i} * var(--ds-motion-stagger-step))"
 		>
-			<FavoriteProjectButton projectId={project.id} class="absolute top-3 right-3 z-10" />
-			<a
-				class="flex flex-1 flex-col focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset sm:flex-row"
-				href={projectHref(project)}
-				aria-label="{FEED_LINK_LABEL}: {project.value}"
-			>
+			{#if !actionsBelowTitle && !actionsAtBottom}
+				<ProjectImageActions
+					compact
+					projectId={project.id}
+					imageUrl={project.images[0]?.url}
+					projectName={projectTitle(project.value)}
+					class="absolute top-3 right-3 z-10"
+				/>
+			{/if}
+			<div class="flex flex-1 flex-col sm:flex-row">
 				<!-- `p1-body` на обёртке кадра несущий: заглушка `ImageFallback`
 			     берёт цвет текста родителя и без роли растворилась бы в
 			     тёмной секции. -->
-				<div class="p1-body w-full shrink-0 overflow-hidden sm:w-[340px]">
+				<a
+					class="p1-body w-full shrink-0 overflow-hidden focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset sm:w-[340px]"
+					href={projectHref(project)}
+					aria-label="{FEED_LINK_LABEL}: {projectTitle(project.value)}"
+				>
 					<ImageFallback
 						imagePath={['projectImages', String(project.id), '0']}
 						src={project.images[0]?.url ?? null}
-						alt="Проект «{project.value}»"
+						alt={projectTitle(project.value)}
 						loading="lazy"
 						class="aspect-4/3 h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105 sm:aspect-auto sm:min-h-[244px]"
 					/>
-				</div>
+				</a>
 
-				<div class="flex flex-1 flex-col p-6 pr-20 sm:px-7 sm:pr-20">
+				<div
+					class="flex flex-1 flex-col p-6 sm:px-7 {actionsBelowTitle || actionsAtBottom
+						? ''
+						: 'pr-20 sm:pr-20'}"
+				>
 					{#if project.categoryValue}
 						<span class="p1-label p1-body">{project.categoryValue}</span>
 					{/if}
-					<h3 class="p1-title p1-title-sub mt-2 text-xl">{project.value}</h3>
+					<a
+						href={projectHref(project)}
+						class="self-start focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-500"
+					>
+						<h3 class="p1-title p1-title-sub mt-2 text-xl">{projectTitle(project.value)}</h3>
+					</a>
+					{#if actionsBelowTitle && project.shortDescription}
+						<p class="p1-body mt-2 text-sm leading-snug">{project.shortDescription}</p>
+					{/if}
+					{#if actionsBelowTitle}
+						<ProjectImageActions
+							compact
+							horizontal
+							projectId={project.id}
+							imageUrl={project.images[0]?.url}
+							projectName={projectTitle(project.value)}
+							class="mt-3 self-start"
+						/>
+					{/if}
 
 					<!-- Подписи внутри карточки — роль `p1-body`, а не `p1-muted`.
 				     Замер на тёмной теме: подложка карточки это 4% белого НАД
@@ -106,7 +141,10 @@
 						</div>
 					{/if}
 
-					<span class="p1-accent p1-label mt-auto inline-flex items-center gap-1.5 self-start pt-5">
+					<a
+						href={projectHref(project)}
+						class="p1-accent p1-label mt-auto inline-flex items-center gap-1.5 self-start pt-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-500"
+					>
 						{FEED_LINK_LABEL}
 						<svg
 							class="size-3.5 transition-transform duration-[var(--ds-motion-duration-ui)] ease-ui group-hover:translate-x-1"
@@ -122,9 +160,19 @@
 								d="M9 5l7 7-7 7"
 							/>
 						</svg>
-					</span>
+					</a>
+					{#if actionsAtBottom}
+						<ProjectImageActions
+							compact
+							horizontal
+							projectId={project.id}
+							imageUrl={project.images[0]?.url}
+							projectName={projectTitle(project.value)}
+							class="mt-4 self-start"
+						/>
+					{/if}
 				</div>
-			</a>
+			</div>
 		</article>
 	{/each}
 </div>

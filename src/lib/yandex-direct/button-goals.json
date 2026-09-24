@@ -116,9 +116,11 @@
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
@@ -127,6 +129,7 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.2" },
@@ -139,6 +142,8 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
 			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }
@@ -296,9 +301,11 @@
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
@@ -307,6 +314,7 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.2" },
@@ -319,6 +327,8 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
 			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }
@@ -476,9 +486,11 @@
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
@@ -487,6 +499,7 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.2" },
@@ -499,6 +512,8 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
 			{ "template": "Promo-1", "page": "/consultation", "article": "1.11.4.1" }
@@ -898,6 +913,19 @@
 		]
 	},
 	{
+		"id": "pages_shared_catalogsidebar_open_1_osveshchenie",
+		"action": "open",
+		"label": "Заказать услугу — кнопка каталога — Освещение",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/_shared/CatalogSidebar.svelte",
+		"route": "/osveshchenie",
+		"mock": false,
+		"baseId": "pages_shared_catalogsidebar_open_1",
+		"variant": "osveshchenie",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" }]
+	},
+	{
 		"id": "pages_shared_catalogsidebar_open_1_furnitura",
 		"action": "open",
 		"label": "Заказать услугу — кнопка каталога — Фурнитура",
@@ -908,7 +936,10 @@
 		"baseId": "pages_shared_catalogsidebar_open_1",
 		"variant": "furnitura",
 		"serviceType": null,
-		"locations": [{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" }]
+		"locations": [
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" }
+		]
 	},
 	{
 		"id": "pages_shared_catalogsidebar_open_1_plitka",
@@ -986,7 +1017,7 @@
 		"source": "templates/Promo-1/pages/contacts/ContactAddress/v2/ContactAddress.svelte",
 		"route": "/contacts",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/contacts", "article": "1.5.3.2" }]
 	},
 	{
 		"id": "contacts_site_consultation_submit",
@@ -996,7 +1027,7 @@
 		"source": "templates/Promo-1/pages/contacts/ContactAddress/v2/ContactAddress.svelte",
 		"route": "/contacts",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/contacts", "article": "1.5.3.2" }]
 	},
 	{
 		"id": "pages_furnitura_furnituracta_open_1",
@@ -1006,7 +1037,10 @@
 		"source": "templates/Promo-1/pages/furnitura/FurnituraCTA.svelte",
 		"route": "/furnitura",
 		"mock": false,
-		"locations": [{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" }]
+		"locations": [
+			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
+			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" }
+		]
 	},
 	{
 		"id": "pages_furnitura_furniturahero_open_1",
@@ -1265,6 +1299,36 @@
 		"route": "/mebel",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.3.1" }]
+	},
+	{
+		"id": "pages_osveshchenie_osveshcheniebrandhero_open_1",
+		"action": "open",
+		"label": "Подобрать освещение — страница бренда",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieBrandHero.svelte",
+		"route": "/osveshchenie",
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "pages_osveshchenie_osveshcheniecta_open_1",
+		"action": "open",
+		"label": "Получить консультацию — освещение",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieCTA.svelte",
+		"route": "/osveshchenie",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" }]
+	},
+	{
+		"id": "pages_osveshchenie_osveshcheniehero_open_1",
+		"action": "open",
+		"label": "Подобрать освещение — страница освещения",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieHero.svelte",
+		"route": "/osveshchenie",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" }]
 	},
 	{
 		"id": "pages_partnership_hero_open_1",
@@ -1577,6 +1641,26 @@
 		"route": "/services",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/measurement", "article": "1.13.4.1" }]
+	},
+	{
+		"id": "glass_mirrors_reset",
+		"action": "reset",
+		"label": "Отправить ещё одну заявку",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/steklo-i-zerkala/GlassRequest.svelte",
+		"route": "/steklo-i-zerkala",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/steklo-i-zerkala", "article": "1.34.1.1" }]
+	},
+	{
+		"id": "glass_mirrors_submit",
+		"action": "submit_click",
+		"label": "Отправить заявку — Стекло и Зеркала",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/steklo-i-zerkala/GlassRequest.svelte",
+		"route": "/steklo-i-zerkala",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/steklo-i-zerkala", "article": "1.34.1.1" }]
 	},
 	{
 		"id": "pages_stoleshnica_stoleshnicabrandhero_open_1",

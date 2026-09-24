@@ -100,7 +100,7 @@
 			{#snippet children(displayValue)}
 				<a
 					href={String(data?.promoLinkHref ?? '/actions')}
-					class="promo-all-link flex h-[26px] origin-left items-center gap-1.5 rounded-sm bg-surface-raised px-3 text-xs whitespace-nowrap text-ink-900 transition-[background-color,color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-ink-100 hover:text-ink-950 focus-visible:bg-ink-100 focus-visible:text-ink-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600 motion-reduce:transition-none"
+					class="promo-all-link flex h-[26px] origin-left items-center gap-1.5 rounded-sm bg-university-link px-3 text-xs whitespace-nowrap text-on-university-link transition-[background-color,color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-university-link-hover focus-visible:bg-university-link-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-university-link-shade motion-reduce:transition-none"
 				>
 					<RichText value={displayValue} />
 					<svg
@@ -121,6 +121,10 @@
 </div>
 
 <style>
+	.promo-all-link {
+		box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-on-university-link) 32%, transparent);
+	}
+
 	@media (prefers-reduced-motion: no-preference) {
 		.promo-all-link:hover,
 		.promo-all-link:focus-visible {

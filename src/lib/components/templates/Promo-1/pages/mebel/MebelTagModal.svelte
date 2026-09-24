@@ -36,6 +36,7 @@
 			{
 				'appliance-brand': '/bytovaya-tehnika',
 				'plumbing-brand': '/santehnika',
+				'lighting-brand': '/osveshchenie',
 				'countertop-brand': '/stoleshnica'
 			} as Record<string, string>
 		)[groups.find((group) => group.id === groupId)?.slug ?? '']
@@ -88,7 +89,7 @@
 			groups = (await loadTagGroups(groupSlugs.length ? undefined : 'mebel')).filter((group) =>
 				groupSlugs.length
 					? groupSlugs.includes(group.slug)
-					: !['appliance-type', 'plumbing-type'].includes(group.slug)
+					: !['appliance-type', 'plumbing-type', 'lighting-type'].includes(group.slug)
 			);
 			groupId = groups[0]?.id ?? '';
 		} catch (cause) {

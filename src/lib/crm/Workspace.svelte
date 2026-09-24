@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { untrack } from 'svelte';
+	import { untrack, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -67,6 +67,27 @@
 	let templateEdit = $state(false);
 	let duplicateMatches = $state<Row[]>([]);
 	let generation = 0;
+	let createdRecord: { base: string; site: string; section: string; item: Row } | undefined;
+	let detailRefreshing = $state(false);
+	let routeController: AbortController | undefined;
+	let auxiliaryController: AbortController | undefined;
+	let auxiliaryLoading = $state(false);
+	let auxiliaryError = $state('');
+	let loadedSite = '';
+	let dashboardReady = $state(false);
+	let duplicateTimer: ReturnType<typeof setTimeout> | undefined;
+	let duplicateController: AbortController | undefined;
+	let duplicateKey = '';
+	type ViewRoute = { base: string; site: string; section: string; id: string; query: string };
+	function currentRoute(): ViewRoute {
+		return { base, site, section, id, query: page.url.search };
+	}
+	onDestroy(() => {
+		routeController?.abort();
+		auxiliaryController?.abort();
+		duplicateController?.abort();
+		clearTimeout(duplicateTimer);
+	});
 	let dragging = $state<Row | null>(null);
 	let specification = $state<Row[]>([]);
 	const canManage = $derived(Boolean(activeSite?.manage));
@@ -113,7 +134,7 @@
 		return async (search: string) => {
 			const response = await crmRequest(
 				base,
-				sitePath(`${resource}?search=${encodeURIComponent(search)}&per_page=30`)
+				sitePath(`${resource}?options=1&search=${encodeURIComponent(search)}&per_page=30`)
 			);
 			return (response.items.data || response.items).map((v: Row) => ({
 				value: v.id,
@@ -125,20 +146,48 @@
 		return e instanceof Error ? e.message : 'Не удалось выполнить действие.';
 	}
 
-	async function refresh() {
+	// Read the complete route synchronously. Never read a new route after an await
+	// belonging to its predecessor (including a create -> detail navigation).
+	async function refresh(view: ViewRoute = currentRoute()) {
 		const turn = ++generation;
-		if (section === 'access' || (!site && section !== 'unassigned')) {
+		routeController?.abort();
+		auxiliaryController?.abort();
+		const controller = new AbortController();
+		routeController = controller;
+		const seed =
+			createdRecord?.base === view.base &&
+			createdRecord.site === view.site &&
+			createdRecord.section === view.section &&
+			createdRecord.item.id === view.id
+				? createdRecord
+				: undefined;
+		if (!seed) createdRecord = undefined;
+		result = seed ? { item: seed.item } : {};
+		detailRefreshing = Boolean(seed);
+		specification = seed?.item.specification || [];
+		error = '';
+		auxiliaryError = '';
+		auxiliaryLoading = false;
+		if (loadedSite !== view.site) {
+			dashboardReady = false;
+			dashboard = { stages: [], members: [], counts: {} };
+			lookups = { clients: [], companies: [], templates: [], deals: [], partners: [] };
+		}
+		loadedSite = view.site;
+		if (view.section === 'access' || (!view.site && view.section !== 'unassigned')) {
 			loading = false;
 			return;
 		}
-		loading = true;
-		error = '';
-		result = {};
-		dashboard = { stages: [], members: [], counts: {} };
-		lookups = { clients: [], companies: [], templates: [], deals: [], partners: [] };
+		loading = !seed;
+		const path = (suffix: string) => `sites/${view.site}/${suffix}`;
+		const read = (target: string) =>
+			crmRequest(view.base, target, undefined, { signal: controller.signal });
+		const isCurrent = () => turn === generation && !controller.signal.aborted;
+
 		try {
 			const params = new URLSearchParams({ per_page: '100' });
-			for (const k of [
+			const query = new URLSearchParams(view.query);
+			for (const key of [
 				'page',
 				'search',
 				'stage_id',
@@ -148,68 +197,142 @@
 				'history_page',
 				'client_id'
 			]) {
-				const v = page.url.searchParams.get(k);
-				if (v) params.set(k, v);
+				const value = query.get(key);
+				if (value) params.set(key, value);
 			}
 			const target =
-				section === 'unassigned'
+				view.section === 'unassigned'
 					? 'unassigned'
-					: section === 'settings'
-						? sitePath('dashboard')
-						: sitePath(`${section}${id ? '/' + id : ''}?${params}`);
-			const [dash, body] = await Promise.all([
-				site
-					? crmRequest(base, sitePath('dashboard'))
-					: Promise.resolve({ stages: [], members: [], counts: {} }),
-				crmRequest(base, target)
-			]);
-			if (turn !== generation) return;
-			dashboard = dash;
-			result = body;
-			specification = body.item?.specification || [];
-			if (id || creating || section === 'deals' || section === 'tasks') await loadLookups();
+					: view.section === 'settings'
+						? path('dashboard')
+						: path(`${view.section}${view.id ? '/' + view.id : ''}?${params}`);
+			const body = await read(target);
+			if (!isCurrent()) return;
+			const keepCreated = seed && body.item?.version === seed.item.version;
+			// Enrich the new record without replacing the form's initial object mid-typing.
+			result = keepCreated ? { ...body, item: result.item } : body;
+			if (!keepCreated) specification = body.item?.specification || [];
+			if (view.section === 'settings') {
+				dashboard = body;
+				dashboardReady = true;
+			}
+			// Related entities already returned by the detail endpoint need no second request.
+			if (body.client) lookups.clients = [body.client];
+			if (body.item && view.section === 'clients') lookups.clients = [body.item];
+			if (body.deals) lookups.deals = body.deals;
+			if (body.item && view.section === 'deals') lookups.deals = [body.item];
+			loading = false;
+			detailRefreshing = false;
+			createdRecord = undefined;
+			// Metadata is independent: a slow sidebar must not hide an already loaded card.
+			if (view.site && view.section !== 'settings') {
+				void read(path('dashboard'))
+					.then((value) => {
+						if (isCurrent()) {
+							dashboard = value;
+							dashboardReady = true;
+						}
+					})
+					.catch((e) => {
+						if (isCurrent()) auxiliaryError = msg(e);
+					});
+			}
+			void loadLookups(view, creating);
 		} catch (e) {
-			if (turn === generation) error = msg(e);
+			if (!isCurrent()) return;
+			controller.abort(); // Do not let metadata repopulate a denied/failed view.
+			result = {};
+			dashboardReady = false;
+			dashboard = { stages: [], members: [], counts: {} };
+			lookups = { clients: [], companies: [], templates: [], deals: [], partners: [] };
+			createdRecord = undefined;
+			error = msg(e);
 		} finally {
-			if (turn === generation) loading = false;
+			if (turn === generation) {
+				loading = false;
+				detailRefreshing = false;
+			}
 		}
 	}
-	async function loadLookups() {
-		if (!site) return;
-		const types = ['clients', 'companies', 'templates', 'deals', 'partners'];
-		const values = await Promise.all(
+	async function loadLookups(view: ViewRoute = currentRoute(), forCreate = false) {
+		auxiliaryController?.abort();
+		const controller = new AbortController();
+		auxiliaryController = controller;
+		const turn = generation;
+		const types =
+			view.section === 'companies' && forCreate
+				? ['partners']
+				: view.section === 'deals'
+					? forCreate
+						? ['clients']
+						: view.id
+							? ['companies', 'templates']
+							: []
+					: view.section === 'tasks' && (view.id || forCreate)
+						? ['clients', 'deals']
+						: view.section === 'incoming' && view.id
+							? ['clients', 'deals']
+							: [];
+		auxiliaryLoading = types.length > 0;
+		auxiliaryError = '';
+		await Promise.all(
 			types.map(async (key) => {
-				const v = await crmRequest(base, sitePath(`${key}?per_page=100`));
-				return [key, v.items?.data || v.items || []];
+				try {
+					const value = await crmRequest(
+						view.base,
+						`sites/${view.site}/${key}?options=1&per_page=30`,
+						undefined,
+						{ signal: controller.signal }
+					);
+					if (turn === generation && !controller.signal.aborted)
+						lookups[key] = value.items?.data || value.items || [];
+				} catch (e) {
+					if (turn === generation && !controller.signal.aborted) auxiliaryError = msg(e);
+				}
 			})
 		);
-		lookups = Object.fromEntries(values);
+		if (turn === generation && !controller.signal.aborted) auxiliaryLoading = false;
 	}
 	$effect(() => {
-		if (browser) {
-			page.url.href;
-			site;
-			creating = false;
-			templateEdit = false;
-			notice = '';
-			search = page.url.searchParams.get('search') || '';
-			stageFilter = page.url.searchParams.get('stage_id') || '';
-			managerFilter = page.url.searchParams.get('assigned_to') || '';
-			sourceFilter = page.url.searchParams.get('source') || '';
-			overdue = page.url.searchParams.get('overdue') === '1';
-			untrack(() => {
-				void refresh();
-			});
-		}
+		// Explicit dependencies are important: this component is reused by the rest route.
+		const view = { base, site, section, id, query: page.url.search };
+		if (!browser) return;
+		creating = false;
+		templateEdit = false;
+		notice = '';
+		const query = new URLSearchParams(view.query);
+		search = query.get('search') || '';
+		stageFilter = query.get('stage_id') || '';
+		managerFilter = query.get('assigned_to') || '';
+		sourceFilter = query.get('source') || '';
+		overdue = query.get('overdue') === '1';
+		untrack(() => {
+			void refresh(view);
+		});
+		return () => {
+			routeController?.abort();
+			auxiliaryController?.abort();
+			duplicateController?.abort();
+			clearTimeout(duplicateTimer);
+			duplicateKey = '';
+		};
 	});
+
 	async function save(path: string, body: Row, goTo?: string) {
-		const value = await crmRequest(base, sitePath(path), body);
+		const origin = currentRoute(),
+			turn = generation;
+		const value = await crmRequest(origin.base, `sites/${origin.site}/${path}`, body);
+		// A completed save must not drag a user back from another site/page.
+		if (turn !== generation) return value;
 		notice = 'Изменения сохранены';
 		creating = false;
-		if (goTo && value.item?.id) await goto(href(`${goTo}/${value.item.id}`));
-		else await refresh();
+		if (goTo && value.item?.id) {
+			createdRecord = { base: origin.base, site: origin.site, section: goTo, item: value.item };
+			await goto(`${origin.base}/${goTo}/${value.item.id}?site=${origin.site}`);
+		} else await refresh(origin);
 		return value;
 	}
+
 	async function action(name: string, body: Row = {}) {
 		if (!row) return;
 		await save(`${section}/${row.id}/${name}`, { version: row.version, ...body });
@@ -228,7 +351,8 @@
 	}
 	async function begin() {
 		creating = !creating;
-		if (creating) await run(loadLookups);
+		if (creating) void loadLookups(currentRoute(), true);
+		else auxiliaryController?.abort();
 	}
 	async function filter(event: SubmitEvent) {
 		event.preventDefault();
@@ -243,20 +367,37 @@
 		if (overdue) q.set('overdue', '1');
 		await goto(`${base}/${section}?${q}`);
 	}
-	async function duplicates(values: Row) {
-		if (!values.phone && !values.email) {
-			duplicateMatches = [];
-			return;
-		}
-		const params = new URLSearchParams();
-		if (values.phone) params.set('phone', values.phone);
-		if (values.email) params.set('email', values.email);
-		try {
-			duplicateMatches = (await crmRequest(base, sitePath(`duplicates?${params}`))).items;
-		} catch {
-			duplicateMatches = [];
-		}
+	function duplicates(values: Row) {
+		const view = currentRoute();
+		const phone = String(values.phone || '').trim();
+		const email = String(values.email || '').trim();
+		const key = `${view.site}:${phone}:${email}`;
+		if (key === duplicateKey) return;
+		duplicateKey = key;
+		clearTimeout(duplicateTimer);
+		duplicateController?.abort();
+		duplicateMatches = [];
+		if (!phone && !email) return;
+		duplicateTimer = setTimeout(async () => {
+			const controller = new AbortController();
+			duplicateController = controller;
+			const params = new URLSearchParams();
+			if (phone) params.set('phone', phone);
+			if (email) params.set('email', email);
+			try {
+				const response = await crmRequest(
+					view.base,
+					`sites/${view.site}/duplicates?${params}`,
+					undefined,
+					{ signal: controller.signal }
+				);
+				if (!controller.signal.aborted && key === duplicateKey) duplicateMatches = response.items;
+			} catch {
+				if (!controller.signal.aborted && key === duplicateKey) duplicateMatches = [];
+			}
+		}, 300);
 	}
+
 	async function sendOffline(values: Row) {
 		await offlineSender({ ...values, license_id: site }, 'crm-offline');
 		notice = 'Заявка принята';
@@ -474,6 +615,16 @@
 								: 'Добавить'}</button
 				>{/if}
 		</header>
+		{#if detailRefreshing}<p class="muted" role="status">
+				Запись сохранена. Подгружаем историю и связанные данные…
+			</p>{/if}
+		{#if auxiliaryLoading}<p class="muted" role="status">Подгружаем варианты выбора…</p>{/if}
+		{#if auxiliaryError}<div class="crm-notice" role="status">
+				{auxiliaryError}
+				<button onclick={() => refresh()} data-goal-ignore="Повтор загрузки CRM"
+					>Повторить загрузку</button
+				>
+			</div>{/if}
 		{#if notice}<p class="crm-notice" role="status">{notice}</p>{/if}
 		{#if error}<div class="crm-error" role="alert">
 				<p>{error}</p>
@@ -503,7 +654,9 @@
 				{:else}<p>Откройте CRM на сайте, к которому требуется доступ.</p>{/if}
 			</section>
 		{:else}
-			{#if site && !dashboard.stages?.length && canManage && !loading}<section class="crm-empty">
+			{#if site && dashboardReady && !dashboard.stages?.length && canManage && !loading}<section
+					class="crm-empty"
+				>
 					<h2>Подготовьте рабочее пространство</h2>
 					<p>Создадим начальную воронку. Её названия и промежуточные этапы можно изменить.</p>
 					<button
@@ -1180,7 +1333,7 @@
 								data-goal-ignore="Вид воронки CRM">{view === 'board' ? 'Таблица' : 'Канбан'}</button
 							>{/if}
 					</form>{/if}
-				{#if section === 'deals' && view === 'board'}
+				{#if section === 'deals' && view === 'board' && dashboard.stages?.length}
 					<p class="muted">
 						{result.items?.total || 0} сделок · карточку можно перенести или открыть и выбрать этап
 					</p>

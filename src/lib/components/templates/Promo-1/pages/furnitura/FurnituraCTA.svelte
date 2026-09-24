@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
-	// Артикул: 1.22.4.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.22.4.1, 1.36.4.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';

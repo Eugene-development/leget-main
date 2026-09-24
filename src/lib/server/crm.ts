@@ -3,28 +3,36 @@ import { CLIENT_COOKIE, readSessionProfile } from '$lib/server/client-session';
 import { adminApi, authApi } from '$lib/server/admin-api';
 import { env } from '$env/dynamic/private';
 
-export function crmToken(event: Pick<RequestEvent, 'cookies' | 'url'>): string {
-	const admin = event.url.pathname.startsWith('/admin/crm');
+export function crmToken(
+	event: Pick<RequestEvent, 'cookies' | 'url'>,
+	admin = event.url.pathname.startsWith('/admin/crm')
+): string {
 	const token = event.cookies.get(admin ? 'leget_admin_jwt' : CLIENT_COOKIE);
 	if (!token) redirect(303, admin ? '/admin' : '/?auth=client-login');
 	return token;
 }
 
-export async function loadCrm(event: Pick<RequestEvent, 'cookies' | 'url'>) {
-	const token = crmToken(event);
-	const profile = await readSessionProfile(token).catch(() => null);
-	if (!profile) error(401, 'Сессия завершена. Войдите снова.');
+export async function loadCrm(event: Pick<RequestEvent, 'cookies' | 'url'>, admin = false) {
+	const token = crmToken(event, admin);
 	const domain = env.FORM_SITE_DOMAIN || event.url.hostname;
-	const response = await adminApi(`/crm/context?domain=${encodeURIComponent(domain)}`, {
-		headers: { Authorization: `Bearer ${token}` }
-	});
+	// Independent authentication/context reads; only the layout loads them.
+	// Each data request still revalidates database permissions in the backend.
+	let profile: Awaited<ReturnType<typeof readSessionProfile>>;
+	let response: Response;
+	try {
+		[profile, response] = await Promise.all([
+			readSessionProfile(token),
+			adminApi(`/crm/context?domain=${encodeURIComponent(domain)}`, {
+				headers: { Authorization: `Bearer ${token}` }
+			})
+		]);
+	} catch {
+		error(503, 'Сервис CRM временно недоступен. Повторите загрузку.');
+	}
+	if (!profile) error(401, 'Сессия завершена. Войдите снова.');
 	if (!response.ok) error(response.status, 'Не удалось загрузить CRM.');
 	const context = await response.json();
-	return {
-		profile,
-		context,
-		base: event.url.pathname.startsWith('/admin/crm') ? '/admin/crm' : '/crm'
-	};
+	return { profile, context, base: admin ? '/admin/crm' : '/crm' };
 }
 
 /** All CRM browser mutations are same-origin. No bearer token reaches JavaScript. */
@@ -54,7 +62,10 @@ export async function proxyCrm(event: RequestEvent): Promise<Response> {
 			});
 		} else if (/^sites\/[A-Z0-9]{26}\/attachments\/[A-Z0-9]{26}$/.test(path)) {
 			if (request.method !== 'GET') error(405);
-			response = await authApi(`/crm/${path}`, { headers: { Authorization: `Bearer ${token}` } });
+			response = await authApi(`/crm/${path}`, {
+				headers: { Authorization: `Bearer ${token}` },
+				signal: request.signal
+			});
 		} else {
 			const headers: Record<string, string> = { Authorization: `Bearer ${token}` };
 			let body: BodyInit | undefined;
@@ -70,6 +81,7 @@ export async function proxyCrm(event: RequestEvent): Promise<Response> {
 						'http://localhost:8001';
 					response = await fetch(`${backend.replace(/\/$/, '')}/crm/${path}`, {
 						method: request.method,
+						signal: request.signal,
 						headers: { ...headers, Accept: 'application/json' },
 						body
 					});
@@ -79,6 +91,7 @@ export async function proxyCrm(event: RequestEvent): Promise<Response> {
 			}
 			response = await adminApi(`/crm/${path}${url.search}`, {
 				method: request.method,
+				signal: request.signal,
 				headers,
 				body
 			});

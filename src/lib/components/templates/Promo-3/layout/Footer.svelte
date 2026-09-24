@@ -159,6 +159,11 @@
 					>Пользовательское соглашение</a
 				>
 				<div class="flex items-center gap-2">
+					<a
+						href="/crm"
+						class="text-xs text-surface-300 transition-colors hover:text-accent-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+						>Менеджер</a
+					>
 					{@render pageSettings?.(
 						'rounded-lg border border-surface-600/60 bg-surface-800/70 text-surface-300 hover:border-accent-500/60 hover:text-accent-500'
 					)}

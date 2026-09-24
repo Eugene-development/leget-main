@@ -2,6 +2,7 @@ import UniversityHero from './pages/university/UniversityHero.svelte';
 import UniversityJournal from './pages/university/UniversityJournal.svelte';
 import UniversityApproach from './pages/university/UniversityApproach.svelte';
 import type { Component } from 'svelte';
+import GlassRequest from './pages/steklo-i-zerkala/GlassRequest.svelte';
 
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
@@ -175,10 +176,16 @@ import SantehnikaCategories from './pages/santehnika/SantehnikaCategories.svelte
 import SantehnikaBenefits from './pages/santehnika/SantehnikaBenefits.svelte';
 import SantehnikaComplex from './pages/santehnika/SantehnikaComplex.svelte';
 import SantehnikaCTA from './pages/santehnika/SantehnikaCTA.svelte';
+import OsveshchenieSidebar from './pages/osveshchenie/OsveshchenieSidebar.svelte';
+import OsveshchenieHero from './pages/osveshchenie/OsveshchenieHero.svelte';
+import OsveshchenieBrands from './pages/osveshchenie/OsveshchenieBrands.svelte';
+import OsveshchenieBrandHero from './pages/osveshchenie/OsveshchenieBrandHero.svelte';
+import OsveshchenieCTA from './pages/osveshchenie/OsveshchenieCTA.svelte';
 
 // Furnitura page components
 import FurnituraSidebar from './pages/furnitura/FurnituraSidebar.svelte';
 import FurnituraHero from './pages/furnitura/FurnituraHero.svelte';
+import FurnituraShopHero from './pages/furnitura/FurnituraShopHero.svelte';
 import FurnituraShops from './pages/furnitura/FurnituraShops.svelte';
 import FurnituraCTA from './pages/furnitura/FurnituraCTA.svelte';
 
@@ -193,6 +200,7 @@ import PliitkaCTA from './pages/plitka/PliitkaCTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/steklo-i-zerkala': { GlassRequest },
 	'/university': { UniversityHero, UniversityJournal, UniversityApproach },
 	// Страница 404. Рендерится и по прямому адресу /404, и как тело ошибки
 	// в src/routes/+error.svelte — см. loadRenderPage().
@@ -408,10 +416,28 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		SantehnikaBenefits,
 		SantehnikaCTA
 	},
+	'/osveshchenie': {
+		OsveshchenieSidebar,
+		OsveshchenieHero,
+		OsveshchenieBrands,
+		OsveshchenieCTA
+	},
+	'/osveshchenie/{brand}': {
+		OsveshchenieSidebar,
+		OsveshchenieBrandHero,
+		BrandAbout,
+		OsveshchenieCTA
+	},
 	'/furnitura': {
 		FurnituraSidebar,
 		FurnituraHero,
 		FurnituraShops,
+		FurnituraCTA
+	},
+	'/furnitura/{shop}': {
+		FurnituraSidebar,
+		FurnituraShopHero,
+		BrandAbout,
 		FurnituraCTA
 	},
 	'/plitka': {

@@ -101,6 +101,11 @@
 			return tmpl.pageOverrides['/santehnika/{brand}'] || {};
 		}
 
+		// /furnitura/{shop}
+		if (cleanSlug.match(/^\/furnitura\/[^/]+$/)) {
+			return tmpl.pageOverrides['/furnitura/{shop}'] || {};
+		}
+
 		if (cleanSlug.match(/^\/stoleshnica\/[^/]+\/[^/]+$/)) {
 			return tmpl.pageOverrides['/stoleshnica/{material}/{brand}'] || {};
 		}

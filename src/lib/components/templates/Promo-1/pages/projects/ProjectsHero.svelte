@@ -26,7 +26,7 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
+	import ProjectImageActions from '$lib/components/ProjectImageActions.svelte';
 	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -34,6 +34,7 @@
 		FEED_LINK_LABEL,
 		formatCompletedAt,
 		projectHref,
+		projectTitle,
 		resolveFeedProjects,
 		type FeedProject
 	} from './ProjectsFeed/data';
@@ -109,11 +110,17 @@
 			<article
 				class="group p1-card p1-border p1-card-hover relative mt-4 animate-fade-up-in overflow-hidden rounded-3xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg"
 			>
-				<FavoriteProjectButton projectId={latest.id} class="absolute top-4 right-4 z-10" />
+				<ProjectImageActions
+					compact
+					projectId={latest.id}
+					imageUrl={latest.images[0]?.url}
+					projectName={projectTitle(latest.value)}
+					class="absolute top-4 right-4 z-10"
+				/>
 				<a
 					class="grid focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset lg:grid-cols-[7fr_5fr] lg:gap-10"
 					href={projectHref(latest)}
-					aria-label="{FEED_LINK_LABEL}: {latest.value}"
+					aria-label="{FEED_LINK_LABEL}: {projectTitle(latest.value)}"
 				>
 					<!-- `p1-body` на обёртке кадра несущий: заглушка `ImageFallback`
 				     берёт цвет текста родителя и без роли растворилась бы в
@@ -122,7 +129,7 @@
 						<ImageFallback
 							imagePath={['projectImages', String(latest.id), '0']}
 							src={latest.images[0]?.url ?? null}
-							alt="Проект «{latest.value}»"
+							alt={projectTitle(latest.value)}
 							class="aspect-video h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105 lg:aspect-auto lg:min-h-[360px]"
 						/>
 					</div>
@@ -135,25 +142,27 @@
 					     странице оно и есть заголовок первого экрана. Ниже, в
 					     ленте, те же названия идут ролью `p1-title-sub` — там они
 					     пункты списка, а не заголовок. -->
-						<p class="p1-title p1-title-display mt-3.5 text-3xl sm:text-4xl">{latest.value}</p>
+						<p class="p1-title p1-title-display mt-3.5 text-3xl sm:text-4xl">
+							{projectTitle(latest.value)}
+						</p>
 
 						<dl class="mt-6 flex flex-col">
 							{#if latest.objectAddress}
 								<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
 									<dt class="p1-label p1-body">Адрес объекта</dt>
-									<dd class="p1-title text-right text-[0.9375rem]">{latest.objectAddress}</dd>
+									<dd class="p1-title text-right text-base">{latest.objectAddress}</dd>
 								</div>
 							{/if}
 							{#if completed}
 								<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
 									<dt class="p1-label p1-body">Сдан</dt>
-									<dd class="p1-title p1-numeric text-right text-[0.9375rem]">{completed}</dd>
+									<dd class="p1-title p1-numeric text-right text-base">{completed}</dd>
 								</div>
 							{/if}
 							{#if latest.maker}
 								<div class="p1-line flex items-baseline justify-between gap-4 border-t py-2.5">
 									<dt class="p1-label p1-body">Изготовление</dt>
-									<dd class="p1-title text-right text-[0.9375rem]">{latest.maker}</dd>
+									<dd class="p1-title text-right text-base">{latest.maker}</dd>
 								</div>
 							{/if}
 						</dl>

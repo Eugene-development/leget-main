@@ -365,6 +365,12 @@
 	/* Типографика */
 	--font-heading: var(--ds-font-heading);
 	--font-body: var(--ds-font-body);
+	--font-catalog-display: var(--ds-font-catalog-display);
+	--text-catalog-display: var(--ds-font-catalog-display-size);
+	--text-catalog-display--line-height: var(--ds-font-catalog-display-leading);
+	--font-weight-catalog-display: var(--ds-font-catalog-display-weight);
+	--tracking-catalog-display: var(--ds-font-catalog-display-tracking);
+	--background-image-glass-spectrum: var(--ds-glass-spectrum);
 	--font-statement: var(--ds-font-statement);
 	--text-statement: var(--ds-font-statement-size);
 	--text-statement--line-height: var(--ds-font-statement-leading);
@@ -1101,4 +1107,13 @@ h6 {
 }
 .rich-text > :last-child {
 	margin-block-end: 0;
+}
+
+/* Large editorial catalog heading; outside layers to override the tag role. */
+.p1-catalog-display {
+	font-family: var(--ds-font-catalog-display);
+	font-size: var(--ds-font-catalog-display-size);
+	font-weight: var(--ds-font-catalog-display-weight);
+	line-height: var(--ds-font-catalog-display-leading);
+	letter-spacing: var(--ds-font-catalog-display-tracking);
 }

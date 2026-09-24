@@ -52,7 +52,10 @@
 			old_price: undefined,
 			is_new: false,
 			is_featured: false,
-			is_active: true
+			is_active: true,
+			completed_at: '',
+			object_address: '',
+			maker: ''
 		};
 	}
 	function releasePhotos() {
@@ -190,9 +193,12 @@
 		event.preventDefault();
 		if (isSubmitting || currentFile) return;
 		errors = validateProject(form, photos.length);
-		for (const input of formElement?.querySelectorAll<HTMLInputElement>('input[type="number"]') ??
-			[]) {
-			if (input.validity.badInput) errors[input.name] = 'Введите корректную цену.';
+		for (const input of formElement?.querySelectorAll<HTMLInputElement>(
+			'input[type="number"],input[type="date"]'
+		) ?? []) {
+			if (input.validity.badInput)
+				errors[input.name] =
+					input.type === 'date' ? 'Введите корректную дату.' : 'Введите корректную цену.';
 		}
 		if (!categories.some((category) => category.id === form.category_id))
 			errors.category_id = 'Выберите доступную категорию мебели.';
@@ -310,14 +316,14 @@
 					<div class="min-w-0 space-y-5">
 						<div class="grid gap-4 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
 							<div>
-								<label for={`${uid}-name`} class="field-label">Название проекта *</label><input
+								<label for={`${uid}-name`} class="field-label">Номер проекта *</label><input
 									id={`${uid}-name`}
 									name="value"
 									required
 									type="text"
 									bind:value={form.value}
 									maxlength="255"
-									placeholder="Например, кухня в современном стиле"
+									placeholder="Например, 124"
 									aria-invalid={!!errors.value}
 									aria-describedby={errors.value ? `${uid}-value-error` : undefined}
 									class="field"
@@ -417,6 +423,61 @@
 						</div>
 						<MebelTagPicker bind:selected={selectedTags} disabled={isSubmitting} />
 						{@render fieldError('tag_ids')}
+						<section
+							class="space-y-4 border-t border-ink-200 pt-5"
+							aria-labelledby={`${uid}-passport-title`}
+						>
+							<div>
+								<h3 id={`${uid}-passport-title`} class="p1-title-sub text-base">Паспорт работы</h3>
+								<p class="mt-1 text-xs text-ink-600">
+									Показывается на странице «Проекты». Дата сдачи необязательна.
+								</p>
+							</div>
+							<div class="grid gap-4 sm:grid-cols-2">
+								<div>
+									<label for={`${uid}-completed`} class="field-label">Дата сдачи</label><input
+										id={`${uid}-completed`}
+										name="completed_at"
+										type="date"
+										min="1000-01-01"
+										max="9999-12-31"
+										bind:value={form.completed_at}
+										aria-invalid={!!errors.completed_at}
+										aria-describedby={errors.completed_at ? `${uid}-completed_at-error` : undefined}
+										class="field"
+									/>{@render fieldError('completed_at')}
+								</div>
+								<div>
+									<label for={`${uid}-maker`} class="field-label">Кто делал мебель</label><input
+										id={`${uid}-maker`}
+										name="maker"
+										type="text"
+										maxlength="255"
+										bind:value={form.maker}
+										placeholder="Собственное производство"
+										aria-invalid={!!errors.maker}
+										aria-describedby={errors.maker ? `${uid}-maker-error` : undefined}
+										class="field"
+									/>{@render fieldError('maker')}
+								</div>
+							</div>
+							<div>
+								<label for={`${uid}-address`} class="field-label">Адрес объекта</label><input
+									id={`${uid}-address`}
+									name="object_address"
+									type="text"
+									maxlength="255"
+									bind:value={form.object_address}
+									placeholder="Город, район, улица и дом"
+									aria-invalid={!!errors.object_address}
+									aria-describedby={`${uid}-address-help ${errors.object_address ? `${uid}-object_address-error` : ''}`}
+									class="field"
+								/>{@render fieldError('object_address')}
+								<p id={`${uid}-address-help`} class="mt-1.5 text-xs text-ink-600">
+									Храним адрес целиком. В ленте проектов показываем город и район.
+								</p>
+							</div>
+						</section>
 					</div>
 					<div class="min-w-0 lg:border-l lg:border-ink-200 lg:pl-7">
 						<div class="mb-1 flex items-center justify-between">

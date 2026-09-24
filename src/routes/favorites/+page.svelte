@@ -3,25 +3,16 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-
 	type PageComponent = {
+		id?: string | null;
 		type: string;
 		data: Record<string, unknown>;
 	};
 
 	const site = $derived(data.pageData?.site);
-	const sourceComponents = $derived(
-		(data.pageData?.page?.componentsData as PageComponent[] | undefined) ?? []
-	);
-	const projects = $derived.by(() => {
-		const latest = sourceComponents.find((component) => component.type === 'ProjectsHero')?.data
-			?.latest;
-		const rest = sourceComponents.find((component) => component.type === 'ProjectsFeed')?.data
-			?.projects;
-
-		return [latest, ...(Array.isArray(rest) ? rest : [])].filter(Boolean);
-	});
-	const components = $derived([{ type: 'FavoritesPage', data: { projects } }]);
+	const page = $derived(data.pageData?.page);
+	const pageId = $derived(page?.id ?? null);
+	const licenseId = $derived(page?.licenseId ?? null);
 </script>
 
 <svelte:head>
@@ -39,7 +30,9 @@
 	footerData={site?.footer?.data ?? null}
 	actionCards={site?.actionCards ?? null}
 	seo={null}
-	{components}
-	editContext={null}
-	ownerId={null}
+	components={(page?.componentsData as PageComponent[] | undefined) ?? []}
+	editContext={pageId && licenseId
+		? { pageId, licenseId, templateId: site?.templateId ?? null, slug: '/favorites' }
+		: null}
+	ownerId={site?.ownerId ?? null}
 />

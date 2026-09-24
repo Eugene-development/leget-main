@@ -8,7 +8,7 @@
 		selected = $bindable([]),
 		disabled = false,
 		groupSlugs = [],
-		helpText = 'Бренды из техники, сантехники и столешниц добавляются автоматически. В проекте эти теги ведут на страницы брендов.'
+		helpText = 'Бренды из техники, сантехники, освещения и столешниц добавляются автоматически. В проекте эти теги ведут на страницы брендов.'
 	}: {
 		selected: string[];
 		disabled?: boolean;
@@ -70,7 +70,7 @@
 			groups = (await loadTagGroups(groupSlugs.length ? undefined : 'mebel')).filter((group) =>
 				groupSlugs.length
 					? groupSlugs.includes(group.slug)
-					: !['appliance-type', 'plumbing-type'].includes(group.slug)
+					: !['appliance-type', 'plumbing-type', 'lighting-type'].includes(group.slug)
 			);
 		} catch (cause) {
 			error = cause instanceof Error ? cause.message : 'Не удалось загрузить теги.';

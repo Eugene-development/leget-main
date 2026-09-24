@@ -556,6 +556,11 @@
 			</p>
 
 			<div class="flex items-center gap-2">
+				<a
+					href="/crm"
+					class="p1-muted p1-accent-hover text-xs transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+					>Менеджер</a
+				>
 				{@render pageSettings?.(
 					'rounded-xl border p1-border p1-muted p1-accent-hover p1-accent-border-hover transition-colors'
 				)}

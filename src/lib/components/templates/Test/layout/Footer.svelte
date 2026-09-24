@@ -53,6 +53,11 @@
 			{/if}
 
 			<div class="flex items-center gap-2">
+				<a
+					href="/crm"
+					class="text-sm text-ink-600 transition-colors hover:text-ink-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+					>Менеджер</a
+				>
 				{@render pageSettings?.(
 					'rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900'
 				)}

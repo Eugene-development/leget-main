@@ -3,6 +3,7 @@
  */
 
 export type ServiceType =
+	| 'glass-mirrors'
 	| 'consultation'
 	| 'design-project'
 	| 'furniture-project'
@@ -16,6 +17,7 @@ export type ServiceType =
 	| 'promo';
 
 export const SERVICE_TITLES: Record<ServiceType, string> = {
+	'glass-mirrors': 'Стекло и Зеркала',
 	consultation: 'Консультация дизайнера',
 	'design-project': 'Заказать дизайн-проект',
 	'furniture-project': 'Проектирование мебели',
@@ -30,6 +32,7 @@ export const SERVICE_TITLES: Record<ServiceType, string> = {
 };
 
 export const SERVICE_MESSAGE_PLACEHOLDERS: Record<ServiceType, string> = {
+	'glass-mirrors': 'Опишите изделие, размеры и пожелания.',
 	consultation: 'Напишите, какой вопрос хотите обсудить с дизайнером.',
 	'design-project': 'Опишите помещение, желаемый стиль и задачи дизайн-проекта.',
 	'furniture-project':

@@ -22,7 +22,7 @@
 		onSaved
 	}: {
 		brand?: Brand | null;
-		rubric?: 'APPLIANCES' | 'PLUMBING';
+		rubric?: 'APPLIANCES' | 'PLUMBING' | 'LIGHTING';
 		licenseId: string;
 		onClose: () => void;
 		onSaved: (deleted: boolean, slug?: string) => void | Promise<void>;
@@ -247,7 +247,13 @@
 			<MebelTagPicker
 				bind:selected
 				disabled={busy}
-				groupSlugs={[rubric === 'PLUMBING' ? 'plumbing-type' : 'appliance-type']}
+				groupSlugs={[
+					rubric === 'PLUMBING'
+						? 'plumbing-type'
+						: rubric === 'LIGHTING'
+							? 'lighting-type'
+							: 'appliance-type'
+				]}
 				helpText="Теги назначаются этому бренду. Справочником тегов можно управлять через шестерёнку сайдбара."
 			/>
 			{#if fields.tag_ids}<p class="text-sm">{fields.tag_ids}</p>{/if}

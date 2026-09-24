@@ -17,7 +17,12 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const shops = $derived(data.shops || []);
+	const shops = $derived.by(() => {
+		const items = Array.isArray(data?.shops) ? data.shops : [];
+		return isEditable
+			? items
+			: items.filter((shop: { is_enabled?: boolean }) => shop.is_enabled !== false);
+	});
 
 	// Циклические цветовые градиенты как в N-front
 	const gradients = [

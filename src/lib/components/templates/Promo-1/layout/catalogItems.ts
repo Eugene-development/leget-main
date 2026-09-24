@@ -35,7 +35,19 @@ export const catalogItems: CatalogItem[] = [
 		icon: 'faucet',
 		desc: 'Смесители, мойки, аксессуары'
 	},
+	{
+		href: '/osveshchenie',
+		label: 'Освещение',
+		icon: 'lamp',
+		desc: 'Светильники и световые решения'
+	},
 	{ href: '/furnitura', label: 'Фурнитура', icon: 'hinge', desc: 'Ручки, петли, механизмы' },
+	{
+		href: '/steklo-i-zerkala',
+		label: 'Стекло и Зеркала',
+		icon: 'surface',
+		desc: 'Изделия по вашим размерам'
+	},
 	{
 		href: '/plitka',
 		label: 'Плитка',

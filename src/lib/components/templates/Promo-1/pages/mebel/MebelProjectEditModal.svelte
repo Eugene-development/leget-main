@@ -1,9 +1,14 @@
 <script lang="ts">
-	import { untrack, tick } from 'svelte';
+	import { onDestroy, untrack, tick } from 'svelte';
 	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
+	import ImageCropper from '$lib/components/ImageCropper.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import MebelTagPicker from './MebelTagPicker.svelte';
 	import { ProjectRequestError, projectRequest } from './project-request';
 	import {
+		IMAGE_TYPES,
+		MAX_IMAGE_BYTES,
+		MAX_PROJECT_IMAGES,
 		loadProjectEditForm,
 		projectUpdateInput,
 		validateProjectUpdate,
@@ -29,14 +34,37 @@
 	let form = $state(untrack(() => loadProjectEditForm(project, categoryId)));
 	let selectedTags = $state<string[]>(untrack(() => (project.tags ?? []).map((tag) => tag.id)));
 	const tagsKnown = untrack(() => Array.isArray(project.tags));
+	type EditablePhoto = { url: string; preview: string; file?: File };
+	let photos = $state<EditablePhoto[]>(
+		untrack(() =>
+			(project.images ?? []).flatMap((image) =>
+				typeof image.url === 'string' && image.url ? [{ url: image.url, preview: image.url }] : []
+			)
+		)
+	);
+	let photosDirty = $state(false);
+	let queue = $state<File[]>([]);
+	const currentFile = $derived(queue[0] ?? null);
+	const newPhotoCount = $derived(photos.filter((photo) => photo.file).length);
+	let uploadProgress = $state(0);
+	let fileInput = $state<HTMLInputElement>();
+	let uploaded = new Map<File, string>();
 	let saving = $state(false);
 	let errors = $state<Record<string, string>>({});
 	let saveError = $state('');
 	let formElement = $state<HTMLFormElement>();
 	let errorSummary = $state<HTMLParagraphElement>();
 
+	function releasePreviews() {
+		photos.forEach((photo) => {
+			if (photo.file) URL.revokeObjectURL(photo.preview);
+		});
+		uploaded.clear();
+	}
+	onDestroy(releasePreviews);
+
 	function close() {
-		if (!saving) onClose();
+		if (!saving && !currentFile) onClose();
 	}
 	function mountDialog(node: HTMLDialogElement) {
 		const previousFocus = document.activeElement;
@@ -55,12 +83,85 @@
 	}
 	async function focusError() {
 		await tick();
-		(formElement?.querySelector<HTMLElement>('[aria-invalid="true"]') ?? errorSummary)?.focus();
+		(
+			formElement?.querySelector<HTMLElement>('[aria-invalid="true"], [data-invalid="true"]') ??
+			errorSummary
+		)?.focus();
+	}
+	function selectFiles(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
+		const files = Array.from(input.files ?? []);
+		input.value = '';
+		if (!files.length || saving || currentFile) return;
+		if (photos.length + files.length > MAX_PROJECT_IMAGES) {
+			errors.image_urls = `Можно добавить ещё ${MAX_PROJECT_IMAGES - photos.length} фото. Всего — не больше восьми.`;
+			return;
+		}
+		if (
+			files.some(
+				(file) => !IMAGE_TYPES.includes(file.type) || file.size > MAX_IMAGE_BYTES || file.size === 0
+			)
+		) {
+			errors.image_urls = 'Выберите JPEG, PNG или WebP размером до 10 МБ каждый.';
+			return;
+		}
+		errors.image_urls = '';
+		queue = files;
+	}
+	function cropped(file: File) {
+		if (file.size > MAX_IMAGE_BYTES) {
+			errors.image_urls = 'Фотография после обработки превышает 10 МБ.';
+			return;
+		}
+		photos = [...photos, { file, url: '', preview: URL.createObjectURL(file) }];
+		photosDirty = true;
+		queue = queue.slice(1);
+		errors.image_urls = '';
+	}
+	function removePhoto(index: number) {
+		if (saving) return;
+		const photo = photos[index];
+		if (photo.file) {
+			URL.revokeObjectURL(photo.preview);
+			uploaded.delete(photo.file);
+		}
+		photos = photos.filter((_, photoIndex) => photoIndex !== index);
+		photosDirty = true;
+		errors.image_urls = '';
+	}
+	async function upload(file: File): Promise<string> {
+		const cached = uploaded.get(file);
+		if (cached) return cached;
+		const result = await projectRequest<{
+			generateUploadUrl: { uploadUrl: string; objectUrl: string };
+		}>(
+			`mutation ProjectPhotoUpload($filename: String!, $mimeType: String!, $folder: String) { generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder) { uploadUrl objectUrl } }`,
+			{ filename: file.name, mimeType: file.type, folder: 'mebel' }
+		);
+		const info = result.generateUploadUrl;
+		if (!info?.uploadUrl || !info.objectUrl)
+			throw new Error('Не удалось получить адрес загрузки фотографии.');
+		let response: Response;
+		try {
+			response = await fetch(info.uploadUrl, {
+				method: 'PUT',
+				headers: { 'Content-Type': file.type },
+				body: file
+			});
+		} catch {
+			throw new Error(
+				'Не удалось загрузить фотографию. Проверьте подключение и повторите сохранение.'
+			);
+		}
+		if (!response.ok) throw new Error('Не удалось загрузить фотографию. Повторите сохранение.');
+		uploaded.set(file, info.objectUrl);
+		return info.objectUrl;
 	}
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
-		if (saving) return;
+		if (saving || currentFile) return;
 		errors = validateProjectUpdate(form);
+		if (photosDirty && photos.length === 0) errors.image_urls = 'Добавьте хотя бы одну фотографию.';
 		if (!categories.some((category) => category.id === form.category_id))
 			errors.category_id = 'Выберите доступную категорию мебели.';
 		for (const input of formElement?.querySelectorAll<HTMLInputElement>(
@@ -76,9 +177,25 @@
 			return;
 		}
 		saving = true;
-		const input = projectUpdateInput(form, selectedTags, tagsKnown);
+		uploadProgress = 0;
+		let input: ProjectUpdateInput;
 		let saved: SavedProject;
 		try {
+			let imageUrls: string[] | undefined;
+			if (photosDirty) {
+				imageUrls = [];
+				let uploadedCount = 0;
+				for (const photo of photos) {
+					if (photo.file) {
+						imageUrls.push(await upload(photo.file));
+						uploadedCount++;
+						uploadProgress = Math.round((uploadedCount / newPhotoCount) * 100);
+					} else {
+						imageUrls.push(photo.url);
+					}
+				}
+			}
+			input = projectUpdateInput(form, selectedTags, tagsKnown, imageUrls);
 			const result = await projectRequest<{ upsertMebelProject: SavedProject }>(
 				`mutation UpdateMebelProject($input: UpsertMebelProjectInput!) { upsertMebelProject(input: $input) { id value slug } }`,
 				{ input }
@@ -91,13 +208,17 @@
 				cause instanceof Error
 					? cause.message
 					: 'Не удалось сохранить изменения. Повторите попытку.';
-			if (cause instanceof ProjectRequestError) errors = cause.fields;
+			if (cause instanceof ProjectRequestError) {
+				errors = cause.fields;
+				if (errors.image_urls) uploaded.clear();
+			}
 			saving = false;
 			await focusError();
 			return;
 		}
 		saving = false;
 		onClose();
+		releasePreviews();
 		onSaved(saved, input);
 	}
 </script>
@@ -175,13 +296,14 @@
 				<div class="min-w-0 space-y-5">
 					<div class="grid gap-4 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
 						<div>
-							<label for={`${uid}-name`} class="field-label">Название проекта *</label><input
+							<label for={`${uid}-name`} class="field-label">Номер проекта *</label><input
 								id={`${uid}-name`}
 								name="value"
 								type="text"
 								required
 								maxlength="255"
 								bind:value={form.value}
+								placeholder="Например, 124"
 								aria-invalid={!!errors.value}
 								aria-describedby={errors.value ? `${uid}-value-error` : undefined}
 								class="field"
@@ -314,10 +436,80 @@
 				<div
 					class="min-w-0 space-y-4 border-t border-ink-200 pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8"
 				>
+					<section class="border-b border-ink-200 pb-5" aria-labelledby={`${uid}-photos-title`}>
+						<div class="mb-1 flex items-center justify-between gap-3">
+							<h3 id={`${uid}-photos-title`} class="p1-title-sub text-base">Фотографии</h3>
+							<span class="text-xs text-ink-600">{photos.length} / 8</span>
+						</div>
+						<p class="mb-4 text-xs text-ink-600">
+							Первое фото — обложка. JPEG, PNG или WebP, до 10 МБ каждое.
+						</p>
+						<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2">
+							{#each photos as photo, index (photo.preview)}
+								<div
+									class="relative aspect-[4/3] overflow-hidden rounded-lg border border-ink-200 bg-ink-50"
+								>
+									<ImageFallback
+										imageRole="preview"
+										src={photo.preview}
+										alt={`Фото проекта ${index + 1}`}
+										class="h-full w-full object-cover"
+									/>
+									{#if index === 0}<span
+											class="absolute bottom-1 left-1 rounded bg-scrim/75 px-2 py-1 text-[11px] text-on-dark"
+											>Обложка</span
+										>{/if}
+									<button
+										type="button"
+										onclick={() => removePhoto(index)}
+										aria-label={`Удалить фото ${index + 1}`}
+										class="absolute top-1 right-1 flex size-11 items-center justify-center rounded-full bg-surface-raised text-ink-800 shadow-sm hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500"
+										><svg
+											width="16"
+											height="16"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg
+										></button
+									>
+								</div>
+							{/each}
+						</div>
+						<input
+							bind:this={fileInput}
+							type="file"
+							accept="image/jpeg,image/png,image/webp"
+							multiple
+							onchange={selectFiles}
+							class="hidden"
+							tabindex="-1"
+							aria-label="Файлы фотографий проекта"
+						/>
+						<button
+							type="button"
+							onclick={() => fileInput?.click()}
+							disabled={photos.length >= MAX_PROJECT_IMAGES || !!currentFile}
+							data-invalid={!!errors.image_urls}
+							aria-describedby={`${uid}-photos-help`}
+							class="mt-3 flex min-h-16 w-full items-center justify-center gap-2 rounded-lg border border-dashed border-ink-300 px-3 py-4 text-sm font-medium text-link-700 hover:border-link-500 hover:bg-link-50 disabled:opacity-50"
+							><svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg
+							>Добавить фото</button
+						>
+						<div id={`${uid}-photos-help`}>{@render fieldError('image_urls')}</div>
+					</section>
 					<div>
 						<h3 class="p1-title-sub text-base">Паспорт работы</h3>
 						<p class="mt-1 text-xs text-ink-600">
-							Показывается на странице «Проекты». Без даты сдачи работа остаётся только в каталоге.
+							Показывается на странице «Проекты». Дата сдачи необязательна.
 						</p>
 					</div>
 					<div class="grid gap-4 sm:grid-cols-2">
@@ -364,37 +556,6 @@
 							Храним адрес целиком. В ленте проектов показываем город и район.
 						</p>
 					</div>
-					<div class="grid gap-4 sm:grid-cols-2">
-						<div>
-							<label for={`${uid}-hardware`} class="field-label">Бренды фурнитуры</label><input
-								id={`${uid}-hardware`}
-								name="hardware_brands"
-								type="text"
-								bind:value={form.hardware_brands}
-								placeholder="Blum, Hettich"
-								aria-invalid={!!errors.hardware_brands}
-								aria-describedby={errors.hardware_brands
-									? `${uid}-hardware_brands-error`
-									: undefined}
-								class="field"
-							/>{@render fieldError('hardware_brands')}
-						</div>
-						<div>
-							<label for={`${uid}-appliances`} class="field-label">Бренды техники</label><input
-								id={`${uid}-appliances`}
-								name="appliance_brands"
-								type="text"
-								bind:value={form.appliance_brands}
-								placeholder="Bosch, Franke"
-								aria-invalid={!!errors.appliance_brands}
-								aria-describedby={errors.appliance_brands
-									? `${uid}-appliance_brands-error`
-									: undefined}
-								class="field"
-							/>{@render fieldError('appliance_brands')}
-						</div>
-					</div>
-					<p class="text-xs text-ink-600">Несколько брендов — через запятую.</p>
 				</div>
 			</fieldset>
 		</div>
@@ -409,12 +570,19 @@
 				</p>{/if}
 			<div class="flex flex-wrap items-center justify-between gap-3">
 				<p role="status" class="text-xs text-ink-600">
-					{saving ? 'Сохраняем изменения…' : 'Поля со звёздочкой обязательны'}
+					{saving && photosDirty && newPhotoCount > 0 && uploadProgress < 100
+						? `Загрузка фотографий · ${uploadProgress}%`
+						: saving
+							? 'Сохраняем изменения…'
+							: 'Поля со звёздочкой обязательны'}
 				</p>
 				<div class="ml-auto flex gap-3">
-					<button type="button" onclick={close} disabled={saving} class="secondary-button"
-						>Отмена</button
-					><button type="submit" disabled={saving} class="primary-button"
+					<button
+						type="button"
+						onclick={close}
+						disabled={saving || !!currentFile}
+						class="secondary-button">Отмена</button
+					><button type="submit" disabled={saving || !!currentFile} class="primary-button"
 						>{saving ? 'Сохранение…' : 'Сохранить изменения'}</button
 					>
 				</div>
@@ -422,6 +590,15 @@
 		</footer>
 	</form>
 </dialog>
+
+{#if currentFile}
+	{#key currentFile}<ImageCropper
+			imageFile={currentFile}
+			maxOutputBytes={MAX_IMAGE_BYTES}
+			onCrop={cropped}
+			onCancel={() => (queue = queue.slice(1))}
+		/>{/key}
+{/if}
 
 <style>
 	.field-label {

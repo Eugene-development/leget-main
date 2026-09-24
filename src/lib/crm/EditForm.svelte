@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import type { Field, Row } from './api';
 	let {
 		fields,
@@ -17,6 +18,20 @@
 	let message = $state('');
 	let choices = $state<Record<string, { value: string; label: string }[]>>({});
 	const searches: Record<string, number> = {};
+	const searchTimers = new Map<string, ReturnType<typeof setTimeout>>();
+	onDestroy(() => {
+		for (const timer of searchTimers.values()) clearTimeout(timer);
+	});
+	function scheduleSearch(field: Field, value: string) {
+		clearTimeout(searchTimers.get(field.key));
+		searches[field.key] = (searches[field.key] || 0) + 1;
+		searchTimers.set(
+			field.key,
+			setTimeout(() => {
+				void search(field, value);
+			}, 300)
+		);
+	}
 	async function search(field: Field, value: string) {
 		const sequence = (searches[field.key] || 0) + 1;
 		searches[field.key] = sequence;
@@ -71,7 +86,7 @@
 							type="search"
 							aria-label={`Поиск: ${field.label}`}
 							placeholder="Найти запись"
-							oninput={(e) => search(field, e.currentTarget.value)}
+							oninput={(e) => scheduleSearch(field, e.currentTarget.value)}
 						/>{/if}
 					<select name={field.key} required={field.required} value={String(getValue(field.key))}>
 						<option value="">Выберите</option>

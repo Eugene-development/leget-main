@@ -16,7 +16,7 @@
 /** Один проект в ленте. Форма — из обогащения RenderPage. */
 export type FeedProject = {
 	id: string;
-	/** Название работы (`mebel_projects.value`). */
+	/** Номер работы (`mebel_projects.value`); слово «Проект» добавляет интерфейс. */
 	value: string;
 	slug: string;
 	/** Категория рубрики «Мебель» — она же первый сегмент ссылки на проект. */
@@ -49,6 +49,11 @@ export const FEED_PAGE_SIZE = 4;
  *  действия, а не текст блока — разные слова на соседних карточках одной
  *  ленты читались бы как разные действия. */
 export const FEED_LINK_LABEL = 'Смотреть проект';
+
+/** Полное имя проекта для интерфейса. В БД `value` хранит только номер. */
+export function projectTitle(projectNumber: string): string {
+	return `Проект ${projectNumber}`;
+}
 
 function asText(value: unknown): string | null {
 	return typeof value === 'string' && value.trim() !== '' ? value.trim() : null;

@@ -868,6 +868,14 @@
                     "projects": []
                 }
             },
+            "/favorites": {
+                "FavoritesPage": {
+                    "projects": [],
+                    "title": "Избранное",
+                    "emptyTitle": "Здесь пока пусто",
+                    "emptyMessage": "Нажмите на сердце в карточке проекта — он появится здесь."
+                }
+            },
             "/vacancy": {
                 "VacancyHero": {
                     "title": "Вакансии",
@@ -1545,6 +1553,63 @@
                     "buttonText": "Получить консультацию"
                 }
             },
+            "/osveshchenie": {
+                "OsveshchenieSidebar": {
+                    "brands": [
+                        {
+                            "title": "Maytoni",
+                            "slug": "maytoni"
+                        },
+                        {
+                            "title": "Lightstar",
+                            "slug": "lightstar"
+                        }
+                    ]
+                },
+                "OsveshchenieHero": {
+                "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero_20260924.png",
+                    "title": "Освещение",
+                    "description": "Подберём светильники для разных зон дома: общий, рабочий и акцентный свет. Поможем сочетать их с мебелью и интерьером.",
+                    "buttonText": "Подобрать освещение"
+                },
+                "OsveshchenieBrands": {
+                    "title": "Бренды освещения",
+                    "brands": [
+                        {
+                            "title": "Maytoni",
+                            "slug": "maytoni"
+                        },
+                        {
+                            "title": "Lightstar",
+                            "slug": "lightstar"
+                        }
+                    ]
+                },
+                "OsveshchenieCTA": {
+                    "title": "Свет под ваш проект",
+                    "description": "Расскажите о помещении и задачах — поможем выбрать освещение для каждого сценария.",
+                    "buttonText": "Получить консультацию"
+                }
+            },
+            "/osveshchenie/{brand}": {
+                "OsveshchenieSidebar": {
+                    "brands": []
+                },
+                "OsveshchenieBrandHero": {
+                    "title": "Бренд",
+                    "description": "Подберём светильники бренда под ваш интерьер и задачи.",
+                    "buttonText": "Подобрать освещение"
+                },
+                "BrandAbout": {
+                    "title": "О бренде",
+                    "description": "Информация о светильниках и решениях бренда."
+                },
+                "OsveshchenieCTA": {
+                    "title": "Нужна помощь с выбором?",
+                    "description": "Поможем подобрать светильники этого бренда под ваш проект.",
+                    "buttonText": "Получить консультацию"
+                }
+            },
             "/furnitura": {
                 "FurnituraSidebar": {
                     "shops": []
@@ -1553,7 +1618,7 @@
                     "title": "Фурнитура",
                     "description": "Каталог интернет-магазинов и поставщиков мебельной фурнитуры. Петли, направляющие, подъёмники и системы хранения от проверенных поставщиков.",
                     "primaryButton": "Подобрать фурнитуру",
-                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png"
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero_20260924.png"
                 },
                 "FurnituraShops": {
                     "title": "Магазины и поставщики",
@@ -1563,6 +1628,32 @@
                     "title": "Подберём фурнитуру под ваш проект",
                     "description": "Поможем выбрать оптимальное решение с учётом бюджета и требований к мебели",
                     "buttonText": "Получить консультацию"
+                }
+            },
+            "/furnitura/{shop}": {
+                "FurnituraSidebar": {
+                    "shops": []
+                },
+                "FurnituraShopHero": {
+                    "title": "Магазин фурнитуры"
+                },
+                "BrandAbout": {
+                    "title": "О магазине",
+                    "description": ""
+                },
+                "FurnituraCTA": {
+                    "title": "Подберём фурнитуру под ваш проект",
+                    "description": "Поможем выбрать механизмы и комплектующие под размеры мебели и ваши задачи",
+                    "buttonText": "Получить консультацию"
+                }
+            },
+            "/steklo-i-zerkala": {
+                "GlassRequest": {
+                    "title": "Стекло и Зеркала",
+                    "description": "Для мебели и интерьера. Расскажите, что вы задумали — поможем подобрать стекло или зеркало под ваш проект.",
+                    "formTitle": "Обсудим ваш проект",
+                    "buttonText": "Отправить заявку",
+                    "theme": "light"
                 }
             },
             "/plitka": {

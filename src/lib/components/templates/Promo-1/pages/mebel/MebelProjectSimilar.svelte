@@ -15,7 +15,7 @@
 </script>
 
 <div class="mebel-container mt-16 mb-16">
-	<h2 class="mb-8 text-2xl text-ink-900">Похожие проекты</h2>
+	<h2 class="mb-8 text-2xl text-ink-900">Другие проекты категории</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 		{#each projects as project}

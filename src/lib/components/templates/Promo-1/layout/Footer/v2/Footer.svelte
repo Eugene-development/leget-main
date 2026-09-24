@@ -667,6 +667,11 @@
 					>
 				</p> -->
 				<div class="flex items-center gap-2">
+					<a
+						href="/crm"
+						class="text-xs text-on-dark/70 transition-colors hover:text-on-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+						>Менеджер</a
+					>
 					{@render pageSettings?.(
 						'rounded-full border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 hover:border-on-dark/25 hover:bg-surface-raised/[0.07] hover:text-on-dark'
 					)}

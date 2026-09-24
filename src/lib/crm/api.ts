@@ -12,7 +12,12 @@ export type Field = {
 	search?: (query: string) => Promise<{ value: string; label: string }[]>;
 };
 const attempts = new Map<string, string>();
-export async function crmRequest(base: string, path: string, body?: Row | FormData): Promise<Row> {
+export async function crmRequest(
+	base: string,
+	path: string,
+	body?: Row | FormData,
+	options: { signal?: AbortSignal } = {}
+): Promise<Row> {
 	const signature =
 		body instanceof FormData
 			? `${path}:${JSON.stringify([...body.entries()].map(([k, v]) => [k, typeof v === 'string' ? v : [v.name, v.size, v.lastModified]]))}`
@@ -31,9 +36,11 @@ export async function crmRequest(base: string, path: string, body?: Row | FormDa
 		response = await fetch(`${base}/api/${path}`, {
 			method: body ? 'POST' : 'GET',
 			headers: body instanceof FormData ? {} : { 'Content-Type': 'application/json' },
-			body: payload
+			body: payload,
+			signal: options.signal
 		});
-	} catch {
+	} catch (error) {
+		if (options.signal?.aborted) throw error;
 		throw new Error('Связь прервалась. Повторите действие — повтор не создаст дубль.');
 	}
 	const result = await response.json().catch(() => ({}));
@@ -55,6 +62,7 @@ export const date = (v: unknown) =>
 			)
 		: '—';
 export const labels: Record<string, string> = {
+	'glass-mirrors': 'Стекло и Зеркала',
 	new: 'Новая',
 	processed: 'В работе',
 	completed: 'Завершена',

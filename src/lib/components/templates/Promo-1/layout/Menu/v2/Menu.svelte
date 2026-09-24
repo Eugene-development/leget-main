@@ -126,6 +126,15 @@
 				d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
 			/>
 		</svg>
+	{:else if name === 'lamp'}
+		<svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="1.5"
+				d="M12 3v3m-5.5 1.5h11L20 15H4l2.5-7.5ZM12 15v5m-4 0h8"
+			/>
+		</svg>
 	{:else if name === 'hinge'}
 		<svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 			<path
@@ -205,18 +214,18 @@
 			<span class="min-w-0 flex-1">
 				<span class="flex items-center gap-2">
 					<span
-						class="text-[13px] font-semibold tracking-tight text-ink-900 transition-colors duration-300 group-hover/item:text-link-600"
+						class="text-sm font-semibold tracking-tight text-ink-900 transition-colors duration-300 group-hover/item:text-link-600"
 					>
 						{item.label}
 					</span>
 					{#if isEditable && !isEnabled && !isComingSoon}
 						<span
-							class="rounded bg-ink-200 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-ink-600 uppercase"
+							class="rounded bg-ink-200 px-1.5 py-0.5 text-xs font-semibold tracking-wider text-ink-600 uppercase"
 							>Откл.</span
 						>
 					{/if}
 				</span>
-				<span class="mt-0.5 block text-[11px] leading-snug text-ink-400">{item.desc}</span>
+				<span class="p1-note mt-0.5 block text-ink-600">{item.desc}</span>
 			</span>
 			{#if !isEditable && !isComingSoon}
 				<span
@@ -275,7 +284,7 @@
 {#snippet dropdownTrigger(label: string, active: boolean, open: boolean)}
 	<button
 		type="button"
-		class="group relative flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {active
+		class="group relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {active
 			? 'bg-link-50 text-link-600'
 			: 'text-ink-600 hover:bg-ink-900/4 hover:text-ink-900'}"
 		aria-expanded={open}
@@ -322,9 +331,7 @@
 							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 						>
 							<div class="mb-1 flex items-center justify-between px-3 pt-2 pb-1">
-								<span class="text-[10px] font-bold tracking-[0.22em] text-ink-400 uppercase"
-									>Услуги</span
-								>
+								<span class="p1-label text-ink-600">Услуги</span>
 								<span class="ml-3 h-px flex-1 bg-linear-to-r from-ink-200 to-transparent"></span>
 							</div>
 							{#each visibleServiceItems as service, idx}
@@ -370,9 +377,7 @@
 							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 						>
 							<div class="mb-1 flex items-center justify-between px-3 pt-2 pb-1">
-								<span class="text-[10px] font-bold tracking-[0.22em] text-ink-400 uppercase"
-									>Каталог</span
-								>
+								<span class="p1-label text-ink-600">Каталог</span>
 								<span class="ml-3 h-px flex-1 bg-linear-to-r from-ink-200 to-transparent"></span>
 							</div>
 							{#each visibleCatalogItems as item, idx}
@@ -396,7 +401,7 @@
 		{:else}
 			<a
 				href={link.href}
-				class="relative rounded-full px-4 py-2 text-[13px] font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {isLinkActive(
+				class="relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] {isLinkActive(
 					link.href
 				)
 					? 'bg-link-50 text-link-600'

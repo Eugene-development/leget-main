@@ -14,12 +14,13 @@
 	// в узкой карточке две подписи «Фурнитура» и «Техника» занимают больше
 	// места, чем сами названия. Полное разделение остаётся в режиме «списком».
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import FavoriteProjectButton from '$lib/components/FavoriteProjectButton.svelte';
+	import ProjectImageActions from '$lib/components/ProjectImageActions.svelte';
 	import {
 		FEED_LINK_LABEL,
 		formatBrands,
 		formatCompletedAt,
 		projectHref,
+		projectTitle,
 		type FeedProject
 	} from './data';
 	import '../../../theme.css';
@@ -39,17 +40,23 @@
 			class="group p1-card p1-border p1-card-hover relative flex animate-fade-up-in flex-col overflow-hidden rounded-2xl border shadow-sm transition-[transform,box-shadow,background-color] duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-1 hover:shadow-lg"
 			style="animation-delay: calc({i} * var(--ds-motion-stagger-step))"
 		>
-			<FavoriteProjectButton projectId={project.id} class="absolute top-3 right-3 z-10" />
+			<ProjectImageActions
+				compact
+				projectId={project.id}
+				imageUrl={project.images[0]?.url}
+				projectName={projectTitle(project.value)}
+				class="absolute top-3 right-3 z-10"
+			/>
 			<a
 				class="flex h-full flex-1 flex-col focus-visible:ring-2 focus-visible:ring-[var(--p1-field-focus)] focus-visible:outline-none focus-visible:ring-inset"
 				href={projectHref(project)}
-				aria-label="{FEED_LINK_LABEL}: {project.value}"
+				aria-label="{FEED_LINK_LABEL}: {projectTitle(project.value)}"
 			>
 				<div class="p1-body overflow-hidden">
 					<ImageFallback
 						imagePath={['projectImages', String(project.id), '0']}
 						src={project.images[0]?.url ?? null}
-						alt="Проект «{project.value}»"
+						alt={projectTitle(project.value)}
 						loading="lazy"
 						class="aspect-video w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
 					/>
@@ -59,7 +66,9 @@
 					{#if project.categoryValue}
 						<span class="p1-label p1-body">{project.categoryValue}</span>
 					{/if}
-					<h3 class="p1-title p1-title-sub mt-1.5 text-lg">{project.value}</h3>
+					<h3 class="p1-title p1-title-sub mt-1.5 text-lg">
+						{projectTitle(project.value)}
+					</h3>
 					{#if project.objectAddress}
 						<p class="p1-body mt-1 text-sm leading-snug">{project.objectAddress}</p>
 					{/if}

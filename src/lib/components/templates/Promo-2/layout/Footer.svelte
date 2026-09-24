@@ -183,6 +183,11 @@
 					Пользовательское соглашение
 				</a>
 				<div class="flex items-center gap-2">
+					<a
+						href="/crm"
+						class="text-xs text-on-dark/70 transition-colors hover:text-on-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+						>Менеджер</a
+					>
 					{@render pageSettings?.(
 						'rounded-full border border-white/15 bg-white/5 text-white/65 hover:border-white/35 hover:bg-white/10 hover:text-white'
 					)}
