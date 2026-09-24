@@ -1567,7 +1567,7 @@
                     ]
                 },
                 "OsveshchenieHero": {
-                "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero_20260924.png",
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero_20260924.png",
                     "title": "Освещение",
                     "description": "Подберём светильники для разных зон дома: общий, рабочий и акцентный свет. Поможем сочетать их с мебелью и интерьером.",
                     "buttonText": "Подобрать освещение"
