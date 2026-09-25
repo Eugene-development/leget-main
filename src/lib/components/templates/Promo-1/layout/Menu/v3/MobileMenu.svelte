@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Мобильная половина версии 1.М.1.3 — см. ./Menu.svelte и ../Mobile.svelte
 	import { page } from '$app/stores';
-	import { fly, slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import { cityStore } from '$lib/stores/city.svelte';
@@ -14,17 +14,14 @@
 
 	type MenuItem = CatalogItem | ServiceItem;
 	type MenuKind = 'catalog' | 'services';
+	type MenuModal = MenuKind | 'city';
 	type ToggleHandler = (href: string, currentEnabled: boolean, event: Event) => void;
 
-	// Вариант 3 мобильного меню — тот же светлый floating island, что на десктопе:
-	// остров в двойной оправе, воздушный editorial-список, монограмма вместо
-	// иконки, круглая стрелка у строки.
+	// Вариант 3 мобильного меню — светлый остров с компактными прямоугольными
+	// пунктами. Каталог, услуги и города открываются в отдельных модальных окнах.
 	//
-	// Тёмная колонка десктопной мега-панели («от идеи до монтажа», «смотреть всё»)
-	// на узком экране становится шапкой острова и меняет содержимое вместе с
-	// открытым разделом: колонке негде стоять сбоку, но именно она несёт
-	// editorial-характер варианта, поэтому выкидывать её нельзя. Двух тёмных
-	// поверхностей при этом не появляется — она всегда одна.
+	// Тёмная колонка остаётся шапкой основного листа; разделы получают собственные
+	// заголовки внутри модальных окон.
 	// Телефон, почта, «Контакты» и вход приходят в лист с 25.08.2026: строка
 	// шапки переехала из баннера в хэдер, и в ней остались только значки, чей
 	// смысл читается без подписи. Здесь блоки стоят общими (`p1-*`, роли темы
@@ -60,52 +57,78 @@
 
 	const account = createClientAccount();
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
+	let catalogDialog = $state<HTMLDialogElement>();
+	let servicesDialog = $state<HTMLDialogElement>();
+	let cityDialog = $state<HTMLDialogElement>();
+	let activeModal = $state<MenuModal | null>(null);
+	const closingDialogs = new WeakSet<HTMLDialogElement>();
 
-	const initialSection = (): MenuKind | null => {
-		const path = $page.url.pathname;
-		if (visibleCatalogItems.some((item) => path.startsWith(item.href))) return 'catalog';
-		if (visibleServiceItems.some((item) => path === item.href)) return 'services';
-		return null;
-	};
+	function dialogFor(kind: MenuModal) {
+		return kind === 'catalog' ? catalogDialog : kind === 'services' ? servicesDialog : cityDialog;
+	}
 
-	let openSection = $state<MenuKind | null>(initialSection());
+	function openModal(kind: MenuModal) {
+		const dialog = dialogFor(kind);
+		if (!dialog || dialog.open) return;
+		activeModal = kind;
+		dialog.showModal();
+	}
 
-	function toggleSection(kind: MenuKind) {
-		openSection = openSection === kind ? null : kind;
+	async function closeModal(kind: MenuModal) {
+		const dialog = dialogFor(kind);
+		if (!dialog?.open || closingDialogs.has(dialog)) return;
+		closingDialogs.add(dialog);
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const duration = reducedMotion ? 120 : 220;
+		dialog.style.setProperty('--menu-modal-exit-duration', `${duration}ms`);
+		dialog.classList.add('is-closing');
+		const animation = dialog.animate(
+			reducedMotion
+				? [{ opacity: 1 }, { opacity: 0 }]
+				: [
+						{ opacity: 1, transform: 'translateY(0) scale(1)' },
+						{ opacity: 0, transform: 'translateY(8px) scale(0.99)' }
+					],
+			{ duration, easing: 'ease-in', fill: 'forwards' }
+		);
+		try {
+			await animation.finished;
+		} catch {
+			// Размонтирование меню может отменить анимацию.
+		} finally {
+			if (dialog.open && dialog.isConnected) dialog.close();
+			animation.cancel();
+			dialog.classList.remove('is-closing');
+			dialog.style.removeProperty('--menu-modal-exit-duration');
+			if (activeModal === kind && dialogFor(kind) === dialog) activeModal = null;
+			closingDialogs.delete(dialog);
+		}
+	}
+
+	function closeActiveModal() {
+		if (activeModal) {
+			const kind = activeModal;
+			activeModal = null;
+			void closeModal(kind);
+		}
+	}
+
+	function keepEscapeInModal(event: KeyboardEvent) {
+		if (event.key === 'Escape') event.stopPropagation();
+	}
+
+	function cancelModal(kind: MenuModal, event: Event) {
+		event.preventDefault();
+		event.stopPropagation();
+		void closeModal(kind);
 	}
 
 	const isLinkActive = (href: string) => $page.url.pathname === href;
 	const isSectionActive = (kind: MenuKind) =>
-		openSection === kind ||
+		activeModal === kind ||
 		(kind === 'catalog'
 			? visibleCatalogItems.some((item) => $page.url.pathname.startsWith(item.href))
 			: visibleServiceItems.some((item) => $page.url.pathname === item.href));
-
-	// Шапка острова: та же пара «надзаголовок → название → пояснение», что в
-	// тёмной колонке десктопной панели. Значения совпадают дословно.
-	const heading = $derived(
-		openSection === 'services'
-			? {
-					eyebrow: 'От идеи до монтажа',
-					title: 'Услуги',
-					description:
-						'Сопровождаем проект на каждом этапе — спокойно, точно и с вниманием к деталям.',
-					rootHref: links.find((link) => link.label === 'Услуги')?.href ?? '/services'
-				}
-			: openSection === 'catalog'
-				? {
-						eyebrow: 'Материалы и предметы',
-						title: 'Каталог',
-						description: 'Мебель, поверхности и детали, из которых складывается цельный интерьер.',
-						rootHref: links.find((link) => link.label === 'Каталог')?.href ?? '/catalog'
-					}
-				: {
-						eyebrow: null,
-						title: 'Меню',
-						description: 'Все разделы сайта — в одном списке.',
-						rootHref: null
-					}
-	);
 </script>
 
 {#snippet arrowIcon(className = 'h-4 w-4')}
@@ -121,7 +144,7 @@
 	</svg>
 {/snippet}
 
-<!-- Строка раздела: монограмма, лестница «раздел → пояснение», круглая стрелка. -->
+<!-- Строка раздела: название, пояснение и стрелка. -->
 {#snippet sectionItem(
 	item: MenuItem,
 	index: number,
@@ -162,7 +185,11 @@
 			<a
 				href={item.href}
 				class="flex min-w-0 items-center gap-3 px-4 py-4 outline-none"
-				onclick={() => uiStore.closeMenu()}
+				onclick={() => {
+					closeActiveModal();
+					uiStore.closeMenu();
+				}}
+				data-goal-ignore="Закрытие модального меню при переходе к разделу"
 				aria-current={isLinkActive(item.href) ? 'page' : undefined}
 			>
 				<div class="min-w-0 flex-1">
@@ -183,7 +210,7 @@
 				</div>
 				{#if !isEditable}
 					<span
-						class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-raised text-alt-petrol-700 shadow-[0_6px_18px_-12px] ring-1 shadow-alt-petrol-950/65 ring-alt-petrol-950/8"
+						class="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm bg-surface-raised text-alt-petrol-700 shadow-[0_6px_18px_-12px] ring-1 shadow-alt-petrol-950/65 ring-alt-petrol-950/8"
 						aria-hidden="true"
 					>
 						{@render arrowIcon('h-3.5 w-3.5')}
@@ -197,7 +224,7 @@
 				<button
 					type="button"
 					onclick={(event) => onToggle(item.href, isEnabled, event)}
-					class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 {isEnabled
+					class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 {isEnabled
 						? 'bg-alt-petrol-accent-600/10 text-alt-petrol-accent-600 ring-1 ring-alt-petrol-accent-600/20'
 						: 'bg-alt-petrol-950/5 text-alt-petrol-400 ring-1 ring-alt-petrol-950/10'}"
 					title={isEnabled ? hideTitle : showTitle}
@@ -226,20 +253,24 @@
 {#snippet trigger(label: string, kind: MenuKind)}
 	<button
 		type="button"
-		onclick={() => toggleSection(kind)}
-		class="group relative flex w-full items-center justify-between rounded-full px-4 py-2 text-left text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] {isSectionActive(
+		onclick={() => openModal(kind)}
+		data-goal-ignore="Открывает модальное окно навигации без формы"
+		class="group relative flex min-h-11 w-full items-center justify-between rounded-sm px-4 py-2 text-left text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] {isSectionActive(
 			kind
 		)
-			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
-			: 'bg-alt-petrol-accent-600/8 text-alt-petrol-800'}"
-		aria-expanded={openSection === kind}
-		aria-controls="mobile-menu-{kind}"
+			? 'bg-alt-petrol-950 text-on-dark shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
+			: 'bg-surface-raised text-alt-petrol-800'}"
+		aria-haspopup="dialog"
+		aria-expanded={activeModal === kind}
+		aria-controls="mobile-menu-{kind}-dialog"
 	>
 		<span>{label}</span>
 		<span
-			class="flex h-6 w-6 items-center justify-center rounded-full transition-[background-color,color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {openSection ===
+			class="flex h-6 w-6 items-center justify-center rounded-sm transition-[background-color,color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {activeModal ===
 			kind
-				? 'rotate-180 bg-alt-petrol-accent-600/12 text-alt-petrol-accent-600'
+				? 'rotate-180'
+				: ''} {isSectionActive(kind)
+				? 'bg-on-dark/15 text-on-dark'
 				: 'bg-alt-petrol-950/5 text-alt-petrol-600'}"
 			aria-hidden="true"
 		>
@@ -250,19 +281,39 @@
 	</button>
 {/snippet}
 
+{#snippet modalHeader(kind: MenuModal, title: string)}
+	<header
+		class="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-alt-petrol-950/8 bg-surface-raised px-4 py-3"
+	>
+		<h2 id="mobile-menu-{kind}-title" class="p1-title-sub text-lg text-alt-petrol-950">{title}</h2>
+		<button
+			type="button"
+			onclick={() => void closeModal(kind)}
+			data-goal-ignore="Закрывает модальное окно навигации без формы"
+			class="flex size-11 shrink-0 items-center justify-center rounded-sm bg-alt-petrol-950/5 focus-visible:outline-2 {kind ===
+			'city'
+				? 'text-alt-petrol-700 focus-visible:outline-alt-petrol-accent-600'
+				: 'text-brand-600 focus-visible:outline-brand-600'}"
+			aria-label="Закрыть окно: {title}"
+		>
+			<svg
+				class="size-5"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="1.8"
+				aria-hidden="true"
+			>
+				<path stroke-linecap="round" d="m6 6 12 12M18 6 6 18" />
+			</svg>
+		</button>
+	</header>
+{/snippet}
+
 <!--
-	Учётная запись и контакты в языке варианта 3.
-
-	Остров набран пилюлями и круглыми бейджами на шкале `alt-petrol`, поэтому
-	и эти два блока — пилюли: строка контакта повторяет анатомию пункта
-	навигации (бейдж 7×7 слева, подпись 13px с отрицательным трекингом), а
-	«Войти» берёт тон тёмной колонки — в острове это самая сильная поверхность,
-	и главное действие законно её носит. Разделены блоки тем же волосяным
-	`border-t border-alt-petrol-950/8`, что каталог и город, и надзаголовок у
-	них тот же 9px вразрядку.
-
-	Телефон помечен акцентным бейджем `alt-petrol-accent` — единственным
-	хроматическим пятном варианта; им же остров метит раскрытый раздел.
+	Контакты и учётная запись завершают мобильный лист. Их строки и кнопки
+	используют ту же компактную прямоугольную форму, что основная навигация.
+	Телефон остаётся акцентным действием; цели входа и регистрации сохранены.
 -->
 {#snippet groupHead(label: string)}
 	<p class="p1-label text-alt-petrol-400">{label}</p>
@@ -270,7 +321,7 @@
 
 {#snippet badge(accent: boolean, path: string)}
 	<span
-		class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full {accent
+		class="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm {accent
 			? 'bg-alt-petrol-accent-600/12 text-alt-petrol-accent-600'
 			: 'bg-alt-petrol-950/5 text-alt-petrol-600'}"
 		aria-hidden="true"
@@ -297,7 +348,7 @@
 	<a
 		{href}
 		{onclick}
-		class="flex items-center gap-3 rounded-full px-3 py-2 text-sm font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] active:bg-alt-petrol-950/5"
+		class="flex items-center gap-3 rounded-sm px-3 py-2 text-sm font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] active:bg-alt-petrol-950/5"
 	>
 		{@render badge(accent, path)}
 		<span class="min-w-0 flex-1 truncate">{label}</span>
@@ -305,7 +356,7 @@
 {/snippet}
 
 {#snippet accountBlock()}
-	<div class="border-b border-alt-petrol-950/8 px-4 py-4">
+	<div class="border-t border-alt-petrol-950/8 px-4 py-4">
 		{@render groupHead('Учётная запись')}
 		{#if account.client}
 			<div class="mt-3 flex items-center gap-3">
@@ -325,7 +376,7 @@
 					type="button"
 					onclick={account.logout}
 					disabled={account.isLoggingOut}
-					class="shrink-0 cursor-pointer rounded-full bg-alt-petrol-950/5 px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap text-alt-petrol-700 transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] disabled:cursor-default disabled:opacity-60"
+					class="shrink-0 cursor-pointer rounded-sm bg-alt-petrol-950/5 px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap text-alt-petrol-700 transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] disabled:cursor-default disabled:opacity-60"
 				>
 					Выйти
 				</button>
@@ -337,7 +388,7 @@
 					data-goal-action="open"
 					type="button"
 					onclick={account.openLogin}
-					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950 px-4 text-sm font-medium tracking-[-0.01em] text-on-dark shadow-[0_10px_28px_-18px] shadow-alt-petrol-950/70 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-sm bg-alt-petrol-950 px-4 text-sm font-medium tracking-[-0.01em] text-on-dark shadow-[0_10px_28px_-18px] shadow-alt-petrol-950/70 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
 				>
 					Войти
 				</button>
@@ -346,7 +397,7 @@
 					data-goal-action="open"
 					type="button"
 					onclick={account.openRegister}
-					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950/5 px-4 text-sm font-medium tracking-[-0.01em] text-alt-petrol-700 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-sm bg-alt-petrol-950/5 px-4 text-sm font-medium tracking-[-0.01em] text-alt-petrol-700 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
 				>
 					Регистрация
 				</button>
@@ -396,14 +447,14 @@
 		transition:fly={{ y: -14, duration: 440, easing: quintOut }}
 	>
 		<div
-			class="rounded-[2.15rem] bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
+			class="rounded-sm bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
 		>
 			<nav
-				class="max-h-[74dvh] overflow-y-auto rounded-[calc(2.15rem-0.375rem)] bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+				class="max-h-[74dvh] overflow-y-auto rounded-[2px] bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 				aria-label="Мобильная навигация"
 			>
 				<!-- Шапка острова = тёмная колонка десктопной панели, положенная сверху. -->
-				<div class="relative overflow-hidden bg-alt-petrol-950 px-5 py-6 text-on-dark">
+				<div class="relative overflow-hidden bg-alt-petrol-950 px-5 py-4 text-on-dark">
 					<div
 						class="pointer-events-none absolute -right-16 -bottom-20 h-56 w-56 rounded-full border border-on-dark/8"
 					></div>
@@ -415,57 +466,14 @@
 					></div>
 
 					<div class="relative">
-						{#if heading.eyebrow}
-							<p class="p1-label text-alt-petrol-accent-300">{heading.eyebrow}</p>
-						{/if}
-						<p class="p1-title-display text-[1.75rem]" class:mt-3={heading.eyebrow}>
-							{heading.title}
-						</p>
-						<p class="mt-3 max-w-[18rem] text-[11px] leading-relaxed text-on-dark/55">
-							{heading.description}
-						</p>
-
-						{#if heading.rootHref}
-							<a
-								href={heading.rootHref}
-								onclick={() => uiStore.closeMenu()}
-								class="group/all mt-5 flex items-center justify-between gap-3 border-t border-on-dark/12 pt-4 text-xs font-medium tracking-[0.04em] text-on-dark/75 transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-							>
-								<span>Смотреть всё</span>
-								<span
-									class="flex h-7 w-7 items-center justify-center rounded-full bg-on-dark/9 text-on-dark"
-									aria-hidden="true"
-								>
-									{@render arrowIcon('h-3.5 w-3.5')}
-								</span>
-							</a>
-						{/if}
+						<p class="p1-title-display text-2xl">Меню</p>
 					</div>
 				</div>
 
-				{@render accountBlock()}
-
-				<!--
-					Полоса навигации в двойной оправе — та же, что на десктопе, но столбцом.
-					
-					Пилюли покоя подмыты акцентом варианта (8% `alt-petrol-accent-600`) —
-					28.08.2026, вслед за 1.М.1.1: до этого пункт в покое был прозрачен и
-					вся полоса читалась пустой оправой. Выбранный пункт не тронут: он
-					по-прежнему белая приподнятая пилюля, то есть остаётся сильнее
-					подмывки, а не спорит с ней.
-					
-					Поле пилюли — `py-2`: 37px у ссылки и 40px у раздела (там держит
-					кружок шеврона). Это ниже цели касания 44 — шаг сделан осознанно,
-					ради более плотной полосы; пилюля идёт во всю ширину оправы, и
-					промахнуться по ней сложнее, чем по чипу той же высоты.
-				-->
+				<!-- Разделы открывают отдельные модальные окна. -->
 				<div class="p-3">
-					<div
-						class="rounded-[1.45rem] bg-alt-petrol-100/80 p-1 shadow-[0_16px_46px_-30px] ring-1 shadow-alt-petrol-950/48 ring-alt-petrol-950/7"
-					>
-						<div
-							class="flex flex-col gap-0.5 rounded-[calc(1.45rem-0.25rem)] bg-alt-petrol-50/92 p-0.5 shadow-[inset_0_1px_0] shadow-on-dark/95"
-						>
+					<div class="rounded-sm bg-linear-to-r from-ink-100/20 to-ink-50/80 p-1 backdrop-blur-xl">
+						<div class="flex flex-col gap-0.5 rounded-[2px] bg-transparent p-0.5">
 							{#each links as link}
 								{#if link.label === 'Услуги'}
 									{@render trigger(link.label, 'services')}
@@ -476,11 +484,11 @@
 										href={link.href}
 										onclick={() => uiStore.closeMenu()}
 										aria-current={isLinkActive(link.href) ? 'page' : undefined}
-										class="flex items-center rounded-full px-4 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] {isLinkActive(
+										class="flex min-h-11 items-center rounded-sm px-4 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] {isLinkActive(
 											link.href
 										)
-											? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
-											: 'bg-alt-petrol-accent-600/8 text-alt-petrol-800'}"
+											? 'bg-alt-petrol-950 text-on-dark shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
+											: 'bg-surface-raised text-alt-petrol-800'}"
 									>
 										{link.label}
 									</a>
@@ -490,62 +498,177 @@
 					</div>
 				</div>
 
-				{#if openSection === 'services'}
-					<div
-						id="mobile-menu-services"
-						transition:slide={{ duration: 360, easing: quintOut }}
-						class="border-t border-alt-petrol-950/8"
+				<div class="border-t border-alt-petrol-950/8 px-4 py-2.5">
+					<button
+						type="button"
+						onclick={() => openModal('city')}
+						data-goal-ignore="Открывает модальное окно выбора города без формы"
+						aria-haspopup="dialog"
+						aria-expanded={activeModal === 'city'}
+						aria-controls="mobile-menu-city-dialog"
+						class="flex min-h-11 w-full items-center justify-between gap-3 rounded-sm px-4 py-2 text-left text-sm font-medium {activeModal ===
+						'city'
+							? 'bg-alt-petrol-950 text-on-dark'
+							: 'bg-surface-raised text-alt-petrol-800'}"
 					>
-						{#each visibleServiceItems as service, index (service.href)}
-							{@render sectionItem(
-								service,
-								index,
-								disabledServices,
-								onToggleService,
-								'Скрыть услугу',
-								'Показать услугу'
-							)}
-						{/each}
-					</div>
-				{:else if openSection === 'catalog'}
-					<div
-						id="mobile-menu-catalog"
-						transition:slide={{ duration: 360, easing: quintOut }}
-						class="border-t border-alt-petrol-950/8"
-					>
-						{#each visibleCatalogItems as item, index (item.href)}
-							{@render sectionItem(
-								item,
-								index,
-								disabledRubrics,
-								onToggleRubric,
-								'Скрыть рубрику',
-								'Показать рубрику'
-							)}
-						{/each}
-					</div>
-				{/if}
-
-				<div class="border-t border-alt-petrol-950/8 px-4 py-4">
-					<p class="p1-label text-alt-petrol-400">Город</p>
-					<div class="mt-3 flex flex-wrap gap-2">
-						{#each cities as city}
-							<button
-								type="button"
-								onclick={() => cityStore.set(city.label)}
-								aria-pressed={cityStore.city === city.label}
-								class="flex min-h-11 items-center rounded-full px-4 text-sm font-medium tracking-[-0.01em] whitespace-nowrap transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {cityStore.city ===
-								city.label
-									? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8'
-									: 'bg-alt-petrol-950/5 text-alt-petrol-700'}"
+						<span class="min-w-0 truncate">Город: {cityStore.city}</span>
+						<span
+							class="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm transition-transform duration-500 {activeModal ===
+							'city'
+								? 'rotate-180 bg-on-dark/15 text-on-dark'
+								: 'bg-alt-petrol-950/5 text-alt-petrol-600'}"
+							aria-hidden="true"
+						>
+							<svg
+								class="h-3 w-3"
+								fill="none"
+								viewBox="0 0 16 16"
+								stroke="currentColor"
+								stroke-width="1.5"
 							>
-								{city.label}
-							</button>
-						{/each}
-					</div>
+								<path stroke-linecap="round" stroke-linejoin="round" d="m4 6 4 4 4-4" />
+							</svg>
+						</span>
+					</button>
 				</div>
 				{@render contactsBlock()}
+				{@render accountBlock()}
 			</nav>
 		</div>
 	</div>
+
+	<dialog
+		bind:this={catalogDialog}
+		id="mobile-menu-catalog-dialog"
+		aria-labelledby="mobile-menu-catalog-title"
+		onclose={() => {
+			if (activeModal === 'catalog') activeModal = null;
+		}}
+		oncancel={(event) => cancelModal('catalog', event)}
+		onkeydown={keepEscapeInModal}
+		class="menu-modal fixed inset-0 m-auto max-h-[min(82dvh,44rem)] w-[calc(100vw-2rem)] max-w-xl overflow-y-auto rounded-sm border border-alt-petrol-950/10 bg-surface-raised p-0 text-alt-petrol-950 shadow-[0_32px_90px_-38px] shadow-alt-petrol-950/55 backdrop:bg-scrim/60"
+	>
+		{@render modalHeader('catalog', 'Каталог')}
+		<div class="p-2">
+			{#each visibleCatalogItems as item, index (item.href)}
+				{@render sectionItem(
+					item,
+					index,
+					disabledRubrics,
+					onToggleRubric,
+					'Скрыть рубрику',
+					'Показать рубрику'
+				)}
+			{/each}
+		</div>
+	</dialog>
+
+	<dialog
+		bind:this={servicesDialog}
+		id="mobile-menu-services-dialog"
+		aria-labelledby="mobile-menu-services-title"
+		onclose={() => {
+			if (activeModal === 'services') activeModal = null;
+		}}
+		oncancel={(event) => cancelModal('services', event)}
+		onkeydown={keepEscapeInModal}
+		class="menu-modal fixed inset-0 m-auto max-h-[min(82dvh,44rem)] w-[calc(100vw-2rem)] max-w-xl overflow-y-auto rounded-sm border border-alt-petrol-950/10 bg-surface-raised p-0 text-alt-petrol-950 shadow-[0_32px_90px_-38px] shadow-alt-petrol-950/55 backdrop:bg-scrim/60"
+	>
+		{@render modalHeader('services', 'Услуги')}
+		<div class="p-2">
+			{#each visibleServiceItems as service, index (service.href)}
+				{@render sectionItem(
+					service,
+					index,
+					disabledServices,
+					onToggleService,
+					'Скрыть услугу',
+					'Показать услугу'
+				)}
+			{/each}
+		</div>
+	</dialog>
+
+	<dialog
+		bind:this={cityDialog}
+		id="mobile-menu-city-dialog"
+		aria-labelledby="mobile-menu-city-title"
+		onclose={() => {
+			if (activeModal === 'city') activeModal = null;
+		}}
+		oncancel={(event) => cancelModal('city', event)}
+		onkeydown={keepEscapeInModal}
+		class="menu-modal fixed inset-0 m-auto max-h-[min(82dvh,44rem)] w-[calc(100vw-2rem)] max-w-md overflow-y-auto rounded-sm border border-alt-petrol-950/10 bg-surface-raised p-0 text-alt-petrol-950 shadow-[0_32px_90px_-38px] shadow-alt-petrol-950/55 backdrop:bg-scrim/60"
+	>
+		{@render modalHeader('city', 'Выберите город')}
+		<div class="flex flex-col gap-1 p-2">
+			{#each cities as city}
+				<button
+					type="button"
+					onclick={() => {
+						cityStore.set(city.label);
+						void closeModal('city');
+					}}
+					data-goal-ignore="Выбор города не открывает форму"
+					aria-pressed={cityStore.city === city.label}
+					class="flex min-h-11 w-full items-center rounded-sm px-4 text-left text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {cityStore.city ===
+					city.label
+						? 'bg-alt-petrol-accent-600/12 text-alt-petrol-950 ring-1 ring-alt-petrol-accent-600/25'
+						: 'bg-alt-petrol-950/5 text-alt-petrol-700'}"
+				>
+					{city.label}
+				</button>
+			{/each}
+		</div>
+	</dialog>
 {/if}
+
+<style>
+	.menu-modal[open]:not(.is-closing) {
+		animation: menu-modal-enter var(--ds-motion-duration-ui) var(--ds-motion-ease) both;
+	}
+
+	.menu-modal[open]:not(.is-closing)::backdrop {
+		animation: menu-backdrop-enter var(--ds-motion-duration-ui) ease-out both;
+	}
+
+	.menu-modal.is-closing::backdrop {
+		animation: menu-backdrop-exit var(--menu-modal-exit-duration) ease-in both;
+	}
+
+	@keyframes menu-modal-enter {
+		from {
+			opacity: 0;
+			transform: translateY(12px) scale(0.985);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes menu-backdrop-enter {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes menu-backdrop-exit {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.menu-modal[open]:not(.is-closing),
+		.menu-modal[open]:not(.is-closing)::backdrop {
+			animation: menu-backdrop-enter 120ms ease-out both;
+		}
+	}
+</style>
