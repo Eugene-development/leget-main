@@ -4,6 +4,8 @@
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import MebelTagPicker from './MebelTagPicker.svelte';
+	import ProjectModelField from './ProjectModelField.svelte';
+	import { createModelUploader, readProjectModel } from './project-model';
 	import { ProjectRequestError, projectRequest } from './project-request';
 	import {
 		IMAGE_TYPES,
@@ -50,6 +52,11 @@
 	let fileInput = $state<HTMLInputElement>();
 	let uploaded = new Map<File, string>();
 	let saving = $state(false);
+	let modelFile = $state<File | null>(null);
+	let modelRemoved = $state(false);
+	let modelValidating = $state(false);
+	const currentModel = $derived(readProjectModel(project.meta));
+	const uploadModel = createModelUploader();
 	let errors = $state<Record<string, string>>({});
 	let saveError = $state('');
 	let formElement = $state<HTMLFormElement>();
@@ -64,7 +71,7 @@
 	onDestroy(releasePreviews);
 
 	function close() {
-		if (!saving && !currentFile) onClose();
+		if (!saving && !currentFile && !modelValidating) onClose();
 	}
 	function mountDialog(node: HTMLDialogElement) {
 		const previousFocus = document.activeElement;
@@ -159,7 +166,7 @@
 	}
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
-		if (saving || currentFile) return;
+		if (saving || currentFile || modelValidating) return;
 		errors = validateProjectUpdate(form);
 		if (photosDirty && photos.length === 0) errors.image_urls = 'Добавьте хотя бы одну фотографию.';
 		if (!categories.some((category) => category.id === form.category_id))
@@ -196,9 +203,14 @@
 				}
 			}
 			input = projectUpdateInput(form, selectedTags, tagsKnown, imageUrls);
+			const modelInput = modelFile
+				? { model_url: await uploadModel(modelFile) }
+				: modelRemoved
+					? { model_url: null }
+					: {};
 			const result = await projectRequest<{ upsertMebelProject: SavedProject }>(
-				`mutation UpdateMebelProject($input: UpsertMebelProjectInput!) { upsertMebelProject(input: $input) { id value slug } }`,
-				{ input }
+				`mutation UpdateMebelProject($input: UpsertMebelProjectInput!) { upsertMebelProject(input: $input) { id value slug meta } }`,
+				{ input: { ...input, ...modelInput } }
 			);
 			saved = result.upsertMebelProject;
 			if (!saved?.id || saved.id !== form.id || !saved.slug)
@@ -506,6 +518,14 @@
 						>
 						<div id={`${uid}-photos-help`}>{@render fieldError('image_urls')}</div>
 					</section>
+					<ProjectModelField
+						bind:file={modelFile}
+						bind:removed={modelRemoved}
+						bind:validating={modelValidating}
+						current={currentModel}
+						disabled={saving}
+						error={errors.model_url ?? ''}
+					/>
 					<div>
 						<h3 class="p1-title-sub text-base">Паспорт работы</h3>
 						<p class="mt-1 text-xs text-ink-600">

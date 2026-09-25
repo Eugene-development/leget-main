@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	// Артикул: 1.35.2.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -16,11 +15,6 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const bgImage = $derived(
-		data.bgImage ||
-			'https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero_20260924.png'
-	);
-
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -31,13 +25,6 @@
 
 <div class="p1-catalog-container mt-16">
 	<section class="relative overflow-hidden rounded-3xl bg-ink-900" data-p1-theme="dark">
-		<ImageFallback
-			imagePath={['bgImage']}
-			src={bgImage}
-			alt="Подвесные светильники и бра с тёплым светом"
-			class="absolute inset-0 h-full w-full object-cover opacity-40"
-		/>
-
 		<div class="relative px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
 			<nav class="p1-muted mb-8 flex items-center gap-2 text-sm" aria-label="Навигационная цепочка">
 				<a href="/" class="transition-colors hover:text-on-dark">Главная</a>

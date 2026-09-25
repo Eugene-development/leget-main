@@ -100,6 +100,7 @@ export interface SavedProject {
 	id: string;
 	value: string;
 	slug: string;
+	meta?: Record<string, unknown> | null;
 }
 
 export function loadProjectEditForm(project: ProjectEditData, categoryId = ''): ProjectEditForm {

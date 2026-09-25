@@ -18,7 +18,7 @@
 
 	const bgImage = $derived(
 		data.bgImage ||
-			'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero_20260924.png'
+			'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png'
 	);
 
 	async function saveField(field: string, value: string) {
@@ -34,7 +34,7 @@
 		<ImageFallback
 			imagePath={['bgImage']}
 			src={bgImage}
-			alt="Мебельная фурнитура: направляющие ящика и петля шкафа"
+			alt="Hero"
 			class="absolute inset-0 h-full w-full object-cover opacity-40"
 		/>
 

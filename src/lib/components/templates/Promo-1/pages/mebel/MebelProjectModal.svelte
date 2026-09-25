@@ -2,6 +2,8 @@
 	import { untrack, onDestroy, tick } from 'svelte';
 	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
 	import MebelTagPicker from './MebelTagPicker.svelte';
+	import ProjectModelField from './ProjectModelField.svelte';
+	import { createModelUploader } from './project-model';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import {
@@ -29,6 +31,10 @@
 	} = $props();
 	const uid = $props.id();
 	let isSubmitting = $state(false);
+	let modelFile = $state<File | null>(null);
+	let modelRemoved = $state(false);
+	let modelValidating = $state(false);
+	const uploadModel = createModelUploader();
 	let selectedTags = $state<string[]>([]);
 	let form = $state<ProjectForm>(emptyForm());
 	let errors = $state<Record<string, string>>({});
@@ -59,6 +65,7 @@
 		};
 	}
 	function releasePhotos() {
+		modelFile = null;
 		photos.forEach((photo) => URL.revokeObjectURL(photo.preview));
 		photos = [];
 		uploaded.clear();
@@ -69,6 +76,8 @@
 			untrack(() => {
 				releasePhotos();
 				form = emptyForm();
+				modelFile = null;
+				modelRemoved = false;
 				form.category_id = categories.some((category) => category.id === initialCategoryId)
 					? initialCategoryId
 					: (categories[0]?.id ?? '');
@@ -81,7 +90,7 @@
 	});
 
 	function close() {
-		if (!isSubmitting && !currentFile) {
+		if (!isSubmitting && !currentFile && !modelValidating) {
 			onClose();
 			releasePhotos();
 		}
@@ -191,7 +200,7 @@
 	}
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
-		if (isSubmitting || currentFile) return;
+		if (isSubmitting || currentFile || modelValidating) return;
 		errors = validateProject(form, photos.length);
 		for (const input of formElement?.querySelectorAll<HTMLInputElement>(
 			'input[type="number"],input[type="date"]'
@@ -218,9 +227,10 @@
 				urls.push(await upload(photo.file));
 				uploadProgress = Math.round((urls.length / photos.length) * 100);
 			}
+			const modelInput = modelFile ? { model_url: await uploadModel(modelFile) } : {};
 			const data = await projectRequest<{ upsertMebelProject: { id: string } }>(
 				`mutation UpsertMebelProject($input: UpsertMebelProjectInput!) { upsertMebelProject(input: $input) { id } }`,
-				{ input: projectInput(form, selectedTags, urls) }
+				{ input: { ...projectInput(form, selectedTags, urls), ...modelInput } }
 			);
 			if (!data.upsertMebelProject?.id) throw new Error('Сервер не подтвердил сохранение проекта.');
 		} catch (cause) {
@@ -421,6 +431,13 @@
 								><input type="checkbox" bind:checked={form.is_new} />Новинка</label
 							>
 						</div>
+						<ProjectModelField
+							bind:file={modelFile}
+							bind:removed={modelRemoved}
+							bind:validating={modelValidating}
+							disabled={isSubmitting}
+							error={errors.model_url ?? ''}
+						/>
 						<MebelTagPicker bind:selected={selectedTags} disabled={isSubmitting} />
 						{@render fieldError('tag_ids')}
 						<section

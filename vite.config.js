@@ -8,7 +8,13 @@ export default defineConfig({
 		// RichTextEditor loads Tiptap only after an owner opens a text field.
 		// Include it in the initial dev pre-bundle so that this first dynamic import
 		// cannot invalidate the dependency bundle used by the already-open page.
-		include: ['@tiptap/core', '@tiptap/starter-kit']
+		include: [
+			'@tiptap/core',
+			'@tiptap/starter-kit',
+			'three',
+			'three/addons/controls/OrbitControls.js',
+			'three/addons/loaders/GLTFLoader.js'
+		]
 	},
 	server: {
 		// Listen on all interfaces so subdomain requests
