@@ -1,7 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
 	import MebelProjectEditModal from './MebelProjectEditModal.svelte';
-	import MebelProjectModel from './MebelProjectModel.svelte';
 	import MebelProjectDeleteDialog from './MebelProjectDeleteDialog.svelte';
 	import type { SavedProject, ProjectUpdateInput } from './project-form';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
@@ -443,9 +442,6 @@
 				{/if}
 			</div>
 		</div>
-		{#key project.meta?.model_3d?.url}
-			<MebelProjectModel meta={project.meta} title={project.value} />
-		{/key}
 	</div>
 {/if}
 

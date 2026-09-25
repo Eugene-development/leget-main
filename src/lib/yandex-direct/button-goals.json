@@ -1291,6 +1291,30 @@
 		]
 	},
 	{
+		"id": "mebel_project_model_open",
+		"action": "open",
+		"label": "Посмотреть в 3D — модель проекта",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectModel.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.6.1" }
+		]
+	},
+	{
+		"id": "mebel_project_model_close",
+		"action": "close",
+		"label": "Закрыть просмотр 3D-модели",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectModelDialog.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.6.1" }
+		]
+	},
+	{
 		"id": "pages_mebel_mebelprojectsgrid_open_1",
 		"action": "open",
 		"label": "Заказать индивидуальный проект",

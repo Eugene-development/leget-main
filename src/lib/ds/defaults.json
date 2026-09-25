@@ -852,6 +852,11 @@
             "/mebel/{category}/{project}": {
                 "MebelSidebar": {},
                 "MebelProjectHero": {},
+                "MebelProjectModel": {
+                    "text": "Доступен просмотр 3D модели проекта",
+                    "buttonText": "Посмотреть в 3D",
+                    "theme": "light"
+                },
                 "MebelProjectDescription": {},
                 "MebelProjectSimilar": {},
                 "MebelCTA": {

@@ -696,6 +696,12 @@
 		"source": "templates/Promo-1/pages/mebel/MebelCTA.svelte"
 	},
 	{
+		"article": "1.18.6.1",
+		"template": "Promo-1",
+		"page": "/mebel/{category}/{project}",
+		"source": "templates/Promo-1/pages/mebel/MebelProjectModel.svelte"
+	},
+	{
 		"article": "1.19.1.1",
 		"template": "Promo-1",
 		"page": "/stoleshnica",

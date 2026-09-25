@@ -7,7 +7,7 @@ export function isolatedModelDocument(html: string): string {
 	return `<!doctype html><meta http-equiv="Content-Security-Policy" content="${policy}"><meta name="referrer" content="no-referrer"><script>
 		addEventListener('error',()=>parent.postMessage({type:'leget-model-error'},'*'));
 		addEventListener('unhandledrejection',()=>parent.postMessage({type:'leget-model-error'},'*'));
-		addEventListener('load',()=>requestAnimationFrame(()=>parent.postMessage({type:'leget-model-ready'},'*')));
+		addEventListener('load',()=>queueMicrotask(()=>parent.postMessage({type:'leget-model-ready'},'*')));
 	</script>${html}`;
 }
 

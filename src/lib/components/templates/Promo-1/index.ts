@@ -130,6 +130,7 @@ import MebelCategoryHero from './pages/mebel/MebelCategoryHero.svelte';
 import MebelProjectsGrid from './pages/mebel/MebelProjectsGrid.svelte';
 import MebelProjectHero from './pages/mebel/MebelProjectHero.svelte';
 import MebelProjectDescription from './pages/mebel/MebelProjectDescription.svelte';
+import MebelProjectModel from './pages/mebel/MebelProjectModel.svelte';
 import MebelProjectSimilar from './pages/mebel/MebelProjectSimilar.svelte';
 
 // Projects page components
@@ -331,6 +332,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/mebel/{category}/{project}': {
 		MebelSidebar,
 		MebelProjectHero,
+		MebelProjectModel,
 		MebelProjectDescription,
 		MebelProjectSimilar,
 		MebelCTA

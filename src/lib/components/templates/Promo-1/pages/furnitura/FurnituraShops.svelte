@@ -72,11 +72,11 @@
 					in:fly={{ y: 20, duration: 500, delay: i * 80, easing: cubicOut }}
 				>
 					<!-- Шапка карточки -->
-					<div class="flex items-start gap-4">
+					<div class="flex flex-col items-start gap-4 lg:flex-row">
 						<div
-							class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl {shop.logo
-								? ''
-								: g.bg}"
+							class="flex h-16 shrink-0 items-center justify-center rounded-xl {shop.logo
+								? 'w-32 sm:w-36'
+								: 'w-16'} {shop.logo ? '' : g.bg}"
 						>
 							{#if shop.logo || imageEditing?.editable}
 								<ImageFallback
@@ -85,7 +85,7 @@
 									loading="lazy"
 									src={shop.logo}
 									alt={shop.title ?? shop.value}
-									class="h-14 w-14 object-contain"
+									class="h-14 w-full object-contain"
 								/>
 							{:else}
 								<span class="text-2xl font-bold {g.text}">

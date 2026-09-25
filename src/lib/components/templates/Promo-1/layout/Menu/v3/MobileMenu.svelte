@@ -90,23 +90,20 @@
 					title: 'Услуги',
 					description:
 						'Сопровождаем проект на каждом этапе — спокойно, точно и с вниманием к деталям.',
-					rootHref: links.find((link) => link.label === 'Услуги')?.href ?? '/services',
-					count: visibleServiceItems.length
+					rootHref: links.find((link) => link.label === 'Услуги')?.href ?? '/services'
 				}
 			: openSection === 'catalog'
 				? {
 						eyebrow: 'Материалы и предметы',
 						title: 'Каталог',
 						description: 'Мебель, поверхности и детали, из которых складывается цельный интерьер.',
-						rootHref: links.find((link) => link.label === 'Каталог')?.href ?? '/catalog',
-						count: visibleCatalogItems.length
+						rootHref: links.find((link) => link.label === 'Каталог')?.href ?? '/catalog'
 					}
 				: {
 						eyebrow: null,
 						title: 'Меню',
 						description: 'Все разделы сайта — в одном списке.',
-						rootHref: null,
-						count: links.length
+						rootHref: null
 					}
 	);
 </script>
@@ -142,23 +139,14 @@
 			: 'opacity-48'}"
 	>
 		{#if isComingSoon}
-			<div
-				class="flex min-w-0 cursor-not-allowed items-center gap-3 px-4 py-4"
-				aria-disabled="true"
-			>
-				<span
-					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.9rem] bg-alt-petrol-950/5 text-xs font-semibold text-alt-petrol-600"
-					aria-hidden="true"
-				>
-					{item.label.slice(0, 1)}
-				</span>
+			<div class="flex min-w-0 cursor-not-allowed items-center px-4 py-4" aria-disabled="true">
 				<div class="min-w-0">
 					<div class="flex flex-wrap items-center gap-2">
 						<span class="text-sm font-semibold tracking-[-0.015em] text-alt-petrol-950"
 							>{item.label}</span
 						>
 						<span
-							class="rounded-full bg-alt-petrol-950/6 px-2 py-1 text-[8px] font-semibold tracking-[0.14em] text-alt-petrol-600 uppercase"
+							class="rounded-full bg-alt-petrol-950/6 px-2 py-1 text-xs font-semibold tracking-[0.14em] text-alt-petrol-600 uppercase"
 						>
 							Скоро
 						</span>
@@ -177,16 +165,6 @@
 				onclick={() => uiStore.closeMenu()}
 				aria-current={isLinkActive(item.href) ? 'page' : undefined}
 			>
-				<span
-					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.9rem] text-xs font-semibold transition-[background-color,color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {isLinkActive(
-						item.href
-					)
-						? 'bg-alt-petrol-accent-600/11 text-alt-petrol-accent-600'
-						: 'bg-alt-petrol-950/5 text-alt-petrol-700'}"
-					aria-hidden="true"
-				>
-					{item.label.slice(0, 1)}
-				</span>
 				<div class="min-w-0 flex-1">
 					<span
 						class="text-sm font-semibold tracking-[-0.015em] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {isLinkActive(
@@ -249,7 +227,7 @@
 	<button
 		type="button"
 		onclick={() => toggleSection(kind)}
-		class="group relative flex w-full items-center justify-between rounded-full px-4 py-2 text-left text-[13px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] {isSectionActive(
+		class="group relative flex w-full items-center justify-between rounded-full px-4 py-2 text-left text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] {isSectionActive(
 			kind
 		)
 			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
@@ -287,7 +265,7 @@
 	хроматическим пятном варианта; им же остров метит раскрытый раздел.
 -->
 {#snippet groupHead(label: string)}
-	<p class="text-[9px] font-semibold tracking-[0.18em] text-alt-petrol-400 uppercase">{label}</p>
+	<p class="p1-label text-alt-petrol-400">{label}</p>
 {/snippet}
 
 {#snippet badge(accent: boolean, path: string)}
@@ -319,7 +297,7 @@
 	<a
 		{href}
 		{onclick}
-		class="flex items-center gap-3 rounded-full px-3 py-2 text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] active:bg-alt-petrol-950/5"
+		class="flex items-center gap-3 rounded-full px-3 py-2 text-sm font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] active:bg-alt-petrol-950/5"
 	>
 		{@render badge(accent, path)}
 		<span class="min-w-0 flex-1 truncate">{label}</span>
@@ -336,7 +314,7 @@
 					'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0'
 				)}
 				<a href={account.cabinet} onclick={() => uiStore.closeMenu()} class="min-w-0 flex-1">
-					<span class="block text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-950"
+					<span class="block text-sm font-medium tracking-[-0.01em] text-alt-petrol-950"
 						>Личный кабинет</span
 					>
 					<span class="mt-0.5 block truncate text-[11px] text-alt-petrol-500"
@@ -359,7 +337,7 @@
 					data-goal-action="open"
 					type="button"
 					onclick={account.openLogin}
-					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950 px-4 text-[13px] font-medium tracking-[-0.01em] text-on-dark shadow-[0_10px_28px_-18px] shadow-alt-petrol-950/70 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950 px-4 text-sm font-medium tracking-[-0.01em] text-on-dark shadow-[0_10px_28px_-18px] shadow-alt-petrol-950/70 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
 				>
 					Войти
 				</button>
@@ -368,7 +346,7 @@
 					data-goal-action="open"
 					type="button"
 					onclick={account.openRegister}
-					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950/5 px-4 text-[13px] font-medium tracking-[-0.01em] text-alt-petrol-700 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
+					class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-full bg-alt-petrol-950/5 px-4 text-sm font-medium tracking-[-0.01em] text-alt-petrol-700 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
 				>
 					Регистрация
 				</button>
@@ -437,21 +415,9 @@
 					></div>
 
 					<div class="relative">
-						<div class="flex items-start justify-between gap-4">
-							{#if heading.eyebrow}
-								<p
-									class="text-[8px] font-semibold tracking-[0.24em] text-alt-petrol-accent-300 uppercase"
-								>
-									{heading.eyebrow}
-								</p>
-							{/if}
-							<span
-								class="flex h-7 min-w-7 items-center justify-center rounded-full bg-on-dark/9 px-2 text-[10px] font-semibold text-on-dark/80"
-								aria-label="Количество разделов"
-							>
-								{heading.count}
-							</span>
-						</div>
+						{#if heading.eyebrow}
+							<p class="p1-label text-alt-petrol-accent-300">{heading.eyebrow}</p>
+						{/if}
 						<p class="p1-title-display text-[1.75rem]" class:mt-3={heading.eyebrow}>
 							{heading.title}
 						</p>
@@ -463,7 +429,7 @@
 							<a
 								href={heading.rootHref}
 								onclick={() => uiStore.closeMenu()}
-								class="group/all mt-5 flex items-center justify-between gap-3 border-t border-on-dark/12 pt-4 text-[10px] font-medium tracking-[0.04em] text-on-dark/75 transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+								class="group/all mt-5 flex items-center justify-between gap-3 border-t border-on-dark/12 pt-4 text-xs font-medium tracking-[0.04em] text-on-dark/75 transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
 							>
 								<span>Смотреть всё</span>
 								<span
@@ -510,7 +476,7 @@
 										href={link.href}
 										onclick={() => uiStore.closeMenu()}
 										aria-current={isLinkActive(link.href) ? 'page' : undefined}
-										class="flex items-center rounded-full px-4 py-2 text-[13px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] {isLinkActive(
+										class="flex items-center rounded-full px-4 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] {isLinkActive(
 											link.href
 										)
 											? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
@@ -561,16 +527,14 @@
 				{/if}
 
 				<div class="border-t border-alt-petrol-950/8 px-4 py-4">
-					<p class="text-[9px] font-semibold tracking-[0.18em] text-alt-petrol-400 uppercase">
-						Город
-					</p>
+					<p class="p1-label text-alt-petrol-400">Город</p>
 					<div class="mt-3 flex flex-wrap gap-2">
 						{#each cities as city}
 							<button
 								type="button"
 								onclick={() => cityStore.set(city.label)}
 								aria-pressed={cityStore.city === city.label}
-								class="flex min-h-11 items-center rounded-full px-4 text-[13px] font-medium tracking-[-0.01em] whitespace-nowrap transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {cityStore.city ===
+								class="flex min-h-11 items-center rounded-full px-4 text-sm font-medium tracking-[-0.01em] whitespace-nowrap transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {cityStore.city ===
 								city.label
 									? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8'
 									: 'bg-alt-petrol-950/5 text-alt-petrol-700'}"

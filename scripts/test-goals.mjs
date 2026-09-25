@@ -118,6 +118,26 @@ for (const goal of registry.filter((goal) => goal.baseId)) {
 	click(variantButton);
 	assert.equal(calls.length, 0, 'missing/unknown variants must never reach analytics');
 }
+for (const id of ['mebel_project_model_open', 'mebel_project_model_close']) {
+	const goal = registry.find((goal) => goal.id === id);
+	assert.ok(goal, `missing 3D goal: ${id}`);
+	assert.ok(
+		goal.locations.some(
+			(location) =>
+				location.article === '1.18.6.1' && location.page === '/mebel/{category}/{project}'
+		)
+	);
+	const modelButton = new TestElement(id);
+	click(modelButton);
+	assert.deepEqual(
+		calls.splice(0),
+		[[123, 'reachGoal', templateGoalName('Promo-1', id)]],
+		'one event per 3D control click'
+	);
+	modelButton.disabled = true;
+	click(modelButton);
+	assert.equal(calls.length, 0, 'disabled loading button must not create a second event');
+}
 removeVariants();
 const heroGoals = registry.filter(
 	(goal) => goal.baseId === 'pages_services_shared_serviceheroform_submit_click_1'
@@ -128,7 +148,17 @@ for (const goal of heroGoals) {
 	assert.ok(goal.locations.every((location) => location.page === '/' + goal.variant));
 }
 const sidebarGoals = registry.filter((goal) => goal.source.endsWith('/CatalogSidebar.svelte'));
-assert.equal(new Set(sidebarGoals.map((goal) => goal.variant)).size, 6);
+const configuredVariants = JSON.parse(
+	readFileSync(new URL('./goal-variants.json', import.meta.url))
+);
+assert.deepEqual(
+	new Set(sidebarGoals.map((goal) => goal.variant)),
+	new Set(
+		configuredVariants['templates/Promo-1/pages/_shared/CatalogSidebar.svelte'].map(
+			(variant) => variant.value
+		)
+	)
+);
 for (const goal of sidebarGoals)
 	assert.ok(goal.locations.every((location) => location.page.startsWith('/' + goal.variant)));
 console.log(

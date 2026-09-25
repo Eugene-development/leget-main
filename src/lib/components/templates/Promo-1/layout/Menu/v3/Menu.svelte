@@ -101,7 +101,7 @@
 {#snippet dropdownTrigger(label: string, active: boolean, kind: MenuKind)}
 	<button
 		type="button"
-		class="group relative flex items-center gap-1 rounded-full px-2 py-2 text-[10px] font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 lg:text-xs xl:px-4 xl:text-[13px] {active
+		class="group relative flex items-center gap-1 rounded-sm px-2 py-2 text-xs font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 xl:px-4 {active
 			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
 			: 'text-alt-petrol-800 hover:bg-surface-raised/65 hover:text-alt-petrol-950'}"
 		aria-expanded={openMenu === kind}
@@ -145,27 +145,22 @@
 )}
 	<div
 		in:fly={{ y: 12, duration: 460, delay: 70 + index * 35, easing: quintOut }}
-		class="group/item relative grid min-h-[88px] grid-cols-[1fr_auto] items-center border-b border-alt-petrol-950/8 transition-[background-color,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] last:border-b-0 hover:bg-alt-petrol-50 {isEnabled
+		class="group/item relative grid min-h-21 grid-cols-[1fr_auto] items-center border-b border-alt-petrol-950/8 transition-[background-color,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] last:border-b-0 hover:bg-alt-petrol-50 {isEnabled
 			? ''
 			: 'opacity-48'}"
 	>
 		{#if isComingSoon}
 			<div
-				class="flex min-w-0 cursor-not-allowed items-center gap-3 px-4 py-4 lg:px-5"
+				class="flex min-w-0 cursor-not-allowed items-center px-4 py-3.5 lg:px-5"
 				aria-disabled="true"
 			>
-				<span
-					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.9rem] bg-alt-petrol-950/5 text-xs font-semibold text-alt-petrol-600"
-				>
-					{item.label.slice(0, 1)}
-				</span>
 				<div class="min-w-0">
 					<div class="flex flex-wrap items-center gap-2">
 						<span class="text-sm font-semibold tracking-[-0.015em] text-alt-petrol-950"
 							>{item.label}</span
 						>
 						<span
-							class="rounded-full bg-alt-petrol-950/6 px-2 py-1 text-[8px] font-semibold tracking-[0.14em] text-alt-petrol-600 uppercase"
+							class="rounded-full bg-alt-petrol-950/6 px-2 py-1 text-xs font-semibold tracking-[0.14em] text-alt-petrol-600 uppercase"
 						>
 							Скоро
 						</span>
@@ -180,15 +175,10 @@
 		{:else}
 			<a
 				href={item.href}
-				class="flex min-w-0 items-center gap-3 px-4 py-4 outline-none lg:px-5"
+				class="flex min-w-0 items-center gap-1 px-4 py-3.5 outline-none lg:px-5"
 				onclick={closeMenu}
 				onkeydown={handleKeydown}
 			>
-				<span
-					class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.9rem] bg-alt-petrol-950/5 text-xs font-semibold text-alt-petrol-700 transition-[background-color,color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:scale-105 group-hover/item:bg-alt-petrol-accent-600/11 group-hover/item:text-alt-petrol-accent-600"
-				>
-					{item.label.slice(0, 1)}
-				</span>
 				<div class="min-w-0 flex-1">
 					<span
 						class="text-sm font-semibold tracking-[-0.015em] text-alt-petrol-950 transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:text-alt-petrol-accent-600"
@@ -245,7 +235,6 @@
 	title: string,
 	eyebrow: string,
 	description: string,
-	rootHref: string,
 	items: MenuItem[],
 	disabledPaths: string[],
 	onToggle: ToggleHandler,
@@ -254,7 +243,7 @@
 )}
 	<div
 		transition:fly={{ y: 14, duration: 440, easing: quintOut }}
-		class="absolute top-full left-1/2 z-50 mt-4 w-[min(64.5rem,calc(100vw-2rem))] -translate-x-1/2 rounded-[2.15rem] bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
+		class="absolute top-full left-1/2 z-50 mt-4 w-[min(61.5rem,calc(100vw-2rem))] -translate-x-1/2 rounded-[2.15rem] bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
 		role="region"
 		aria-label="{title} — разделы"
 	>
@@ -276,52 +265,19 @@
 					></div>
 
 					<div class="relative">
-						<p
-							class="text-[8px] font-semibold tracking-[0.24em] text-alt-petrol-accent-300 uppercase"
-						>
+						<p class="p1-label text-alt-petrol-accent-300">
 							{eyebrow}
 						</p>
 						<h3 class="p1-title-display mt-5 text-[2rem] lg:text-[2.7rem]">
 							{title}
 						</h3>
-						<p
-							class="mt-5 max-w-[12rem] text-[10px] leading-relaxed text-on-dark/55 lg:text-[11px]"
-						>
+						<p class="p1-note mt-5 max-w-[12rem] text-on-dark/55">
 							{description}
 						</p>
 					</div>
-
-					<a
-						href={rootHref}
-						class="group/all relative mt-10 flex items-center justify-between gap-3 border-t border-on-dark/12 pt-4 text-[10px] font-medium tracking-[0.04em] text-on-dark/75 transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-on-dark"
-						onclick={closeMenu}
-						onkeydown={handleKeydown}
-					>
-						<span>Смотреть всё</span>
-						<span
-							class="flex h-7 w-7 items-center justify-center rounded-full bg-on-dark/9 text-on-dark transition-[background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/all:translate-x-1 group-hover/all:bg-on-dark/15"
-						>
-							{@render arrowIcon('h-3.5 w-3.5')}
-						</span>
-					</a>
 				</aside>
 
 				<section class="min-w-0 px-3 py-3 lg:px-5 lg:py-4">
-					<header class="flex items-center justify-between gap-4 px-4 py-3 lg:px-5">
-						<div>
-							<p class="text-[9px] font-semibold tracking-[0.18em] text-alt-petrol-400 uppercase">
-								Выберите направление
-							</p>
-							<p class="mt-1 text-xs text-alt-petrol-300">Все разделы в одном месте</p>
-						</div>
-						<span
-							class="flex h-8 min-w-8 items-center justify-center rounded-full bg-alt-petrol-950/5 px-2 text-[10px] font-semibold text-alt-petrol-600"
-							aria-label="Количество разделов"
-						>
-							{items.length}
-						</span>
-					</header>
-
 					{#if items.length > 0}
 						<div class="grid grid-cols-1 px-1 md:grid-cols-2 md:gap-x-3">
 							{#each items as item, index}
@@ -357,11 +313,9 @@
 	onmouseleave={closeMenu}
 	onfocusout={handleFocusOut}
 >
-	<div
-		class="rounded-[1.45rem] bg-alt-petrol-100/80 p-1 shadow-[0_16px_46px_-30px] ring-1 shadow-alt-petrol-950/48 ring-alt-petrol-950/7 backdrop-blur-xl"
-	>
+	<div class="rounded-sm bg-linear-to-r from-ink-100/20 to-ink-50/80 p-1 backdrop-blur-xl">
 		<nav
-			class="flex items-center rounded-[calc(1.45rem-0.25rem)] bg-alt-petrol-50/92 p-0.5 shadow-[inset_0_1px_0] shadow-on-dark/95"
+			class="flex items-center rounded-[2px] bg-transparent p-0.5"
 			aria-label="Основная навигация"
 		>
 			{#each links as link}
@@ -376,7 +330,7 @@
 				{:else}
 					<a
 						href={link.href}
-						class="relative flex items-center rounded-full px-2 py-2.5 text-[10px] font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none hover:bg-surface-raised/65 hover:text-alt-petrol-950 active:scale-[0.98] lg:px-3 lg:text-xs xl:px-4 xl:text-[13px] {isLinkActive(
+						class="relative flex items-center rounded-sm px-2 py-2.5 text-xs font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none hover:bg-surface-raised/65 hover:text-alt-petrol-950 active:scale-[0.98] lg:px-3 xl:px-4 {isLinkActive(
 							link.href
 						)
 							? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
@@ -395,12 +349,10 @@
 
 	{#if openMenu === 'services'}
 		<div class="absolute top-full left-1/2 h-4 w-full -translate-x-1/2"></div>
-		{@const servicesRoot = links.find((link) => link.label === 'Услуги')?.href ?? '/services'}
 		{@render menuPanel(
 			'Услуги',
 			'От идеи до монтажа',
 			'Сопровождаем проект на каждом этапе — спокойно, точно и с вниманием к деталям.',
-			servicesRoot,
 			visibleServiceItems,
 			disabledServices,
 			onToggleService,
@@ -409,12 +361,10 @@
 		)}
 	{:else if openMenu === 'catalog'}
 		<div class="absolute top-full left-1/2 h-4 w-full -translate-x-1/2"></div>
-		{@const catalogRoot = links.find((link) => link.label === 'Каталог')?.href ?? '/catalog'}
 		{@render menuPanel(
 			'Каталог',
 			'Материалы и предметы',
 			'Мебель, поверхности и детали, из которых складывается цельный интерьер.',
-			catalogRoot,
 			visibleCatalogItems,
 			disabledRubrics,
 			onToggleRubric,

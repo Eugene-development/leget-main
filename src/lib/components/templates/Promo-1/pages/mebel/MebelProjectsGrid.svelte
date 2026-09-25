@@ -36,7 +36,7 @@
 	// Pagination
 	let currentPage = $state(1);
 	let gridElement = $state<HTMLElement>();
-	const itemsPerPage = 6;
+	const itemsPerPage = 8;
 	let paginatedProjects = $derived(
 		projects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 	);
@@ -107,7 +107,7 @@
 			{#if view === 'list'}
 				<FeedRows projects={rowProjects} actionsBelowTitle />
 			{:else}
-				<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 					{#each paginatedProjects as project (project.id)}
 						<article
 							class="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-raised shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
@@ -167,7 +167,7 @@
 								<div class="px-5 pt-5 pb-3">
 									<div class="flex items-start justify-between gap-4">
 										<h3
-											class="p1-title-sub line-clamp-2 text-lg text-ink-900 transition-colors group-hover:text-link-600"
+											class="p1-title-sub line-clamp-2 text-base text-ink-900 transition-colors group-hover:text-link-600"
 										>
 											{projectTitle(project.value)}
 										</h3>
