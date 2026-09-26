@@ -13,16 +13,16 @@
 	import '../../../theme.css';
 
 	type MenuItem = CatalogItem | ServiceItem;
-	type MenuKind = 'catalog' | 'services';
+	type MenuKind = 'catalog' | 'services' | 'information';
 	type MenuModal = MenuKind | 'city';
 	type ToggleHandler = (href: string, currentEnabled: boolean, event: Event) => void;
 
 	// Вариант 3 мобильного меню — светлый остров с компактными прямоугольными
-	// пунктами. Каталог, услуги и города открываются в отдельных модальных окнах.
+	// пунктами. Каталог, услуги, информация и города открываются в отдельных модальных окнах.
 	//
 	// Тёмная колонка остаётся шапкой основного листа; разделы получают собственные
 	// заголовки внутри модальных окон.
-	// Телефон, почта, «Контакты» и вход приходят в лист с 25.08.2026: строка
+	// Телефон, почта и вход приходят в лист с 25.08.2026: строка
 	// шапки переехала из баннера в хэдер, и в ней остались только значки, чей
 	// смысл читается без подписи. Здесь блоки стоят общими (`p1-*`, роли темы
 	// приютившего `<nav>`) — под идиому этой версии они ещё не подогнаны:
@@ -36,7 +36,7 @@
 		cities = [],
 		sitePhone = '',
 		email = '',
-		contactsLink = null,
+		informationLinks = [],
 		isEditable = false,
 		onToggleRubric,
 		onToggleService
@@ -49,7 +49,7 @@
 		cities: { label: string }[];
 		sitePhone: string;
 		email: string;
-		contactsLink: BannerLink | null;
+		informationLinks: BannerLink[];
 		isEditable?: boolean;
 		onToggleRubric: ToggleHandler;
 		onToggleService: ToggleHandler;
@@ -57,14 +57,32 @@
 
 	const account = createClientAccount();
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
+	const informationHrefs = new Set([
+		'/about',
+		'/partnership',
+		'/testimonials',
+		'/installment',
+		'/guarantees',
+		'/contacts'
+	]);
+	const visibleInformationLinks = $derived(
+		informationLinks.filter((link) => informationHrefs.has(link.href))
+	);
 	let catalogDialog = $state<HTMLDialogElement>();
 	let servicesDialog = $state<HTMLDialogElement>();
+	let informationDialog = $state<HTMLDialogElement>();
 	let cityDialog = $state<HTMLDialogElement>();
 	let activeModal = $state<MenuModal | null>(null);
 	const closingDialogs = new WeakSet<HTMLDialogElement>();
 
 	function dialogFor(kind: MenuModal) {
-		return kind === 'catalog' ? catalogDialog : kind === 'services' ? servicesDialog : cityDialog;
+		return kind === 'catalog'
+			? catalogDialog
+			: kind === 'services'
+				? servicesDialog
+				: kind === 'information'
+					? informationDialog
+					: cityDialog;
 	}
 
 	function openModal(kind: MenuModal) {
@@ -128,7 +146,9 @@
 		activeModal === kind ||
 		(kind === 'catalog'
 			? visibleCatalogItems.some((item) => $page.url.pathname.startsWith(item.href))
-			: visibleServiceItems.some((item) => $page.url.pathname === item.href));
+			: kind === 'services'
+				? visibleServiceItems.some((item) => $page.url.pathname === item.href)
+				: visibleInformationLinks.some((item) => $page.url.pathname === item.href));
 </script>
 
 {#snippet arrowIcon(className = 'h-4 w-4')}
@@ -407,7 +427,7 @@
 {/snippet}
 
 {#snippet contactsBlock()}
-	{#if sitePhone || email || contactsLink}
+	{#if sitePhone || email}
 		<div class="border-t border-alt-petrol-950/8 px-4 py-4">
 			{@render groupHead('Контакты')}
 			<div class="mt-2 flex flex-col gap-0.5">
@@ -427,15 +447,6 @@
 						false
 					)}
 				{/if}
-				{#if contactsLink}
-					{@render contactRow(
-						contactsLink.href,
-						contactsLink.label,
-						'M5 12h14M13 6l6 6-6 6',
-						false,
-						() => uiStore.closeMenu()
-					)}
-				{/if}
 			</div>
 		</div>
 	{/if}
@@ -450,7 +461,7 @@
 			class="rounded-sm bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
 		>
 			<nav
-				class="max-h-[74dvh] overflow-y-auto rounded-[2px] bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+				class="max-h-[74dvh] overflow-y-auto rounded-sm bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 				aria-label="Мобильная навигация"
 			>
 				<!-- Шапка острова = тёмная колонка десктопной панели, положенная сверху. -->
@@ -473,7 +484,7 @@
 				<!-- Разделы открывают отдельные модальные окна. -->
 				<div class="p-3">
 					<div class="rounded-sm bg-linear-to-r from-ink-100/20 to-ink-50/80 p-1 backdrop-blur-xl">
-						<div class="flex flex-col gap-0.5 rounded-[2px] bg-transparent p-0.5">
+						<div class="flex flex-col gap-0.5 rounded-sm bg-transparent p-0.5">
 							{#each links as link}
 								{#if link.label === 'Услуги'}
 									{@render trigger(link.label, 'services')}
@@ -498,6 +509,12 @@
 					</div>
 				</div>
 
+				{#if visibleInformationLinks.length > 0}
+					<div class="border-t border-alt-petrol-950/8 px-4 py-2.5">
+						{@render trigger('Информация', 'information')}
+					</div>
+				{/if}
+
 				<div class="border-t border-alt-petrol-950/8 px-4 py-2.5">
 					<button
 						type="button"
@@ -508,7 +525,7 @@
 						aria-controls="mobile-menu-city-dialog"
 						class="flex min-h-11 w-full items-center justify-between gap-3 rounded-sm px-4 py-2 text-left text-sm font-medium {activeModal ===
 						'city'
-							? 'bg-alt-petrol-950 text-on-dark'
+							? 'bg-alt-petrol-950 text-on-dark shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
 							: 'bg-surface-raised text-alt-petrol-800'}"
 					>
 						<span class="min-w-0 truncate">Город: {cityStore.city}</span>
@@ -585,6 +602,40 @@
 					'Скрыть услугу',
 					'Показать услугу'
 				)}
+			{/each}
+		</div>
+	</dialog>
+
+	<dialog
+		bind:this={informationDialog}
+		id="mobile-menu-information-dialog"
+		aria-labelledby="mobile-menu-information-title"
+		onclose={() => {
+			if (activeModal === 'information') activeModal = null;
+		}}
+		oncancel={(event) => cancelModal('information', event)}
+		onkeydown={keepEscapeInModal}
+		class="menu-modal fixed inset-0 m-auto max-h-[min(82dvh,44rem)] w-[calc(100vw-2rem)] max-w-xl overflow-y-auto rounded-sm border border-alt-petrol-950/10 bg-surface-raised p-0 text-alt-petrol-950 shadow-[0_32px_90px_-38px] shadow-alt-petrol-950/55 backdrop:bg-scrim/60"
+	>
+		{@render modalHeader('information', 'Информация')}
+		<div class="flex flex-col gap-1 p-2">
+			{#each visibleInformationLinks as link (link.href)}
+				<a
+					href={link.href}
+					onclick={() => {
+						closeActiveModal();
+						uiStore.closeMenu();
+					}}
+					data-goal-ignore="Закрытие информационного окна при переходе по ссылке"
+					aria-current={isLinkActive(link.href) ? 'page' : undefined}
+					class="flex min-h-11 items-center rounded-sm px-4 py-2 text-sm font-medium transition-[background-color,color] {isLinkActive(
+						link.href
+					)
+						? 'bg-alt-petrol-950 text-on-dark'
+						: 'bg-surface-raised text-alt-petrol-800'}"
+				>
+					{link.label}
+				</a>
 			{/each}
 		</div>
 	</dialog>

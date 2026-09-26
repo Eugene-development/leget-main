@@ -1,9 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.П.1.2 — см. docs/architecture/component-articles.md
 	import { isLightBlock } from '$lib/utils/block-theme';
-	import RichText from '$lib/components/RichText.svelte';
-	import EditableField from '$lib/components/EditableField.svelte';
-	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import type { ActiveAction } from '../../../pages/actions/actionCards';
 	import '../../../theme.css';
 
@@ -19,13 +16,9 @@
 	// их в одну шапку, а не в две независимые ленты.
 	let {
 		data = $bindable({}),
-		editContext = null,
-		isEditable = false,
 		actions = []
 	}: {
 		data: Record<string, unknown>;
-		editContext?: EditContext | null;
-		isEditable?: boolean;
 		actions: ActiveAction[];
 	} = $props();
 
@@ -34,21 +27,11 @@
 	// Скорость постоянная, а не длительность: восемь акций едут дольше двух,
 	// иначе длинная лента летела бы, а короткая ползла. ~9 секунд на акцию.
 	const duration = $derived(`${Math.max(actions.length, 2) * 9}s`);
-
-	async function saveLinkText(value: string) {
-		if (!editContext) return;
-		const updated = { ...data, promoLinkText: value };
-		await saveLayoutData(editContext, 'Header', updated);
-		data = updated;
-	}
 </script>
 
 <div class="promo-strip" data-p1-theme={isLight ? 'light' : 'dark'}>
 	<div
-		class="p1-surface p1-line relative flex h-12 items-center border-b px-4 sm:px-8 lg:h-10 {isEditable &&
-		editContext
-			? 'pr-12 sm:pr-12 lg:pr-8'
-			: ''}"
+		class="p1-surface p1-line relative flex h-12 items-center border-b px-4 sm:px-8 lg:h-10"
 		role="complementary"
 		aria-label="Акции"
 	>
@@ -86,48 +69,10 @@
 				{/each}
 			</div>
 		</div>
-
-		<span class="p1-line hidden h-3.5 shrink-0 border-l lg:block" aria-hidden="true"></span>
-
-		<EditableField
-			fieldKey="PromoStrip.promoLinkText"
-			label="Текст ссылки «Все акции партнёров»"
-			value={String(data?.promoLinkText ?? 'Все акции партнёров')}
-			isEditable={isEditable && !!editContext}
-			onSave={saveLinkText}
-			class="hidden shrink-0 pl-3.5 lg:block {isEditable && editContext ? 'lg:mr-9' : ''}"
-		>
-			{#snippet children(displayValue)}
-				<a
-					href={String(data?.promoLinkHref ?? '/actions')}
-					class="promo-all-link flex h-[26px] origin-left items-center gap-1.5 rounded-sm bg-ink-100 px-3 text-xs whitespace-nowrap text-favorite-badge transition-[background-color,color,transform] duration-[var(--ds-motion-duration-ui)] ease-ui hover:bg-ink-200 focus-visible:bg-ink-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-700 motion-reduce:transition-none"
-				>
-					<RichText value={displayValue} />
-					<svg
-						class="h-3 w-3 [stroke-width:var(--ds-icon-stroke)]"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						aria-hidden="true"
-					>
-						<path d="M5 12h14M13 6l6 6-6 6" />
-					</svg>
-				</a>
-			{/snippet}
-		</EditableField>
 	</div>
 </div>
 
 <style>
-	@media (prefers-reduced-motion: no-preference) {
-		.promo-all-link:hover,
-		.promo-all-link:focus-visible {
-			transform: scale(1.05);
-		}
-	}
-
 	/* Края ленты гасятся в поверхность полосы, а не обрезаются: акция не должна
 	   вылезать из-под разделителя половиной буквы. Маска, а не два градиента
 	   сверху, — под полосой нет своего фона, `p1-surface` приходит из системы. */

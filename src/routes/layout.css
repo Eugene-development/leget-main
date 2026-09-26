@@ -9,6 +9,49 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/* SvelteKit swaps the page between the two snapshots of a view transition. */
+::view-transition-old(root) {
+	animation: var(--ds-motion-duration-ui) ease-in both page-fade-out;
+}
+
+::view-transition-new(root) {
+	animation: var(--ds-motion-duration-ui) var(--ds-motion-ease-ui) both page-fade-in;
+}
+
+@keyframes page-fade-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes page-fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes page-load-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	body:not(.page-entering) {
+		animation: var(--ds-motion-duration-ui) var(--ds-motion-ease-ui) both page-load-in;
+	}
+}
+
+body.page-entering {
+	animation: var(--ds-motion-duration-ui) var(--ds-motion-ease-ui) both page-fade-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body.page-entering {
+		animation: none;
+	}
+}
+
 /**
  * Шрифты --font-heading / --font-body. Self-host, как Mona Sans в leget-front:
  * клиентские сайты не должны зависеть от fonts.gstatic.com.

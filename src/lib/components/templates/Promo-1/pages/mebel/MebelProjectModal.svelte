@@ -2,6 +2,8 @@
 	import { untrack, onDestroy, tick } from 'svelte';
 	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
 	import MebelTagPicker from './MebelTagPicker.svelte';
+	import ProjectCaptionField from './ProjectCaptionField.svelte';
+	import { emptyCaption, captionInput, validateCaption } from './project-caption';
 	import ProjectModelField from './ProjectModelField.svelte';
 	import { createModelUploader } from './project-model';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
@@ -30,6 +32,8 @@
 		initialCategoryId?: string;
 	} = $props();
 	const uid = $props.id();
+	let captionEnabled = $state(false);
+	let caption = $state(emptyCaption());
 	let isSubmitting = $state(false);
 	let modelFile = $state<File | null>(null);
 	let modelRemoved = $state(false);
@@ -76,6 +80,8 @@
 			untrack(() => {
 				releasePhotos();
 				form = emptyForm();
+				captionEnabled = false;
+				caption = emptyCaption();
 				modelFile = null;
 				modelRemoved = false;
 				form.category_id = categories.some((category) => category.id === initialCategoryId)
@@ -201,7 +207,10 @@
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
 		if (isSubmitting || currentFile || modelValidating) return;
-		errors = validateProject(form, photos.length);
+		errors = {
+			...validateProject(form, photos.length),
+			...validateCaption(captionEnabled, caption)
+		};
 		for (const input of formElement?.querySelectorAll<HTMLInputElement>(
 			'input[type="number"],input[type="date"]'
 		) ?? []) {
@@ -230,7 +239,13 @@
 			const modelInput = modelFile ? { model_url: await uploadModel(modelFile) } : {};
 			const data = await projectRequest<{ upsertMebelProject: { id: string } }>(
 				`mutation UpsertMebelProject($input: UpsertMebelProjectInput!) { upsertMebelProject(input: $input) { id } }`,
-				{ input: { ...projectInput(form, selectedTags, urls), ...modelInput } }
+				{
+					input: {
+						...projectInput(form, selectedTags, urls),
+						...modelInput,
+						...captionInput(captionEnabled, caption)
+					}
+				}
 			);
 			if (!data.upsertMebelProject?.id) throw new Error('Сервер не подтвердил сохранение проекта.');
 		} catch (cause) {
@@ -569,6 +584,13 @@
 									Добавьте хотя бы одну фотографию.
 								</p>{/if}
 						</div>
+						<ProjectCaptionField
+							bind:enabled={captionEnabled}
+							bind:caption
+							preview={photos[0]?.preview ?? ''}
+							error={errors.image_caption ?? ''}
+							disabled={isSubmitting}
+						/>
 					</div>
 				</fieldset>
 			</div>

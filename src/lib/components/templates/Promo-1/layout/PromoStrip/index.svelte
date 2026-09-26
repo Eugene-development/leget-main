@@ -162,7 +162,7 @@
 		{/if}
 	{:else if selectedVersion === 'v2'}
 		<div in:fly={{ x: 0, y: -40, duration: 400 }}>
-			<PromoStripV2 bind:data {editContext} {isEditable} {actions} />
+			<PromoStripV2 bind:data {actions} />
 		</div>
 	{:else}
 		<div in:fly={{ x: 0, y: -40, duration: 400 }}>
