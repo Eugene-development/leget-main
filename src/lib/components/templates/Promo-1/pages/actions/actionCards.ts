@@ -163,6 +163,13 @@ export function mergeActionCards(propsCards: unknown): ActionCard[] {
  * `ActionsCards.svelte`, и менять это нельзя).
  */
 export function activeActionCards(saved: unknown): ActiveAction[] {
+	if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
+		const groups = saved as { primary?: unknown; extra?: unknown };
+		return [
+			...activeActionCards(groups.primary ?? null),
+			...activeExtraActionCards(groups.extra ?? null)
+		];
+	}
 	if (Array.isArray(saved) && saved.length === 0) return [];
 
 	return mergeActionCards(saved)

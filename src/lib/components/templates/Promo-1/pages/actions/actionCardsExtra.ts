@@ -8,7 +8,7 @@ export interface ExtraCard {
 		enabled?: boolean;
 	}
 
-export const defaultExtraCards: ExtraExtraCard[] = [
+export const defaultExtraCards: ExtraCard[] = [
 		{
 			id: 'repeat',
 			title: 'Особое предложение',
