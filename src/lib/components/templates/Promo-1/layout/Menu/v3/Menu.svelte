@@ -101,9 +101,9 @@
 {#snippet dropdownTrigger(label: string, active: boolean, kind: MenuKind)}
 	<button
 		type="button"
-		class="group relative flex min-h-11 items-center gap-1 rounded-sm px-2 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 xl:px-4 {active
-			? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
-			: 'text-alt-petrol-800 hover:bg-surface-raised/65 hover:text-alt-petrol-950'}"
+		class="group relative flex min-h-11 items-center gap-1 rounded-sm px-2 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 xl:px-4 {active
+			? 'bg-alt-petrol-50 text-alt-petrol-accent-600'
+			: 'text-alt-petrol-800 hover:bg-alt-petrol-50 hover:text-alt-petrol-accent-600'}"
 		aria-expanded={openMenu === kind}
 		aria-haspopup="true"
 		onmouseenter={() => showMenu(kind)}
@@ -330,11 +330,11 @@
 				{:else}
 					<a
 						href={link.href}
-						class="relative flex min-h-11 items-center rounded-sm px-2 py-2.5 text-sm font-medium tracking-[-0.01em] text-alt-petrol-800 transition-[color,background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none hover:bg-surface-raised/65 hover:text-alt-petrol-950 active:scale-[0.98] lg:px-3 xl:px-4 {isLinkActive(
+						class="relative flex min-h-11 items-center rounded-sm px-2 py-2.5 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] lg:px-3 xl:px-4 {isLinkActive(
 							link.href
 						)
-							? 'bg-surface-raised text-alt-petrol-950 shadow-[0_8px_24px_-16px] shadow-alt-petrol-950/55'
-							: ''}"
+							? 'bg-alt-petrol-50 text-alt-petrol-accent-600'
+							: 'text-alt-petrol-800 hover:bg-alt-petrol-50 hover:text-alt-petrol-accent-600'}"
 						onmouseenter={() => hoverLink(link.href)}
 						onfocus={() => hoverLink(link.href)}
 						onkeydown={handleKeydown}

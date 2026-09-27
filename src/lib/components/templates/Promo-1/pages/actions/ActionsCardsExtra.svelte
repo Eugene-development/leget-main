@@ -7,7 +7,6 @@
 	import { mergeExtraCards, type ExtraCard } from './actionCardsExtra';
 	import '../../theme.css';
 
-
 	let {
 		data = $bindable(),
 		editContext = null,
@@ -21,7 +20,6 @@
 	// Тема блока: нейтральная палитра идёт из семантических классов p1-*,
 	// акценты (красный/янтарный) от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
-
 
 	// Начальное значение считаем ПРИ ИНИЦИАЛИЗАЦИИ, а не только в $effect: на сервере
 	// эффекты не выполняются, и с пустым localCards hasVisibleCards давал false —

@@ -4,7 +4,7 @@
  * Видимый виджет рендерится прямо в форме (см. SmartCaptcha.svelte).
  * После решения юзером колбэк отдаёт одноразовый токен, который форма
  * отправляет в теле запроса как `captcha_token`; бэкенд (leget-auth)
- * верифицирует его через https://smartcaptcha.yandexcloud.net/validate.
+ * верифицирует его через https://smartcaptcha.cloud.yandex.ru/validate.
  *
  * Fail-open: без sitekey капча не рендерится и формы не блокируются
  * (dev/staging, где ключ может быть не прописан).
@@ -18,7 +18,7 @@
 /** Sitekey виджета (публичный ключ ysс1_...) из env. Пусто = капча выключена. */
 export const SITE_KEY = import.meta.env.VITE_SMARTCAPTCHA_SITE_KEY;
 
-const CAPTCHA_SCRIPT_SRC = 'https://smartcaptcha.yandexcloud.net/captcha.js';
+const CAPTCHA_SCRIPT_SRC = 'https://smartcaptcha.cloud.yandex.ru/captcha.js';
 
 /** Глобальный объект виджета Яндекса, доступный после загрузки captcha.js. */
 /** (объявлен неявно на window; обращения идут через window.smartCaptcha) */
