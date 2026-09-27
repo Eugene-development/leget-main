@@ -98,7 +98,7 @@
 						tabindex={shown ? undefined : -1}
 					>
 						<span class="p1-title text-xs font-semibold tracking-[0.02em] whitespace-nowrap">
-							{action.badge}
+							{action.title}
 						</span>
 						<svg
 							viewBox="0 0 2 2"
@@ -107,7 +107,7 @@
 						>
 							<circle cx={1} cy={1} r={1} />
 						</svg>
-						<span class="p1-body truncate text-xs">{action.title}</span>
+						<span class="p1-body truncate text-xs">{action.badge}</span>
 					</a>
 				{/each}
 			</div>

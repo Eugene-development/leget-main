@@ -53,7 +53,7 @@
 						{#each actions as action (action.id)}
 							<a href="/actions" class="flex items-center gap-2.5 px-6">
 								<span class="p1-title text-xs font-semibold tracking-[0.02em] whitespace-nowrap">
-									{action.badge}
+									{action.title}
 								</span>
 								<svg
 									viewBox="0 0 2 2"
@@ -62,7 +62,7 @@
 								>
 									<circle cx={1} cy={1} r={1} />
 								</svg>
-								<span class="p1-body text-xs whitespace-nowrap">{action.title}</span>
+								<span class="p1-body text-xs whitespace-nowrap">{action.badge}</span>
 							</a>
 						{/each}
 					</div>
