@@ -538,7 +538,7 @@
 
 		<!-- ── Копирайт и вход ────────────────────────────────────────────── -->
 		<div
-			class="p1-border mt-12 flex flex-col items-center gap-4 border-t pt-8 md:flex-row md:justify-between"
+			class="p1-border mt-12 flex flex-col items-center gap-4 border-t pt-8 md:flex-row md:flex-wrap md:justify-between"
 		>
 			<p class="p1-muted text-center text-sm/6 md:text-left">
 				&copy; {new Date().getFullYear()} Компания "<EditableField
@@ -554,6 +554,13 @@
 						>{/snippet}</EditableField
 				>". Все права защищены.
 			</p>
+			<iframe
+				title="stars"
+				src="https://yandex.ru/sprav/widget/rating-badge/75907151870?type=rating"
+				width="150"
+				height="50"
+				frameborder="0"
+			></iframe>
 
 			<div class="flex items-center gap-2">
 				<a

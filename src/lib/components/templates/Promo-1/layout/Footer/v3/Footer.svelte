@@ -151,7 +151,6 @@
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="footer-v3-grid absolute inset-0 opacity-55"></div>
 		<div
 			class="absolute -top-20 right-[8%] h-56 w-56 rounded-full border-[46px] border-[var(--p1-accent)]/10 sm:h-80 sm:w-80 sm:border-[64px]"
 		></div>
@@ -529,11 +528,18 @@
 		</div>
 
 		<div
-			class="p1-muted flex flex-col gap-5 pt-7 text-xs md:flex-row md:items-center md:justify-between"
+			class="p1-muted flex flex-col gap-5 pt-7 text-xs md:flex-row md:flex-wrap md:items-center md:justify-between"
 			use:reveal
 			data-reveal-delay="180"
 		>
 			<p>&copy; {new Date().getFullYear()} {siteName}. Все права защищены.</p>
+			<iframe
+				title="stars"
+				src="https://yandex.ru/sprav/widget/rating-badge/75907151870?type=rating"
+				width="150"
+				height="50"
+				frameborder="0"
+			></iframe>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
 				<!-- <p>
 					Разработка — <a
@@ -569,14 +575,3 @@
 </footer>
 
 <LoginModal open={showLoginModal} onClose={() => (showLoginModal = false)} />
-
-<style>
-	.footer-v3-grid {
-		background-image:
-			linear-gradient(var(--p1-line) 1px, transparent 1px),
-			linear-gradient(90deg, var(--p1-line) 1px, transparent 1px);
-		background-size: 80px 80px;
-		-webkit-mask-image: linear-gradient(to bottom, #000, transparent 78%);
-		mask-image: linear-gradient(to bottom, #000, transparent 78%);
-	}
-</style>

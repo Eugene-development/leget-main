@@ -7,6 +7,7 @@
 	import ClientAuthModal from '$lib/components/ClientAuthModal.svelte';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import SiteSearchModal from '$lib/components/SiteSearchModal.svelte';
+	import Toast from '$lib/components/Toast.svelte';
 	import { siteSearch } from '$lib/stores/site-search.svelte';
 
 	let { children } = $props();
@@ -48,6 +49,8 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 {@render children()}
+
+<Toast />
 
 {#if siteSearch.open}
 	<SiteSearchModal />

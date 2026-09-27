@@ -17,6 +17,7 @@
 		type ProjectForm
 	} from './project-form';
 	import { ProjectRequestError, projectRequest } from './project-request';
+	import { toast } from '$lib/stores/toast.svelte';
 
 	let {
 		isOpen,
@@ -264,6 +265,7 @@
 			return;
 		}
 		isSubmitting = false;
+		toast.success('Проект загружен');
 		onClose();
 		releasePhotos();
 		// A refresh failure must not invite a second creation after the server saved the project.

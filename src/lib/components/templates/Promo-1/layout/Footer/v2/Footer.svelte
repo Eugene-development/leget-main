@@ -650,12 +650,19 @@
 
 		<!-- Низ: копирайт + авторизация -->
 		<div
-			class="mt-20 flex flex-col gap-5 border-t border-on-dark/10 pt-8 md:flex-row md:items-center md:justify-between"
+			class="mt-20 flex flex-col gap-5 border-t border-on-dark/10 pt-8 md:flex-row md:flex-wrap md:items-center md:justify-between"
 		>
 			<p class="text-sm text-on-dark/45">
 				&copy; {new Date().getFullYear()}
 				{siteName}. Все права защищены.
 			</p>
+			<iframe
+				title="stars"
+				src="https://yandex.ru/sprav/widget/rating-badge/75907151870?type=rating"
+				width="150"
+				height="50"
+				frameborder="0"
+			></iframe>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3">
 				<!-- <p class="text-xs text-on-dark/35">
 					Разработка — <a
