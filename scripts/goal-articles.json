@@ -1080,6 +1080,12 @@
 		"source": "templates/Promo-1/pages/university/UniversityApproach.svelte"
 	},
 	{
+		"article": "1.32.4.1",
+		"template": "Promo-1",
+		"page": "/university",
+		"source": "templates/Promo-1/pages/university/UniversityProgram.svelte"
+	},
+	{
 		"article": "1.33.1.1",
 		"template": "Promo-1",
 		"page": "/favorites",
@@ -1138,6 +1144,30 @@
 		"template": "Promo-1",
 		"page": "/furnitura/{shop}",
 		"source": "templates/Promo-1/pages/furnitura/FurnituraCTA.svelte"
+	},
+	{
+		"article": "1.37.1.1",
+		"template": "Promo-1",
+		"page": "/osveshchenie/{brand}",
+		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieSidebar.svelte"
+	},
+	{
+		"article": "1.37.2.1",
+		"template": "Promo-1",
+		"page": "/osveshchenie/{brand}",
+		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieBrandHero.svelte"
+	},
+	{
+		"article": "1.37.3.1",
+		"template": "Promo-1",
+		"page": "/osveshchenie/{brand}",
+		"source": "templates/Promo-1/pages/_shared/BrandAbout.svelte"
+	},
+	{
+		"article": "1.37.4.1",
+		"template": "Promo-1",
+		"page": "/osveshchenie/{brand}",
+		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieCTA.svelte"
 	},
 	{
 		"article": "1.Б.1.1",

@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.35.4.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.35.4.1, 1.37.4.1 — см. docs/architecture/component-articles-map.md
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';

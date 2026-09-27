@@ -1,5 +1,6 @@
 <script lang="ts">
 	import RichText from '$lib/components/RichText.svelte';
+	import UniversityMark from '../pages/university/UniversityMark.svelte';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -694,6 +695,16 @@
 						stroke-width="0.5"
 					/><path d="M5 5h2M5 7v1" class="icon-shine" /></svg
 				>
+			</a>
+
+			<a
+				href="/university"
+				aria-label="Универ — университет о доме"
+				onclick={() => uiStore.closeMenu()}
+				data-goal-ignore="Закрытие мобильного меню перед переходом в Универ"
+				class="mobile-action flex size-11 shrink-0 items-center justify-center rounded-lg text-university-accent ring-1 ring-[var(--p1-line)] ring-inset focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+			>
+				<UniversityMark class="size-7" />
 			</a>
 
 			<a

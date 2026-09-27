@@ -95,3 +95,8 @@ export const universityApproach = {
 	],
 	linkText: 'Вернуться к дисциплинам'
 };
+
+export const universityProgram = {
+	title: 'Ваша программа обучения',
+	description: 'Выберите дисциплину. Пройдите курсы в своём темпе.'
+};

@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Артикул: 1.37.2.1 — см. docs/architecture/component-articles-map.md
 	// Шапка страницы бренда (/osveshchenie/{brand}). Заголовок и описание
 	// приезжают из справочника: RenderPage кладёт в `data` строку бренда, как
 	// MebelCategoryHero получает свою категорию. Правки инлайн сохраняются в

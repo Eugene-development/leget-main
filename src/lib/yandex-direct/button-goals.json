@@ -121,6 +121,7 @@
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
@@ -142,7 +143,9 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
@@ -306,6 +309,7 @@
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
@@ -327,7 +331,9 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
@@ -491,6 +497,7 @@
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika", "article": "1.21.1.1" },
 			{ "template": "Promo-1", "page": "/santehnika/{brand}", "article": "1.31.1.1" },
@@ -512,7 +519,9 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.2.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.7.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.2.1" },
@@ -923,7 +932,10 @@
 		"baseId": "pages_shared_catalogsidebar_open_1",
 		"variant": "osveshchenie",
 		"serviceType": null,
-		"locations": [{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" }]
+		"locations": [
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" }
+		]
 	},
 	{
 		"id": "pages_shared_catalogsidebar_open_1_furnitura",
@@ -1332,7 +1344,7 @@
 		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieBrandHero.svelte",
 		"route": "/osveshchenie",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" }]
 	},
 	{
 		"id": "pages_osveshchenie_osveshcheniecta_open_1",
@@ -1342,7 +1354,10 @@
 		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieCTA.svelte",
 		"route": "/osveshchenie",
 		"mock": false,
-		"locations": [{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" }]
+		"locations": [
+			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
+			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" }
+		]
 	},
 	{
 		"id": "pages_osveshchenie_osveshcheniehero_open_1",

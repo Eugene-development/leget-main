@@ -1,0 +1,129 @@
+/* fin.ai reference: large serif, open light field, warm sculptural object,
+   crisp ink controls. Values are owned by each site's design system. */
+:is(.uni, .academy) {
+	--university-accent: var(--ds-university-accent);
+	--university-light: var(--ds-university-accent-light);
+	--university-deep: var(--ds-university-accent-deep);
+}
+:is(.uni, .academy) :is(h1, h2),
+.uni .uni-wordmark {
+	font-family: var(--ds-font-university);
+	font-weight: var(--ds-font-university-weight);
+	line-height: var(--ds-font-university-leading);
+	letter-spacing: var(--ds-font-university-tracking);
+}
+.uni-learning-object {
+	position: relative;
+	width: 100%;
+	min-width: 0;
+	height: 460px;
+	perspective: 1100px;
+	isolation: isolate;
+	overflow: clip;
+}
+.uni-book-fan {
+	position: absolute;
+	inset: 40px 0 0;
+	transform: scale(0.82) rotate(-12deg) rotateX(12deg) rotateY(-18deg);
+	transform-style: preserve-3d;
+}
+.uni-book-leaf {
+	position: absolute;
+	width: 230px;
+	height: 320px;
+	left: calc(50% - 115px);
+	top: 10px;
+	border-radius: 4px 22px 22px 4px;
+	transform-origin: 12% 95%;
+	transform: rotate(calc((var(--leaf) - 3) * 13deg)) translateZ(calc(var(--leaf) * 9px));
+	background: linear-gradient(
+		105deg,
+		var(--university-deep),
+		var(--university-accent) 12%,
+		var(--university-light) 14%,
+		var(--university-accent) 18%,
+		var(--university-accent) 85%,
+		var(--university-deep)
+	);
+	border: 1px solid color-mix(in srgb, var(--university-deep), transparent 50%);
+	box-shadow: 6px 12px 18px color-mix(in srgb, var(--ds-scrim), transparent 82%);
+	transition: transform var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-ui);
+}
+.uni-book-leaf::after {
+	content: '';
+	position: absolute;
+	inset: auto 8px -7px 7px;
+	height: 10px;
+	border-radius: 0 0 12px 3px;
+	background: repeating-linear-gradient(
+		to bottom,
+		var(--ds-light-surface-paper) 0 2px,
+		var(--ds-light-border) 2px 3px
+	);
+	z-index: -1;
+}
+.uni-book-face {
+	padding: 26px 25px 25px 35px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	color: var(--ds-light-title);
+}
+.uni-book-mark {
+	width: 30px;
+	height: 30px;
+}
+.uni-book-name {
+	margin-top: 32px;
+	font-family: var(--ds-font-university);
+	font-size: 36px;
+	line-height: 1;
+	letter-spacing: var(--ds-font-university-tracking);
+}
+.uni-book-imprint {
+	margin-top: auto;
+	font-size: 9px;
+	letter-spacing: 0.12em;
+}
+.uni-book-shadow {
+	position: absolute;
+	width: 65%;
+	height: 35px;
+	left: 18%;
+	bottom: 45px;
+	background: color-mix(in srgb, var(--ds-scrim), transparent 83%);
+	filter: blur(20px);
+	border-radius: 50%;
+	transform: rotate(-8deg);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+	.uni-learning-object:hover .uni-book-leaf {
+		transform: rotate(calc((var(--leaf) - 3) * 16deg)) translateZ(calc(var(--leaf) * 12px));
+	}
+}
+@media (max-width: 700px) {
+	.uni-learning-object {
+		height: 330px;
+	}
+	.uni-book-fan {
+		transform: translate(-8px, -20px) scale(0.56) rotate(-12deg) rotateX(12deg) rotateY(-18deg);
+		transform-origin: 50% 20%;
+	}
+	.uni-book-shadow {
+		bottom: 40px;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.uni-book-leaf {
+		transition: none;
+	}
+}
+
+@media (max-width: 360px) {
+	.uni-book-fan {
+		transform: translate(-8px, -20px) scale(0.46) rotate(-12deg) rotateX(12deg) rotateY(-18deg);
+	}
+	.uni-learning-object {
+		height: 290px;
+	}
+}

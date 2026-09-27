@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикул: 1.35.1.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.35.1.1, 1.37.1.1 — см. docs/architecture/component-articles-map.md
 	// Разметку и поведение отдаёт общий CatalogSidebar. Бренды — справочник в БД
 	// (категории рубрики «osveshchenie»), поэтому у пунктов есть тумблер
 	// включения, как у брендов бытовой техники.

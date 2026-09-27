@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Артикулы: 1.28.5.1, 1.30.5.1, 1.31.5.1, 1.36.3.1 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.28.5.1, 1.30.5.1, 1.31.5.1, 1.36.3.1, 1.37.3.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';

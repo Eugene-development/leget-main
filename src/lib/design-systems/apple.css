@@ -19,6 +19,19 @@
  */
 
 :root[data-ds='apple'] {
+	/* University display role: editorial serif and sculptural warm accent. */
+	--ds-font-university: 'Cormorant Garamond', Georgia, serif;
+	--ds-font-university-weight: 500;
+	--ds-font-university-leading: 0.98;
+	--ds-font-university-tracking: -0.035em;
+	--ds-university-accent: var(--ds-cat-8-500);
+	--ds-university-accent-light: color-mix(
+		in srgb,
+		var(--ds-university-accent),
+		var(--ds-light-card) 55%
+	);
+	--ds-university-accent-deep: color-mix(in srgb, var(--ds-university-accent), var(--ds-scrim) 30%);
+
 	/* Крупный заголовок каталога и спектр отражения: значения принадлежат системе. */
 	--ds-font-catalog-display: var(--ds-font-body);
 	--ds-font-catalog-display-size: clamp(3.25rem, 6.6vw, 6.5rem);

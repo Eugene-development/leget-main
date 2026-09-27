@@ -1,6 +1,5 @@
-/* University: an academic prospectus, a reading desk and a personal record book.
-   Tokens inherit the site's design system. Course hierarchy owns the composition.
-   Motion opens a syllabus like a page; all content remains visible without animation. */
+@import './visual.css';
+/* Shared learning surfaces: Fin-inspired editorial typography and ink controls. */
 .academy {
 	color: var(--p1-title);
 	font-family: var(--ds-font-body);
@@ -42,14 +41,14 @@
 	display: flex;
 	gap: 14px;
 	align-items: center;
-	font-family: var(--ds-font-heading);
-	font-size: 30px;
+	font-family: var(--ds-font-university);
+	font-size: 34px;
 	text-decoration: none;
 }
 .academy-mark {
 	width: 42px;
 	height: 42px;
-	color: var(--p1-accent);
+	color: var(--university-accent);
 }
 .academy-brand small {
 	display: block;
@@ -98,9 +97,9 @@
 	gap: 16px;
 	padding: 13px 24px;
 	min-height: 48px;
-	background: var(--p1-accent);
-	color: var(--ds-on-accent);
-	border: 1px solid var(--p1-accent);
+	background: var(--p1-title);
+	color: var(--p1-surface-paper);
+	border: 1px solid var(--p1-title);
 	font-size: 14px;
 	font-weight: 600;
 	cursor: pointer;
@@ -145,7 +144,8 @@
 	font-size: 13px;
 }
 .academy-program {
-	padding: 20px 0 0;
+	padding: 58px 0 0;
+	border-top: 1px solid var(--academy-rule);
 	scroll-margin-top: 140px;
 }
 .academy-program-heading {
@@ -173,10 +173,9 @@
 }
 .academy-catalog {
 	display: grid;
-	grid-template-columns: 290px minmax(0, 1fr);
-	gap: 60px;
-	border-top: 1px solid var(--academy-rule);
-	padding-top: 12px;
+	grid-template-columns: 230px minmax(0, 1fr);
+	gap: 50px;
+	padding-top: 8px;
 }
 .academy-disciplines {
 	padding-top: 12px;
@@ -190,7 +189,7 @@
 	text-align: left;
 	min-height: 64px;
 	border-bottom: 1px solid var(--academy-rule);
-	padding: 12px;
+	padding: 14px 12px;
 	background: none;
 	color: var(--p1-title);
 	cursor: pointer;
@@ -215,9 +214,37 @@
 	font-size: 36px;
 	margin-bottom: 30px;
 }
+.academy-course-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 28px;
+}
 .academy-course {
-	border-top: 1px solid var(--academy-rule);
-	padding: 24px 0 30px;
+	border-top: 2px solid var(--university-accent);
+	padding: 24px 0 16px;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+.academy-course .academy-link {
+	margin-top: auto;
+	align-self: start;
+}
+.academy-course h4 {
+	font-family: var(--ds-font-heading-sub);
+	font-size: 26px;
+}
+.academy-course-top {
+	flex-wrap: wrap;
+}
+.academy-course-top span:first-child {
+	color: var(--p1-title);
+}
+.academy-course p {
+	font-size: 15px;
+}
+.academy-course ol {
+	color: var(--p1-body);
 }
 .academy-course p {
 	max-width: 55ch;
@@ -239,8 +266,8 @@
 	padding: 4px 0;
 }
 .academy-method {
-	margin-top: 36px;
-	padding: 38px 0;
+	margin-top: 65px;
+	padding: 42px 0 0;
 	border-top: 1px solid var(--academy-rule);
 	display: grid;
 	grid-template-columns: 1fr 2fr;
@@ -274,9 +301,9 @@
 	color: var(--p1-body);
 }
 .academy-admission-form {
-	padding: 30px;
+	padding: 36px;
 	background: var(--p1-card);
-	border: 1px solid var(--academy-rule);
+	border-top: 3px solid var(--university-accent);
 }
 .academy-switch {
 	display: flex;
@@ -448,7 +475,7 @@
 }
 .academy-syllabus button.active {
 	background: var(--p1-card);
-	box-shadow: inset 1px 0 var(--p1-accent);
+	box-shadow: inset 1px 0 var(--university-accent);
 }
 .academy-lesson {
 	max-width: 740px;
@@ -846,5 +873,103 @@
 	}
 	.academy-certificate p {
 		margin-bottom: 10px;
+	}
+}
+
+.academy-program-heading h2 {
+	max-width: 13ch;
+	font-size: clamp(38px, 4.4vw, 58px);
+	margin-bottom: 16px;
+}
+.academy-program-heading {
+	margin-bottom: 38px;
+}
+.academy-program-heading p {
+	max-width: 42ch;
+	font-size: 15px;
+}
+.academy-disciplines button {
+	font-size: 15px;
+}
+.academy-disciplines button.active {
+	background: var(--p1-title);
+	color: var(--p1-surface-paper);
+}
+.academy-course-list {
+	padding-top: 12px;
+}
+.academy-course-list h3 {
+	font-family: var(--ds-font-university);
+	font-size: 44px;
+}
+.academy-method h3 {
+	font-family: var(--ds-font-university);
+	font-size: 34px;
+}
+.academy-header nav {
+	align-items: center;
+}
+.academy-header nav a {
+	padding-block: 10px;
+}
+.academy-header nav a:hover {
+	text-decoration: underline;
+}
+.academy-admission h1 {
+	font-size: clamp(48px, 5.5vw, 78px);
+}
+.academy-admission .academy-lead {
+	font-family: var(--ds-font-body);
+	font-size: 20px;
+}
+@media (max-width: 1000px) {
+	.academy-catalog {
+		grid-template-columns: 200px minmax(0, 1fr);
+		gap: 28px;
+	}
+	.academy-course-grid {
+		grid-template-columns: 1fr;
+	}
+	.academy-admission {
+		gap: 40px;
+	}
+}
+@media (max-width: 650px) {
+	.academy-program {
+		padding-top: 36px;
+	}
+	.academy-catalog {
+		grid-template-columns: 1fr;
+		gap: 22px;
+	}
+	.academy-program-heading .academy-link {
+		margin: 8px 0 0;
+		display: flex;
+	}
+	.academy-disciplines {
+		gap: 6px;
+		padding: 0 2px 12px;
+		scroll-snap-type: x proximity;
+	}
+	.academy-disciplines button {
+		min-width: 145px;
+		scroll-snap-align: start;
+	}
+	.academy-course-list h3 {
+		font-size: 36px;
+		margin-bottom: 18px;
+	}
+	.academy-course-grid {
+		gap: 22px;
+	}
+	.academy-method {
+		margin-top: 30px;
+		gap: 14px;
+	}
+	.academy-admission-form {
+		padding: 24px 18px;
+	}
+	.academy-admission h1 {
+		font-size: 52px;
 	}
 }

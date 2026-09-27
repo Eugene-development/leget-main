@@ -353,6 +353,13 @@ body.page-entering {
  * в дизайн-системе. Добавляете токен — добавьте и строку сюда.
  */
 @theme {
+	--font-university: var(--ds-font-university);
+	--font-weight-university: var(--ds-font-university-weight);
+	--leading-university: var(--ds-font-university-leading);
+	--tracking-university: var(--ds-font-university-tracking);
+	--color-university-accent: var(--ds-university-accent);
+	--color-university-accent-light: var(--ds-university-accent-light);
+	--color-university-accent-deep: var(--ds-university-accent-deep);
 	/* Палитра бренда */
 	--color-primary: var(--ds-color-primary);
 	--color-primary-light: var(--ds-color-primary-light);

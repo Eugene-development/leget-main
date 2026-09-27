@@ -1,3 +1,4 @@
+@import '../../../../../university/visual.css';
 /* Композиция Универа; все цвета и типографические роли принадлежат системе. */
 .uni {
 	color: var(--p1-title);
@@ -22,15 +23,14 @@
 	outline-offset: 5px;
 }
 .uni-hero {
-	padding: 34px 0 72px;
+	padding: 28px 0 0;
 	scroll-margin-top: calc(var(--header-h, 100px) + 20px);
 }
 .uni-masthead {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom-width: 1px;
-	padding-bottom: 22px;
+	padding-bottom: 16px;
 }
 .uni-brand {
 	display: flex;
@@ -41,7 +41,7 @@
 	width: 46px;
 	height: 46px;
 	flex-shrink: 0;
-	color: var(--p1-accent);
+	color: var(--university-accent);
 }
 .uni-wordmark {
 	font-family: var(--ds-font-heading-sub);
@@ -54,22 +54,22 @@
 }
 .uni-intro {
 	display: grid;
-	grid-template-columns: 1.3fr 1fr;
-	gap: 64px;
-	align-items: end;
-	padding: 38px 0 42px;
+	grid-template-columns: 1.25fr 1fr;
+	gap: 30px;
+	align-items: center;
+	padding: 44px 0 90px;
 }
 .uni h1.uni-headline {
-	font-size: clamp(40px, 4.6vw, 68px);
-	max-width: 760px;
+	font-size: clamp(54px, 6.8vw, 98px);
+	max-width: 12ch;
 	text-wrap: balance;
 	margin: 0;
 }
 .uni-intro-copy {
-	max-width: 420px;
-	justify-self: end;
+	max-width: 440px;
+	margin-top: 28px;
 	font-size: 16px;
-	line-height: 1.75;
+	line-height: 1.65;
 }
 .uni-text-link {
 	display: inline-flex;
@@ -201,7 +201,7 @@
 	margin-bottom: 44px;
 }
 .uni h2.uni-section-title {
-	font-size: clamp(34px, 3.5vw, 50px);
+	font-size: clamp(40px, 4.5vw, 64px);
 	max-width: 650px;
 	text-wrap: balance;
 }
@@ -212,9 +212,9 @@
 }
 .uni-note {
 	display: grid;
-	grid-template-columns: 190px 1fr;
+	grid-template-columns: 150px 1fr;
 	gap: 32px;
-	padding: 28px 0;
+	padding: 36px 0;
 	border-top-width: 1px;
 }
 .uni-note:last-child {
@@ -260,7 +260,15 @@
 	padding-top: 20px;
 }
 .uni-approach {
-	padding: 80px 0 90px;
+	padding: 100px 0;
+	background: var(--p1-title);
+	color: var(--p1-surface-paper);
+}
+.uni-approach :is(.p1-title, .p1-body) {
+	color: inherit;
+}
+.uni-approach .p1-line {
+	border-color: color-mix(in srgb, currentColor, transparent 75%);
 }
 .uni-approach-grid {
 	display: grid;
@@ -299,6 +307,9 @@
 	.uni-intro {
 		grid-template-columns: 1.2fr 1fr;
 	}
+	.uni-learning-object {
+		transform: scale(0.85);
+	}
 	.uni-studio {
 		grid-template-columns: 1fr 1fr;
 	}
@@ -316,7 +327,7 @@
 	}
 	.uni-hero {
 		padding-top: 24px;
-		padding-bottom: 48px;
+		padding-bottom: 0;
 	}
 	.uni-masthead {
 		padding-bottom: 16px;
@@ -336,11 +347,15 @@
 	.uni-intro {
 		grid-template-columns: 1fr;
 		gap: 20px;
-		padding: 28px 0;
+		padding: 30px 0 44px;
+	}
+	.uni-learning-object {
+		transform: none;
 	}
 	.uni-intro-copy {
 		justify-self: start;
 		max-width: 48ch;
+		margin-top: 22px;
 		font-size: 15px;
 	}
 	.uni-studio {
@@ -400,5 +415,121 @@
 		transition: none !important;
 		animation: none !important;
 		scroll-behavior: auto !important;
+	}
+}
+
+.uni-intro-main {
+	min-width: 0;
+}
+.uni-intro-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 16px 24px;
+	margin-top: 28px;
+}
+.uni-primary-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	padding: 15px 20px;
+	min-height: 50px;
+	background: var(--p1-title);
+	color: var(--p1-surface-paper);
+	border: 1px solid var(--p1-title);
+	border-radius: var(--ds-radius-sm);
+	font-size: 13px;
+	text-decoration: none;
+}
+.uni-primary-link svg {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+}
+.uni-primary-link:hover {
+	background: var(--p1-body);
+}
+.uni-secondary-link {
+	font-size: 13px;
+	text-underline-offset: 5px;
+	padding: 12px 0;
+	text-decoration: underline;
+}
+.uni-journal .uni-note-category {
+	color: var(--p1-body);
+}
+.uni-note-body {
+	max-width: 760px;
+}
+.uni-note-body > p {
+	max-width: 60ch;
+}
+@media (min-width: 701px) {
+	.uni-journal .uni-notes {
+		margin-left: 18%;
+	}
+}
+@media (max-width: 700px) {
+	.uni h1.uni-headline {
+		font-size: clamp(48px, 10.8vw, 72px);
+		max-width: 12ch;
+	}
+	.uni-intro {
+		gap: 8px;
+	}
+	.uni-primary-link {
+		padding: 14px 16px;
+		gap: 10px;
+	}
+	.uni-approach {
+		padding: 64px 0;
+	}
+}
+
+/* The programme is a standalone editable block; spacing preserves the hero above. */
+.uni-program {
+	padding-bottom: 80px;
+}
+@media (max-width: 700px) {
+	.uni-program {
+		padding-bottom: 48px;
+	}
+}
+
+/* The hero ends at the first viewport boundary; long/mobile content can grow. */
+.uni-hero {
+	min-height: calc(100svh - var(--uni-viewport-offset, var(--header-h, 100px)));
+	display: flex;
+}
+.uni-hero > .uni-wrap {
+	display: flex;
+	flex-direction: column;
+}
+.uni-hero .uni-intro {
+	flex: 1;
+}
+@media (min-width: 701px) {
+	.uni-hero .uni-intro {
+		position: relative;
+		grid-template-columns: 1.25fr 1fr;
+	}
+	.uni-hero .uni-intro > .uni-learning-object {
+		position: absolute;
+		right: 0;
+		top: 46%;
+		width: 44%;
+		transform: translateY(-50%) scale(1.12);
+	}
+}
+@media (min-width: 701px) and (max-height: 850px) {
+	.uni-hero .uni-intro {
+		padding-block: 20px 32px;
+	}
+	.uni-hero h1.uni-headline {
+		font-size: clamp(48px, min(6.8vw, 9svh), 98px);
+	}
+	.uni-hero .uni-intro > .uni-learning-object {
+		transform: translateY(-50%) scale(1.08);
 	}
 }
