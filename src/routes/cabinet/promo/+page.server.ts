@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		redirect(303, '/?auth=client-login');
 	}
 
-	if (!['client', 'student'].includes(profile.role)) {
+	if (profile.role !== 'client') {
 		redirect(303, profile.role === 'superadmin' ? '/admin' : cabinetHref(profile.role));
 	}
 

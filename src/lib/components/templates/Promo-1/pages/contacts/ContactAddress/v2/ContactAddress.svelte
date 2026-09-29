@@ -100,13 +100,19 @@
 			class="ct-reveal grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-20"
 		>
 			<div class="lg:pt-8">
+				<div
+					class="ct-item mb-8 inline-flex items-center gap-3 rounded-2xl border border-brand-600/20 bg-brand-600/5 px-5 py-4"
+				>
+					<span class="size-2 rounded-full bg-brand-600" aria-hidden="true"></span>
+					<p class="{ct.body.labelOnLight} text-sm">Услуга бесплатная</p>
+				</div>
 				<EditableField
 					fieldKey="ContactAddress.visitTitle"
 					label="Заголовок встречи на объекте"
 					value={String(data?.visitTitle ?? 'Встретимся у вас на объекте')}
 					{isEditable}
 					onSave={(value) => saveField('visitTitle', value)}
-					class="ct-item block"
+					class="ct-item ct-d1 block"
 				>
 					{#snippet children(displayValue)}
 						<h2 class={ct.title.h2OnLight}><RichText value={displayValue} /></h2>
@@ -122,24 +128,18 @@
 					{isEditable}
 					multiline
 					onSave={(value) => saveField('visitDescription', value)}
-					class="ct-item ct-d1 mt-6 block"
+					class="ct-item ct-d2 mt-6 block"
 				>
 					{#snippet children(displayValue)}
 						<p class="{ct.body.onLight} max-w-xl text-lg"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
-				<div class="ct-item ct-d2 p1-line mt-10 border-t pt-6">
+				<div class="ct-item ct-d3 p1-line mt-10 border-t pt-6">
 					<p class="{ct.body.labelOnLight} text-sm">Встреча начинается с разговора</p>
 					<p class="{ct.body.onLight} mt-2 max-w-md">
 						Расскажите, где находится объект и что хотите обсудить. Детали и удобное время уточним
 						лично.
 					</p>
-				</div>
-				<div
-					class="ct-item ct-d3 mt-8 inline-flex items-center gap-3 rounded-2xl border border-brand-600/20 bg-brand-600/5 px-5 py-4"
-				>
-					<span class="size-2 rounded-full bg-brand-600" aria-hidden="true"></span>
-					<p class="{ct.body.labelOnLight} text-sm">Услуга бесплатная</p>
 				</div>
 			</div>
 

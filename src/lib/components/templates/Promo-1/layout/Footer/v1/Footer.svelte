@@ -103,13 +103,18 @@
 	const infoItems = [
 		{ href: '/actions', label: 'Акции' },
 		{ href: '/testimonials', label: 'Отзывы' },
-		{ href: '/about', label: 'О компании' },
+		{ href: '/about', label: 'О проекте' },
+		{ href: '/guarantees', label: 'Гарантии' },
+		{ href: '/installment', label: 'Рассрочка' },
 		{ href: '/contacts', label: 'Контакты' },
 		// Страницы /vacancy в шаблоне ещё нет (см. index.ts) — ссылка заведена заранее,
 		// под будущую разработку. До неё маршрут отдаёт 404.
 		{ href: '/vacancy', label: 'Вакансии' }
 	];
-	const otherItems = [{ href: '/partnership', label: 'Партнёрство' }];
+	const otherItems = [
+		{ href: '/partnership', label: 'Партнёрство' },
+		{ href: '/university', label: 'Университет' }
+	];
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();

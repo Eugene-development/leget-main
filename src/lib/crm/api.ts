@@ -45,10 +45,13 @@ export async function crmRequest(
 	}
 	const result = await response.json().catch(() => ({}));
 	if (!response.ok)
-		throw new Error(
-			result.errors
-				? Object.values(result.errors).flat().join(' ')
-				: result.message || `Не удалось выполнить действие (${response.status}).`
+		throw Object.assign(
+			new Error(
+				result.errors
+					? Object.values(result.errors).flat().join(' ')
+					: result.message || `Не удалось выполнить действие (${response.status}).`
+			),
+			{ code: result.code }
 		);
 	if (body) attempts.delete(signature);
 	return result;

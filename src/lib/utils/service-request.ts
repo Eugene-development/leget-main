@@ -6,7 +6,8 @@ export type ServiceRequestInput = {
 	serviceType: ServiceType;
 	formId?: string;
 	formTitle?: string;
-	name: string;
+	name?: string;
+	consent?: boolean;
 	phone: string;
 	message?: string | null;
 	objectAddress?: string;
@@ -36,7 +37,8 @@ export async function submitServiceRequest(
 	const payload = new FormData();
 	payload.set('service_type', input.serviceType);
 	if (input.formTitle) payload.set('form_title', input.formTitle);
-	payload.set('name', input.name.trim());
+	if (input.name !== undefined) payload.set('name', input.name.trim());
+	if (input.consent !== undefined) payload.set('consent', input.consent ? '1' : '0');
 	payload.set('phone', cleanPhone(input.phone));
 	payload.set('city', input.city);
 	if (input.message) payload.set('message', input.message.trim());

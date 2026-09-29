@@ -24,7 +24,8 @@
 		"test:goals": "node scripts/test-goals.mjs",
 		"test:metrika": "node --test scripts/test-metrika.mjs",
 		"check:forms": "node scripts/check-forms.mjs",
-		"test:forms": "node scripts/test-form-submission.mjs"
+		"test:forms": "node scripts/test-form-submission.mjs",
+		"test:lead-catcher": "node scripts/test-lead-catcher.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^5.5.4",

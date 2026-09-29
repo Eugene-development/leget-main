@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		redirect(303, '/?auth=client-login');
 	}
 
-	if (!['client', 'student'].includes(profile.role)) {
+	if (profile.role !== 'client') {
 		// Сессия действительна, но кабинет чужой. Cookie не трогаем: человек
 		// вошёл законно, просто не сюда — уводим в его собственную дверь.
 		redirect(303, profile.role === 'superadmin' ? '/admin' : cabinetHref(profile.role));

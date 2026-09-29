@@ -59,7 +59,12 @@
 					</div>
 				</div>
 
-				<div class="flex items-center gap-3">
+				<div class="flex flex-wrap items-center gap-3">
+					<a
+						href="/university/auth"
+						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700"
+						>Обучение</a
+					>
 					<a
 						href="/"
 						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700 transition hover:bg-surface-muted"

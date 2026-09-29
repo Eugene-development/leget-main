@@ -60,6 +60,11 @@
 					<p class="mt-2 text-sm text-ink-500">Промокодов под сопровождением: {total}.</p>
 				</div>
 				<a
+					href="/university/auth"
+					class="self-start rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700"
+					>Обучение</a
+				>
+				<a
 					href="/"
 					class="self-start rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700 transition hover:bg-surface-muted"
 				>
@@ -123,7 +128,7 @@
 										{/if}
 									</p>
 								</div>
-								<div class="flex items-center gap-3">
+								<div class="flex flex-wrap items-center gap-3">
 									{#if client.from_advertising}
 										<span class="rounded-full bg-cat-4-50 px-2.5 py-1 text-xs text-cat-4-700">
 											из рекламы

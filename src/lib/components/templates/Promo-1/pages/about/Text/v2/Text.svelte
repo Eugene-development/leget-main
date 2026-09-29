@@ -36,7 +36,7 @@
 		data-p1-theme={isLight ? 'light' : 'dark'}
 	>
 		<div class="paper-stage">
-			<div class="paper-opening p1-title"><QuoteMark /></div>
+			<div class="paper-opening p1-title"><QuoteMark gradientId="about-text-v2-opening" /></div>
 			<div class="p1-paper paper-leaf">
 				<div class="paper-copy ds-prose p1-prose prose">
 					<EditableField
@@ -54,7 +54,9 @@
 						{/snippet}
 					</EditableField>
 				</div>
-				<div class="paper-closing p1-title"><QuoteMark closing /></div>
+				<div class="paper-closing p1-title">
+					<QuoteMark closing gradientId="about-text-v2-closing" />
+				</div>
 			</div>
 		</div>
 	</section>

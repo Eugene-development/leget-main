@@ -19,6 +19,7 @@ export const CLIENT_COOKIE = 'leget_client_jwt';
 
 /** Заявка, вынутая из JWT без проверки подписи — только для отрисовки шапки. */
 export interface ClientDisplay {
+	roles: string[];
 	name: string;
 	email: string;
 	/**
@@ -86,7 +87,10 @@ export function decodeClientDisplay(token: string | undefined): ClientDisplay | 
 			email,
 			// Токены, выданные до появления claim'а, роли не несут — до истечения
 			// их TTL считаем такого пользователя клиентом, как и колонка по умолчанию.
-			role: typeof json.role === 'string' && json.role ? json.role : 'client'
+			role: typeof json.role === 'string' && json.role ? json.role : 'client',
+			roles: Array.isArray(json.roles)
+				? json.roles.filter((r): r is string => typeof r === 'string')
+				: [typeof json.role === 'string' ? json.role : 'client']
 		};
 	} catch {
 		return null;
@@ -104,7 +108,8 @@ export async function readSessionProfile(token: string): Promise<ClientProfile |
 		headers: { Authorization: `Bearer ${token}` }
 	});
 
-	if (!response.ok) return null;
+	if (response.status === 401 || response.status === 403) return null;
+	if (!response.ok) throw new Error('Сервис профилей временно недоступен.');
 
 	const result = await readApiJson(response);
 	const user = result.user;

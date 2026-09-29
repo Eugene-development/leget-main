@@ -8,7 +8,9 @@
 	 * /cabinet/register, а те держат JWT в httpOnly-cookie. Поэтому вход
 	 * клиента не может включить редактор чужого сайта.
 	 */
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
+	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import { goto, invalidateAll } from '$app/navigation';
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
@@ -30,13 +32,24 @@
 
 	let fieldErrors = $state<Record<string, string>>({});
 	let submitError = $state('');
+	let accountExists = $state(false);
+	let reuseRegistration = $state(false);
+	let activationAccount = $state<{ name: string; email: string } | null>(null);
 	let isSubmitting = $state(false);
 
 	let captchaToken = $state<string | null>(null);
 	let captchaRef = $state<{ reset: () => void } | undefined>();
 
 	const isRegister = $derived(currentMode === 'register');
-	const title = $derived(isRegister ? 'Регистрация' : 'Вход в личный кабинет');
+	const title = $derived(
+		activationAccount
+			? 'Подключить кабинет клиента'
+			: accountExists
+				? 'Аккаунт уже существует'
+				: isRegister
+					? 'Регистрация'
+					: 'Вход в личный кабинет'
+	);
 
 	function isValidEmail(value: string) {
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -64,9 +77,41 @@
 	}
 
 	function switchMode() {
+		reuseRegistration = false;
+		password = '';
+		passwordConfirmation = '';
 		clientAuthModal.open(isRegister ? 'login' : 'register');
 		fieldErrors = {};
 		submitError = '';
+	}
+
+	function reuseAccount() {
+		accountExists = false;
+		reuseRegistration = true;
+		password = '';
+		passwordConfirmation = '';
+		fieldErrors = {};
+		submitError = '';
+		clientAuthModal.open('login');
+	}
+	async function finish(role: string) {
+		onClose();
+		await invalidateAll();
+		await goto(page.url.pathname === '/partner/register' ? '/partner/register' : cabinetHref(role));
+	}
+	async function activateClient() {
+		isSubmitting = true;
+		submitError = '';
+		try {
+			const response = await fetch('/cabinet/activate', { method: 'POST' });
+			const result = await response.json();
+			if (!response.ok) throw new Error(result.message || 'Не удалось подключить кабинет.');
+			await finish(result.user.role);
+		} catch (e) {
+			submitError = e instanceof Error ? e.message : 'Сервис недоступен.';
+		} finally {
+			isSubmitting = false;
+		}
 	}
 
 	/** Ошибки валидации Laravel: { field: [message] } → плоская карта. */
@@ -113,6 +158,14 @@
 			});
 			const result = await response.json().catch(() => ({}));
 
+			if (result.code === 'account_exists') {
+				accountExists = true;
+				password = '';
+				passwordConfirmation = '';
+				captchaRef?.reset();
+				captchaToken = null;
+				return;
+			}
 			if (!response.ok) {
 				// Токен капчи одноразовый — сбрасываем виджет для новой попытки.
 				captchaRef?.reset();
@@ -123,11 +176,18 @@
 				return;
 			}
 
-			onClose();
-			// Сессию открыл сервер (httpOnly-cookie): шапке нужен свежий layout-load,
-			// поэтому переход в кабинет идёт с инвалидацией.
-			await invalidateAll();
-			await goto(page.url.pathname === '/partner/register' ? '/partner/register' : '/cabinet');
+			password = '';
+			passwordConfirmation = '';
+			if (
+				reuseRegistration &&
+				result.user?.role === 'student' &&
+				page.url.pathname !== '/partner/register'
+			) {
+				activationAccount = result.user;
+				await invalidateAll();
+				return;
+			}
+			await finish(result.user?.role || 'client');
 		} catch {
 			captchaRef?.reset();
 			captchaToken = null;
@@ -144,6 +204,17 @@
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') onClose();
 	}
+
+	onMount(() => {
+		if (isRegister && page.data.client && page.url.pathname !== '/partner/register') {
+			void fetch('/cabinet/activate')
+				.then((r) => (r.ok ? r.json() : null))
+				.then((result) => {
+					if (result?.user?.role === 'student') activationAccount = result.user;
+				})
+				.catch(() => {});
+		}
+	});
 
 	const inputClass =
 		'w-full rounded-xl border px-4 py-3 text-sm text-ink-950 transition focus:border-link-600 focus:ring-2 focus:ring-link-600/20 focus:outline-none';
@@ -190,170 +261,215 @@
 			</button>
 		</div>
 
-		<form onsubmit={handleSubmit} novalidate>
-			<!--
+		{#if activationAccount}
+			<p class="ym-hide-content text-ink-700">
+				{activationAccount.name} · {activationAccount.email}
+			</p>
+			<p class="mt-4 text-ink-600">
+				К вашему аккаунту добавится роль Клиент. Обучение и сертификаты сохранятся.
+			</p>
+			{#if submitError}<p role="alert" class="mt-4">{submitError}</p>{/if}
+			<button
+				type="button"
+				onclick={activateClient}
+				disabled={isSubmitting}
+				class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-on-dark"
+				data-metrika-goal="client_role_activate"
+				data-goal-action="submit_click"
+				>{isSubmitting ? 'Подключаем…' : 'Добавить роль Клиент'}</button
+			>
+		{:else if accountExists}
+			<p class="text-ink-600">
+				Использовать существующий аккаунт? Войдите с прежним паролем. Пароль и данные профиля не
+				изменятся.
+			</p>
+			<button
+				type="button"
+				onclick={reuseAccount}
+				class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-on-dark"
+				data-metrika-goal="client_existing_account_open"
+				data-goal-action="open">Использовать существующий аккаунт</button
+			>
+			<button
+				type="button"
+				onclick={() => {
+					accountExists = false;
+					email = '';
+				}}
+				class="mt-4 text-link-600"
+				data-goal-ignore="Исправление email регистрации">Указать другой email</button
+			>
+		{:else}
+			<form class="ym-hide-content" onsubmit={handleSubmit} novalidate>
+				<!--
 				По два поля в строке. Сетка одна на оба режима: у входа это Email и
 				Пароль в одну строку, у регистрации — три строки по паре. Порядок полей
 				в разметке и есть порядок обхода сетки.
 			-->
-			<div class="grid gap-4 sm:grid-cols-2">
-				{#if isRegister}
-					<div>
-						<label for="client-name" class="mb-1 block text-sm font-medium text-ink-700">Имя</label>
-						<input
-							id="client-name"
-							type="text"
-							autocomplete="name"
-							bind:value={name}
-							class={inputClass}
-							class:border-cat-6-400={fieldErrors.name}
-							class:border-ink-300={!fieldErrors.name}
-							placeholder="Как к вам обращаться"
-						/>
-						{#if fieldErrors.name}
-							<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.name}</p>
-						{/if}
-					</div>
-				{/if}
-
-				<div>
-					<label for="client-email" class="mb-1 block text-sm font-medium text-ink-700">Email</label
-					>
-					<input
-						id="client-email"
-						type="email"
-						autocomplete="email"
-						bind:value={email}
-						class={inputClass}
-						class:border-cat-6-400={fieldErrors.email}
-						class:border-ink-300={!fieldErrors.email}
-						placeholder="you@example.com"
-					/>
-					{#if fieldErrors.email}
-						<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.email}</p>
+				<div class="grid gap-4 sm:grid-cols-2">
+					{#if isRegister}
+						<div>
+							<label for="client-name" class="mb-1 block text-sm font-medium text-ink-700"
+								>Имя</label
+							>
+							<input
+								id="client-name"
+								type="text"
+								autocomplete="name"
+								bind:value={name}
+								class={inputClass}
+								class:border-cat-6-400={fieldErrors.name}
+								class:border-ink-300={!fieldErrors.name}
+								placeholder="Как к вам обращаться"
+							/>
+							{#if fieldErrors.name}
+								<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.name}</p>
+							{/if}
+						</div>
 					{/if}
-				</div>
-
-				{#if isRegister}
-					<div>
-						<label for="client-phone" class="mb-1 block text-sm font-medium text-ink-700">
-							Телефон <span class="text-ink-400">— желательно</span>
-						</label>
-						<input
-							id="client-phone"
-							type="tel"
-							autocomplete="tel"
-							bind:value={phone}
-							class={`${inputClass} border-ink-300`}
-							placeholder="+7 999 000-00-00"
-						/>
-					</div>
 
 					<div>
-						<label for="client-region" class="mb-1 block text-sm font-medium text-ink-700">
-							Регион <span class="text-ink-400">— желательно</span>
-						</label>
-						<input
-							id="client-region"
-							type="text"
-							autocomplete="address-level1"
-							bind:value={region}
-							class={inputClass}
-							class:border-cat-6-400={fieldErrors.region}
-							class:border-ink-300={!fieldErrors.region}
-							placeholder="Москва и МО"
-						/>
-						{#if fieldErrors.region}
-							<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.region}</p>
-						{/if}
-					</div>
-				{/if}
-
-				<div>
-					<label for="client-password" class="mb-1 block text-sm font-medium text-ink-700">
-						Пароль
-					</label>
-					<input
-						id="client-password"
-						type="password"
-						autocomplete={isRegister ? 'new-password' : 'current-password'}
-						bind:value={password}
-						class={inputClass}
-						class:border-cat-6-400={fieldErrors.password}
-						class:border-ink-300={!fieldErrors.password}
-						placeholder="••••••••"
-					/>
-					{#if fieldErrors.password}
-						<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.password}</p>
-					{/if}
-				</div>
-
-				{#if isRegister}
-					<div>
-						<label
-							for="client-password-confirm"
-							class="mb-1 block text-sm font-medium text-ink-700"
+						<label for="client-email" class="mb-1 block text-sm font-medium text-ink-700"
+							>Email</label
 						>
-							Повторите пароль
+						<input
+							id="client-email"
+							type="email"
+							autocomplete="email"
+							bind:value={email}
+							class={inputClass}
+							class:border-cat-6-400={fieldErrors.email}
+							class:border-ink-300={!fieldErrors.email}
+							placeholder="you@example.com"
+						/>
+						{#if fieldErrors.email}
+							<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.email}</p>
+						{/if}
+					</div>
+
+					{#if isRegister}
+						<div>
+							<label for="client-phone" class="mb-1 block text-sm font-medium text-ink-700">
+								Телефон <span class="text-ink-400">— желательно</span>
+							</label>
+							<input
+								id="client-phone"
+								type="tel"
+								autocomplete="tel"
+								bind:value={phone}
+								class={`${inputClass} border-ink-300`}
+								placeholder="+7 999 000-00-00"
+							/>
+						</div>
+
+						<div>
+							<label for="client-region" class="mb-1 block text-sm font-medium text-ink-700">
+								Регион <span class="text-ink-400">— желательно</span>
+							</label>
+							<input
+								id="client-region"
+								type="text"
+								autocomplete="address-level1"
+								bind:value={region}
+								class={inputClass}
+								class:border-cat-6-400={fieldErrors.region}
+								class:border-ink-300={!fieldErrors.region}
+								placeholder="Москва и МО"
+							/>
+							{#if fieldErrors.region}
+								<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.region}</p>
+							{/if}
+						</div>
+					{/if}
+
+					<div>
+						<label for="client-password" class="mb-1 block text-sm font-medium text-ink-700">
+							Пароль
 						</label>
 						<input
-							id="client-password-confirm"
+							id="client-password"
 							type="password"
-							autocomplete="new-password"
-							bind:value={passwordConfirmation}
+							autocomplete={isRegister ? 'new-password' : 'current-password'}
+							bind:value={password}
 							class={inputClass}
-							class:border-cat-6-400={fieldErrors.password_confirmation}
-							class:border-ink-300={!fieldErrors.password_confirmation}
+							class:border-cat-6-400={fieldErrors.password}
+							class:border-ink-300={!fieldErrors.password}
 							placeholder="••••••••"
 						/>
-						{#if fieldErrors.password_confirmation}
-							<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.password_confirmation}</p>
+						{#if fieldErrors.password}
+							<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.password}</p>
 						{/if}
 					</div>
-				{/if}
-			</div>
 
-			{#if SITE_KEY}
-				<div class="mt-4">
-					<SmartCaptcha
-						bind:this={captchaRef}
-						onverify={(token: string) => (captchaToken = token)}
-						onerror={() => (captchaToken = null)}
-					/>
+					{#if isRegister}
+						<div>
+							<label
+								for="client-password-confirm"
+								class="mb-1 block text-sm font-medium text-ink-700"
+							>
+								Повторите пароль
+							</label>
+							<input
+								id="client-password-confirm"
+								type="password"
+								autocomplete="new-password"
+								bind:value={passwordConfirmation}
+								class={inputClass}
+								class:border-cat-6-400={fieldErrors.password_confirmation}
+								class:border-ink-300={!fieldErrors.password_confirmation}
+								placeholder="••••••••"
+							/>
+							{#if fieldErrors.password_confirmation}
+								<p class="mt-1 text-xs text-cat-6-500">{fieldErrors.password_confirmation}</p>
+							{/if}
+						</div>
+					{/if}
 				</div>
-			{/if}
 
-			{#if submitError}
-				<div class="mt-4 rounded-xl bg-cat-6-50 px-4 py-3 text-sm text-cat-6-600">
-					{submitError}
-				</div>
-			{/if}
-
-			<button
-				data-metrika-goal="clientauthmodal_submit_click_1"
-				data-goal-label="Войти / Зарегистрироваться"
-				data-goal-action="submit_click"
-				type="submit"
-				disabled={isSubmitting}
-				class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-sm font-semibold text-on-dark transition hover:bg-ink-800 disabled:opacity-60"
-			>
-				{#if isSubmitting}
-					Отправляем…
-				{:else}
-					{isRegister ? 'Зарегистрироваться' : 'Войти'}
+				{#if SITE_KEY}
+					<div class="mt-4">
+						<SmartCaptcha
+							bind:this={captchaRef}
+							onverify={(token: string) => (captchaToken = token)}
+							onerror={() => (captchaToken = null)}
+						/>
+					</div>
 				{/if}
-			</button>
-		</form>
 
-		<p class="mt-5 text-center text-sm text-ink-500">
-			{isRegister ? 'Уже есть аккаунт?' : 'Ещё нет аккаунта?'}
-			<button
-				type="button"
-				onclick={switchMode}
-				class="ml-1 font-semibold text-link-600 underline-offset-4 transition hover:underline"
-			>
-				{isRegister ? 'Войти' : 'Зарегистрироваться'}
-			</button>
-		</p>
+				{#if submitError}
+					<div class="mt-4 rounded-xl bg-cat-6-50 px-4 py-3 text-sm text-cat-6-600">
+						{submitError}
+					</div>
+				{/if}
+
+				<button
+					data-metrika-goal="clientauthmodal_submit_click_1"
+					data-goal-label="Войти / Зарегистрироваться"
+					data-goal-action="submit_click"
+					type="submit"
+					disabled={isSubmitting}
+					class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-sm font-semibold text-on-dark transition hover:bg-ink-800 disabled:opacity-60"
+				>
+					{#if isSubmitting}
+						Отправляем…
+					{:else}
+						{isRegister ? 'Зарегистрироваться' : 'Войти'}
+					{/if}
+				</button>
+			</form>
+
+			<p class="mt-5 text-center text-sm text-ink-500">
+				{isRegister ? 'Уже есть аккаунт?' : 'Ещё нет аккаунта?'}
+				<button
+					type="button"
+					onclick={switchMode}
+					data-metrika-goal="client_auth_mode_open"
+					data-goal-action="open"
+					class="ml-1 font-semibold text-link-600 underline-offset-4 transition hover:underline"
+				>
+					{isRegister ? 'Войти' : 'Зарегистрироваться'}
+				</button>
+			</p>
+		{/if}
 	</div>
 </div>

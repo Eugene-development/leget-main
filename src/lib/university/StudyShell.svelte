@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
 	import { page } from '$app/state';
+	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import { afterNavigate, goto } from '$app/navigation';
 	import type { Course, Attempt } from './types';
@@ -141,11 +142,16 @@
 				data-goal-ignore="Закрыть меню университета"><Icon name="close" /></button
 			>
 			<nav aria-label="Разделы университета">
-				<a href={cabinetHref(page.data.client?.role)}
-					>{['client', 'student'].includes(page.data.client?.role || '')
-						? 'Кабинет клиента'
-						: 'Личный кабинет'}</a
-				>
+				{#if page.data.client?.role !== 'student'}<a href={cabinetHref(page.data.client?.role)}
+						>{['client', 'student'].includes(page.data.client?.role || '')
+							? 'Кабинет клиента'
+							: 'Личный кабинет'}</a
+					>{:else}<button
+						class="study-link"
+						onclick={() => clientAuthModal.open('register')}
+						data-metrika-goal="student_client_registration_open"
+						data-goal-action="open">Стать клиентом</button
+					>{/if}
 				<a href="/university/learn">Курсы</a><a href="/university/interviews">Интервью</a><a
 					href="/university/resources">Ресурсы</a
 				><a href="/university/student">Моё обучение</a><a href="/university">О Универе</a><a
@@ -189,11 +195,16 @@
 				data-goal-ignore="Открыть меню университета"><Icon name="nav" /></button
 			>
 			<nav class="study-topnav" aria-label="Университет">
-				<a href={cabinetHref(page.data.client?.role)}
-					>{['client', 'student'].includes(page.data.client?.role || '')
-						? 'Кабинет клиента'
-						: 'Личный кабинет'}</a
-				>
+				{#if page.data.client?.role !== 'student'}<a href={cabinetHref(page.data.client?.role)}
+						>{['client', 'student'].includes(page.data.client?.role || '')
+							? 'Кабинет клиента'
+							: 'Личный кабинет'}</a
+					>{:else}<button
+						class="study-link"
+						onclick={() => clientAuthModal.open('register')}
+						data-metrika-goal="student_client_registration_top_open"
+						data-goal-action="open">Стать клиентом</button
+					>{/if}
 				<a
 					href="/university/learn"
 					aria-current={page.url.pathname.startsWith('/university/learn') ? 'page' : undefined}

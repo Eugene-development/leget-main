@@ -38,6 +38,10 @@
 	<div class="relative">
 		<input
 			type="tel"
+			autocomplete="tel"
+			aria-required={required}
+			aria-invalid={Boolean(error)}
+			aria-describedby={error ? `${id}-error` : undefined}
 			{id}
 			placeholder="+7 (___) ___-__-__"
 			{value}
@@ -48,6 +52,8 @@
 		/>
 	</div>
 	{#if error}
-		<span class="mt-1 text-xs font-medium text-cat-6-400">{error}</span>
+		<span id={`${id}-error`} role="alert" class="mt-1 text-xs font-medium text-cat-6-400"
+			>{error}</span
+		>
 	{/if}
 </div>

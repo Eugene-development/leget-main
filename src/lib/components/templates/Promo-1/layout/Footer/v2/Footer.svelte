@@ -513,7 +513,29 @@
 									href="/about"
 									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
 								>
-									О компании
+									О проекте
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
+								</a>
+							</li>
+							<li>
+								<a
+									href="/guarantees"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
+									Гарантии
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
+								</a>
+							</li>
+							<li>
+								<a
+									href="/installment"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
+									Рассрочка
 									<span
 										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
 									></span>
@@ -595,6 +617,17 @@
 									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
 								>
 									Партнёрство
+									<span
+										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+									></span>
+								</a>
+							</li>
+							<li>
+								<a
+									href="/university"
+									class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+								>
+									Университет
 									<span
 										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
 									></span>

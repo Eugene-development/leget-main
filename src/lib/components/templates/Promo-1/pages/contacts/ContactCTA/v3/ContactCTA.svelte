@@ -59,7 +59,7 @@
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<div class={ct.section.container}>
-		<div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+		<div class="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
 			<div class="min-w-0 lg:col-span-5">
 				<EditableField
 					fieldKey="ContactCTA.title"
@@ -84,7 +84,7 @@
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('subtitle', v)}
-					class="mt-6 block"
+					class="mt-5 block"
 				>
 					{#snippet children(displayValue)}
 						<p class="p1-muted max-w-md text-base/7 break-words">
@@ -98,7 +98,7 @@
 				<a
 					href={phoneHref}
 					aria-label={`Позвонить по номеру ${phone}`}
-					class="contact-desk__action p1-line flex items-center justify-between gap-4 border-y py-8 sm:gap-8 sm:py-10"
+					class="contact-desk__action p1-line flex min-h-28 items-center justify-between gap-4 border-y py-6 sm:min-h-36 sm:gap-8 sm:py-8"
 				>
 					<span class="min-w-0">
 						<span class="p1-muted block text-sm">Позвонить</span>
@@ -128,7 +128,7 @@
 								href={displayValue}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="contact-desk__action p1-line p1-title flex items-center justify-between gap-6 border-b py-7 sm:py-8"
+								class="contact-desk__action p1-line p1-title flex min-h-28 items-center justify-between gap-6 border-b py-6 sm:min-h-36 sm:py-8"
 							>
 								<span class="text-lg break-words sm:text-xl">Написать в Telegram</span>
 								<span class="flex size-14 shrink-0 items-center justify-center sm:size-18"

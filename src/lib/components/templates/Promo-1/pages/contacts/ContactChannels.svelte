@@ -36,13 +36,9 @@
 
 <!-- Поверхность, радиусы, акцент и анимации — из общей темы страницы (./theme.ts). -->
 <section
-	class="{ct.section.shell} {ct.section.pad} {ct.surface.base}"
+	class="{ct.section.shell} {ct.section.channelsPad} {ct.surface.base}"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class={ct.accent.toplineOnLight}></div>
-	</div>
-
 	<div class={ct.section.container}>
 		<div use:revealOnScroll class="ct-reveal grid gap-6 lg:grid-cols-3 lg:gap-8">
 			<!-- Телефон -->
@@ -51,9 +47,9 @@
 					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-brand-600/8 transition duration-300 group-hover:scale-150"
 				></div>
 				<div class="relative">
-					<div class={ct.iconTile}>
+					<div class="{ct.iconTile} size-12!">
 						<svg
-							class="size-7"
+							class="size-6"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -133,9 +129,9 @@
 					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-brand-600/8 transition duration-300 group-hover:scale-150"
 				></div>
 				<div class="relative">
-					<div class={ct.iconTile}>
+					<div class="{ct.iconTile} size-12!">
 						<svg
-							class="size-7"
+							class="size-6"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -215,9 +211,9 @@
 					class="pointer-events-none absolute -top-6 -right-6 size-28 rounded-full bg-brand-600/8 transition duration-300 group-hover:scale-150"
 				></div>
 				<div class="relative">
-					<div class={ct.iconTile}>
+					<div class="{ct.iconTile} size-12!">
 						<svg
-							class="size-7"
+							class="size-6"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"

@@ -64,8 +64,13 @@ export function goalLocations(root, write = false) {
 			path === 'templates/Promo-1/layout/Header.svelte' || menuVersion
 				? 'templates/Promo-1/layout/Menu/index.svelte'
 				: path;
+		const bannerWrapper = path === 'templates/Promo-1/layout/Banner/index.svelte';
 		const direct = rows.filter(
-			(row) => row.source === canonical && (!menuVersion || row.article.endsWith('.' + menuVersion))
+			(row) =>
+				(bannerWrapper
+					? /^templates\/Promo-1\/layout\/Banner\/v[12]\/Banner\.svelte$/.test(row.source)
+					: row.source === canonical) &&
+				(!menuVersion || row.article.endsWith('.' + menuVersion))
 		);
 		return direct.length
 			? direct

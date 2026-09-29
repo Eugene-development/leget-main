@@ -48,9 +48,63 @@
 		]
 	},
 	{
+		"id": "client_role_activate",
+		"action": "submit_click",
+		"label": "Добавить роль Клиент",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthModal.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+		]
+	},
+	{
+		"id": "client_existing_account_open",
+		"action": "open",
+		"label": "Использовать существующий аккаунт",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthModal.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+		]
+	},
+	{
 		"id": "clientauthmodal_submit_click_1",
 		"action": "submit_click",
 		"label": "Войти / Зарегистрироваться",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthModal.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+		]
+	},
+	{
+		"id": "client_auth_mode_open",
+		"action": "open",
+		"label": "Зарегистрироваться",
 		"templates": ["Promo-1"],
 		"source": "ClientAuthModal.svelte",
 		"route": null,
@@ -664,6 +718,58 @@
 		"variant": "promo",
 		"serviceType": "promo",
 		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+	},
+	{
+		"id": "lead_catcher_close",
+		"action": "close",
+		"label": "Закрыть форму",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Banner/LeadCatcher.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
+		]
+	},
+	{
+		"id": "lead_catcher_success_close",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Banner/LeadCatcher.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
+		]
+	},
+	{
+		"id": "lead_catcher_submit",
+		"action": "submit_click",
+		"label": "Получить консультацию",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Banner/LeadCatcher.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
+		]
+	},
+	{
+		"id": "lead_catcher_preview_open",
+		"action": "open",
+		"label": "Предпросмотр",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/layout/Banner/index.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
+		]
 	},
 	{
 		"id": "layout_footer_v1_footer_reset_1",
@@ -1919,6 +2025,26 @@
 		"locations": []
 	},
 	{
+		"id": "university_enroll_confirm",
+		"action": "submit_click",
+		"label": "Стать студентом",
+		"templates": ["Promo-1"],
+		"source": "../university/Admission.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
+	},
+	{
+		"id": "university_existing_account_open",
+		"action": "open",
+		"label": "Использовать существующий аккаунт",
+		"templates": ["Promo-1"],
+		"source": "../university/Admission.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
+	},
+	{
 		"id": "university_registration_tab",
 		"action": "open",
 		"label": "Регистрация",
@@ -1931,7 +2057,7 @@
 	{
 		"id": "university_login_tab",
 		"action": "open",
-		"label": "Уже учусь",
+		"label": "Уже есть аккаунт",
 		"templates": ["Promo-1"],
 		"source": "../university/Admission.svelte",
 		"route": "/university",
@@ -1989,12 +2115,32 @@
 		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
 	},
 	{
+		"id": "student_client_registration_open",
+		"action": "open",
+		"label": "Стать клиентом",
+		"templates": ["Promo-1"],
+		"source": "../university/StudyShell.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
+	},
+	{
+		"id": "student_client_registration_top_open",
+		"action": "open",
+		"label": "Стать клиентом",
+		"templates": ["Promo-1"],
+		"source": "../university/StudyShell.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
+	},
+	{
 		"id": "admin_users_logout",
 		"action": "submit_click",
 		"label": "Выйти",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/clients/+page.svelte",
-		"route": null,
+		"route": "/admin/clients",
 		"mock": false,
 		"locations": []
 	},
@@ -2004,7 +2150,7 @@
 		"label": "Назначить куратора",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/clients/+page.svelte",
-		"route": null,
+		"route": "/admin/clients",
 		"mock": false,
 		"locations": []
 	},
@@ -2014,7 +2160,7 @@
 		"label": "Отмена",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/clients/+page.svelte",
-		"route": null,
+		"route": "/admin/clients",
 		"mock": false,
 		"locations": []
 	},
@@ -2024,7 +2170,7 @@
 		"label": "Найти",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/clients/+page.svelte",
-		"route": null,
+		"route": "/admin/clients",
 		"mock": false,
 		"locations": []
 	},
@@ -2034,7 +2180,7 @@
 		"label": "Назначить куратором",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/clients/+page.svelte",
-		"route": null,
+		"route": "/admin/clients",
 		"mock": false,
 		"locations": []
 	},
@@ -2044,7 +2190,7 @@
 		"label": "Подключить партнёра",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/partners/+page.svelte",
-		"route": null,
+		"route": "/admin/partners",
 		"mock": false,
 		"locations": []
 	},
@@ -2054,7 +2200,17 @@
 		"label": "Отклонить заявку",
 		"templates": ["Promo-1"],
 		"source": "../../routes/admin/partners/+page.svelte",
-		"route": null,
+		"route": "/admin/partners",
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "superadmin_student_enroll",
+		"action": "submit_click",
+		"label": "+page",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/study/+page.svelte",
+		"route": "/admin/study",
 		"mock": false,
 		"locations": []
 	},
@@ -2064,7 +2220,7 @@
 		"label": "Создать аккаунт",
 		"templates": ["Promo-1"],
 		"source": "../../routes/partner/register/+page.svelte",
-		"route": null,
+		"route": "/partner/register",
 		"mock": false,
 		"locations": []
 	},
@@ -2074,7 +2230,7 @@
 		"label": "Уже есть аккаунт",
 		"templates": ["Promo-1"],
 		"source": "../../routes/partner/register/+page.svelte",
-		"route": null,
+		"route": "/partner/register",
 		"mock": false,
 		"locations": []
 	},
@@ -2084,7 +2240,7 @@
 		"label": "+page",
 		"templates": ["Promo-1"],
 		"source": "../../routes/partner/register/+page.svelte",
-		"route": null,
+		"route": "/partner/register",
 		"mock": false,
 		"locations": []
 	},

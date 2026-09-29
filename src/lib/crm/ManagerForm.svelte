@@ -4,6 +4,8 @@
 	let mode = $state('new');
 	let busy = $state(false);
 	let error = $state('');
+	let needsConfirmation = $state(false);
+	let confirmed = $state(false);
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
 		if (busy) return;
@@ -14,6 +16,8 @@
 			await onSave(value);
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Не удалось назначить менеджера.';
+			needsConfirmation =
+				(e as { code?: string })?.code === 'role_replacement_confirmation_required';
 		} finally {
 			busy = false;
 		}
@@ -22,14 +26,22 @@
 
 <form onsubmit={submit} class="crm-form ym-hide-content" aria-busy={busy}>
 	<p class="muted">
-		Доступ будет выдан только к выбранному сайту. Клиентские аккаунты не преобразуются в рабочие.
+		Доступ будет выдан только к выбранному сайту. Студент сохраняет обучение. Замена роли Клиент у
+		студента требует отдельного подтверждения.
 	</p>
 	<fieldset disabled={busy} class="crm-fields">
 		<legend class="sr-only">Назначение менеджера</legend>
 		<label
-			><span>Аккаунт менеджера</span><select name="mode" bind:value={mode}
+			><span>Аккаунт менеджера</span><select
+				name="mode"
+				bind:value={mode}
+				onchange={() => {
+					needsConfirmation = false;
+					confirmed = false;
+					error = '';
+				}}
 				><option value="new">Создать рабочий аккаунт</option><option value="existing"
-					>Назначить существующего менеджера</option
+					>Назначить менеджера или студента</option
 				></select
 			></label
 		>
@@ -37,6 +49,10 @@
 			><span>Рабочий email</span><input
 				type="email"
 				name="email"
+				oninput={() => {
+					needsConfirmation = false;
+					confirmed = false;
+				}}
 				autocomplete="off"
 				required
 				maxlength="255"
@@ -77,11 +93,20 @@
 			Передайте сотруднику email и пароль лично. Для входа он использует кнопку «Войти» на сайте,
 			затем открывает CRM.
 		</p>{/if}
+	{#if needsConfirmation}<label class="wide"
+			><input
+				type="checkbox"
+				name="confirm_client_replacement"
+				value="1"
+				bind:checked={confirmed}
+				required
+			/> Подтверждаю замену роли Клиент на Менеджер у выбранного студента. Учебный доступ сохранится.</label
+		>{/if}
 	{#if error}<p role="alert" class="crm-error">{error}</p>{/if}
 	<button
 		type="submit"
 		class="primary"
-		disabled={busy}
+		disabled={busy || (needsConfirmation && !confirmed)}
 		data-metrika-goal="crm_manager_assign"
 		data-goal-action="submit_click">{busy ? 'Назначаем…' : 'Назначить менеджера'}</button
 	>

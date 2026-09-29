@@ -5,6 +5,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { ct } from '../../theme';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import HeroWave from '../../../_shared/HeroWave.svelte';
 	import '../../../../theme.css';
 	import '../../theme.css';
 
@@ -102,4 +103,5 @@
 			</EditableField>
 		</div>
 	</div>
+	<HeroWave fallback="var(--ds-light-surface)" />
 </section>

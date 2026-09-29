@@ -32,7 +32,7 @@ export const POST: RequestHandler = async ({ params, request, cookies, url, getC
 	if (!['register', 'login'].includes(path) && !token)
 		return json({ message: 'Войдите в университет.' }, { status: 401 });
 	try {
-		const response = await authApi(path === 'login' ? '/client/login' : `/university/${path}`, {
+		const response = await authApi(`/university/${path}`, {
 			method: 'POST',
 			headers: {
 				...(token ? { Authorization: `Bearer ${token}` } : {}),

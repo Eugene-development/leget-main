@@ -47,6 +47,7 @@ export const POST: RequestHandler = async ({ request, cookies, url, getClientAdd
 				{
 					message:
 						typeof result.message === 'string' ? result.message : 'Не удалось зарегистрироваться.',
+					code: result.code ?? null,
 					errors: result.errors ?? null
 				},
 				{ status: response.status >= 400 ? response.status : 422 }

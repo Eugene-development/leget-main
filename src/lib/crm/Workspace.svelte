@@ -583,6 +583,8 @@
 					: canManage
 						? 'Админ сайта'
 						: 'Менеджер'}</span
+			><a href={data.context.role === 'superadmin' ? '/admin/study' : '/university/auth'}
+				>Обучение</a
 			><a href="/">Вернуться на сайт</a>
 		</div>
 	</aside>

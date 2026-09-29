@@ -132,9 +132,22 @@
 						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary"
 						>Универ</a
 					>
-					<a href="/admin/partners" class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary">Партнёры</a>
-                    <a href="/admin/crm/members" class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary">Менеджеры сайтов</a>
-                    <a
+					<a
+						href="/admin/study"
+						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary"
+						>Моё обучение</a
+					>
+					<a
+						href="/admin/partners"
+						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary"
+						>Партнёры</a
+					>
+					<a
+						href="/admin/crm/members"
+						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary"
+						>Менеджеры сайтов</a
+					>
+					<a
 						href="/admin/clients"
 						class="rounded-xl border border-border-medium bg-white px-5 py-3 text-xs font-bold tracking-wider text-text-primary uppercase transition hover:bg-surface"
 					>

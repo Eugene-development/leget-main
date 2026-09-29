@@ -26,7 +26,9 @@ export const ct = {
 	section: {
 		shell: 'relative isolate overflow-hidden',
 		pad: 'py-20 sm:py-24 lg:py-28',
-		heroPad: 'flex min-h-96 items-center py-14 sm:min-h-104 sm:py-16 lg:min-h-112 lg:py-20',
+		channelsPad: 'pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28',
+		heroPad:
+			'flex min-h-96 items-center pt-14 pb-24 sm:min-h-104 sm:pt-16 sm:pb-28 lg:min-h-112 lg:pt-20 lg:pb-36',
 		container: 'relative mx-auto w-full max-w-7xl px-6 lg:px-8',
 		containerMid: 'relative mx-auto w-full max-w-5xl px-6 lg:px-8',
 		containerText: 'relative mx-auto w-full max-w-4xl px-6 lg:px-8',

@@ -40,7 +40,7 @@ for (const file of [
 	...files(join(base, 'templates')),
 	...files(join(root, 'src/lib/university')),
 	...shared.map((n) => join(base, n + '.svelte')),
-	...['partner/register', 'admin/clients', 'admin/partners'].map((route) =>
+	...['partner/register', 'admin/clients', 'admin/partners', 'admin/study'].map((route) =>
 		join(root, 'src/routes', route, '+page.svelte')
 	),
 	join(root, 'src/lib/crm/ManagerForm.svelte')
@@ -136,11 +136,12 @@ for (const file of [
 				? 'university'
 				: path.match(/\/pages\/([^/]+)/)?.[1];
 		const route =
-			pageRoute || !slug || slug === '_shared' || path.includes('/services/_shared/')
+			pageRoute ||
+			(!slug || slug === '_shared' || path.includes('/services/_shared/')
 				? null
 				: slug === 'home'
 					? '/'
-					: `/${slug}`;
+					: `/${slug}`);
 		const mock = false;
 		const record = { id, action, label, templates, source: path, route, mock };
 		if (attr('data-goal-variant')) {
