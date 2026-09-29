@@ -59,11 +59,20 @@
 					</div>
 				</div>
 
-				<div class="flex items-center gap-3">
+				<div class="flex flex-wrap items-center gap-3">
 					<a
-						href="/crm"
+						href="/partner/register"
 						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700"
-						>CRM / доступ менеджера</a
+						>Стать партнёром</a
+					>
+					<a
+						href={profile.roles?.includes('student') || profile.role === 'student'
+							? '/university/student'
+							: '/university/auth?mode=login'}
+						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700"
+						>{profile.roles?.includes('student') || profile.role === 'student'
+							? 'Кабинет студента'
+							: 'Стать студентом'}</a
 					>
 					<a
 						href="/"
@@ -73,6 +82,8 @@
 					</a>
 					<form method="POST" action="?/logout" use:enhance>
 						<button
+							data-metrika-goal="cabinet_logout"
+							data-goal-action="submit_click"
 							type="submit"
 							class="rounded-xl bg-ink-950 px-5 py-3 text-sm font-semibold text-on-dark transition hover:bg-ink-800"
 						>
@@ -122,7 +133,11 @@
 					</div>
 					<div class="grid gap-1 px-7 py-4 sm:grid-cols-3 sm:gap-4">
 						<dt class="text-sm text-ink-500">Роль</dt>
-						<dd class="text-sm text-ink-950 sm:col-span-2">Клиент</dd>
+						<dd class="text-sm text-ink-950 sm:col-span-2">
+							{profile.roles?.includes('student') || profile.role === 'student'
+								? 'Клиент, Студент'
+								: 'Клиент'}
+						</dd>
 					</div>
 					<div class="grid gap-1 px-7 py-4 sm:grid-cols-3 sm:gap-4">
 						<dt class="text-sm text-ink-500">Регистрация</dt>

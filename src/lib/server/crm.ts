@@ -47,7 +47,7 @@ export async function proxyCrm(event: RequestEvent): Promise<Response> {
 	try {
 		if (path.startsWith('intake/')) {
 			const action = path.slice(7);
-			if (request.method !== 'POST' || !['offline', 'apply'].includes(action)) error(404);
+			if (request.method !== 'POST' || action !== 'offline') error(404);
 			const form = await request.formData();
 			const site = String(form.get('license_id') || '');
 			if (!/^[A-Z0-9]{26}$/.test(site)) error(422, 'Выберите сайт.');

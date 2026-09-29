@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { toast } from '$lib/stores/toast.svelte';
 	let leaving = $state(false);
 	let logoutProblem = $state('');
 	async function logout() {
@@ -31,14 +32,19 @@
 				></a
 			>
 			<nav aria-label="Университет">
-				<a href="/university#university-program">Программа</a><a href="/university/student"
-					>Кабинет студента</a
+				<a href="/university#university-program">Программа</a><a
+					href={page.data.client ? '/university/student' : '/university/auth?mode=login'}
+					onclick={() => {
+						if (!page.data.client) toast.info('Чтобы открыть кабинет студента, войдите в систему.');
+					}}
+					data-goal-ignore="Навигация в кабинет студента с подсказкой о входе">Кабинет студента</a
 				>
 				{#if page.data.client}<button
 						disabled={leaving}
 						onclick={logout}
 						data-goal-ignore="Выход из учебной сессии">{leaving ? 'Выходим…' : 'Выйти'}</button
 					>{/if}
+				<a class="academy-site-exit" href="/" data-sveltekit-reload>Вернуться на сайт</a>
 			</nav>
 		</header>
 		{#if logoutProblem}<p class="academy-notice" role="alert">{logoutProblem}</p>{/if}

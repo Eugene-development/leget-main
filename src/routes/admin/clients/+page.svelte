@@ -1,7 +1,17 @@
 <script>
 	import { enhance } from '$app/forms';
 
-	let { data } = $props();
+	let { data, form } = $props();
+	let selected = $state(null);
+	let assigning = $state(false);
+	const roleLabels = {
+		client: 'Клиент',
+		student: 'Студент',
+		admin: 'Админ сайта',
+		manager: 'Менеджер',
+		partner: 'Партнёр',
+		curator: 'Куратор'
+	};
 
 	function formatDate(value) {
 		if (!value) return '—';
@@ -22,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>Мои клиенты — LEGET Admin</title>
+	<title>Пользователи и кураторы — LEGET Admin</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
@@ -35,14 +45,19 @@
 				<p class="text-[10px] font-bold tracking-[0.22em] text-secondary uppercase">
 					Администрирование
 				</p>
-				<h1 class="mt-2 text-4xl text-text-primary sm:text-5xl">Мои клиенты</h1>
+				<h1 class="mt-2 text-4xl text-text-primary sm:text-5xl">Пользователи и кураторы</h1>
 				<p class="mt-2 max-w-2xl text-sm text-text-secondary">
-					Регистрации в личном кабинете. Администраторы платформы в список не попадают — роль
-					определяется тем же allowlist, что и доступ к этой панели.
+					Аккаунты пользователей и их роли. Выберите клиента, чтобы назначить его куратором.
+					Суперадминистраторы в этот список не входят.
 				</p>
 			</div>
 
-			<div class="flex items-center gap-3">
+			<div class="flex flex-wrap items-center gap-3">
+				<a
+					href="/admin/partners"
+					class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary"
+					>Партнёры</a
+				>
 				<a
 					href="/admin/crm"
 					class="rounded-xl border border-border-medium px-5 py-3 text-sm text-text-primary">CRM</a
@@ -56,6 +71,8 @@
 				<form method="POST" action="?/logout" use:enhance>
 					<button
 						type="submit"
+						data-metrika-goal="admin_users_logout"
+						data-goal-action="submit_click"
 						class="rounded-xl border border-border-medium bg-white px-5 py-3 text-xs font-bold tracking-wider text-text-primary uppercase transition hover:bg-surface"
 					>
 						Выйти
@@ -64,6 +81,65 @@
 			</div>
 		</header>
 
+		{#if form?.roleError}<p role="alert" class="mb-6 border border-border-medium p-4">
+				{form.roleError}
+			</p>{/if}
+		{#if form?.roleSuccess}<p role="status" class="mb-6 border border-border-medium p-4">
+				{form.roleSuccess}
+			</p>{/if}
+		{#if selected}
+			<section class="ym-hide-content mb-8 border-y border-border-medium py-6">
+				<h2 class="text-2xl">Назначить куратора</h2>
+				<p class="mt-3">{selected.name} · {selected.email}</p>
+				<p class="mt-2 text-sm text-text-secondary">
+					Пользователь получит доступ к сопровождению клиентов и промокодов. Основная роль изменится
+					на «Куратор».
+				</p>
+				<form
+					method="POST"
+					action="?/assignCurator"
+					use:enhance={() => {
+						assigning = true;
+						return async ({ result, update }) => {
+							try {
+								await update();
+								if (result.type === 'success') selected = null;
+							} finally {
+								assigning = false;
+							}
+						};
+					}}
+					class="mt-4 space-y-4"
+				>
+					<input type="hidden" name="user_id" value={selected.id} />
+					<label class="block"
+						>Основание назначения<textarea
+							name="reason"
+							required
+							minlength="3"
+							maxlength="2000"
+							class="mt-2 block w-full rounded-lg border border-border-medium bg-surface-raised p-3"
+						></textarea></label
+					>
+					<div class="flex flex-wrap gap-3">
+						<button
+							class="rounded-lg bg-primary px-5 py-3 text-on-dark"
+							disabled={assigning}
+							data-metrika-goal="admin_curator_assign"
+							data-goal-action="submit_click"
+							>{assigning ? 'Назначаем…' : 'Назначить куратора'}</button
+						>
+						<button
+							type="button"
+							onclick={() => (selected = null)}
+							class="rounded-lg border border-border-medium px-5 py-3"
+							data-metrika-goal="admin_curator_cancel"
+							data-goal-action="close">Отмена</button
+						>
+					</div>
+				</form>
+			</section>
+		{/if}
 		{#if data.summary}
 			<section class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3" aria-label="Сводка по клиентам">
 				<div class="rounded-2xl border border-border-light bg-surface-card p-5 shadow-card">
@@ -105,6 +181,8 @@
 			/>
 			<button
 				type="submit"
+				data-metrika-goal="admin_users_search"
+				data-goal-action="submit_click"
 				class="h-11 rounded-xl bg-primary px-5 text-xs font-bold tracking-wider text-white uppercase transition hover:bg-primary-light focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
 			>
 				Найти
@@ -137,6 +215,7 @@
 								<th class="px-5 py-4 text-[9px] tracking-wider uppercase">Телефон</th>
 								<th class="px-5 py-4 text-[9px] tracking-wider uppercase">Регион</th>
 								<th class="px-5 py-4 text-[9px] tracking-wider uppercase">Подтверждение</th>
+								<th class="px-5 py-4 text-[9px] tracking-wider uppercase">Роли и назначение</th>
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-border-light">
@@ -162,10 +241,24 @@
 											{client.email_verified ? 'Подтверждён' : 'Ожидает'}
 										</span>
 									</td>
+									<td class="px-5 py-4">
+										<p>
+											{(client.roles || [client.role])
+												.map((role) => roleLabels[role] || role)
+												.join(', ')}
+										</p>
+										{#if ['client', 'student'].includes(client.role)}<button
+												type="button"
+												class="mt-3 text-link-600 underline"
+												onclick={() => (selected = client)}
+												data-metrika-goal="admin_curator_form_open"
+												data-goal-action="open">Назначить куратором</button
+											>{/if}
+									</td>
 								</tr>
 							{:else}
 								<tr>
-									<td colspan="6" class="px-5 py-12 text-center text-text-secondary">
+									<td colspan="7" class="px-5 py-12 text-center text-text-secondary">
 										{data.search ? 'По запросу никого не нашлось.' : 'Регистраций пока нет.'}
 									</td>
 								</tr>

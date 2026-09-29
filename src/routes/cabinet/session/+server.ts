@@ -10,7 +10,9 @@ import type { RequestHandler } from './$types';
  *
  * Админский адрес получает 403 от leget-auth: роли исключают друг друга.
  */
-export const POST: RequestHandler = async ({ request, cookies, getClientAddress }) => {
+export const POST: RequestHandler = async ({ request, cookies, url, getClientAddress }) => {
+	if (request.headers.get('origin') !== url.origin)
+		return json({ message: 'Недопустимый источник запроса.' }, { status: 403 });
 	let body: Record<string, unknown>;
 	try {
 		body = (await request.json()) as Record<string, unknown>;

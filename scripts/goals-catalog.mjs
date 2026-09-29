@@ -39,7 +39,11 @@ function files(dir) {
 for (const file of [
 	...files(join(base, 'templates')),
 	...files(join(root, 'src/lib/university')),
-	...shared.map((n) => join(base, n + '.svelte'))
+	...shared.map((n) => join(base, n + '.svelte')),
+	...['partner/register', 'admin/clients', 'admin/partners'].map((route) =>
+		join(root, 'src/routes', route, '+page.svelte')
+	),
+	join(root, 'src/lib/crm/ManagerForm.svelte')
 ].sort()) {
 	const source = readFileSync(file, 'utf8');
 	const path = relative(base, file);
@@ -123,11 +127,16 @@ for (const file of [
 			: path.startsWith('LoginModal')
 				? ['Promo-1', 'Promo-2', 'Promo-3', 'Test']
 				: ['Promo-1'];
-		const slug = path.startsWith('../university/')
-			? 'university'
-			: path.match(/\/pages\/([^/]+)/)?.[1];
+		const pageRoute = file.includes('/src/routes/')
+			? '/' + relative(join(root, 'src/routes'), file).replace('/+page.svelte', '')
+			: null;
+		const slug = path.startsWith('../crm/')
+			? 'crm'
+			: path.startsWith('../university/')
+				? 'university'
+				: path.match(/\/pages\/([^/]+)/)?.[1];
 		const route =
-			!slug || slug === '_shared' || path.includes('/services/_shared/')
+			pageRoute || !slug || slug === '_shared' || path.includes('/services/_shared/')
 				? null
 				: slug === 'home'
 					? '/'

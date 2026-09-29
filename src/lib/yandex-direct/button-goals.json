@@ -1397,10 +1397,7 @@
 		"source": "templates/Promo-1/pages/partnership/PartnershipDrawer.svelte",
 		"route": "/partnership",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
-		]
+		"locations": []
 	},
 	{
 		"id": "pages_partnership_partnershipdrawer_status_back",
@@ -1410,10 +1407,7 @@
 		"source": "templates/Promo-1/pages/partnership/PartnershipDrawer.svelte",
 		"route": "/partnership",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
-		]
+		"locations": []
 	},
 	{
 		"id": "pages_partnership_partnershipdrawer_submit_click_1",
@@ -1423,10 +1417,7 @@
 		"source": "templates/Promo-1/pages/partnership/PartnershipDrawer.svelte",
 		"route": "/partnership",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
-		]
+		"locations": []
 	},
 	{
 		"id": "pages_plitka_pliitkacta_open_1",
@@ -1918,6 +1909,16 @@
 		"locations": []
 	},
 	{
+		"id": "crm_manager_assign",
+		"action": "submit_click",
+		"label": "Назначить менеджера",
+		"templates": ["Promo-1"],
+		"source": "../crm/ManagerForm.svelte",
+		"route": "/crm",
+		"mock": false,
+		"locations": []
+	},
+	{
 		"id": "university_registration_tab",
 		"action": "open",
 		"label": "Регистрация",
@@ -1948,6 +1949,26 @@
 		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
 	},
 	{
+		"id": "university_assessment_submit",
+		"action": "submit_click",
+		"label": "Отправить учебную работу",
+		"templates": ["Promo-1"],
+		"source": "../university/Assessment.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
+	},
+	{
+		"id": "university_assessment_retry",
+		"action": "reset",
+		"label": "Пройти ещё раз",
+		"templates": ["Promo-1"],
+		"source": "../university/Assessment.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
+	},
+	{
 		"id": "university_register_open",
 		"action": "open",
 		"label": "Стать студентом",
@@ -1958,24 +1979,114 @@
 		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
 	},
 	{
-		"id": "university_assessment_submit",
+		"id": "university_certificate_verify_submit",
 		"action": "submit_click",
-		"label": "Отправить учебную работу",
+		"label": "Проверить сертификат дизайнера",
 		"templates": ["Promo-1"],
-		"source": "../university/Classroom.svelte",
+		"source": "../university/CertificateVerifier.svelte",
 		"route": "/university",
 		"mock": false,
-		"locations": [{ "template": "Promo-1", "page": "/university/learn/[slug]", "article": "" }]
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
 	},
 	{
-		"id": "university_assessment_retry",
-		"action": "reset",
-		"label": "Пройти ещё раз",
+		"id": "admin_users_logout",
+		"action": "submit_click",
+		"label": "Выйти",
 		"templates": ["Promo-1"],
-		"source": "../university/Classroom.svelte",
-		"route": "/university",
+		"source": "../../routes/admin/clients/+page.svelte",
+		"route": null,
 		"mock": false,
-		"locations": [{ "template": "Promo-1", "page": "/university/learn/[slug]", "article": "" }]
+		"locations": []
+	},
+	{
+		"id": "admin_curator_assign",
+		"action": "submit_click",
+		"label": "Назначить куратора",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/clients/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "admin_curator_cancel",
+		"action": "close",
+		"label": "Отмена",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/clients/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "admin_users_search",
+		"action": "submit_click",
+		"label": "Найти",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/clients/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "admin_curator_form_open",
+		"action": "open",
+		"label": "Назначить куратором",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/clients/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "admin_partner_approve",
+		"action": "submit_click",
+		"label": "Подключить партнёра",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/partners/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "admin_partner_reject",
+		"action": "submit_click",
+		"label": "Отклонить заявку",
+		"templates": ["Promo-1"],
+		"source": "../../routes/admin/partners/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "partner_registration_open",
+		"action": "open",
+		"label": "Создать аккаунт",
+		"templates": ["Promo-1"],
+		"source": "../../routes/partner/register/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "partner_login_open",
+		"action": "open",
+		"label": "Уже есть аккаунт",
+		"templates": ["Promo-1"],
+		"source": "../../routes/partner/register/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
+	},
+	{
+		"id": "partner_application_submit",
+		"action": "submit_click",
+		"label": "+page",
+		"templates": ["Promo-1"],
+		"source": "../../routes/partner/register/+page.svelte",
+		"route": null,
+		"mock": false,
+		"locations": []
 	},
 	{
 		"id": "partnership_drawer_close",
@@ -1985,10 +2096,7 @@
 		"source": "SideDrawer.svelte",
 		"route": "/partnership",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
-		]
+		"locations": []
 	},
 	{
 		"id": "partnership_drawer_backdrop_close",
@@ -1998,10 +2106,7 @@
 		"source": "SideDrawer.svelte",
 		"route": "/partnership",
 		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.1.1" },
-			{ "template": "Promo-1", "page": "/partnership", "article": "1.6.6.1" }
-		]
+		"locations": []
 	},
 	{
 		"id": "guarantees_warranty_drawer_close",

@@ -20,6 +20,12 @@
 		isEditable?: boolean;
 	} = $props();
 	const isLight = $derived(isLightBlock(data, 'light'));
+	function fieldValue(key: keyof typeof defaults) {
+		const value = data[key] ?? defaults[key];
+		if (key === 'brandName' && value === 'Универ') return defaults.brandName;
+		if (key === 'title' && value === 'Хороший дом начинается с понимания.') return defaults.title;
+		return String(value);
+	}
 	// Measure the actual space occupied by the promo strip and site navigation.
 	function fitFirstScreen(node: HTMLElement) {
 		const measure = () => {
@@ -49,7 +55,7 @@
 	<EditableField
 		fieldKey="UniversityHero.{key}"
 		{label}
-		value={String(data[key] ?? defaults[key])}
+		value={fieldValue(key)}
 		{isEditable}
 		inline
 		onSave={(v) => saveField(key, v)}
@@ -89,6 +95,7 @@
 							>
 						</a>
 						<a class="uni-secondary-link" href="/university/student">Моё обучение</a>
+						<a class="uni-secondary-link" href="#university-verification">Проверка дизайнера</a>
 					</div>
 				</div>
 			</div>

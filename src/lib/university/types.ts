@@ -4,12 +4,16 @@ export interface Question {
 	options: string[];
 }
 export interface Lesson {
+	practice?: string | null;
+	video_id?: string | null;
 	id: string;
 	title: string;
 	sections?: { title: string; text: string }[];
 	questions?: Question[];
 }
 export interface Course {
+	status?: 'draft' | 'published' | 'archived';
+	cover_id?: string | null;
 	slug: string;
 	discipline: string;
 	title: string;
@@ -48,4 +52,37 @@ export interface AssessmentResult {
 	passed: boolean;
 	certificate_id: string | null;
 	feedback: { id: string; correct: boolean; explanation: string }[];
+}
+
+export interface Chapter {
+	start: number;
+	title: string;
+}
+export interface TranscriptLine {
+	start: number;
+	speaker: string;
+	text: string;
+}
+export interface Interview {
+	slug: string;
+	title: string;
+	speaker: string;
+	description: string;
+	intro?: string;
+	cover_id?: string | null;
+	video_id?: string | null;
+	chapters?: Chapter[];
+	transcript?: TranscriptLine[];
+}
+export interface Resource {
+	slug: string;
+	category: 'articles' | 'media' | 'books' | 'tools';
+	title: string;
+	description: string;
+	author?: string;
+	cover_id?: string | null;
+	file_id?: string | null;
+	url?: string | null;
+	course_slug?: string | null;
+	lesson_id?: string | null;
 }

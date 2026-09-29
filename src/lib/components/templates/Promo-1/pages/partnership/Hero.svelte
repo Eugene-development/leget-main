@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.1.1 — см. docs/architecture/component-articles-map.md
-	import PartnershipDrawer from './PartnershipDrawer.svelte';
+	import { goto } from '$app/navigation';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -26,7 +26,6 @@
 		data = updated;
 	}
 
-	let partnershipOpen = $state(false);
 	const buttonText = $derived(
 		!data?.buttonText ||
 			['Обсудить сотрудничество', 'Узнать условия'].includes(String(data.buttonText))
@@ -167,10 +166,9 @@
 						data-goal-label="Стать партнёром (текст кнопки настраивается)"
 						data-goal-action="open"
 						type="button"
-						aria-haspopup="dialog"
 						aria-label={buttonText}
 						onclick={() => {
-							partnershipOpen = true;
+							if (!isEditable) goto('/partner/register');
 						}}
 						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-surface-raised px-7 py-3.5 text-sm font-semibold text-link-700 shadow-[0_20px_50px_-20px] shadow-link-950/65 transition duration-300 hover:bg-link-50 hover:shadow-[0_26px_60px_-18px] hover:shadow-link-950/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark motion-safe:hover:-translate-y-0.5"
 					>
@@ -364,8 +362,6 @@
 		</svg>
 	</div>
 </section>
-
-<PartnershipDrawer bind:open={partnershipOpen} />
 
 <style>
 	.ph-wave-front {

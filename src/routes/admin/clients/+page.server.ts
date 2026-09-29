@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { adminApi, readApiJson } from '$lib/server/admin-api';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -74,6 +74,28 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 };
 
 export const actions: Actions = {
+	assignCurator: async ({ request, cookies }) => {
+		const token = cookies.get(COOKIE_NAME);
+		if (!token) redirect(303, '/admin');
+		const body = await request.formData();
+		const id = String(body.get('user_id') || '');
+		if (!/^[1-9][0-9]*$/.test(id)) return fail(422, { roleError: 'Выберите пользователя.' });
+		try {
+			const response = await adminApi(`/admin/clients/${id}/curator`, {
+				method: 'POST',
+				headers: { Authorization: `Bearer ${token}` },
+				body: JSON.stringify({ reason: String(body.get('reason') || '').trim() })
+			});
+			const result = await readApiJson(response);
+			if (!response.ok)
+				return fail(response.status, {
+					roleError: String(result.message || 'Не удалось назначить куратора.')
+				});
+			return { roleSuccess: 'Куратор назначен. Доступен кабинет /curator.' };
+		} catch {
+			return fail(503, { roleError: 'Сервис недоступен. Повторите назначение.' });
+		}
+	},
 	logout: async ({ cookies }) => {
 		cookies.delete(COOKIE_NAME, { path: '/admin' });
 		redirect(303, '/admin');

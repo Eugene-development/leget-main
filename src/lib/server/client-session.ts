@@ -30,6 +30,7 @@ export interface ClientDisplay {
 }
 
 export interface ClientProfile {
+	roles?: string[];
 	id: number;
 	name: string;
 	email: string;

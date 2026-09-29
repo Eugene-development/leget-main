@@ -8,7 +8,9 @@ import type { RequestHandler } from './$types';
  * Регистрация клиента. Успешная регистрация сразу открывает сессию — тем же
  * httpOnly-cookie, что и вход (см. client-session.ts).
  */
-export const POST: RequestHandler = async ({ request, cookies, getClientAddress }) => {
+export const POST: RequestHandler = async ({ request, cookies, url, getClientAddress }) => {
+	if (request.headers.get('origin') !== url.origin)
+		return json({ message: 'Недопустимый источник запроса.' }, { status: 403 });
 	let body: Record<string, unknown>;
 	try {
 		body = (await request.json()) as Record<string, unknown>;

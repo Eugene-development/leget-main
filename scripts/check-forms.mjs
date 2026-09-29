@@ -32,7 +32,10 @@ function walk(node, visitor) {
 }
 const errors = [];
 let count = 0;
-for (const file of files(components).filter((file) => file.endsWith('.svelte'))) {
+for (const file of [
+	...files(components).filter((file) => file.endsWith('.svelte')),
+	resolve(root, 'src/routes/partner/register/+page.svelte')
+]) {
 	const source = readFileSync(file, 'utf8');
 	const path = relative(components, file);
 	const ast = parse(source, { modern: true });

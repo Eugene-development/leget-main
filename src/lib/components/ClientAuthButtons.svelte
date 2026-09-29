@@ -29,6 +29,7 @@
 	import IconHint from '$lib/components/IconHint.svelte';
 
 	const account = createClientAccount();
+	let { compact = false }: { compact?: boolean } = $props();
 
 	/**
 	 * `/cabinet` уводит гостя редиректом с `?auth=client-login` — по этой метке
@@ -43,13 +44,13 @@
 	});
 
 	const iconClass =
-		'group relative flex cursor-pointer items-center justify-center rounded-xl bg-linear-to-r from-ink-100/20 to-ink-50/80 p-3 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200 disabled:cursor-default disabled:opacity-60';
+		'group relative flex cursor-pointer items-center justify-center bg-linear-to-r from-ink-100/20 to-ink-50/80 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200 disabled:cursor-default disabled:opacity-60';
 	const iconGlyphClass =
 		'size-5 text-ink-500 transition-all duration-300 group-hover:scale-110 group-hover:text-link-500';
 </script>
 
 {#if account.client}
-	<a href={account.cabinet} class={iconClass}>
+	<a href={account.cabinet} class="{iconClass} {compact ? 'size-10 rounded-lg' : 'rounded-xl p-3'}">
 		<span class="sr-only">Личный кабинет</span>
 		<IconHint text="Кабинет — {account.client.email}" />
 		<svg
@@ -66,7 +67,12 @@
 			/>
 		</svg>
 	</a>
-	<button type="button" onclick={account.logout} disabled={account.isLoggingOut} class={iconClass}>
+	<button
+		type="button"
+		onclick={account.logout}
+		disabled={account.isLoggingOut}
+		class="{iconClass} {compact ? 'size-10 rounded-lg' : 'rounded-xl p-3'}"
+	>
 		<span class="sr-only">Выйти</span>
 		<IconHint text="Выйти" align="right" />
 		<svg
@@ -89,7 +95,7 @@
 		data-goal-action="open"
 		type="button"
 		onclick={account.openLogin}
-		class={iconClass}
+		class="{iconClass} {compact ? 'size-10 rounded-lg' : 'rounded-xl p-3'}"
 	>
 		<span class="sr-only">Войти</span>
 		<IconHint text="Войти" />
@@ -112,7 +118,7 @@
 		data-goal-action="open"
 		type="button"
 		onclick={account.openRegister}
-		class={iconClass}
+		class="{iconClass} {compact ? 'size-10 rounded-lg' : 'rounded-xl p-3'}"
 	>
 		<span class="sr-only">Регистрация</span>
 		<IconHint text="Регистрация" align="right" />

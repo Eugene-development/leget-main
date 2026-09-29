@@ -344,98 +344,134 @@
 		Ниже неё работает мобильный слой (полоса + бургер + панель), выше —
 		десктопный (эта строка + меню + строка ссылок баннера).
 	-->
-	<div class="max-w-9xl mx-auto hidden items-center justify-between px-4 py-3 lg:flex lg:px-8">
-		<!-- Левая часть: Логотип -->
-		<div class="flex flex-1 justify-start">
-			<a
-				href="/"
-				class="group relative z-30 -m-1.5 -mb-10 hidden min-w-[140px] flex-col items-center justify-center rounded-b-2xl bg-surface-raised px-6 py-4 shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl lg:flex"
-			>
-				<span class="sr-only">{siteName}</span>
-				{#if data?.logoUrl || imageEditing?.editable}
-					<ImageFallback
-						imagePath={['logoUrl']}
-						class="h-16 w-auto transition-transform duration-300 group-hover:scale-105"
-						src={String(data.logoUrl ?? '')}
-						alt="Логотип {siteName}"
-					/>
-				{:else}
-					<div class="flex flex-col items-center">
-						<div
-							class="mb-1 size-8 rounded-full bg-linear-to-tr from-link-400 to-cat-4-500 shadow-sm transition-transform duration-300 group-hover:scale-110"
-						></div>
-						<EditableField
-							fieldKey="Header.siteName"
-							label="Название сайта"
-							value={!data?.siteName || data.siteName === 'Новострой'
-								? 'Логотип'
-								: String(data.siteName)}
-							onSave={(val) => saveField('siteName', val)}
-							{isEditable}
-						>
-							{#snippet children(displayValue)}
-								<!--
+	<Menu
+		bind:data
+		{editContext}
+		{isEditable}
+		{links}
+		{visibleCatalogItems}
+		{visibleServiceItems}
+		{disabledRubrics}
+		{disabledServices}
+		onToggleRubric={handleToggleRubric}
+		onToggleService={handleToggleService}
+	>
+		{#snippet logo(compact: boolean)}
+			<!-- Левая часть: Логотип -->
+			<div class="relative flex flex-1 justify-start {compact ? 'h-10 min-w-[140px]' : ''}">
+				<a
+					href="/"
+					class="group z-30 hidden min-w-[140px] flex-col items-center justify-center rounded-b-2xl bg-surface-raised px-6 py-4 shadow-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl lg:flex {compact
+						? 'absolute -top-1.5 -left-1.5'
+						: 'relative -m-1.5 -mb-10'}"
+				>
+					<span class="sr-only">{siteName}</span>
+					{#if data?.logoUrl || imageEditing?.editable}
+						<ImageFallback
+							imagePath={['logoUrl']}
+							class="h-16 w-auto transition-transform duration-300 group-hover:scale-105"
+							src={String(data.logoUrl ?? '')}
+							alt="Логотип {siteName}"
+						/>
+					{:else}
+						<div class="flex flex-col items-center">
+							<div
+								class="mb-1 size-8 rounded-full bg-linear-to-tr from-link-400 to-cat-4-500 shadow-sm transition-transform duration-300 group-hover:scale-110"
+							></div>
+							<EditableField
+								fieldKey="Header.siteName"
+								label="Название сайта"
+								value={!data?.siteName || data.siteName === 'Новострой'
+									? 'Логотип'
+									: String(data.siteName)}
+								onSave={(val) => saveField('siteName', val)}
+								{isEditable}
+							>
+								{#snippet children(displayValue)}
+									<!--
 									Роль, а не четыре утилиты. Кегль, начертание, разрежение и
 									регистр у метки принадлежат системе с 19.08.2026 — здесь они
 									оставались набраны руками (10px/900/0.2em/uppercase), то есть
 									при смене системы подпись не менялась. Цвет остаётся утилитой:
 									от темы блока он не зависит, зона хэдера темы не имеет.
 								-->
-								<span
-									class="p1-label text-link-900 transition-transform duration-300 group-hover:scale-105"
-								>
-									<RichText value={displayValue} />
-								</span>
-							{/snippet}
-						</EditableField>
-					</div>
-				{/if}
+									<span
+										class="p1-label text-link-900 transition-transform duration-300 group-hover:scale-105"
+									>
+										<RichText value={displayValue} />
+									</span>
+								{/snippet}
+							</EditableField>
+						</div>
+					{/if}
+					<div
+						class="absolute inset-0 rounded-b-2xl bg-linear-to-t from-link-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					></div>
+				</a>
+			</div>
+		{/snippet}
+		{#snippet actions(compact: boolean, openSettings: () => void)}
+			<!-- Правая часть: Выбор города + избранное + вход -->
+			<div class="flex flex-1 items-center justify-end {compact ? 'gap-1.5' : 'gap-3'}">
+				<!-- Город -->
 				<div
-					class="absolute inset-0 rounded-b-2xl bg-linear-to-t from-link-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-				></div>
-			</a>
-		</div>
-
-		<!-- Центральная часть: Навигация (компонент Menu с переключением вариантов v1/v2/v3) -->
-		<Menu
-			bind:data
-			{editContext}
-			{isEditable}
-			{links}
-			{visibleCatalogItems}
-			{visibleServiceItems}
-			{disabledRubrics}
-			{disabledServices}
-			onToggleRubric={handleToggleRubric}
-			onToggleService={handleToggleService}
-		/>
-
-		<!-- Правая часть: Выбор города + избранное + вход -->
-		<div class="flex flex-1 items-center justify-end gap-3">
-			<!-- Город -->
-			<div
-				role="group"
-				class="relative hidden sm:block"
-				onmouseenter={() => (visibleCityMenu = true)}
-				onmouseleave={() => (visibleCityMenu = false)}
-			>
-				<button
-					type="button"
-					class="city-selector group relative flex h-11 items-center gap-2 overflow-hidden rounded-xl bg-linear-to-r from-ink-100/20 to-ink-50/80 px-3 py-2.5 text-base font-medium whitespace-nowrap text-ink-700 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200 xl:px-5"
-					aria-expanded={visibleCityMenu}
-					title={cityStore.city}
+					role="group"
+					class="relative hidden sm:block"
+					onmouseenter={() => (visibleCityMenu = true)}
+					onmouseleave={() => (visibleCityMenu = false)}
 				>
-					<span
-						class="absolute inset-0 -z-10 bg-linear-to-r from-link-500 to-cat-5-500 opacity-0 transition-opacity duration-300 group-hover:opacity-10"
-					></span>
+					<button
+						type="button"
+						class="city-selector group relative flex items-center gap-2 overflow-hidden bg-linear-to-r from-ink-100/20 to-ink-50/80 font-medium whitespace-nowrap text-ink-700 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200 {compact
+							? 'h-10 rounded-lg px-2 text-sm'
+							: 'h-11 rounded-xl px-3 py-2.5 text-base xl:px-5'}"
+						aria-expanded={visibleCityMenu}
+						title={cityStore.city}
+					>
+						<span
+							class="absolute inset-0 -z-10 bg-linear-to-r from-link-500 to-cat-5-500 opacity-0 transition-opacity duration-300 group-hover:opacity-10"
+						></span>
 
-					<!-- Значок остаётся только там, где подписи нет: с xl её видно, и
+						<!-- Значок остаётся только там, где подписи нет: с xl её видно, и
 					     указатель рядом с названием города ничего не добавляет; ниже xl
 					     подпись уходит в `sr-only`, и он — единственное, по чему кнопку
 					     можно узнать. -->
-					<span class="flex items-center justify-center xl:hidden">
+						<span class="flex items-center justify-center xl:hidden">
+							<svg
+								class="h-4 w-4 text-link-500 transition-transform duration-300 group-hover:scale-110"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								/>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+								/>
+							</svg>
+						</span>
+
+						<!-- До xl подпись снимается с полосы: в правой зоне четыре кнопки, и
+					     при развёрнутом городе строка хэдера на 1024px не помещается (замер:
+					     переполнение 87px, город — 194px из них). Не `hidden`, а `sr-only`:
+					     выбранный город остаётся в дереве доступности, а мышью его показывает
+					     `title` кнопки. -->
+						<span
+							class="sr-only transition-colors duration-300 group-hover:text-link-600 xl:not-sr-only"
+							>{cityStore.city}</span
+						>
+
 						<svg
-							class="h-4 w-4 text-link-500 transition-transform duration-300 group-hover:scale-110"
+							class="h-4 w-4 text-ink-400 transition-all duration-300 group-hover:text-link-500 {visibleCityMenu
+								? 'rotate-180'
+								: ''}"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -444,171 +480,168 @@
 								stroke-linecap="round"
 								stroke-linejoin="round"
 								stroke-width="2"
-								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-							/>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+								d="M19 9l-7 7-7-7"
 							/>
 						</svg>
-					</span>
+					</button>
 
-					<!-- До xl подпись снимается с полосы: в правой зоне четыре кнопки, и
-					     при развёрнутом городе строка хэдера на 1024px не помещается (замер:
-					     переполнение 87px, город — 194px из них). Не `hidden`, а `sr-only`:
-					     выбранный город остаётся в дереве доступности, а мышью его показывает
-					     `title` кнопки. -->
-					<span
-						class="sr-only transition-colors duration-300 group-hover:text-link-600 xl:not-sr-only"
-						>{cityStore.city}</span
-					>
-
-					<svg
-						class="h-4 w-4 text-ink-400 transition-all duration-300 group-hover:text-link-500 {visibleCityMenu
-							? 'rotate-180'
-							: ''}"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M19 9l-7 7-7-7"
-						/>
-					</svg>
-				</button>
-
-				{#if visibleCityMenu}
-					<div class="absolute top-full right-0 left-0 h-3"></div>
-					<div
-						transition:fly={{ y: -10, duration: 200, easing: cubicOut }}
-						class="absolute top-full right-0 z-50 mt-3 w-48 overflow-hidden rounded-2xl bg-surface-raised p-2 shadow-xl ring-1 ring-ink-900/5"
-					>
+					{#if visibleCityMenu}
+						<div class="absolute top-full right-0 left-0 h-3"></div>
 						<div
-							class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-link-500 to-transparent"
-						></div>
+							transition:fly={{ y: -10, duration: 200, easing: cubicOut }}
+							class="absolute top-full right-0 z-50 mt-3 w-48 overflow-hidden rounded-2xl bg-surface-raised p-2 shadow-xl ring-1 ring-ink-900/5"
+						>
+							<div
+								class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-link-500 to-transparent"
+							></div>
 
-						{#each cities as city, idx}
-							<button
-								type="button"
-								onclick={() => {
-									cityStore.set(city.label);
-									visibleCityMenu = false;
-								}}
-								class="group flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left transition-all duration-200 hover:bg-linear-to-r hover:from-link-50 hover:to-cat-5-50"
-								class:bg-link-50={cityStore.city === city.label}
-								transition:fly={{ y: -5, duration: 150, delay: idx * 30 }}
-							>
-								<span
-									class="text-sm font-medium transition-colors {cityStore.city === city.label
-										? 'text-link-600'
-										: 'text-ink-700'} group-hover:text-link-600">{city.label}</span
-								>
-								{#if cityStore.city === city.label}
-									<svg
-										class="h-4 w-4 text-link-500"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M5 13l4 4L19 7"
-										/>
-									</svg>
-								{/if}
-							</button>
-						{/each}
-
-						{#if isEditable}
-							<div class="mt-2 border-t border-ink-100 pt-2">
+							{#each cities as city, idx}
 								<button
 									type="button"
 									onclick={() => {
-										editStore.open({
-											key: 'Header.cities',
-											label: 'Список городов (каждый с новой строки)',
-											value: citiesRaw,
-											multiline: true,
-											onSave: (val) => saveField('cities', val)
-										});
+										cityStore.set(city.label);
+										visibleCityMenu = false;
 									}}
-									class="flex w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-ink-300 py-2 text-xs font-medium text-ink-400 transition-colors hover:border-link-300 hover:text-link-500"
+									class="group flex w-full items-center justify-between rounded-xl px-4 py-2.5 text-left transition-all duration-200 hover:bg-linear-to-r hover:from-link-50 hover:to-cat-5-50"
+									class:bg-link-50={cityStore.city === city.label}
+									transition:fly={{ y: -5, duration: 150, delay: idx * 30 }}
 								>
-									Редактировать список
+									<span
+										class="text-sm font-medium transition-colors {cityStore.city === city.label
+											? 'text-link-600'
+											: 'text-ink-700'} group-hover:text-link-600">{city.label}</span
+									>
+									{#if cityStore.city === city.label}
+										<svg
+											class="h-4 w-4 text-link-500"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M5 13l4 4L19 7"
+											/>
+										</svg>
+									{/if}
 								</button>
-							</div>
-						{/if}
-					</div>
-				{/if}
-			</div>
+							{/each}
 
-			<!-- Избранное -->
-			<a
-				href={favoritesHref}
-				aria-label={`Избранное: ${favoriteCount}`}
-				class="group relative flex items-center justify-center rounded-xl bg-linear-to-r from-ink-100/20 to-ink-50/80 p-3 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 hover:ring-brand-200"
-			>
-				{@render favoritesBadge(false)}
-				<IconHint text="Избранное" />
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="size-5 text-ink-500 transition-all duration-300 group-hover:scale-110 group-hover:text-brand-500"
+							{#if isEditable}
+								<div class="mt-2 border-t border-ink-100 pt-2">
+									<button
+										type="button"
+										onclick={() => {
+											editStore.open({
+												key: 'Header.cities',
+												label: 'Список городов (каждый с новой строки)',
+												value: citiesRaw,
+												multiline: true,
+												onSave: (val) => saveField('cities', val)
+											});
+										}}
+										class="flex w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-ink-300 py-2 text-xs font-medium text-ink-400 transition-colors hover:border-link-300 hover:text-link-500"
+									>
+										Редактировать список
+									</button>
+								</div>
+							{/if}
+						</div>
+					{/if}
+				</div>
+
+				<!-- Избранное -->
+				<a
+					href={favoritesHref}
+					aria-label={`Избранное: ${favoriteCount}`}
+					class="group relative flex items-center justify-center bg-linear-to-r from-ink-100/20 to-ink-50/80 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 hover:ring-brand-200 {compact
+						? 'size-10 rounded-lg'
+						: 'rounded-xl p-3'}"
 				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-					<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
-					></path>
-				</svg>
-			</a>
+					{@render favoritesBadge(false)}
+					<IconHint text="Избранное" />
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="size-5 text-ink-500 transition-all duration-300 group-hover:scale-110 group-hover:text-brand-500"
+					>
+						<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+						<path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+						></path>
+					</svg>
+				</a>
 
-			<button
-				type="button"
-				aria-label="Поиск по сайту"
-				aria-haspopup="dialog"
-				onclick={() => {
-					uiStore.closeMenu();
-					siteSearch.open = true;
-				}}
-				class="group relative flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-ink-50 text-ink-500 ring-1 ring-ink-200/50 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-link-600"
-			>
-				<svg
-					class="size-5"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4.5 4.5" /></svg
+				<button
+					type="button"
+					aria-label="Поиск по сайту"
+					aria-haspopup="dialog"
+					onclick={() => {
+						uiStore.closeMenu();
+						siteSearch.open = true;
+					}}
+					class="group relative flex shrink-0 cursor-pointer items-center justify-center bg-ink-50 text-ink-500 ring-1 ring-ink-200/50 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-link-600 {compact
+						? 'size-10 rounded-lg'
+						: 'size-11 rounded-xl'}"
 				>
-				<IconHint text="Поиск по сайту" />
-			</button>
+					<svg
+						class="size-5"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						aria-hidden="true"
+						><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4.5 4.5" /></svg
+					>
+					<IconHint text="Поиск по сайту" />
+				</button>
 
-			<!-- Вход и регистрация клиента: значками, в одном ряду с «Избранным».
+				<!-- Вход и регистрация клиента: значками, в одном ряду с «Избранным».
 			     До 24.08.2026 стояли надписями в полосе баннера — там они были
 			     единственной кнопкой среди строки контактов и читались как текст,
 			     а не как действие. Состояние (гость / вошедший) приходит из
 			     клиентской cookie, см. ClientAuthButtons. -->
-			<!-- До lg значки входа не показываются: строка хэдера в диапазоне
+				<!-- До lg значки входа не показываются: строка хэдера в диапазоне
 			     640–1023px и без них переполнена (замер на 900px: 99px), а вход
 			     на этих ширинах даёт мобильная полоса баннера — она как раз
 			     живёт до lg. Дублирования нет ни на одной ширине. -->
-			<div class="hidden items-center gap-3 lg:flex">
-				<ClientAuthButtons />
+				<div class="hidden items-center lg:flex {compact ? 'gap-1.5' : 'gap-3'}">
+					<ClientAuthButtons {compact} />
+				</div>
+				{#if isEditable && editContext}
+					<button
+						type="button"
+						onclick={openSettings}
+                    data-goal-ignore="Настройки владельца сайта, не обращение посетителя"
+						class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-surface-raised text-ink-500 shadow-sm transition-all duration-300 hover:border-link-300 hover:text-link-600 active:scale-95"
+						title="Настройки шапки"
+						data-field-toolbar-anchor
+						aria-label="Настройки шапки"
+					>
+						<svg
+							class="h-3.5 w-3.5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+							<circle cx="9" cy="6" r="2" fill="currentColor" />
+							<circle cx="15" cy="12" r="2" fill="currentColor" />
+							<circle cx="8" cy="18" r="2" fill="currentColor" />
+						</svg>
+					</button>
+				{/if}
 			</div>
-		</div>
-	</div>
+		{/snippet}
+	</Menu>
 
 	<!--
 		Мобильная строка шапки — здесь с 25.08.2026, а не в баннере.

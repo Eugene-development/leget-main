@@ -8,6 +8,7 @@
 	 * /cabinet/register, а те держат JWT в httpOnly-cookie. Поэтому вход
 	 * клиента не может включить редактор чужого сайта.
 	 */
+	import { page } from '$app/state';
 	import { goto, invalidateAll } from '$app/navigation';
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
@@ -126,7 +127,7 @@
 			// Сессию открыл сервер (httpOnly-cookie): шапке нужен свежий layout-load,
 			// поэтому переход в кабинет идёт с инвалидацией.
 			await invalidateAll();
-			await goto('/cabinet');
+			await goto(page.url.pathname === '/partner/register' ? '/partner/register' : '/cabinet');
 		} catch {
 			captchaRef?.reset();
 			captchaToken = null;

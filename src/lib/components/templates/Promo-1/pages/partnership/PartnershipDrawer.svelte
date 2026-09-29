@@ -71,6 +71,11 @@
 </script>
 
 <SideDrawer goalPrefix="partnership_drawer" bind:open title="Партнёрство">
+	<p class="mb-6 text-on-dark">
+		Для подключения к платформе <a href="/partner/register" class="underline underline-offset-4"
+			>зарегистрируйтесь как партнёр</a
+		>. Эта форма — для обсуждения условий.
+	</p>
 	{#if sent}
 		<div class="space-y-5 text-on-dark" role="status">
 			<p class="text-xl font-semibold">Заявка принята</p>

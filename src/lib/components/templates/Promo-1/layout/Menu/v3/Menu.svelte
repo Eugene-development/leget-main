@@ -101,7 +101,7 @@
 {#snippet dropdownTrigger(label: string, active: boolean, kind: MenuKind)}
 	<button
 		type="button"
-		class="group relative flex min-h-11 items-center gap-1 rounded-sm px-2 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 xl:px-4 {active
+		class="group relative flex h-10 items-center gap-1 rounded-sm px-2 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] lg:gap-1.5 lg:px-3 xl:px-4 {active
 			? 'bg-alt-petrol-50 text-alt-petrol-accent-600'
 			: 'text-alt-petrol-800 hover:bg-alt-petrol-50 hover:text-alt-petrol-accent-600'}"
 		aria-expanded={openMenu === kind}
@@ -313,11 +313,8 @@
 	onmouseleave={closeMenu}
 	onfocusout={handleFocusOut}
 >
-	<div class="rounded-sm bg-linear-to-r from-ink-100/20 to-ink-50/80 p-1 backdrop-blur-xl">
-		<nav
-			class="flex items-center rounded-[2px] bg-transparent p-0.5"
-			aria-label="Основная навигация"
-		>
+	<div class="rounded-sm bg-linear-to-r from-ink-100/20 to-ink-50/80 backdrop-blur-xl">
+		<nav class="flex items-center rounded-[2px] bg-transparent" aria-label="Основная навигация">
 			{#each links as link}
 				{#if link.label === 'Услуги'}
 					<div role="group" class="relative" onmouseenter={() => showMenu('services')}>
@@ -330,7 +327,7 @@
 				{:else}
 					<a
 						href={link.href}
-						class="relative flex min-h-11 items-center rounded-sm px-2 py-2.5 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] lg:px-3 xl:px-4 {isLinkActive(
+						class="relative flex h-10 items-center rounded-sm px-2 py-2 text-sm font-medium tracking-[-0.01em] transition-[color,background-color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none active:scale-[0.98] lg:px-3 xl:px-4 {isLinkActive(
 							link.href
 						)
 							? 'bg-alt-petrol-50 text-alt-petrol-accent-600'

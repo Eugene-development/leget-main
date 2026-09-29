@@ -252,9 +252,19 @@
 		await saveComponentData(editContext, 'PartnerOffers', updated);
 		data = updated;
 	}
+
+	async function saveOfferDate(index: number, field: 'validFrom' | 'validUntil', value: string) {
+		if (!editContext) return;
+		const updated = {
+			...data,
+			offers: offers.map((offer, i) => (i === index ? { ...offer, [field]: value.trim() } : offer))
+		};
+		await saveComponentData(editContext, 'PartnerOffers', updated);
+		data = updated;
+	}
 </script>
 
-{#snippet card(item: Offer, clone: boolean)}
+{#snippet card(item: Offer, index: number, clone: boolean)}
 	<!-- Кадр. Рамка карточки — единственное место в блоке, где тема ещё уместна:
 	     эта линия отделяет плитку от подложки секции, а не лежит на кадре.
 
@@ -269,7 +279,7 @@
 		     системы (Базовая 500ms, Графит 300ms). Кривая приходит из
 		     `--default-transition-timing-function`, поэтому своей `ease-*` тут нет. -->
 		<ImageFallback
-			imagePath={['offers', offers.indexOf(item), 'image']}
+			imagePath={['offers', index, 'image']}
 			imageDefaults={{ offers }}
 			src={item.image}
 			alt={clone ? '' : item.alt}
@@ -295,8 +305,40 @@
 		     запаса, поэтому плашка читается на любом кадре, какой загрузит тенант.
 
 		     Отступ 7/8, а не 4: на 4 плашка легла бы ровно на декоративную рамку
-		     (`inset-4`) и перечеркнула бы её. Пустой срок не рисует пустую плашку. -->
-		{#if period(item)}
+		     (`inset-4`) и перечеркнула бы её. Пустой срок не рисует плашку вне
+		     режима редактирования. -->
+		{#if isEditable && !clone}
+			<div
+				class="absolute top-7 left-7 z-10 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-scrim/60 px-3 py-2 text-xs text-on-dark sm:top-8 sm:left-8"
+			>
+				<EditableField
+					fieldKey={`PartnerOffers.offers.${index}.validFrom`}
+					label={`Дата начала акции — ${item.partner || `предложение ${index + 1}`}`}
+					value={item.validFrom ?? ''}
+					{isEditable}
+					richText={false}
+					inline
+					onSave={(value) => saveOfferDate(index, 'validFrom', value)}
+				>
+					{#snippet children(displayValue)}
+						<span>с {displayValue || 'указать дату'}</span>
+					{/snippet}
+				</EditableField>
+				<EditableField
+					fieldKey={`PartnerOffers.offers.${index}.validUntil`}
+					label={`Дата окончания акции — ${item.partner || `предложение ${index + 1}`}`}
+					value={item.validUntil ?? ''}
+					{isEditable}
+					richText={false}
+					inline
+					onSave={(value) => saveOfferDate(index, 'validUntil', value)}
+				>
+					{#snippet children(displayValue)}
+						<span>по {displayValue || 'указать дату'}</span>
+					{/snippet}
+				</EditableField>
+			</div>
+		{:else if period(item)}
 			<div
 				class="absolute top-7 left-7 z-10 rounded-xl bg-scrim/60 px-3 py-2 text-xs text-on-dark sm:top-8 sm:left-8"
 			>
@@ -418,7 +460,7 @@
 						class="w-[85%] shrink-0 snap-start sm:w-[55%] lg:w-[42%]"
 						aria-hidden={slot.set === 1 ? undefined : 'true'}
 					>
-						{@render card(slot.offer, slot.set !== 1)}
+						{@render card(slot.offer, slot.i, slot.set !== 1)}
 					</div>
 				{/each}
 			</div>
@@ -495,7 +537,7 @@
 		<div class="mt-10 grid min-h-0 flex-1 grid-cols-1 gap-8 md:grid-cols-2">
 			{#each offers as item, i (i)}
 				<div class="p1-settle flex min-h-0 flex-col">
-					{@render card(item, false)}
+					{@render card(item, i, false)}
 				</div>
 			{/each}
 		</div>

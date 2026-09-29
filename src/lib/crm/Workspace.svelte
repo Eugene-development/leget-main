@@ -5,6 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { createFormSender } from '$lib/utils/form-submission';
 	import EditForm from './EditForm.svelte';
+	import ManagerForm from './ManagerForm.svelte';
 	import TemplateEditor from './TemplateEditor.svelte';
 	import {
 		crmRequest,
@@ -25,6 +26,7 @@
 		['clients', 'Клиенты'],
 		['companies', 'Компании'],
 		['tasks', 'Задачи'],
+		['members', 'Сотрудники'],
 		['settings', 'Настройки']
 	];
 	const titles: Record<string, string> = Object.fromEntries([
@@ -56,7 +58,6 @@
 	let notice = $state('');
 	let creating = $state(false);
 	let busy = $state(false);
-	let accessRequested = $state(false);
 	let search = $state('');
 	let view = $state('board');
 	let stageFilter = $state('');
@@ -110,7 +111,6 @@
 	const dealOptions = $derived(
 		(lookups.deals || []).map((v: Row) => ({ value: v.id, label: v.title }))
 	);
-	const requestSender = createFormSender('crm-manager-access');
 	const offlineSender = createFormSender('crm-offline');
 	function href(target: string, extra = '') {
 		return `${base}/${target}?site=${site}${extra}`;
@@ -404,11 +404,7 @@
 		creating = false;
 		await refresh();
 	}
-	async function applyAccess() {
-		await requestSender({ license_id: data.context.current_site.id }, 'crm-manager-access');
-		notice = 'Запрос отправлен владельцу сайта. Доступ появится после одобрения.';
-		accessRequested = true;
-	}
+
 	async function drop(stage: Row, event: DragEvent) {
 		event.preventDefault();
 		const deal = dragging;
@@ -562,7 +558,7 @@
 				></label
 			>{/if}
 		<nav aria-label="Разделы CRM">
-			{#each navigation as [key, label]}<a
+			{#each navigation.filter(([key]) => key !== 'members' || canManage) as [key, label]}<a
 					class:active={section === key ||
 						(key === 'settings' && ['members', 'stages', 'templates'].includes(section))}
 					href={href(key)}
@@ -581,7 +577,12 @@
 				>{/if}
 		</nav>
 		<div class="crm-profile">
-			<strong>{data.profile.name}</strong><span>{canManage ? 'Управление сайтом' : 'Менеджер'}</span
+			<strong>{data.profile.name}</strong><span
+				>{data.context.role === 'superadmin'
+					? 'Суперадмин'
+					: canManage
+						? 'Админ сайта'
+						: 'Менеджер'}</span
 			><a href="/">Вернуться на сайт</a>
 		</div>
 	</aside>
@@ -602,17 +603,20 @@
 								: activeSite?.domain || 'Рабочее пространство'}
 				</p>
 			</div>
-			{#if !id && ['incoming', 'clients', 'companies', 'deals', 'tasks', 'stages', 'templates'].includes(section) && site && (canManage || !['stages', 'templates'].includes(section))}<button
+			{#if !id && ['incoming', 'clients', 'companies', 'deals', 'tasks', 'stages', 'templates', 'members'].includes(section) && site && (canManage || !['stages', 'templates', 'members'].includes(section))}<button
 					class="primary"
 					onclick={begin}
-					data-goal-ignore="Создание записи CRM"
+					data-metrika-goal="crm_record_form_open"
+					data-goal-action="open"
 					>{creating
 						? 'Закрыть форму'
-						: section === 'incoming'
-							? 'Добавить офлайн-заявку'
-							: section === 'templates'
-								? 'Создать шаблон'
-								: 'Добавить'}</button
+						: section === 'members'
+							? 'Назначить менеджера'
+							: section === 'incoming'
+								? 'Добавить офлайн-заявку'
+								: section === 'templates'
+									? 'Создать шаблон'
+									: 'Добавить'}</button
 				>{/if}
 		</header>
 		{#if detailRefreshing}<p class="muted" role="status">
@@ -633,25 +637,11 @@
 		{#if section === 'access' || (!site && section !== 'unassigned')}
 			<section class="crm-empty">
 				<h2>Доступ к CRM</h2>
-				<p>Рабочие данные появятся после одобрения владельцем сайта.</p>
-				{#if data.context.current_site && ['client', 'manager'].includes(data.context.role)}
-					{@const application = data.context.applications?.find(
-						(a: Row) => a.license_id === data.context.current_site.id
-					)}
-					{#if application}<p>
-							Ваш запрос: <strong>{labels[application.status] || application.status}</strong>
-						</p>
-						{#if application.review_note}<p>{application.review_note}</p>{/if}{/if}
-					<button
-						class="primary"
-						disabled={busy || accessRequested || application?.status === 'pending'}
-						onclick={() => run(applyAccess)}
-						data-goal-ignore="Запрос рабочего доступа CRM"
-						>{application?.status === 'pending'
-							? 'Ожидаем решения владельца'
-							: 'Запросить доступ менеджера'}</button
-					>
-				{:else}<p>Откройте CRM на сайте, к которому требуется доступ.</p>{/if}
+				<p>Доступ к выбранному сайту назначает его администратор или суперадминистратор LEGET.</p>
+				<p>
+					Самостоятельных заявок на роль менеджера нет. Обратитесь к администратору за рабочим
+					аккаунтом.
+				</p>
 			</section>
 		{:else}
 			{#if site && dashboardReady && !dashboard.stages?.length && canManage && !loading}<section
@@ -670,9 +660,13 @@
 					<h2>
 						{section === 'incoming'
 							? 'Новое офлайн-обращение'
-							: `Новая запись: ${titles[section]?.toLowerCase()}`}
+							: section === 'members'
+								? 'Назначить менеджера'
+								: `Новая запись: ${titles[section]?.toLowerCase()}`}
 					</h2>
-					{#if section === 'templates'}<TemplateEditor
+					{#if section === 'members'}
+						<ManagerForm onSave={(v) => save('members/assign', v, 'members')} />
+					{:else if section === 'templates'}<TemplateEditor
 							{base}
 							{site}
 							onSaved={async () => {
@@ -738,11 +732,9 @@
 			{#if loading}<p class="crm-loading" role="status">Загружаем рабочие данные…</p>
 			{:else if section === 'settings'}
 				{#if canManage}<div class="crm-settings-nav">
-						<a href={href('members')}
-							>Сотрудники <span>{dashboard.counts.pending_members || 0} запросов</span></a
-						><a href={href('stages')}>Этапы воронки <span>Порядок и правила</span></a><a
-							href={href('templates')}>Шаблоны документов <span>Договоры и акты</span></a
-						>
+						<a href={href('members')}>Сотрудники <span>Назначение и отзыв доступа</span></a><a
+							href={href('stages')}>Этапы воронки <span>Порядок и правила</span></a
+						><a href={href('templates')}>Шаблоны документов <span>Договоры и акты</span></a>
 					</div>
 					<section class="crm-panel">
 						<h2>Реквизиты исполнителя</h2>
@@ -1212,7 +1204,7 @@
 										label: 'Решение',
 										required: true,
 										options: options({
-											approve: 'Одобрить',
+											approve: 'Восстановить доступ',
 											reject: 'Отклонить',
 											revoke: 'Отозвать доступ'
 										})

@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
-	import PartnershipDrawer from './PartnershipDrawer.svelte';
+	import { goto } from '$app/navigation';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -19,7 +19,6 @@
 		isEditable?: boolean;
 		sitePhone?: string | null;
 	} = $props();
-	let partnershipOpen = $state(false);
 	const buttonText = $derived(
 		!data?.buttonText ||
 			['Обсудить сотрудничество', 'Узнать условия'].includes(String(data.buttonText))
@@ -181,10 +180,9 @@
 							data-goal-label="Стать партнёром (текст кнопки настраивается)"
 							data-goal-action="open"
 							type="button"
-							aria-haspopup="dialog"
 							aria-label={buttonText}
 							onclick={() => {
-								partnershipOpen = true;
+								if (!isEditable) goto('/partner/register');
 							}}
 							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-link-500/95 transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-5-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
 						>
@@ -246,8 +244,6 @@
 		</div>
 	</div>
 </section>
-
-<PartnershipDrawer bind:open={partnershipOpen} />
 
 <style>
 	/*

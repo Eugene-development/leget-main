@@ -28,7 +28,12 @@
 				stroke-linejoin="round"
 				aria-hidden="true"
 			>
-				<path d="m5 12 4 4L19 6" />
+				{#if toast.current.kind === 'info'}
+					<circle cx="12" cy="12" r="9" />
+					<path d="M12 11v5M12 8h.01" />
+				{:else}
+					<path d="m5 12 4 4L19 6" />
+				{/if}
 			</svg>
 			{toast.current.message}
 		</div>

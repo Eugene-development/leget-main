@@ -45,7 +45,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	if (profile.role !== 'partner') {
 		// Сессия действительна, но кабинет чужой. Cookie не трогаем: человек
 		// вошёл законно, просто не сюда.
-		redirect(303, profile.role === 'admin' ? '/admin' : cabinetHref(profile.role));
+		redirect(303, profile.role === 'superadmin' ? '/admin' : cabinetHref(profile.role));
 	}
 
 	return { profile, serviceUnavailable: false };

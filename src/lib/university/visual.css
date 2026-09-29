@@ -19,7 +19,8 @@
 	height: 460px;
 	perspective: 1100px;
 	isolation: isolate;
-	overflow: clip;
+	/* The fanned covers and page edges must not be clipped by this staging box. */
+	overflow: visible;
 }
 .uni-book-fan {
 	position: absolute;
@@ -98,7 +99,8 @@
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
 	.uni-learning-object:hover .uni-book-leaf {
-		transform: rotate(calc((var(--leaf) - 3) * 16deg)) translateZ(calc(var(--leaf) * 12px));
+		transform: translateY(var(--uni-book-hover-lift, 0px)) rotate(calc((var(--leaf) - 3) * 16deg))
+			translateZ(calc(var(--leaf) * 12px));
 	}
 }
 @media (max-width: 700px) {

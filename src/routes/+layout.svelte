@@ -69,6 +69,6 @@
 	/_ds — каталог дизайн-системы: карточка должна содержать блок и ничего кроме блока,
 	иначе плавающая кнопка заказа попадёт в каждое превью.
 -->
-{#if !page.url.pathname.startsWith('/admin') && !page.url.pathname.startsWith('/_ds') && !page.url.pathname.startsWith('/goals') && !page.url.pathname.startsWith('/site-settings') && !page.url.pathname.startsWith('/cabinet') && !page.url.pathname.startsWith('/crm') && !page.url.pathname.startsWith('/university/')}
+{#if !page.url.pathname.startsWith('/admin') && !page.url.pathname.startsWith('/_ds') && !page.url.pathname.startsWith('/goals') && !page.url.pathname.startsWith('/site-settings') && !page.url.pathname.startsWith('/cabinet') && !page.url.pathname.startsWith('/partner') && !page.url.pathname.startsWith('/crm') && !page.url.pathname.startsWith('/university/')}
 	<ServiceOrderIsland />
 {/if}

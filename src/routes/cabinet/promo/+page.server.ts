@@ -34,8 +34,8 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		redirect(303, '/?auth=client-login');
 	}
 
-	if (profile.role !== 'client') {
-		redirect(303, profile.role === 'admin' ? '/admin' : cabinetHref(profile.role));
+	if (!['client', 'student'].includes(profile.role)) {
+		redirect(303, profile.role === 'superadmin' ? '/admin' : cabinetHref(profile.role));
 	}
 
 	const status = url.searchParams.get('status');

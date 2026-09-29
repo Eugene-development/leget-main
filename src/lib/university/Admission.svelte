@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
-	let registering = $state(true);
+	let registering = $state(page.url.searchParams.get('mode') !== 'login');
+	$effect(() => {
+		if (page.url.searchParams.get('mode') === 'login') registering = false;
+	});
 	let busy = $state(false);
 	let problem = $state('');
 	let captchaToken = $state('');
@@ -103,29 +107,26 @@
 					placeholder="you@example.ru"
 				/></label
 			>
-			<label
-				>Пароль<input
-					type="password"
-					name="password"
-					autocomplete={registering ? 'new-password' : 'current-password'}
-					minlength="8"
-					required
-				/><small>Не менее 8 символов</small></label
-			>
-			{#if registering}<label
-					>Повторите пароль<input
+			<div class="academy-password-fields" class:single={!registering}>
+				<label
+					>Пароль<input
 						type="password"
-						name="password_confirmation"
-						autocomplete="new-password"
+						name="password"
+						autocomplete={registering ? 'new-password' : 'current-password'}
 						minlength="8"
 						required
-					/></label
-				>{/if}
-			<p class="academy-fine">
-				{registering
-					? 'Вы создаёте аккаунт с ролью «Студент». Имя будет указано в сертификатах.'
-					: 'Войдите с существующим аккаунтом. Аккаунт клиента получит роль «Студент»; аккаунты партнёров и сотрудников сохраняют свои права и для обучения требуют отдельной регистрации.'}
-			</p>
+					/><small>Не менее 8 символов</small></label
+				>
+				{#if registering}<label
+						>Повторите пароль<input
+							type="password"
+							name="password_confirmation"
+							autocomplete="new-password"
+							minlength="8"
+							required
+						/></label
+					>{/if}
+			</div>
 			<SmartCaptcha
 				bind:this={captcha}
 				onverify={(token) => (captchaToken = token)}
