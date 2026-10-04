@@ -1,11 +1,13 @@
+import { getAuthToken } from '$lib/utils/auth-session';
 /**
  * Утилита для inline-редактирования компонентов страницы.
  *
  * Вызывает мутацию upsertPageComponent через GraphQL API
- * с токеном авторизации из localStorage.
+ * с токеном текущей сессии редактора.
  */
 
 import { getGraphQLUrl } from '$lib/utils/config';
+import { usesDraft, saveDraftOperation, type PageDraft } from '$lib/growth/drafts';
 
 const UPSERT_MUTATION = `
   mutation UpsertPageComponent($pageId: ID!, $licenseId: ID!, $type: String!, $data: JSON!) {
@@ -80,7 +82,11 @@ export async function savePageSeo(
 	context: EditContext,
 	values: { title: string; description: string; keywords: string }
 ): Promise<void> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	if (usesDraft(context)) {
+		await saveDraftOperation(context, { kind: 'seo', ...values });
+		return;
+	}
+	const token = getAuthToken();
 
 	if (!token) {
 		throw new Error('Не авторизован');
@@ -171,7 +177,14 @@ export async function saveComponentData(
 	type: string,
 	data: Record<string, unknown>
 ): Promise<string | null> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	if (usesDraft(context)) {
+		const result = await saveDraftOperation<PageDraft & { componentId: string }>(context, {
+			kind: 'component', scope: context.slug === '__global__' ? 'global' : 'page', type, data
+		});
+		data._componentId = result.componentId;
+		return result.componentId;
+	}
+	const token = getAuthToken();
 
 	if (!token) {
 		throw new Error('Не авторизован');
@@ -240,7 +253,11 @@ export async function deleteComponentData(
 	context: EditContext,
 	componentId: string
 ): Promise<void> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	if (usesDraft(context)) {
+		await saveDraftOperation(context, { kind: 'reset', componentId });
+		return;
+	}
+	const token = getAuthToken();
 
 	if (!token) {
 		throw new Error('Не авторизован');
@@ -284,7 +301,11 @@ export async function saveLayoutData(
 	type: 'Header' | 'Footer',
 	data: Record<string, unknown>
 ): Promise<void> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	if (usesDraft(context)) {
+		await saveDraftOperation(context, { kind: 'layout', type, data });
+		return;
+	}
+	const token = getAuthToken();
 
 	if (!token) {
 		throw new Error('Не авторизован');
@@ -355,7 +376,7 @@ export interface BucketFile {
  * @param maxKeys - максимальное количество файлов (до 200). По умолчанию 100.
  */
 export async function listBucketFiles(folder = 'bg', maxKeys = 100): Promise<BucketFile[]> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	const token = getAuthToken();
 
 	if (!token) {
 		throw new Error('Не авторизован');
@@ -398,7 +419,7 @@ export async function toggleCategory(
 	id: string,
 	isEnabled: boolean
 ): Promise<void> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	const token = getAuthToken();
 
 	if (!token) {
 		throw new Error('Не авторизован');

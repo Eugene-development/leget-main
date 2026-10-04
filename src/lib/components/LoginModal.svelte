@@ -1,4 +1,9 @@
 <script lang="ts">
+	import RememberMe from '$lib/components/RememberMe.svelte';
+	let remember = $state(false);
+	let smsBusy = $state(false);
+	import SmsLogin from '$lib/components/SmsLogin.svelte';
+	import { getAuthApiUrl, getPasswordRecoveryUrl } from '$lib/utils/config';
 	import { auth } from '$lib/stores/auth';
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
@@ -20,6 +25,7 @@
 	$effect(() => {
 		if (!open) {
 			email = '';
+			remember = false;
 			password = '';
 			errors = { email: '', password: '' };
 			submitError = '';
@@ -57,6 +63,7 @@
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
+		if (isSubmitting || smsBusy) return;
 		if (!validate()) return;
 
 		// Антибот: при включённой капче требуется токен
@@ -69,7 +76,7 @@
 		submitError = '';
 
 		try {
-			await auth.login(email, password, captchaToken);
+			await auth.login(email, password, captchaToken, remember);
 			onClose();
 		} catch (err: unknown) {
 			// Токен одноразовый — сбрасываем капчу для повторной попытки
@@ -177,6 +184,16 @@
 				</div>
 			</div>
 
+			<RememberMe bind:checked={remember} disabled={isSubmitting || smsBusy} />
+
+			<a
+				href={getPasswordRecoveryUrl()}
+				data-metrika-goal="owner_password_recovery_open"
+				data-goal-action="open"
+				class="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-link-600 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600"
+				>Забыли пароль?</a
+			>
+
 			{#if SITE_KEY}
 				<div class="mt-4">
 					<SmartCaptcha
@@ -203,5 +220,15 @@
 				{isSubmitting ? 'Вход...' : 'Войти'}
 			</button>
 		</form>
+		{#if open}<SmsLogin
+				bind:busy={smsBusy}
+				{remember}
+				endpoint={`${getAuthApiUrl()}/sms`}
+				context="owner"
+				onlogin={(result) => {
+					auth.acceptLogin(result);
+					onClose();
+				}}
+			/>{/if}
 	</div>
 </div>

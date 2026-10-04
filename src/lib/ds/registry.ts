@@ -73,7 +73,7 @@ const CATALOG_LAYOUTS: Record<number, Record<string, CatalogLayout>> = {
 	1: {
 		Header: {
 			component: Promo1.Header as Component<PageComponentProps>,
-			versionCount: 4,
+			versionCount: 5,
 			versionKey: 'menuVersion',
 			data: { siteName: 'LEGET' }
 		}

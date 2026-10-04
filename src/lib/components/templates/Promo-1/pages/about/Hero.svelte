@@ -83,7 +83,7 @@
 	componentType="Hero"
 	{palette}
 	{paletteLight}
-	title={{ key: 'title', label: 'Заголовок', value: String(data?.title ?? 'О нас') }}
+	title={{ key: 'title', label: 'Заголовок', value: String(data?.title ?? 'О проекте') }}
 	text={textField}
 >
 	{#snippet icon()}

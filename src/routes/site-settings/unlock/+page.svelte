@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { getAuthToken } from '$lib/utils/auth-session';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	let errorMessage = $state<string | null>(null);
 
 	onMount(async () => {
-		const token = localStorage.getItem('auth_token');
+		const token = getAuthToken();
 		if (!token) {
 			await goto('/', { replaceState: true });
 			return;

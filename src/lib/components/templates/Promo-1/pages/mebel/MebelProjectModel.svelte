@@ -3,6 +3,7 @@
 	import { tick } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
+	import SingleVersionSettings from '$lib/components/SingleVersionSettings.svelte';
 	import { blockTheme } from '$lib/utils/block-theme';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { readProjectModel, type ProjectModel } from './project-model';
@@ -10,11 +11,13 @@
 	let {
 		data = $bindable({}),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		componentId = null
 	} = $props<{
 		data?: Record<string, any>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		componentId?: string | null;
 	}>();
 	const uid = $props.id();
 	const model = $derived(readProjectModel(data.project?.meta));
@@ -50,7 +53,16 @@
 	}
 </script>
 
-{#if model || isEditable}
+{#if model}
+	<SingleVersionSettings
+		bind:data
+		{editContext}
+		{isEditable}
+		componentType="MebelProjectModel"
+		resetId={componentId}
+		themeToggle
+		themeDefault="light"
+	/>
 	<section
 		class="p1-catalog-container mt-8"
 		data-p1-theme={blockTheme(data)}
@@ -86,9 +98,9 @@
 							bind:this={trigger}
 							type="button"
 							onclick={start}
-							disabled={!model || !!session}
+							disabled={!!session}
 							aria-busy={loading}
-							aria-describedby={error || !model ? `${uid}-status` : undefined}
+							aria-describedby={error ? `${uid}-status` : undefined}
 							data-metrika-goal="mebel_project_model_open"
 							data-goal-action="open"
 							data-goal-label="Посмотреть в 3D — модель проекта"
@@ -108,11 +120,7 @@
 			</div>
 		</div>
 		<div id={`${uid}-status`}>
-			{#if error}<p role="alert" class="text-cat-6-700 mt-2 text-sm">{error}</p>
-			{:else if !model}<p class="p1-body mt-2 text-sm">
-					Добавьте модель через «Редактировать проект». Посетители увидят блок после загрузки
-					модели.
-				</p>{/if}
+			{#if error}<p role="alert" class="text-cat-6-700 mt-2 text-sm">{error}</p>{/if}
 			{#if loading}<span role="status" class="sr-only"
 					>Загружаем 3D-модель. Окно откроется после загрузки.</span
 				>{/if}

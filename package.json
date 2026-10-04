@@ -25,7 +25,9 @@
 		"test:metrika": "node --test scripts/test-metrika.mjs",
 		"check:forms": "node scripts/check-forms.mjs",
 		"test:forms": "node scripts/test-form-submission.mjs",
-		"test:lead-catcher": "node scripts/test-lead-catcher.mjs"
+		"test:lead-catcher": "node scripts/test-lead-catcher.mjs",
+		"test:remember": "node --test scripts/test-remember-me.mjs && node scripts/test-remember-session.mjs",
+		"test:publication": "node --test scripts/test-page-publication.mjs scripts/test-analytics-lifecycle.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^5.5.4",
@@ -48,6 +50,7 @@
 		"vite": "^8.0.7"
 	},
 	"dependencies": {
+		"@google/model-viewer": "^4.3.1",
 		"@tiptap/core": "^3.31.3",
 		"@tiptap/pm": "^3.31.3",
 		"@tiptap/starter-kit": "^3.31.3",

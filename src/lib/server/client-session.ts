@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import type { Cookies } from '@sveltejs/kit';
 import { authApi, readApiJson } from '$lib/server/admin-api';
+import { sessionPersistence } from '$lib/server/session-persistence';
 
 /**
  * Сессия клиента (роль «Клиент») в leget-main.
@@ -42,7 +43,12 @@ export interface ClientProfile {
 	created_at: string | null;
 }
 
-export function setClientSession(cookies: Cookies, token: string, expiresIn: unknown): void {
+export function setClientSession(
+	cookies: Cookies,
+	token: string,
+	expiresIn: unknown,
+	remember: unknown = false
+): void {
 	cookies.set(CLIENT_COOKIE, token, {
 		path: '/',
 		httpOnly: true,
@@ -50,7 +56,7 @@ export function setClientSession(cookies: Cookies, token: string, expiresIn: unk
 		// lax, а не strict: на кабинет приходят по обычной ссылке из письма или
 		// закладки, и strict оставил бы такой переход без cookie — гость.
 		sameSite: 'lax',
-		maxAge: typeof expiresIn === 'number' && expiresIn > 0 ? expiresIn : 3_600
+		...sessionPersistence(expiresIn, remember)
 	});
 }
 

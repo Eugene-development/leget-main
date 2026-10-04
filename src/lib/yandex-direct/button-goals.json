@@ -11,7 +11,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" }
 		]
 	},
 	{
@@ -26,7 +27,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" }
 		]
 	},
 	{
@@ -42,6 +44,7 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
@@ -60,6 +63,7 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
@@ -78,6 +82,26 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+		]
+	},
+	{
+		"id": "client_password_recovery_open",
+		"action": "open",
+		"label": "Забыли пароль?",
+		"templates": ["Promo-1"],
+		"source": "ClientAuthModal.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
@@ -96,6 +120,7 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
@@ -114,6 +139,7 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
@@ -123,6 +149,24 @@
 		"id": "loginmodal_close_1",
 		"action": "close",
 		"label": "Закрыть",
+		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
+		"source": "LoginModal.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "3.Ф.1.1" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "3.М.1.1" }
+		]
+	},
+	{
+		"id": "owner_password_recovery_open",
+		"action": "open",
+		"label": "Забыли пароль?",
 		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
 		"source": "LoginModal.svelte",
 		"route": null,
@@ -718,6 +762,54 @@
 		"variant": "promo",
 		"serviceType": "promo",
 		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+	},
+	{
+		"id": "sms_login_toggle",
+		"action": "open",
+		"label": "Войти по SMS",
+		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
+		"source": "SmsLogin.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "3.Ф.1.1" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "3.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
+			{ "template": "Promo-1", "page": "/university/auth", "article": "" }
+		]
+	},
+	{
+		"id": "sms_login_submit",
+		"action": "submit_click",
+		"label": "Получить код / подтвердить вход по SMS",
+		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
+		"source": "SmsLogin.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "3.Ф.1.1" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "3.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
+			{ "template": "Promo-1", "page": "/university/auth", "article": "" }
+		]
 	},
 	{
 		"id": "lead_catcher_close",
@@ -1433,6 +1525,30 @@
 		]
 	},
 	{
+		"id": "mebel_project_ar_close",
+		"action": "close",
+		"label": "Вернуться из AR в обычный 3D-просмотр",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectModelDialog.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.6.1" }
+		]
+	},
+	{
+		"id": "mebel_project_ar_open",
+		"action": "open",
+		"label": "Переключить на размещение мебели в комнате",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/MebelProjectModelDialog.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.6.1" }
+		]
+	},
+	{
 		"id": "pages_mebel_mebelprojectsgrid_open_1",
 		"action": "open",
 		"label": "Заказать индивидуальный проект",
@@ -1441,6 +1557,18 @@
 		"route": "/mebel",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.3.1" }]
+	},
+	{
+		"id": "mebel_project_ar_activate",
+		"action": "open",
+		"label": "Разместить мебель в своей комнате",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/mebel/ProjectAR.svelte",
+		"route": "/mebel",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.6.1" }
+		]
 	},
 	{
 		"id": "pages_osveshchenie_osveshcheniebrandhero_open_1",
@@ -2065,6 +2193,16 @@
 		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
 	},
 	{
+		"id": "university_password_recovery_open",
+		"action": "open",
+		"label": "Забыли пароль?",
+		"templates": ["Promo-1"],
+		"source": "../university/Admission.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university/auth", "article": "" }]
+	},
+	{
 		"id": "university_auth_submit",
 		"action": "submit_click",
 		"label": "Регистрация или вход студента",
@@ -2215,6 +2353,34 @@
 		"locations": []
 	},
 	{
+		"id": "kitchen_estimate_submit",
+		"action": "submit_click",
+		"label": "Обсудить с менеджером",
+		"templates": ["Promo-1", "Promo-2", "Promo-3"],
+		"source": "../../routes/calculator/+page.svelte",
+		"route": "/calculator",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/calculator", "article": "" },
+			{ "template": "Promo-2", "page": "/calculator", "article": "" },
+			{ "template": "Promo-3", "page": "/calculator", "article": "" }
+		]
+	},
+	{
+		"id": "order_question_submit",
+		"action": "submit_click",
+		"label": "Отправить вопрос по заказу",
+		"templates": ["Promo-1", "Promo-2", "Promo-3"],
+		"source": "../../routes/orders/+page.svelte",
+		"route": "/orders",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/orders", "article": "" },
+			{ "template": "Promo-2", "page": "/orders", "article": "" },
+			{ "template": "Promo-3", "page": "/orders", "article": "" }
+		]
+	},
+	{
 		"id": "partner_registration_open",
 		"action": "open",
 		"label": "Создать аккаунт",
@@ -2243,6 +2409,20 @@
 		"route": "/partner/register",
 		"mock": false,
 		"locations": []
+	},
+	{
+		"id": "selection_estimate_submit",
+		"action": "submit_click",
+		"label": "Отправить на расчёт",
+		"templates": ["Promo-1", "Promo-2", "Promo-3"],
+		"source": "../../routes/selection/[token]/+page.svelte",
+		"route": "/selection/[token]",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "/selection/[token]", "article": "" },
+			{ "template": "Promo-2", "page": "/selection/[token]", "article": "" },
+			{ "template": "Promo-3", "page": "/selection/[token]", "article": "" }
+		]
 	},
 	{
 		"id": "partnership_drawer_close",

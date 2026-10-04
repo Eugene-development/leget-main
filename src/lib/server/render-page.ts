@@ -99,7 +99,13 @@ export interface RenderPageResponse {
  */
 export async function loadRenderPage(event: RequestEvent, slug: string) {
 	const hostname = new URL(event.request.url).hostname;
-	const client = createGraphQLClient({ 'X-Forwarded-Host': hostname });
+	const draftToken = event.url.searchParams.get('draft');
+	if (draftToken !== null && !/^[a-f0-9]{64}$/.test(draftToken)) error(404, 'Предпросмотр не найден.');
+	const client = createGraphQLClient({
+		'X-Forwarded-Host': hostname,
+		...(draftToken ? { 'X-Leget-Draft': draftToken } : {})
+	});
+	if (draftToken) event.setHeaders({ 'cache-control': 'private, no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'no-referrer' });
 
 	try {
 		const data = await client.request<RenderPageResponse>(RENDER_PAGE_QUERY, { slug });
@@ -115,6 +121,10 @@ export async function loadRenderPage(event: RequestEvent, slug: string) {
 	} catch (err) {
 		if (err instanceof ClientError) {
 			const code = err.response.errors?.[0]?.extensions?.['code'] as string | undefined;
+
+			if (code === 'PAGE_PREVIEW_NOT_FOUND') {
+				error(410, 'Предпросмотр завершён. Попросите владельца сайта создать новую ссылку.');
+			}
 
 			if (code === 'PAGE_NOT_FOUND') {
 				const notFound = await loadNotFoundPage(client, slug);

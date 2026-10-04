@@ -14,10 +14,21 @@ const reviewedPath = join(root, 'scripts/goals-reviewed-controls.json');
 const reviewed = JSON.parse(readFileSync(reviewedPath, 'utf8'));
 const variants = JSON.parse(readFileSync(join(root, 'scripts/goal-variants.json'), 'utf8'));
 const errors = [];
-const shared = ['ServiceOrderIsland', 'ClientAuthModal', 'ClientAuthButtons', 'LoginModal'];
+const shared = [
+	'ServiceOrderIsland',
+	'ClientAuthModal',
+	'ClientAuthButtons',
+	'LoginModal',
+	'SmsLogin'
+];
 // Content CRUD is owner-only, not a visitor conversion (see metrika-goals.md).
 const ownerOnly =
 	/Mebel(ProjectModal|ProjectEditModal|ProjectDeleteDialog|TagModal)|^templates\/Promo-1\/pages\/bytovaya-tehnika\/BrandModal\.svelte$/;
+function pageRouteShared(file) {
+	return ['calculator', 'selection/[token]', 'orders'].some(
+		(route) => file === join(root, 'src/routes', route, '+page.svelte')
+	);
+}
 function walk(node, visit) {
 	if (!node || typeof node !== 'object') return;
 	if (node.type) visit(node);
@@ -40,9 +51,15 @@ for (const file of [
 	...files(join(base, 'templates')),
 	...files(join(root, 'src/lib/university')),
 	...shared.map((n) => join(base, n + '.svelte')),
-	...['partner/register', 'admin/clients', 'admin/partners', 'admin/study'].map((route) =>
-		join(root, 'src/routes', route, '+page.svelte')
-	),
+	...[
+		'partner/register',
+		'admin/clients',
+		'admin/partners',
+		'admin/study',
+		'calculator',
+		'selection/[token]',
+		'orders'
+	].map((route) => join(root, 'src/routes', route, '+page.svelte')),
 	join(root, 'src/lib/crm/ManagerForm.svelte')
 ].sort()) {
 	const source = readFileSync(file, 'utf8');
@@ -124,9 +141,11 @@ for (const file of [
 		const template = path.match(/^templates\/([^/]+)/)?.[1];
 		const templates = template
 			? [template]
-			: path.startsWith('LoginModal')
-				? ['Promo-1', 'Promo-2', 'Promo-3', 'Test']
-				: ['Promo-1'];
+			: pageRouteShared(file)
+				? ['Promo-1', 'Promo-2', 'Promo-3']
+				: path.startsWith('LoginModal') || path === 'SmsLogin.svelte'
+					? ['Promo-1', 'Promo-2', 'Promo-3', 'Test']
+					: ['Promo-1'];
 		const pageRoute = file.includes('/src/routes/')
 			? '/' + relative(join(root, 'src/routes'), file).replace('/+page.svelte', '')
 			: null;

@@ -7,6 +7,55 @@ export type FormResult = {
 	message: string;
 };
 type Pending = { key: string; promise: Promise<FormResult> | null };
+
+/** Advertising identifiers only; never read contact fields, messages or credential URLs. */
+export function formAttribution(): Record<string, string> {
+	if (typeof window === 'undefined' || typeof document === 'undefined') return {};
+	if (window.location.pathname.replace(/\/+$/, '') === '/reset-password') return {};
+	const cookies = new Map(
+		document.cookie.split(';').map((entry) => {
+			const index = entry.indexOf('=');
+			return [entry.slice(0, index).trim(), entry.slice(index + 1)];
+		})
+	);
+	let first: Record<string, unknown> = {};
+	try {
+		const stored = JSON.parse(decodeURIComponent(cookies.get('leget_attr') ?? 'null'));
+		if (stored?.first && typeof stored.first === 'object') first = stored.first;
+	} catch {
+		/* Attribution must never interrupt intake. */
+	}
+	const query = new URL(window.location.href).searchParams;
+	const hasFirst = Object.keys(first).length > 0;
+	const result: Record<string, string> = {};
+	for (const field of ['utm_source', 'utm_medium', 'utm_campaign']) {
+		const value = hasFirst ? first[field] : query.get(field);
+		if (typeof value === 'string' && value.trim()) result[field] = value.trim().slice(0, 120);
+	}
+	const ids = {
+		yclid: hasFirst ? first.yclid : query.get('yclid'),
+		metrika_client_id: cookies.get('_ym_uid')
+	};
+	for (const [field, value] of Object.entries(ids)) {
+		if (typeof value === 'string' && /^[0-9]{1,128}$/.test(value)) result[field] = value;
+	}
+	return result;
+}
+
+/** Recovery credentials must never become request attribution or a retry fingerprint. */
+export function formSourceUrl(sourceUrl: string, currentUrl?: string): string {
+	const isRecovery = (url: URL) => url.pathname.replace(/\/+$/, '') === '/reset-password';
+	try {
+		const current = currentUrl ? new URL(currentUrl) : undefined;
+		if (current && isRecovery(current)) return `${current.origin}${current.pathname}`.slice(0, 500);
+		const source = new URL(sourceUrl, currentUrl);
+		if (isRecovery(source)) return `${source.origin}${source.pathname}`.slice(0, 500);
+	} catch {
+		// Keep ordinary attribution compatible with existing callers.
+	}
+	return sourceUrl.slice(0, 500);
+}
+
 /** Read the visible heading while the submit event still has its currentTarget. */
 export function formHeading(event?: Event): string | undefined {
 	if (typeof HTMLElement === 'undefined') return undefined;
@@ -23,6 +72,7 @@ export function formHeading(event?: Event): string | undefined {
 
 export function createFormSender(formId: string) {
 	const pending = new Map<string, Pending>();
+	let capturedAttribution: Record<string, string> | undefined;
 	return async function sendForm(
 		payload: FormData | Record<string, string | number | null | undefined>,
 		endpoint = 'service-request',
@@ -35,10 +85,16 @@ export function createFormSender(formId: string) {
 			}
 		}
 		body.set('form_id', formId);
+		if (!body.has('attribution')) {
+			const attribution = (capturedAttribution ??= formAttribution());
+			if (Object.keys(attribution).length) body.set('attribution', JSON.stringify(attribution));
+		}
 		const title = formHeading(event);
 		if (title) body.set('form_title', title);
-		if (!body.has('source_url') && typeof window !== 'undefined')
-			body.set('source_url', window.location.href.slice(0, 500));
+		const currentUrl = typeof window !== 'undefined' ? window.location.href : undefined;
+		const sourceUrl = body.get('source_url');
+		if (typeof sourceUrl === 'string') body.set('source_url', formSourceUrl(sourceUrl, currentUrl));
+		else if (currentUrl) body.set('source_url', formSourceUrl(currentUrl, currentUrl));
 		const signature: [string, string][] = [];
 		for (const [key, value] of body.entries()) {
 			if (key === 'captcha_token' || key === 'submission_key') continue;
@@ -72,11 +128,16 @@ export function createFormSender(formId: string) {
 				});
 				const result = await response.json().catch(() => null);
 				if (!response.ok || !result?.success || !result?.id) {
+					const staleEstimate =
+						response.status === 422 && Array.isArray(result?.errors?.estimate_version);
 					const error = new Error(
-						response.status === 429
-							? 'Слишком много попыток. Подождите минуту.'
-							: 'Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.'
+						staleEstimate
+							? 'Правила расчёта изменились. Рассчитайте стоимость ещё раз.'
+							: response.status === 429
+								? 'Слишком много попыток. Подождите минуту.'
+								: 'Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.'
 					);
+					if (staleEstimate) Object.assign(error, { code: 'estimate_stale' });
 					throw error;
 				}
 				pending.delete(fingerprint);

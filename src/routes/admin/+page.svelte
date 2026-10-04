@@ -1,5 +1,11 @@
 <script>
+	import RememberMe from '$lib/components/RememberMe.svelte';
+	let remember = $state(false);
+	let smsBusy = $state(false);
+	let loginBusy = $state(false);
+	import SmsLogin from '$lib/components/SmsLogin.svelte';
 	import { enhance } from '$app/forms';
+	import { getPasswordRecoveryUrl } from '$lib/utils/config';
 
 	let { data, form } = $props();
 	let offlineType = $state('');
@@ -53,7 +59,25 @@
 					</p>
 				</div>
 
-				<form method="POST" action="?/login" use:enhance class="space-y-5 p-7 sm:p-9">
+				<form
+					method="POST"
+					action="?/login"
+					use:enhance={({ cancel }) => {
+						if (loginBusy || smsBusy) {
+							cancel();
+							return;
+						}
+						loginBusy = true;
+						return async ({ update }) => {
+							try {
+								await update();
+							} finally {
+								loginBusy = false;
+							}
+						};
+					}}
+					class="space-y-5 p-7 sm:p-9"
+				>
 					<label class="block">
 						<span
 							class="mb-2 block text-[10px] font-bold tracking-wider text-text-secondary uppercase"
@@ -85,6 +109,16 @@
 						/>
 					</label>
 
+					<RememberMe bind:checked={remember} disabled={loginBusy || smsBusy} />
+
+					<a
+						href={getPasswordRecoveryUrl()}
+						data-metrika-goal="admin_password_recovery_open"
+						data-goal-action="open"
+						class="inline-flex min-h-11 items-center text-sm font-medium text-link-600 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600"
+						>Забыли пароль?</a
+					>
+
 					{#if data.clientSession}
 						<p class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
 							Вы вошли как клиент. Панель администратора для этой роли закрыта —
@@ -104,11 +138,22 @@
 
 					<button
 						type="submit"
+						disabled={loginBusy || smsBusy}
 						class="w-full rounded-xl bg-primary px-5 py-3.5 text-xs font-bold tracking-[0.16em] text-white uppercase transition hover:bg-primary-light focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
 					>
 						Войти
 					</button>
 				</form>
+				<div class="px-7 pb-7 sm:px-9">
+					<SmsLogin
+						bind:busy={smsBusy}
+						{remember}
+						context="admin"
+						onlogin={() => {
+							window.location.href = '/admin';
+						}}
+					/>
+				</div>
 			</div>
 		</section>
 	{:else}

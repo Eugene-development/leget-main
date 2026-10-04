@@ -1,8 +1,13 @@
 <script lang="ts">
+	import RememberMe from '$lib/components/RememberMe.svelte';
+	let remember = $state(false);
+	let smsBusy = $state(false);
+	import SmsLogin from '$lib/components/SmsLogin.svelte';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
+	import { getPasswordRecoveryUrl } from '$lib/utils/config';
 	import type { ClientProfile } from '$lib/server/client-session';
 	let { profile = null }: { profile?: ClientProfile | null } = $props();
 	let authenticated = $state<ClientProfile | null>(null);
@@ -30,7 +35,7 @@
 	}
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
-		if (busy) return;
+		if (busy || smsBusy) return;
 		busy = true;
 		problem = '';
 		const payload = Object.fromEntries(new FormData(event.currentTarget as HTMLFormElement));
@@ -38,7 +43,11 @@
 			const response = await fetch(`/university/api/${registering ? 'register' : 'login'}`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ ...payload, captcha_token: captchaToken })
+				body: JSON.stringify({
+					...payload,
+					captcha_token: captchaToken,
+					...(!registering ? { remember } : {})
+				})
 			});
 			const result = await response.json();
 			if (result.code === 'account_exists') {
@@ -220,6 +229,15 @@
 							/></label
 						>{/if}
 				</div>
+				{#if !registering}
+					<RememberMe bind:checked={remember} disabled={busy || smsBusy} />
+					<a
+						class="academy-link"
+						href={getPasswordRecoveryUrl()}
+						data-metrika-goal="university_password_recovery_open"
+						data-goal-action="open">Забыли пароль?</a
+					>
+				{/if}
 				<SmartCaptcha
 					bind:this={captcha}
 					onverify={(token) => (captchaToken = token)}
@@ -239,6 +257,19 @@
 					>{busy ? 'Подождите…' : registering ? 'Зарегистрироваться студентом' : 'Войти'}</button
 				>
 			</form>
+			{#if !registering}<SmsLogin
+					bind:busy={smsBusy}
+					{remember}
+					context="university"
+					onlogin={async (result) => {
+						if (result.user?.role === 'student' || result.user?.roles?.includes('student'))
+							await goto('/university/student', { invalidateAll: true });
+						else {
+							authenticated = result.user;
+							await invalidateAll();
+						}
+					}}
+				/>{/if}
 		{/if}
 	</section>
 </div>

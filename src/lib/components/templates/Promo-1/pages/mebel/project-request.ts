@@ -1,3 +1,4 @@
+import { getAuthToken } from '$lib/utils/auth-session';
 import { getGraphQLUrl } from '$lib/utils/config';
 
 export class ProjectRequestError extends Error {
@@ -14,7 +15,7 @@ export async function projectRequest<T>(
 	variables: Record<string, unknown>,
 	failureMessage = 'Не удалось сохранить проект. Проверьте права доступа и повторите попытку.'
 ): Promise<T> {
-	const token = localStorage.getItem('auth_token');
+	const token = getAuthToken();
 	if (!token)
 		throw new ProjectRequestError('Войдите в аккаунт владельца сайта и повторите действие.');
 	let response: Response;

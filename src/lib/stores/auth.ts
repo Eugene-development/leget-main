@@ -1,6 +1,13 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import { getAuthApiUrl } from '$lib/utils/config';
+import {
+	clearAuthSession,
+	getAuthToken,
+	getAuthUserId,
+	saveAuthSession,
+	setAuthUserId
+} from '$lib/utils/auth-session';
 
 export interface AuthUser {
 	id: number;
@@ -18,7 +25,7 @@ interface AuthState {
 	 * renderPage). `user` приезжает только с ответом /auth/me, а режим
 	 * редактирования включается сразу по наличию токена — если бы владение
 	 * проверялось по `user.id`, редактор у владельца появлялся бы лишь после
-	 * сетевого круга. Поэтому id кэшируется в localStorage рядом с токеном.
+	 * сетевого круга. Поэтому id кэшируется в выбранном хранилище рядом с токеном.
 	 *
 	 * Кэш оптимистичен, но безопасен: подделав его, пользователь получит только
 	 * нарисованный интерфейс редактора — все мутации проверяют владение на
@@ -26,39 +33,6 @@ interface AuthState {
 	 */
 	userId: number | null;
 	isLoading: boolean;
-}
-
-const TOKEN_KEY = 'auth_token';
-const USER_ID_KEY = 'auth_user_id';
-
-function readCachedUserId(): number | null {
-	if (!browser) return null;
-	const raw = localStorage.getItem(USER_ID_KEY);
-	if (raw === null || raw.trim() === '') return null;
-	const id = Number(raw);
-	return Number.isFinite(id) ? id : null;
-}
-
-/**
- * Кладёт id в кэш. Нераспознанный id стирает старую запись, а не оставляет её:
- * иначе после входа другим пользователем в кэше остался бы id предыдущего.
- */
-function cacheUserId(id: unknown): number | null {
-	if (!browser) return null;
-	const value = typeof id === 'number' || typeof id === 'string' ? Number(id) : Number.NaN;
-	if (!Number.isFinite(value)) {
-		localStorage.removeItem(USER_ID_KEY);
-		return null;
-	}
-	localStorage.setItem(USER_ID_KEY, String(value));
-	return value;
-}
-
-function clearSessionStorage(): void {
-	if (!browser) return;
-	localStorage.removeItem(TOKEN_KEY);
-	localStorage.removeItem(USER_ID_KEY);
-	localStorage.removeItem('email_verified');
 }
 
 function createAuthStore() {
@@ -76,7 +50,19 @@ function createAuthStore() {
 	 * свежий вход, стирали новый токен и гасили режим редактирования.
 	 */
 	function isStale(token: string): boolean {
-		return !browser || localStorage.getItem(TOKEN_KEY) !== token;
+		if (!browser) return true;
+		const current = getAuthToken();
+		if (!current) set({ isAuthenticated: false, user: null, userId: null, isLoading: false });
+		else if (current !== token) {
+			// A cross-tab login can replace an expired temporary session. Do not leave
+			// its optimistic identity active; an already accepted new login stays intact.
+			update((state) =>
+				state.isLoading
+					? { isAuthenticated: false, user: null, userId: null, isLoading: false }
+					: state
+			);
+		}
+		return current !== token;
 	}
 
 	/** Проверка идёт один раз на страницу: повторные вызовы ждут тот же запрос. */
@@ -84,14 +70,31 @@ function createAuthStore() {
 
 	return {
 		subscribe,
+		acceptLogin(result: {
+			token: string;
+			user: AuthUser;
+			email_verified: boolean;
+			remember?: boolean;
+		}) {
+			saveAuthSession(result);
+			set({
+				isAuthenticated: true,
+				user: result.user,
+				userId: setAuthUserId(result.user.id),
+				isLoading: false
+			});
+		},
 
 		/** Check token validity against /auth/me and update state */
 		async init() {
 			if (!browser) return;
 			if (pendingInit) return pendingInit;
 
-			const token = localStorage.getItem(TOKEN_KEY);
-			if (!token) return;
+			const token = getAuthToken();
+			if (!token) {
+				set({ isAuthenticated: false, user: null, userId: null, isLoading: false });
+				return;
+			}
 
 			// Токен есть — считаем сессию активной сразу, не дожидаясь ответа.
 			// Иначе редактор включался только после сетевого запроса: на живом
@@ -105,7 +108,7 @@ function createAuthStore() {
 			update((s) => ({
 				...s,
 				isAuthenticated: true,
-				userId: s.userId ?? readCachedUserId(),
+				userId: s.userId ?? getAuthUserId(),
 				isLoading: true
 			}));
 
@@ -123,7 +126,7 @@ function createAuthStore() {
 					if (isStale(token)) return;
 
 					if (!response.ok) {
-						clearSessionStorage();
+						clearAuthSession();
 						set({ isAuthenticated: false, user: null, userId: null, isLoading: false });
 						return;
 					}
@@ -134,7 +137,7 @@ function createAuthStore() {
 					set({
 						isAuthenticated: true,
 						user,
-						userId: cacheUserId(user?.id),
+						userId: setAuthUserId(user?.id),
 						isLoading: false
 					});
 				} catch {
@@ -154,7 +157,8 @@ function createAuthStore() {
 		async login(
 			email: string,
 			password: string,
-			captchaToken: string | null = null
+			captchaToken: string | null = null,
+			remember = false
 		): Promise<void> {
 			const authApiUrl = getAuthApiUrl();
 			const response = await fetch(`${authApiUrl}/auth/login`, {
@@ -166,7 +170,8 @@ function createAuthStore() {
 				body: JSON.stringify({
 					email: email.trim().toLowerCase(),
 					password,
-					captcha_token: captchaToken
+					captcha_token: captchaToken,
+					remember
 				})
 			});
 
@@ -178,18 +183,14 @@ function createAuthStore() {
 				throw new Error(captchaErr || result.message || 'Ошибка входа');
 			}
 
-			if (result.token) {
-				localStorage.setItem(TOKEN_KEY, result.token);
-			}
-			if (result.email_verified !== undefined) {
-				localStorage.setItem('email_verified', result.email_verified ? '1' : '0');
-			}
+			if (!result.token) throw new Error('Сервер не вернул сессию. Повторите вход.');
+			saveAuthSession(result);
 
 			const user = (result.user ?? null) as AuthUser | null;
 			set({
 				isAuthenticated: true,
 				user,
-				userId: cacheUserId(user?.id),
+				userId: setAuthUserId(user?.id),
 				isLoading: false
 			});
 		},
@@ -197,7 +198,7 @@ function createAuthStore() {
 		/** Clear token and reset state */
 		logout() {
 			if (browser) {
-				clearSessionStorage();
+				clearAuthSession();
 				// Сессия карты целей хранится в отдельной httpOnly-cookie, поэтому
 				// клиент не может удалить её напрямую. Endpoint завершает её вместе
 				// с общей пользовательской сессией; ошибка сети не блокирует выход.

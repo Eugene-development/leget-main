@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.35.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -15,6 +16,18 @@
 		isEditable?: boolean;
 	} = $props();
 
+	const defaultBgImage =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero.png';
+	const unavailableDefaultBgImage =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero_20260924.png';
+	// Старый стартовый файл недоступен; обновляем данные до SSR и после их загрузки клиентом.
+	function restoreDefaultImage() {
+		if (!data.bgImage || data.bgImage === unavailableDefaultBgImage) data.bgImage = defaultBgImage;
+	}
+	restoreDefaultImage();
+	$effect.pre(restoreDefaultImage);
+	const bgImage = $derived(data.bgImage || defaultBgImage);
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -25,6 +38,13 @@
 
 <div class="p1-catalog-container mt-16">
 	<section class="relative overflow-hidden rounded-3xl bg-ink-900" data-p1-theme="dark">
+		<ImageFallback
+			imagePath={['bgImage']}
+			src={bgImage}
+			alt="Подвесные светильники и бра с тёплым светом"
+			class="absolute inset-0 h-full w-full object-cover opacity-40"
+		/>
+
 		<div class="relative px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
 			<nav class="p1-muted mb-8 flex items-center gap-2 text-sm" aria-label="Навигационная цепочка">
 				<a href="/" class="transition-colors hover:text-on-dark">Главная</a>

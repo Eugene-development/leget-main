@@ -15,7 +15,7 @@ export const POST: RequestHandler = async ({ request, cookies, url }) => {
 		});
 		const result = await readApiJson(response);
 		if (response.ok && typeof result.token === 'string')
-			setClientSession(cookies, result.token, result.expires_in);
+			setClientSession(cookies, result.token, result.expires_in, result.remember);
 		delete result.token;
 		return json(result, { status: response.status });
 	} catch {

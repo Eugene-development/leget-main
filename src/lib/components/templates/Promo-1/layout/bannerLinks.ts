@@ -1,6 +1,6 @@
 /**
  * Второстепенные ссылки баннера — те, что на десктопе идут строкой слева
- * от контактов: «О компании», «Партнёрство», «Отзывы», «Рассрочка»,
+ * от контактов: «О проекте», «Партнёрство», «Отзывы», «Рассрочка»,
  * «Гарантии», «Контакты».
  *
  * Вынесено 25.08.2026 при разборе мобильной шапки. До этого список стоял
@@ -18,7 +18,7 @@
 export type BannerLink = { href: string; label: string };
 
 export const bannerDefaultLinks: readonly BannerLink[] = [
-	{ href: '/about', label: 'О нас' },
+	{ href: '/about', label: 'О проекте' },
 	{ href: '/partnership', label: 'Партнёрство' },
 	{ href: '/testimonials', label: 'Отзывы' },
 	{ href: '/installment', label: 'Рассрочка' },

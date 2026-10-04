@@ -773,6 +773,9 @@ body.page-entering {
 /* Base Styles */
 html {
 	scroll-behavior: smooth;
+	/* Раскрытие контента не меняет ширину страницы при появлении скроллбара. */
+	scrollbar-gutter: stable;
+	overflow-y: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 

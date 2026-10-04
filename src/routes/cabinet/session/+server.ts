@@ -16,6 +16,7 @@ export const POST: RequestHandler = async ({ request, cookies, url, getClientAdd
 	let body: Record<string, unknown>;
 	try {
 		body = (await request.json()) as Record<string, unknown>;
+		if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error();
 	} catch {
 		return json({ message: 'Некорректный запрос.' }, { status: 400 });
 	}
@@ -37,7 +38,12 @@ export const POST: RequestHandler = async ({ request, cookies, url, getClientAdd
 			// посетителя передаём отдельно — SmartCaptcha сверяет его с тем,
 			// на котором был решён виджет.
 			headers: { 'X-Forwarded-For': getClientAddress() },
-			body: JSON.stringify({ email, password, captcha_token: captchaToken })
+			body: JSON.stringify({
+				email,
+				password,
+				captcha_token: captchaToken,
+				remember: body.remember
+			})
 		});
 		const result = await readApiJson(response);
 
@@ -52,7 +58,7 @@ export const POST: RequestHandler = async ({ request, cookies, url, getClientAdd
 			);
 		}
 
-		setClientSession(cookies, result.token, result.expires_in);
+		setClientSession(cookies, result.token, result.expires_in, result.remember);
 
 		// Повторный рекламный переход обновляет последнее касание. Первое
 		// на сервере не перезаписывается — ни этим вызовом, ни любым другим.

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getAuthToken } from '$lib/utils/auth-session';
 	import { onMount, untrack } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
@@ -294,7 +295,7 @@
 
 		try {
 			// 1. Получаем pre-signed URL
-			const token = localStorage.getItem('auth_token');
+			const token = getAuthToken();
 			if (!token) throw new Error('Сессия истекла. Войдите снова и повторите загрузку.');
 			const apiUrl = getGraphQLUrl();
 

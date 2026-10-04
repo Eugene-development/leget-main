@@ -342,7 +342,7 @@
             "/about": {
                 "Hero": {
                     "badge": "О компании",
-                    "title": "О нас",
+                    "title": "О проекте",
                     "lead": "Мы помогаем пройти путь от идеи до готового интерьера: подбираем материалы, считаем проект и ведём его до финальной сборки.",
                     "text": "",
                     "buttonText": "Связаться с нами",
@@ -1578,7 +1578,8 @@
                 "OsveshchenieHero": {
                     "title": "Освещение",
                     "description": "Подберём светильники для разных зон дома: общий, рабочий и акцентный свет. Поможем сочетать их с мебелью и интерьером.",
-                    "buttonText": "Подобрать освещение"
+                    "buttonText": "Подобрать освещение",
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/lighting_hero.png"
                 },
                 "OsveshchenieBrands": {
                     "title": "Бренды освещения",
@@ -1626,7 +1627,7 @@
                     "title": "Фурнитура",
                     "description": "Каталог интернет-магазинов и поставщиков мебельной фурнитуры. Петли, направляющие, подъёмники и системы хранения от проверенных поставщиков.",
                     "primaryButton": "Подобрать фурнитуру",
-                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png"
+                    "bgImage": "https://storage.yandexcloud.net/leget-main/templates/promo-1/furnitura-hero-realistic-20261002.webp"
                 },
                 "FurnituraShops": {
                     "title": "Магазины и поставщики",
@@ -2390,6 +2391,7 @@
     "_versions": {
         "1": {
             "HeroMain": 4,
+            "HomeFAQ": 2,
             "ActionsCTA": 4,
             "Brands": 2,
             "ContactAddress": 2,

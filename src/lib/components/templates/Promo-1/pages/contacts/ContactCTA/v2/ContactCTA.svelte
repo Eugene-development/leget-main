@@ -3,11 +3,10 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import { ct, revealOnScroll } from '../../theme';
+	import { ct } from '../../theme';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../../../theme.css';
-	import '../../theme.css';
 
 	let {
 		data = $bindable(),
@@ -20,10 +19,9 @@
 		isEditable?: boolean;
 		sitePhone?: string | null;
 	} = $props();
+
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
-
-	// Ink-блок: дефолт тёмный, тумблер живёт в панели VersionSwitcher.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 
 	async function saveField(field: string, value: string) {
@@ -34,49 +32,40 @@
 	}
 </script>
 
-<!--
-	Вариант 2 — карточка-паспарту в две колонки: текст слева, действия справа,
-	между ними вертикальный разделитель с ромбом. Поверхность, палитра, кнопки и
-	шкала заголовков те же, что у варианта 1 (../../theme.ts): переключение
-	версии меняет только раскладку.
--->
+{#snippet arrow(compact = false)}
+	<svg
+		class="contact-panel__arrow size-5 shrink-0 {compact ? 'max-[374px]:hidden' : ''}"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="1.5"
+		aria-hidden="true"
+	>
+		<path d="M7 17 17 7M7 7h10v10" stroke-linecap="round" stroke-linejoin="round" />
+	</svg>
+{/snippet}
+
+<!-- v2: контактная панель; данные и семантические роли общие с остальными версиями. -->
 <section
-	class="{ct.section.shell} {ct.section.pad} {ct.surface.ink}"
+	class="contact-panel p1-surface py-16 sm:py-20 lg:py-24"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="ct-grid ct-grid--fade-center"></div>
-		<div class="ct-glow absolute -top-24 right-1/4 size-112"></div>
-		<div class={ct.accent.toplineOnInk}></div>
-		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
-		></div>
-	</div>
-
 	<div class={ct.section.containerMid}>
-		<div
-			use:revealOnScroll
-			class="ct-reveal ct-card-enter {ct.card.onInk} relative px-6 py-10 sm:px-12 sm:py-12 lg:px-14"
-		>
-			<span class={ct.accent.hairlineOnCard} aria-hidden="true"></span>
-
-			<div class="grid items-center gap-10 lg:grid-cols-[1.05fr_auto_0.95fr] lg:gap-12">
-				<div class="text-center lg:text-left">
-					<p class="ct-item {ct.eyebrow.onInk}">
-						<span class={ct.eyebrow.dashOnInk} aria-hidden="true"></span>
-						Мы на связи
-					</p>
-
+		<div class="p1-card rounded-3xl border p-6 sm:p-10 lg:p-12">
+			<div class="grid items-center gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
+				<div class="min-w-0">
 					<EditableField
 						fieldKey="ContactCTA.title"
 						label="Заголовок"
 						value={String(data?.title ?? 'Остались вопросы?')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
-						class="ct-item ct-d1 mt-5 block"
+						class="block"
 					>
 						{#snippet children(displayValue)}
-							<h2 class={ct.title.h2OnInk}><RichText value={displayValue} /></h2>
+							<h2 class="{ct.title.h2OnInk} text-balance break-words">
+								<RichText value={displayValue} />
+							</h2>
 						{/snippet}
 					</EditableField>
 
@@ -89,27 +78,17 @@
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('subtitle', v)}
-						class="ct-item ct-d3 mt-6 block"
+						class="mt-4 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="{ct.body.onInkMuted} mx-auto max-w-md lg:mx-0">
+							<p class="p1-body max-w-md text-base/7 break-words">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
 					</EditableField>
 				</div>
 
-				<!-- Вертикальный разделитель с ромбом — тот же акцентный элемент, что и в Hero. -->
-				<div
-					class="ct-rule ct-d2 flex items-center justify-center gap-3 lg:h-40 lg:flex-col"
-					aria-hidden="true"
-				>
-					<span class="{ct.accent.ruleOnInk} lg:h-auto lg:w-px lg:flex-1"></span>
-					<span class={ct.accent.diamond}></span>
-					<span class="{ct.accent.ruleOnInk} lg:h-auto lg:w-px lg:flex-1"></span>
-				</div>
-
-				<div class="flex flex-col gap-3">
+				<div class="min-w-0">
 					<EditableField
 						richText={false}
 						fieldKey="ContactCTA.phone"
@@ -117,29 +96,24 @@
 						value={phone}
 						isEditable={false}
 						onSave={(v) => saveField('phone', v)}
-						class="ct-item ct-d3 block"
+						class="block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
-								<a href={phoneHref} class="{ct.btn.primary} w-full justify-between">
-									<span class="flex items-center gap-3">
-										<svg
-											class="size-4.5"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											stroke-width="2"
-											aria-hidden="true"
+								<a
+									href={phoneHref}
+									aria-label={`Позвонить по номеру ${displayValue}`}
+									class="contact-panel__action contact-panel__call flex min-h-28 items-center justify-between gap-4 rounded-2xl bg-brand-600 p-5 text-on-accent sm:p-6"
+								>
+									<span class="min-w-0">
+										<span class="block text-sm">Позвонить</span>
+										<span
+											class="ds-title-sub mt-2 block text-lg break-words min-[375px]:text-xl sm:text-2xl"
 										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-											/>
-										</svg>
-										{displayValue}
+											{displayValue}
+										</span>
 									</span>
-									<span class={ct.arrow} aria-hidden="true">&rarr;</span>
+									{@render arrow(true)}
 								</a>
 							{/if}
 						{/snippet}
@@ -152,7 +126,7 @@
 						value={String(data?.telegramUrl ?? '')}
 						{isEditable}
 						onSave={(v) => saveField('telegramUrl', v)}
-						class="ct-item ct-d4 block"
+						class="block"
 					>
 						{#snippet children(displayValue)}
 							{#if displayValue}
@@ -160,22 +134,27 @@
 									href={displayValue}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="{ct.btn.ghostOnInk} w-full justify-between"
+									class="contact-panel__action contact-panel__message p1-title p1-line mt-3 flex min-h-16 items-center justify-between gap-4 rounded-2xl border px-5 py-4 sm:px-6"
 								>
-									<span class="flex items-center gap-3">
+									<span class="flex min-w-0 items-center gap-3">
 										<svg
-											class="size-4.5 text-telegram"
-											fill="currentColor"
+											class="size-5 shrink-0"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.5"
 											viewBox="0 0 24 24"
 											aria-hidden="true"
 										>
 											<path
-												d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"
+												d="m21 3-6 18-4-8-8-4L21 3ZM11 13l5-5"
+												stroke-linecap="round"
+												stroke-linejoin="round"
 											/>
 										</svg>
-										Написать в Telegram
+										<span class="break-words">Написать в Telegram</span>
+										<span class="sr-only">(откроется в новой вкладке)</span>
 									</span>
-									<span class={ct.arrow} aria-hidden="true">&rarr;</span>
+									{@render arrow()}
 								</a>
 							{/if}
 						{/snippet}
@@ -185,3 +164,42 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	.contact-panel__action {
+		text-decoration: none;
+		transition: background-color var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+	}
+
+	.contact-panel__action:focus-visible {
+		outline: 2px solid var(--p1-title);
+		outline-offset: 4px;
+	}
+
+	.contact-panel__call:hover {
+		background-color: var(--color-brand-700);
+	}
+
+	.contact-panel__message:hover {
+		background-color: var(--p1-card-hover);
+	}
+
+	.contact-panel__arrow {
+		transition: transform var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+	}
+
+	.contact-panel__action:is(:hover, :focus-visible) .contact-panel__arrow {
+		transform: translate(0.125rem, -0.125rem);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.contact-panel__action,
+		.contact-panel__arrow {
+			transition: none;
+		}
+
+		.contact-panel__action:is(:hover, :focus-visible) .contact-panel__arrow {
+			transform: none;
+		}
+	}
+</style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getAuthToken } from '$lib/utils/auth-session';
 	import { browser } from '$app/environment';
 	import { getGraphQLUrl } from '$lib/utils/config';
 
@@ -39,7 +40,7 @@
 
 		isOwner = readOwnerCache(licenseId);
 
-		const token = localStorage.getItem('auth_token');
+		const token = getAuthToken();
 		if (!token) return;
 		const controller = new AbortController();
 

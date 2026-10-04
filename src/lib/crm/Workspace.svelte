@@ -26,6 +26,11 @@
 		['clients', 'Клиенты'],
 		['companies', 'Компании'],
 		['tasks', 'Задачи'],
+		['insights', 'Результаты сайта'],
+		['automation', 'Правила CRM'],
+		['orders', 'Кабинет заказчика'],
+		['calculator', 'Калькулятор'],
+		['launch', 'Запуск сайта'],
 		['members', 'Сотрудники'],
 		['settings', 'Настройки']
 	];
@@ -558,7 +563,7 @@
 				></label
 			>{/if}
 		<nav aria-label="Разделы CRM">
-			{#each navigation.filter(([key]) => key !== 'members' || canManage) as [key, label]}<a
+			{#each navigation.filter(([key]) => !['members', 'automation', 'calculator', 'launch'].includes(key) || canManage) as [key, label]}<a
 					class:active={section === key ||
 						(key === 'settings' && ['members', 'stages', 'templates'].includes(section))}
 					href={href(key)}

@@ -1,5 +1,7 @@
+import { getAuthToken } from '$lib/utils/auth-session';
 import type { EditContext } from '$lib/utils/page-edit';
 import { getGraphQLUrl } from '$lib/utils/config';
+import { usesDraft, saveDraftOperation, type PageDraft } from '$lib/growth/drafts';
 
 export type MoveDirection = 'up' | 'down';
 export const COMPONENT_ORDER_CONTEXT = Symbol('component-order');
@@ -14,7 +16,13 @@ export async function movePageComponent(
 	type: string,
 	direction: MoveDirection
 ): Promise<string[]> {
-	const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+	if (usesDraft(context)) {
+		const result = await saveDraftOperation<PageDraft & { order: string[] }>(context, {
+			kind: 'move', type, direction
+		});
+		return result.order;
+	}
+	const token = getAuthToken();
 	if (!token) throw new Error('Войдите в аккаунт, чтобы изменить порядок блоков.');
 	const response = await fetch(getGraphQLUrl(), {
 		method: 'POST',

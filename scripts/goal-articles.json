@@ -123,7 +123,13 @@
 		"article": "1.1.10.1",
 		"template": "Promo-1",
 		"page": "/",
-		"source": "templates/Promo-1/pages/home/HomeFAQ.svelte"
+		"source": "templates/Promo-1/pages/home/HomeFAQ/v1/HomeFAQ.svelte"
+	},
+	{
+		"article": "1.1.10.2",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/HomeFAQ/v2/HomeFAQ.svelte"
 	},
 	{
 		"article": "1.2.1.1",
@@ -1201,6 +1207,12 @@
 	},
 	{
 		"article": "1.М.1.4",
+		"template": "Promo-1",
+		"page": "(layout)",
+		"source": "templates/Promo-1/layout/Menu/index.svelte"
+	},
+	{
+		"article": "1.М.1.5",
 		"template": "Promo-1",
 		"page": "(layout)",
 		"source": "templates/Promo-1/layout/Menu/index.svelte"

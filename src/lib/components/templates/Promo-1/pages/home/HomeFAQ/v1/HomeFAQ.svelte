@@ -134,6 +134,7 @@
 								type="button"
 								aria-expanded={expanded}
 								aria-controls="{uid}-answer-{i}"
+								data-goal-ignore="Раскрытие ответа FAQ, не открывает форму"
 								onclick={() => toggle(i)}
 							>
 								<span class="faq-number" aria-hidden="true">{i + 1}.</span>

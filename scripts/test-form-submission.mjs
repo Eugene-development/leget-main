@@ -84,3 +84,79 @@ await createFormSender('heading-test')({ service_type: 'contact' }, 'service-req
 });
 assert.equal(capturedTitle, 'Обновлённый заголовок');
 console.log('PASS: current visible form heading is included in the submission.');
+
+// Only bounded advertising fields are captured. The snapshot must stay stable
+// when a tracking cookie appears between a lost response and its HTTP retry.
+const { formAttribution } = await import(
+	`data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`
+);
+globalThis.window = {
+	location: {
+		href: 'https://tenant.example/calculator?utm_source=last&yclid=123',
+		pathname: '/calculator'
+	}
+};
+document.cookie = `leget_attr=${encodeURIComponent(JSON.stringify({ first: { utm_source: 'first', utm_medium: 'cpc', utm_campaign: 'x'.repeat(150), yclid: '123', phone: 'private' } }))}; _ym_uid=456`;
+assert.deepEqual(formAttribution(), {
+	utm_source: 'first',
+	utm_medium: 'cpc',
+	utm_campaign: 'x'.repeat(120),
+	yclid: '123',
+	metrika_client_id: '456'
+});
+const attributionCalls = [];
+let attributionLost = true;
+globalThis.fetch = async (_url, options) => {
+	attributionCalls.push({
+		key: options.body.get('submission_key'),
+		attribution: options.body.get('attribution')
+	});
+	if (attributionLost) throw new Error('response lost');
+	return new Response(
+		JSON.stringify({ success: true, id: 'attribution-test', status: 'new', mail_status: 'sent' })
+	);
+};
+const sendAttributed = createFormSender('attribution-test');
+await assert.rejects(sendAttributed(payload));
+document.cookie = '_ym_uid=789';
+attributionLost = false;
+await sendAttributed(payload);
+assert.equal(attributionCalls[0].key, attributionCalls[1].key);
+assert.equal(attributionCalls[0].attribution, attributionCalls[1].attribution);
+window.location = {
+	href: 'https://tenant.example/reset-password?token=secret&email=private',
+	pathname: '/reset-password'
+};
+assert.deepEqual(formAttribution(), {});
+console.log(
+	'PASS: bounded attribution, no private fields, stable retry snapshot, recovery exclusion.'
+);
+
+const estimateCalls = [];
+const staleSender = createFormSender('kitchen-estimate');
+globalThis.fetch = async (_url, options) => {
+	estimateCalls.push(options.body.get('submission_key'));
+	return new Response(
+		JSON.stringify({ success: false, errors: { estimate_version: ['Server-only diagnostic'] } }),
+		{ status: 422 }
+	);
+};
+await assert.rejects(
+	staleSender({ service_type: 'kitchen-estimate', estimate_version: 'old' }),
+	(error) => {
+		assert.equal(error.code, 'estimate_stale');
+		assert.equal(error.message, 'Правила расчёта изменились. Рассчитайте стоимость ещё раз.');
+		assert.equal('errors' in error, false);
+		return true;
+	}
+);
+globalThis.fetch = async (_url, options) => {
+	estimateCalls.push(options.body.get('submission_key'));
+	return new Response(
+		JSON.stringify({ success: true, id: 'fresh-estimate', status: 'new', mail_status: 'pending' }),
+		{ status: 202 }
+	);
+};
+await staleSender({ service_type: 'kitchen-estimate', estimate_version: 'fresh' });
+assert.notEqual(estimateCalls[0], estimateCalls[1], 'recalculated version gets a fresh key');
+console.log('PASS: safe stale-estimate code, recalculated retry uses new version/key.');

@@ -1,9 +1,13 @@
 <script lang="ts">
+	import RememberMe from '$lib/components/RememberMe.svelte';
+	let remember = $state(false);
+	let smsBusy = $state(false);
+	import SmsLogin from '$lib/components/SmsLogin.svelte';
 	/**
 	 * Вход и регистрация клиента сайта (роль «Клиент»).
 	 *
 	 * Отличие от LoginModal: тот пускает ВЛАДЕЛЬЦА сайта и кладёт JWT в
-	 * localStorage, чем включает режим правки. Здесь токен браузеру не
+	 * хранилище сессии редактора, чем включает режим правки. Здесь токен браузеру не
 	 * достаётся вовсе — форма ходит на серверные маршруты /cabinet/session и
 	 * /cabinet/register, а те держат JWT в httpOnly-cookie. Поэтому вход
 	 * клиента не может включить редактор чужого сайта.
@@ -15,6 +19,7 @@
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
+	import { getPasswordRecoveryUrl } from '$lib/utils/config';
 
 	let { onClose }: { onClose: () => void } = $props();
 
@@ -127,6 +132,7 @@
 
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
+		if (isSubmitting || smsBusy) return;
 		if (!validate()) return;
 
 		if (SITE_KEY && !captchaToken) {
@@ -148,7 +154,7 @@
 					password_confirmation: passwordConfirmation,
 					captcha_token: captchaToken
 				}
-			: { email: email.trim(), password, captcha_token: captchaToken };
+			: { email: email.trim(), password, captcha_token: captchaToken, remember };
 
 		try {
 			const response = await fetch(endpoint, {
@@ -426,6 +432,17 @@
 					{/if}
 				</div>
 
+				{#if !isRegister}
+					<RememberMe bind:checked={remember} disabled={isSubmitting || smsBusy} />
+					<a
+						href={getPasswordRecoveryUrl()}
+						data-metrika-goal="client_password_recovery_open"
+						data-goal-action="open"
+						class="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-link-600 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-600"
+						>Забыли пароль?</a
+					>
+				{/if}
+
 				{#if SITE_KEY}
 					<div class="mt-4">
 						<SmartCaptcha
@@ -457,6 +474,20 @@
 					{/if}
 				</button>
 			</form>
+			{#if !isRegister}<SmsLogin
+					bind:busy={smsBusy}
+					{remember}
+					onlogin={async (result) => {
+						if (
+							reuseRegistration &&
+							result.user?.role === 'student' &&
+							page.url.pathname !== '/partner/register'
+						) {
+							activationAccount = result.user;
+							await invalidateAll();
+						} else await finish(result.user?.role || 'client');
+					}}
+				/>{/if}
 
 			<p class="mt-5 text-center text-sm text-ink-500">
 				{isRegister ? 'Уже есть аккаунт?' : 'Ещё нет аккаунта?'}

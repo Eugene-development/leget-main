@@ -27,7 +27,7 @@ import HomeIncentives from './pages/home/Incentives/index.svelte';
 import HomeDirection from './pages/home/Direction/index.svelte';
 import HomePartnerOffers from './pages/home/PartnerOffers/index.svelte';
 import HomeBrands from './pages/home/Brands/index.svelte';
-import HomeFAQ from './pages/home/HomeFAQ.svelte';
+import HomeFAQ from './pages/home/HomeFAQ/index.svelte';
 
 // About page components
 import AboutHero from './pages/about/Hero.svelte';

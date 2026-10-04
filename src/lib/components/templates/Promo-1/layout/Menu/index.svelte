@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
-	// Артикулы: 1.М.1.1, 1.М.1.2, 1.М.1.3, 1.М.1.4 — см. docs/architecture/component-articles-map.md
+	// Артикулы: 1.М.1.1, 1.М.1.2, 1.М.1.3, 1.М.1.4, 1.М.1.5 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import MenuV1 from './v1/Menu.svelte';
 	import MenuV2 from './v2/Menu.svelte';
 	import MenuV3 from './v3/Menu.svelte';
 	import MenuV4 from './v4/Menu.svelte';
+	import MenuV5 from './v5/Menu.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
@@ -53,7 +54,7 @@
 		actions: Snippet<[boolean, () => void]>;
 	} = $props();
 
-	type MenuVersion = 'v1' | 'v2' | 'v3' | 'v4';
+	type MenuVersion = 'v1' | 'v2' | 'v3' | 'v4' | 'v5';
 
 	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
@@ -77,7 +78,7 @@
 	});
 
 	const versionNumber = (v: unknown): number | null => {
-		const m = /^v([1-4])$/.exec(typeof v === 'string' ? v : '');
+		const m = /^v([1-5])$/.exec(typeof v === 'string' ? v : '');
 		return m ? Number(m[1]) : null;
 	};
 
@@ -128,7 +129,18 @@
 <div class="max-w-9xl mx-auto hidden items-center justify-between px-4 py-3 lg:flex lg:px-8">
 	{@render logo(selectedVersion === 'v3')}
 	<div class="relative flex items-center gap-2">
-		{#if selectedVersion === 'v4'}
+		{#if selectedVersion === 'v5'}
+			<MenuV5
+				{links}
+				{visibleCatalogItems}
+				{visibleServiceItems}
+				{disabledRubrics}
+				{disabledServices}
+				{isEditable}
+				{onToggleRubric}
+				{onToggleService}
+			/>
+		{:else if selectedVersion === 'v4'}
 			<MenuV4
 				{links}
 				{visibleCatalogItems}
@@ -293,6 +305,18 @@
 						onclick={() => selectVersion('v4')}
 					>
 						Вариант 4
+					</button>
+					<button
+						type="button"
+						class="w-full cursor-pointer rounded-2xl border px-4 py-3 text-left text-xs font-bold tracking-wider uppercase transition-colors {selectedVersion ===
+						'v5'
+							? 'border-link-400/40 bg-link-500/10 text-link-100'
+							: 'border-on-dark/10 text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
+						aria-pressed={selectedVersion === 'v5'}
+						data-goal-ignore="Выбор оформления шапки сайта"
+						onclick={() => selectVersion('v5')}
+					>
+						Вариант 5 · Скошенные вкладки
 					</button>
 				</div>
 			</section>

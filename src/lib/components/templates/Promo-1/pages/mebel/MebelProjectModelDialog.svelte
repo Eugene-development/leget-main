@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import HtmlProjectModel from './HtmlProjectModel.svelte';
+	import ProjectAR from './ProjectAR.svelte';
 	import type { ProjectModel } from './project-model';
 	import type { GlbViewer, ModelView } from './project-glb-viewer';
 	let { model, title, onready, onclose, onerror } = $props<{
@@ -16,6 +17,7 @@
 		upperAvailable = $state(false),
 		upperVisible = $state(true);
 	let currentView = $state<ModelView>('iso');
+	let arMode = $state(false);
 	let viewer = $state.raw<GlbViewer>();
 	let disposed = false;
 	let restoreScroll: (() => void) | undefined;
@@ -148,6 +150,7 @@
 				onready={show}
 				{onerror}
 			/>
+		{:else if arMode}<ProjectAR {model} {title} />
 		{:else}<div class="h-full w-full" use:mountViewer></div>{/if}
 	</div>
 	{#if model.format !== 'html'}
@@ -156,39 +159,58 @@
 			role="group"
 			aria-label="Управление 3D-моделью"
 		>
-			{#each views as view (view.id)}<button
+			{#if arMode}<button
 					type="button"
-					aria-pressed={currentView === view.id}
-					onclick={() => {
-						currentView = view.id;
-						viewer?.setView(view.id);
-					}}
-					data-goal-ignore="Выбор ракурса 3D-модели"
-					class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500 aria-pressed:border-link-600 aria-pressed:bg-link-50 aria-pressed:text-link-700"
-					>{view.label}</button
-				>{/each}
-			{#if upperAvailable}<button
-					type="button"
-					aria-pressed={upperVisible}
-					onclick={() => {
-						upperVisible = !upperVisible;
-						viewer?.setUpper(upperVisible);
-					}}
-					data-goal-ignore="Показ верхних шкафов в 3D"
+					onclick={() => (arMode = false)}
+					data-metrika-goal="mebel_project_ar_close"
+					data-goal-action="close"
+					data-goal-label="Вернуться из AR в обычный 3D-просмотр"
 					class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500"
-					>{upperVisible ? 'Скрыть верхние шкафы' : 'Показать верхние шкафы'}</button
+					>Вернуться в 3D</button
+				>{:else}<button
+					type="button"
+					onclick={() => (arMode = true)}
+					data-metrika-goal="mebel_project_ar_open"
+					data-goal-action="open"
+					data-goal-label="Переключить на размещение мебели в комнате"
+					class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500"
+					>Посмотреть в своей комнате</button
 				>{/if}
-			<button
-				type="button"
-				onclick={() => {
-					currentView = 'iso';
-					upperVisible = true;
-					viewer?.reset();
-				}}
-				data-goal-ignore="Сброс ракурса 3D-модели"
-				class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500"
-				>Сброс</button
-			>
+			{#if !arMode}
+				{#each views as view (view.id)}<button
+						type="button"
+						aria-pressed={currentView === view.id}
+						onclick={() => {
+							currentView = view.id;
+							viewer?.setView(view.id);
+						}}
+						data-goal-ignore="Выбор ракурса 3D-модели"
+						class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500 aria-pressed:border-link-600 aria-pressed:bg-link-50 aria-pressed:text-link-700"
+						>{view.label}</button
+					>{/each}
+				{#if upperAvailable}<button
+						type="button"
+						aria-pressed={upperVisible}
+						onclick={() => {
+							upperVisible = !upperVisible;
+							viewer?.setUpper(upperVisible);
+						}}
+						data-goal-ignore="Показ верхних шкафов в 3D"
+						class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500"
+						>{upperVisible ? 'Скрыть верхние шкафы' : 'Показать верхние шкафы'}</button
+					>{/if}
+				<button
+					type="button"
+					onclick={() => {
+						currentView = 'iso';
+						upperVisible = true;
+						viewer?.reset();
+					}}
+					data-goal-ignore="Сброс ракурса 3D-модели"
+					class="min-h-11 rounded-lg border border-ink-300 px-4 py-2 text-sm text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-500"
+					>Сброс</button
+				>
+			{/if}
 		</footer>
 	{/if}
 </dialog>

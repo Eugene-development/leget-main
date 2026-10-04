@@ -54,7 +54,7 @@ export const POST: RequestHandler = async ({ request, cookies, url, getClientAdd
 			);
 		}
 
-		setClientSession(cookies, result.token, result.expires_in);
+		setClientSession(cookies, result.token, result.expires_in, result.remember);
 
 		// Рекламная атрибуция живёт в cookie до появления аккаунта: строка
 		// в БД привязана к пользователю, а до регистрации его нет. Переносим

@@ -130,16 +130,15 @@
 			.filter(({ index }) => isEditable || visibility.isVisible(`brand:${index}`))
 	);
 
-	// Лента поставщиков: набор повторяется, пока в нём не наберётся столько
-	// знаков, чтобы один набор гарантированно перекрыл ширину контейнера.
-	// Иначе на -50% между концом первого набора и началом второго открывался бы
-	// пустой ход: шести знаков на 1216px стены не хватает даже в худшей
-	// пропорции (узкий знак — около 94px вместе с полем).
+	// Каждый набор перекрывает всю секцию, включая широкие экраны.
+	// Даже без ширины картинки знак занимает 64px за счёт двух полей px-8.
+	let sectionWidth = $state(0);
 	const MARQUEE_MIN_ITEMS = 16;
+	const marqueeMinItems = $derived(Math.max(MARQUEE_MIN_ITEMS, Math.ceil(sectionWidth / 64)));
 	const marqueeBrands = $derived(
 		renderedBrands.length > 0
 			? Array.from(
-					{ length: Math.max(1, Math.ceil(MARQUEE_MIN_ITEMS / renderedBrands.length)) },
+					{ length: Math.max(1, Math.ceil(marqueeMinItems / renderedBrands.length)) },
 					() => renderedBrands.map(({ brand }) => brand)
 				).flat()
 			: []
@@ -187,6 +186,7 @@
 -->
 {#if renderedPartners.length > 0 || renderedBrands.length > 0 || isEditable}
 	<section
+		bind:clientWidth={sectionWidth}
 		class="brands-screen p1-surface py-section-xs sm:py-section"
 		data-p1-theme={isLight ? 'light' : 'dark'}
 		data-has-partners={renderedPartners.length > 0}
@@ -361,6 +361,10 @@
 {/if}
 
 <style>
+	.brands-screen {
+		container-type: inline-size;
+	}
+
 	/* Решётка стены брендов: зазор `gap-px` показывает фон контейнера, и это
 	   единственная в шаблоне линия, которую рисует заливка, а не граница.
 	   Значение — роль разделителя, только взятое переменной: класс `p1-line`
@@ -447,6 +451,10 @@
 	   случае лента отдаётся прокрутке рукой, иначе знаки за краем стали бы
 	   недоступны совсем. */
 	.brands-marquee {
+		/* Лента выходит из max-w-7xl до краёв секции; в превью ширина
+		   остаётся шириной карточки, а на сайте — шириной экрана. */
+		width: 100cqw;
+		margin-inline: calc(50% - 50cqw);
 		overflow: hidden;
 		/* Края гасятся в поверхность секции, а не обрезаются: знак не должен
 		   вылезать из-под края половиной себя. Маска, а не пара градиентов

@@ -16,10 +16,17 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const bgImage = $derived(
-		data.bgImage ||
-			'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png'
-	);
+	const defaultBgImage =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/furnitura-hero-realistic-20261002.webp';
+	const previousDefaultBgImage =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_fittings_hero.png';
+	// Обновляем прежний стартовый фон до SSR; inline-редактор тоже читает data.bgImage.
+	function replacePreviousDefaultImage() {
+		if (data.bgImage === previousDefaultBgImage) data.bgImage = defaultBgImage;
+	}
+	replacePreviousDefaultImage();
+	$effect.pre(replacePreviousDefaultImage);
+	const bgImage = $derived(data.bgImage || defaultBgImage);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -34,7 +41,7 @@
 		<ImageFallback
 			imagePath={['bgImage']}
 			src={bgImage}
-			alt="Hero"
+			alt="Мебельная фурнитура"
 			class="absolute inset-0 h-full w-full object-cover opacity-40"
 		/>
 

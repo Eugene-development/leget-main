@@ -2,6 +2,7 @@
 	import { provideImageEditing } from '$lib/utils/image-editing.svelte';
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
+	import { page } from '$app/state';
 	import {
 		saveLayoutData,
 		COMPONENT_ARTICLES_CONTEXT,
@@ -35,6 +36,8 @@
 	import { siteAppearanceStyle } from '$lib/site-settings/appearance';
 	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
+	import PageDraftToolbar from '$lib/growth/PageDraftToolbar.svelte';
+	import { draftSession } from '$lib/growth/drafts';
 
 	interface PageComponent {
 		id?: string | null;
@@ -166,6 +169,7 @@
 		'Stage',
 		'Incentives',
 		'Brands',
+		'HomeFAQ',
 		'ContactCTA',
 		'ContactAddress',
 		'ContactsHero',
@@ -177,6 +181,7 @@
 	// У сайдбара контрол одноверсионных настроек находится в его собственной шапке:
 	// внешний overlay здесь дал бы кнопку вне fixed-карточки.
 	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set([
+		'MebelProjectModel',
 		'MebelSidebar',
 		'ByttehnikaSidebar',
 		'StoleshnicaSidebar',
@@ -274,8 +279,12 @@
 		Boolean(ownerId) && $auth.userId !== null && String($auth.userId) === String(ownerId)
 	);
 
+	const draftMode = $derived(page.url.searchParams.has('draft'));
+	const sharedPreview = $derived(page.url.searchParams.get('preview') === '1');
 	const isEditable = $derived(
-		browser && $auth.isAuthenticated && isOwner && (editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
+		browser && $auth.isAuthenticated && isOwner && !sharedPreview &&
+		(!draftMode || ($draftSession?.licenseId === editContext?.licenseId && $draftSession?.draft.slug === editContext?.slug)) &&
+		(editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
 	const catalogRubric = $derived(catalogRubricFromSlug(editContext?.templateId, slug));
@@ -374,7 +383,13 @@
 </script>
 
 <div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
-	<SiteAnalytics data={headerDataState} enabled={!isEditable} />
+	{#if !draftMode}<SiteAnalytics data={headerDataState} enabled={!isEditable} />{/if}
+
+	{#if browser && isOwner && editContext && !sharedPreview}
+		{#key `${editContext.licenseId}:${editContext.slug}`}
+			<PageDraftToolbar context={editContext} />
+		{/key}
+	{/if}
 
 	{#if PromoStrip}
 		<!-- Полоса акций — над баннером. bind по той же причине, что у баннера:
@@ -507,5 +522,8 @@
 
 	{#if isEditable}
 		<EditModal />
+	{/if}
+	{#if browser && isOwner && editContext && !sharedPreview}
+		<div aria-hidden="true" style="height: var(--leget-publication-space, 0px)"></div>
 	{/if}
 </div>

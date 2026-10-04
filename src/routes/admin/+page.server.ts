@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { adminApi, adminAuthApi, readApiJson } from '$lib/server/admin-api';
+import { sessionPersistence } from '$lib/server/session-persistence';
 import type { Actions, PageServerLoad } from './$types';
 
 const COOKIE_NAME = 'leget_admin_jwt';
@@ -76,6 +77,7 @@ export const actions: Actions = {
 			.trim()
 			.toLowerCase();
 		const password = String(formData.get('password') ?? '');
+		const remember = formData.get('remember') === '1';
 
 		if (!email || !password) {
 			return fail(422, { action: 'login', message: 'Введите email и пароль.', email });
@@ -88,7 +90,7 @@ export const actions: Actions = {
 		try {
 			const response = await adminAuthApi('/admin/login', {
 				method: 'POST',
-				body: JSON.stringify({ email, password })
+				body: JSON.stringify({ email, password, remember })
 			});
 			const result = await readApiJson(response);
 
@@ -108,7 +110,7 @@ export const actions: Actions = {
 				httpOnly: true,
 				secure: !dev,
 				sameSite: 'strict',
-				maxAge: typeof result.expires_in === 'number' ? result.expires_in : 3_600
+				...sessionPersistence(result.expires_in, result.remember)
 			});
 
 			return { action: 'login', success: true };

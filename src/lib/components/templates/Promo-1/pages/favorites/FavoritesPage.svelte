@@ -25,6 +25,7 @@
 		type FeedProject
 	} from '../projects/ProjectsFeed/data';
 	import '../../theme.css';
+	import SelectionBuilder from '$lib/growth/selections/SelectionBuilder.svelte';
 
 	let {
 		data = $bindable(),
@@ -74,7 +75,9 @@
 					{#snippet children(displayValue)}{displayValue}{/snippet}
 				</EditableField>
 				{#if favoriteProjects.length > 0}
-					<span class="p1-note p1-numeric p1-muted ml-2 align-baseline sm:ml-3">
+					<span
+						class="p1-note p1-numeric p1-muted ml-2 inline-block align-top text-[length:calc(var(--ds-font-note-size)*1.5)] leading-none sm:ml-3"
+					>
 						{favoriteProjects.length}
 					</span>
 				{/if}
@@ -85,6 +88,7 @@
 				</div>
 			{/if}
 		</div>
+		<SelectionBuilder projectIds={favoriteProjects.map((project) => project.id)} />
 
 		{#if favoriteProjects.length > 0}
 			{#if view === 'list'}
@@ -168,7 +172,9 @@
 					<EditableField
 						fieldKey="FavoritesPage.emptyMessage"
 						label="Подсказка пустого избранного"
-						value={String(data?.emptyMessage ?? 'Нажмите на сердце в карточке проекта — он появится здесь.')}
+						value={String(
+							data?.emptyMessage ?? 'Нажмите на сердце в карточке проекта — он появится здесь.'
+						)}
 						{isEditable}
 						inline
 						richText={false}

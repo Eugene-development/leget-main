@@ -6,6 +6,7 @@ const components = resolve(root, 'src/lib/components');
 const exceptions = new Map([
 	['LoginModal.svelte', 'Owner authentication'],
 	['ClientAuthModal.svelte', 'Client authentication'],
+	['SmsLogin.svelte', 'SMS authentication for existing accounts, not a service request'],
 	['ImagePickerDialog.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelTagModal.svelte', 'Content editor'],
 	[
@@ -15,6 +16,13 @@ const exceptions = new Map([
 	['templates/Promo-1/pages/mebel/MebelProjectDeleteDialog.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelProjectEditModal.svelte', 'Content editor'],
 	['templates/Promo-1/pages/mebel/MebelProjectModal.svelte', 'Content editor']
+]);
+// A business operation is exempt only at its explicit route and purpose.
+// Unknown annotations fail; annotating a lead form cannot bypass intake validation.
+const businessForms = new Map([
+	['../../routes/calculator/+page.svelte', new Set(['estimate-calculation'])],
+	['../../routes/selection/[token]/+page.svelte', new Set(['selection-comment'])],
+	['../../routes/orders/+page.svelte', new Set(['session-logout'])]
 ]);
 function files(dir) {
 	return readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
@@ -34,7 +42,9 @@ const errors = [];
 let count = 0;
 for (const file of [
 	...files(components).filter((file) => file.endsWith('.svelte')),
-	resolve(root, 'src/routes/partner/register/+page.svelte')
+	...['partner/register', 'calculator', 'selection/[token]', 'orders'].map((route) =>
+		resolve(root, 'src/routes', route, '+page.svelte')
+	)
 ]) {
 	const source = readFileSync(file, 'utf8');
 	const path = relative(components, file);
@@ -96,6 +106,29 @@ for (const file of [
 	for (const form of forms) {
 		const value = form.attributes.find((attribute) => attribute.name === 'onsubmit')?.value;
 		const handler = (Array.isArray(value) ? value[0] : value)?.expression;
+		const attrValue = (name) =>
+			form.attributes.find((attribute) => attribute.name === name)?.value?.[0]?.data;
+		const business = form.attributes.find((attribute) => attribute.name === 'data-form-business')
+			?.value?.[0]?.data;
+		if (business) {
+			const expectedHandler =
+				business === 'estimate-calculation'
+					? 'calculate'
+					: business === 'selection-comment'
+						? 'addComment'
+						: undefined;
+			const matchesOperation = expectedHandler
+				? handler?.type === 'Identifier' &&
+					handler.name === expectedHandler &&
+					!reachesSender(handler)
+				: business === 'session-logout' &&
+					attrValue('method')?.toLowerCase() === 'post' &&
+					attrValue('action') === '?/logout' &&
+					!handler;
+			if (businessForms.get(path)?.has(business) && matchesOperation) continue;
+			errors.push(`${path}: unrecognized business form or handler for ${business}`);
+			continue;
+		}
 		if (!reachesSender(handler))
 			errors.push(`${path}: submit handler does not call the durable sender`);
 	}

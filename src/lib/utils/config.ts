@@ -5,6 +5,7 @@
  */
 
 import { PUBLIC_AUTH_URL, PUBLIC_API_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
 /**
  * @returns Auth API base URL (e.g. https://auth.leget.ru/api)
@@ -18,4 +19,9 @@ export function getAuthApiUrl(): string {
  */
 export function getGraphQLUrl(): string {
 	return (PUBLIC_API_URL || 'http://localhost:8001') + '/graphql';
+}
+
+/** All account roles recover their password on the central LEGET frontend. */
+export function getPasswordRecoveryUrl(): string {
+	return new URL('/forgot-password', env.PUBLIC_FRONTEND_URL || 'https://leget.ru').href;
 }

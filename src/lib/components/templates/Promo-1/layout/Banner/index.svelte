@@ -278,7 +278,7 @@
 			</section>
 
 			<section class="border-t border-on-dark/10 pt-5">
-				<h4 class="text-sm font-semibold text-on-dark">Ловец лидов</h4>
+				<h4 class="text-sm text-on-dark">Ловец лидов</h4>
 				<p class="mt-2 text-xs leading-relaxed text-ink-300">
 					Бесплатная консультация при выходе курсора вверх после 15 секунд на сайте. Не чаще раза в
 					сутки, только с мышью.

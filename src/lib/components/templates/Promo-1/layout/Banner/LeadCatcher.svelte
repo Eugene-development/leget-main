@@ -189,7 +189,7 @@
 			>
 		</button>
 		{#if sent}
-			<h2 id="lead-catcher-title" class="p1-title pr-8 text-2xl font-semibold">Заявка принята</h2>
+			<h2 id="lead-catcher-title" class="p1-title pr-8 text-2xl">Заявка принята</h2>
 			<p role="status" class="p1-body mt-4">Мы свяжемся с вами.</p>
 			<button
 				type="button"
@@ -200,7 +200,7 @@
 			>
 		{:else}
 			<form onsubmit={submit} novalidate>
-				<h2 id="lead-catcher-title" class="p1-title pr-8 text-2xl leading-tight font-semibold">
+				<h2 id="lead-catcher-title" class="p1-title pr-8 text-2xl">
 					Получите бесплатную консультацию
 				</h2>
 				<p class="p1-body mt-4 text-sm leading-relaxed">

@@ -89,6 +89,16 @@ export function goalLocations(root, write = false) {
 								text.includes('serviceOrderStore.open(ctaContent.serviceType)')))
 				)
 				.flatMap(([path]) => owners(path));
+		else if (button.source === 'SmsLogin.svelte')
+			locations = [
+				...owners('LoginModal.svelte'),
+				...[...sources]
+					.filter(([, text]) =>
+						/clientAuthModal\.open\(|account\.open(?:Login|Register)/.test(text)
+					)
+					.flatMap(([path]) => owners(path)),
+				{ template: 'Promo-1', page: '/university/auth', article: '' }
+			];
 		else if (button.source === 'ClientAuthModal.svelte')
 			locations = [...sources]
 				.filter(([, text]) => /clientAuthModal\.open\(|account\.open(?:Login|Register)/.test(text))
@@ -109,6 +119,12 @@ export function goalLocations(root, write = false) {
 					article: ''
 				}
 			];
+		else if (/^\/calculator$|^\/selection\/\[token\]$|^\/orders$/.test(button.route || ''))
+			locations = button.templates.map((template) => ({
+				template,
+				page: button.route,
+				article: ''
+			}));
 		else locations = owners(button.source);
 		if (button.variant && button.route)
 			locations = locations.filter(

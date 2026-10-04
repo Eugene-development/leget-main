@@ -1,3 +1,4 @@
+import { getAuthToken } from '$lib/utils/auth-session';
 import { getGraphQLUrl } from '$lib/utils/config';
 
 export interface ProjectTag {
@@ -16,7 +17,7 @@ export interface TagGroup {
 }
 
 async function request<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
-	const token = localStorage.getItem('auth_token');
+	const token = getAuthToken();
 	const response = await fetch(getGraphQLUrl(), {
 		method: 'POST',
 		headers: {

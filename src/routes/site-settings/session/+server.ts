@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import { json } from '@sveltejs/kit';
 import { adminAuthApi } from '$lib/server/admin-api';
+import { validatedTokenPersistence } from '$lib/server/session-persistence';
 import type { RequestHandler } from './$types';
 
 const COOKIE_NAME = 'leget_site_settings_jwt';
@@ -22,7 +23,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			httpOnly: true,
 			secure: !dev,
 			sameSite: 'strict',
-			maxAge: 3_600
+			...validatedTokenPersistence(authorization.slice(7))
 		});
 		return json({ success: true });
 	} catch {

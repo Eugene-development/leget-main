@@ -412,7 +412,7 @@
 							<a
 								href="/about"
 								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-								>О компании</a
+								>О проекте</a
 							>
 						</li>
 						<li>
