@@ -1,0 +1,148 @@
+<script lang="ts">
+	// Артикулы: 1.38.4.1, 1.39.4.1 — см. docs/architecture/component-articles-map.md
+	import RichText from '$lib/components/RichText.svelte';
+
+	import { fly } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import EditableField from '$lib/components/EditableField.svelte';
+	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+
+	let {
+		data = $bindable(),
+		editContext = null,
+		isEditable = false
+	}: {
+		data: any;
+		editContext?: EditContext | null;
+		isEditable?: boolean;
+	} = $props();
+
+	async function saveField(field: string, value: unknown) {
+		if (!editContext) return;
+		const updated = { ...data, [field]: value };
+		await saveComponentData(editContext, 'DveriBenefits', updated);
+		data = updated;
+	}
+
+	async function updateItem(index: number, field: 'title' | 'desc', value: string) {
+		const updatedItems = [...items];
+		updatedItems[index] = { ...updatedItems[index], [field]: value };
+		await saveField('items', updatedItems);
+	}
+
+	const items = $derived(
+		data.items || [
+			{
+				title: 'Подбор под проект',
+				desc: 'Сравним двери по размерам, материалам и стилю интерьера',
+				icon: 'shield',
+				color: 'emerald'
+			},
+			{
+				title: 'Учёт бюджета',
+				desc: 'Поможем выбрать решение с учётом ваших пожеланий и бюджета',
+				icon: 'wallet',
+				color: 'sky'
+			},
+			{
+				title: 'Согласование деталей',
+				desc: 'Обсудим комплектацию, сроки и условия поставки',
+				icon: 'bolt',
+				color: 'amber'
+			}
+		]
+	);
+
+	const colorClasses: Record<string, string> = {
+		emerald: 'bg-cat-2-100 text-cat-2-600 group-hover:bg-cat-2-500 group-hover:text-on-accent',
+		sky: 'bg-link-100 text-link-600 group-hover:bg-link-500 group-hover:text-on-accent',
+		amber: 'bg-cat-1-100 text-cat-1-600 group-hover:bg-cat-1-500 group-hover:text-on-accent'
+	};
+</script>
+
+<div class="mebel-container mt-12 mb-12">
+	<h2 class="mb-8 text-2xl text-ink-900">
+		<EditableField
+			fieldKey="DveriBenefits.title"
+			label="Заголовок блока"
+			value={String(data.title ?? 'Работаем напрямую с поставщиками')}
+			{isEditable}
+			inline
+			onSave={(value) => saveField('title', value)}
+		>
+			{#snippet children(value)}<RichText {value} />{/snippet}
+		</EditableField>
+	</h2>
+
+	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		{#each items as item, i}
+			<div
+				class="group rounded-2xl border border-ink-50 bg-surface-raised p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink-200/50"
+				in:fly={{ y: 20, duration: 600, delay: i * 100, easing: cubicOut }}
+			>
+				<div
+					class="flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 {colorClasses[
+						item.color
+					] || 'bg-ink-100 text-ink-600'}"
+				>
+					{#if item.icon === 'shield'}
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+							/>
+						</svg>
+					{:else if item.icon === 'wallet'}
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+							/>
+						</svg>
+					{:else}
+						<!-- bolt -->
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M13 10V3L4 14h7v7l9-11h-7z"
+							/>
+						</svg>
+					{/if}
+				</div>
+				<h3
+					class="p1-title-sub mt-4 text-lg text-ink-900 transition-colors group-hover:text-link-600"
+				>
+					<EditableField
+						fieldKey="DveriBenefits.item.{i}.title"
+						label="Заголовок карточки"
+						value={String(item.title ?? '')}
+						{isEditable}
+						inline
+						onSave={(value) => updateItem(i, 'title', value)}
+					>
+						{#snippet children(value)}<RichText {value} />{/snippet}
+					</EditableField>
+				</h3>
+				<p class="mt-2 text-sm leading-relaxed text-ink-600">
+					<EditableField
+						fieldKey="DveriBenefits.item.{i}.desc"
+						label="Описание карточки"
+						value={String(item.desc ?? '')}
+						{isEditable}
+						inline
+						multiline
+						onSave={(value) => updateItem(i, 'desc', value)}
+					>
+						{#snippet children(value)}<RichText {value} />{/snippet}
+					</EditableField>
+				</p>
+			</div>
+		{/each}
+	</div>
+</div>

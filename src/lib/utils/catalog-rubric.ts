@@ -1,10 +1,18 @@
-export type CatalogRubric = 'mebel' | 'stoleshnica' | 'bytovaya-tehnika' | 'santehnika';
+export type CatalogRubric =
+	| 'mebel'
+	| 'stoleshnica'
+	| 'bytovaya-tehnika'
+	| 'santehnika'
+	| 'dveri'
+	| 'okna';
 
 const CATALOG_RUBRICS = new Set<CatalogRubric>([
 	'mebel',
 	'stoleshnica',
 	'bytovaya-tehnika',
-	'santehnika'
+	'santehnika',
+	'dveri',
+	'okna'
 ]);
 
 /**

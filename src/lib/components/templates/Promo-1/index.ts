@@ -184,6 +184,23 @@ import OsveshchenieBrands from './pages/osveshchenie/OsveshchenieBrands.svelte';
 import OsveshchenieBrandHero from './pages/osveshchenie/OsveshchenieBrandHero.svelte';
 import OsveshchenieCTA from './pages/osveshchenie/OsveshchenieCTA.svelte';
 
+import DveriSidebar from './pages/dveri/DveriSidebar.svelte';
+import DveriHero from './pages/dveri/DveriHero.svelte';
+import DveriBrands from './pages/dveri/DveriBrands.svelte';
+import DveriBrandHero from './pages/dveri/DveriBrandHero.svelte';
+import DveriBenefits from './pages/dveri/DveriBenefits.svelte';
+import DveriCategories from './pages/dveri/DveriCategories.svelte';
+import DveriComplex from './pages/dveri/DveriComplex.svelte';
+import DveriCTA from './pages/dveri/DveriCTA.svelte';
+import OknaSidebar from './pages/okna/OknaSidebar.svelte';
+import OknaHero from './pages/okna/OknaHero.svelte';
+import OknaBrands from './pages/okna/OknaBrands.svelte';
+import OknaBrandHero from './pages/okna/OknaBrandHero.svelte';
+import OknaBenefits from './pages/okna/OknaBenefits.svelte';
+import OknaCategories from './pages/okna/OknaCategories.svelte';
+import OknaComplex from './pages/okna/OknaComplex.svelte';
+import OknaCTA from './pages/okna/OknaCTA.svelte';
+
 // Furnitura page components
 import FurnituraSidebar from './pages/furnitura/FurnituraSidebar.svelte';
 import FurnituraHero from './pages/furnitura/FurnituraHero.svelte';
@@ -430,6 +447,38 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		OsveshchenieBrandHero,
 		BrandAbout,
 		OsveshchenieCTA
+	},
+	'/dveri': {
+		DveriSidebar,
+		DveriHero,
+		DveriBrands,
+		DveriBenefits,
+		DveriCategories,
+		DveriComplex,
+		DveriCTA
+	},
+	'/dveri/{brand}': {
+		DveriSidebar,
+		DveriBrandHero,
+		BrandAbout,
+		DveriBenefits,
+		DveriCTA
+	},
+	'/okna': {
+		OknaSidebar,
+		OknaHero,
+		OknaBrands,
+		OknaBenefits,
+		OknaCategories,
+		OknaComplex,
+		OknaCTA
+	},
+	'/okna/{brand}': {
+		OknaSidebar,
+		OknaBrandHero,
+		BrandAbout,
+		OknaBenefits,
+		OknaCTA
 	},
 	'/furnitura': {
 		FurnituraSidebar,

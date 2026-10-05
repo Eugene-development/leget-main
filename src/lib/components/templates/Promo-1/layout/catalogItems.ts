@@ -41,6 +41,8 @@ export const catalogItems: CatalogItem[] = [
 		icon: 'lamp',
 		desc: 'Светильники и световые решения'
 	},
+	{ href: '/dveri', label: 'Двери', icon: 'surface', desc: 'Каталог брендов дверей' },
+	{ href: '/okna', label: 'Окна', icon: 'surface', desc: 'Каталог брендов окон' },
 	{ href: '/furnitura', label: 'Фурнитура', icon: 'hinge', desc: 'Ручки, петли, механизмы' },
 	{
 		href: '/steklo-i-zerkala',

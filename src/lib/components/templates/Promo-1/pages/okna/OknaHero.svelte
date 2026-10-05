@@ -1,0 +1,125 @@
+<script lang="ts">
+	// Артикул: 1.40.2.1 — см. docs/architecture/component-articles-map.md
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RichText from '$lib/components/RichText.svelte';
+	import EditableField from '$lib/components/EditableField.svelte';
+	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
+	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+
+	let {
+		data = $bindable(),
+		editContext = null,
+		isEditable = false
+	}: {
+		data: any;
+		editContext?: EditContext | null;
+		isEditable?: boolean;
+	} = $props();
+
+	const bgImage = $derived(data.bgImage || '');
+
+	async function saveField(field: string, value: string) {
+		if (!editContext) return;
+		const updated = { ...data, [field]: value };
+		await saveComponentData(editContext, 'OknaHero', updated);
+		data = updated;
+	}
+</script>
+
+<div class="mebel-container">
+	<section class="mebel-hero relative overflow-hidden rounded-2xl bg-ink-900">
+		<ImageFallback
+			imagePath={['bgImage']}
+			src={bgImage}
+			alt="Hero"
+			class="absolute inset-0 h-full w-full object-cover opacity-40"
+		/>
+
+		<div class="relative px-8 py-16 sm:px-12 sm:py-20">
+			<nav class="mb-6 flex items-center gap-2 text-sm text-ink-400">
+				<a href="/" class="transition-colors hover:text-on-dark">Главная</a>
+				<span>/</span>
+				<span class="text-on-dark">Окна</span>
+			</nav>
+
+			<h1 class="text-3xl text-on-dark sm:text-4xl lg:text-5xl">
+				<EditableField
+					fieldKey="OknaHero.title"
+					label="Заголовок"
+					value={String(data.title || 'Окна')}
+					{isEditable}
+					inline
+					onSave={(v) => saveField('title', v)}
+				>
+					{#snippet children(val)}<RichText value={val} />{/snippet}
+				</EditableField>
+			</h1>
+
+			<p class="mt-4 max-w-xl text-lg text-ink-300">
+				<EditableField
+					fieldKey="OknaHero.description"
+					label="Описание"
+					value={String(
+						data.description ||
+							'Подберём окна под размеры, интерьер и бюджет. Поможем сравнить бренды и выбрать подходящее решение.'
+					)}
+					{isEditable}
+					inline
+					multiline
+					onSave={(v) => saveField('description', v)}
+				>
+					{#snippet children(val)}<RichText value={val} />{/snippet}
+				</EditableField>
+			</p>
+
+			<div class="mt-8 flex flex-wrap gap-4">
+				<button
+					data-metrika-goal="pages_okna_oknahero_open_1"
+					data-goal-label="Подобрать окна — герой окон"
+					data-goal-action="open"
+					type="button"
+					onclick={() => serviceOrderStore.open('consultation')}
+					class="inline-flex items-center gap-2 rounded-lg bg-link-700 px-6 py-3 font-medium text-on-dark transition-all hover:brightness-90"
+				>
+					<EditableField
+						fieldKey="OknaHero.primaryButton"
+						label="Кнопка"
+						value={String(data.primaryButton || 'Подобрать окна')}
+						{isEditable}
+						inline
+						onSave={(v) => saveField('primaryButton', v)}
+					>
+						{#snippet children(val)}<RichText value={val} />{/snippet}
+					</EditableField>
+					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M17 8l4 4m0 0l-4 4m4-4H3"
+						/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</section>
+</div>
+
+<style>
+	:global(.mebel-container) {
+		max-width: 1536px;
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		margin-top: 4rem;
+	}
+	@media (min-width: 1024px) {
+		:global(.mebel-container) {
+			padding-left: 360px;
+		}
+	}
+	h1 {
+		font-family: inherit;
+	}
+</style>

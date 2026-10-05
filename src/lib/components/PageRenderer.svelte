@@ -184,6 +184,8 @@
 		'MebelProjectModel',
 		'MebelSidebar',
 		'ByttehnikaSidebar',
+		'DveriSidebar',
+		'OknaSidebar',
 		'StoleshnicaSidebar',
 		'SantehnikaSidebar',
 		'OsveshchenieSidebar',

@@ -110,7 +110,9 @@
 }
 
 /* Бытовая техника: точный холодный индиго. */
-[data-catalog-rubric='bytovaya-tehnika'] {
+[data-catalog-rubric='bytovaya-tehnika'],
+[data-catalog-rubric='dveri'],
+[data-catalog-rubric='okna'] {
 	--p1-catalog-accent-50: var(--ds-cat-4-50);
 	--p1-catalog-accent-100: var(--ds-cat-4-100);
 	--p1-catalog-accent-200: var(--ds-cat-4-200);

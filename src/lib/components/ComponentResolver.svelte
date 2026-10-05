@@ -101,6 +101,12 @@
 			return tmpl.pageOverrides['/santehnika/{brand}'] || {};
 		}
 
+		// Doors and windows use the same brand-page structure as appliances.
+		const brandRubric = cleanSlug.match(/^\/(dveri|okna)\/[^/]+$/)?.[1];
+		if (brandRubric) {
+			return tmpl.pageOverrides[`/${brandRubric}/{brand}`] || {};
+		}
+
 		// /furnitura/{shop}
 		if (cleanSlug.match(/^\/furnitura\/[^/]+$/)) {
 			return tmpl.pageOverrides['/furnitura/{shop}'] || {};

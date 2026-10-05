@@ -37,6 +37,8 @@
 				'appliance-brand': '/bytovaya-tehnika',
 				'plumbing-brand': '/santehnika',
 				'lighting-brand': '/osveshchenie',
+				'window-brand': '/okna',
+				'door-brand': '/dveri',
 				'countertop-brand': '/stoleshnica'
 			} as Record<string, string>
 		)[groups.find((group) => group.id === groupId)?.slug ?? '']

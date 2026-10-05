@@ -22,7 +22,7 @@
 		onSaved
 	}: {
 		brand?: Brand | null;
-		rubric?: 'APPLIANCES' | 'PLUMBING' | 'LIGHTING';
+		rubric?: 'APPLIANCES' | 'PLUMBING' | 'LIGHTING' | 'DOORS' | 'WINDOWS';
 		licenseId: string;
 		onClose: () => void;
 		onSaved: (deleted: boolean, slug?: string) => void | Promise<void>;
@@ -248,11 +248,13 @@
 				bind:selected
 				disabled={busy}
 				groupSlugs={[
-					rubric === 'PLUMBING'
-						? 'plumbing-type'
-						: rubric === 'LIGHTING'
-							? 'lighting-type'
-							: 'appliance-type'
+					{
+						APPLIANCES: 'appliance-type',
+						PLUMBING: 'plumbing-type',
+						LIGHTING: 'lighting-type',
+						DOORS: 'door-type',
+						WINDOWS: 'window-type'
+					}[rubric]
 				]}
 				helpText="Теги назначаются этому бренду. Справочником тегов можно управлять через шестерёнку сайдбара."
 			/>
