@@ -8,7 +8,7 @@
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { cabinetHref } from '$lib/utils/cabinet-href';
-	import { catalogItems } from '../../catalogItems';
+	import { catalogItems, orderCatalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import type { Action } from 'svelte/action';
 	import type { Snippet } from 'svelte';
@@ -74,12 +74,14 @@
 	// «Проекты» (/projects) — не рубрика, поэтому в общем catalogItems её нет: там она
 	// попала бы и в меню каталога хэдера, и в переключатели рубрик. В футере ссылка
 	// уместна — секция «Каталог» здесь работает как навигация по витрине целиком.
-	const visibleCatalogItems = $derived([
-		...catalogItems.filter(
-			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
-		),
-		{ href: '/projects', label: 'Проекты' }
-	]);
+	const visibleCatalogItems = $derived(
+		orderCatalogItems([
+			...catalogItems.filter(
+				(item) => item.comingSoon === true || !disabledRubrics.includes(item.href)
+			),
+			{ href: '/projects', label: 'Проекты', comingSoon: false }
+		])
+	);
 	const visibleServiceItems = $derived(
 		serviceItems.filter((item) => item.comingSoon !== true && !disabledServices.includes(item.href))
 	);
@@ -593,15 +595,25 @@
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleCatalogItems as item}
 									<li>
-										<a
-											href={item.href}
-											class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
-										>
-											{item.label}
+										{#if item.comingSoon}
 											<span
-												class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
-											></span>
-										</a>
+												role="link"
+												aria-label={`${item.label} — Скоро`}
+												aria-disabled="true"
+												class="cursor-default text-sm/6 text-on-dark/60"
+												>{item.label}<span class="ml-2 text-xs">Скоро</span></span
+											>
+										{:else}
+											<a
+												href={item.href}
+												class="group/link relative inline-block text-sm text-on-dark/60 transition-colors duration-500 hover:text-on-dark"
+											>
+												{item.label}
+												<span
+													class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
+												></span>
+											</a>
+										{/if}
 									</li>
 								{/each}
 							</ul>

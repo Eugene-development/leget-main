@@ -197,7 +197,8 @@
 				}
 				closeMenu();
 			}}
-			href={item.href}
+			href={isComingSoon ? undefined : item.href}
+			role={isComingSoon ? 'link' : undefined}
 			tabindex={isComingSoon ? -1 : undefined}
 			aria-disabled={isComingSoon}
 			class="flex flex-1 items-center gap-3.5 p-3 {isComingSoon ? 'pointer-events-none' : ''}"
@@ -214,9 +215,10 @@
 			<span class="min-w-0 flex-1">
 				<span class="flex items-center gap-2">
 					<span
-						class="text-sm font-semibold tracking-tight text-ink-900 transition-colors duration-300 group-hover/item:text-link-600"
+						class="text-lg font-semibold tracking-tight text-ink-900 transition-colors duration-300 group-hover/item:text-link-600"
 					>
 						{item.label}
+						{#if isComingSoon && !isEditable}<span class="p1-note p1-muted ml-2">Скоро</span>{/if}
 					</span>
 					{#if isEditable && !isEnabled && !isComingSoon}
 						<span

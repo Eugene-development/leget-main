@@ -24,7 +24,7 @@
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { cabinetHref } from '$lib/utils/cabinet-href';
-	import { catalogItems } from '../../catalogItems';
+	import { catalogItems, orderCatalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import { createContactVisibility } from '../contacts.svelte';
 	import ContactToggle from '../ContactToggle.svelte';
@@ -84,17 +84,19 @@
 	const disabledServices = $derived(
 		Array.isArray(data?.disabledServices) ? (data.disabledServices as string[]) : []
 	);
-	// В футере показываем только опубликованные рубрики: comingSoon (например «Плитка»)
-	// и явно отключённые в хэдере здесь не нужны — футер для посетителей.
-	// «Проекты» (/projects) — не рубрика, поэтому в общем catalogItems её нет: там она
-	// попала бы и в меню каталога хэдера, и в переключатели рубрик. В футере ссылка
-	// уместна — секция «Каталог» здесь работает как навигация по витрине целиком.
-	const visibleCatalogItems = $derived([
-		...catalogItems.filter(
-			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
-		),
-		{ href: '/projects', label: 'Проекты' }
-	]);
+	// Будущие рубрики видны как неактивные пункты «Скоро».
+	// Опубликованные рубрики учитывают настройки видимости сайта.
+	const visibleCatalogItems = $derived(
+		orderCatalogItems(
+			catalogItems.filter(
+				(item) => item.comingSoon === true || !disabledRubrics.includes(item.href)
+			)
+		)
+	);
+	const catalogColumns = $derived.by(() => {
+		const midpoint = Math.ceil(visibleCatalogItems.length / 2);
+		return [visibleCatalogItems.slice(0, midpoint), visibleCatalogItems.slice(midpoint)];
+	});
 	// Та же логика для услуг — скрываем comingSoon и отключённые в хэдере.
 	const visibleServiceItems = $derived(
 		serviceItems.filter((item) => item.comingSoon !== true && !disabledServices.includes(item.href))
@@ -106,12 +108,12 @@
 		{ href: '/about', label: 'О проекте' },
 		{ href: '/guarantees', label: 'Гарантии' },
 		{ href: '/installment', label: 'Рассрочка' },
-		{ href: '/contacts', label: 'Контакты' },
 		// Страницы /vacancy в шаблоне ещё нет (см. index.ts) — ссылка заведена заранее,
 		// под будущую разработку. До неё маршрут отдаёт 404.
 		{ href: '/vacancy', label: 'Вакансии' }
 	];
 	const otherItems = [
+		{ href: '/contacts', label: 'Контакты' },
 		{ href: '/partnership', label: 'Партнёрство' },
 		{ href: '/university', label: 'Университет' }
 	];
@@ -451,7 +453,7 @@
 
 		<!-- ── Полоса рубрик ──────────────────────────────────────────────── -->
 		<nav
-			class="p1-border mt-12 grid grid-cols-2 gap-x-8 gap-y-10 border-t pt-10 md:grid-cols-4 lg:mt-14"
+			class="p1-border mt-12 grid grid-cols-2 gap-x-8 gap-y-10 border-t pt-10 lg:mt-14 lg:grid-cols-5 lg:items-baseline"
 			aria-label="Разделы сайта"
 		>
 			<div>
@@ -467,38 +469,8 @@
 				</ul>
 			</div>
 
-			{#if visibleServiceItems.length > 0}
-				<div>
-					<h3 class="p1-title-sub p1-title text-sm">Услуги</h3>
-					<ul role="list" class="mt-4 space-y-3">
-						{#each visibleServiceItems as service}
-							<li>
-								<a href={service.href} class="p1-muted p1-accent-hover text-sm/6 transition-colors"
-									>{service.label}</a
-								>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-
-			{#if visibleCatalogItems.length > 0}
-				<div>
-					<h3 class="p1-title-sub p1-title text-sm">Каталог</h3>
-					<ul role="list" class="mt-4 space-y-3">
-						{#each visibleCatalogItems as item}
-							<li>
-								<a href={item.href} class="p1-muted p1-accent-hover text-sm/6 transition-colors"
-									>{item.label}</a
-								>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-
 			<div>
-				<h3 class="p1-title-sub p1-title text-sm">Прочее</h3>
+				<h3 class="p1-title-sub p1-title text-sm">Компания</h3>
 				<ul role="list" class="mt-4 space-y-3">
 					{#each otherItems as item}
 						<li>
@@ -539,6 +511,51 @@
 					{/if}
 				</ul>
 			</div>
+
+			{#if visibleServiceItems.length > 0}
+				<div>
+					<h3 class="p1-title-sub p1-title text-sm">Услуги</h3>
+					<ul role="list" class="mt-4 space-y-3">
+						{#each visibleServiceItems as service}
+							<li>
+								<a href={service.href} class="p1-muted p1-accent-hover text-sm/6 transition-colors"
+									>{service.label}</a
+								>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			{#if visibleCatalogItems.length > 0}
+				<div class="p1-border col-span-2 rounded-xl border p-5">
+					<h3 class="p1-title-sub p1-title text-sm">Каталог</h3>
+					<div class="mt-4 grid grid-cols-2 gap-x-8">
+						{#each catalogColumns as items}
+							<ul role="list" class="space-y-3">
+								{#each items as item}
+									<li>
+										{#if item.comingSoon}
+											<span
+												role="link"
+												aria-label={`${item.label} — Скоро`}
+												aria-disabled="true"
+												class="p1-muted cursor-default text-sm/6"
+												>{item.label}<span class="ml-2 text-xs">Скоро</span></span
+											>
+										{:else}
+											<a
+												href={item.href}
+												class="p1-muted p1-accent-hover text-sm/6 transition-colors">{item.label}</a
+											>
+										{/if}
+									</li>
+								{/each}
+							</ul>
+						{/each}
+					</div>
+				</div>
+			{/if}
 		</nav>
 
 		<!-- ── Копирайт и вход ────────────────────────────────────────────── -->

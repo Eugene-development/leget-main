@@ -82,7 +82,7 @@
 
 	const visibleCatalogItems = $derived(
 		catalogItems.filter(
-			(item) => isEditable || (item.comingSoon !== true && !disabledRubrics.includes(item.href))
+			(item) => item.comingSoon === true || isEditable || !disabledRubrics.includes(item.href)
 		)
 	);
 
@@ -619,7 +619,7 @@
 					<button
 						type="button"
 						onclick={openSettings}
-                    data-goal-ignore="Настройки владельца сайта, не обращение посетителя"
+						data-goal-ignore="Настройки владельца сайта, не обращение посетителя"
 						class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-surface-raised text-ink-500 shadow-sm transition-all duration-300 hover:border-link-300 hover:text-link-600 active:scale-95"
 						title="Настройки шапки"
 						data-field-toolbar-anchor

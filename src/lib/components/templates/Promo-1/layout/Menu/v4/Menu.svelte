@@ -244,7 +244,8 @@
 		in:fly={{ y: -5, duration: motion.enterDuration, delay: motion.enterDelay(idx) }}
 	>
 		<a
-			href={item.href}
+			href={isComingSoon ? undefined : item.href}
+			role={isComingSoon ? 'link' : undefined}
 			onclick={(e) => {
 				if (isComingSoon) {
 					e.preventDefault();
@@ -260,7 +261,7 @@
 			class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 		>
 			{@render icon(item.icon, 'h-6 w-6')}
-			<span class="mt-1 text-base font-semibold">{item.label}</span>
+			<span class="mt-1 text-lg font-semibold">{item.label}</span>
 			{#if item.desc}
 				<span class="p1-note p1-muted">{item.desc}</span>
 			{/if}
@@ -304,7 +305,7 @@
 		>
 			<span class="mt-0.5">{@render icon(service.icon, 'h-5 w-5')}</span>
 			<span class="flex flex-col gap-0.5">
-				<span class="text-sm font-semibold">{service.label}</span>
+				<span class="text-lg font-semibold">{service.label}</span>
 				{#if service.desc}
 					<span class="p1-note p1-muted">{service.desc}</span>
 				{/if}

@@ -176,7 +176,8 @@
 			{@const enabled = !unavailable && !disabled.includes(item.href)}
 			<div class="panel-row p1-line" class:unavailable={unavailable || (isEditable && !enabled)}>
 				<a
-					href={item.href}
+					href={unavailable ? undefined : item.href}
+					role={unavailable ? 'link' : undefined}
 					class="panel-link p1-title p1-accent-hover"
 					aria-disabled={unavailable || (isEditable && !enabled)}
 					aria-current={matches(item.href) ? 'page' : undefined}
@@ -425,7 +426,7 @@
 		text-decoration: none;
 	}
 	.panel-label {
-		font-size: var(--text-sm);
+		font-size: var(--text-lg);
 		font-weight: 600;
 	}
 	.panel-link:focus-visible,

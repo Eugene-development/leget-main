@@ -213,11 +213,15 @@
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.1.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.1.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
@@ -227,6 +231,10 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.2.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.7.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.5.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.2.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
@@ -241,6 +249,10 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.2.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.7.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.5.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" },
@@ -401,11 +413,15 @@
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.1.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.1.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
@@ -415,6 +431,10 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.2.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.7.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.5.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.2.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
@@ -429,6 +449,10 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.2.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.7.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.5.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" },
@@ -589,11 +613,15 @@
 		"locations": [
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika", "article": "1.20.1.1" },
 			{ "template": "Promo-1", "page": "/bytovaya-tehnika/{brand}", "article": "1.28.1.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.1.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.1.1" },
 			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.1.1" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.1.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.1.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.1.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.1.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.1.1" },
@@ -603,6 +631,10 @@
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}", "article": "1.29.1.1" },
 			{ "template": "Promo-1", "page": "/stoleshnica/{material}/{brand}", "article": "1.30.1.1" },
 			{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.2.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.7.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.5.1" },
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.2.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura/{shop}", "article": "1.36.4.1" },
 			{ "template": "Promo-1", "page": "/furnitura", "article": "1.22.2.1" },
@@ -617,6 +649,10 @@
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}", "article": "1.17.5.1" },
 			{ "template": "Promo-1", "page": "/mebel/{category}/{project}", "article": "1.18.5.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.2.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.7.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.5.1" },
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.2.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie", "article": "1.35.4.1" },
 			{ "template": "Promo-1", "page": "/osveshchenie/{brand}", "article": "1.37.4.1" },
@@ -1247,7 +1283,7 @@
 		"source": "templates/Promo-1/pages/dveri/DveriBrandHero.svelte",
 		"route": "/dveri",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.2.1" }]
 	},
 	{
 		"id": "pages_dveri_dvericta_open_1",
@@ -1257,7 +1293,10 @@
 		"source": "templates/Promo-1/pages/dveri/DveriCTA.svelte",
 		"route": "/dveri",
 		"mock": false,
-		"locations": []
+		"locations": [
+			{ "template": "Promo-1", "page": "/dveri", "article": "1.38.7.1" },
+			{ "template": "Promo-1", "page": "/dveri/{brand}", "article": "1.39.5.1" }
+		]
 	},
 	{
 		"id": "pages_dveri_dverihero_open_1",
@@ -1267,7 +1306,7 @@
 		"source": "templates/Promo-1/pages/dveri/DveriHero.svelte",
 		"route": "/dveri",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/dveri", "article": "1.38.2.1" }]
 	},
 	{
 		"id": "pages_furnitura_furnituracta_open_1",
@@ -1608,7 +1647,7 @@
 		"source": "templates/Promo-1/pages/okna/OknaBrandHero.svelte",
 		"route": "/okna",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.2.1" }]
 	},
 	{
 		"id": "pages_okna_oknacta_open_1",
@@ -1618,7 +1657,10 @@
 		"source": "templates/Promo-1/pages/okna/OknaCTA.svelte",
 		"route": "/okna",
 		"mock": false,
-		"locations": []
+		"locations": [
+			{ "template": "Promo-1", "page": "/okna", "article": "1.40.7.1" },
+			{ "template": "Promo-1", "page": "/okna/{brand}", "article": "1.41.5.1" }
+		]
 	},
 	{
 		"id": "pages_okna_oknahero_open_1",
@@ -1628,7 +1670,7 @@
 		"source": "templates/Promo-1/pages/okna/OknaHero.svelte",
 		"route": "/okna",
 		"mock": false,
-		"locations": []
+		"locations": [{ "template": "Promo-1", "page": "/okna", "article": "1.40.2.1" }]
 	},
 	{
 		"id": "pages_osveshchenie_osveshcheniebrandhero_open_1",

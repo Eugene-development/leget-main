@@ -11,7 +11,7 @@
 	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import type { Action } from 'svelte/action';
 	import type { Snippet } from 'svelte';
-	import { catalogItems } from '../../catalogItems';
+	import { catalogItems, orderCatalogItems } from '../../catalogItems';
 	import { serviceItems } from '../../serviceItems';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { createContactVisibility } from '../contacts.svelte';
@@ -91,12 +91,14 @@
 	// «Проекты» (/projects) — не рубрика, поэтому в общем catalogItems её нет: там она
 	// попала бы и в меню каталога хэдера, и в переключатели рубрик. В футере ссылка
 	// уместна — секция «Каталог» здесь работает как навигация по витрине целиком.
-	const visibleCatalogItems = $derived([
-		...catalogItems.filter(
-			(item) => item.comingSoon !== true && !disabledRubrics.includes(item.href)
-		),
-		{ href: '/projects', label: 'Проекты' }
-	]);
+	const visibleCatalogItems = $derived(
+		orderCatalogItems([
+			...catalogItems.filter(
+				(item) => item.comingSoon === true || !disabledRubrics.includes(item.href)
+			),
+			{ href: '/projects', label: 'Проекты', comingSoon: false }
+		])
+	);
 	const visibleServiceItems = $derived(
 		serviceItems.filter((item) => item.comingSoon !== true && !disabledServices.includes(item.href))
 	);
@@ -469,11 +471,21 @@
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleCatalogItems as item}
 								<li>
-									<a
-										href={item.href}
-										class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-										>{item.label}</a
-									>
+									{#if item.comingSoon}
+										<span
+											role="link"
+											aria-label={`${item.label} — Скоро`}
+											aria-disabled="true"
+											class="p1-muted cursor-default text-sm/6"
+											>{item.label}<span class="ml-2 text-xs">Скоро</span></span
+										>
+									{:else}
+										<a
+											href={item.href}
+											class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+											>{item.label}</a
+										>
+									{/if}
 								</li>
 							{/each}
 						</ul>

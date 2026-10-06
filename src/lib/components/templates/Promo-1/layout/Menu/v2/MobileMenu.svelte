@@ -121,7 +121,8 @@
 		in:fly={{ y: 12, duration: 420, delay: idx * 55, easing: expoOut }}
 	>
 		<a
-			href={item.href}
+			href={isComingSoon ? undefined : item.href}
+			role={isComingSoon ? 'link' : undefined}
 			onclick={(e) => {
 				if (isComingSoon) {
 					e.preventDefault();
@@ -153,13 +154,14 @@
 			<span class="min-w-0 flex-1">
 				<span class="flex items-center gap-2">
 					<span
-						class="text-[13px] font-semibold tracking-tight transition-colors duration-300 {isLinkActive(
+						class="text-lg font-semibold tracking-tight transition-colors duration-300 {isLinkActive(
 							item.href
 						)
 							? 'text-link-600'
 							: 'text-ink-900'}"
 					>
 						{item.label}
+						{#if isComingSoon && !isEditable}<span class="p1-note p1-muted ml-2">Скоро</span>{/if}
 					</span>
 					{#if isEditable && !isEnabled && !isComingSoon}
 						<span

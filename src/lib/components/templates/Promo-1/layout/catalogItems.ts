@@ -11,11 +11,18 @@ export interface CatalogItem {
 	label: string;
 	icon: string;
 	desc?: string;
-	/** Рубрика ещё не запущена — недоступна для посещения, переключатель скрыт. */
+	/** Рубрика видна со статусом «Скоро», переход и переключатель недоступны. */
 	comingSoon?: boolean;
 }
 
-export const catalogItems: CatalogItem[] = [
+/** Keep available items first, preserving the order within each status. */
+export function orderCatalogItems<T extends { comingSoon?: boolean }>(items: readonly T[]): T[] {
+	return [...items].sort(
+		(first, second) => Number(first.comingSoon === true) - Number(second.comingSoon === true)
+	);
+}
+
+export const catalogItems: CatalogItem[] = orderCatalogItems([
 	{ href: '/mebel', label: 'Мебель', icon: 'sofa', desc: 'Кухни, шкафы, гардеробные' },
 	{
 		href: '/stoleshnica',
@@ -39,10 +46,17 @@ export const catalogItems: CatalogItem[] = [
 		href: '/osveshchenie',
 		label: 'Освещение',
 		icon: 'lamp',
-		desc: 'Светильники и световые решения'
+		desc: 'Светильники и световые решения',
+		comingSoon: true
 	},
-	{ href: '/dveri', label: 'Двери', icon: 'surface', desc: 'Каталог брендов дверей' },
-	{ href: '/okna', label: 'Окна', icon: 'surface', desc: 'Каталог брендов окон' },
+	{
+		href: '/dveri',
+		label: 'Двери',
+		icon: 'surface',
+		desc: 'Каталог брендов дверей',
+		comingSoon: true
+	},
+	{ href: '/okna', label: 'Окна', icon: 'surface', desc: 'Каталог брендов окон', comingSoon: true },
 	{ href: '/furnitura', label: 'Фурнитура', icon: 'hinge', desc: 'Ручки, петли, механизмы' },
 	{
 		href: '/steklo-i-zerkala',
@@ -57,4 +71,4 @@ export const catalogItems: CatalogItem[] = [
 		desc: 'Керамогранит и мозаика',
 		comingSoon: true
 	}
-];
+]);

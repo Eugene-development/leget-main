@@ -1176,6 +1176,150 @@
 		"source": "templates/Promo-1/pages/osveshchenie/OsveshchenieCTA.svelte"
 	},
 	{
+		"article": "1.38.1.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriSidebar.svelte"
+	},
+	{
+		"article": "1.38.2.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriHero.svelte"
+	},
+	{
+		"article": "1.38.3.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriBrands.svelte"
+	},
+	{
+		"article": "1.38.4.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriBenefits.svelte"
+	},
+	{
+		"article": "1.38.5.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriCategories.svelte"
+	},
+	{
+		"article": "1.38.6.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriComplex.svelte"
+	},
+	{
+		"article": "1.38.7.1",
+		"template": "Promo-1",
+		"page": "/dveri",
+		"source": "templates/Promo-1/pages/dveri/DveriCTA.svelte"
+	},
+	{
+		"article": "1.39.1.1",
+		"template": "Promo-1",
+		"page": "/dveri/{brand}",
+		"source": "templates/Promo-1/pages/dveri/DveriSidebar.svelte"
+	},
+	{
+		"article": "1.39.2.1",
+		"template": "Promo-1",
+		"page": "/dveri/{brand}",
+		"source": "templates/Promo-1/pages/dveri/DveriBrandHero.svelte"
+	},
+	{
+		"article": "1.39.3.1",
+		"template": "Promo-1",
+		"page": "/dveri/{brand}",
+		"source": "templates/Promo-1/pages/_shared/BrandAbout.svelte"
+	},
+	{
+		"article": "1.39.4.1",
+		"template": "Promo-1",
+		"page": "/dveri/{brand}",
+		"source": "templates/Promo-1/pages/dveri/DveriBenefits.svelte"
+	},
+	{
+		"article": "1.39.5.1",
+		"template": "Promo-1",
+		"page": "/dveri/{brand}",
+		"source": "templates/Promo-1/pages/dveri/DveriCTA.svelte"
+	},
+	{
+		"article": "1.40.1.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaSidebar.svelte"
+	},
+	{
+		"article": "1.40.2.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaHero.svelte"
+	},
+	{
+		"article": "1.40.3.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaBrands.svelte"
+	},
+	{
+		"article": "1.40.4.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaBenefits.svelte"
+	},
+	{
+		"article": "1.40.5.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaCategories.svelte"
+	},
+	{
+		"article": "1.40.6.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaComplex.svelte"
+	},
+	{
+		"article": "1.40.7.1",
+		"template": "Promo-1",
+		"page": "/okna",
+		"source": "templates/Promo-1/pages/okna/OknaCTA.svelte"
+	},
+	{
+		"article": "1.41.1.1",
+		"template": "Promo-1",
+		"page": "/okna/{brand}",
+		"source": "templates/Promo-1/pages/okna/OknaSidebar.svelte"
+	},
+	{
+		"article": "1.41.2.1",
+		"template": "Promo-1",
+		"page": "/okna/{brand}",
+		"source": "templates/Promo-1/pages/okna/OknaBrandHero.svelte"
+	},
+	{
+		"article": "1.41.3.1",
+		"template": "Promo-1",
+		"page": "/okna/{brand}",
+		"source": "templates/Promo-1/pages/_shared/BrandAbout.svelte"
+	},
+	{
+		"article": "1.41.4.1",
+		"template": "Promo-1",
+		"page": "/okna/{brand}",
+		"source": "templates/Promo-1/pages/okna/OknaBenefits.svelte"
+	},
+	{
+		"article": "1.41.5.1",
+		"template": "Promo-1",
+		"page": "/okna/{brand}",
+		"source": "templates/Promo-1/pages/okna/OknaCTA.svelte"
+	},
+	{
 		"article": "1.Б.1.1",
 		"template": "Promo-1",
 		"page": "(layout)",

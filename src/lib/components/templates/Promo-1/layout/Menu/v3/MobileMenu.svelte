@@ -182,10 +182,14 @@
 			: 'opacity-48'}"
 	>
 		{#if isComingSoon}
-			<div class="flex min-w-0 cursor-not-allowed items-center px-4 py-4" aria-disabled="true">
+			<div
+				class="flex min-w-0 cursor-not-allowed items-center px-4 py-4"
+				role="link"
+				aria-disabled="true"
+			>
 				<div class="min-w-0">
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="text-sm font-semibold tracking-[-0.015em] text-alt-petrol-950"
+						<span class="text-lg font-semibold tracking-[-0.015em] text-alt-petrol-950"
 							>{item.label}</span
 						>
 						<span
@@ -214,7 +218,7 @@
 			>
 				<div class="min-w-0 flex-1">
 					<span
-						class="text-sm font-semibold tracking-[-0.015em] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {isLinkActive(
+						class="text-lg font-semibold tracking-[-0.015em] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] {isLinkActive(
 							item.href
 						)
 							? 'text-alt-petrol-accent-600'

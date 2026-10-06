@@ -16,7 +16,10 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const bgImage = $derived(data.bgImage || '');
+	const bgImage = $derived(
+		data.bgImage ||
+			'https://storage.yandexcloud.net/leget-main/templates/promo-1/leget-okna-hero-20261005.webp'
+	);
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -31,8 +34,8 @@
 		<ImageFallback
 			imagePath={['bgImage']}
 			src={bgImage}
-			alt="Hero"
-			class="absolute inset-0 h-full w-full object-cover opacity-40"
+			alt="Панорамные окна с тёмными рамами в светлой гостиной"
+			class="absolute inset-0 h-full w-full object-cover object-[70%_center] opacity-40 sm:object-center"
 		/>
 
 		<div class="relative px-8 py-16 sm:px-12 sm:py-20">

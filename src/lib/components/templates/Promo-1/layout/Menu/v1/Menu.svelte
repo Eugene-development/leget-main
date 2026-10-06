@@ -180,7 +180,8 @@
 		in:fly={{ y: -5, duration: motion.enterDuration, delay: motion.enterDelay(idx) }}
 	>
 		<a
-			href={item.href}
+			href={isComingSoon ? undefined : item.href}
+			role={isComingSoon ? 'link' : undefined}
 			onclick={(e) => {
 				if (isComingSoon) {
 					e.preventDefault();
@@ -195,8 +196,9 @@
 				: 'p1-accent-hover p1-accent-border-hover'}"
 			class:pointer-events-none={!isComingSoon && isEditable && !isEnabled}
 		>
-			<span class="text-sm font-semibold">
+			<span class="text-lg font-semibold">
 				{item.label}
+				{#if isComingSoon && !isEditable}<span class="p1-note p1-muted ml-2">Скоро</span>{/if}
 				{#if isEditable && !isEnabled && !isComingSoon}
 					<span class="p1-label p1-muted ml-1.5 align-middle">откл</span>
 				{/if}
