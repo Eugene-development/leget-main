@@ -4,6 +4,8 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { createFormSender } from '$lib/utils/form-submission';
+	import ContentLoading from '$lib/components/ContentLoading.svelte';
+	import NavigationBody from '$lib/components/NavigationBody.svelte';
 	import EditForm from './EditForm.svelte';
 	import ManagerForm from './ManagerForm.svelte';
 	import TemplateEditor from './TemplateEditor.svelte';
@@ -594,6 +596,7 @@
 		</div>
 	</aside>
 	<main class="crm-main">
+		<NavigationBody workspace>
 		<header class="crm-header">
 			<div>
 				{#if id}<a class="back" href={href(section)}>← {titles[section]}</a>{/if}
@@ -626,10 +629,14 @@
 									: 'Добавить'}</button
 				>{/if}
 		</header>
-		{#if detailRefreshing}<p class="muted" role="status">
-				Запись сохранена. Подгружаем историю и связанные данные…
-			</p>{/if}
-		{#if auxiliaryLoading}<p class="muted" role="status">Подгружаем варианты выбора…</p>{/if}
+		{#if detailRefreshing}<ContentLoading
+				><p class="muted" role="status">
+					Запись сохранена. Подгружаем историю и связанные данные…
+				</p></ContentLoading
+			>{/if}
+		{#if auxiliaryLoading}<ContentLoading
+				><p class="muted" role="status">Подгружаем варианты выбора…</p></ContentLoading
+			>{/if}
 		{#if auxiliaryError}<div class="crm-notice" role="status">
 				{auxiliaryError}
 				<button onclick={() => refresh()} data-goal-ignore="Повтор загрузки CRM"
@@ -736,7 +743,7 @@
 						/>{/if}
 				</section>
 			{/if}
-			{#if loading}<p class="crm-loading" role="status">Загружаем рабочие данные…</p>
+			{#if loading}<ContentLoading label="Загружаем рабочие данные…" />
 			{:else if section === 'settings'}
 				{#if canManage}<div class="crm-settings-nav">
 						<a href={href('members')}>Сотрудники <span>Назначение и отзыв доступа</span></a><a
@@ -1543,5 +1550,6 @@
 					</nav>{/if}
 			{/if}
 		{/if}
+		</NavigationBody>
 	</main>
 </div>

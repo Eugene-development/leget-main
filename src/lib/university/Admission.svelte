@@ -36,6 +36,10 @@
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
 		if (busy || smsBusy) return;
+		if (SITE_KEY && !captchaToken) {
+			problem = 'Подтвердите, что вы не робот.';
+			return;
+		}
 		busy = true;
 		problem = '';
 		const payload = Object.fromEntries(new FormData(event.currentTarget as HTMLFormElement));
@@ -241,16 +245,13 @@
 				<SmartCaptcha
 					bind:this={captcha}
 					onverify={(token) => (captchaToken = token)}
-					onerror={() => {
-						captchaToken = '';
-						problem = 'Проверка безопасности недоступна. Попробуйте ещё раз.';
-					}}
+					onerror={() => (captchaToken = '')}
 				/>
 				{#if problem}<p role="alert" class="academy-notice">{problem}</p>{/if}
 				<button
 					class="academy-button"
 					type="submit"
-					disabled={busy || (!!SITE_KEY && !captchaToken)}
+					disabled={busy || smsBusy || (!!SITE_KEY && !captchaToken)}
 					data-metrika-goal="university_auth_submit"
 					data-goal-label="Регистрация или вход студента"
 					data-goal-action="submit_click"

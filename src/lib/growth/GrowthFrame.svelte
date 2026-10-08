@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import type { Snippet } from 'svelte';
+	import NavigationBody from '$lib/components/NavigationBody.svelte';
 	import './growth.css';
 	let {
 		title,
@@ -61,7 +62,9 @@
 		<a href={`https://${activeSite?.domain || ''}`}>Открыть сайт</a>
 	</aside>
 	<main class="growth-main">
-		<h1>{title}</h1>
-		{@render children()}
+		<NavigationBody workspace>
+			<h1>{title}</h1>
+			{@render children()}
+		</NavigationBody>
 	</main>
 </div>

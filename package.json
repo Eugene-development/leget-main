@@ -23,6 +23,7 @@
 		"goals:generate": "node scripts/goals-catalog.mjs --write",
 		"test:goals": "node scripts/test-goals.mjs",
 		"test:metrika": "node --test scripts/test-metrika.mjs",
+		"test:captcha": "node --test scripts/test-smartcaptcha.mjs",
 		"check:forms": "node scripts/check-forms.mjs",
 		"test:forms": "node scripts/test-form-submission.mjs",
 		"test:lead-catcher": "node scripts/test-lead-catcher.mjs",

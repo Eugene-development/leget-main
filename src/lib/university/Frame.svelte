@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import NavigationBody from '$lib/components/NavigationBody.svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { toast } from '$lib/stores/toast.svelte';
@@ -48,7 +49,7 @@
 			</nav>
 		</header>
 		{#if logoutProblem}<p class="academy-notice" role="alert">{logoutProblem}</p>{/if}
-		{@render children()}
+		<NavigationBody>{@render children()}</NavigationBody>
 		<footer class="academy-footer">
 			Учиться понимать. Создавать своё.<a href="/university">Все дисциплины</a>
 		</footer>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
+	import NavigationBody from '$lib/components/NavigationBody.svelte';
 	import { page } from '$app/state';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { cabinetHref } from '$lib/utils/cabinet-href';
@@ -232,6 +233,8 @@
 			</nav>
 		</header>
 		{#if problem}<p class="study-alert" role="alert">{problem}</p>{/if}
-		<main class="study-main">{@render children()}</main>
+		<main class="study-main">
+			<NavigationBody workspace>{@render children()}</NavigationBody>
+		</main>
 	</div>
 </div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.17.3.1 — см. docs/architecture/component-articles-map.md
+	import HiddenSharedProjects from './HiddenSharedProjects.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import FeedViewToggle from '../projects/ProjectsFeed/FeedViewToggle.svelte';
 	import FeedRows from '../projects/ProjectsFeed/FeedRows.svelte';
@@ -70,6 +71,11 @@
 <div class="mebel-container">
 	<!-- Убираем дополнительный зазор глобального scroll-padding-top, сохраняя высоту меню. -->
 	<section bind:this={gridElement} class="mt-12 -scroll-mt-6" data-p1-theme="light">
+		{#if isEditable && editContext?.licenseId && data.categoryId}
+			{#key `${editContext.licenseId}:${data.categoryId}`}
+				<HiddenSharedProjects licenseId={editContext.licenseId} categoryId={data.categoryId} />
+			{/key}
+		{/if}
 		{#if projects.length === 0}
 			<div class="rounded-2xl bg-surface-raised p-12 text-center shadow-sm">
 				<svg

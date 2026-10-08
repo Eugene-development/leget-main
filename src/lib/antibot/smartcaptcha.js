@@ -24,35 +24,70 @@ const CAPTCHA_SCRIPT_SRC = 'https://smartcaptcha.cloud.yandex.ru/captcha.js';
 /** (объявлен неявно на window; обращения идут через window.smartCaptcha) */
 
 let scriptPromise = null;
+let loadAttempt = 0;
+
+function readyApi() {
+	const api = window.smartCaptcha;
+	return api &&
+		['render', 'subscribe', 'reset', 'destroy'].every((method) => typeof api[method] === 'function')
+		? api
+		: undefined;
+}
 
 /**
  * Загружает captcha.js один раз (защита от повторной вставки и гонок при
  * одновременном монтировании нескольких виджетов — один общий промис).
- * @returns {Promise<void>}
+ * После ошибки следующая попытка загружает скрипт заново. Callback уникален,
+ * чтобы запоздавший ответ старого запроса не завершил новую попытку.
  */
 export function loadCaptchaScript() {
 	if (typeof window === 'undefined') return Promise.resolve();
-	if (window.smartCaptcha) return Promise.resolve();
 	if (scriptPromise) return scriptPromise;
+	if (readyApi()) return Promise.resolve(readyApi());
 
-	scriptPromise = new Promise((resolve) => {
+	scriptPromise = new Promise((resolve, reject) => {
 		const existing = document.querySelector(`script[src^="${CAPTCHA_SCRIPT_SRC}"]`);
-		if (existing) {
-			if (window.smartCaptcha) {
-				resolve();
-				return;
-			}
-			existing.addEventListener('load', () => resolve());
-			return;
+		const script = existing ?? document.createElement('script');
+		const callbackName = `__legetSmartCaptchaLoaded${++loadAttempt}`;
+		let settled = false;
+		const timer = setTimeout(() => finish(new Error('SmartCaptcha load timeout')), 15000);
+
+		function finish(error) {
+			if (settled) return;
+			const api = readyApi();
+			if (!error && !api) return;
+			settled = true;
+			clearTimeout(timer);
+			script.removeEventListener('load', onLoad);
+			script.removeEventListener('error', onError);
+			delete window[callbackName];
+			if (error) {
+				script.remove();
+				reject(error);
+			} else resolve(api);
+		}
+		function onLoad() {
+			finish(readyApi() ? undefined : new Error('SmartCaptcha API unavailable'));
+		}
+		function onError() {
+			finish(new Error('SmartCaptcha script could not be loaded'));
 		}
 
-		// Глобальный onload-колбэк нужно назначить ДО вставки скрипта (требование Я.).
-		window.onloadSmartCaptchaScript = () => resolve();
-
-		const script = document.createElement('script');
-		script.src = `${CAPTCHA_SCRIPT_SRC}?render=onload&onload=onloadSmartCaptchaScript`;
-		script.async = true;
-		document.head.appendChild(script);
+		window[callbackName] = () => finish();
+		script.addEventListener('load', onLoad);
+		script.addEventListener('error', onError);
+		if (!existing) {
+			script.src = `${CAPTCHA_SCRIPT_SRC}?render=onload&onload=${callbackName}`;
+			script.async = true;
+			try {
+				document.head.appendChild(script);
+			} catch (error) {
+				finish(error);
+			}
+		}
+	}).catch((error) => {
+		scriptPromise = null;
+		throw error;
 	});
 
 	return scriptPromise;

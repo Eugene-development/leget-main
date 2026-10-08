@@ -1,5 +1,6 @@
 <script lang="ts">
 	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
+	import { setSharedProjectVisibility } from './project-visibility';
 	import MebelProjectEditModal from './MebelProjectEditModal.svelte';
 	import MebelProjectDeleteDialog from './MebelProjectDeleteDialog.svelte';
 	import type { SavedProject, ProjectUpdateInput } from './project-form';
@@ -47,6 +48,9 @@
 	let refreshError = $state('');
 	let isDeleteDialogOpen = $state(false);
 	let deletedProjectId = $state('');
+	let hiddenProjectId = $state('');
+	let hiding = $state(false);
+	const isHidden = $derived(!!project.id && hiddenProjectId === String(project.id));
 	const isDeleted = $derived(!!project.id && deletedProjectId === String(project.id));
 	const categoryHref = $derived(
 		category.slug ? `/mebel/${encodeURIComponent(category.slug)}` : '/mebel'
@@ -64,6 +68,39 @@
 				node.parentNode?.removeChild(node);
 			}
 		};
+	}
+
+	async function hideProject() {
+		if (hiding || !isEditable || !editContext?.licenseId || !project.can_hide) return;
+		const projectId = String(project.id);
+		const licenseId = editContext.licenseId;
+		const destination = categoryHref;
+		const stillCurrent = () =>
+			String(project.id) === projectId && editContext?.licenseId === licenseId;
+		hiding = true;
+		refreshError = '';
+		try {
+			await setSharedProjectVisibility(projectId, licenseId, false);
+		} catch (cause) {
+			if (stillCurrent())
+				refreshError =
+					cause instanceof Error ? cause.message : 'Не удалось скрыть проект. Повторите попытку.';
+			hiding = false;
+			return;
+		}
+		if (!stillCurrent()) {
+			hiding = false;
+			return;
+		}
+		hiddenProjectId = projectId;
+		isLightboxOpen = false;
+		try {
+			await goto(destination, { invalidateAll: true });
+		} catch {
+			refreshError = 'Проект скрыт. Не удалось открыть категорию — перейдите по ссылке ниже.';
+		} finally {
+			hiding = false;
+		}
 	}
 
 	async function projectDeleted() {
@@ -140,10 +177,13 @@
 	});
 </script>
 
-{#if isDeleted}
+{#if isDeleted || isHidden}
 	<div class="mebel-container py-10">
 		<p role="status" class="text-ink-800">
-			{refreshError || 'Проект удалён. Возвращаемся в категорию…'}
+			{refreshError ||
+				(isHidden
+					? 'Проект скрыт на вашем сайте. Возвращаемся в категорию…'
+					: 'Проект удалён. Возвращаемся в категорию…')}
 		</p>
 		<a href={categoryHref} class="mt-4 inline-flex min-h-11 items-center text-link-700 underline"
 			>Вернуться в категорию</a
@@ -269,29 +309,42 @@
 								</svg>
 							</button>
 
-							<button
-								type="button"
-								onclick={() => (isDeleteDialogOpen = true)}
-								disabled={!project.id || project.can_delete === false}
-								aria-label="Удалить проект"
-								title={project.can_delete === false
-									? 'Общий проект каталога недоступен для удаления'
-									: 'Удалить проект'}
-								class="flex size-11 shrink-0 items-center justify-center rounded-lg border border-cat-6-300 bg-cat-6-50 text-cat-6-600 hover:bg-cat-6-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								<svg
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.8"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									aria-hidden="true"
-									><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg
+							{#if project.can_hide}
+								<button
+									type="button"
+									onclick={hideProject}
+									disabled={hiding || !editContext?.licenseId}
+									data-goal-ignore="Редактор: скрытие общего проекта на сайте"
+									title="Скрыть только на вашем сайте. Вернуть можно в списке скрытых проектов категории."
+									class="min-h-11 rounded-lg border border-ink-300 bg-surface-raised px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500 disabled:opacity-50"
 								>
-							</button>
+									{hiding ? 'Скрытие…' : 'Скрыть на сайте'}
+								</button>
+							{:else}
+								<button
+									type="button"
+									onclick={() => (isDeleteDialogOpen = true)}
+									disabled={!project.id || project.can_delete === false}
+									aria-label="Удалить проект"
+									title={project.can_delete === false
+										? 'Общий проект каталога недоступен для удаления'
+										: 'Удалить проект'}
+									class="flex size-11 shrink-0 items-center justify-center rounded-lg border border-cat-6-300 bg-cat-6-50 text-cat-6-600 hover:bg-cat-6-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-500 disabled:cursor-not-allowed disabled:opacity-50"
+								>
+									<svg
+										width="16"
+										height="16"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+										><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg
+									>
+								</button>
+							{/if}
 						{/if}
 					</div>
 				</div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
+	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import type { Course } from './types';
 	import './university.css';
 	let { heading, description }: { heading?: Snippet; description?: Snippet } = $props();
@@ -44,7 +45,7 @@
 			data-goal-action="open">Стать студентом</a
 		><a class="academy-link" href="/university/student">Продолжить обучение</a>
 	</div>
-	{#if loading}<p role="status">Загружаем учебную программу…</p>
+	{#if loading}<ContentLoading label="Загружаем учебную программу…" />
 	{:else if problem}<p role="alert">{problem}</p>
 		<button
 			class="academy-button"

@@ -464,7 +464,7 @@
 					data-goal-label="Войти / Зарегистрироваться"
 					data-goal-action="submit_click"
 					type="submit"
-					disabled={isSubmitting}
+					disabled={isSubmitting || smsBusy || (!!SITE_KEY && !captchaToken)}
 					class="mt-6 w-full rounded-xl bg-ink-950 px-6 py-3 text-sm font-semibold text-on-dark transition hover:bg-ink-800 disabled:opacity-60"
 				>
 					{#if isSubmitting}

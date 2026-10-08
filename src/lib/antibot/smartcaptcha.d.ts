@@ -5,15 +5,28 @@
 export const SITE_KEY: string;
 
 /** Загружает captcha.js один раз (идемпотентно). На сервере — no-op. */
-export function loadCaptchaScript(): Promise<void>;
+export function loadCaptchaScript(): Promise<SmartCaptchaApi | undefined>;
+
+export interface SmartCaptchaApi {
+	render: (
+		container: HTMLElement,
+		options: {
+			sitekey: string;
+			hl?: 'ru' | 'en';
+			callback: (token: string) => void;
+		}
+	) => number;
+	reset: (widgetId: number) => void;
+	destroy: (widgetId: number) => void;
+	subscribe: (
+		widgetId: number,
+		event: 'network-error' | 'javascript-error' | 'token-expired',
+		callback: (error?: unknown) => void
+	) => () => void;
+}
 
 declare global {
 	interface Window {
-		smartCaptcha?: {
-			render: (container: HTMLElement, options: Record<string, unknown>) => number;
-			reset: (widgetId: number) => void;
-			destroy: (widgetId: number) => void;
-		};
-		onloadSmartCaptchaScript?: () => void;
+		smartCaptcha?: SmartCaptchaApi;
 	}
 }

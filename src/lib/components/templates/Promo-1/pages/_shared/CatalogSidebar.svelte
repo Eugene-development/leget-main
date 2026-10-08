@@ -101,7 +101,7 @@
 	const sidebarId = $props.id();
 	const activeMaterial = $derived(String(data?.activeSlug ?? ''));
 	function isExpanded(slug: string) {
-		return expandedMaterials[`${activeMaterial}:${slug}`] ?? slug === activeMaterial;
+		return expandedMaterials[slug] ?? slug === activeMaterial;
 	}
 
 	/* Пустой ответ API не должен возвращать скрытые/удалённые пункты из статики. */
@@ -329,7 +329,8 @@
 						class="ms-link ms-expand"
 						aria-expanded={expanded}
 						aria-controls="{sidebarId}-{context}-{item.slug}"
-						onclick={() => (expandedMaterials[`${activeMaterial}:${item.slug}`] = !expanded)}
+						data-goal-ignore="Раскрытие списка брендов в сайдбаре каталога"
+						onclick={() => (expandedMaterials[item.slug] = !expanded)}
 					>
 						<span class="ms-label">{label}</span>
 						{#if showDisabledBadge && isEditable && !isEnabled}<span class="ms-badge">Откл.</span

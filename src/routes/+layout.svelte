@@ -1,6 +1,7 @@
 <script>
 	import { afterNavigate, onNavigate } from '$app/navigation';
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
+	import { setContext } from 'svelte';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import ServiceOrderIsland from '$lib/components/ServiceOrderIsland.svelte';
@@ -9,11 +10,50 @@
 	import SiteSearchModal from '$lib/components/SiteSearchModal.svelte';
 	import Toast from '$lib/components/Toast.svelte';
 	import { siteSearch } from '$lib/stores/site-search.svelte';
+	import NavigationBody from '$lib/components/NavigationBody.svelte';
+	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
 
 	let { children } = $props();
+	let pendingContent = $state(0);
+	let navigationBodies = $state(0);
+	setContext('leget-navigation-body', {
+		active: () => loadingPage,
+		register() {
+			navigationBodies += 1;
+			let stopped = false;
+			return () => {
+				if (stopped) return;
+				stopped = true;
+				navigationBodies -= 1;
+			};
+		}
+	});
+	setContext('leget-content-loading', {
+		start() {
+			pendingContent += 1;
+			let stopped = false;
+			return () => {
+				if (stopped) return;
+				stopped = true;
+				pendingContent -= 1;
+			};
+		}
+	});
+	const loadingPage = $derived(
+		!!navigating.to &&
+			!navigating.willUnload &&
+			(navigating.from?.url.pathname !== navigating.to.url.pathname ||
+				navigating.from?.url.search !== navigating.to.url.search)
+	);
+	const loadingWorkspace = $derived(
+		/^\/(admin|cabinet|partner|crm|curator|site-settings|university\/student)(\/|$)/.test(
+			navigating.to?.url.pathname ?? ''
+		)
+	);
 
 	onNavigate((navigation) => {
 		if (
+			loadingPage ||
 			navigation.from?.url.pathname === navigation.to?.url.pathname ||
 			!document.startViewTransition ||
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -48,7 +88,10 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-{@render children()}
+<LoadingProgress active={loadingPage || pendingContent > 0} />
+<NavigationBody root delegated={navigationBodies > 0} workspace={loadingWorkspace}>
+	{@render children()}
+</NavigationBody>
 
 <Toast />
 

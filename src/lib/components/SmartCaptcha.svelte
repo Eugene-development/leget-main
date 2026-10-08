@@ -1,15 +1,7 @@
 <script lang="ts">
-	/**
-	 * Видимый виджет Yandex SmartCaptcha.
-	 *
-	 * Рендерится прямо в форме. Юзер решает чекбокс → Яндекса отдаёт одноразовый
-	 * токен в `onverify`. Токен летит на бэкенд как `captcha_token` (см. формы).
-	 * Сбросить виджет (для повторной попытки) — вызвать `reset()` через bind:this.
-	 *
-	 * Без SITE_KEY компонент не рендерит ничего (fail-open).
-	 */
 	import { onMount } from 'svelte';
 	import { SITE_KEY, loadCaptchaScript } from '$lib/antibot/smartcaptcha.js';
+	import { createCaptchaWidget, type CaptchaState } from '$lib/antibot/captcha-widget';
 
 	let {
 		onverify = () => {},
@@ -19,47 +11,75 @@
 		onerror?: (err: unknown) => void;
 	} = $props();
 
-	let container: HTMLDivElement | null = $state(null);
-	let widgetId: number | null = null;
+	let container = $state<HTMLDivElement>();
+	let captchaState = $state<CaptchaState>('loading');
+	let widget: ReturnType<typeof createCaptchaWidget> | undefined;
 
 	onMount(() => {
-		if (!SITE_KEY) return;
-
-		let disposed = false;
-		loadCaptchaScript().then(() => {
-			if (!disposed && container && window.smartCaptcha) {
-				widgetId = window.smartCaptcha.render(container, {
-					sitekey: SITE_KEY,
-					callback: (token: string) => onverify(token),
-					'error-callback': (err: unknown) => onerror(err)
-				});
-			}
+		if (!SITE_KEY || !container) return;
+		widget = createCaptchaWidget({
+			container,
+			sitekey: SITE_KEY,
+			load: loadCaptchaScript,
+			onverify: (token) => onverify(token),
+			onerror: (error) => onerror(error),
+			onstate: (value) => (captchaState = value)
 		});
-
-		return () => {
-			disposed = true;
-			if (widgetId !== null) {
-				window.smartCaptcha?.destroy(widgetId);
-				widgetId = null;
-			}
-		};
+		void widget.retry();
+		return () => widget?.destroy();
 	});
 
-	/** Сбрасывает виджет — токен аннулируется, юзер может пройти проверку заново. */
+	/** Also clears the parent's token, including when the SDK is still loading. */
 	export function reset() {
-		if (widgetId !== null && typeof window !== 'undefined' && window.smartCaptcha) {
-			window.smartCaptcha.reset(widgetId);
-		}
+		widget?.reset();
 	}
 </script>
 
 {#if SITE_KEY}
-	<!-- Контейнер виджета; резервируем min-height, чтобы избежать скачка вёрстки. -->
-	<div bind:this={container} class="smartcaptcha"></div>
+	<div class="smartcaptcha">
+		<div bind:this={container}></div>
+		{#if captchaState === 'error'}
+			<p role="alert">Не удалось загрузить проверку. Проверьте подключение и повторите попытку.</p>
+			<button
+				type="button"
+				onclick={() => widget?.retry()}
+				data-goal-ignore="Повторная загрузка капчи после сбоя, без отправки формы"
+				>Повторить загрузку</button
+			>
+		{:else}
+			<p role="status">
+				{#if captchaState === 'loading'}Загружаем проверку… Поля формы уже можно заполнить.
+				{:else if captchaState === 'expired'}Срок проверки истёк. Подтвердите ещё раз, что вы не
+					робот.
+				{:else if captchaState === 'ready'}Перед отправкой подтвердите, что вы не робот.
+				{/if}
+			</p>
+		{/if}
+	</div>
 {/if}
 
 <style>
 	.smartcaptcha {
 		min-height: 76px;
+	}
+	p {
+		margin-block: 0.5rem;
+		line-height: 1.5;
+		color: inherit;
+	}
+	button {
+		min-height: 44px;
+		padding-inline: 0.5rem;
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		cursor: pointer;
+	}
+	button:hover {
+		text-decoration-thickness: 2px;
+	}
+	button:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
 	}
 </style>

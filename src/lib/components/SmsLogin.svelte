@@ -139,7 +139,7 @@
 			{#if problem}<p role="alert">{problem}</p>{/if}
 			<button
 				type="submit"
-				disabled={busy || (!challenge && remaining > 0)}
+				disabled={busy || (!challenge && (remaining > 0 || (!!SITE_KEY && !captchaToken)))}
 				data-goal-label="Получить код / подтвердить вход по SMS"
 				data-metrika-goal="sms_login_submit"
 				data-goal-action="submit_click"

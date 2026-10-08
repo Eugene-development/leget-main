@@ -38,6 +38,7 @@
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 	import PageDraftToolbar from '$lib/growth/PageDraftToolbar.svelte';
 	import { draftSession } from '$lib/growth/drafts';
+	import NavigationBody from './NavigationBody.svelte';
 
 	interface PageComponent {
 		id?: string | null;
@@ -180,6 +181,17 @@
 	]);
 	// У сайдбара контрол одноверсионных настроек находится в его собственной шапке:
 	// внешний overlay здесь дал бы кнопку вне fixed-карточки.
+	const catalogSidebarTypes = new Set([
+		'MebelSidebar',
+		'ByttehnikaSidebar',
+		'DveriSidebar',
+		'OknaSidebar',
+		'StoleshnicaSidebar',
+		'SantehnikaSidebar',
+		'OsveshchenieSidebar',
+		'FurnituraSidebar',
+		'PliitkaSidebar'
+	]);
 	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set([
 		'MebelProjectModel',
 		'MebelSidebar',
@@ -306,6 +318,11 @@
 	);
 	// Компоненты текущей страницы без футера — он рендерится отдельно (внизу).
 	const pageComponents = $derived(componentsState.filter((c) => c.type !== 'Footer'));
+	const catalogSidebars = $derived(pageComponents.filter((c) => catalogSidebarTypes.has(c.type)));
+	const bodyComponents = $derived(pageComponents.filter((c) => !catalogSidebarTypes.has(c.type)));
+	const hasCatalogSidebar = $derived(
+		catalogSidebars.some((c) => componentMap[c.type] && (isEditable || !isSingleVersionDisabled(c)))
+	);
 	let orderBusy = $state(false);
 	let orderError = $state<{ type: string; message: string } | null>(null);
 	const blockElements = new Map<string, HTMLElement>();
@@ -384,6 +401,38 @@
 	});
 </script>
 
+{#snippet pageBlock(element: PageComponent)}
+	{@const Component = componentMap[element.type] ?? null}
+	{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
+	{#if Component && (isEditable || !isSingleVersionDisabled(element))}
+		<div
+			use:trackBlock={element.type}
+			data-field-toolbar-scope
+			class="group/component relative {isSingleVersionDisabled(element)
+				? 'opacity-40 grayscale'
+				: ''}"
+		>
+			<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
+		     с кнопкой «Позвонить» нужен тот же номер, что в баннере хэдера. Отдельным
+		     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
+		     целиком, и подмешанный номер осел бы копией в данных блока при первой же
+		     правке любого поля — после смены номера в баннере копии разошлись бы. -->
+			<EditableComponent
+				component={Component}
+				componentType={element.type}
+				showSettings={!componentHasOwnSwitcher(element.type) &&
+					!componentHasEmbeddedSingleVersionSettings(element.type)}
+				settingsThemeDefault={singleThemeDefault}
+				bind:data={element.data}
+				{editContext}
+				{isEditable}
+				componentId={String(element.data?._componentId ?? element.id ?? '') || null}
+				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
+			/>
+		</div>
+	{/if}
+{/snippet}
+
 <div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
 	{#if !draftMode}<SiteAnalytics data={headerDataState} enabled={!isEditable} />{/if}
 
@@ -428,37 +477,15 @@
 	<!-- Акцент рубрики ограничен телом страницы: layout-хром выше и Footer ниже
 	     остаются в общей палитре сайта. `contents` не добавляет геометрию. -->
 	<div class="contents" data-catalog-rubric={catalogRubric}>
-		{#each pageComponents as element (element.type)}
-			{@const Component = componentMap[element.type] ?? null}
-			{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
-			{#if Component && (isEditable || !isSingleVersionDisabled(element))}
-				<div
-					use:trackBlock={element.type}
-					data-field-toolbar-scope
-					class="group/component relative {isSingleVersionDisabled(element)
-						? 'opacity-40 grayscale'
-						: ''}"
-				>
-					<!-- sitePhone — мост из layout-данных, как bridge-поля у футера ниже: блокам
-				     с кнопкой «Позвонить» нужен тот же номер, что в баннере хэдера. Отдельным
-				     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
-				     целиком, и подмешанный номер осел бы копией в данных блока при первой же
-				     правке любого поля — после смены номера в баннере копии разошлись бы. -->
-					<EditableComponent
-						component={Component}
-						componentType={element.type}
-						showSettings={!componentHasOwnSwitcher(element.type) &&
-							!componentHasEmbeddedSingleVersionSettings(element.type)}
-						settingsThemeDefault={singleThemeDefault}
-						bind:data={element.data}
-						{editContext}
-						{isEditable}
-						componentId={String(element.data?._componentId ?? element.id ?? '') || null}
-						sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
-					/>
-				</div>
-			{/if}
+		<!-- Sidebar identity belongs to the rubric, not the currently loading page. -->
+		{#each catalogSidebars as element (element.type)}
+			{@render pageBlock(element)}
 		{/each}
+		<NavigationBody catalog={hasCatalogSidebar}>
+			{#each bodyComponents as element (element.type)}
+				{@render pageBlock(element)}
+			{/each}
+		</NavigationBody>
 	</div>
 
 	{#if isEditable && orderError}

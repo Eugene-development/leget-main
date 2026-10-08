@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import GrowthFrame from '$lib/growth/GrowthFrame.svelte';
+	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import { crmRequest, date, type Row } from '$lib/crm/api';
 	let { data } = $props();
 	let selectedDeal = $state(''),
@@ -161,7 +162,7 @@
 					>{/each}</select
 			></label
 		>
-		{#if loading}<p role="status">Загрузка заказа…</p>{/if}
+		{#if loading}<ContentLoading label="Загрузка заказа…" />{/if}
 		{#if detail}<h2>Этапы, видимые заказчику</h2>
 			<div class="growth-table-wrap">
 				<table>
