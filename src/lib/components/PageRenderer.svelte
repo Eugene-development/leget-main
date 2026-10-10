@@ -39,6 +39,7 @@
 	import PageDraftToolbar from '$lib/growth/PageDraftToolbar.svelte';
 	import { draftSession } from '$lib/growth/drafts';
 	import NavigationBody from './NavigationBody.svelte';
+	import CatalogHeroRegion from './CatalogHeroRegion.svelte';
 
 	interface PageComponent {
 		id?: string | null;
@@ -192,6 +193,25 @@
 		'FurnituraSidebar',
 		'PliitkaSidebar'
 	]);
+	const catalogHeroTypes = new Set([
+		'MebelHero',
+		'MebelCategoryHero',
+		'StoleshnicaHero',
+		'StoleshnicaBrandHero',
+		'ByttehnikaHero',
+		'ByttehnikaBrandHero',
+		'SantehnikaHero',
+		'SantehnikaBrandHero',
+		'OsveshchenieHero',
+		'OsveshchenieBrandHero',
+		'DveriHero',
+		'DveriBrandHero',
+		'OknaHero',
+		'OknaBrandHero',
+		'FurnituraHero',
+		'FurnituraShopHero',
+		'PliitkaHero'
+	]);
 	const promo1ComponentsWithEmbeddedSingleVersionSettings = new Set([
 		'MebelProjectModel',
 		'MebelSidebar',
@@ -319,7 +339,16 @@
 	// Компоненты текущей страницы без футера — он рендерится отдельно (внизу).
 	const pageComponents = $derived(componentsState.filter((c) => c.type !== 'Footer'));
 	const catalogSidebars = $derived(pageComponents.filter((c) => catalogSidebarTypes.has(c.type)));
-	const bodyComponents = $derived(pageComponents.filter((c) => !catalogSidebarTypes.has(c.type)));
+	const contentComponents = $derived(pageComponents.filter((c) => !catalogSidebarTypes.has(c.type)));
+	// Keep editor-reordered blocks in place and project galleries in the body.
+	const catalogHeroes = $derived.by(() => {
+		const firstBodyIndex = contentComponents.findIndex((c) => !catalogHeroTypes.has(c.type));
+		return firstBodyIndex < 0 ? contentComponents : contentComponents.slice(0, firstBodyIndex);
+	});
+	const bodyComponents = $derived(contentComponents.slice(catalogHeroes.length));
+	const hasCatalogHero = $derived(
+		catalogHeroes.some((c) => componentMap[c.type] && (isEditable || !isSingleVersionDisabled(c)))
+	);
 	const hasCatalogSidebar = $derived(
 		catalogSidebars.some((c) => componentMap[c.type] && (isEditable || !isSingleVersionDisabled(c)))
 	);
@@ -481,7 +510,14 @@
 		{#each catalogSidebars as element (element.type)}
 			{@render pageBlock(element)}
 		{/each}
-		<NavigationBody catalog={hasCatalogSidebar}>
+		{#if hasCatalogHero}
+			<CatalogHeroRegion>
+				{#each catalogHeroes as element (element.type)}
+					{@render pageBlock(element)}
+				{/each}
+			</CatalogHeroRegion>
+		{/if}
+		<NavigationBody catalog={hasCatalogSidebar} intro={!hasCatalogHero}>
 			{#each bodyComponents as element (element.type)}
 				{@render pageBlock(element)}
 			{/each}

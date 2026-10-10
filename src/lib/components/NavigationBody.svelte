@@ -6,12 +6,14 @@
 		children,
 		workspace = false,
 		catalog = false,
+		intro = true,
 		root = false,
 		delegated = false
 	}: {
 		children: Snippet;
 		workspace?: boolean;
 		catalog?: boolean;
+		intro?: boolean;
 		root?: boolean;
 		delegated?: boolean;
 	} = $props();
@@ -102,7 +104,7 @@
 	{#if loading}
 		<div class="body-loading" style:left={`${loadingLeft}px`} style:right={`${loadingRight}px`}>
 			<div class="body-placeholder" style:top={`${loadingOffset}px`}>
-				<NavigationLoading {workspace} />
+				<NavigationLoading {workspace} {intro} />
 			</div>
 		</div>
 	{/if}

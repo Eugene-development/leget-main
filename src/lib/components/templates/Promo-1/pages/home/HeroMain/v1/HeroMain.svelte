@@ -56,10 +56,28 @@
 	let pageVisible = $state(true);
 	let reducedMotion = $state(false);
 	let glassPanel = $state<HTMLDivElement>();
+	let heroStage = $state<HTMLElement>();
 	let noticeVisible = $state(false);
 	let noticeExpanded = $state(false);
 	const noticeId = $props.id();
 	let noticeHeaderBottom = $state(0);
+
+	$effect(() => {
+		if (!heroStage || isEditable) return;
+		const root = heroStage;
+		let disposed = false;
+		let stop: (() => void) | undefined;
+		// Load GSAP only for this version in the browser; SSR stays fully visible.
+		void import('./motion')
+			.then(({ animateHeroEntrance }) => {
+				if (!disposed) stop = animateHeroEntrance(root);
+			})
+			.catch((error) => console.warn('HeroMain entrance unavailable', error));
+		return () => {
+			disposed = true;
+			stop?.();
+		};
+	});
 
 	function closeNotice() {
 		noticeDismissed = true;
@@ -387,7 +405,10 @@
 	{/if}
 </div>
 
-<section class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900">
+<section
+	bind:this={heroStage}
+	class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900"
+>
 	<!-- Фоновое изображение -->
 	<div class="hero-background absolute inset-0 z-0 bg-surface-raised" bind:this={bgViewport}>
 		{#each bgImages as bgImage, index (`${index}:${bgImage}`)}
@@ -466,7 +487,7 @@
 					class="-mb-2 block"
 				>
 					{#snippet children(displayValue)}
-						<span class="ds-label text-ink-700">
+						<span class="hero-company ds-label inline-block text-ink-700">
 							<RichText value={displayValue} />
 						</span>
 					{/snippet}
@@ -874,23 +895,6 @@
 	@supports not (backdrop-filter: blur(1px)) {
 		.glass-panel {
 			background: var(--ds-surface-raised);
-		}
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.hero-shell {
-			animation: glass-arrive var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-soft);
-		}
-	}
-
-	@keyframes glass-arrive {
-		from {
-			opacity: 0.5;
-			transform: translateY(1.5rem) scale(0.97);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0) scale(1);
 		}
 	}
 

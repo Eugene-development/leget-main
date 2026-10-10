@@ -1,26 +1,31 @@
 <script lang="ts">
-	let { workspace = false, label = 'Загрузка страницы…' }: { workspace?: boolean; label?: string } =
-		$props();
+	let {
+		workspace = false,
+		intro = true,
+		label = 'Загрузка страницы…'
+	}: { workspace?: boolean; intro?: boolean; label?: string } = $props();
 </script>
 
 <div class="navigation-loading" class:workspace aria-busy="true" data-navigation-loading>
 	<p class="sr-only" role="status">{label}</p>
 	<div class="skeleton" aria-hidden="true">
 		<div class="skeleton-body">
-			<div class="placeholder breadcrumb"></div>
-			<div class="skeleton-intro">
-				<div class="skeleton-copy">
-					<div class="placeholder title"></div>
-					<div class="placeholder title short"></div>
-					<div class="skeleton-lines">
-						<div class="placeholder line"></div>
-						<div class="placeholder line"></div>
-						<div class="placeholder line short"></div>
+			{#if intro}
+				<div class="placeholder breadcrumb"></div>
+				<div class="skeleton-intro">
+					<div class="skeleton-copy">
+						<div class="placeholder title"></div>
+						<div class="placeholder title short"></div>
+						<div class="skeleton-lines">
+							<div class="placeholder line"></div>
+							<div class="placeholder line"></div>
+							<div class="placeholder line short"></div>
+						</div>
 					</div>
+					{#if !workspace}<div class="placeholder media"></div>{/if}
 				</div>
-				{#if !workspace}<div class="placeholder media"></div>{/if}
-			</div>
-			<div class="skeleton-grid">
+			{/if}
+			<div class="skeleton-grid" class:content-only={!intro}>
 				{#each Array(3) as _}
 					<div class="skeleton-item">
 						<div class="placeholder preview"></div>
@@ -89,6 +94,9 @@
 		grid-template-columns: repeat(3, 1fr);
 		gap: 1.5rem;
 		margin-top: 3rem;
+	}
+	.skeleton-grid.content-only {
+		margin-top: 0;
 	}
 	.skeleton-item {
 		display: grid;
