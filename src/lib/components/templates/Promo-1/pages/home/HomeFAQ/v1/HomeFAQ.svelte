@@ -5,6 +5,7 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { animationsEnabled } from '$lib/motion/promo';
 
 	let {
 		data = $bindable(),
@@ -88,7 +89,7 @@
 	<div class="faq-dots pointer-events-none absolute inset-0" aria-hidden="true"></div>
 	<div
 		class="faq-symbol pointer-events-none absolute"
-		class:is-visible={symbolVisible}
+		class:is-visible={symbolVisible || !animationsEnabled(data)}
 		aria-hidden="true"
 	>
 		?

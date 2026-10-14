@@ -7,7 +7,6 @@
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import ProjectImageActions from '$lib/components/ProjectImageActions.svelte';
-	import { fly } from 'svelte/transition';
 	import { invalidateAll, goto } from '$app/navigation';
 	import { cubicOut } from 'svelte/easing';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -544,7 +543,7 @@
 			<div
 				class="relative flex h-[85vh] w-[90vw] max-w-5xl items-center justify-center overflow-hidden rounded-xl bg-ink-900/50 shadow-2xl"
 			>
-				<div class="h-full w-full" in:fly={{ y: 20, duration: 400, easing: cubicOut }}>
+				<div class="h-full w-full">
 					<ImageFallback
 						imagePath={['projectImages', String(project.id), String(selectedImageIndex)]}
 						src={images[selectedImageIndex]?.url ?? ''}

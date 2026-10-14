@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.21.7.1 — см. docs/architecture/component-articles-map.md
-	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -34,10 +33,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<div
-		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
-		in:fly={{ y: 20, duration: 500, easing: cubicOut }}
-	>
+	<div class="rounded-2xl bg-surface-raised p-8 shadow-sm">
 		<div class="lg:flex lg:items-center lg:gap-12">
 			<div class="lg:flex-1">
 				<h2 class="text-2xl text-ink-900">
@@ -71,10 +67,7 @@
 
 				<ul class="mt-5 space-y-2">
 					{#each perks as perk, i}
-						<li
-							class="flex items-center gap-2 text-sm text-ink-600"
-							in:fly={{ x: -10, duration: 400, delay: i * 80, easing: cubicOut }}
-						>
+						<li class="flex items-center gap-2 text-sm text-ink-600">
 							<svg
 								class="h-5 w-5 shrink-0 text-cat-2-500"
 								fill="none"

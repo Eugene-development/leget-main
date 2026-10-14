@@ -3,7 +3,6 @@
 	import IncentivesV2 from './v2/Incentives.svelte';
 	import IncentivesV3 from './v3/Incentives.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -67,19 +66,15 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v3'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<IncentivesV3 bind:data {editContext} {isEditable} />
 			</div>
 		{:else if selectedVersion === 'v2'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<IncentivesV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div
-				class="w-full"
-				in:fly={{ x: -1200, duration: 600 }}
-				out:fly={{ x: -1200, duration: 600 }}
-			>
+			<div class="w-full">
 				<IncentivesV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

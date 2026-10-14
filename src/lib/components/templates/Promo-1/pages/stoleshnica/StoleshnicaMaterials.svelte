@@ -1,6 +1,5 @@
 <script lang="ts">
 	// Артикул: 1.19.3.1 — см. docs/architecture/component-articles-map.md
-	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -87,10 +86,7 @@
 		{data.title || 'Сравнение материалов'}
 	</h2>
 
-	<div
-		class="overflow-hidden rounded-2xl bg-surface-raised shadow-sm"
-		in:fly={{ y: 20, duration: 500, easing: cubicOut }}
-	>
+	<div class="overflow-hidden rounded-2xl bg-surface-raised shadow-sm">
 		<div class="overflow-x-auto">
 			<table class="w-full text-left text-sm">
 				<thead class="bg-ink-50">

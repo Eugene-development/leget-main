@@ -31,6 +31,7 @@
 		title = '',
 		placement = 'overlay',
 		settings = null,
+		hasAnimationSettings = false,
 		controlActions = null,
 		imageManagerExcludePaths = []
 	}: {
@@ -55,6 +56,7 @@
 		placement?: 'overlay' | 'inline';
 		/** Специализированная секция внутри панели настроек блока. */
 		settings?: Snippet | null;
+		hasAnimationSettings?: boolean;
 		/** Дополнительные действия в меню шестерёнки. */
 		controlActions?: Snippet | null;
 		/** Image-пути, которыми управляет специализированная секция. */
@@ -312,6 +314,7 @@
 				canReset={Boolean(actualResetId)}
 				{isResetting}
 				{settings}
+				{hasAnimationSettings}
 				{imageManagerExcludePaths}
 				onReset={handleReset}
 				isDisabled={selectedVersion === 'disabled'}

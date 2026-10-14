@@ -6,7 +6,6 @@
 	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
-	import { fade, fly } from 'svelte/transition';
 	/* Роль `p1-numeric` живёт в theme.css шаблона; импорт нужен в самом листе —
 	   бочка index.ts маскирует пропуск только в проде. */
 	import '../../../../theme.css';
@@ -142,7 +141,7 @@
 	<!-- Фоновое изображение с плавным переходом -->
 	<div class="absolute inset-0 z-0">
 		{#key activeSkillIndex}
-			<div class="absolute inset-0" in:fade={{ duration: 800 }}>
+			<div class="absolute inset-0">
 				<ImageFallback
 					imagePath={['skillImages', activeSkill.id]}
 					src={activeSkill.bgImage}
@@ -439,10 +438,7 @@
 
 								<!-- Стрелка активности -->
 								{#if activeSkillIndex === idx}
-									<div
-										class="flex h-6 w-6 items-center justify-center self-center text-cat-4-500"
-										in:fly={{ x: -6, duration: 250 }}
-									>
+									<div class="flex h-6 w-6 items-center justify-center self-center text-cat-4-500">
 										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 											<path
 												stroke-linecap="round"
@@ -464,7 +460,7 @@
 							: 'border-on-dark/5 bg-ink-950/40'}"
 					>
 						{#key activeSkillIndex}
-							<div class="flex flex-col gap-3" in:fade={{ duration: 300 }}>
+							<div class="flex flex-col gap-3">
 								<!-- Описание выбранного скилла -->
 								<p
 									class="text-xs leading-relaxed font-semibold sm:text-[12.5px] {isLight

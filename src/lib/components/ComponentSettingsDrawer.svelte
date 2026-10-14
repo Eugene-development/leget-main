@@ -3,7 +3,9 @@
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ComponentImageManager from '$lib/components/ComponentImageManager.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
-	import type { Snippet } from 'svelte';
+	import { getContext, type Snippet } from 'svelte';
+	import ComponentAnimationSettings from './ComponentAnimationSettings.svelte';
+	import { PROMO_MOTION_CONTEXT, type PromoMotionContext } from '$lib/motion/promo';
 
 	/**
 	 * Панель настроек блока: артикул, анимации, сброс контента, отключение.
@@ -33,6 +35,7 @@
 		componentType = '',
 		onSaveData = null,
 		settings = null,
+		hasAnimationSettings = false,
 		imageManagerExcludePaths = []
 	}: {
 		/** Открыта ли панель. Владелец может закрыть её извне (напр. после сброса). */
@@ -61,9 +64,12 @@
 		onSaveData?: ((next: Record<string, unknown>) => void | Promise<void>) | null;
 		/** Специализированные настройки конкретного блока. */
 		settings?: Snippet | null;
+		/** Specialized settings already include a working animation control. */
+		hasAnimationSettings?: boolean;
 		/** Image-пути, которыми управляет специализированная секция. */
 		imageManagerExcludePaths?: string[];
 	} = $props();
+	const motion = getContext<PromoMotionContext | undefined>(PROMO_MOTION_CONTEXT);
 </script>
 
 <!-- Компактный триггер: становится в один ряд с «Вариантами» и тумблером темы -->
@@ -106,6 +112,9 @@
 		{/if}
 	{/snippet}
 	<div class="flex flex-col gap-6">
+		{#if motion?.supported && editContext && onSaveData}
+			<ComponentAnimationSettings bind:data {componentType} {onSaveData} />
+		{/if}
 		{#if settings}
 			{@render settings()}
 		{/if}
@@ -181,25 +190,27 @@
 			</button>
 		</section>
 
-		<!-- Анимации (заглушка: функциональность в разработке) -->
-		<section class="border-t border-on-dark/10 pt-5">
-			<h4 class="text-xs text-on-dark/40 uppercase">Анимации</h4>
-			<p class="mt-2 text-xs leading-relaxed text-ink-400">
-				Включение и отключение анимаций блока. Функция появится в одном из ближайших обновлений.
-			</p>
-			<button
-				type="button"
-				class="mt-4 flex w-full cursor-not-allowed items-center justify-between gap-3 rounded-2xl border border-on-dark/10 bg-on-dark/3 px-4 py-3 text-xs font-bold tracking-wider text-ink-500 uppercase"
-				disabled
-				aria-disabled="true"
-			>
-				<span>Отключить анимации</span>
-				<span
-					class="rounded-full border border-cat-1-500/25 bg-cat-1-500/10 px-2 py-1 text-xs font-bold tracking-wider text-cat-1-300/80 uppercase"
+		{#if !hasAnimationSettings && !motion?.supported}
+			<!-- Анимации (для блоков без поддержки настройки) -->
+			<section class="border-t border-on-dark/10 pt-5">
+				<h4 class="text-xs text-on-dark/40 uppercase">Анимации</h4>
+				<p class="mt-2 text-xs leading-relaxed text-ink-400">
+					Включение и отключение анимаций блока. Функция появится в одном из ближайших обновлений.
+				</p>
+				<button
+					type="button"
+					class="mt-4 flex w-full cursor-not-allowed items-center justify-between gap-3 rounded-2xl border border-on-dark/10 bg-on-dark/3 px-4 py-3 text-xs font-bold tracking-wider text-ink-500 uppercase"
+					disabled
+					aria-disabled="true"
 				>
-					В разработке
-				</span>
-			</button>
-		</section>
+					<span>Отключить анимации</span>
+					<span
+						class="rounded-full border border-cat-1-500/25 bg-cat-1-500/10 px-2 py-1 text-xs font-bold tracking-wider text-cat-1-300/80 uppercase"
+					>
+						В разработке
+					</span>
+				</button>
+			</section>
+		{/if}
 	</div>
 </SideDrawer>

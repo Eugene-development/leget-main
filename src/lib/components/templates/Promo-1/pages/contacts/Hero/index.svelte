@@ -2,7 +2,6 @@
 	import HeroV1 from './v1/Hero.svelte';
 	import HeroV2 from './v2/Hero.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -72,19 +71,11 @@
 		-->
 		<div class="grid w-full">
 			{#if selectedVersion === 'v2'}
-				<div
-					class="col-start-1 row-start-1 w-full"
-					in:fly={{ x: 1200, duration: 600 }}
-					out:fly={{ x: 1200, duration: 600 }}
-				>
+				<div class="col-start-1 row-start-1 w-full">
 					<HeroV2 bind:data {editContext} {isEditable} />
 				</div>
 			{:else}
-				<div
-					class="col-start-1 row-start-1 w-full"
-					in:fly={{ x: -1200, duration: 600 }}
-					out:fly={{ x: -1200, duration: 600 }}
-				>
+				<div class="col-start-1 row-start-1 w-full">
 					<HeroV1 bind:data {editContext} {isEditable} />
 				</div>
 			{/if}

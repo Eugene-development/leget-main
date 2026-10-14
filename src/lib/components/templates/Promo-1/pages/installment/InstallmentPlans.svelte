@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+
 	// Артикул: 1.8.2.1 — см. docs/architecture/component-articles-map.md
 	import { tick } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -293,6 +295,9 @@
 			if (componentSection) componentSection.inert = false;
 		};
 	});
+
+	const p1_fade = withPromoMotion(fade);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -522,7 +527,7 @@
 		data-p1-theme="light"
 		class="fixed inset-0 z-200 flex items-end justify-center overflow-y-auto bg-scrim/60 p-0 backdrop-blur-sm sm:items-center sm:p-6"
 		onclick={handleBackdropClick}
-		transition:fade={{ duration: 180 }}
+		transition:p1_fade={{ duration: 180 }}
 	>
 		<div
 			bind:this={modalPanel}
@@ -530,7 +535,7 @@
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="installment-modal-title"
-			transition:fly={{ y: 28, duration: 260, easing: cubicOut }}
+			transition:p1_fly={{ y: 28, duration: 260, easing: cubicOut }}
 		>
 			<div
 				class="sticky top-0 z-10 flex items-start justify-between gap-5 border-b border-ink-900/10 bg-surface-raised/95 px-5 py-5 backdrop-blur-lg sm:px-8"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import EditableComponent from '$lib/components/EditableComponent.svelte';
 	import { dev } from '$app/environment';
 	import { resolveComponent } from '$lib/ds/registry';
 	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
@@ -76,7 +77,14 @@
 	мешала бы — при переходе между карточками она бы залипала на первом значении.
 -->
 <div bind:this={blockEl} data-catalog-rubric={catalogRubric}>
-	<Block data={data.data} editContext={null} isEditable={false} />
+	<EditableComponent
+		component={Block}
+		componentType={data.type}
+		data={data.data}
+		editContext={null}
+		isEditable={false}
+		promoMotion={data.templateId === 1 && data.pageSlug !== '(layout)'}
+	/>
 </div>
 
 {#if dev}

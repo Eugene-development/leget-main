@@ -3,6 +3,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { getHeroBackgrounds, backgroundFields } from './backgrounds';
+	import { animationsEnabled as motionEnabled } from '$lib/motion/promo';
 	const MIN_INTERVAL_SECONDS = 1;
 	const MAX_INTERVAL_SECONDS = 300;
 	const MAX_BACKGROUNDS = 12;
@@ -16,6 +17,7 @@
 	} = $props();
 
 	const backgrounds = $derived(getHeroBackgrounds(data));
+	const animationsEnabled = $derived(motionEnabled(data));
 	const enabledCount = $derived(backgrounds.filter(({ enabled }) => enabled).length);
 	const intervalSeconds = $derived(
 		Math.min(MAX_INTERVAL_SECONDS, Math.max(MIN_INTERVAL_SECONDS, Number(data.bgIntervalV1) || 5))
@@ -46,7 +48,7 @@
 			await saveComponentData(editContext, 'HeroMain', next);
 		} catch (cause) {
 			data = previous;
-			error = cause instanceof Error ? cause.message : 'Не удалось сохранить настройки фона';
+			error = cause instanceof Error ? cause.message : 'Не удалось сохранить настройки блока';
 			throw cause;
 		} finally {
 			isSaving = false;
@@ -143,16 +145,13 @@
 			? 'Все фоны выключены. Блок отображается без фонового изображения.'
 			: enabledCount === 1
 				? 'Включён один фон — он отображается без смены.'
-				: `Включено фонов: ${enabledCount}. Они сменяются по порядку.`}
+				: !animationsEnabled
+					? 'Анимации выключены — отображается первый включённый фон.'
+					: `Включено фонов: ${enabledCount}. Они сменяются по порядку.`}
 	</p>
 
 	{#if error}
-		<p
-			class="mt-3 rounded-xl border border-cat-6-500/20 bg-cat-6-500/10 px-3 py-2 text-xs text-cat-6-300"
-			role="alert"
-		>
-			{error}. Повторите действие.
-		</p>
+		<p class="mt-3 text-xs text-cat-6-300" role="alert">{error}. Повторите действие.</p>
 	{/if}
 
 	<label class="mt-4 block text-xs font-semibold text-ink-200" for="hero-bg-interval">
@@ -166,7 +165,7 @@
 			max={MAX_INTERVAL_SECONDS}
 			step="1"
 			bind:value={intervalDraft}
-			disabled={isSaving}
+			disabled={isSaving || !animationsEnabled}
 			onfocus={() => (intervalFocused = true)}
 			onblur={saveInterval}
 			onchange={saveInterval}

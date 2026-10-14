@@ -1,0 +1,151 @@
+/* Legacy entrances are replaced only inside a Promo-1 page block. Layout has no scope. */
+.p1-motion-scope
+	:is(
+		.ab-item,
+		.ab-card,
+		.ab-rule,
+		.ct-item,
+		.ct-rule,
+		.ct-card-enter,
+		.gt-item,
+		.gt-card,
+		.gt-rule,
+		.it-item,
+		.it-card,
+		.it-rule,
+		.tm-item,
+		.tm-card,
+		.tm-rule,
+		.vc-item,
+		.vc-card,
+		.vc-rule,
+		.hr-item,
+		.nf-item,
+		.nf-rule,
+		.ph-item,
+		.ph-frame,
+		.ph-rule,
+		.pb-item,
+		.pb-card,
+		.wi-item,
+		.wi-rule,
+		.wi-card,
+		.fm-item,
+		.fm-tile,
+		.pca-item,
+		.pca-frame,
+		.pca-rule,
+		.ah-item,
+		.ah-in,
+		.tile,
+		.ledger-row,
+		.stage-card,
+		.p1-stage-step,
+		.p1-stage-rule,
+		.contact-route__progress,
+		.contact-route__destination,
+		.contact-route__phone-wrap,
+		.paper-leaf,
+		.paper-cascade .ds-prose-content > *,
+		.animate-fade-up,
+		.animate-fade-up-in,
+		.animate-fade-in,
+		.animate-scale-in,
+		.animate-slide-right
+	) {
+	animation: none !important;
+}
+
+/* SSR and a failed JS chunk must never leave legacy reveal content hidden.
+   During a GSAP tween, its inline values take over; completion clears them. */
+.p1-motion-scope
+	:is(
+		.ab-item,
+		.ab-card,
+		.ab-rule,
+		.ct-item,
+		.ct-rule,
+		.ct-card-enter,
+		.gt-item,
+		.gt-card,
+		.gt-rule,
+		.it-item,
+		.it-card,
+		.it-rule,
+		.tm-item,
+		.tm-card,
+		.tm-rule,
+		.vc-item,
+		.vc-card,
+		.vc-rule,
+		.ah-in,
+		.pb-card,
+		.fm-item,
+		.fm-tile,
+		.wi-item,
+		.wi-rule,
+		.wi-card,
+		.pca-item,
+		.pca-rule,
+		.pca-frame,
+		.p1-stage-step,
+		.contact-route__destination,
+		.contact-route__phone-wrap
+	):not([style*='opacity']) {
+	opacity: 1 !important;
+}
+
+.p1-motion-scope .contact-route__progress {
+	stroke-dashoffset: 0;
+}
+
+.p1-motion-scope :is(.p1-stage-step, .p1-stage-rule):not([style*='transform']) {
+	transform: none !important;
+}
+
+.p1-motion-scope[data-motion-paused] * {
+	animation-play-state: paused !important;
+}
+
+.p1-motion-scope[data-motion-muted] *,
+.p1-motion-scope[data-motion-muted] *::before,
+.p1-motion-scope[data-motion-muted] *::after {
+	animation: none !important;
+	transition: none !important;
+	scroll-behavior: auto !important;
+}
+
+/* Freeze decorative hover movement without resetting structural transforms. */
+.p1-motion-scope[data-motion-muted]
+	:is([class*='hover:scale'], [class*='hover:translate'], [class*='hover:-translate']) {
+	scale: 1 !important;
+	translate: none !important;
+}
+
+/* Marquees become manually scrollable lists; their accessible first copy stays. */
+.p1-motion-scope[data-motion-muted] :is(.brand-viewport-scroll, .brands-marquee) {
+	overflow-x: auto;
+	mask-image: none;
+	-webkit-mask-image: none;
+}
+.p1-motion-scope[data-motion-muted] :is(.brand-group-copy, .brands-marquee-copy) {
+	display: none;
+}
+.p1-motion-scope[data-motion-muted] .brands-track > [aria-hidden='true'] {
+	display: none;
+}
+
+.p1-motion-scope[data-motion-muted] :is(.tile, .faq-question):hover,
+.p1-motion-scope[data-motion-muted] .tile:hover img {
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.p1-motion-scope *,
+	.p1-motion-scope *::before,
+	.p1-motion-scope *::after {
+		animation: none !important;
+		transition-duration: 0s !important;
+		scroll-behavior: auto !important;
+	}
+}

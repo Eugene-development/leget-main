@@ -2,7 +2,6 @@
 	import ContactAddressV1 from './v1/ContactAddress.svelte';
 	import ContactAddressV2 from './v2/ContactAddress.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -72,19 +71,11 @@
 		-->
 		<div class="grid w-full">
 			{#if selectedVersion === 'v2'}
-				<div
-					class="col-start-1 row-start-1 w-full"
-					in:fly={{ x: 1200, duration: 600 }}
-					out:fly={{ x: 1200, duration: 600 }}
-				>
+				<div class="col-start-1 row-start-1 w-full">
 					<ContactAddressV2 bind:data {editContext} {isEditable} />
 				</div>
 			{:else}
-				<div
-					class="col-start-1 row-start-1 w-full"
-					in:fly={{ x: -1200, duration: 600 }}
-					out:fly={{ x: -1200, duration: 600 }}
-				>
+				<div class="col-start-1 row-start-1 w-full">
 					<ContactAddressV1 bind:data {editContext} {isEditable} />
 				</div>
 			{/if}

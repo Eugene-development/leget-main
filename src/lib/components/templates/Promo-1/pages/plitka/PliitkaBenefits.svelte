@@ -1,6 +1,5 @@
 <script lang="ts">
 	// Артикул: 1.23.4.1 — см. docs/architecture/component-articles-map.md
-	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -51,7 +50,6 @@
 		{#each items as item, i}
 			<div
 				class="group rounded-2xl border border-ink-50 bg-surface-raised p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink-200/50"
-				in:fly={{ y: 20, duration: 600, delay: i * 100, easing: cubicOut }}
 			>
 				<div
 					class="flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 {colorClasses[

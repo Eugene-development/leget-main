@@ -2,7 +2,6 @@
 	import MebelBenefitsV1 from './v1/MebelBenefits.svelte';
 	import MebelBenefitsV2 from './v2/MebelBenefits.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -61,15 +60,11 @@
 		{/if}
 
 		{#if selectedVersion === 'v2'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<MebelBenefitsV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div
-				class="w-full"
-				in:fly={{ x: -1200, duration: 600 }}
-				out:fly={{ x: -1200, duration: 600 }}
-			>
+			<div class="w-full">
 				<MebelBenefitsV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+
 	import RichText from '$lib/components/RichText.svelte';
 	/**
 	 * Общий сайдбар рубрик каталога Promo-1.
@@ -301,6 +303,9 @@
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape' && isSheetOpen) isSheetOpen = false;
 	}
+
+	const p1_fade = withPromoMotion(fade);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -546,12 +551,12 @@
 				class="ms-scrim"
 				aria-label="Закрыть"
 				onclick={() => (isSheetOpen = false)}
-				transition:fade={{ duration: 200 }}
+				transition:p1_fade={{ duration: 200 }}
 			></button>
 
 			<div
 				class="ms-sheet"
-				transition:fly={{ y: 420, duration: 380, easing: cubicOut, opacity: 1 }}
+				transition:p1_fly={{ y: 420, duration: 380, easing: cubicOut, opacity: 1 }}
 			>
 				<span class="ms-grabber" aria-hidden="true"></span>
 

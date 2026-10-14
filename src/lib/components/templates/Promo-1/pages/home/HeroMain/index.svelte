@@ -5,7 +5,6 @@
 	import HeroV4 from './v4/HeroMain.svelte';
 	import HeroBackgroundSettings from './v1/HeroBackgroundSettings.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -36,7 +35,7 @@
 	>
 		<!-- Встраиваемый переключатель версий -->
 		{#snippet heroSettings()}
-			{#if selectedVersion === 'v1' && editContext}
+			{#if isEditable && selectedVersion === 'v1' && editContext}
 				<HeroBackgroundSettings bind:data {editContext} />
 			{/if}
 		{/snippet}
@@ -78,27 +77,15 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v4'}
-			<div
-				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
-				in:fly={{ x: 500, y: 500, duration: 600 }}
-				out:fly={{ x: -500, y: -500, duration: 600 }}
-			>
+			<div class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full">
 				<HeroV4 bind:data {editContext} {isEditable} />
 			</div>
 		{:else if selectedVersion === 'v3'}
-			<div
-				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
-				in:fly={{ y: 800, duration: 600 }}
-				out:fly={{ y: -800, duration: 600 }}
-			>
+			<div class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full">
 				<HeroV3 bind:data {editContext} {isEditable} />
 			</div>
 		{:else if selectedVersion === 'v2'}
-			<div
-				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
-				in:fly={{ x: 1200, duration: 600 }}
-				out:fly={{ x: -1200, duration: 600 }}
-			>
+			<div class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full">
 				<HeroV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}

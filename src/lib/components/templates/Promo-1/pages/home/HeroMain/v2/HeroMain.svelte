@@ -6,7 +6,6 @@
 	import HoverSwapLabel from '$lib/components/HoverSwapLabel.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
-	import { fade } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -838,7 +837,7 @@
 						class="hero-media group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-on-dark/10 bg-ink-950"
 					>
 						{#key activeStyleIndex}
-							<div class="h-full w-full" in:fade={{ duration: 400 }}>
+							<div class="h-full w-full">
 								<ImageFallback
 									imagePath={['styleImages', String(activeStyleIndex)]}
 									src={activeStyle.image}

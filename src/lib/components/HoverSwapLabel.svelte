@@ -1,5 +1,7 @@
 <script lang="ts">
 	import RichText from '$lib/components/RichText.svelte';
+	import { getContext } from 'svelte';
+	import { PROMO_MOTION_CONTEXT, type PromoMotionContext } from '$lib/motion/promo';
 	/**
 	 * Подпись кнопки, которая по наведению подменяется другим текстом
 	 * (CTA дизайн-проекта: «Дизайн-проект с расчётом стоимости» → «Это бесплатно»).
@@ -23,17 +25,21 @@
 		hoverText?: string;
 		disabled?: boolean;
 	} = $props();
+	const motion = getContext<PromoMotionContext | undefined>(PROMO_MOTION_CONTEXT);
+	const swapDisabled = $derived(
+		disabled || (motion?.supported && (!motion.enabled || motion.editable))
+	);
 </script>
 
 <span class="grid">
 	<span
-		class="col-start-1 row-start-1 transition-opacity duration-150 ease-out {disabled
+		class="col-start-1 row-start-1 transition-opacity duration-150 ease-out {swapDisabled
 			? ''
 			: 'delay-150 group-hover:opacity-0 group-hover:delay-0'}"
 	>
 		<RichText value={text} />
 	</span>
-	{#if !disabled}
+	{#if !swapDisabled}
 		<span
 			aria-hidden="true"
 			class="col-start-1 row-start-1 place-self-center opacity-0 transition-opacity delay-0 duration-150 ease-out group-hover:opacity-100 group-hover:delay-150"

@@ -2,7 +2,6 @@
 	import MessageV1 from './v1/Message.svelte';
 	import MessageV2 from './v2/Message.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -65,15 +64,11 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<MessageV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div
-				class="w-full"
-				in:fly={{ x: -1200, duration: 600 }}
-				out:fly={{ x: -1200, duration: 600 }}
-			>
+			<div class="w-full">
 				<MessageV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

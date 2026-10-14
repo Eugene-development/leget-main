@@ -1,6 +1,5 @@
 <script lang="ts">
 	// Артикулы: 1.19.6.1, 1.29.4.1, 1.30.4.1 — см. docs/architecture/component-articles-map.md
-	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -25,20 +24,14 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<div
-		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
-		in:fly={{ y: 20, duration: 500, easing: cubicOut }}
-	>
+	<div class="rounded-2xl bg-surface-raised p-8 shadow-sm">
 		<h2 class="text-2xl text-ink-900">
 			{data.title || 'Что входит в стоимость'}
 		</h2>
 
 		<div class="mt-6 grid gap-4 sm:grid-cols-2">
 			{#each services as service, i}
-				<div
-					class="flex items-start gap-3"
-					in:fly={{ y: 10, duration: 400, delay: i * 80, easing: cubicOut }}
-				>
+				<div class="flex items-start gap-3">
 					<svg
 						class="h-6 w-6 shrink-0 text-cat-2-500"
 						fill="none"

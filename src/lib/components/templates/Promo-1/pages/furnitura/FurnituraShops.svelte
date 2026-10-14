@@ -3,7 +3,6 @@
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
@@ -43,10 +42,7 @@
 	<h2 class="mb-6 text-2xl text-ink-900">{data.title || 'Магазины и поставщики'}</h2>
 
 	{#if shops.length === 0}
-		<div
-			class="mt-6 rounded-xl bg-surface-raised p-12 text-center shadow-sm"
-			in:fly={{ y: 20, duration: 400, easing: cubicOut }}
-		>
+		<div class="mt-6 rounded-xl bg-surface-raised p-12 text-center shadow-sm">
 			<svg
 				class="mx-auto h-12 w-12 text-ink-300"
 				fill="none"
@@ -67,10 +63,7 @@
 		<div class="grid gap-6 sm:grid-cols-2">
 			{#each shops as shop, i}
 				{@const g = getGradient(i)}
-				<div
-					class="rounded-xl bg-surface-raised p-6 shadow-sm transition-shadow hover:shadow-md"
-					in:fly={{ y: 20, duration: 500, delay: i * 80, easing: cubicOut }}
-				>
+				<div class="rounded-xl bg-surface-raised p-6 shadow-sm transition-shadow hover:shadow-md">
 					<!-- Шапка карточки -->
 					<div class="flex flex-col items-start gap-4 lg:flex-row">
 						<div

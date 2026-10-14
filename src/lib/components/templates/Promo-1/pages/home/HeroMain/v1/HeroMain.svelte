@@ -4,6 +4,8 @@
 </script>
 
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+
 	// Артикул: 1.1.1.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -17,6 +19,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { fly, slide } from 'svelte/transition';
 	import { getHeroBackgrounds } from './backgrounds';
+	import { animationsEnabled as motionEnabled } from '$lib/motion/promo';
 
 	type PartnerBrand = {
 		name: string;
@@ -55,6 +58,9 @@
 	let bgInViewport = $state(true);
 	let pageVisible = $state(true);
 	let reducedMotion = $state(false);
+	const animationsEnabled = $derived(motionEnabled(data ?? {}));
+	const motionDisabled = $derived(reducedMotion || !animationsEnabled);
+	const displayedBgIndex = $derived(animationsEnabled ? activeBgIndex : 0);
 	let glassPanel = $state<HTMLDivElement>();
 	let heroStage = $state<HTMLElement>();
 	let noticeVisible = $state(false);
@@ -63,7 +69,7 @@
 	let noticeHeaderBottom = $state(0);
 
 	$effect(() => {
-		if (!heroStage || isEditable) return;
+		if (!heroStage || isEditable || !animationsEnabled) return;
 		const root = heroStage;
 		let disposed = false;
 		let stop: (() => void) | undefined;
@@ -125,7 +131,7 @@
 
 	// Decorative pointer response never moves the text or click targets.
 	$effect(() => {
-		if (!glassPanel || reducedMotion || isEditable) return;
+		if (!glassPanel || motionDisabled || isEditable) return;
 		const panel = glassPanel;
 		let frame = 0;
 		const move = (event: PointerEvent) => {
@@ -165,7 +171,7 @@
 		if (
 			typeof window === 'undefined' ||
 			bgImages.length < 2 ||
-			reducedMotion ||
+			motionDisabled ||
 			!bgInViewport ||
 			!pageVisible
 		)
@@ -336,6 +342,9 @@
 		await saveComponentData(editContext, 'HeroMain', updated);
 		data = updated;
 	}
+
+	const p1_fly = withPromoMotion(fly);
+	const p1_slide = withPromoMotion(slide);
 </script>
 
 <div aria-live="polite" aria-atomic="true">
@@ -344,7 +353,7 @@
 			class="free-services-notice glass-panel rounded-3xl"
 			style:--notice-header-bottom={`${noticeHeaderBottom}px`}
 			aria-label="Об услугах компании"
-			transition:fly={{ y: -12, duration: reducedMotion ? 0 : 480 }}
+			transition:p1_fly={{ y: -12, duration: motionDisabled ? 0 : 480 }}
 		>
 			<button
 				type="button"
@@ -390,7 +399,7 @@
 			</button>
 			<div id={noticeId}>
 				{#if noticeExpanded}
-					<div transition:slide={{ duration: reducedMotion ? 0 : 260 }}>
+					<div transition:p1_slide={{ duration: motionDisabled ? 0 : 260 }}>
 						<p class="notice-comment text-sm">
 							Наш сервис — место, где встречаются покупатели и поставщики товаров и услуг.
 						</p>
@@ -407,16 +416,17 @@
 
 <section
 	bind:this={heroStage}
+	class:hero-motion-disabled={!animationsEnabled}
 	class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900"
 >
 	<!-- Фоновое изображение -->
 	<div class="hero-background absolute inset-0 z-0 bg-surface-raised" bind:this={bgViewport}>
 		{#each bgImages as bgImage, index (`${index}:${bgImage}`)}
 			<div
-				class="hero-bg-slide absolute inset-0 {index === activeBgIndex
+				class="hero-bg-slide absolute inset-0 {index === displayedBgIndex
 					? 'hero-bg-slide-active'
 					: ''}"
-				aria-hidden={index === activeBgIndex ? undefined : 'true'}
+				aria-hidden={index === displayedBgIndex ? undefined : 'true'}
 			>
 				<!-- Новые интерьеры скомпонованы от верхнего края; у остальных фото сохраняем центр. -->
 				<ImageFallback
@@ -559,7 +569,7 @@
 								onclick={() => serviceOrderStore.open('consultation')}
 								class="hero-primary group cursor-pointer rounded-xl border border-ink-900 bg-ink-900 px-5 py-3 text-center text-sm font-semibold text-on-dark shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-ink-800 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
-								<HoverSwapLabel text={displayValue} disabled={isEditable} />
+								<HoverSwapLabel text={displayValue} disabled={isEditable || motionDisabled} />
 							</button>
 						{/snippet}
 					</EditableField>
@@ -978,6 +988,34 @@
 		to {
 			transform: translateX(-50%);
 		}
+	}
+
+	/* The saved preference is applied on SSR as well as when edited live. */
+	.hero-motion-disabled .hero-bg-slide {
+		transition: none;
+	}
+
+	.hero-motion-disabled .brand-viewport-scroll {
+		overflow-x: auto;
+		mask-image: none;
+		-webkit-mask-image: none;
+		scrollbar-width: thin;
+	}
+
+	.hero-motion-disabled .brand-track-marquee {
+		animation: none;
+		will-change: auto;
+	}
+
+	.hero-motion-disabled .brand-group-copy {
+		display: none;
+	}
+
+	.hero-motion-disabled .hero-primary,
+	.hero-motion-disabled .brand-logo {
+		translate: none;
+		transform: none;
+		transition: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

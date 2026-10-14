@@ -4,7 +4,6 @@
 	import ActionsCTAV3 from './v3/ActionsCTA.svelte';
 	import ActionsCTAV4 from './v4/ActionsCTA.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -70,23 +69,19 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v4'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<ActionsCTAV4 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else if selectedVersion === 'v3'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<ActionsCTAV3 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else if selectedVersion === 'v2'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<ActionsCTAV2 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else}
-			<div
-				class="w-full"
-				in:fly={{ x: -1200, duration: 600 }}
-				out:fly={{ x: -1200, duration: 600 }}
-			>
+			<div class="w-full">
 				<ActionsCTAV1 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{/if}

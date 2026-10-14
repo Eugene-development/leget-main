@@ -316,9 +316,14 @@
 	const draftMode = $derived(page.url.searchParams.has('draft'));
 	const sharedPreview = $derived(page.url.searchParams.get('preview') === '1');
 	const isEditable = $derived(
-		browser && $auth.isAuthenticated && isOwner && !sharedPreview &&
-		(!draftMode || ($draftSession?.licenseId === editContext?.licenseId && $draftSession?.draft.slug === editContext?.slug)) &&
-		(editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
+		browser &&
+			$auth.isAuthenticated &&
+			isOwner &&
+			!sharedPreview &&
+			(!draftMode ||
+				($draftSession?.licenseId === editContext?.licenseId &&
+					$draftSession?.draft.slug === editContext?.slug)) &&
+			(editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
 	const catalogRubric = $derived(catalogRubricFromSlug(editContext?.templateId, slug));
@@ -339,7 +344,9 @@
 	// Компоненты текущей страницы без футера — он рендерится отдельно (внизу).
 	const pageComponents = $derived(componentsState.filter((c) => c.type !== 'Footer'));
 	const catalogSidebars = $derived(pageComponents.filter((c) => catalogSidebarTypes.has(c.type)));
-	const contentComponents = $derived(pageComponents.filter((c) => !catalogSidebarTypes.has(c.type)));
+	const contentComponents = $derived(
+		pageComponents.filter((c) => !catalogSidebarTypes.has(c.type))
+	);
 	// Keep editor-reordered blocks in place and project galleries in the body.
 	const catalogHeroes = $derived.by(() => {
 		const firstBodyIndex = contentComponents.findIndex((c) => !catalogHeroTypes.has(c.type));
@@ -449,6 +456,7 @@
 			<EditableComponent
 				component={Component}
 				componentType={element.type}
+				promoMotion={Number(editContext?.templateId) === 1}
 				showSettings={!componentHasOwnSwitcher(element.type) &&
 					!componentHasEmbeddedSingleVersionSettings(element.type)}
 				settingsThemeDefault={singleThemeDefault}

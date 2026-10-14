@@ -42,6 +42,8 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { animationsEnabled } from '$lib/motion/promo';
+	import { onMount } from 'svelte';
 	import '../../../../theme.css';
 
 	let {
@@ -155,8 +157,22 @@
 	let stride = 0; // шаг между началами карточек: ширина карточки + зазор
 	let setWidth = 0; // ширина одного набора
 
-	const reduced = () =>
-		typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+	let reducedMotion = $state(false);
+	let pageVisible = $state(true);
+	const motionEnabled = $derived(animationsEnabled(data));
+	onMount(() => {
+		const query = matchMedia('(prefers-reduced-motion: reduce)');
+		const syncMotion = () => (reducedMotion = query.matches);
+		const syncVisibility = () => (pageVisible = !document.hidden);
+		syncMotion();
+		syncVisibility();
+		query.addEventListener('change', syncMotion);
+		document.addEventListener('visibilitychange', syncVisibility);
+		return () => {
+			query.removeEventListener('change', syncMotion);
+			document.removeEventListener('visibilitychange', syncVisibility);
+		};
+	});
 
 	function measure() {
 		if (!scroller) return;
@@ -182,7 +198,10 @@
 
 	function goToSlot(slot: number) {
 		if (!scroller || !stride) return;
-		scroller.scrollTo({ left: slot * stride, behavior: reduced() ? 'auto' : 'smooth' });
+		scroller.scrollTo({
+			left: slot * stride,
+			behavior: reducedMotion || !motionEnabled ? 'auto' : 'smooth'
+		});
 	}
 
 	const step = (dir: number) => goToSlot(slotAt() + dir);
@@ -234,7 +253,17 @@
 	// Автопрокрутка. Стоит, пока лента не видна, пока на ней курсор или фокус,
 	// пока вкладка в фоне — и не заводится вовсе при prefers-reduced-motion.
 	$effect(() => {
-		if (!isSlider || !scroller || held || !visible || reduced()) return;
+		if (
+			!isSlider ||
+			!scroller ||
+			held ||
+			!visible ||
+			reducedMotion ||
+			!motionEnabled ||
+			isEditable ||
+			!pageVisible
+		)
+			return;
 
 		const raw = getComputedStyle(scroller).getPropertyValue('--ds-motion-dwell').trim();
 		const dwell = raw.endsWith('ms') ? parseFloat(raw) : parseFloat(raw) * 1000;

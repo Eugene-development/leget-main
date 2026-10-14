@@ -3,7 +3,6 @@
 	import ContactCTAV2 from './v2/ContactCTA.svelte';
 	import ContactCTAV3 from './v3/ContactCTA.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -77,19 +76,11 @@
 					<ContactCTAV3 bind:data {editContext} {isEditable} {sitePhone} />
 				</div>
 			{:else if selectedVersion === 'v2'}
-				<div
-					class="col-start-1 row-start-1 w-full"
-					in:fly={{ x: 1200, duration: 600 }}
-					out:fly={{ x: 1200, duration: 600 }}
-				>
+				<div class="col-start-1 row-start-1 w-full">
 					<ContactCTAV2 bind:data {editContext} {isEditable} {sitePhone} />
 				</div>
 			{:else}
-				<div
-					class="col-start-1 row-start-1 w-full"
-					in:fly={{ x: -1200, duration: 600 }}
-					out:fly={{ x: -1200, duration: 600 }}
-				>
+				<div class="col-start-1 row-start-1 w-full">
 					<ContactCTAV1 bind:data {editContext} {isEditable} {sitePhone} />
 				</div>
 			{/if}

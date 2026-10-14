@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
@@ -78,6 +80,8 @@
 			loading = false;
 		}
 	}
+
+	const p1_slide = withPromoMotion(slide);
 </script>
 
 <div class="space-y-3">
@@ -181,7 +185,7 @@
 									{#if expanded}
 										<div
 											id={`${id}-group-${group.id}`}
-											transition:slide={{ duration: reducedMotion ? 0 : 220, easing: cubicOut }}
+											transition:p1_slide={{ duration: reducedMotion ? 0 : 220, easing: cubicOut }}
 											inert={!expanded}
 										>
 											<fieldset {disabled} aria-label={group.name} class="min-w-0 pt-2">

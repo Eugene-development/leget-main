@@ -2,7 +2,6 @@
 	import ProjectsFeedV1 from './v1/ProjectsFeed.svelte';
 	import ProjectsFeedV2 from './v2/ProjectsFeed.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
-	import { fly } from 'svelte/transition';
 
 	let {
 		data = $bindable(),
@@ -72,15 +71,11 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
-			<div class="w-full" in:fly={{ x: 1200, duration: 600 }} out:fly={{ x: 1200, duration: 600 }}>
+			<div class="w-full">
 				<ProjectsFeedV2 bind:data />
 			</div>
 		{:else}
-			<div
-				class="w-full"
-				in:fly={{ x: -1200, duration: 600 }}
-				out:fly={{ x: -1200, duration: 600 }}
-			>
+			<div class="w-full">
 				<ProjectsFeedV1 bind:data />
 			</div>
 		{/if}
