@@ -560,7 +560,7 @@
 					onclick={() => selectedImageIndex--}
 					aria-label="Предыдущее изображение"
 					title="Назад"
-					class="absolute top-1/2 left-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-on-dark/10 text-on-dark backdrop-blur hover:bg-on-dark/20"
+					class="absolute top-1/2 left-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/60 bg-scrim/75 text-on-dark shadow-lg shadow-scrim/25 backdrop-blur transition-colors hover:bg-scrim/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-dark"
 				>
 					<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -579,7 +579,7 @@
 					onclick={() => selectedImageIndex++}
 					aria-label="Следующее изображение"
 					title="Вперёд"
-					class="absolute top-1/2 right-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-on-dark/10 text-on-dark backdrop-blur hover:bg-on-dark/20"
+					class="absolute top-1/2 right-8 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/60 bg-scrim/75 text-on-dark shadow-lg shadow-scrim/25 backdrop-blur transition-colors hover:bg-scrim/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-dark"
 				>
 					<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -598,7 +598,7 @@
 				onclick={() => (isLightboxOpen = false)}
 				aria-label="Закрыть галерею"
 				title="Закрыть"
-				class="absolute top-8 right-8 flex h-12 w-12 items-center justify-center rounded-full bg-on-dark/10 text-on-dark backdrop-blur hover:bg-on-dark/20"
+				class="absolute top-8 right-8 flex h-12 w-12 items-center justify-center rounded-full border border-on-dark/60 bg-scrim/75 text-on-dark shadow-lg shadow-scrim/25 backdrop-blur transition-colors hover:bg-scrim/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-dark"
 			>
 				<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
