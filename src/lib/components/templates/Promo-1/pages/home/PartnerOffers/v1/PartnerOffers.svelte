@@ -78,7 +78,7 @@
 
 	const DEFAULT_TITLE = 'Предложения партнёров';
 	const DEFAULT_DESCRIPTION =
-		'Мы работаем напрямую с производителями фурнитуры и материалов, поэтому часть их выгоды достаётся вам. Условия действуют ограниченное время и суммируются со скидкой на проект.';
+		'Специальные предложения от партнёров для компании «Новострой» — собрали их для вас ниже.';
 
 	const title = $derived(String(data?.title ?? DEFAULT_TITLE));
 	const description = $derived(String(data?.description ?? DEFAULT_DESCRIPTION));

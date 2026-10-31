@@ -34,6 +34,7 @@ export function animatePromoBlock(
 			const curve = styles.getPropertyValue('--ds-motion-ease').match(/cubic-bezier\(([^)]+)\)/);
 			const ease = curve ? CustomEase.create('', curve[1]) : 'power3.out';
 			const context = gsap.context(() => {}, root);
+			const animations: gsap.core.Tween[] = [];
 			const known = new WeakSet<HTMLElement>();
 			const roles = new WeakMap<HTMLElement, { role: Role; index: number }>();
 			const restoreNumbers: Array<() => void> = [];
@@ -85,20 +86,22 @@ export function animatePromoBlock(
 					if (text.nodeValue === last) text.nodeValue = original;
 				};
 				restoreNumbers.push(restore);
-				gsap.to(counter, {
-					value,
-					duration: detail,
-					ease,
-					onUpdate() {
-						last =
-							counter.value.toLocaleString('ru-RU', {
-								useGrouping: /\s/.test(match[1]),
-								maximumFractionDigits: precision
-							}) + match[2];
-						text.nodeValue = last;
-					},
-					onComplete: restore
-				});
+				animations.push(
+					gsap.to(counter, {
+						value,
+						duration: detail,
+						ease,
+						onUpdate() {
+							last =
+								counter.value.toLocaleString('ru-RU', {
+									useGrouping: /\s/.test(match[1]),
+									maximumFractionDigits: precision
+								}) + match[2];
+							text.nodeValue = last;
+						},
+						onComplete: restore
+					})
+				);
 			}
 
 			function play(element: HTMLElement) {
@@ -135,7 +138,7 @@ export function animatePromoBlock(
 							vars.y = lift * 0.25;
 						} else vars.y = lift * (profile === 'form' || profile === 'faq' ? 0.15 : 0.45);
 					}
-					gsap.from(element, vars);
+					animations.push(gsap.from(element, vars));
 				});
 			}
 
@@ -211,9 +214,12 @@ export function animatePromoBlock(
 			}
 
 			const finish = () => {
+				if (interacted) return;
 				interacted = true;
 				observer?.disconnect();
-				context.getTweens().forEach((tween: gsap.core.Tween) => tween.progress(1));
+				// A context also contains GSAP's internal from-start tweens. Completing those
+				// reapplies the entrance's opacity/offset, even after the entrance has ended.
+				animations.forEach((tween) => tween.progress(1));
 			};
 			const visibility = () => {
 				setPaused(document.hidden || !inViewport);

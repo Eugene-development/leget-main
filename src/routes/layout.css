@@ -846,7 +846,9 @@ body {
 	color: var(--color-text-primary);
 	background-color: var(--color-surface);
 	line-height: 1.6;
-	overflow-x: hidden;
+	/* hidden создаёт scroll-контейнер body и мешает sticky-шапке 1.М.1
+	   следовать прокрутке окна. clip обрезает горизонтальный выход без него. */
+	overflow-x: clip;
 }
 
 h1,

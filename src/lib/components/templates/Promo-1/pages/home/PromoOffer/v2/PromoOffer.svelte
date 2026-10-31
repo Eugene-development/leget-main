@@ -29,7 +29,7 @@
 
 	const activeImage = $derived(String(data?.imageV2 ?? data?.image ?? ''));
 
-	async function saveField(field: string, value: string) {
+	async function saveField(field: string, value: string | string[]) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'PromoOffer', updated);
@@ -122,28 +122,42 @@
 
 				<!-- Список фич в виде горизонтального ряда стеклянных тегов -->
 				<div class="mb-10 flex w-full flex-wrap gap-3">
-					{#each features as feature}
-						<div
-							class="p1-border p1-card flex items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-semibold tracking-wide backdrop-blur-md transition-colors duration-300 hover:border-cat-8-500/20 hover:bg-cat-8-500/5 md:text-sm"
+					{#each features as feature, index}
+						<EditableField
+							fieldKey={`PromoOffer.features.${index}`}
+							label={`Преимущество ${index + 1}`}
+							value={feature}
+							{isEditable}
+							onSave={(value) =>
+								saveField(
+									'features',
+									features.map((item, i) => (i === index ? value : item))
+								)}
 						>
-							<div
-								class="flex h-5 w-5 items-center justify-center rounded-lg bg-cat-8-500/10 {isLight
-									? 'text-cat-8-600'
-									: 'text-cat-8-400'}"
-							>
-								<svg
-									width="14"
-									height="14"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="3"
+							{#snippet children(displayValue)}
+								<div
+									class="p1-border p1-card flex items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-semibold tracking-wide backdrop-blur-md transition-colors duration-300 hover:border-cat-8-500/20 hover:bg-cat-8-500/5 md:text-sm"
 								>
-									<polyline points="20 6 9 17 4 12"></polyline>
-								</svg>
-							</div>
-							<span>{feature}</span>
-						</div>
+									<div
+										class="flex h-5 w-5 items-center justify-center rounded-lg bg-cat-8-500/10 {isLight
+											? 'text-cat-8-600'
+											: 'text-cat-8-400'}"
+									>
+										<svg
+											width="14"
+											height="14"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="3"
+										>
+											<polyline points="20 6 9 17 4 12"></polyline>
+										</svg>
+									</div>
+									<span><RichText value={displayValue} /></span>
+								</div>
+							{/snippet}
+						</EditableField>
 					{/each}
 				</div>
 
@@ -200,13 +214,13 @@
 			<!-- Правая колонка: Изображение и декоративные элементы -->
 			<div class="relative flex w-full items-center justify-center lg:col-span-5">
 				<div
-					class="p1-border group relative aspect-square w-full max-w-md overflow-hidden rounded-3xl border shadow-2xl transition-transform duration-500 hover:scale-[1.01]"
+					class="group relative aspect-square w-full max-w-md overflow-hidden rounded-3xl p-3 shadow-2xl transition-transform duration-500 hover:scale-[1.01] sm:p-4"
 				>
 					<ImageFallback
 						imagePath={['imageV2']}
 						src={activeImage}
 						alt={String(data?.imageAlt ?? 'Промо изображение')}
-						class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+						class="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
 					/>
 				</div>
 

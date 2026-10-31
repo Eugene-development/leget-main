@@ -40,6 +40,7 @@
 	import { draftSession } from '$lib/growth/drafts';
 	import NavigationBody from './NavigationBody.svelte';
 	import CatalogHeroRegion from './CatalogHeroRegion.svelte';
+	import ScrollChrome from './ScrollChrome.svelte';
 
 	interface PageComponent {
 		id?: string | null;
@@ -479,37 +480,39 @@
 		{/key}
 	{/if}
 
-	{#if PromoStrip}
-		<!-- Полоса акций — над баннером. bind по той же причине, что у баннера:
-	     версия и тема полосы лежат в том же headerData. -->
-		<PromoStrip bind:data={headerDataState} {editContext} {isEditable} {actionCards} />
-	{/if}
+	<ScrollChrome enabled={Boolean(Header && (PromoStrip || Banner))}>
+		{#snippet above()}
+			{#if PromoStrip}
+				<!-- Полоса акций — над баннером. bind по той же причине, что у баннера:
+			     версия и тема полосы лежат в том же headerData. -->
+				<PromoStrip bind:data={headerDataState} {editContext} {isEditable} {actionCards} />
+			{/if}
 
-	{#if Banner}
-		<!-- bind нужен не только редактору баннера: после сохранения телефона тот же
-	     реактивный headerDataState сразу обновляет CTA и футер без перезагрузки. -->
-		<Banner bind:data={headerDataState} {editContext} {isEditable} />
-	{/if}
-
-	{#if Header}
-		<!-- Не оборачиваем публичный/Promo-1 header в короткий positioning-контейнер:
-	     он ограничивает sticky высотой шапки, а сайдбар рассчитывает top от её положения. -->
-		{#if isEditable && editContext && Number(editContext.templateId) !== 1}
-			<div class="relative">
+			{#if Banner}
+				<!-- bind нужен не только редактору баннера: после сохранения телефона тот же
+			     реактивный headerDataState сразу обновляет CTA и футер без перезагрузки. -->
+				<Banner bind:data={headerDataState} {editContext} {isEditable} />
+			{/if}
+		{/snippet}
+		{#if Header}
+			<!-- У Promo-1 sticky принадлежит общей обёртке вместе с верхними полосами. -->
+			{#if isEditable && editContext && Number(editContext.templateId) !== 1}
+				<div class="relative">
+					<Header bind:data={headerDataState} {editContext} {isEditable} />
+					<LayoutImageSettings
+						bind:data={headerDataState}
+						{editContext}
+						{isEditable}
+						slots={Number(editContext.templateId) === 0
+							? [{ path: ['logo'], label: 'Логотип' }]
+							: [{ path: ['logoUrl'], label: 'Логотип' }]}
+					/>
+				</div>
+			{:else}
 				<Header bind:data={headerDataState} {editContext} {isEditable} />
-				<LayoutImageSettings
-					bind:data={headerDataState}
-					{editContext}
-					{isEditable}
-					slots={Number(editContext.templateId) === 0
-						? [{ path: ['logo'], label: 'Логотип' }]
-						: [{ path: ['logoUrl'], label: 'Логотип' }]}
-				/>
-			</div>
-		{:else}
-			<Header bind:data={headerDataState} {editContext} {isEditable} />
+			{/if}
 		{/if}
-	{/if}
+	</ScrollChrome>
 
 	<!-- Акцент рубрики ограничен телом страницы: layout-хром выше и Footer ниже
 	     остаются в общей палитре сайта. `contents` не добавляет геометрию. -->

@@ -38,7 +38,7 @@
 
 	const activeImage = $derived(String(data?.imageV1 ?? data?.image ?? ''));
 
-	async function saveField(field: string, value: string) {
+	async function saveField(field: string, value: string | string[]) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'PromoOffer', updated);
@@ -142,22 +142,36 @@
 			</div>
 
 			<div class="promo-alt__features">
-				{#each features as feature}
-					<div class="promo-alt__feature">
-						<div class="promo-alt__feature-icon">
-							<svg
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-							>
-								<polyline points="20 6 9 17 4 12"></polyline>
-							</svg>
-						</div>
-						<span>{feature}</span>
-					</div>
+				{#each features as feature, index}
+					<EditableField
+						fieldKey={`PromoOffer.features.${index}`}
+						label={`Преимущество ${index + 1}`}
+						value={feature}
+						{isEditable}
+						onSave={(value) =>
+							saveField(
+								'features',
+								features.map((item, i) => (i === index ? value : item))
+							)}
+					>
+						{#snippet children(displayValue)}
+							<div class="promo-alt__feature">
+								<div class="promo-alt__feature-icon">
+									<svg
+										width="18"
+										height="18"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline>
+									</svg>
+								</div>
+								<span><RichText value={displayValue} /></span>
+							</div>
+						{/snippet}
+					</EditableField>
 				{/each}
 			</div>
 
