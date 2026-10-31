@@ -40,7 +40,7 @@
 		function position() {
 			// Общая sticky-обёртка сохраняет место в потоке. Отрицательный top
 			// прячет только верхние полосы, оставляя строку меню у края окна.
-			node.style.top = revealed ? '0px' : `${-upper.offsetHeight}px`;
+			node.style.top = revealed ? '0px' : `${-upper.getBoundingClientRect().height}px`;
 			root.style.setProperty(
 				'--chrome-overlay',
 				`${Math.max(0, node.getBoundingClientRect().bottom)}px`
