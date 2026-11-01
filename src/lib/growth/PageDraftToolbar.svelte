@@ -21,6 +21,7 @@
 	let failure = $state('');
 	let notice = $state('');
 	let showHistory = $state(false);
+	let dismissed = $state(false);
 	let confirmAction = $state<{ kind: 'publish' | 'discard' | 'restore'; revision?: string } | null>(
 		null
 	);
@@ -34,11 +35,10 @@
 		let stopped = false;
 		const root = document.documentElement;
 		const previousSpace = root.style.getPropertyValue('--leget-publication-space');
-		const measure = () =>
-			root.style.setProperty(
-				'--leget-publication-space',
-				`${(toolbarElement?.getBoundingClientRect().height ?? 0) + 24}px`
-			);
+		const measure = () => {
+			const height = toolbarElement?.getBoundingClientRect().height ?? 0;
+			root.style.setProperty('--leget-publication-space', `${height > 0 ? height + 24 : 0}px`);
+		};
 		const observer = new ResizeObserver(measure);
 		if (toolbarElement) observer.observe(toolbarElement);
 		measure();
@@ -133,16 +133,39 @@
 
 <aside
 	bind:this={toolbarElement}
+	hidden={dismissed}
 	aria-label="Публикация страницы"
 	class="fixed right-3 bottom-3 left-3 z-[120] max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-xl border border-ink-200 bg-surface-raised p-3 text-ink-950 shadow-[0_6px_24px] shadow-ink-950/15 sm:left-auto sm:w-[420px]"
 >
-	<div class="flex flex-wrap items-center gap-2">
-		<p class="mr-auto text-sm font-medium">
-			{active ? 'Черновик страницы' : 'Страница опубликована'}
-		</p>
-		{#if active}<span aria-live="polite" class="text-xs text-ink-600"
-				>{$draftSaving ? 'Сохраняем…' : 'Правки сохранены'}</span
-			>{/if}
+	<div class="flex items-center gap-2">
+		<div class="min-w-0 flex-1">
+			<p class="text-sm font-medium">
+				{active ? 'Черновик страницы' : 'Страница опубликована'}
+			</p>
+			{#if active}<span aria-live="polite" class="text-xs text-ink-600"
+					>{$draftSaving ? 'Сохраняем…' : 'Правки сохранены'}</span
+				>{/if}
+		</div>
+		<button
+			type="button"
+			onclick={() => (dismissed = true)}
+			aria-label="Закрыть панель черновика"
+			title="Закрыть панель черновика"
+			data-goal-ignore="Редактор: скрытие панели черновика"
+			class="flex size-11 shrink-0 items-center justify-center rounded-lg text-ink-600 hover:bg-ink-100 hover:text-ink-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600"
+		>
+			<svg
+				aria-hidden="true"
+				class="size-5"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+			>
+				<path d="m6 6 12 12M18 6 6 18" />
+			</svg>
+		</button>
 	</div>
 	<p class="mt-1 text-xs text-ink-600">
 		{active

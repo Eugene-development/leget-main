@@ -276,9 +276,14 @@
 		sync();
 		const ro = new ResizeObserver(sync);
 		ro.observe(bar);
+		// Закрытие полосы акций меняет положение строки, даже если её высота прежняя.
+		const chrome = bar.closest('[data-scroll-chrome]');
+		if (chrome) ro.observe(chrome);
+		chrome?.addEventListener('scroll-chrome-position', sync);
 
 		return () => {
 			ro.disconnect();
+			chrome?.removeEventListener('scroll-chrome-position', sync);
 			unlock();
 			root.style.removeProperty('--p1-sheet-top');
 		};
