@@ -57,5 +57,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		response.headers.set('Cross-Origin-Resource-Policy', 'cross-origin');
 	}
 
+	// Administrative and preview routes must never enter the public search index.
+	if (/^\/(?:admin|cabinet|partner|crm|curator|orders|site-settings|goals|_ds|favorites|selection)(?:\/|$)/.test(event.url.pathname) || event.url.searchParams.has('draft')) {
+		response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+	}
 	return response;
 };

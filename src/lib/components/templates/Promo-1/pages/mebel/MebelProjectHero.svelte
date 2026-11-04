@@ -190,9 +190,22 @@
 	</div>
 {:else}
 	<div class="mebel-container">
-		<div class="lg:grid lg:grid-cols-2 lg:gap-12">
+		<div class="lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-12">
+			<!-- Хлебные крошки -->
+			<nav
+				aria-label="Хлебные крошки"
+				class="mb-6 flex flex-wrap items-center gap-2 text-sm text-ink-400 lg:col-start-2 lg:row-start-1"
+			>
+				<a href="/" class="hover:text-ink-600">Главная</a>
+				<span>/</span>
+				<a href="/mebel" class="hover:text-ink-600">Мебель</a>
+				{#if category.slug}
+					<span>/</span>
+					<a href="/mebel/{category.slug}" class="hover:text-ink-600">{category.value}</a>
+				{/if}
+			</nav>
 			<!-- Галерея -->
-			<div>
+			<div class="min-w-0 lg:col-start-1 lg:row-span-2 lg:row-start-1">
 				<div
 					class="relative aspect-4/3 overflow-hidden rounded-2xl border border-ink-100 bg-surface-raised shadow-sm"
 				>
@@ -229,6 +242,20 @@
 							</svg>
 						</div>
 					{/if}
+					{#if project.is_new || project.is_featured}
+						<div
+							class="pointer-events-none absolute top-3 right-3 left-3 z-10 flex flex-wrap gap-2"
+						>
+							{#if project.is_new}<span
+									class="rounded-full bg-cat-2-500 px-3 py-1 text-xs font-bold text-on-accent"
+									>Новинка</span
+								>{/if}
+							{#if project.is_featured}<span
+									class="rounded-full bg-cat-1-500 px-3 py-1 text-xs font-bold text-on-accent"
+									>Хит</span
+								>{/if}
+						</div>
+					{/if}
 				</div>
 				{#if images.length > 1}
 					<div class="mt-4 grid grid-cols-4 gap-3">
@@ -254,30 +281,7 @@
 				{/if}
 			</div>
 			<!-- Информация -->
-			<div class="mt-8 lg:mt-0">
-				<!-- Хлебные крошки -->
-				<nav class="mb-6 flex items-center gap-2 text-sm text-ink-400">
-					<a href="/" class="hover:text-ink-600">Главная</a>
-					<span>/</span>
-					<a href="/mebel" class="hover:text-ink-600">Мебель</a>
-					{#if category.slug}
-						<span>/</span>
-						<a href="/mebel/{category.slug}" class="hover:text-ink-600">{category.value}</a>
-					{/if}
-				</nav>
-
-				{#if project.is_new || project.is_featured}
-					<div class="mb-3 flex flex-wrap gap-2">
-						{#if project.is_new}<span
-								class="rounded-full bg-cat-2-500 px-3 py-1 text-xs font-bold text-on-accent"
-								>Новинка</span
-							>{/if}
-						{#if project.is_featured}<span
-								class="rounded-full bg-cat-1-500 px-3 py-1 text-xs font-bold text-on-accent"
-								>Хит</span
-							>{/if}
-					</div>
-				{/if}
+			<div class="mt-8 min-w-0 lg:col-start-2 lg:row-start-2 lg:mt-0">
 				<div class="flex flex-wrap items-center justify-between gap-4">
 					<h1 class="min-w-0 text-3xl text-ink-900 sm:text-4xl">
 						{project.value}
@@ -620,12 +624,13 @@
 		margin-right: auto;
 		padding-left: 1rem;
 		padding-right: 1rem;
-		margin-top: 4rem;
+		margin-top: 1rem;
 	}
 
 	@media (min-width: 1024px) {
 		.mebel-container {
 			padding-left: 360px;
+			margin-top: 4rem;
 		}
 	}
 </style>

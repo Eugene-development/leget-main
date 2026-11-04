@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 1.4.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
+	import ActionIconPicker from './ActionIconPicker.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
@@ -23,41 +24,31 @@
 	// акценты (красный/янтарный) от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
 
-	// Начальное значение считаем ПРИ ИНИЦИАЛИЗАЦИИ, а не только в $effect: на сервере
-	// эффекты не выполняются, и с пустым localCards hasVisibleCards давал false —
-	// вся секция выпадала из SSR-разметки. $effect ниже оставлен для синхронизации
-	// с обновлённым пропсом (например, invalidateAll после сброса блока).
-	// svelte-ignore state_referenced_locally — начальный SSR-снимок намеренный.
-	let localCards = $state<ActionCard[]>(mergeActionCards(data?.cards));
-
-	$effect(() => {
-		const merged = mergeActionCards(data?.cards);
-		if (JSON.stringify(localCards) !== JSON.stringify(merged)) {
-			localCards = JSON.parse(JSON.stringify(merged));
-		}
-	});
+	const localCards = $derived(mergeActionCards(data?.cards));
+	let saving = $state(false);
+	let saveError = $state('');
 
 	async function toggleCard(index: number, enabled: boolean) {
-		localCards[index] = { ...localCards[index], enabled };
-		const updatedData = { ...data, cards: $state.snapshot(localCards) };
-		data = updatedData;
-		if (!editContext) return;
 		try {
-			await saveComponentData(editContext, 'ActionsCards', updatedData);
-		} catch (err) {
-			console.error('Не удалось сохранить карточки:', err);
+			await updateCardField(index, 'enabled', enabled);
+		} catch {
+			saveError = 'Не удалось сохранить изменения. Повторите действие.';
 		}
 	}
 
-	async function updateCardField(index: number, field: keyof ActionCard, value: any) {
-		localCards[index] = { ...localCards[index], [field]: value };
-		const updatedData = { ...data, cards: $state.snapshot(localCards) };
-		data = updatedData;
-		if (!editContext) return;
+	async function updateCardField(index: number, field: keyof ActionCard, value: string | boolean) {
+		if (saving) throw new Error('Дождитесь сохранения изменений.');
+		saving = true;
+		saveError = '';
+		const updatedData = {
+			...data,
+			cards: localCards.map((card, i) => (i === index ? { ...card, [field]: value } : card))
+		};
 		try {
-			await saveComponentData(editContext, 'ActionsCards', updatedData);
-		} catch (err) {
-			console.error('Не удалось сохранить карточки:', err);
+			if (editContext) await saveComponentData(editContext, 'ActionsCards', updatedData);
+			data = updatedData;
+		} finally {
+			saving = false;
 		}
 	}
 
@@ -67,6 +58,7 @@
 {#if hasVisibleCards}
 	<section class="p1-surface relative py-section-sm" data-p1-theme={isLight ? 'light' : 'dark'}>
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
+			<h2 class="p1-title p1-title-section mb-8 text-2xl sm:text-3xl">Акции Новостроя</h2>
 			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{#each localCards as card, i}
 					{#if isEditable || card.enabled !== false}
@@ -87,6 +79,7 @@
 										>
 											<input
 												type="checkbox"
+												disabled={saving}
 												checked={card.enabled !== false}
 												onchange={(e) => toggleCard(i, e.currentTarget.checked)}
 												class="peer sr-only"
@@ -103,25 +96,19 @@
 									</div>
 								{/if}
 
-								<div
-									class="flex size-14 items-center justify-center rounded-2xl bg-brand-500 text-on-accent shadow-lg shadow-brand-500/30"
-								>
-									<svg
-										class="size-7"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="1.5"
-									>
-										<path stroke-linecap="round" stroke-linejoin="round" d={card.icon} />
-									</svg>
-								</div>
+								<ActionIconPicker
+									value={card.icon}
+									label={card.title}
+									{isEditable}
+									disabled={saving}
+									onSave={(path) => updateCardField(i, 'icon', path)}
+								/>
 
 								<EditableField
 									fieldKey="ActionsCards.cards.{i}.title"
 									label="Заголовок карточки"
 									value={card.title}
-									{isEditable}
+									isEditable={isEditable && !saving}
 									onSave={async (v) => {
 										await updateCardField(i, 'title', v);
 									}}
@@ -138,7 +125,7 @@
 									fieldKey="ActionsCards.cards.{i}.description"
 									label="Описание"
 									value={card.description}
-									{isEditable}
+									isEditable={isEditable && !saving}
 									multiline
 									onSave={async (v) => {
 										await updateCardField(i, 'description', v);
@@ -155,7 +142,7 @@
 										fieldKey="ActionsCards.cards.{i}.badge"
 										label="Бейдж"
 										value={card.badge}
-										{isEditable}
+										isEditable={isEditable && !saving}
 										onSave={async (v) => {
 											await updateCardField(i, 'badge', v);
 										}}
@@ -175,6 +162,7 @@
 					{/if}
 				{/each}
 			</div>
+			{#if isEditable && saveError}<p class="p1-body mt-4 text-sm" role="alert">{saveError}</p>{/if}
 		</div>
 	</section>
 {/if}

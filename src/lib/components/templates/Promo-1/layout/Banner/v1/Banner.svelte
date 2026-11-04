@@ -2,6 +2,7 @@
 	// Артикул: 1.Б.1.1 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/stores';
 	import EditableField from '$lib/components/EditableField.svelte';
+	import { editStore } from '$lib/stores/edit.svelte';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import { resolveBannerLinks } from '../../bannerLinks';
@@ -67,6 +68,20 @@
 		await saveLayoutData(editContext, 'Header', updated);
 		data = updated;
 	}
+
+	function editContact(event: MouseEvent, field: 'phone' | 'email') {
+		if (!isEditable || !editContext) return;
+		event.preventDefault();
+		event.stopPropagation();
+		editStore.open({
+			key: `Banner.${field}`,
+			label: field === 'phone' ? 'Телефон' : 'Email',
+			value: field === 'phone' ? phone : email,
+			multiline: false,
+			richText: false,
+			onSave: (value) => saveField(field, value)
+		});
+	}
 </script>
 
 <div data-p1-theme={isLight ? 'light' : 'dark'}>
@@ -82,9 +97,11 @@
 						class={link.href === '/university'
 							? 'university-link my-1.5 text-[13px] whitespace-nowrap'
 							: $page.url.pathname === link.href
-								? 'text-university-link text-[13px] whitespace-nowrap'
+								? 'text-[13px] whitespace-nowrap text-university-link'
 								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-[13px] whitespace-nowrap transition-colors`}
-						class:brightness-90={isLight && link.href !== '/university' && $page.url.pathname !== link.href}
+						class:brightness-90={isLight &&
+							link.href !== '/university' &&
+							$page.url.pathname !== link.href}
 					>
 						{link.label}
 					</a>
@@ -118,6 +135,8 @@
 								{#snippet children(displayValue)}
 									<a
 										href="tel:{displayValue}"
+										onclick={(event) => editContact(event, 'phone')}
+										data-goal-ignore="Редактирование телефона владельцем; для посетителя — обычная ссылка"
 										class="p1-title p1-accent-hover text-[13px] font-normal tracking-wide antialiased transition-colors"
 										class:brightness-90={isLight}
 									>
@@ -151,6 +170,8 @@
 								{#snippet children(displayValue)}
 									<a
 										href="mailto:{displayValue}"
+										onclick={(event) => editContact(event, 'email')}
+										data-goal-ignore="Редактирование почты владельцем; для посетителя — обычная ссылка"
 										class="p1-title p1-accent-hover text-[13px] font-normal tracking-wide antialiased transition-colors"
 										class:brightness-90={isLight}
 									>

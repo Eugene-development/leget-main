@@ -1,52 +1,55 @@
 <script lang="ts">
-	import RichText from '$lib/components/RichText.svelte';
 	import PromoStripV1 from './v1/PromoStrip.svelte';
 	import PromoStripV2 from './v2/PromoStrip.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
-	import EditableField from '$lib/components/EditableField.svelte';
+	import { editStore } from '$lib/stores/edit.svelte';
 	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
 	import {
 		saveLayoutData,
 		getLayoutComponentArticle,
 		type EditContext
 	} from '$lib/utils/page-edit';
-	import { activeActionCards } from '../../pages/actions/actionCards';
 	import { fly } from 'svelte/transition';
 	import '../../theme.css';
 	import './promo-strip.css';
 
-	// Полоса акций — вторая полоса шапки, НАД баннером.
-	//
-	// Устроена как баннер и намеренно: это тоже layout-компонент, её версия и
-	// тема живут в том же blob'е `header_data` (ключи `promoVersion`,
-	// `promoTheme`), сохраняются тем же `saveLayoutData('Header', …)`, а выбор
-	// варианта открывается тем же `SideDrawer` — полоса узкая, плавающему
-	// переключателю в ней не поместиться.
-	//
-	// Чем от баннера ОТЛИЧАЕТСЯ: своего контента у неё нет. Она показывает
-	// активные акции страницы `/actions` — те же, что видит там посетитель, —
-	// поэтому в панели нет «сброса контента»: сбрасывать нечего, правится
-	// содержимое на самой странице акций.
+	// Независимый контент полосы хранится в header_data вместе с её темой и версией.
 	let {
 		data = $bindable({}),
 		editContext = null,
-		isEditable = false,
-		actionCards = null
+		isEditable = false
 	}: {
 		data: Record<string, unknown>;
 		editContext: EditContext | null;
 		isEditable: boolean;
-		/**
-		 * Сохранённые карточки акций из `site.actionCards` (renderPage). `null` —
-		 * тенант блок акций не правил, тогда берутся дефолты страницы; см. разбор
-		 * в `pages/actions/actionCards.ts`.
-		 */
-		actionCards?: unknown;
 	} = $props();
 
-	const actions = $derived(activeActionCards(actionCards));
+	const savedText = $derived(typeof data.promoText === 'string' ? data.promoText : '');
+	const text = $derived(
+		editStore.activeField?.key === 'PromoStrip.promoText'
+			? (editStore.activeField.draft ?? savedText)
+			: savedText
+	);
+
+	function editText() {
+		if (!isEditable || !editContext) return;
+		drawerOpen = false;
+		editStore.open({
+			key: 'PromoStrip.promoText',
+			label: 'Текст информационной полосы',
+			value: savedText,
+			multiline: true,
+			richText: false,
+			onSave: async (value) => {
+				if (!editContext) return;
+				const updated = { ...data, promoText: value.trim() };
+				await saveLayoutData(editContext, 'Header', updated);
+				data = updated;
+			}
+		});
+	}
 
 	// Версию читаем сразу при инициализации, а не только в $effect: на сервере
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных — ровно
@@ -93,34 +96,10 @@
 			: null
 	);
 
-	// Полоса нарисована живой (а не индикатором «отключена»/«нет акций») —
+	// Полоса нарисована живой (а не индикатором «отключена»/«нет текста») —
 	// от этого зависит, где стоит триггер настроек: у первой версии справа
 	// есть крестик, и наезжать на него нельзя.
-	const isLive = $derived(selectedVersion !== 'disabled' && actions.length > 0);
-
-	// «1 активную акцию» / «3 активные акции» / «8 активных акций» — у русского
-	// счётного оборота три формы, и двух здесь мало: список приходит от тенанта
-	// и бывает любой длины.
-	const actionsPhrase = $derived.by(() => {
-		const n = actions.length;
-		const tail = n % 10;
-		const teen = n % 100;
-
-		if (tail === 1 && teen !== 11) return `${n} активную акцию`;
-		if (tail >= 2 && tail <= 4 && (teen < 12 || teen > 14)) return `${n} активные акции`;
-		return `${n} активных акций`;
-	});
-
-	async function saveLinkHref(value: string) {
-		if (!editContext) return;
-		const href = value.trim();
-		if (!/^(\/(?!\/)|https?:\/\/)[^\s]*$/i.test(href)) {
-			throw new Error('Укажите путь от / или полный адрес с https://');
-		}
-		const updated = { ...data, promoLinkHref: href };
-		await saveLayoutData(editContext, 'Header', updated);
-		data = updated;
-	}
+	const isLive = $derived(selectedVersion !== 'disabled' && text.trim().length > 0);
 
 	async function selectVersion(version: 'v1' | 'v2' | 'disabled') {
 		if (version === selectedVersion) return;
@@ -132,7 +111,7 @@
 			await saveLayoutData(editContext, 'Header', updated);
 			data = updated;
 		} catch (err) {
-			console.error('Ошибка сохранения версии полосы акций:', err);
+			console.error('Ошибка сохранения версии информационной полосы:', err);
 		}
 	}
 </script>
@@ -145,28 +124,25 @@
 				class="flex h-9 items-center justify-center gap-2 bg-ink-900 text-[11px] font-medium tracking-wider text-ink-400 uppercase"
 			>
 				<span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
-				Полоса акций отключена
+				Информационная полоса отключена
 			</div>
 		{/if}
-	{:else if actions.length === 0}
+	{:else if !text.trim()}
 		{#if isEditable}
-			<!-- Активных акций нет: посетителю полоса не показывается вовсе —
-			     пустая строка в шапке хуже её отсутствия. Владельцу говорим, где
-			     это чинится. -->
 			<div
 				class="flex h-9 items-center justify-center gap-2 bg-ink-900 text-[11px] font-medium tracking-wider text-ink-400 uppercase"
 			>
 				<span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
-				Нет активных акций — полоса скрыта
+				Добавьте текст в настройках полосы
 			</div>
 		{/if}
 	{:else if selectedVersion === 'v2'}
 		<div in:fly={{ x: 0, y: -40, duration: 400 }}>
-			<PromoStripV2 bind:data {actions} />
+			<PromoStripV2 {data} {text} {isEditable} />
 		</div>
 	{:else}
 		<div in:fly={{ x: 0, y: -40, duration: 400 }}>
-			<PromoStripV1 {data} {actions} {isEditable} />
+			<PromoStripV1 {data} {text} {isEditable} />
 		</div>
 	{/if}
 
@@ -182,9 +158,10 @@
 			selectedVersion === 'v1'
 				? 'right-14 lg:right-16'
 				: 'right-1.5'}"
-			title="Варианты полосы акций"
+			title="Настройки информационной полосы"
 			data-field-toolbar-anchor
-			aria-label="Варианты полосы акций"
+			aria-label="Настройки информационной полосы"
+			data-goal-ignore="Настройки полосы владельцем"
 		>
 			<svg
 				class="h-3.5 w-3.5"
@@ -203,7 +180,7 @@
 </div>
 
 {#if isEditable && editContext}
-	<SideDrawer bind:open={drawerOpen} title="Полоса акций">
+	<SideDrawer bind:open={drawerOpen} title="Информационная полоса">
 		<div class="flex flex-col gap-6">
 			<!-- Артикул выбранной версии -->
 			{#if promoArticle}
@@ -214,6 +191,25 @@
 					<ArticleBadge article={promoArticle} sectionLabel="Раздел" align="left" />
 				</div>
 			{/if}
+
+			<section aria-label="Текст полосы">
+				<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Текст полосы</h4>
+				<p class="mt-2 text-xs leading-relaxed text-ink-400">
+					Текст не связан с акциями. Если он шире доступного места, включается бегущая строка.
+					Пустая полоса скрыта от посетителей.
+				</p>
+				<button
+					type="button"
+					onclick={editText}
+					data-goal-ignore="Редактирование текста полосы владельцем"
+					class="mt-4 w-full cursor-pointer rounded-2xl border border-on-dark/10 px-4 py-3 text-left text-sm text-on-dark transition-colors hover:bg-on-dark/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400"
+				>
+					<span class="block text-xs text-ink-300">Редактировать текст</span>
+					<span class="mt-2 block break-words whitespace-pre-wrap"
+						>{savedText || 'Добавить текст'}</span
+					>
+				</button>
+			</section>
 
 			<!-- Тема полосы -->
 			{#if THEME_VERSIONS.includes(selectedVersion as 'v1' | 'v2')}
@@ -228,22 +224,6 @@
 				</section>
 			{/if}
 
-			<!-- Варианты -->
-			{#if selectedVersion === 'v2'}
-				<EditableField
-					fieldKey="PromoStrip.promoLinkHref"
-					label="Адрес ссылки «Все акции»"
-					value={String(data?.promoLinkHref ?? '/actions')}
-					{isEditable}
-					onSave={saveLinkHref}
-				>
-					{#snippet children(displayValue)}
-						<p class="text-xs text-ink-300">Адрес ссылки «Все акции»</p>
-						<p class="mt-1 text-sm break-all text-on-dark"><RichText value={displayValue} /></p>
-					{/snippet}
-				</EditableField>
-			{/if}
-
 			<section>
 				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Вариант дизайна</h4>
 				<div class="flex flex-col gap-2">
@@ -254,10 +234,10 @@
 							? 'scale-[1.01] border-on-dark/20 bg-on-dark/10 text-on-dark shadow-md'
 							: 'border-on-dark/10 text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
 						onclick={() => selectVersion('v1')}
+						data-goal-ignore="Выбор версии полосы владельцем"
 					>
 						<span class="block text-xs font-bold tracking-wider uppercase">Вариант 1</span>
-						<span class="mt-1 block text-[11px] text-ink-400">Одна акция, смена раз в 6 секунд</span
-						>
+						<span class="mt-1 block text-[11px] text-ink-400">Строка с кнопкой закрытия</span>
 					</button>
 					<button
 						type="button"
@@ -266,9 +246,10 @@
 							? 'scale-[1.01] border-link-500/40 bg-gradient-to-r from-link-500/15 to-cat-4-500/15 text-link-200 shadow-md'
 							: 'border-on-dark/10 text-ink-400 hover:bg-on-dark/5 hover:text-ink-200'}"
 						onclick={() => selectVersion('v2')}
+						data-goal-ignore="Выбор версии полосы владельцем"
 					>
 						<span class="block text-xs font-bold tracking-wider uppercase">Вариант 2</span>
-						<span class="mt-1 block text-[11px] text-ink-400">Бегущая лента, видно все акции</span>
+						<span class="mt-1 block text-[11px] text-ink-400">Строка без кнопки закрытия</span>
 					</button>
 					<button
 						type="button"
@@ -277,25 +258,11 @@
 							? 'scale-[1.01] border-brand-500/40 bg-brand-500/15 text-brand-200 shadow-md'
 							: 'border-on-dark/10 text-ink-400 hover:bg-brand-500/5 hover:text-brand-400'}"
 						onclick={() => selectVersion('disabled')}
+						data-goal-ignore="Отключение полосы владельцем"
 					>
 						Отключить
 					</button>
 				</div>
-			</section>
-
-			<!-- Откуда контент -->
-			<section class="border-t border-on-dark/10 pt-5">
-				<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Контент</h4>
-				<p class="mt-2 text-xs leading-relaxed text-ink-400">
-					Полоса показывает {actionsPhrase} со страницы «Акции» — те же, что видит там посетитель. Текст
-					и состав правятся на самой странице: выключенная там акция исчезает и отсюда.
-				</p>
-				<a
-					href="/actions"
-					class="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-on-dark/10 px-4 py-3 text-xs font-bold tracking-wider text-ink-300 uppercase transition-all duration-300 hover:border-on-dark/20 hover:text-on-dark"
-				>
-					Открыть страницу акций
-				</a>
 			</section>
 
 			{#if selectedVersion === 'v1'}
@@ -303,7 +270,7 @@
 				<section class="border-t border-on-dark/10 pt-5">
 					<h4 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Закрытие посетителем</h4>
 					<p class="mt-2 text-xs leading-relaxed text-ink-400">
-						Крестик скрывает полосу до конца сессии вкладки: в новой сессии акции показываются
+						Крестик скрывает полосу до конца сессии вкладки: в новой сессии текст показывается
 						снова. В режиме редактирования закрытие не действует — иначе настройки полосы стали бы
 						недоступны.
 					</p>

@@ -1,4 +1,5 @@
 import { activeExtraActionCards } from './actionCardsExtra';
+import { normalizeActionCard } from './actionCardData';
 
 /**
  * Основной блок карточек страницы `/actions` и список для полосы акций.
@@ -119,7 +120,7 @@ export function mergeActionCards(propsCards: unknown): ActionCard[] {
 			const matchedDefault = defaultActionCards.find((d) => d.title === card.title);
 			id = matchedDefault ? matchedDefault.id : card.title;
 		}
-		savedMap.set(id, { ...card, id });
+		savedMap.set(id, normalizeActionCard({ ...card, id }));
 	});
 
 	const result: ActionCard[] = [];

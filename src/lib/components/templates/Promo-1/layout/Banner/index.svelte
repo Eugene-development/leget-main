@@ -6,6 +6,7 @@
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import { editStore } from '$lib/stores/edit.svelte';
 	import { createThemeToggle, isLightBlock } from '$lib/utils/block-theme';
 	import {
 		saveLayoutData,
@@ -38,6 +39,28 @@
 		(data?.bannerVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
 	);
 	let drawerOpen = $state(false);
+
+	function editContact(field: 'phone' | 'email') {
+		if (!isEditable || !editContext) return;
+		drawerOpen = false;
+		editStore.open({
+			key: `Banner.${field}`,
+			label: field === 'phone' ? 'Телефон' : 'Email',
+			value: data[field]
+				? String(data[field])
+				: field === 'phone'
+					? '+7 (999) 000-00-00'
+					: 'info@leget.ru',
+			multiline: false,
+			richText: false,
+			onSave: async (value) => {
+				if (!editContext) return;
+				const updated = { ...data, [field]: value };
+				await saveLayoutData(editContext, 'Header', updated);
+				data = updated;
+			}
+		});
+	}
 	let leadPreview = $state(false);
 	let leadSaving = $state(false);
 	let leadError = $state('');
@@ -187,9 +210,9 @@
 			type="button"
 			onclick={() => (drawerOpen = true)}
 			class="absolute top-1/2 right-1.5 z-[100] hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-on-dark/10 bg-ink-950/80 text-on-dark/80 shadow-lg backdrop-blur-xl transition-all duration-300 hover:border-link-400/40 hover:bg-ink-900 hover:text-on-dark active:scale-95 lg:flex"
-			title="Варианты и сброс"
+			title="Настройки баннера"
 			data-field-toolbar-anchor
-			aria-label="Варианты и сброс баннера"
+			aria-label="Настройки баннера"
 		>
 			<svg
 				class="h-3.5 w-3.5"
@@ -226,6 +249,30 @@
 					<ArticleBadge article={bannerArticle} sectionLabel="Раздел" align="left" />
 				</div>
 			{/if}
+
+			<section aria-label="Контакты баннера">
+				<h4 class="p1-title-sub mb-3 text-[10px] text-on-dark/40 uppercase">Контакты</h4>
+				<div class="flex flex-col gap-2">
+					{#each ['phone', 'email'] as field}
+						<button
+							type="button"
+							onclick={() => editContact(field as 'phone' | 'email')}
+							data-goal-ignore="Редактирование контактов владельцем"
+							class="flex min-h-11 w-full cursor-pointer flex-col gap-1 rounded-2xl border border-on-dark/10 px-4 py-3 text-left transition-colors hover:bg-on-dark/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400"
+							aria-label={field === 'phone' ? 'Редактировать телефон' : 'Редактировать email'}
+						>
+							<span class="text-xs text-ink-300">{field === 'phone' ? 'Телефон' : 'Email'}</span>
+							<span class="text-sm break-all text-on-dark">
+								{data[field]
+									? String(data[field])
+									: field === 'phone'
+										? '+7 (999) 000-00-00'
+										: 'info@leget.ru'}
+							</span>
+						</button>
+					{/each}
+				</div>
+			</section>
 
 			<!-- Тема полосы -->
 			{#if THEME_VERSIONS.includes(selectedVersion as 'v1' | 'v2')}

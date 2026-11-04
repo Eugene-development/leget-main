@@ -1,3 +1,6 @@
+import { richTextToPlainText } from '$lib/utils/rich-text';
+import { actionText, normalizeActionCard } from './actionCardData';
+
 /** Карточки второго блока страницы акций, общие для блока и верхней ленты. */
 export interface ExtraCard {
 	id: string;
@@ -63,7 +66,7 @@ export function mergeExtraCards(propsCards: any[] | undefined): ExtraCard[] {
 			const matchedDefault = defaultExtraCards.find((d) => d.title === card.title);
 			id = matchedDefault ? matchedDefault.id : card.title;
 		}
-		savedMap.set(id, { ...card, id });
+		savedMap.set(id, normalizeActionCard({ ...card, id }));
 	});
 
 	const result: ExtraCard[] = [];
@@ -87,9 +90,51 @@ export function mergeExtraCards(propsCards: any[] | undefined): ExtraCard[] {
 	return result;
 }
 
+/** One repeated company block inside catalog component 1.4.3.1. */
+export interface ActionCompany {
+	id: string;
+	name: string;
+	enabled?: boolean;
+	cards: ExtraCard[];
+}
+
+/** Explicit companies (including []) win over legacy cards; no defaults are resurrected. */
+export function actionCompanies(data: Record<string, unknown>): ActionCompany[] {
+	if (Array.isArray(data.companies)) {
+		return (data.companies as ActionCompany[]).map((company) => ({
+			...company,
+			name: actionText(company.name),
+			cards: Array.isArray(company.cards) ? company.cards.map(normalizeActionCard) : []
+		}));
+	}
+	return [
+		{
+			id: 'legacy',
+			name: 'Акции компаний',
+			cards:
+				Array.isArray(data.cards) && data.cards.length === 0
+					? []
+					: mergeExtraCards(data.cards as ExtraCard[] | undefined)
+		}
+	];
+}
+
 export function activeExtraActionCards(saved: unknown) {
+	if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
+		return actionCompanies(saved as Record<string, unknown>)
+			.filter((company) => company.enabled !== false)
+			.flatMap((company) =>
+				company.cards
+					.filter((card) => card.enabled !== false)
+					.map((card) => ({
+						id: `extra-${company.id}-${card.id}`,
+						title: `${richTextToPlainText(company.name ?? '')}: ${richTextToPlainText(card.title ?? '')}`,
+						badge: richTextToPlainText(card.badge ?? '')
+					}))
+			);
+	}
 	if (Array.isArray(saved) && saved.length === 0) return [];
-	return mergeExtraCards(saved as any[] | undefined)
+	return mergeExtraCards(saved as ExtraCard[] | undefined)
 		.filter((card) => card.enabled !== false)
 		.map((card) => ({ id: `extra-${card.id}`, title: card.title, badge: card.badge }));
 }

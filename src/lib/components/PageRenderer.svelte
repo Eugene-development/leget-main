@@ -65,7 +65,6 @@
 		components = [],
 		headerData = null,
 		footerData = null,
-		actionCards = null,
 		seo = null,
 		editContext = null,
 		ownerId = null
@@ -76,11 +75,7 @@
 		components: PageComponent[];
 		headerData: Record<string, unknown> | null;
 		footerData: Record<string, unknown> | null;
-		/**
-		 * Сохранённые карточки акций страницы `/actions` (`site.actionCards`).
-		 * Полоса акций стоит на каждой странице, а карточки лежат на одной,
-		 * поэтому список приходит вместе с настройками сайта, а не с блоками.
-		 */
+		/** Совместимость с прежним renderPage; информационная полоса не читает акции. */
 		actionCards?: unknown;
 		seo: PageSeoData | null;
 		editContext: EditContext | null;
@@ -483,9 +478,9 @@
 	<ScrollChrome enabled={Boolean(Header && (PromoStrip || Banner))}>
 		{#snippet above()}
 			{#if PromoStrip}
-				<!-- Полоса акций — над баннером. bind по той же причине, что у баннера:
+				<!-- Информационная полоса — над баннером. bind по той же причине, что у баннера:
 			     версия и тема полосы лежат в том же headerData. -->
-				<PromoStrip bind:data={headerDataState} {editContext} {isEditable} {actionCards} />
+				<PromoStrip bind:data={headerDataState} {editContext} {isEditable} />
 			{/if}
 
 			{#if Banner}

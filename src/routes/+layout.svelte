@@ -1,4 +1,5 @@
 <script>
+	import { canonicalUrl } from '$lib/seo.js';
 	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { navigating, page } from '$app/state';
 	import { setContext } from 'svelte';
@@ -84,9 +85,19 @@
 		}
 		body.classList.add('page-entering');
 	});
+
+	const seoCanonical = $derived(canonicalUrl(page.url));
+
+	const seoPrivate = $derived(/^\/(?:admin|cabinet|partner|crm|curator|orders|site-settings|goals|_ds|favorites|selection|university\/(?:learn|student|auth|resources|interviews|certificate))(?:\/|$)/.test(page.url.pathname) || page.url.searchParams.has('draft'));
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+	{#if seoPrivate}
+		<meta name="robots" content="noindex, nofollow" />
+	{:else if page.status >= 200 && page.status < 300}
+		<link rel="canonical" href={seoCanonical} />
+	{/if}
+<link rel="icon" href={favicon} /></svelte:head>
 
 <LoadingProgress active={loadingPage || pendingContent > 0} />
 <NavigationBody root delegated={navigationBodies > 0} workspace={loadingWorkspace}>

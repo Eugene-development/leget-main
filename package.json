@@ -28,6 +28,7 @@
 		"test:forms": "node scripts/test-form-submission.mjs",
 		"test:lead-catcher": "node scripts/test-lead-catcher.mjs",
 		"test:remember": "node --test scripts/test-remember-me.mjs && node scripts/test-remember-session.mjs",
+		"test:actions": "node --test scripts/test-action-companies.mjs",
 		"test:publication": "node --test scripts/test-page-publication.mjs scripts/test-analytics-lifecycle.mjs"
 	},
 	"devDependencies": {
