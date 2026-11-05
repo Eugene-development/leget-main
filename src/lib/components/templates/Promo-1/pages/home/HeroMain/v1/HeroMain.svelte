@@ -64,9 +64,30 @@
 	let glassPanel = $state<HTMLDivElement>();
 	let heroStage = $state<HTMLElement>();
 	let noticeVisible = $state(false);
+	let noticeClosed = $state(false);
 	let noticeExpanded = $state(false);
 	const noticeId = $props.id();
 	let noticeHeaderBottom = $state(0);
+	const noticeDefaults = {
+		noticeTitleV1: 'Наши услуги бесплатны',
+		noticeIntroV1: 'Наш сервис — место, где встречаются покупатели и поставщики товаров и услуг.',
+		noticeRecommendationsV1:
+			'Проект «Новострой» даёт полезные бесплатные рекомендации, которые ни к чему вас не обязывают.',
+		noticePaymentsV1:
+			'Все финансовые взаимоотношения вы имеете с нашими партнёрами напрямую без нашего непосредственного участия.'
+	};
+	const noticeParagraphs = [
+		{ key: 'noticeIntroV1', label: 'Уведомление: о сервисе' },
+		{ key: 'noticeRecommendationsV1', label: 'Уведомление: рекомендации' },
+		{ key: 'noticePaymentsV1', label: 'Уведомление: расчёты с партнёрами' }
+	] as const;
+
+	function noticeText(key: keyof typeof noticeDefaults): string {
+		// An explicitly cleared field can return as null after Laravel normalization.
+		return Object.prototype.hasOwnProperty.call(data ?? {}, key)
+			? String(data?.[key] ?? '')
+			: noticeDefaults[key];
+	}
 
 	$effect(() => {
 		if (!heroStage || isEditable || !animationsEnabled) return;
@@ -86,6 +107,7 @@
 	});
 
 	function closeNotice() {
+		noticeClosed = true;
 		noticeDismissed = true;
 		noticeVisible = false;
 	}
@@ -348,7 +370,7 @@
 </script>
 
 <div aria-live="polite" aria-atomic="true">
-	{#if noticeVisible}
+	{#if !noticeClosed && (noticeVisible || isEditable)}
 		<aside
 			class="free-services-notice glass-panel rounded-3xl"
 			style:--notice-header-bottom={`${noticeHeaderBottom}px`}
@@ -374,43 +396,58 @@
 					<path d="m6 6 12 12M18 6 6 18" stroke-linecap="round" />
 				</svg>
 			</button>
-			<p class="notice-title">Наши услуги бесплатны</p>
-			<button
-				type="button"
-				class="notice-details"
-				aria-expanded={noticeExpanded}
-				aria-controls={noticeId}
-				data-goal-ignore="Раскрытие пояснения о бесплатных услугах, не форма"
-				onclick={() => (noticeExpanded = !noticeExpanded)}
+			<EditableField
+				fieldKey="HeroMain.noticeTitleV1"
+				label="Уведомление: заголовок"
+				value={noticeText('noticeTitleV1')}
+				{isEditable}
+				onSave={(value) => saveField('noticeTitleV1', value)}
 			>
-				{noticeExpanded ? 'Свернуть' : 'Подробнее'}
-				<svg
-					width="16"
-					height="16"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.5"
-					aria-hidden="true"
-					class:notice-chevron-open={noticeExpanded}
+				{#snippet children(displayValue)}
+					<p class="notice-title"><RichText value={displayValue} /></p>
+				{/snippet}
+			</EditableField>
+			{#if !isEditable}
+				<button
+					type="button"
+					class="notice-details"
+					aria-expanded={noticeExpanded}
+					aria-controls={noticeId}
+					data-goal-ignore="Раскрытие пояснения о бесплатных услугах, не форма"
+					onclick={() => (noticeExpanded = !noticeExpanded)}
 				>
-					<path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
-				</svg>
-			</button>
+					{noticeExpanded ? 'Свернуть' : 'Подробнее'}
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						aria-hidden="true"
+						class:notice-chevron-open={noticeExpanded}
+					>
+						<path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</button>
+			{/if}
 			<div id={noticeId}>
-				{#if noticeExpanded}
+				{#if noticeExpanded || isEditable}
 					<div transition:p1_slide={{ duration: motionDisabled ? 0 : 260 }}>
-						<p class="notice-comment text-sm">
-							Наш сервис — место, где встречаются покупатели и поставщики товаров и услуг.
-						</p>
-						<p class="notice-comment text-sm">
-							Проект «Новострой» даёт полезные бесплатные рекомендации, которые ни к чему вас не
-							обязывают.
-						</p>
-						<p class="notice-comment text-sm">
-							Все финансовые взаимоотношения вы имеете с нашими партнёрами напрямую без нашего
-							непосредственного участия.
-						</p>
+						{#each noticeParagraphs as paragraph (paragraph.key)}
+							<EditableField
+								fieldKey={`HeroMain.${paragraph.key}`}
+								label={paragraph.label}
+								value={noticeText(paragraph.key)}
+								{isEditable}
+								multiline
+								onSave={(value) => saveField(paragraph.key, value)}
+							>
+								{#snippet children(displayValue)}
+									<p class="notice-comment text-sm"><RichText value={displayValue} /></p>
+								{/snippet}
+							</EditableField>
+						{/each}
 					</div>
 				{/if}
 			</div>
@@ -759,6 +796,7 @@
 		overflow-y: auto;
 		padding: 1.25rem;
 		color: var(--ds-light-title);
+		overflow-wrap: anywhere;
 		border: 1px solid color-mix(in srgb, var(--ds-on-dark) 55%, transparent);
 	}
 	.free-services-notice.glass-panel {
@@ -785,6 +823,7 @@
 	}
 	.notice-close {
 		position: absolute;
+		z-index: 1;
 		top: 0.5rem;
 		right: 0.5rem;
 		width: 44px;
@@ -1061,6 +1100,27 @@
 	}
 
 	@media (max-width: 767px) {
+		.free-services-notice {
+			top: calc(max(var(--notice-header-bottom), env(safe-area-inset-top)) + 0.5rem);
+			right: max(0.75rem, env(safe-area-inset-right));
+			width: min(17.5rem, calc(100vw - 1.5rem));
+			padding: 0.75rem;
+		}
+		.notice-title {
+			font-size: var(--text-sm);
+			line-height: 1.4;
+		}
+		.notice-close {
+			top: 0;
+			right: 0;
+		}
+		.notice-details {
+			font-size: var(--text-sm);
+		}
+		.notice-comment {
+			padding-top: 0.5rem;
+			line-height: 1.5;
+		}
 		.hero-stage {
 			/* Карточка перекрывает только нижние 10% фото, независимо от объёма текста. */
 			--hero-photo-height: clamp(20rem, 85vw, 32rem);

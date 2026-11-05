@@ -34,7 +34,7 @@
 		errors = { name: '', phone: '', dimensions: '' };
 		let valid = true;
 
-		if (!name.trim()) {
+		if (serviceOrderStore.serviceType !== 'promo' && !name.trim()) {
 			errors.name = 'Пожалуйста, введите ваше имя';
 			valid = false;
 		}
@@ -78,7 +78,7 @@
 							: serviceOrderStore.serviceType === 'plumbing-selection'
 								? 'promo1-plumbing-selection'
 								: `service-order-${serviceOrderStore.serviceType}`,
-				name,
+				name: serviceOrderStore.serviceType === 'promo' ? undefined : name,
 				phone,
 				message: serviceOrderStore.serviceType === 'countertop-estimate' ? undefined : message,
 				dimensions:
@@ -217,8 +217,13 @@
 						</div>
 						<h3 class="mb-3 text-xl text-on-dark">Заявка принята!</h3>
 						<p class="mb-8 max-w-sm text-sm leading-relaxed text-ink-400">
-							Спасибо за обращение. Наш специалист свяжется с вами в течение 15 минут для уточнения
-							деталей.
+							{#if serviceOrderStore.serviceType === 'promo'}
+								Мы пришлём на указанный телефон ваш разовый промокод на скидку 2% на ВСЁ — любую
+								продукцию или услугу.
+							{:else}
+								Спасибо за обращение. Наш специалист свяжется с вами в течение 15 минут для
+								уточнения деталей.
+							{/if}
 						</p>
 						<button
 							data-metrika-goal="serviceorderisland_close_2"
@@ -234,24 +239,34 @@
 				{:else}
 					<!-- Form -->
 					<form onsubmit={handleSubmit} class="space-y-6" novalidate>
-						<!-- Name -->
-						<div class="flex flex-col gap-1.5">
-							<label for="client-name" class="text-sm font-semibold text-ink-300">
-								Ваше имя <span class="text-cat-6-400">*</span>
-							</label>
-							<input
-								id="client-name"
-								maxlength="255"
-								type="text"
-								bind:value={name}
-								class="w-full rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
-								class:border-cat-6-400={errors.name}
-								placeholder="Иван Иванов"
-							/>
-							{#if errors.name}
-								<span class="mt-1 text-xs font-medium text-cat-6-400">{errors.name}</span>
-							{/if}
-						</div>
+						{#if serviceOrderStore.serviceType === 'promo'}
+							<p class="text-base leading-relaxed text-on-dark">
+								Оставьте ваш телефон и мы пришлём вам промокод.
+							</p>
+							<p class="text-xl font-semibold text-on-dark">Скидка 2% на ВСЁ!</p>
+							<p class="text-sm leading-relaxed text-ink-300">
+								На любую продукцию или услугу. Промокод персональный и действует один раз.
+							</p>
+						{:else}
+							<!-- Name -->
+							<div class="flex flex-col gap-1.5">
+								<label for="client-name" class="text-sm font-semibold text-ink-300">
+									Ваше имя <span class="text-cat-6-400">*</span>
+								</label>
+								<input
+									id="client-name"
+									maxlength="255"
+									type="text"
+									bind:value={name}
+									class="w-full rounded-xl border border-ink-700/80 bg-ink-900/60 px-4 py-3.5 text-base text-on-dark placeholder-ink-500 transition duration-300 focus:border-link-500 focus:ring-4 focus:ring-link-500/10 focus:outline-none"
+									class:border-cat-6-400={errors.name}
+									placeholder="Иван Иванов"
+								/>
+								{#if errors.name}
+									<span class="mt-1 text-xs font-medium text-cat-6-400">{errors.name}</span>
+								{/if}
+							</div>
+						{/if}
 
 						<!-- Phone (custom masked component) -->
 						<PhoneInput bind:value={phone} error={errors.phone} />
@@ -327,7 +342,7 @@
 									<span class="font-normal text-ink-500">{dimensions.length}/10</span>
 								</button>
 							</fieldset>
-						{:else}
+						{:else if serviceOrderStore.serviceType !== 'promo'}
 							<!-- Message -->
 							<div class="flex flex-col gap-1.5">
 								<label for="client-message" class="text-sm font-semibold text-ink-300">
@@ -413,7 +428,11 @@
 								</svg>
 								Отправка...
 							{:else}
-								<span>Отправить заявку</span>
+								<span
+									>{serviceOrderStore.serviceType === 'promo'
+										? 'Получить промокод'
+										: 'Отправить заявку'}</span
+								>
 								<svg
 									class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"

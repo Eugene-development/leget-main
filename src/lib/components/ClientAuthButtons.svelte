@@ -23,6 +23,7 @@
 	 */
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
+	import { replaceState } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { createClientAccount } from '$lib/stores/client-account.svelte';
@@ -38,9 +39,12 @@
 	 * страницу, а компонент этот на странице один.
 	 */
 	onMount(() => {
-		if (browser && !account.client && page.url.searchParams.get('auth') === 'client-login') {
-			clientAuthModal.open('login');
-		}
+		if (!browser || page.url.searchParams.get('auth') !== 'client-login') return;
+		// Consume the redirect command once; a reload must not reopen the dialog.
+		const url = new URL(page.url);
+		url.searchParams.delete('auth');
+		replaceState(url, page.state);
+		if (!account.client) clientAuthModal.open('login');
 	});
 
 	const iconClass =
