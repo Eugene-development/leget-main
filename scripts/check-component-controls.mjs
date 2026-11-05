@@ -33,6 +33,8 @@ const expected = new Map([
 	['SingleVersionSettings', declarations.get('promo1ComponentsWithEmbeddedSingleVersionSettings')]
 ]);
 const actual = new Map([...expected.keys()].map((name) => [name, new Set()]));
+const promo2ActionsExpected = declarations.get('promo2ActionsComponentsWithSwitcher');
+const promo2ActionsActual = new Set();
 const errors = [];
 let files = 0;
 let controls = 0;
@@ -63,6 +65,12 @@ function inspect(directory) {
 				return;
 			}
 			if (!path.includes('/Promo-1/')) {
+				if (path.includes('/Promo-2/pages/actions/') && node.name === 'VersionSwitcher') {
+					promo2ActionsActual.add(type);
+					if (!promo2ActionsExpected?.has(type))
+						errors.push(`${path}: ${type} получит вторую панель из PageRenderer`);
+					return;
+				}
 				errors.push(`${path}: встроенная панель нового шаблона не учтена PageRenderer`);
 				return;
 			}
@@ -92,6 +100,11 @@ for (const [kind, types] of expected) {
 	for (const type of types)
 		if (!actual.get(kind).has(type))
 			errors.push(`${type}: запись ${kind} не соответствует каталогу`);
+}
+if (!promo2ActionsExpected) errors.push('Не найден реестр панелей Promo-2 /actions');
+for (const type of promo2ActionsExpected ?? []) {
+	if (!promo2ActionsActual.has(type))
+		errors.push(`Promo-2 /actions ${type}: нет встроенной панели`);
 }
 // Main actions must only be rendered inside the gear popover, never alongside it.
 for (const name of ['VersionSwitcher.svelte', 'templates/Promo-1/layout/Footer/index.svelte']) {

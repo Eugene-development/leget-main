@@ -47,12 +47,15 @@
 	<div class="absolute inset-0 z-0">
 		<ImageFallback
 			imagePath={['image']}
-			src={String(data?.image ?? '')}
+			src={String(
+				data?.image ??
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchens-hero-20261105.webp'
+			)}
 			alt="Премиальные кухни"
-			class="h-full w-full object-cover opacity-30 mix-blend-overlay"
+			class="h-full w-full object-cover"
 		/>
 		<div
-			class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/95"
+			class="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/60 to-primary/85"
 		></div>
 	</div>
 

@@ -2115,16 +2115,6 @@
 		"locations": [{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" }]
 	},
 	{
-		"id": "layout_header_open_1",
-		"action": "open",
-		"label": "Войти",
-		"templates": ["Promo-2"],
-		"source": "templates/Promo-2/layout/Header.svelte",
-		"route": null,
-		"mock": false,
-		"locations": [{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" }]
-	},
-	{
 		"id": "layout_header_open_2",
 		"action": "open",
 		"label": "Войти",

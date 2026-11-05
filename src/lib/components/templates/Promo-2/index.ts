@@ -28,7 +28,7 @@ import ContactFormComponent from './pages/contact/ContactForm.svelte';
 import MapComponent from './pages/contact/Map.svelte';
 
 // Actions page components
-import ActionsHero from './pages/actions/Hero.svelte';
+import ActionsHero from './pages/actions/Hero/index.svelte';
 import ActionsTimer from './pages/actions/ActionsTimer.svelte';
 import ActionsCards from './pages/actions/ActionsCards.svelte';
 import ActionsBanner from './pages/actions/ActionsBanner.svelte';

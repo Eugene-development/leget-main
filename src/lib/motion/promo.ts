@@ -20,9 +20,13 @@ export type MotionProfile =
 	| 'sidebar'
 	| 'model';
 
+// Temporarily pause Promo-1 motion: entrances move already-visible content on navigation.
+// Preserve saved block preferences so motion can be restored without changing site data.
+const PROMO_ANIMATIONS_ENABLED = false;
+
 /** Keep the previously saved HeroMain v1 switch working on existing sites. */
 export function animationsEnabled(data: Record<string, unknown>): boolean {
-	return (data.animationsEnabled ?? data.animationsEnabledV1) !== false;
+	return PROMO_ANIMATIONS_ENABLED && (data.animationsEnabled ?? data.animationsEnabledV1) !== false;
 }
 
 /** Profiles describe the job of a block, rather than the page it happens to be on. */

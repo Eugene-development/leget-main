@@ -1,0 +1,396 @@
+/* Shared anatomy for the three Promo-2 actions compositions. Values of colour,
+   lettering and motion stay in the selected design system. */
+.actions-hero {
+	background: var(--p1-surface);
+	color: var(--p1-title);
+	font-family: var(--ds-font-body);
+	padding-block: var(--ds-spacing-section-2xs);
+}
+.actions-hero ::selection {
+	background: var(--p1-title);
+	color: var(--p1-surface);
+}
+.actions-hero .ah-shell {
+	max-width: 1360px;
+	margin-inline: auto;
+	padding-inline: 32px;
+}
+.actions-hero .ah-title {
+	margin: 0;
+	font-size: var(--ds-font-action-display-size);
+	text-wrap: balance;
+	overflow-wrap: anywhere;
+}
+.actions-hero .ah-label {
+	margin: 24px 0 0;
+	font-size: var(--ds-font-prose-size);
+	line-height: var(--ds-font-prose-leading);
+	color: var(--p1-body);
+}
+.actions-hero .ah-description {
+	margin-top: 24px;
+	max-width: 52ch;
+	color: var(--p1-body);
+	font-size: var(--ds-font-prose-size);
+	line-height: var(--ds-font-prose-leading);
+	overflow-wrap: anywhere;
+}
+.actions-hero .ah-action {
+	margin-top: 36px;
+}
+.actions-hero .ah-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 32px;
+	min-height: 56px;
+	max-width: 100%;
+	padding: 18px 24px;
+	border-radius: var(--ds-radius-sm);
+	background: var(--p1-title);
+	color: var(--p1-surface);
+	font-size: var(--ds-font-control-size);
+	line-height: var(--ds-font-prose-leading);
+	text-decoration: none;
+	transition: background var(--ds-motion-duration-ui) var(--ds-motion-ease-ui);
+}
+.actions-hero .ah-link:hover {
+	background: color-mix(in srgb, var(--p1-title) 85%, var(--p1-surface));
+}
+.actions-hero :is(.ah-link, .ah-browse):focus-visible {
+	outline: 2px solid var(--p1-field-focus);
+	outline-offset: 5px;
+}
+.actions-hero :is(.ah-link, .ah-browse) svg {
+	width: 24px;
+	height: 24px;
+	flex: 0 0 24px;
+	transition: transform var(--ds-motion-duration-ui) var(--ds-motion-ease);
+}
+.actions-hero .ah-link:hover svg {
+	transform: translateX(4px);
+}
+.actions-hero .ah-photo {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.actions-hero .ah-offer {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.actions-hero .ah-note {
+	font-size: var(--ds-font-label-size);
+	font-weight: var(--ds-font-label-weight);
+	letter-spacing: var(--ds-font-label-tracking);
+	text-transform: var(--ds-font-label-transform);
+}
+.actions-hero .ah-discount {
+	font-family: var(--ds-font-heading);
+	font-size: var(--ds-font-action-display-size);
+	font-weight: var(--ds-font-heading-weight);
+	line-height: var(--ds-font-heading-leading);
+	letter-spacing: var(--ds-font-heading-tracking);
+	overflow-wrap: anywhere;
+}
+.actions-hero .ah-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px 40px;
+	margin: 40px 0 0;
+}
+.actions-hero .ah-stats > div {
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 6px;
+}
+.actions-hero .ah-stats dt {
+	font-size: var(--ds-font-label-size);
+	color: var(--p1-body);
+}
+.actions-hero .ah-stats dd {
+	margin: 0;
+	font-family: var(--ds-font-numeric);
+	font-variant-numeric: var(--ds-font-numeric-variant);
+	font-weight: var(--ds-font-numeric-weight);
+	font-size: var(--ds-font-stat-size);
+	letter-spacing: var(--ds-font-numeric-tracking);
+}
+/* Editorial: independent photograph and a solid offer sheet, never text on image. */
+.ah-editorial .ah-editorial-grid {
+	display: grid;
+	grid-template-columns: 1fr 1.05fr;
+	gap: 64px;
+	align-items: stretch;
+}
+.ah-editorial .ah-editorial-copy {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	padding-block: 24px;
+}
+.ah-editorial .ah-title {
+	max-width: 8ch;
+}
+.ah-editorial .ah-stats {
+	padding-top: 28px;
+	border-top: 1px solid var(--p1-border);
+	width: 100%;
+}
+.ah-editorial .ah-editorial-media {
+	min-width: 0;
+	min-height: 500px;
+	position: relative;
+	background: var(--p1-surface-alt);
+	color: var(--p1-body);
+}
+.ah-editorial .ah-editorial-media > .ah-photo {
+	position: absolute;
+	inset: 0;
+}
+.ah-editorial .ah-editorial-offer {
+	position: relative;
+	width: fit-content;
+	max-width: calc(100% - 48px);
+	margin: 24px;
+	padding: 24px 32px;
+	background: var(--p1-surface);
+	color: var(--p1-title);
+}
+/* Poster: horizontal title, oversize offer on a solid field, cropped picture strip. */
+.ah-poster .ah-poster-heading {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 32px;
+	padding-bottom: 28px;
+	border-bottom: 1px solid var(--p1-border);
+}
+.ah-poster .ah-poster-heading .ah-label {
+	max-width: 23ch;
+	margin: 0;
+}
+.ah-poster .ah-poster-grid {
+	display: grid;
+	grid-template-columns: 1fr 0.8fr;
+	gap: 48px;
+	margin-top: 32px;
+}
+.ah-poster .ah-poster-offer {
+	min-width: 0;
+	padding: 32px;
+	background: var(--p1-surface-paper);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+}
+.ah-poster .ah-discount {
+	font-family: var(--ds-font-numeric);
+	font-size: var(--ds-font-catalog-display-size);
+	font-weight: var(--ds-font-numeric-weight);
+}
+.ah-poster .ah-poster-media {
+	min-height: 320px;
+	color: var(--p1-body);
+	background: var(--p1-surface-alt);
+}
+.ah-poster .ah-poster-footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding-top: 28px;
+	margin-top: 32px;
+	border-top: 1px solid var(--p1-border);
+}
+.ah-poster .ah-stats {
+	margin: 0;
+}
+.actions-hero .ah-browse {
+	display: inline-flex;
+	align-items: center;
+	gap: 24px;
+	min-height: 44px;
+	color: var(--p1-title);
+	text-decoration: underline;
+	text-underline-offset: 6px;
+	font-size: var(--ds-font-control-size);
+}
+/* Gallery: image leads, the caption panel takes over below it. */
+.ah-gallery .ah-gallery-media {
+	position: relative;
+	height: clamp(240px, 34vw, 410px);
+	color: var(--p1-body);
+	background: var(--p1-surface-alt);
+}
+.ah-gallery .ah-gallery-offer {
+	position: absolute;
+	left: 24px;
+	bottom: 24px;
+	max-width: calc(100% - 48px);
+	background: var(--p1-surface);
+	color: var(--p1-title);
+	padding: 20px 28px;
+}
+.ah-gallery .ah-gallery-offer .ah-offer {
+	flex-direction: row;
+	align-items: center;
+	gap: 24px;
+}
+.ah-gallery .ah-gallery-panel {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 48px;
+	padding-top: 32px;
+}
+.ah-gallery .ah-gallery-copy {
+	min-width: 0;
+}
+.ah-gallery .ah-title {
+	font-size: var(--ds-font-statement-size);
+}
+.ah-gallery .ah-label {
+	margin-top: 12px;
+}
+.ah-gallery .ah-gallery-action {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+}
+.ah-gallery .ah-stats {
+	margin-top: 24px;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.actions-hero .ah-photo {
+		animation: ah-image-settle var(--ds-motion-duration) var(--ds-motion-ease) both;
+	}
+	@keyframes ah-image-settle {
+		from {
+			clip-path: inset(0 0 4% 0);
+		}
+		to {
+			clip-path: inset(0);
+		}
+	}
+}
+@media (max-width: 900px) {
+	.actions-hero .ah-shell {
+		padding-inline: 24px;
+	}
+	.ah-editorial .ah-editorial-grid {
+		gap: 32px;
+	}
+	.ah-editorial .ah-editorial-media {
+		min-height: 460px;
+	}
+	.ah-poster .ah-poster-heading {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 16px;
+	}
+	.ah-poster .ah-poster-heading .ah-label {
+		max-width: none;
+	}
+	.ah-poster .ah-poster-grid {
+		gap: 24px;
+	}
+	.ah-gallery .ah-gallery-panel {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+	.ah-gallery .ah-gallery-action {
+		align-items: flex-start;
+	}
+}
+@media (max-width: 600px) {
+	.actions-hero {
+		padding-block: 28px;
+	}
+	.actions-hero .ah-shell {
+		padding-inline: 20px;
+	}
+	.actions-hero .ah-label {
+		margin-top: 16px;
+	}
+	.actions-hero .ah-action {
+		margin-top: 24px;
+	}
+	.actions-hero .ah-link {
+		gap: 16px;
+		padding-inline: 20px;
+	}
+	.actions-hero .ah-stats {
+		gap: 20px 28px;
+		margin-top: 28px;
+	}
+	.ah-editorial .ah-editorial-grid {
+		grid-template-columns: 1fr;
+		gap: 28px;
+	}
+	.ah-editorial .ah-editorial-copy {
+		padding: 0;
+	}
+	.ah-editorial .ah-title {
+		max-width: 13ch;
+	}
+	.ah-editorial .ah-editorial-media {
+		min-height: 300px;
+	}
+	.ah-editorial .ah-editorial-offer {
+		margin: 16px;
+		padding: 16px 20px;
+	}
+	.ah-poster .ah-poster-grid {
+		grid-template-columns: 1fr;
+		gap: 20px;
+		margin-top: 20px;
+	}
+	.ah-poster .ah-poster-offer {
+		padding: 24px;
+	}
+	.ah-poster .ah-poster-media {
+		height: 200px;
+		min-height: 0;
+	}
+	.ah-poster .ah-poster-footer {
+		margin-top: 24px;
+		padding-top: 24px;
+	}
+	.ah-poster .ah-stats {
+		margin: 0;
+	}
+	.ah-gallery .ah-gallery-offer {
+		left: 16px;
+		bottom: 16px;
+		padding: 16px 20px;
+	}
+	.ah-gallery .ah-gallery-offer .ah-offer {
+		gap: 16px;
+	}
+	.ah-gallery .ah-gallery-panel {
+		padding-top: 24px;
+	}
+	.ah-gallery .ah-stats {
+		margin-top: 24px;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.actions-hero *,
+	.actions-hero *::before,
+	.actions-hero *::after {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+@media (max-width: 639px) {
+	.actions-hero .ah-stats .ah-delivery {
+		display: none;
+	}
+}

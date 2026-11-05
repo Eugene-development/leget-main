@@ -1,6 +1,8 @@
 <script lang="ts">
 	// Артикул: 2.11.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import { showroomAddresses } from './showroom-addresses';
+	import { showroomCoordinates } from './showroom-coordinates';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -19,7 +21,7 @@
 	let mapInstance: any = $state(null);
 	let searchQuery = $state('');
 	let selectedPlace: any = $state(null);
-	let selectedCity = $state('Москва и МО');
+	let selectedCity = $state('Россия/Москва и МО');
 
 	$effect(() => {
 		selectedCity;
@@ -27,187 +29,27 @@
 		selectedPlace = null;
 	});
 
-	const showrooms: Record<
-		string,
-		Array<{
-			city: string;
-			places: Array<{ name?: string; address: string; hours: string; coords: [number, number] }>;
-		}>
-	> = {
-		Беларусь: [
-			{
-				city: 'Гродно',
-				places: [
-					{
-						name: 'Флагманский салон',
-						address: 'ул. Индустриальная, 9',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [53.649, 23.823]
-					}
-				]
-			},
-			{
-				city: 'Минск',
-				places: [
-					{
-						name: 'ТЦ «Замок Home»',
-						address: 'пр-т Победителей, 65, 4 этаж',
-						hours: 'Пн-Вс: 10:00 – 22:00',
-						coords: [53.926, 27.518]
-					},
-					{
-						name: 'ТЦ «Камелот»',
-						address: 'ул. Мазурова, 1',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [53.890632, 27.433431]
-					}
-				]
-			}
-		],
-		Россия: [
-			{
-				city: 'Москва и МО',
-				places: [
-					{
-						address: 'г. Москва, Подольское ш., д. 8, корп. 5',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.714561, 37.623834]
-					},
-					{
-						address: 'г. Москва, Ленинградский пр-т, д. 74, корп. 1',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.805133, 37.516952]
-					},
-					{
-						address: 'г. Москва, Тихорецкий б-р, д. 1, корп. 5, ТЦ «ЛЮБЛИНСКОЕ ПОЛЕ»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.678763, 37.77961]
-					},
-					{
-						address: 'г. Москва, Варшавское ш., д. 94',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.647193, 37.618659]
-					},
-					{
-						address: 'г. Москва, ул. Ярцевская, д. 19, МФК «Кунцево Плаза»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.738596, 37.411014]
-					},
-					{
-						address: 'г. Москва, Рязанский пр-т, д. 2, корп. 2, ТРЦ «Город»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.729873, 37.730437]
-					},
-					{
-						address: 'г. Москва, Локомотивный проезд, д. 4, ТЦ «Парус»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.838, 37.576861]
-					},
-					{
-						address: 'г. Москва, ул. Вавилова, д. 3, ТРЦ «ГАГАРИНСКИЙ»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.706883, 37.592096]
-					},
-					{
-						address: 'г. Москва, МКАД, 25-й км, вл. 1, ТЦ «Конструктор», 2 этаж',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.583469, 37.711168]
-					},
-					{
-						address: 'г. Москва, ш. Энтузиастов, д. 76/1',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.76447, 37.785971]
-					},
-					{
-						address: 'г. Москва, Дмитровское ш., д. 73, корп. 1, ТЦ «Metromall»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.857149, 37.558858]
-					},
-					{
-						address: 'г. Москва, пр-т Мира, д. 33, корп. 1, ТО «OLYMPIC PLAZA»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.780319, 37.632098]
-					},
-					{
-						address: 'г. Москва, Комсомольский пр-т, д. 19',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.728865, 37.585538]
-					},
-					{
-						address: 'г. Москва, ул. Таганская, д. 3, ТЦ «Таганский Пассаж»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.741237, 37.658733]
-					},
-					{
-						address: 'г. Москва, ул. Ленинская Слобода, д. 26, МЦ «ROOMER»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.710129, 37.65461]
-					},
-					{
-						address: 'г. Москва, Волоколамское ш., д. 71/22, корп. 3',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.821927, 37.438619]
-					},
-					{
-						address: 'г. Москва, Хорошёвское ш., д. 16, стр. 3, ТЦ «На Беговой»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.774274, 37.545932]
-					},
-					{
-						address: 'г. Москва, Ленинградское ш., д. 25, МЦ «FAMILY ROOM»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.828015, 37.489401]
-					},
-					{
-						address: 'г. Москва, пр-т Мира, д. 211, корп. 2, ТРК «ЕВРОПОЛИС»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.845855, 37.662093]
-					},
-					{
-						address: 'г. Москва, Ходынский бульвар, д. 4, ТЦ «АВИАПАРК»',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [55.790231, 37.531289]
-					}
-				]
-			},
-			{
-				city: 'Санкт-Петербург',
-				places: [
-					{
-						name: 'ТЦ «Мебельный Континент»',
-						address: 'ул. Варшавская, 3',
-						hours: 'Пн-Вс: 10:00 – 20:00',
-						coords: [59.882, 30.312]
-					}
-				]
-			}
-		]
-	};
-
-	const allCities = $derived(
-		Object.values(showrooms).flatMap((cities) => cities.map((c) => c.city))
+	type Place = { address: string; coords: [number, number] };
+	const showrooms = Object.entries(showroomAddresses).flatMap(([country, cities]) =>
+		Object.entries(cities).map(([city, addresses]) => ({
+			country,
+			city,
+			key: `${country}/${city}`,
+			places: addresses.map((address): Place => ({ address, coords: showroomCoordinates[address] }))
+		}))
 	);
 
-	const filteredShowrooms = $derived.by(() => {
-		for (const cities of Object.values(showrooms)) {
-			const cityData = cities.filter((c) => c.city === selectedCity);
-			if (cityData.length > 0) {
-				return cityData
-					.map((c) => ({
-						...c,
-						places: c.places.filter((p) => {
-							if (!searchQuery) return true;
-							const q = searchQuery.toLowerCase();
-							return (
-								(p.name && p.name.toLowerCase().includes(q)) || p.address.toLowerCase().includes(q)
-							);
-						})
-					}))
-					.filter((c) => c.places.length > 0);
-			}
-		}
-		return [];
-	});
+	const filteredShowrooms = $derived(
+		showrooms
+			.filter((group) => group.key === selectedCity)
+			.map((group) => ({
+				...group,
+				places: group.places.filter((place) =>
+					place.address.toLowerCase().includes(searchQuery.toLowerCase())
+				)
+			}))
+			.filter((group) => group.places.length > 0)
+	);
 
 	const totalPlaces = $derived(filteredShowrooms.reduce((acc, c) => acc + c.places.length, 0));
 
@@ -231,9 +73,8 @@
 				const placemark = new ymaps.Placemark(
 					place.coords,
 					{
-						balloonContentHeader: place.name || 'Салон',
-						balloonContentBody: place.address,
-						balloonContentFooter: place.hours
+						balloonContentHeader: 'Салон',
+						balloonContentBody: place.address
 					},
 					{
 						preset: 'islands#brownIcon',
@@ -331,8 +172,12 @@
 							bind:value={selectedCity}
 							class="h-12 cursor-pointer appearance-none rounded-sm border border-border-medium bg-white pr-10 pl-4 text-xs tracking-[0.1em] text-primary transition-all duration-300 hover:border-secondary focus:border-secondary focus:outline-none"
 						>
-							{#each allCities as city}
-								<option value={city}>{city}</option>
+							{#each Object.keys(showroomAddresses) as country}
+								<optgroup label={country}>
+									{#each showrooms.filter((group) => group.country === country) as group}
+										<option value={group.key}>{group.city}</option>
+									{/each}
+								</optgroup>
 							{/each}
 						</select>
 						<div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
@@ -413,7 +258,7 @@
 								</h3>
 
 								<div class="mt-6 flex flex-col gap-6">
-									{#each cityData.places as place, i ((place.name ?? place.address) + i)}
+									{#each cityData.places as place, i (place.address + i)}
 										<button
 											class="group block w-full cursor-pointer border-l-2 border-border-light pl-6 text-left transition-colors duration-300 hover:border-secondary"
 											class:!border-secondary={selectedPlace === place}
@@ -421,30 +266,7 @@
 												selectedPlace = selectedPlace === place ? null : place;
 											}}
 										>
-											{#if place.name}
-												<h4 class="text-base text-primary">{place.name}</h4>
-											{/if}
-											<p class="{place.name ? 'mt-2' : ''} text-sm text-secondary">
-												{place.address}
-											</p>
-											<div class="mt-4 flex flex-col gap-1.5 text-xs text-muted">
-												<div class="flex items-center gap-2">
-													<svg
-														class="h-3.5 w-3.5"
-														fill="none"
-														viewBox="0 0 24 24"
-														stroke="currentColor"
-														stroke-width="1.5"
-													>
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-														/>
-													</svg>
-													{place.hours}
-												</div>
-											</div>
+											<p class="text-sm text-secondary">{place.address}</p>
 										</button>
 									{/each}
 								</div>

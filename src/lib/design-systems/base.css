@@ -330,6 +330,9 @@
 	--ds-font-statement-leading: 1.2;
 	--ds-font-statement-weight: 400;
 	--ds-font-statement-tracking: -0.025em;
+	/* Размеры действия и компактной числовой сводки — роли общие для шаблонов. */
+	--ds-font-control-size: 0.875rem;
+	--ds-font-stat-size: 1.5rem;
 	--ds-font-prose-size: 1.125rem;
 	--ds-font-prose-leading: 1.7777778;
 	--ds-space-prose-paragraph: 1.5rem;

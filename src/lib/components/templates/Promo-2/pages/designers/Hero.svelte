@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.13.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -53,6 +54,18 @@
 </script>
 
 <section bind:this={sectionEl} class="relative overflow-hidden bg-primary py-28 lg:py-36">
+	<div class="absolute inset-0">
+		<ImageFallback
+			imagePath={['image']}
+			src={String(
+				data?.image ??
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/designers-hero-realistic-20261105.webp'
+			)}
+			alt="Рабочее пространство дизайнера интерьера"
+			class="h-full w-full object-cover"
+		/>
+		<div class="pointer-events-none absolute inset-0 bg-linear-to-r from-primary/95 via-primary/75 to-primary/45"></div>
+	</div>
 	<!-- Geometric decorations -->
 	<div
 		class="absolute top-0 left-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 border border-white/5"

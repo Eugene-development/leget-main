@@ -106,7 +106,7 @@
 	});
 </script>
 
-<section class="relative py-section-sm lg:py-section" bind:this={sectionEl}>
+<section id="actions-cards" class="relative py-section-sm lg:py-section" bind:this={sectionEl}>
 	<!-- Subtle Background Pattern -->
 	<div
 		class="absolute inset-0 opacity-[0.03]"

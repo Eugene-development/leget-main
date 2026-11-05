@@ -46,7 +46,7 @@
 	const termsLink = $derived(typeof data?.termsLink === 'string' ? data.termsLink : '/terms');
 
 	const navColumns = $derived(
-		Array.isArray(data?.navColumns)
+		(Array.isArray(data?.navColumns)
 			? (data.navColumns as { title: string; links: { label: string; href: string }[] }[])
 			: [
 					{
@@ -62,7 +62,6 @@
 						title: 'Компания',
 						links: [
 							{ label: 'О фабрике', href: '/about' },
-							{ label: 'Новости', href: '/news' },
 							{ label: 'Вакансии', href: '/careers' },
 							{ label: 'Дизайнерам', href: '/designers' }
 						]
@@ -76,7 +75,10 @@
 							{ label: 'Контакты', href: '/contact' }
 						]
 					}
-				]
+				]).map((column) => ({
+			...column,
+			links: column.links.filter((link) => link.href !== '/news')
+		}))
 	);
 </script>
 

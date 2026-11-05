@@ -116,11 +116,12 @@ export function versionKey(type: string): string {
  * Считать по одному имени типа нельзя: `ActionsCTA` и `Brands` есть в нескольких
  * шаблонах, а папки v1…vN — только у Promo-1.
  */
-export function versionCount(templateId: number, type: string): number {
+export function versionCount(templateId: number, type: string, pageSlug?: string): number {
 	const layout = CATALOG_LAYOUTS[templateId]?.[type];
 	if (layout) return layout.versionCount;
 
-	return defaults._versions?.[String(templateId)]?.[type] ?? 1;
+	const types = defaults._versions?.[String(templateId)];
+	return (pageSlug ? types?.[`${pageSlug}:${type}`] : undefined) ?? types?.[type] ?? 1;
 }
 
 export type CatalogEntry = {
@@ -161,7 +162,7 @@ export function catalogEntries(): CatalogEntry[] {
 
 		for (const [pageSlug, map] of Object.entries(overrides)) {
 			for (const type of Object.keys(map)) {
-				const count = versionCount(templateId, type);
+				const count = versionCount(templateId, type, pageSlug);
 				const hasData = hasDemoData(templateId, pageSlug, type);
 
 				for (let version = 1; version <= count; version++) {

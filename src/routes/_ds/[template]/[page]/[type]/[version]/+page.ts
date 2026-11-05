@@ -39,7 +39,7 @@ export const load: PageLoad = ({ params }) => {
 	if (
 		!Number.isInteger(version) ||
 		version < 1 ||
-		version > versionCount(templateId, params.type)
+		version > versionCount(templateId, params.type, pageSlug)
 	) {
 		error(404, `У блока ${params.type} нет версии ${params.version}`);
 	}

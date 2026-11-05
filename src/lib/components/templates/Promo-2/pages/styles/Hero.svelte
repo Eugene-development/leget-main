@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.4.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -32,11 +33,20 @@
 <section
 	class="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden border-b border-border-light px-4 py-20 text-center sm:px-6 xl:px-1"
 >
-	<!-- Background Image with fixed attachment -->
-	<div class="absolute inset-0 bg-cover bg-fixed bg-center" style=""></div>
+	<div class="absolute inset-0">
+		<ImageFallback
+			imagePath={['image']}
+			src={String(
+				data?.image ??
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/styles-hero-20261105.webp'
+			)}
+			alt="Интерьер кухни"
+			class="h-full w-full object-cover"
+		/>
+	</div>
 
 	<!-- Light Overlay -->
-	<div class="absolute inset-0 bg-surface-warm/90 backdrop-blur-[2px]"></div>
+	<div class="pointer-events-none absolute inset-0 bg-surface-warm/70"></div>
 
 	<div
 		class="relative z-10 mx-auto max-w-4xl opacity-0"

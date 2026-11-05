@@ -7,6 +7,7 @@
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
+	import { sitePhoneHref } from '$lib/utils/site-phone';
 
 	let {
 		data,
@@ -19,19 +20,23 @@
 	} = $props();
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Фабрика');
-	const phone = $derived(typeof data?.phone === 'string' ? data.phone : '');
-	const email = $derived(typeof data?.email === 'string' ? data.email : '');
+	const phone = $derived(
+		typeof data?.phone === 'string' && data.phone.trim() ? data.phone : '8 (915) 400-00-20'
+	);
+	const email = $derived(
+		typeof data?.email === 'string' && data.email.trim() ? data.email : 'info@mebelzov.com'
+	);
 
 	const topLinks = $derived(
-		Array.isArray(data?.topLinks)
+		(Array.isArray(data?.topLinks)
 			? (data.topLinks as { href: string; label: string }[])
 			: [
 					{ href: '/about', label: 'О фабрике' },
-					{ href: '/news', label: 'Новости' },
 					{ href: '/styles', label: 'Стили' },
 					{ href: '/facades', label: 'Фасады' },
-					{ href: '/furniture', label: 'Фурнитура' }
-				]
+					{ href: '/furniture', label: 'Фурнитура' },
+					{ href: '/designers', label: 'Дизайнерам' }
+				]).filter((link) => link.href !== '/news')
 	);
 
 	const mainNav = $derived(
@@ -124,11 +129,11 @@
 				{/each}
 			</div>
 
-			<!-- Contacts + auth -->
+			<!-- Contacts -->
 			<div class="flex items-center gap-5">
 				{#if phone}
 					<a
-						href="tel:{phone}"
+						href={sitePhoneHref(phone)}
 						class="flex items-center gap-1.5 text-xs tracking-wide text-secondary transition-colors duration-300 hover:text-primary"
 					>
 						<svg
@@ -146,7 +151,7 @@
 						</svg>
 						{phone}
 					</a>
-					<span class="h-3 w-px bg-border-medium"></span>
+					{#if email}<span class="h-3 w-px bg-border-medium"></span>{/if}
 				{/if}
 				{#if email}
 					<a
@@ -168,17 +173,7 @@
 						</svg>
 						{email}
 					</a>
-					<span class="h-3 w-px bg-border-medium"></span>
 				{/if}
-				<button
-					data-metrika-goal="layout_header_open_1"
-					data-goal-action="open"
-					type="button"
-					onclick={handleAuthClick}
-					class="text-xs tracking-wide text-secondary transition-colors duration-300 hover:text-primary"
-				>
-					{$auth.isAuthenticated ? 'Выйти' : 'Войти'}
-				</button>
 			</div>
 		</div>
 	</div>
@@ -343,7 +338,7 @@
 	<div class="border-t border-border-light px-8 py-6">
 		<div class="flex flex-col gap-3">
 			{#if phone}
-				<a href="tel:{phone}" class="flex items-center gap-2 text-sm text-secondary">
+				<a href={sitePhoneHref(phone)} class="flex items-center gap-2 text-sm text-secondary">
 					<svg
 						class="h-4 w-4 shrink-0"
 						fill="none"

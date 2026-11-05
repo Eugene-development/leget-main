@@ -340,6 +340,8 @@ body.page-entering {
  * Ключи темы Tailwind. Значения — не здесь.
  *
  * Каждый ключ ссылается на токен дизайн-системы. Tailwind v4 кладёт `@theme`
+	--text-control: var(--ds-font-control-size);
+	--text-stat: var(--ds-font-stat-size);
  * в `:root` и генерирует утилиты вида `background-color: var(--color-accent)`,
  * поэтому цепочка `bg-accent → var(--color-accent) → var(--ds-color-accent)`
  * разрешается в рантайме — смена `data-ds` на <html> перекрашивает утилиты

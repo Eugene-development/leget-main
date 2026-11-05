@@ -34,7 +34,10 @@
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['image']}
-			src={String(data?.image ?? '')}
+			src={String(
+				data?.image ??
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/facades-hero-20261105.webp'
+			)}
 			alt="Мебельные фасады"
 			class="h-full w-full object-cover transition-transform duration-[2s] {visible
 				? 'scale-105'
