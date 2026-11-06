@@ -8,9 +8,11 @@
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
+	import TopBar from './TopBar/index.svelte';
+	import { topBarPhone, topBarEmail, topBarLinks } from './top-bar';
 
 	let {
-		data,
+		data = $bindable(),
 		editContext = null,
 		isEditable = false
 	}: {
@@ -20,24 +22,9 @@
 	} = $props();
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Фабрика');
-	const phone = $derived(
-		typeof data?.phone === 'string' && data.phone.trim() ? data.phone : '8 (915) 400-00-20'
-	);
-	const email = $derived(
-		typeof data?.email === 'string' && data.email.trim() ? data.email : 'info@mebelzov.com'
-	);
-
-	const topLinks = $derived(
-		(Array.isArray(data?.topLinks)
-			? (data.topLinks as { href: string; label: string }[])
-			: [
-					{ href: '/about', label: 'О фабрике' },
-					{ href: '/styles', label: 'Стили' },
-					{ href: '/facades', label: 'Фасады' },
-					{ href: '/furniture', label: 'Фурнитура' },
-					{ href: '/designers', label: 'Дизайнерам' }
-				]).filter((link) => link.href !== '/news')
-	);
+	const phone = $derived(topBarPhone(data));
+	const email = $derived(topBarEmail(data));
+	const topLinks = $derived(topBarLinks(data));
 
 	const mainNav = $derived(
 		Array.isArray(data?.links)
@@ -59,8 +46,8 @@
 	let lastScrollY = $state(0);
 	let mobileMenuOpen = $state(false);
 	let showLoginModal = $state(false);
+	let topBarHeight = $state(40);
 
-	const TOP_BAR_HEIGHT = 40;
 	const HIDE_THRESHOLD = 60;
 	const SHOW_THRESHOLD = 40;
 
@@ -105,85 +92,20 @@
 <svelte:window onscroll={handleScroll} />
 
 <div
-	class="sticky top-0 z-50 flex w-full flex-col transition-transform duration-500"
-	style="transform: translateY({showTopBar ? 0 : -TOP_BAR_HEIGHT}px);"
+	class="promo2-header sticky top-0 z-50 flex w-full flex-col transition-transform duration-500"
+	style="--top-bar-offset: {showTopBar || isEditable ? 0 : -topBarHeight}px;"
 >
-	<div class="absolute top-3 right-3 z-[100]">
-		<LayoutArticleSettings {editContext} {isEditable} type="Header" title="Меню" />
-	</div>
-	<!-- Top Info Bar -->
-	<div
-		class="relative hidden border-b border-border-light bg-surface-warm lg:block"
-		style="height: {TOP_BAR_HEIGHT}px;"
-	>
-		<div class="mx-auto flex h-10 max-w-screen-xl items-center justify-between px-6 xl:px-1">
-			<!-- Top links -->
-			<div class="flex items-center gap-6">
-				{#each topLinks as link}
-					<a
-						href={link.href}
-						class="text-xs tracking-wider text-secondary transition-colors duration-300 hover:text-primary"
-					>
-						{link.label}
-					</a>
-				{/each}
-			</div>
-
-			<!-- Contacts -->
-			<div class="flex items-center gap-5">
-				{#if phone}
-					<a
-						href={sitePhoneHref(phone)}
-						class="flex items-center gap-1.5 text-xs tracking-wide text-secondary transition-colors duration-300 hover:text-primary"
-					>
-						<svg
-							class="h-3.5 w-3.5"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							stroke-width="1.5"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-							/>
-						</svg>
-						{phone}
-					</a>
-					{#if email}<span class="h-3 w-px bg-border-medium"></span>{/if}
-				{/if}
-				{#if email}
-					<a
-						href="mailto:{email}"
-						class="flex items-center gap-1.5 text-xs tracking-wide text-secondary transition-colors duration-300 hover:text-primary"
-					>
-						<svg
-							class="h-3.5 w-3.5"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							stroke-width="1.5"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-							/>
-						</svg>
-						{email}
-					</a>
-				{/if}
-			</div>
-		</div>
-	</div>
+	<TopBar bind:data bind:height={topBarHeight} {editContext} {isEditable} />
 
 	<!-- Main Header -->
 	<header
-		class="w-full transition-all duration-500 {scrolled
+		class="relative w-full transition-all duration-500 {scrolled
 			? 'bg-white/95 shadow-soft backdrop-blur-lg'
 			: 'border-b border-border-light bg-white'}"
 	>
+		<div class="absolute top-3 right-16 z-[100] lg:right-3">
+			<LayoutArticleSettings {editContext} {isEditable} type="Header" title="Меню" />
+		</div>
 		<div
 			class="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-6 lg:h-20 xl:px-1"
 		>
@@ -282,7 +204,7 @@
 
 <!-- Mobile Menu Panel -->
 <div
-	class="fixed top-0 right-0 z-40 flex h-full w-80 max-w-[85vw] flex-col bg-white pt-20 shadow-elevated transition-transform duration-500 lg:hidden {mobileMenuOpen
+	class="fixed top-0 right-0 z-40 flex h-full w-80 max-w-[85vw] flex-col overflow-y-auto bg-white pt-20 shadow-elevated transition-transform duration-500 lg:hidden {mobileMenuOpen
 		? 'translate-x-0'
 		: 'translate-x-full'}"
 >
@@ -394,6 +316,12 @@
 {/if}
 
 <style>
+	@media (min-width: 1024px) {
+		.promo2-header {
+			transform: translateY(var(--top-bar-offset));
+		}
+	}
+
 	.cta-btn {
 		background: linear-gradient(135deg, #b8860b 0%, #8b6508 45%, #c9950c 100%);
 		position: relative;

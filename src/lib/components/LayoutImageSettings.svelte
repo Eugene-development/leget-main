@@ -3,6 +3,7 @@
 	import ComponentImageManager from '$lib/components/ComponentImageManager.svelte';
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import type { ComponentImageSlot } from '$lib/utils/component-images';
+	import { stickyComponentControls } from '$lib/utils/sticky-component-controls';
 
 	let {
 		data = $bindable(),
@@ -28,6 +29,7 @@
 
 {#if isEditable && editContext}
 	<button
+		use:stickyComponentControls
 		data-field-toolbar-anchor
 		type="button"
 		class="font-sans-premium absolute top-3 left-3 z-[170] flex min-h-10 items-center gap-2 rounded-xl border border-on-dark/15 bg-ink-950/80 px-3 py-2 text-xs font-semibold text-on-dark shadow-xl backdrop-blur-xl transition-colors hover:border-link-400/45 hover:bg-ink-900 focus-visible:ring-2 focus-visible:ring-link-400 focus-visible:outline-none"

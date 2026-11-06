@@ -2,6 +2,7 @@
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import { getLayoutComponentArticle, type EditContext } from '$lib/utils/page-edit';
+	import { stickyComponentControls } from '$lib/utils/sticky-component-controls';
 
 	let {
 		editContext = null,
@@ -25,9 +26,10 @@
 
 {#if isEditable && editContext}
 	<button
+		use:stickyComponentControls
 		data-field-toolbar-anchor
 		type="button"
-		class="flex cursor-pointer items-center justify-center rounded-2xl border border-on-dark/10 bg-ink-950/75 p-2.5 text-on-dark shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-on-dark/25 active:scale-95"
+		class="flex cursor-pointer items-center justify-center rounded-2xl border border-on-dark/10 bg-ink-950/75 p-2.5 text-on-dark shadow-2xl backdrop-blur-xl transition-colors duration-300 hover:border-on-dark/25 active:scale-95"
 		onclick={() => (open = true)}
 		title="Настройки компонента"
 		aria-label="Настройки компонента {title}"
@@ -43,7 +45,7 @@
 	<SideDrawer bind:open {title}>
 		<div class="flex flex-col gap-6">
 			<div class="flex items-center gap-2">
-				<span class="text-[10px] font-semibold tracking-[0.2em] text-on-dark/40 uppercase">
+				<span class="text-xs font-semibold tracking-[0.2em] text-on-dark/40 uppercase">
 					Артикул
 				</span>
 				{#if article}

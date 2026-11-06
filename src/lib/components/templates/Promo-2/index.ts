@@ -4,8 +4,9 @@ type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>
 
 // Layout components
 import Header from './layout/Header.svelte';
+import TopBar from './layout/TopBar/index.svelte';
 import Footer from './layout/Footer.svelte';
-export { Header, Footer };
+export { Header, TopBar, Footer };
 
 // Home page components
 import HomeHero from './pages/home/Hero.svelte';

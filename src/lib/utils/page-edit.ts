@@ -139,12 +139,14 @@ export type ComponentArticleLookup = (type: string) => ComponentArticle | null;
 // Эти компоненты общие для всех страниц и не привязаны к slug страницы, поэтому
 // их артикул не лежит в каталожной системе (template_pages/components). Сегмент 2 —
 // буквенный код раздела вместо номера страницы: П — полоса акций (над баннером),
-// Б — баннер, М — меню (хэдер), Ф — футер. Формат: {template}.{код}.1.{version}
+// Б — баннер, В — верхняя панель, М — меню (хэдер), Ф — футер.
+// Формат: {template}.{код}.1.{version}
 // (component_number = 1 — один слот на раздел). Артикул детерминирован и
 // стабилен (как и каталожные). Порядок ключей ниже — сверху вниз по странице.
 export const LAYOUT_SECTION_CODES: Record<string, string> = {
 	PromoStrip: 'П',
 	Banner: 'Б',
+	TopBar: 'В',
 	Header: 'М',
 	Footer: 'Ф'
 };
@@ -179,7 +181,10 @@ export async function saveComponentData(
 ): Promise<string | null> {
 	if (usesDraft(context)) {
 		const result = await saveDraftOperation<PageDraft & { componentId: string }>(context, {
-			kind: 'component', scope: context.slug === '__global__' ? 'global' : 'page', type, data
+			kind: 'component',
+			scope: context.slug === '__global__' ? 'global' : 'page',
+			type,
+			data
 		});
 		data._componentId = result.componentId;
 		return result.componentId;

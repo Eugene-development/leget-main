@@ -77,6 +77,14 @@ const CATALOG_LAYOUTS: Record<number, Record<string, CatalogLayout>> = {
 			versionKey: 'menuVersion',
 			data: { siteName: 'LEGET' }
 		}
+	},
+	2: {
+		TopBar: {
+			component: Promo2.TopBar as Component<PageComponentProps>,
+			versionCount: 2,
+			versionKey: 'topBarVersion',
+			data: {}
+		}
 	}
 };
 

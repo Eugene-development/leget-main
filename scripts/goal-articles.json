@@ -1770,6 +1770,18 @@
 		"source": "templates/Promo-2/pages/yandex-direct/CTA.svelte"
 	},
 	{
+		"article": "2.В.1.1",
+		"template": "Promo-2",
+		"page": "(layout)",
+		"source": "templates/Promo-2/layout/TopBar/v1/TopBar.svelte"
+	},
+	{
+		"article": "2.В.1.2",
+		"template": "Promo-2",
+		"page": "(layout)",
+		"source": "templates/Promo-2/layout/TopBar/v2/TopBar.svelte"
+	},
+	{
 		"article": "2.М.1.1",
 		"template": "Promo-2",
 		"page": "(layout)",

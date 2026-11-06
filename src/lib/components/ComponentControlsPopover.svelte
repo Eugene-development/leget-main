@@ -1,5 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import {
+		componentControlsScope,
+		stickyComponentControls
+	} from '$lib/utils/sticky-component-controls';
 	let {
 		label,
 		children,
@@ -22,6 +26,17 @@
 		function update() {
 			if (!trigger) return;
 			const rect = trigger.getBoundingClientRect();
+			const header = document.querySelector<HTMLElement>('[data-scroll-chrome], header');
+			const top = header?.contains(trigger)
+				? 0
+				: Math.max(0, header?.getBoundingClientRect().bottom ?? 0);
+			const scope = componentControlsScope(trigger)?.getBoundingClientRect();
+			// Do not leave the previous block's menu floating over the header.
+			// Scope geometry is stable even before the sticky action's next frame.
+			if (scope && (scope.bottom < top + rect.height + 8 || scope.top >= innerHeight)) {
+				close();
+				return;
+			}
 			node.style.left = `${Math.max(8, Math.min(rect.right - node.offsetWidth, innerWidth - node.offsetWidth - 8))}px`;
 			node.style.top = `${rect.bottom + 8}px`;
 			frame = requestAnimationFrame(update);
@@ -45,6 +60,7 @@
 
 <svelte:window onkeydown={keydown} />
 <button
+	use:stickyComponentControls
 	bind:this={trigger}
 	data-field-toolbar-anchor
 	data-controls-panel={id}
