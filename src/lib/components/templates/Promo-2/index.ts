@@ -48,7 +48,7 @@ import StylesCTA from './pages/styles/StylesCTA.svelte';
 
 // Facades page components
 import FacadesHero from './pages/facades/Hero.svelte';
-import FacadesCatalog from './pages/facades/FacadesCatalog.svelte';
+import FacadesCatalog from './pages/facades/FacadesCatalog/index.svelte';
 import FacadesCTA from './pages/facades/FacadesCTA.svelte';
 
 // Furniture page components

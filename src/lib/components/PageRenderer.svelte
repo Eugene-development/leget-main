@@ -225,13 +225,17 @@
 	]);
 
 	const promo2ActionsComponentsWithSwitcher = new Set(['Hero']);
+	const promo2FacadesComponentsWithSwitcher = new Set(['FacadesCatalog']);
 
 	function componentHasOwnSwitcher(type: string): boolean {
 		return (
 			(Number(editContext?.templateId) === 1 && promo1ComponentsWithSwitcher.has(type)) ||
 			(Number(editContext?.templateId) === 2 &&
 				slug === '/actions' &&
-				promo2ActionsComponentsWithSwitcher.has(type))
+				promo2ActionsComponentsWithSwitcher.has(type)) ||
+			(Number(editContext?.templateId) === 2 &&
+				slug === '/facades' &&
+				promo2FacadesComponentsWithSwitcher.has(type))
 		);
 	}
 

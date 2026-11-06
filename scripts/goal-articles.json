@@ -1497,7 +1497,25 @@
 		"article": "2.5.2.1",
 		"template": "Promo-2",
 		"page": "/facades",
-		"source": "templates/Promo-2/pages/facades/FacadesCatalog.svelte"
+		"source": "templates/Promo-2/pages/facades/FacadesCatalog/v1/FacadesCatalog.svelte"
+	},
+	{
+		"article": "2.5.2.2",
+		"template": "Promo-2",
+		"page": "/facades",
+		"source": "templates/Promo-2/pages/facades/FacadesCatalog/v2/FacadesCatalog.svelte"
+	},
+	{
+		"article": "2.5.2.3",
+		"template": "Promo-2",
+		"page": "/facades",
+		"source": "templates/Promo-2/pages/facades/FacadesCatalog/v3/FacadesCatalog.svelte"
+	},
+	{
+		"article": "2.5.2.4",
+		"template": "Promo-2",
+		"page": "/facades",
+		"source": "templates/Promo-2/pages/facades/FacadesCatalog/v4/FacadesCatalog.svelte"
 	},
 	{
 		"article": "2.5.3.1",

@@ -20,13 +20,9 @@ export type MotionProfile =
 	| 'sidebar'
 	| 'model';
 
-// Temporarily pause Promo-1 motion: entrances move already-visible content on navigation.
-// Preserve saved block preferences so motion can be restored without changing site data.
-const PROMO_ANIMATIONS_ENABLED = false;
-
 /** Keep the previously saved HeroMain v1 switch working on existing sites. */
 export function animationsEnabled(data: Record<string, unknown>): boolean {
-	return PROMO_ANIMATIONS_ENABLED && (data.animationsEnabled ?? data.animationsEnabledV1) !== false;
+	return (data.animationsEnabled ?? data.animationsEnabledV1) !== false;
 }
 
 /** Profiles describe the job of a block, rather than the page it happens to be on. */
@@ -51,7 +47,7 @@ export function motionProfile(type: string): MotionProfile {
 }
 
 export const motionDescriptions: Record<MotionProfile, string> = {
-	hero: 'Плавное появление заголовка, текста и фотографий.',
+	hero: 'Плавное появление фотографий и элементов управления.',
 	cards: 'Поочерёдное появление карточек при прокрутке.',
 	steps: 'Последовательное появление этапов и соединяющих линий.',
 	statistics: 'Появление показателей и плавный набор числовых значений.',
@@ -59,7 +55,7 @@ export const motionDescriptions: Record<MotionProfile, string> = {
 	brands: 'Появление логотипов и движение лент брендов.',
 	form: 'Спокойное появление блока и основных действий.',
 	faq: 'Появление списка вопросов без движения открытого ответа.',
-	editorial: 'Появление текста, иллюстраций и разделительных линий.',
+	editorial: 'Появление иллюстраций и разделительных линий.',
 	sidebar: 'Короткое появление пунктов каталога.',
-	model: 'Появление подписи и кнопки просмотра модели.'
+	model: 'Появление кнопки просмотра модели.'
 };

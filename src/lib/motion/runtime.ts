@@ -4,7 +4,7 @@ import type { MotionProfile } from './promo';
 
 gsap.registerPlugin(CustomEase);
 
-type Role = 'title' | 'body' | 'card' | 'image' | 'rule' | 'number';
+type Role = 'body' | 'card' | 'image' | 'rule' | 'number';
 const cards =
 	'.grid > article, .grid > li, .grid > a, .grid > div, .space-y-4 > div, .space-y-6 > div, .faq-item, details, .stage-card, .p1-stage-step, .p1-stage-row, .ledger-row, .tile, .uni-note, .ms-item, .ab-card, .ct-card-enter, .gt-card, .it-card, .tm-card, .vc-card';
 const rules =
@@ -171,26 +171,19 @@ export function animatePromoBlock(
 				const groups = outermost(
 					select(cards).filter(
 						(el) =>
-							el.querySelector('h3, img, button, a, .tabular-nums') ||
-							el.matches(
-								'.stage-card, .p1-stage-step, .p1-stage-row, .ledger-row, .tile, .uni-note, .ms-item'
-							)
+							!el.querySelector('h1, h2') &&
+							(el.querySelector('h3, img, button, a, .tabular-nums') ||
+								el.matches(
+									'.stage-card, .p1-stage-step, .p1-stage-row, .ledger-row, .tile, .uni-note, .ms-item'
+								))
 					)
 				);
-				const outsideGroups = (el: HTMLElement) => !groups.some((group) => group.contains(el));
-				add(select('h1, h2').filter(outsideGroups), 'title');
+				// Headings and paragraphs stay at their painted position during navigation.
+				// Cards, media, rules and interactive controls retain their own entrances.
 				if (profile === 'sidebar') add(select('.ms-nav a, .ms-item, .ms-fab'), 'card');
-				else if (profile === 'model')
-					add(select('p, button').filter(outsideGroups).slice(0, 4), 'body');
+				else if (profile === 'model') add(select('button').slice(0, 4), 'body');
 				else {
 					add(groups, 'card');
-					add(
-						select('p')
-							.filter(outsideGroups)
-							.filter((el) => !el.closest('form, [role="tabpanel"]'))
-							.slice(0, 6),
-						'body'
-					);
 					if (profile === 'hero' || profile === 'gallery' || profile === 'editorial')
 						add(
 							select('img.object-cover')
@@ -209,7 +202,7 @@ export function animatePromoBlock(
 					'rule'
 				);
 				if (profile === 'statistics') add(select('.tabular-nums'), 'number');
-				if (!groups.length && !root.querySelector('h1, h2'))
+				if (!groups.length && !root.querySelector('h1, h2, p'))
 					add(select('section > div, article, aside').slice(0, 2), 'body');
 			}
 

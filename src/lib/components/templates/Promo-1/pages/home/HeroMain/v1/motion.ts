@@ -3,7 +3,7 @@ import { CustomEase } from 'gsap/CustomEase';
 
 gsap.registerPlugin(CustomEase);
 
-/** One entrance for the interior and its glass caption; never owns content visibility. */
+/** Animate the interior and controls while the glass caption's text stays still. */
 export function animateHeroEntrance(root: HTMLElement) {
 	const media = gsap.matchMedia();
 	media.add(
@@ -38,24 +38,9 @@ export function animateHeroEntrance(root: HTMLElement) {
 				},
 				0
 			);
-			timeline.from(
-				select('.hero-shell'),
-				{
-					y: distance,
-					opacity: 0.65,
-					duration: seconds('--ds-motion-duration-fast')
-				},
-				0
-			);
 
-			// Animate semantic groups, leaving rich text and button hover transforms intact.
-			const groups = [
-				'.hero-company',
-				'.hero-title',
-				'.hero-description',
-				'.hero-actions',
-				'.hero-brands'
-			];
+			// Text has no entrance, including motion inherited from the glass shell.
+			const groups = ['.hero-actions', '.hero-brands'];
 			groups.forEach((selector, index) => {
 				const elements = select(selector);
 				if (!elements.length) return;
@@ -66,7 +51,7 @@ export function animateHeroEntrance(root: HTMLElement) {
 						opacity: 0,
 						duration: detailDuration
 					},
-					seconds(`--ds-motion-stagger-${index + 1}`)
+					seconds(`--ds-motion-stagger-${index + 4}`)
 				);
 			});
 

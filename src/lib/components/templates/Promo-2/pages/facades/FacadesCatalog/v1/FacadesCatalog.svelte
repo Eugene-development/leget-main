@@ -2,6 +2,7 @@
 	// Артикул: 2.5.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
+	import { resolveFacades } from '../data';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
 	let {
@@ -18,84 +19,7 @@
 	let sectionEl: HTMLElement;
 	let itemVisibility = $state<Record<string, boolean>>({});
 
-	const defaultFacades = [
-		{
-			id: 'enamel',
-			title: 'Эмаль (Крашеный МДФ)',
-			description:
-				'Гладкие матовые или глянцевые поверхности любого оттенка. Эмаль наносится в несколько слоев, что создает идеальное покрытие без швов по кромке. Идеально для современных, минималистичных и неоклассических интерьеров.',
-			image: 'https://storage.yandexcloud.net/zovtop/foto/kv-1_fonjfgnbisfn.webp',
-			details: {
-				base: 'Плита МДФ',
-				coating: 'Многослойная эмаль (матовая / глянцевая)',
-				thickness: '19 мм',
-				minSize: '100 × 100 мм',
-				maxSize: '2750 × 1100 мм'
-			}
-		},
-		{
-			id: 'wood',
-			title: 'Массив дерева',
-			description:
-				'Классика, которая никогда не выходит из моды. Натуральная текстура дуба или ясеня привносит в дом тепло и уют. Фасады из массива поддаются реставрации и с годами становятся только благороднее.',
-			image: null,
-			details: {
-				base: 'Массив ясеня / дуба',
-				coating: 'Эмаль, масловоск, воскобейц, патина',
-				thickness: '21 мм',
-				minSize: '140 × 140 мм',
-				maxSize: '2400 × 900 мм'
-			}
-		},
-		{
-			id: 'hpl',
-			title: 'Пластики',
-			description:
-				'Максимально устойчивые к царапинам, ударам и температурам материал. Пластики идеально имитируют текстуры бетона, камня или дерева, сохраняя при этом индустриальную строгость и премиальный вид.',
-			image: null,
-			details: {
-				base: 'Плита МДФ',
-				coating: 'Декоративный пластик',
-				thickness: '18 мм / 21 мм',
-				minSize: '100 × 100 мм',
-				maxSize: '2800 × 1300 мм'
-			}
-		},
-		{
-			id: 'shpon',
-			title: 'Шпон натуральный',
-			description:
-				'Фасады из натурального шпона дуба или ясеня — это классика, которая никогда не выходит из моды. Натуральная текстура дерева привносит в дом тепло и уют.',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/shponjdfnvkjsvnkjsf.jpg',
-			details: {
-				base: 'Плита МДФ',
-				coating: 'Шпон дуба или ясеня',
-				thickness: '18 мм / 21 мм',
-				minSize: '100 × 100 мм',
-				maxSize: '2800 × 1300 мм'
-			}
-		},
-		{
-			id: 'acrylic',
-			title: 'Акрил',
-			description:
-				'Идеально ровная, зеркальная глянцевая или бархатистая матовая поверхность. Фасады из акрила обладают высокой ударопрочностью, не выцветают на солнце и придают интерьеру премиальный блеск.',
-			image: null,
-			details: {
-				base: 'Плита МДФ',
-				coating: 'Акриловый пластик',
-				thickness: '19 мм',
-				minSize: '100 × 100 мм',
-				maxSize: '2800 × 1300 мм'
-			}
-		}
-	];
-
-	const facades = $derived(
-		Array.isArray(data?.facades) && (data.facades as unknown[]).length > 0
-			? (data.facades as typeof defaultFacades)
-			: defaultFacades
-	);
+	const facades = $derived(resolveFacades(data));
 
 	onMount(() => {
 		const observer = new IntersectionObserver(

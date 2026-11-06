@@ -46,7 +46,7 @@
 	</div>
 
 	<!-- Light Overlay -->
-	<div class="pointer-events-none absolute inset-0 bg-surface-warm/70"></div>
+	<div class="pointer-events-none absolute inset-0 bg-surface-warm/85"></div>
 
 	<div
 		class="relative z-10 mx-auto max-w-4xl opacity-0"
@@ -61,7 +61,7 @@
 			onSave={(v) => saveField('label', v)}
 		>
 			{#snippet children(displayValue)}
-				<span class="mb-4 block text-sm font-medium tracking-[0.2em] text-secondary uppercase">
+				<span class="mb-4 block text-sm font-medium tracking-[0.2em] text-primary uppercase">
 					<RichText value={displayValue} />
 				</span>
 			{/snippet}
@@ -98,7 +98,7 @@
 		>
 			{#snippet children(displayValue)}
 				<p
-					class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed font-light text-secondary md:text-xl"
+					class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed font-normal text-primary md:text-xl"
 				>
 					<RichText value={displayValue} />
 				</p>
@@ -108,7 +108,7 @@
 		<div class="mt-12">
 			<a
 				href="#styles-grid"
-				class="group inline-flex items-center justify-center gap-3 rounded-sm border border-border-medium bg-transparent px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-300 hover:border-secondary hover:text-secondary"
+				class="group inline-flex items-center justify-center gap-3 rounded-sm border border-primary bg-surface-warm px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-300 hover:bg-primary hover:text-surface-warm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
 			>
 				Выбрать стиль
 				<svg
@@ -131,8 +131,8 @@
 		style="animation-delay: 1s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-muted uppercase">Вниз</span>
-			<div class="h-10 w-px bg-gradient-to-b from-border-medium to-transparent"></div>
+			<span class="text-[10px] tracking-[0.3em] text-primary uppercase">Вниз</span>
+			<div class="h-10 w-px bg-gradient-to-b from-primary to-transparent"></div>
 		</div>
 	</div>
 </section>
