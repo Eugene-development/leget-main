@@ -9,10 +9,10 @@
 	import '../../../../theme.css';
 
 	/*
-	 * THESIS: открытая контактная полоса с двумя адресными действиями.
+	 * THESIS: открытая контактная полоса с адресными действиями.
 	 * OWN-WORLD: семантические поверхности, шрифты и акцент текущей системы.
 	 * STORY: прочитать приглашение, выбрать звонок или сообщение.
-	 * FIRST VIEWPORT: заголовок слева, крупная строка звонка и Telegram справа;
+	 * FIRST VIEWPORT: заголовок слева, телефон, почта и Telegram справа;
 	 * на телефоне — единая колонка, без потери номера или зоны нажатия.
 	 * FORM: разделённые линиями действия; стрелка откликается на hover/focus,
 	 * содержимое видно сразу, reduced-motion отключает движение.
@@ -100,10 +100,23 @@
 					aria-label={`Позвонить по номеру ${phone}`}
 					class="contact-desk__action p1-line flex min-h-28 items-center justify-between gap-4 border-y py-6 sm:min-h-36 sm:gap-8 sm:py-8"
 				>
-					<span class="min-w-0">
-						<span class="p1-muted block text-sm">Позвонить</span>
+					<span class="p1-title flex min-w-0 items-center gap-3 sm:gap-4">
+						<svg
+							class="size-6 shrink-0"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+						>
+							<path
+								d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
 						<span
-							class="p1-title p1-title-sub mt-3 block text-2xl break-words sm:text-3xl xl:text-4xl"
+							class="p1-title p1-title-sub block min-w-0 text-2xl break-words sm:text-3xl xl:text-4xl"
 							>{phone}</span
 						>
 					</span>
@@ -112,6 +125,46 @@
 						>{@render arrow()}</span
 					>
 				</a>
+
+				<EditableField
+					richText={false}
+					fieldKey="ContactCTA.email"
+					label="Email"
+					value={String(data?.email ?? 'info@leget.ru')}
+					{isEditable}
+					onSave={(v) => saveField('email', v)}
+					class="block"
+				>
+					{#snippet children(displayValue)}
+						{#if displayValue}
+							<a
+								href="mailto:{displayValue}"
+								class="contact-desk__action p1-line p1-title flex min-h-28 items-center justify-between gap-4 border-b py-6 sm:min-h-36 sm:gap-8 sm:py-8"
+							>
+								<span class="flex min-w-0 items-center gap-3 sm:gap-4">
+									<svg
+										class="size-6 shrink-0"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.5"
+										aria-hidden="true"
+									>
+										<path
+											d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+									</svg>
+									<span class="min-w-0 text-lg break-words sm:text-xl">{displayValue}</span>
+								</span>
+								<span class="flex size-14 shrink-0 items-center justify-center sm:size-18"
+									>{@render arrow()}</span
+								>
+							</a>
+						{/if}
+					{/snippet}
+				</EditableField>
 
 				<EditableField
 					richText={false}

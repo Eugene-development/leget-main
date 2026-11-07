@@ -16,7 +16,12 @@
 		data = null,
 		enabled = true
 	}: { data?: Record<string, unknown> | null; enabled?: boolean } = $props();
-	const template = $derived((page.data as { site?: { templateId?: number } }).site?.templateId);
+	type AnalyticsSite = { templateId?: number | null };
+	const siteData = $derived(
+		page.data as { pageData?: { site?: AnalyticsSite | null }; site?: AnalyticsSite | null }
+	);
+	// Public pages use renderPage; calculator/university expose site directly.
+	const template = $derived(siteData.pageData?.site?.templateId ?? siteData.site?.templateId);
 	const trackingEnabled = $derived(enabled && !isPrivateAnalyticsUrl(page.url));
 	onMount(() =>
 		installGoalTracking(
@@ -100,7 +105,10 @@
 		const analyticsWindow = window as unknown as AnalyticsWindow;
 		analyticsWindow[`ga-disable-${tagId}`] = false;
 		analyticsWindow.dataLayer ??= [];
-		analyticsWindow.gtag ??= (...args: unknown[]) => analyticsWindow.dataLayer!.push(args);
+		// gtag.js recognizes Arguments as commands; plain arrays use another protocol.
+		analyticsWindow.gtag ??= function () {
+			analyticsWindow.dataLayer!.push(arguments);
+		};
 		ensureScript(
 			`leget-google-tag-${tagId}`,
 			`https://www.googletagmanager.com/gtag/js?id=${tagId}`

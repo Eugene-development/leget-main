@@ -122,17 +122,20 @@
 	`bg-on-dark/10`, то есть контраст под текстом снижался. Здесь карточка,
 	наоборот, ДОГАЩАЕТ кадр (`bg-scrim/35`), и текст стоит на 12:1.
 
-	`bg-ink-950` на самой секции — основание под кадром. Картинки у Stage
-	в `defaults` нет вовсе, то есть типовое состояние блока — `ImageFallback`,
-	и без основания секция досталась бы фону страницы. По контракту заглушки
+	`bg-ink-950` на самой секции — основание под кадром. Для Stage v1 задан стартовый абстрактный фон
+	из Object Storage; пользовательский `bgImage` имеет приоритет. Основание
+	сохраняет тёмную поверхность до загрузки изображения. По контракту заглушки
 	на её обёртке стоит текстовая роль (здесь — `text-ink-300`): заглушка
 	рисуется `currentColor`, и без цвета растворилась бы в собственном фоне.
 -->
 <section class="p1-stage-screen relative isolate overflow-hidden bg-ink-950 py-section-xs">
 	<ImageFallback
 		imagePath={['bgImage']}
-		src={String(data?.bgImage ?? '')}
-		alt="Интерьер с мебелью"
+		src={String(
+			data?.bgImage ||
+				'https://storage.yandexcloud.net/leget-main/templates/promo-1/stage-1.1.5.1-abstract-20261106.webp'
+		)}
+		alt=""
 		class="absolute inset-0 -z-20 h-full w-full object-cover text-ink-300"
 	/>
 	<div class="absolute inset-0 -z-10 bg-scrim/65"></div>

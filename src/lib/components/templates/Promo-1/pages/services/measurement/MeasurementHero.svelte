@@ -71,7 +71,7 @@
 				class="inline-block"
 			>
 				{#snippet children(displayValue)}
-					<span class="p1-label p1-accent"><RichText value={displayValue} /></span>
+					<span class="p1-label text-accent-surface"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -97,7 +97,7 @@
 					class="inline-block"
 				>
 					{#snippet children(displayValue)}
-						<span class="p1-accent"><RichText value={displayValue} /></span>
+						<span class="text-accent-surface"><RichText value={displayValue} /></span>
 					{/snippet}
 				</EditableField>
 			</h1>

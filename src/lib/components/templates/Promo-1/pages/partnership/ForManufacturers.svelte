@@ -116,33 +116,12 @@
 		<div class="lg:grid lg:grid-cols-2 lg:items-end lg:gap-16">
 			<div>
 				<EditableField
-					fieldKey="ForManufacturers.badge"
-					label="Бейдж"
-					value={String(data?.badge ?? 'Вы организация?')}
-					{isEditable}
-					onSave={(v) => saveField('badge', v)}
-					class="fm-item inline-block"
-				>
-					{#snippet children(displayValue)}
-						<div
-							class="p1-accent inline-flex items-center gap-2.5 rounded-2xl border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.2em] uppercase sm:text-xs"
-						>
-							<span
-								class="size-1.5 rounded-full bg-brand-400 shadow-[0_0_12px_2px] shadow-brand-400/70"
-								aria-hidden="true"
-							></span>
-							<RichText value={displayValue} />
-						</div>
-					{/snippet}
-				</EditableField>
-
-				<EditableField
 					fieldKey="ForManufacturers.title"
 					label="Заголовок"
 					value={String(data?.title ?? 'Для производителей и поставщиков')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
-					class="fm-item fm-d1 mt-6 block"
+					class="fm-item fm-d1 block"
 				>
 					{#snippet children(displayValue)}
 						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">

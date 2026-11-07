@@ -2,7 +2,7 @@ export type YandexMethod = ((...args: unknown[]) => void) & { a?: unknown[][]; l
 export type AnalyticsWindow = Window & {
 	ym?: YandexMethod;
 	gtag?: (...args: unknown[]) => void;
-	dataLayer?: unknown[][];
+	dataLayer?: unknown[];
 	__legetYandexCounters?: Record<string, boolean>;
 	__legetGoogleTags?: Record<string, boolean>;
 	[key: `ga-disable-${string}`]: boolean | undefined;

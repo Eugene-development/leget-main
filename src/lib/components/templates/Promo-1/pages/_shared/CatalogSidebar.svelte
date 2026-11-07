@@ -498,6 +498,7 @@
 	<aside
 		bind:this={sidebarElement}
 		class="mebel-sidebar"
+		data-component={componentType}
 		data-accent={accent}
 		style="top: {offsetTop}px;"
 		aria-label={title}
@@ -541,6 +542,7 @@
 	{#if isSheetOpen}
 		<div
 			class="ms-sheet-root"
+			data-component={componentType}
 			data-accent={accent}
 			role="dialog"
 			aria-modal="true"
@@ -654,7 +656,7 @@
 	}
 	.ms-brand-link:hover,
 	.ms-brand-link[aria-current='page'] {
-		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
 	}
 	.ms-brand-link:hover,
 	.ms-brand-link[aria-current='page'] {
@@ -683,6 +685,10 @@
 		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-link-700));
 		--ms-accent-light: var(--p1-catalog-accent-400, var(--ds-link-400));
 		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-link-50));
+		--ms-glow: var(--ms-accent);
+		--ms-glow-light: var(--ms-accent-light);
+		--ms-shadow: var(--ms-accent-deep);
+		--ms-shadow-light: var(--ms-accent-light);
 	}
 
 	[data-accent='amber'] {
@@ -690,6 +696,14 @@
 		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-cat-1-700));
 		--ms-accent-light: var(--p1-catalog-accent-400, var(--ds-cat-1-400));
 		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-cat-1-50));
+	}
+
+	/* Мебель: нейтральные тени без цветной дымки на поверхностях. */
+	[data-component='MebelSidebar'] {
+		--ms-glow: transparent;
+		--ms-glow-light: transparent;
+		--ms-shadow: var(--ds-light-title);
+		--ms-shadow-light: var(--ds-light-title);
 	}
 
 	/* ---------------------------------------------------------------- *
@@ -726,14 +740,14 @@
 		background:
 			radial-gradient(
 				120% 60% at 50% 0%,
-				color-mix(in srgb, var(--ms-accent) 6%, transparent),
+				color-mix(in srgb, var(--ms-glow) 6%, transparent),
 				transparent 70%
 			),
 			linear-gradient(180deg, var(--ds-light-overlay) 0%, var(--ds-light-surface-alt) 100%);
 		box-shadow:
 			0 1px 2px color-mix(in srgb, var(--ds-light-title) 4%, transparent),
 			0 12px 28px -14px color-mix(in srgb, var(--ds-light-title) 14.000000000000002%, transparent),
-			0 44px 80px -60px color-mix(in srgb, var(--ms-accent-deep) 40%, transparent);
+			0 44px 80px -60px color-mix(in srgb, var(--ms-shadow) 40%, transparent);
 	}
 
 	/* ---------------------------------------------------------------- *
@@ -828,7 +842,7 @@
 	.ms-item--link:has(> a.ms-link:hover)::before {
 		opacity: 1;
 		transform: translateX(0);
-		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
 	}
 
 	/* Акцентная полоса активного пункта. */
@@ -853,7 +867,7 @@
 	.ms-item--link.ms-item--active::before {
 		opacity: 1;
 		transform: translateX(0);
-		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-accent-deep) 70%, transparent);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
 	}
 	.ms-nav:has(a:hover) .ms-item--link.ms-item--active:not(:has(> a.ms-link:hover))::before {
 		opacity: 0;
@@ -1048,7 +1062,7 @@
 		border-radius: var(--ds-radius-full);
 		background: radial-gradient(
 			circle,
-			color-mix(in srgb, var(--ms-accent-light) 45%, transparent),
+			color-mix(in srgb, var(--ms-glow-light) 45%, transparent),
 			transparent 65%
 		);
 		filter: blur(6px);
@@ -1096,7 +1110,7 @@
 		background: linear-gradient(
 			100deg,
 			transparent,
-			color-mix(in srgb, var(--ms-accent) 28%, transparent),
+			color-mix(in srgb, var(--ms-glow) 28%, transparent),
 			transparent
 		);
 		transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1104,7 +1118,7 @@
 
 	.ms-cta-btn:hover {
 		transform: translateY(-1px);
-		box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--ms-accent-light) 80%, transparent);
+		box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--ms-shadow-light) 80%, transparent);
 	}
 
 	.ms-cta-btn:hover::after {
@@ -1189,7 +1203,7 @@
 		background:
 			radial-gradient(
 				120% 40% at 50% 0%,
-				color-mix(in srgb, var(--ms-accent) 7%, transparent),
+				color-mix(in srgb, var(--ms-glow) 7%, transparent),
 				transparent 70%
 			),
 			linear-gradient(180deg, var(--ds-light-overlay) 0%, var(--ds-light-surface-alt) 100%);

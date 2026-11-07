@@ -119,24 +119,6 @@
 							class="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-raised shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 						>
 							<a href="/mebel/{categorySlug}/{project.slug}" class="block flex-1">
-								<!-- Метки -->
-								<div class="absolute top-3 left-3 z-10 flex gap-1.5">
-									{#if project.is_new}
-										<span
-											class="rounded-full bg-cat-2-500 px-2.5 py-1 text-xs font-semibold text-on-accent shadow-md"
-										>
-											Новинка
-										</span>
-									{/if}
-									{#if project.is_featured}
-										<span
-											class="rounded-full bg-cat-1-500 px-2.5 py-1 text-xs font-semibold text-on-accent shadow-md"
-										>
-											⭐ Хит
-										</span>
-									{/if}
-								</div>
-
 								<div class="relative block aspect-4/3 overflow-hidden bg-ink-100">
 									{#if project.images?.[0]?.url || imageEditing?.editable || imageEditing?.read(['projectImages', String(project.id), '0'], '')}
 										<ImageFallback

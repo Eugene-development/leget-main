@@ -45,28 +45,12 @@
 		<div use:revealOnScroll class="ct-reveal grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
 			<div>
 				<EditableField
-					fieldKey="ContactAddress.eyebrow"
-					label="Надпись над заголовком"
-					value={String(data?.eyebrow || 'Давайте встретимся')}
-					{isEditable}
-					onSave={(v) => saveField('eyebrow', v)}
-					class="ct-item inline-block"
-				>
-					{#snippet children(displayValue)}
-						<p class={ct.eyebrow.onLight}>
-							<span class={ct.eyebrow.dashOnLight} aria-hidden="true"></span>
-							<RichText value={displayValue} />
-						</p>
-					{/snippet}
-				</EditableField>
-
-				<EditableField
 					fieldKey="ContactAddress.title"
 					label="Заголовок"
 					value={String(data?.title || 'Личная консультация')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
-					class="ct-item ct-d1 mt-5 block"
+					class="ct-item ct-d1 block"
 				>
 					{#snippet children(displayValue)}
 						<h2 class={ct.title.h2OnLight}><RichText value={displayValue} /></h2>
