@@ -44,7 +44,7 @@
 	id="intro-section"
 	bind:this={sectionEl}
 >
-	<div class="mx-auto max-w-screen-xl px-6 text-center xl:px-1">
+	<div class="p2-container mx-auto text-center">
 		<div class="opacity-0" class:animate-fade-up={visible}>
 			<EditableField
 				fieldKey="FurnitureIntro.eyebrow"

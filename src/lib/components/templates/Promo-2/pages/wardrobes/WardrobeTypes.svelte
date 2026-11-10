@@ -70,11 +70,8 @@
 	});
 </script>
 
-<section
-	bind:this={sectionEl}
-	class="overflow-hidden bg-white px-6 py-section-sm lg:py-section xl:px-1"
->
-	<div class="mx-auto max-w-screen-xl">
+<section bind:this={sectionEl} class="overflow-hidden bg-white py-section-sm lg:py-section">
+	<div class="p2-container mx-auto">
 		<div
 			class="mb-16 flex flex-col items-end justify-between gap-8 opacity-0 transition-all duration-700 lg:flex-row"
 			class:animate-fade-up={visible}

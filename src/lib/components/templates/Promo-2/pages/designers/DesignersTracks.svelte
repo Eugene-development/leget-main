@@ -84,7 +84,7 @@
 	class="bg-surface-warm py-section-sm lg:py-section"
 	id="how-it-works"
 >
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="mb-10 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 			<EditableField
 				fieldKey="DesignersTracks.label"

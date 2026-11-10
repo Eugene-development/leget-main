@@ -48,7 +48,7 @@
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
 			<!-- Левая колонка: Текст и Оффер -->
-			<div class="flex flex-col items-start text-left lg:col-span-7">
+			<div class="flex flex-col items-start text-left lg:col-span-6">
 				<div class="mb-6">
 					<span
 						class="inline-flex items-center gap-2 border border-cat-8-500/30 bg-cat-8-500/10 {isLight
@@ -212,9 +212,9 @@
 			</div>
 
 			<!-- Правая колонка: Изображение и декоративные элементы -->
-			<div class="relative flex w-full items-center justify-center lg:col-span-5">
+			<div class="relative flex w-full items-center justify-center lg:col-span-6">
 				<div
-					class="group relative aspect-square w-full max-w-md overflow-hidden rounded-3xl p-3 shadow-2xl transition-transform duration-500 hover:scale-[1.01] sm:p-4"
+					class="group relative aspect-square w-full max-w-xl overflow-hidden rounded-3xl p-3 shadow-2xl transition-transform duration-500 hover:scale-[1.01] sm:p-4"
 				>
 					<ImageFallback
 						imagePath={['imageV2']}

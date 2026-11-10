@@ -232,8 +232,9 @@
 
 <style>
 	/* Посадка в экран — тот же приём, что в `Stage/v1` и `Brands/v1`, и та же
-	   роль доступной высоты (`--chrome-overlay`, только хедер: баннер стоит
-	   НАД ним и к пятому блоку главной давно уехал).
+	   высота строки меню (`--header-h`). Она не зависит от направления
+	   прокрутки: возвращение верхних полос не должно сжимать блок.
+	   Меняющийся `--chrome-overlay` нужен для перекрытия и якорей.
 
 	   Замер до правки, 1440x900: секция 1076px против 828px под хедером —
 	   шестой шаг уходил за нижний край, а порядок работ читают целиком.
@@ -257,7 +258,7 @@
 	@media (min-width: 64rem) and (min-height: 50rem) {
 		.p1-stage-screen {
 			display: flex;
-			min-height: calc(100svh - var(--chrome-overlay));
+			min-height: calc(100svh - var(--header-h));
 			flex-direction: column;
 			padding-block: var(--spacing-section-2xs);
 		}

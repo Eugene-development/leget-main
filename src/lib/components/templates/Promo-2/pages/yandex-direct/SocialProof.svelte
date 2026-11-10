@@ -70,7 +70,7 @@
 	class="relative overflow-hidden bg-surface-warm py-section-sm lg:py-section"
 	bind:this={sectionEl}
 >
-	<div class="mx-auto max-w-7xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<!-- Header -->
 		<div
 			class="mb-16 flex flex-col gap-4 opacity-0 transition-all duration-700 lg:flex-row lg:items-end lg:justify-between"

@@ -424,9 +424,10 @@
 	</div>
 {/snippet}
 
-<!-- Спецпредложения партнёров (PartnerOffers) — экранный блок: шапка, кадры, действие -->
+<!-- Спецпредложения партнёров (PartnerOffers) — экранный блок: шапка, кадры, действие.
+     Высота учитывает стабильную строку меню: появление верхних полос не сжимает кадры. -->
 <section
-	class="p1-surface flex min-h-[calc(100svh-var(--chrome-overlay))] flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs"
+	class="p1-surface flex min-h-[calc(100svh-var(--header-h))] flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Шапка. `shrink-0`, иначе на низком экране флекс сжал бы её раньше кадров. -->

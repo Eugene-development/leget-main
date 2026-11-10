@@ -54,7 +54,7 @@
 	class="relative mt-12 bg-surface-warm pt-28 pb-section-sm lg:mt-20 lg:pt-40 lg:pb-section"
 	bind:this={sectionEl}
 >
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
 			<!-- Image -->
 			<div class="relative opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">

@@ -22,8 +22,8 @@
 	}
 </script>
 
-<section class="bg-white px-6 py-12">
-	<div class="mx-auto max-w-2xl">
+<section class="bg-white py-12">
+	<div class="p2-container mx-auto">
 		{#if data?.address}
 			<EditableField
 				fieldKey="Map.address"

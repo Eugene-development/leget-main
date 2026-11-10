@@ -68,10 +68,7 @@
 	});
 </script>
 
-<section
-	bind:this={sectionEl}
-	class="mx-auto max-w-screen-xl px-6 py-section-sm lg:py-section xl:px-1"
->
+<section bind:this={sectionEl} class="p2-container mx-auto py-section-sm lg:py-section">
 	<div
 		class="mb-16 text-center opacity-0 transition-all duration-700"
 		class:animate-fade-up={visible}
@@ -100,7 +97,7 @@
 				style="animation-delay: {0.1 + i * 0.1}s"
 			>
 				<div
-					class="absolute top-8 right-8 text-6xl font-light text-border-medium/30"
+					class="absolute top-8 right-8 text-6xl font-normal text-secondary"
 					style="font-family: var(--font-heading);"
 				>
 					0{i + 1}

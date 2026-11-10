@@ -36,7 +36,7 @@
 	></div>
 	<div class="absolute bottom-0 left-16 h-40 w-40 border border-border-light opacity-20"></div>
 
-	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="relative p2-container mx-auto">
 		<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
 			<EditableField
 				fieldKey="Hero.label"

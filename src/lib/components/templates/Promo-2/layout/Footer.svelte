@@ -75,7 +75,8 @@
 							{ label: 'Контакты', href: '/contact' }
 						]
 					}
-				]).map((column) => ({
+				]
+		).map((column) => ({
 			...column,
 			links: column.links.filter((link) => link.href !== '/news')
 		}))
@@ -90,7 +91,7 @@
 	<div class="h-px w-full bg-linear-to-r from-transparent via-accent to-transparent"></div>
 
 	<!-- Main Footer Content -->
-	<div class="mx-auto max-w-screen-xl px-6 pt-16 pb-10 lg:pt-20 lg:pb-14 xl:px-1">
+	<div class="p2-container mx-auto pt-16 pb-10 lg:pt-20 lg:pb-14">
 		<div class="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-12 lg:gap-8">
 			<!-- Brand Column -->
 			<div class="col-span-2 lg:col-span-4">
@@ -168,7 +169,7 @@
 	<!-- Bottom Bar -->
 	<div class="border-t border-white/10">
 		<div
-			class="mx-auto flex max-w-screen-xl flex-col items-center justify-between gap-4 px-6 py-6 md:flex-row xl:px-1"
+			class="p2-container mx-auto flex flex-col items-center justify-between gap-4 py-6 md:flex-row"
 		>
 			<p class="text-xs text-white/35">{copyright}</p>
 			<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:justify-end">

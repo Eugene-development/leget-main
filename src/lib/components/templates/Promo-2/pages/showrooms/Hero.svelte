@@ -64,25 +64,15 @@
 	</div>
 
 	<!-- Content -->
-	<div class="relative z-10 flex min-h-[90vh] items-center">
-		<div class="mx-auto w-full max-w-screen-xl px-6 xl:px-1">
-			<div class="max-w-xl">
-				<div class="mb-6 opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.3s">
-					<EditableField
-						fieldKey="Hero.label"
-						label="Лейбл"
-						value={String(data?.label ?? 'Где купить')}
-						{isEditable}
-						onSave={(v) => saveField('label', v)}
-					>
-						{#snippet children(displayValue)}
-							<span class="text-[11px] tracking-[0.3em] text-white/70 uppercase"
-								><RichText value={displayValue} /></span
-							>
-						{/snippet}
-					</EditableField>
-				</div>
-
+	<div class="relative z-10 flex min-h-[90vh] items-center py-24">
+		<div class="p2-container mx-auto w-full">
+			<div
+				class="hero-glass relative isolate max-w-xl rounded-2xl border border-white/25 bg-primary/90 p-6 shadow-[0_20px_60px] shadow-primary/20 backdrop-blur-2xl backdrop-saturate-150 supports-[backdrop-filter:blur(1px)]:bg-primary/45 md:p-10"
+			>
+				<div
+					class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/20 via-white/5 to-transparent"
+					aria-hidden="true"
+				></div>
 				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.5s">
 					<EditableField
 						fieldKey="Hero.title"
@@ -117,7 +107,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mt-6 text-base leading-relaxed text-white/70 md:text-lg">
+							<p class="mt-6 text-base leading-relaxed text-white/90 md:text-lg">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -166,8 +156,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-white/50 uppercase">Вниз</span>
+			<span class="text-xs tracking-[0.3em] text-white/50 uppercase">Вниз</span>
 			<div class="h-10 w-px bg-gradient-to-b from-white/50 to-transparent"></div>
 		</div>
 	</div>
 </section>
+
+<style>
+	@media (prefers-reduced-transparency: reduce) {
+		.hero-glass {
+			background: var(--color-primary);
+			backdrop-filter: none;
+		}
+	}
+</style>

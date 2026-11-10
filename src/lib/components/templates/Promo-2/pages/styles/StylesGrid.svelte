@@ -112,11 +112,7 @@
 	});
 </script>
 
-<section
-	id="styles-grid"
-	class="mx-auto max-w-screen-xl px-4 py-20 sm:px-6 xl:px-1"
-	bind:this={sectionEl}
->
+<section id="styles-grid" class="p2-container mx-auto py-20" bind:this={sectionEl}>
 	<div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
 		{#each styles as style, i}
 			<div

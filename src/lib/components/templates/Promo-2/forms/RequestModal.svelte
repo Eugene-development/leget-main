@@ -269,6 +269,36 @@
 	.p2-request::backdrop {
 		background: color-mix(in srgb, var(--color-primary) 65%, transparent);
 	}
+	.p2-request[open] {
+		animation: p2-request-enter 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+	.p2-request[open]::backdrop {
+		animation: p2-request-backdrop-enter 240ms ease-out both;
+	}
+	@keyframes p2-request-enter {
+		from {
+			opacity: 0;
+			transform: translateY(1rem) scale(0.985);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+	@keyframes p2-request-backdrop-enter {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.p2-request[open],
+		.p2-request[open]::backdrop {
+			animation: p2-request-backdrop-enter 120ms ease-out both;
+		}
+	}
 	.p2-request-content {
 		position: relative;
 		padding: 2.5rem;

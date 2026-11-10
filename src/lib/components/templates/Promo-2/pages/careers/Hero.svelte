@@ -65,7 +65,7 @@
 		class="absolute top-0 left-0 h-px w-full bg-linear-to-r from-transparent via-secondary to-transparent opacity-30"
 	></div>
 
-	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="relative p2-container mx-auto">
 		<div class="max-w-2xl">
 			<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
 				<EditableField

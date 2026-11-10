@@ -46,13 +46,17 @@
 	</div>
 
 	<!-- Light Overlay -->
-	<div class="pointer-events-none absolute inset-0 bg-surface-warm/85"></div>
+	<div class="pointer-events-none absolute inset-0 bg-surface-warm/25"></div>
 
 	<div
-		class="relative z-10 mx-auto max-w-4xl opacity-0"
+		class="hero-glass relative isolate z-10 mx-auto max-w-4xl rounded-2xl border border-white/60 bg-white/70 p-6 opacity-0 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
 		class:animate-fade-up={visible}
 		style="animation-delay: 0.2s"
 	>
+		<div
+			class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/50 via-white/10 to-transparent"
+			aria-hidden="true"
+		></div>
 		<EditableField
 			fieldKey="Hero.label"
 			label="Лейбл"
@@ -131,8 +135,17 @@
 		style="animation-delay: 1s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-primary uppercase">Вниз</span>
+			<span class="text-xs tracking-[0.3em] text-primary uppercase">Вниз</span>
 			<div class="h-10 w-px bg-gradient-to-b from-primary to-transparent"></div>
 		</div>
 	</div>
 </section>
+
+<style>
+	@media (prefers-reduced-transparency: reduce) {
+		.hero-glass {
+			background: var(--color-surface);
+			backdrop-filter: none;
+		}
+	}
+</style>

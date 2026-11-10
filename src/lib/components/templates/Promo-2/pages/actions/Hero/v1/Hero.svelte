@@ -42,8 +42,8 @@
 				? 'scale-105'
 				: ''}"
 		/>
-		<div class="absolute inset-0 bg-linear-to-r from-white/95 via-white/75 to-white/5"></div>
-		<div class="absolute inset-0 bg-linear-to-t from-white/60 via-transparent to-transparent"></div>
+		<div class="absolute inset-0 bg-linear-to-r from-white/65 via-white/35 to-transparent"></div>
+		<div class="absolute inset-0 bg-linear-to-t from-white/20 via-transparent to-transparent"></div>
 	</div>
 
 	<!-- Decorative vertical accent line -->
@@ -76,7 +76,7 @@
 		<div
 			class="flex h-24 w-24 flex-col items-center justify-center border border-secondary/30 bg-white/50 text-center shadow-soft backdrop-blur-sm"
 		>
-			<span class="text-[10px] tracking-[0.2em] text-secondary/70 uppercase">до</span>
+			<span class="text-xs tracking-[0.2em] text-secondary/70 uppercase">до</span>
 			<span
 				class="text-3xl leading-none font-light text-secondary"
 				style="font-family: var(--font-heading);"
@@ -91,35 +91,20 @@
 					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</span>
-			<span class="mt-0.5 text-[9px] tracking-[0.15em] text-muted uppercase">скидка</span>
+			<span class="mt-0.5 text-xs tracking-[0.15em] text-muted uppercase">скидка</span>
 		</div>
 	</div>
 
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center pt-40 pb-32">
-		<div class="mx-auto w-full max-w-screen-xl px-6 xl:px-1">
-			<div class="max-w-2xl">
-				<!-- Label -->
+		<div class="p2-container mx-auto w-full">
+			<div
+				class="hero-glass relative isolate max-w-2xl rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
+			>
 				<div
-					class="mb-6 opacity-0"
-					class:animate-fade-up={heroVisible}
-					style="animation-delay: 0.3s"
-				>
-					<span
-						class="inline-flex items-center gap-2 border border-secondary/30 bg-white/70 px-4 py-2 text-[11px] tracking-[0.25em] text-secondary uppercase backdrop-blur-sm"
-					>
-						<EditableField
-							fieldKey="Hero.label"
-							label="Лейбл"
-							value={String(data?.label ?? 'Специальные предложения')}
-							{isEditable}
-							onSave={(v) => saveField('label', v)}
-						>
-							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
-						</EditableField>
-					</span>
-				</div>
-
+					class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/50 via-white/10 to-transparent"
+					aria-hidden="true"
+				></div>
 				<!-- Heading -->
 				<EditableField
 					fieldKey="Hero.title"
@@ -140,11 +125,33 @@
 					{/snippet}
 				</EditableField>
 
+				<!-- Description -->
+				<EditableField
+					fieldKey="Hero.description"
+					label="Описание"
+					value={String(data?.description ?? '').trim() ||
+						'Выберите подходящее предложение на мебель для вашего дома. Поможем разобраться в условиях акций и рассчитать стоимость вашего проекта.'}
+					{isEditable}
+					multiline
+					onSave={(v) => saveField('description', v)}
+					class="block"
+				>
+					{#snippet children(displayValue)}
+						<p
+							class="mt-6 max-w-lg text-base leading-relaxed font-medium text-primary opacity-0 md:text-lg"
+							class:animate-fade-up={heroVisible}
+							style="animation-delay: 0.65s"
+						>
+							<RichText value={displayValue} />
+						</p>
+					{/snippet}
+				</EditableField>
+
 				<!-- Stats row -->
 				<div
 					class="mt-10 flex items-center gap-8 opacity-0"
 					class:animate-fade-up={heroVisible}
-					style="animation-delay: 0.65s"
+					style="animation-delay: 0.75s"
 				>
 					<div class="flex flex-col gap-1">
 						<span
@@ -173,27 +180,6 @@
 						<span class="text-xs tracking-[0.15em] text-secondary uppercase">за доставку</span>
 					</div>
 				</div>
-
-				<!-- Description -->
-				<EditableField
-					fieldKey="Hero.description"
-					label="Описание"
-					value={String(data?.description ?? '')}
-					{isEditable}
-					multiline
-					onSave={(v) => saveField('description', v)}
-					class="block"
-				>
-					{#snippet children(displayValue)}
-						<p
-							class="mt-6 max-w-lg text-base leading-relaxed text-secondary opacity-0 md:text-lg"
-							class:animate-fade-up={heroVisible}
-							style="animation-delay: 0.7s"
-						>
-							<RichText value={displayValue} />
-						</p>
-					{/snippet}
-				</EditableField>
 
 				<!-- CTA Button -->
 				<div
@@ -247,8 +233,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-muted uppercase">Листайте</span>
+			<span class="text-xs tracking-[0.3em] text-muted uppercase">Листайте</span>
 			<div class="h-10 w-px bg-gradient-to-b from-text-muted to-transparent"></div>
 		</div>
 	</div>
 </section>
+
+<style>
+	@media (prefers-reduced-transparency: reduce) {
+		.hero-glass {
+			background: var(--color-surface);
+			backdrop-filter: none;
+		}
+	}
+</style>

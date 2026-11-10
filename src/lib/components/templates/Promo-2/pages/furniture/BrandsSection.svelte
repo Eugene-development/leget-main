@@ -89,7 +89,7 @@
 </script>
 
 <section class="relative bg-surface-warm pb-section-sm lg:pb-section">
-	<div class="mx-auto max-w-screen-xl px-6 pt-20 xl:px-1">
+	<div class="p2-container mx-auto pt-20">
 		<div class="flex flex-col gap-24 lg:gap-32">
 			{#each brands as brand (brand.id)}
 				<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16" data-brand-id={brand.id}>

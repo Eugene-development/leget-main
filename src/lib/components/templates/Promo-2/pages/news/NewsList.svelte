@@ -78,7 +78,7 @@
 
 <!-- Filter Bar -->
 <div class="sticky top-[80px] z-20 border-b border-border-light bg-white/95 backdrop-blur-md">
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="flex items-center gap-1 overflow-x-auto py-4" style="scrollbar-width: none;">
 			{#each categories as cat}
 				<button
@@ -100,7 +100,7 @@
 
 <!-- News List -->
 <section class="py-16 lg:py-20" bind:this={sectionEl}>
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="divide-y divide-border-light">
 			{#each filteredNews as item, i (item.id)}
 				<article

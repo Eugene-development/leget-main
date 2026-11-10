@@ -35,39 +35,30 @@
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['image']}
-			src={String(data?.image ?? '')}
-			alt="Салон мебели"
-			class="h-full w-full object-cover transition-transform duration-[2s] {visible
+			src={String(
+				data?.image ??
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/about-factory-craftsman.webp'
+			)}
+			alt="Мастер мебельной фабрики за работой у станка"
+			fetchpriority="high"
+			class="h-full w-full object-cover object-[70%_center] transition-transform duration-[2s] md:object-center {visible
 				? 'scale-105'
 				: ''}"
 		/>
-		<div class="absolute inset-0 bg-linear-to-r from-white via-white/80 to-white/30"></div>
-		<div class="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent"></div>
+		<div class="absolute inset-0 bg-linear-to-r from-white/65 via-white/35 to-transparent"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent"></div>
 	</div>
 
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center pb-24">
-		<div class="mx-auto w-full max-w-screen-xl px-6 xl:px-1">
-			<div class="max-w-2xl">
-				<!-- Label -->
-				<div class="mb-6 opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.3s">
-					<EditableField
-						fieldKey="Hero.label"
-						label="Лейбл"
-						value={String(data?.label ?? 'О фабрике')}
-						{isEditable}
-						onSave={(v) => saveField('label', v)}
-					>
-						{#snippet children(displayValue)}
-							<span
-								class="inline-flex items-center gap-2 border border-secondary/30 bg-white/60 px-4 py-2 text-[11px] tracking-[0.25em] text-secondary uppercase backdrop-blur-sm"
-							>
-								<RichText value={displayValue} />
-							</span>
-						{/snippet}
-					</EditableField>
-				</div>
-
+		<div class="p2-container mx-auto w-full">
+			<div
+				class="hero-glass relative isolate max-w-2xl rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
+			>
+				<div
+					class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/50 via-white/10 to-transparent"
+					aria-hidden="true"
+				></div>
 				<!-- Heading -->
 				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.5s">
 					<EditableField
@@ -104,7 +95,9 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mt-8 max-w-lg text-base leading-relaxed text-secondary md:text-lg">
+							<p
+								class="mt-8 max-w-lg text-base leading-relaxed font-medium text-primary md:text-lg"
+							>
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -158,8 +151,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-muted uppercase">Листайте</span>
+			<span class="text-xs tracking-[0.3em] text-muted uppercase">Листайте</span>
 			<div class="h-10 w-px bg-gradient-to-b from-border-medium to-transparent"></div>
 		</div>
 	</div>
 </section>
+
+<style>
+	@media (prefers-reduced-transparency: reduce) {
+		.hero-glass {
+			background: var(--color-surface);
+			backdrop-filter: none;
+		}
+	}
+</style>

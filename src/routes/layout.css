@@ -9,6 +9,23 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/* Shared content grid for Promo-2, including CSS-authored component variants.
+   Text measures and dialogs keep their own narrower limits. */
+:root {
+	--p2-content-max: 100rem;
+}
+
+@utility p2-container {
+	width: 100%;
+	max-width: var(--p2-content-max);
+	margin-inline: auto;
+	padding-inline: 1.5rem;
+
+	@media (width >= 80rem) {
+		padding-inline: 2rem;
+	}
+}
+
 /* SvelteKit swaps the page between the two snapshots of a view transition. */
 ::view-transition-old(root) {
 	animation: var(--ds-motion-duration-ui) ease-in both page-fade-out;
@@ -798,6 +815,9 @@ html {
 	 * Сколько верха экрана съедает липкий хром. По умолчанию — строка меню.
 	 * ScrollChrome уточняет перекрытие по реальной нижней кромке шапки:
 	 * при скролле вверх над меню возвращаются баннер и полоса акций.
+	 * Это динамическое перекрытие для якорей и плавающих элементов.
+	 * Для высоты секций ниже первого экрана используем стабильный `--header-h`,
+	 * иначе возвращение верхних полос сжимает содержимое страницы.
 	 *
 	 * Заведено 11.08.2026. До этого поправку на хедер каждый блок изобретал
 	 * сам: во всём каталоге её делали четыре блока Promo-2 — `scroll-mt-20`,

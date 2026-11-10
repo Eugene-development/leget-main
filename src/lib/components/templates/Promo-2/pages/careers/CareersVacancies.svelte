@@ -109,7 +109,7 @@
 </script>
 
 <section bind:this={sectionEl} class="bg-surface-warm py-section-sm lg:py-section" id="vacancies">
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<!-- Header -->
 		<div
 			class="mb-10 flex flex-col gap-6 opacity-0 transition-all duration-700 sm:flex-row sm:items-end sm:justify-between"

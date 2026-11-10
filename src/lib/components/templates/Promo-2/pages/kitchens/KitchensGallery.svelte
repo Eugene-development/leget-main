@@ -264,8 +264,8 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="bg-surface-warm px-6 py-section-sm lg:py-section xl:px-1">
-	<div class="mx-auto max-w-screen-xl">
+<section bind:this={sectionEl} class="bg-surface-warm py-section-sm lg:py-section">
+	<div class="p2-container mx-auto">
 		<div class="mb-10 text-center">
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 				<EditableField

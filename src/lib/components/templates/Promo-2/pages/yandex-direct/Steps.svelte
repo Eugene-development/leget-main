@@ -72,7 +72,7 @@
 </script>
 
 <section class="relative overflow-hidden py-section-sm lg:py-section" bind:this={sectionEl}>
-	<div class="mx-auto max-w-7xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<!-- Header -->
 		<div class="mb-16 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
 			<EditableField

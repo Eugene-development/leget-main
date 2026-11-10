@@ -13,9 +13,10 @@
 </script>
 
 <div
-	class="mx-auto flex min-h-10 max-w-screen-xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-2 xl:px-1 {isEditable
+	class="p2-container mx-auto flex min-h-10 flex-wrap items-center justify-between gap-x-6 gap-y-3 py-2 {isEditable
 		? 'pr-14 xl:pr-10'
 		: ''}"
+	style="font-family: var(--font-heading);"
 >
 	<!-- Top links -->
 	<div class="flex min-w-0 flex-wrap items-center gap-x-6 gap-y-2">

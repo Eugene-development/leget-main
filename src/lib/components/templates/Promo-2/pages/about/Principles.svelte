@@ -76,7 +76,7 @@
 	class="relative -mt-12 bg-surface-warm pt-28 pb-section-sm lg:-mt-20 lg:pt-40 lg:pb-section"
 	bind:this={sectionEl}
 >
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<!-- Header -->
 		<div class="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>

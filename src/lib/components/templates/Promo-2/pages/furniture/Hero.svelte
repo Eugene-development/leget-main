@@ -49,7 +49,7 @@
 
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center">
-		<div class="mx-auto w-full max-w-screen-xl px-6 xl:px-1">
+		<div class="p2-container mx-auto w-full">
 			<div class="max-w-2xl">
 				<!-- Label -->
 				<div class="mb-6 opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.3s">

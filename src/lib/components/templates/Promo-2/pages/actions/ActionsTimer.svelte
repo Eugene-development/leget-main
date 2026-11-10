@@ -70,7 +70,7 @@
 </script>
 
 <section class="relative bg-surface pt-16 pb-24 lg:pt-24 lg:pb-32" bind:this={sectionEl}>
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div
 			class="relative flex flex-col items-center gap-16 opacity-0 transition-all duration-700 lg:flex-row lg:justify-between lg:gap-24"
 			class:animate-fade-up={visible}

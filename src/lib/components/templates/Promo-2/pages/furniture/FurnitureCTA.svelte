@@ -48,7 +48,7 @@
 	<div class="absolute top-0 left-0 h-40 w-40 border border-white/5 opacity-50"></div>
 	<div class="absolute right-0 bottom-0 h-64 w-64 border border-white/5 opacity-50"></div>
 
-	<div class="relative mx-auto max-w-screen-xl px-6 text-center xl:px-1">
+	<div class="relative p2-container mx-auto text-center">
 		<div class="opacity-0" class:animate-fade-up={visible}>
 			<EditableField
 				fieldKey="FurnitureCTA.eyebrow"

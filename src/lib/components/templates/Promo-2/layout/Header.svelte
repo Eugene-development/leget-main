@@ -108,15 +108,13 @@
 		<div class="absolute top-3 right-16 z-[100] lg:right-3">
 			<LayoutArticleSettings {editContext} {isEditable} type="Header" title="Меню" />
 		</div>
-		<div
-			class="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-6 lg:h-20 xl:px-1"
-		>
+		<div class="p2-container mx-auto flex h-16 items-center justify-between lg:h-20">
 			<!-- Logo -->
-			<a href="/" class="group flex items-center gap-3" onclick={closeMenu}>
+			<a href="/" class="group flex shrink-0 items-center gap-3" onclick={closeMenu}>
 				{#if data?.logoUrl || imageEditing?.editable}
 					<ImageFallback
 						imagePath={['logoUrl']}
-						class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+						class="h-12 w-auto max-w-44 object-contain object-left transition-transform duration-300 group-hover:scale-105 lg:h-16 lg:max-w-52"
 						src={String(data.logoUrl ?? '')}
 						alt="Логотип {siteName}"
 					/>
@@ -135,7 +133,8 @@
 				{#each mainNav as item}
 					<a
 						href={item.href}
-						class="group relative rounded-sm px-5 py-2.5 text-sm tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
+						class="group relative rounded-sm px-5 py-2.5 text-lg tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
+						style="font-family: var(--font-heading);"
 					>
 						{item.label}
 						<span
@@ -221,7 +220,7 @@
 		{#each mainNav as item}
 			<a
 				href={item.href}
-				class="border-b border-border-light py-4 text-lg tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
+				class="border-b border-border-light py-4 text-xl tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
 				style="font-family: var(--font-heading);"
 				onclick={closeMenu}
 			>

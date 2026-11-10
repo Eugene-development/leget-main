@@ -67,7 +67,7 @@
 	class="relative -mt-12 bg-surface-warm pt-28 pb-section-sm lg:-mt-20 lg:pt-40 lg:pb-section"
 	bind:this={sectionEl}
 >
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<!-- Header -->
 		<div
 			class="mb-16 text-center opacity-0 transition-all duration-700"

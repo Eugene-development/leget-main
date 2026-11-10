@@ -40,7 +40,7 @@
 </script>
 
 <section class="relative bg-surface py-section" id="facades-catalog" bind:this={sectionEl}>
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="mb-16 opacity-0 lg:mb-24" class:animate-fade-up={true}>
 			<h2 class="text-4xl text-primary lg:text-5xl" style="font-family: var(--font-heading);">
 				Коллекция <span class="text-secondary">фасадов</span>

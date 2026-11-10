@@ -71,7 +71,7 @@
 	class="relative overflow-hidden bg-surface-warm py-section-sm lg:py-section"
 	bind:this={sectionEl}
 >
-	<div class="mx-auto max-w-7xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: stats -->
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>

@@ -156,7 +156,7 @@
 	class="relative bg-surface py-section-sm lg:py-section"
 	id="network-section"
 >
-	<div class="mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="grid items-start gap-16 lg:grid-cols-12 lg:gap-12">
 			<!-- Left Column: Locations List -->
 			<div class="flex flex-col opacity-0 lg:col-span-5" class:animate-fade-up={visible}>

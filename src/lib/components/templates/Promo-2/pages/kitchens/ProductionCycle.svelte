@@ -40,8 +40,8 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="relative px-6 py-section-sm lg:py-section xl:px-1">
-	<div class="mx-auto max-w-screen-xl">
+<section bind:this={sectionEl} class="relative py-section-sm lg:py-section">
+	<div class="p2-container mx-auto">
 		<!-- Section Header -->
 		<div
 			class="mb-16 text-center opacity-0 transition-all duration-700"

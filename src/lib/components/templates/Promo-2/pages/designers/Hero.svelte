@@ -39,8 +39,17 @@
 
 	let visible = $state(false);
 	let sectionEl: HTMLElement;
+	let chromeHeight = $state(0);
 
 	onMount(() => {
+		const chrome = document.querySelector<HTMLElement>('[data-scroll-chrome], .promo2-header');
+		const resizeObserver = new ResizeObserver(() => {
+			chromeHeight = chrome?.getBoundingClientRect().height ?? 0;
+		});
+		if (chrome) {
+			chromeHeight = chrome.getBoundingClientRect().height;
+			resizeObserver.observe(chrome);
+		}
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
@@ -50,11 +59,18 @@
 			{ threshold: 0.1 }
 		);
 		if (sectionEl) observer.observe(sectionEl);
-		return () => observer.disconnect();
+		return () => {
+			observer.disconnect();
+			resizeObserver.disconnect();
+		};
 	});
 </script>
 
-<section bind:this={sectionEl} class="relative overflow-hidden bg-primary py-28 lg:py-36">
+<section
+	bind:this={sectionEl}
+	class="relative flex items-center overflow-hidden bg-primary py-12 lg:py-16"
+	style:min-height="calc(100svh - {chromeHeight}px)"
+>
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['image']}
@@ -81,27 +97,8 @@
 		class="absolute top-0 left-0 h-1 w-full bg-linear-to-r from-transparent via-secondary to-transparent opacity-40"
 	></div>
 
-	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="relative p2-container mx-auto w-full">
 		<div class="max-w-2xl">
-			<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
-				<EditableField
-					fieldKey="Hero.label"
-					label="Лейбл"
-					value={String(data?.label ?? 'Партнёрская программа')}
-					{isEditable}
-					onSave={(v) => saveField('label', v)}
-				>
-					{#snippet children(displayValue)}
-						<span
-							class="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-4 py-2 text-[11px] tracking-[0.3em] text-accent uppercase backdrop-blur-sm"
-						>
-							<span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
-							<RichText value={displayValue} />
-						</span>
-					{/snippet}
-				</EditableField>
-			</div>
-
 			<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.4s">
 				<EditableField
 					fieldKey="Hero.title"
@@ -113,7 +110,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="mt-6 text-5xl text-white md:text-6xl lg:text-7xl"
+							class="text-5xl text-white md:text-6xl lg:text-7xl"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -183,19 +180,57 @@
 
 		<!-- Stats row -->
 		<div
-			class="mt-20 grid grid-cols-2 gap-px border border-white/10 opacity-0 md:grid-cols-4"
+			class="stats-glass mt-20 grid grid-cols-2 opacity-0 md:grid-cols-4"
 			class:animate-fade-up={visible}
 			style="animation-delay: 1s"
 		>
 			{#each stats as stat}
-				<div class="flex flex-col gap-1.5 bg-white/5 px-6 py-5 backdrop-blur-sm xl:px-8">
+				<div class="stats-glass-item flex flex-col gap-1.5 px-6 py-6 xl:px-8">
 					<span
 						class="text-3xl font-light text-accent-light"
 						style="font-family: var(--font-heading);">{stat.value}</span
 					>
-					<span class="text-xs tracking-wide text-white/40">{stat.label}</span>
+					<span class="text-xs tracking-wide text-white/80">{stat.label}</span>
 				</div>
 			{/each}
 		</div>
 	</div>
 </section>
+
+<style>
+	.stats-glass {
+		overflow: hidden;
+		border: 1px solid rgb(255 255 255 / 22%);
+		border-radius: 1.5rem;
+		background: linear-gradient(
+			135deg,
+			rgb(255 255 255 / 16%),
+			rgb(255 255 255 / 4%) 55%,
+			rgb(255 255 255 / 9%)
+		);
+		box-shadow:
+			0 16px 40px rgb(0 0 0 / 18%),
+			inset 0 1px 0 rgb(255 255 255 / 24%),
+			inset 0 -1px 0 rgb(255 255 255 / 6%);
+		-webkit-backdrop-filter: blur(24px) saturate(145%);
+		backdrop-filter: blur(24px) saturate(145%);
+	}
+
+	.stats-glass-item:nth-child(even) {
+		border-left: 1px solid rgb(255 255 255 / 14%);
+	}
+
+	.stats-glass-item:nth-child(n + 3) {
+		border-top: 1px solid rgb(255 255 255 / 14%);
+	}
+
+	@media (min-width: 768px) {
+		.stats-glass-item + .stats-glass-item {
+			border-left: 1px solid rgb(255 255 255 / 14%);
+		}
+
+		.stats-glass-item:nth-child(n + 3) {
+			border-top: 0;
+		}
+	}
+</style>

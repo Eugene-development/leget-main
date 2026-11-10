@@ -100,7 +100,7 @@
 		class="absolute right-0 bottom-0 h-80 w-80 translate-x-1/3 translate-y-1/3 border border-white/5"
 	></div>
 
-	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="relative p2-container mx-auto">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
 			<!-- Left: text -->
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
@@ -172,7 +172,18 @@
 								/>
 							</svg>
 						</div>
-						<span class="text-sm text-white/60">{String(data?.phone ?? '')}</span>
+						<EditableField
+							fieldKey="DesignersForm.phone"
+							label="Телефон"
+							value={String(data?.phone ?? '+7 000 000-00-00')}
+							{isEditable}
+							richText={false}
+							onSave={(v) => saveField('phone', v)}
+						>
+							{#snippet children(displayValue)}
+								<span class="text-sm text-white/60">{displayValue}</span>
+							{/snippet}
+						</EditableField>
 					</div>
 					<div class="flex items-center gap-3">
 						<div class="flex h-9 w-9 shrink-0 items-center justify-center border border-white/10">
@@ -190,7 +201,18 @@
 								/>
 							</svg>
 						</div>
-						<span class="text-sm text-white/60">{String(data?.email ?? '')}</span>
+						<EditableField
+							fieldKey="DesignersForm.email"
+							label="Электронная почта"
+							value={String(data?.email ?? 'info@mysite.com')}
+							{isEditable}
+							richText={false}
+							onSave={(v) => saveField('email', v)}
+						>
+							{#snippet children(displayValue)}
+								<span class="text-sm text-white/60">{displayValue}</span>
+							{/snippet}
+						</EditableField>
 					</div>
 				</div>
 			</div>

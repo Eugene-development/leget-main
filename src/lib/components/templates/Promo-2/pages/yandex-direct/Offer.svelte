@@ -60,7 +60,7 @@
 		class="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-border-medium to-transparent"
 	></div>
 
-	<div class="mx-auto max-w-7xl px-6 xl:px-1">
+	<div class="p2-container mx-auto">
 		<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: offer info -->
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>

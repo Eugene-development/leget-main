@@ -62,7 +62,7 @@
 
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center pt-40 pb-32">
-		<div class="mx-auto w-full max-w-7xl px-6 xl:px-1">
+		<div class="p2-container mx-auto w-full">
 			<div class="max-w-2xl">
 				<!-- Label -->
 				<div

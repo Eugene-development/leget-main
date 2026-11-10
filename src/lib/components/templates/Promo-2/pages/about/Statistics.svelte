@@ -41,11 +41,11 @@
 	];
 </script>
 
-<section class="relative overflow-hidden bg-stone-900 px-6 py-20 text-white lg:py-32">
+<section class="relative overflow-hidden bg-stone-900 py-20 text-white lg:py-32">
 	<div
 		class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,#78350f22,transparent_60%)]"
 	></div>
-	<div class="relative mx-auto max-w-6xl">
+	<div class="relative p2-container mx-auto">
 		<div class="mb-16 text-center">
 			<EditableField
 				fieldKey="Statistics.title"

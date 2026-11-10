@@ -60,7 +60,7 @@
 		></div>
 	</div>
 
-	<div class="relative z-10 mx-auto max-w-screen-xl px-6 text-center xl:px-1">
+	<div class="relative z-10 p2-container mx-auto text-center">
 		<div class="mb-6 opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.3s">
 			<EditableField
 				fieldKey="Hero.label"

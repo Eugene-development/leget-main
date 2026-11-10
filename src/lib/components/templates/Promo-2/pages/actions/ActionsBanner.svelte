@@ -41,8 +41,8 @@
 	});
 </script>
 
-<section class="relative z-10 px-6 xl:px-1" bind:this={sectionEl}>
-	<div class="mx-auto max-w-screen-xl">
+<section class="relative z-10" bind:this={sectionEl}>
+	<div class="p2-container mx-auto">
 		<div
 			class="relative overflow-hidden opacity-0 transition-all duration-700"
 			class:animate-scale-in={visible}

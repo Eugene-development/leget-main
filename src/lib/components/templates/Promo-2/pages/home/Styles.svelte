@@ -64,8 +64,8 @@
 	});
 </script>
 
-<section class="relative z-10 mt-16 px-6 lg:mt-48 xl:px-1" bind:this={sectionEl}>
-	<div class="mx-auto max-w-screen-xl">
+<section class="relative z-10 mt-16 lg:mt-48" bind:this={sectionEl}>
+	<div class="p2-container mx-auto">
 		<!-- Section Header -->
 		<div class="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
 			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>

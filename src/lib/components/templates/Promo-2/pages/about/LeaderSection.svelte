@@ -60,7 +60,7 @@
 		class="absolute -top-32 -right-32 h-96 w-96 rounded-full border border-accent/10 lg:h-[36rem] lg:w-[36rem]"
 	></div>
 
-	<div class="relative mx-auto max-w-screen-xl px-6 xl:px-1">
+	<div class="relative p2-container mx-auto">
 		<div class="flex flex-col items-center justify-between gap-16 lg:flex-row lg:gap-32">
 			<!-- Photo -->
 			<div
