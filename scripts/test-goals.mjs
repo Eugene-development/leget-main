@@ -104,12 +104,13 @@ const removeVariants = installGoalTracking(
 	(...args) => calls.push(args)
 );
 for (const goal of registry.filter((goal) => goal.baseId)) {
+	config.template = goal.templates[0];
 	const variantButton = new TestElement(goal.baseId);
 	variantButton.dataset.goalVariant = goal.variant;
 	click(new TestElement(null, variantButton));
 	assert.deepEqual(
 		calls.splice(0),
-		[[123, 'reachGoal', templateGoalName('Promo-1', goal.id)]],
+		[[123, 'reachGoal', templateGoalName(config.template, goal.id)]],
 		'one event per variant click'
 	);
 	variantButton.dataset.goalVariant = 'unregistered-sensitive-value';
@@ -118,6 +119,7 @@ for (const goal of registry.filter((goal) => goal.baseId)) {
 	click(variantButton);
 	assert.equal(calls.length, 0, 'missing/unknown variants must never reach analytics');
 }
+config.template = 'Promo-1';
 for (const id of ['mebel_project_model_open', 'mebel_project_model_close']) {
 	const goal = registry.find((goal) => goal.id === id);
 	assert.ok(goal, `missing 3D goal: ${id}`);
@@ -167,3 +169,11 @@ console.log(
 console.log(
 	'PASS: nested targets, template/counter switching, disabled/inert/editor/no-counter, unknown/wrong-template goals, cleanup, exception isolation, unique IDs.'
 );
+
+for (const goal of registry.filter(
+	(goal) => goal.source === 'templates/Promo-2/forms/RequestModal.svelte'
+)) {
+	assert.deepEqual(goal.templates, ['Promo-2']);
+	assert.ok(goal.locations.length > 0, `${goal.id}: missing callers`);
+	assert.ok(goal.locations.every((location) => location.template === 'Promo-2'));
+}

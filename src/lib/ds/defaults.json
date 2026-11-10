@@ -2,6 +2,24 @@
     "1": {
         "name": "Promo-1",
         "pages": {
+            "/privacy": {
+                "PrivacyPolicy": {
+                    "operatorName": "",
+                    "inn": "",
+                    "registrationNumber": "",
+                    "address": "",
+                    "email": "",
+                    "domains": "",
+                    "effectiveDate": "",
+                    "processingDetails": "",
+                    "retentionDetails": "",
+                    "recipients": "",
+                    "storageDetails": "",
+                    "analyticsDetails": "",
+                    "crossBorderDetails": "",
+                    "additionalTerms": ""
+                }
+            },
             "__global__": {
                 "Footer": {
                     "siteName": "Логотип"
@@ -1990,6 +2008,24 @@
     "2": {
         "name": "Promo-2",
         "pages": {
+            "/privacy": {
+                "PrivacyPolicy": {
+                    "operatorName": "",
+                    "inn": "",
+                    "registrationNumber": "",
+                    "address": "",
+                    "email": "",
+                    "domains": "",
+                    "effectiveDate": "",
+                    "processingDetails": "",
+                    "retentionDetails": "",
+                    "recipients": "",
+                    "storageDetails": "",
+                    "analyticsDetails": "",
+                    "crossBorderDetails": "",
+                    "additionalTerms": ""
+                }
+            },
             "/": {
                 "Hero": {
                     "label": "Белорусская фабрика мебели",
@@ -2278,6 +2314,7 @@
                 "ActionsBanner": {
                     "eyebrow": "Специальное предложение",
                     "title": "Кухня мечты −30%",
+                    "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-actions-banner-2-8-4-1-20261109.webp",
                     "description": "",
                     "ctaText": "Консультация по акции",
                     "ctaLink": "/contact"
@@ -2315,7 +2352,7 @@
                     "description": "Отточенный годами процесс создания премиальной мебели.",
                     "designImage": "https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg",
                     "productionImage": "https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg",
-                    "assemblyImage": ""
+                    "assemblyImage": "https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-assembly-2-9-3-1-20261109.webp"
                 },
                 "KitchenStyles": {
                     "heading": "Варианты стилистических решений",
@@ -2475,6 +2512,24 @@
     "3": {
         "name": "Promo-3",
         "pages": {
+            "/privacy": {
+                "PrivacyPolicy": {
+                    "operatorName": "",
+                    "inn": "",
+                    "registrationNumber": "",
+                    "address": "",
+                    "email": "",
+                    "domains": "",
+                    "effectiveDate": "",
+                    "processingDetails": "",
+                    "retentionDetails": "",
+                    "recipients": "",
+                    "storageDetails": "",
+                    "analyticsDetails": "",
+                    "crossBorderDetails": "",
+                    "additionalTerms": ""
+                }
+            },
             "/": {
                 "Hero": {
                     "tag": "Коллекция 2026",

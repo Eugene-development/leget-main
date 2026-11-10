@@ -258,6 +258,7 @@
 	}
 
 	const SINGLE_VERSION_THEME_DEFAULTS: Record<string, 'light' | 'dark'> = {
+		'/privacy:PrivacyPolicy': 'light',
 		'/mebel/{category}/{project}:MebelProjectModel': 'light',
 		'/:HomeFAQ': 'light',
 		'/actions:Hero': 'dark',

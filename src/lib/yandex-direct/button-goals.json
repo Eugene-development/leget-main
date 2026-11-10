@@ -2105,6 +2105,492 @@
 		"locations": [{ "template": "Promo-1", "page": "/vacancy", "article": "1.27.3.1" }]
 	},
 	{
+		"id": "request_modal_close_consultation",
+		"action": "close",
+		"label": "Закрыть форму — Бесплатная консультация",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "consultation",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
+		]
+	},
+	{
+		"id": "request_modal_close_showroom",
+		"action": "close",
+		"label": "Закрыть форму — Запись в салон",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "showroom",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
+			{ "template": "Promo-2", "page": "/facades", "article": "2.5.3.1" },
+			{ "template": "Promo-2", "page": "/furniture", "article": "2.6.4.1" },
+			{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.5.1" },
+			{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.2.1" },
+			{ "template": "Promo-2", "page": "/styles", "article": "2.4.3.1" },
+			{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.5.1" }
+		]
+	},
+	{
+		"id": "request_modal_close_home_designer",
+		"action": "close",
+		"label": "Закрыть форму — Дизайнер на дом",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "home-designer",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/", "article": "2.1.1.1" },
+			{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.3.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_close_kitchen_project",
+		"action": "close",
+		"label": "Закрыть форму — Проект кухни",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "kitchen-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.1.1" }]
+	},
+	{
+		"id": "request_modal_close_wardrobe_project",
+		"action": "close",
+		"label": "Закрыть форму — Проект шкафа",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "wardrobe-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.1.1" }]
+	},
+	{
+		"id": "request_modal_close_design_project",
+		"action": "close",
+		"label": "Закрыть форму — Дизайн-проект",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "design-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/about", "article": "2.2.7.1" }]
+	},
+	{
+		"id": "request_modal_close_estimate",
+		"action": "close",
+		"label": "Закрыть форму — Расчёт стоимости",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "estimate",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }
+		]
+	},
+	{
+		"id": "request_modal_close_action_consultation",
+		"action": "close",
+		"label": "Закрыть форму — Консультация по акции",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "action-consultation",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.4.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.6.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.3.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.2.1" }
+		]
+	},
+	{
+		"id": "request_modal_close_partnership",
+		"action": "close",
+		"label": "Закрыть форму — Партнёрство",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "partnership",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/designers", "article": "2.13.3.1" },
+			{ "template": "Promo-2", "page": "/designers", "article": "2.13.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_close_careers",
+		"action": "close",
+		"label": "Закрыть форму — Отклик на вакансию",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_close",
+		"variant": "careers",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/careers", "article": "2.12.3.1" },
+			{ "template": "Promo-2", "page": "/careers", "article": "2.12.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_consultation",
+		"action": "close",
+		"label": "Вернуться на сайт — Бесплатная консультация",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "consultation",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_showroom",
+		"action": "close",
+		"label": "Вернуться на сайт — Запись в салон",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "showroom",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
+			{ "template": "Promo-2", "page": "/facades", "article": "2.5.3.1" },
+			{ "template": "Promo-2", "page": "/furniture", "article": "2.6.4.1" },
+			{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.5.1" },
+			{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.2.1" },
+			{ "template": "Promo-2", "page": "/styles", "article": "2.4.3.1" },
+			{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.5.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_home_designer",
+		"action": "close",
+		"label": "Вернуться на сайт — Дизайнер на дом",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "home-designer",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/", "article": "2.1.1.1" },
+			{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.3.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_kitchen_project",
+		"action": "close",
+		"label": "Вернуться на сайт — Проект кухни",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "kitchen-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.1.1" }]
+	},
+	{
+		"id": "request_modal_success_close_wardrobe_project",
+		"action": "close",
+		"label": "Вернуться на сайт — Проект шкафа",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "wardrobe-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.1.1" }]
+	},
+	{
+		"id": "request_modal_success_close_design_project",
+		"action": "close",
+		"label": "Вернуться на сайт — Дизайн-проект",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "design-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/about", "article": "2.2.7.1" }]
+	},
+	{
+		"id": "request_modal_success_close_estimate",
+		"action": "close",
+		"label": "Вернуться на сайт — Расчёт стоимости",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "estimate",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_action_consultation",
+		"action": "close",
+		"label": "Вернуться на сайт — Консультация по акции",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "action-consultation",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.4.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.6.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.3.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.2.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_partnership",
+		"action": "close",
+		"label": "Вернуться на сайт — Партнёрство",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "partnership",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/designers", "article": "2.13.3.1" },
+			{ "template": "Promo-2", "page": "/designers", "article": "2.13.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_success_close_careers",
+		"action": "close",
+		"label": "Вернуться на сайт — Отклик на вакансию",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_success_close",
+		"variant": "careers",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/careers", "article": "2.12.3.1" },
+			{ "template": "Promo-2", "page": "/careers", "article": "2.12.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_consultation",
+		"action": "submit_click",
+		"label": "Отправить заявку — Бесплатная консультация",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "consultation",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_showroom",
+		"action": "submit_click",
+		"label": "Отправить заявку — Запись в салон",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "showroom",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
+			{ "template": "Promo-2", "page": "/facades", "article": "2.5.3.1" },
+			{ "template": "Promo-2", "page": "/furniture", "article": "2.6.4.1" },
+			{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.5.1" },
+			{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.2.1" },
+			{ "template": "Promo-2", "page": "/styles", "article": "2.4.3.1" },
+			{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.5.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_home_designer",
+		"action": "submit_click",
+		"label": "Отправить заявку — Дизайнер на дом",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "home-designer",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/", "article": "2.1.1.1" },
+			{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.3.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_kitchen_project",
+		"action": "submit_click",
+		"label": "Отправить заявку — Проект кухни",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "kitchen-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.1.1" }]
+	},
+	{
+		"id": "request_modal_submit_wardrobe_project",
+		"action": "submit_click",
+		"label": "Отправить заявку — Проект шкафа",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "wardrobe-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.1.1" }]
+	},
+	{
+		"id": "request_modal_submit_design_project",
+		"action": "submit_click",
+		"label": "Отправить заявку — Дизайн-проект",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "design-project",
+		"serviceType": null,
+		"locations": [{ "template": "Promo-2", "page": "/about", "article": "2.2.7.1" }]
+	},
+	{
+		"id": "request_modal_submit_estimate",
+		"action": "submit_click",
+		"label": "Отправить заявку — Расчёт стоимости",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "estimate",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" },
+			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_action_consultation",
+		"action": "submit_click",
+		"label": "Отправить заявку — Консультация по акции",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "action-consultation",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.4.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.6.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.3.1" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.2.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_partnership",
+		"action": "submit_click",
+		"label": "Отправить заявку — Партнёрство",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "partnership",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/designers", "article": "2.13.3.1" },
+			{ "template": "Promo-2", "page": "/designers", "article": "2.13.1.1" }
+		]
+	},
+	{
+		"id": "request_modal_submit_careers",
+		"action": "submit_click",
+		"label": "Отправить заявку — Отклик на вакансию",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/forms/RequestModal.svelte",
+		"route": null,
+		"mock": false,
+		"baseId": "request_modal_submit",
+		"variant": "careers",
+		"serviceType": null,
+		"locations": [
+			{ "template": "Promo-2", "page": "/careers", "article": "2.12.3.1" },
+			{ "template": "Promo-2", "page": "/careers", "article": "2.12.1.1" }
+		]
+	},
+	{
 		"id": "layout_footer_open_1",
 		"action": "open",
 		"label": "Админ",
@@ -2113,6 +2599,26 @@
 		"route": null,
 		"mock": false,
 		"locations": [{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" }]
+	},
+	{
+		"id": "layout_header_showroom_open_1",
+		"action": "open",
+		"label": "Header",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" }]
+	},
+	{
+		"id": "layout_header_showroom_open_2",
+		"action": "open",
+		"label": "Header",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/layout/Header.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" }]
 	},
 	{
 		"id": "layout_header_open_2",
@@ -2125,6 +2631,80 @@
 		"locations": [{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" }]
 	},
 	{
+		"id": "pages_about_aboutcta_open",
+		"action": "open",
+		"label": "AboutCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/about/AboutCTA.svelte",
+		"route": "/about",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/about", "article": "2.2.7.1" }]
+	},
+	{
+		"id": "pages_actions_actionsbanner_open",
+		"action": "open",
+		"label": "ActionsBanner",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/actions/ActionsBanner.svelte",
+		"route": "/actions",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/actions", "article": "2.8.4.1" }]
+	},
+	{
+		"id": "pages_actions_actionscta_open",
+		"action": "open",
+		"label": "ActionsCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/actions/ActionsCTA.svelte",
+		"route": "/actions",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/actions", "article": "2.8.6.1" }]
+	},
+	{
+		"id": "pages_actions_actionscards_open",
+		"action": "open",
+		"label": "Консультация",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/actions/ActionsCards.svelte",
+		"route": "/actions",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/actions", "article": "2.8.3.1" }]
+	},
+	{
+		"id": "pages_actions_actionstimer_open",
+		"action": "open",
+		"label": "ActionsTimer",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/actions/ActionsTimer.svelte",
+		"route": "/actions",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/actions", "article": "2.8.2.1" }]
+	},
+	{
+		"id": "pages_actions_hero_herolink_open",
+		"action": "open",
+		"label": "HeroLink",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/actions/Hero/HeroLink.svelte",
+		"route": "/actions",
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
+			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" }
+		]
+	},
+	{
+		"id": "pages_actions_hero_v1_hero_open",
+		"action": "open",
+		"label": "Hero",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/actions/Hero/v1/Hero.svelte",
+		"route": "/actions",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" }]
+	},
+	{
 		"id": "pages_careers_careersform_submit_click_1",
 		"action": "submit_click",
 		"label": "Отправить резюме",
@@ -2133,6 +2713,26 @@
 		"route": "/careers",
 		"mock": false,
 		"locations": [{ "template": "Promo-2", "page": "/careers", "article": "2.12.4.1" }]
+	},
+	{
+		"id": "pages_careers_careersvacancies_open",
+		"action": "open",
+		"label": "Откликнуться",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/careers/CareersVacancies.svelte",
+		"route": "/careers",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/careers", "article": "2.12.3.1" }]
+	},
+	{
+		"id": "pages_careers_hero_open",
+		"action": "open",
+		"label": "Отправить резюме",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/careers/Hero.svelte",
+		"route": "/careers",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/careers", "article": "2.12.1.1" }]
 	},
 	{
 		"id": "pages_contact_contactform_submit_click_1",
@@ -2153,6 +2753,166 @@
 		"route": "/designers",
 		"mock": false,
 		"locations": [{ "template": "Promo-2", "page": "/designers", "article": "2.13.5.1" }]
+	},
+	{
+		"id": "pages_designers_designerstracks_open",
+		"action": "open",
+		"label": "Оставить заявку",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/designers/DesignersTracks.svelte",
+		"route": "/designers",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/designers", "article": "2.13.3.1" }]
+	},
+	{
+		"id": "pages_designers_hero_open",
+		"action": "open",
+		"label": "Стать партнёром",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/designers/Hero.svelte",
+		"route": "/designers",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/designers", "article": "2.13.1.1" }]
+	},
+	{
+		"id": "pages_facades_facadescta_open",
+		"action": "open",
+		"label": "FacadesCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/facades/FacadesCTA.svelte",
+		"route": "/facades",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/facades", "article": "2.5.3.1" }]
+	},
+	{
+		"id": "pages_furniture_furniturecta_open",
+		"action": "open",
+		"label": "FurnitureCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/furniture/FurnitureCTA.svelte",
+		"route": "/furniture",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/furniture", "article": "2.6.4.1" }]
+	},
+	{
+		"id": "pages_home_cta_open",
+		"action": "open",
+		"label": "CTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/home/CTA.svelte",
+		"route": "/",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" }]
+	},
+	{
+		"id": "pages_home_hero_open",
+		"action": "open",
+		"label": "Hero",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/home/Hero.svelte",
+		"route": "/",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/", "article": "2.1.1.1" }]
+	},
+	{
+		"id": "pages_kitchens_hero_open",
+		"action": "open",
+		"label": "Hero",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/kitchens/Hero.svelte",
+		"route": "/kitchens",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.1.1" }]
+	},
+	{
+		"id": "pages_kitchens_kitchenscta_open",
+		"action": "open",
+		"label": "KitchensCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/kitchens/KitchensCTA.svelte",
+		"route": "/kitchens",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/kitchens", "article": "2.9.5.1" }]
+	},
+	{
+		"id": "pages_showrooms_showroomscta_open",
+		"action": "open",
+		"label": "ShowroomsCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/showrooms/ShowroomsCTA.svelte",
+		"route": "/showrooms",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.3.1" }]
+	},
+	{
+		"id": "pages_showrooms_showroomsmap_open",
+		"action": "open",
+		"label": "Запись в салон",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/showrooms/ShowroomsMap.svelte",
+		"route": "/showrooms",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/showrooms", "article": "2.11.2.1" }]
+	},
+	{
+		"id": "pages_styles_stylescta_open",
+		"action": "open",
+		"label": "StylesCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/styles/StylesCTA.svelte",
+		"route": "/styles",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/styles", "article": "2.4.3.1" }]
+	},
+	{
+		"id": "pages_wardrobes_hero_open",
+		"action": "open",
+		"label": "Hero",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/wardrobes/Hero.svelte",
+		"route": "/wardrobes",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.1.1" }]
+	},
+	{
+		"id": "pages_wardrobes_wardrobescta_open",
+		"action": "open",
+		"label": "WardrobesCTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/wardrobes/WardrobesCTA.svelte",
+		"route": "/wardrobes",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/wardrobes", "article": "2.10.5.1" }]
+	},
+	{
+		"id": "pages_yandex_direct_cta_open",
+		"action": "open",
+		"label": "CTA",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/yandex-direct/CTA.svelte",
+		"route": "/yandex-direct",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }]
+	},
+	{
+		"id": "pages_yandex_direct_hero_open",
+		"action": "open",
+		"label": "Hero",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/yandex-direct/Hero.svelte",
+		"route": "/yandex-direct",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.1.1" }]
+	},
+	{
+		"id": "pages_yandex_direct_offer_open",
+		"action": "open",
+		"label": "Offer",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/yandex-direct/Offer.svelte",
+		"route": "/yandex-direct",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }]
 	},
 	{
 		"id": "layout_footer_open_1",

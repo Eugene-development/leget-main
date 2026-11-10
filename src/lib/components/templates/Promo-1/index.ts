@@ -3,6 +3,7 @@ import UniversityProgram from './pages/university/UniversityProgram.svelte';
 import UniversityJournal from './pages/university/UniversityJournal.svelte';
 import UniversityApproach from './pages/university/UniversityApproach.svelte';
 import type { Component } from 'svelte';
+import PrivacyPolicy from '../../legal/PrivacyPolicy.svelte';
 import GlassRequest from './pages/steklo-i-zerkala/GlassRequest.svelte';
 
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
@@ -219,6 +220,7 @@ import PliitkaCTA from './pages/plitka/PliitkaCTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/privacy': { PrivacyPolicy },
 	'/steklo-i-zerkala': { GlassRequest },
 	'/university': { UniversityHero, UniversityProgram, UniversityJournal, UniversityApproach },
 	// Страница 404. Рендерится и по прямому адресу /404, и как тело ошибки

@@ -1320,6 +1320,12 @@
 		"source": "templates/Promo-1/pages/okna/OknaCTA.svelte"
 	},
 	{
+		"article": "1.42.1.1",
+		"template": "Promo-1",
+		"page": "/privacy",
+		"source": "legal/PrivacyPolicy.svelte"
+	},
+	{
 		"article": "1.Б.1.1",
 		"template": "Promo-1",
 		"page": "(layout)",
@@ -1788,6 +1794,12 @@
 		"source": "templates/Promo-2/pages/yandex-direct/CTA.svelte"
 	},
 	{
+		"article": "2.15.1.1",
+		"template": "Promo-2",
+		"page": "/privacy",
+		"source": "legal/PrivacyPolicy.svelte"
+	},
+	{
 		"article": "2.В.1.1",
 		"template": "Promo-2",
 		"page": "(layout)",
@@ -2050,6 +2062,12 @@
 		"template": "Promo-3",
 		"page": "/yandex-direct",
 		"source": "templates/Promo-3/pages/yandex-direct/CTA.svelte"
+	},
+	{
+		"article": "3.10.1.1",
+		"template": "Promo-3",
+		"page": "/privacy",
+		"source": "legal/PrivacyPolicy.svelte"
 	},
 	{
 		"article": "3.М.1.1",

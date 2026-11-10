@@ -28,15 +28,20 @@
 	const pageSlug = $derived(page?.slug ?? null);
 	const seo = $derived((page?.seo as PageSeoData | undefined) ?? null);
 	const isUniversity = $derived(templateId === 1 && pageSlug === '/university');
+	const isPrivacy = $derived(pageSlug === '/privacy');
 	const metaTitle = $derived(
-		isUniversity && !seo?.rawTitle
-			? 'Университет — о дизайне, ремонте и доме'
-			: (seo?.title ?? site?.name)
+		isPrivacy && !seo?.rawTitle
+			? `Политика конфиденциальности${site?.name ? ` — ${site.name}` : ''}`
+			: isUniversity && !seo?.rawTitle
+				? 'Университет — о дизайне, ремонте и доме'
+				: (seo?.title ?? site?.name)
 	);
 	const metaDescription = $derived(
-		isUniversity && !seo?.rawDescription
-			? 'Универ: разбираемся в дизайне, ремонте, мебели, фурнитуре, технике, сантехнике и аксессуарах. Начните с интересной вам дисциплины.'
-			: (seo?.description ?? site?.metaDescription)
+		isPrivacy && !seo?.rawDescription
+			? 'Порядок обработки персональных данных, сведения об операторе, сроки хранения и права пользователей сайта.'
+			: isUniversity && !seo?.rawDescription
+				? 'Универ: разбираемся в дизайне, ремонте, мебели, фурнитуре, технике, сантехнике и аксессуарах. Начните с интересной вам дисциплины.'
+				: (seo?.description ?? site?.metaDescription)
 	);
 
 	// Try both camelCase and snake_case for licenseId to be resilient to GraphQL mapping

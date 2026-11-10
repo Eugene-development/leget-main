@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -113,9 +114,14 @@
 					onSave={(v) => saveField('ctaText', v)}
 				>
 					{#snippet children(displayValue)}
-						<a
-							href={String(data?.ctaLink ?? '/contact')}
+						<button
 							class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-accent bg-accent px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:border-accent-light hover:bg-accent-light"
+							type="button"
+							data-metrika-goal="pages_actions_actionscta_open"
+							data-goal-action="open"
+							onclick={() => {
+								if (!isEditable) openPromo2Form('action-consultation', '');
+							}}
 						>
 							<RichText value={displayValue} />
 							<svg
@@ -131,7 +137,7 @@
 									d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
 								/>
 							</svg>
-						</a>
+						</button>
 					{/snippet}
 				</EditableField>
 

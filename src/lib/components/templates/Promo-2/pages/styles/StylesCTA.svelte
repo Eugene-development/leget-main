@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.4.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -79,9 +80,14 @@
 				{/snippet}
 			</EditableField>
 
-			<a
-				href={String(data?.ctaLink ?? '/contact')}
+			<button
 				class="group inline-flex items-center justify-center gap-3 rounded-sm border border-primary bg-primary px-8 py-4 text-sm tracking-wider text-white uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
+				type="button"
+				data-metrika-goal="pages_styles_stylescta_open"
+				data-goal-action="open"
+				onclick={() => {
+					if (!isEditable) openPromo2Form('showroom', 'Выбор стиля кухни');
+				}}
 			>
 				<EditableField
 					fieldKey="StylesCTA.ctaText"
@@ -103,7 +109,7 @@
 				>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
 				</svg>
-			</a>
+			</button>
 		</div>
 	</div>
 </section>

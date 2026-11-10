@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.9.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -118,9 +119,14 @@
 		</div>
 
 		<div class="mt-10 opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.9s">
-			<a
-				href={String(data?.ctaLink ?? '/contact')}
+			<button
 				class="group inline-flex items-center gap-3 rounded-sm border border-white bg-white px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:bg-transparent hover:text-white"
+				type="button"
+				data-metrika-goal="pages_kitchens_hero_open"
+				data-goal-action="open"
+				onclick={() => {
+					if (!isEditable) openPromo2Form('kitchen-project', '');
+				}}
 			>
 				<EditableField
 					fieldKey="Hero.ctaText"
@@ -142,7 +148,7 @@
 				>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
 				</svg>
-			</a>
+			</button>
 		</div>
 	</div>
 

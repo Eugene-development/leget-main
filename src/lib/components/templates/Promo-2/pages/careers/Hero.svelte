@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.12.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -150,12 +151,17 @@
 						/>
 					</svg>
 				</a>
-				<a
-					href="#open-resume"
+				<button
 					class="inline-flex items-center gap-2 rounded-sm border border-white/20 px-8 py-4 text-xs tracking-[0.15em] text-white/80 uppercase transition-all duration-500 hover:border-white/50 hover:text-white"
+					type="button"
+					data-metrika-goal="pages_careers_hero_open"
+					data-goal-action="open"
+					onclick={() => {
+						if (!isEditable) openPromo2Form('careers', '');
+					}}
 				>
 					Отправить резюме
-				</a>
+				</button>
 			</div>
 		</div>
 

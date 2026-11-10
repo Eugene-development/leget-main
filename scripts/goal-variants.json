@@ -114,5 +114,47 @@
 			"label": "Плитка",
 			"route": "/plitka"
 		}
+	],
+	"templates/Promo-2/forms/RequestModal.svelte": [
+		{
+			"value": "consultation",
+			"label": "Бесплатная консультация"
+		},
+		{
+			"value": "showroom",
+			"label": "Запись в салон"
+		},
+		{
+			"value": "home-designer",
+			"label": "Дизайнер на дом"
+		},
+		{
+			"value": "kitchen-project",
+			"label": "Проект кухни"
+		},
+		{
+			"value": "wardrobe-project",
+			"label": "Проект шкафа"
+		},
+		{
+			"value": "design-project",
+			"label": "Дизайн-проект"
+		},
+		{
+			"value": "estimate",
+			"label": "Расчёт стоимости"
+		},
+		{
+			"value": "action-consultation",
+			"label": "Консультация по акции"
+		},
+		{
+			"value": "partnership",
+			"label": "Партнёрство"
+		},
+		{
+			"value": "careers",
+			"label": "Отклик на вакансию"
+		}
 	]
 }

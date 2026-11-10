@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -262,9 +263,14 @@
 
 							<!-- CTA -->
 							<div class="mt-4">
-								<a
-									href={String(data?.consultLink ?? '/contact')}
+								<button
 									class="group/btn flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-4 py-3 text-[10px] tracking-[0.12em] text-white uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
+									type="button"
+									data-metrika-goal="pages_actions_actionscards_open"
+									data-goal-action="open"
+									onclick={() => {
+										if (!isEditable) openPromo2Form('action-consultation', card.title);
+									}}
 								>
 									Консультация
 									<svg
@@ -280,7 +286,7 @@
 											d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
 										/>
 									</svg>
-								</a>
+								</button>
 							</div>
 						</div>
 					</div>

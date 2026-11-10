@@ -3,6 +3,8 @@
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import RequestModal from '../forms/RequestModal.svelte';
+	import { openPromo2Form, promo2Request } from '../forms/request';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
@@ -39,12 +41,12 @@
 	);
 
 	const ctaText = $derived(typeof data?.ctaText === 'string' ? data.ctaText : 'Записаться в салон');
-	const ctaLink = $derived(typeof data?.ctaLink === 'string' ? data.ctaLink : '/contact');
 
 	let scrolled = $state(false);
 	let showTopBar = $state(true);
 	let lastScrollY = $state(0);
 	let mobileMenuOpen = $state(false);
+	let menuButton: HTMLButtonElement;
 	let showLoginModal = $state(false);
 	let topBarHeight = $state(40);
 
@@ -145,9 +147,15 @@
 
 			<!-- CTA Desktop -->
 			<div class="hidden items-center gap-4 lg:flex">
-				<a
-					href={ctaLink}
+				<button
 					class="cta-btn group relative flex items-center gap-2 overflow-hidden rounded-lg px-5 py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-[0.98]"
+					type="button"
+					data-metrika-goal="layout_header_showroom_open_1"
+					data-goal-action="open"
+					onclick={() => {
+						closeMenu();
+						if (!isEditable) openPromo2Form('showroom');
+					}}
 				>
 					<span class="cta-shimmer"></span>
 					<span class="relative z-10">{ctaText}</span>
@@ -164,12 +172,13 @@
 							d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
 						/>
 					</svg>
-				</a>
+				</button>
 			</div>
 
 			<!-- Mobile Burger -->
 			<button
 				class="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+				bind:this={menuButton}
 				onclick={toggleMenu}
 				aria-label="Меню"
 			>
@@ -234,10 +243,16 @@
 	</div>
 
 	<div class="mt-auto px-8 pt-6 pb-4">
-		<a
-			href={ctaLink}
-			onclick={closeMenu}
+		<button
 			class="cta-btn group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-lg px-5 py-3.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-[0.98]"
+			type="button"
+			data-metrika-goal="layout_header_showroom_open_2"
+			data-goal-action="open"
+			onclick={() => {
+				closeMenu();
+				menuButton.focus({ preventScroll: true });
+				if (!isEditable) openPromo2Form('showroom');
+			}}
 		>
 			<span class="cta-shimmer"></span>
 			<span class="relative z-10">{ctaText}</span>
@@ -254,7 +269,7 @@
 					d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
 				/>
 			</svg>
-		</a>
+		</button>
 	</div>
 
 	<div class="border-t border-border-light px-8 py-6">
@@ -313,6 +328,12 @@
 
 {#if showLoginModal}
 	<LoginModal onClose={() => (showLoginModal = false)} />
+{/if}
+
+{#if $promo2Request && !isEditable}
+	{#key $promo2Request}
+		<RequestModal request={$promo2Request} />
+	{/key}
 {/if}
 
 <style>

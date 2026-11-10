@@ -25,7 +25,7 @@
 		"test:metrika": "node --test scripts/test-metrika.mjs scripts/test-site-analytics.mjs scripts/test-analytics-lifecycle.mjs",
 		"test:captcha": "node --test scripts/test-smartcaptcha.mjs",
 		"check:forms": "node scripts/check-forms.mjs",
-		"test:forms": "node scripts/test-form-submission.mjs",
+		"test:forms": "node scripts/test-form-submission.mjs && node scripts/test-promo2-forms.mjs",
 		"test:lead-catcher": "node scripts/test-lead-catcher.mjs",
 		"test:remember": "node --test scripts/test-remember-me.mjs && node scripts/test-remember-session.mjs",
 		"test:actions": "node --test scripts/test-action-companies.mjs",

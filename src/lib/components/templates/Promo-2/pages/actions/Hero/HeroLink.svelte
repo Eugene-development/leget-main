@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	import HeroField from './HeroField.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 	let {
@@ -10,11 +11,17 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
-	// RichText stores formatting; link destinations remain the existing ctaLink field.
-	const href = $derived(String(data?.ctaLink ?? '/contact'));
 </script>
 
-<a class="ah-link" {href}>
+<button
+	class="ah-link"
+	type="button"
+	data-metrika-goal="pages_actions_hero_herolink_open"
+	data-goal-action="open"
+	onclick={() => {
+		if (!isEditable) openPromo2Form('estimate', '');
+	}}
+>
 	<HeroField
 		bind:data
 		{editContext}
@@ -32,4 +39,4 @@
 			stroke-linejoin="round"
 		/></svg
 	>
-</a>
+</button>

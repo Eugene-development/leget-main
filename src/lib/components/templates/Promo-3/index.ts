@@ -1,4 +1,5 @@
 import type { Component } from 'svelte';
+import PrivacyPolicy from '../../legal/PrivacyPolicy.svelte';
 
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
@@ -67,6 +68,7 @@ import YandexDirectCTA from './pages/yandex-direct/CTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/privacy': { PrivacyPolicy },
 	'/': {
 		Hero: HomeHero,
 		Categories: HomeCategories,

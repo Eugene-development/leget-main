@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.14.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -118,9 +119,14 @@
 				</EditableField>
 
 				<div class="mt-10">
-					<a
-						href={String(data?.buttonHref ?? '/contact')}
+					<button
 						class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-primary bg-primary px-8 py-4 text-xs tracking-[0.15em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
+						type="button"
+						data-metrika-goal="pages_yandex_direct_offer_open"
+						data-goal-action="open"
+						onclick={() => {
+							if (!isEditable) openPromo2Form('estimate', '');
+						}}
 					>
 						<EditableField
 							fieldKey="Offer.buttonText"
@@ -144,7 +150,7 @@
 								d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
 							/>
 						</svg>
-					</a>
+					</button>
 					<p class="mt-4 text-xs text-muted">Перезвоним в течение 15 минут</p>
 				</div>
 			</div>

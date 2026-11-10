@@ -89,6 +89,14 @@ export function goalLocations(root, write = false) {
 								text.includes('serviceOrderStore.open(ctaContent.serviceType)')))
 				)
 				.flatMap(([path]) => owners(path));
+		else if (button.source === 'templates/Promo-2/forms/RequestModal.svelte')
+			locations = [...sources]
+				.filter(
+					([path, text]) =>
+						path.startsWith('templates/Promo-2/') &&
+						text.replace(/\s+/g, '').includes(`openPromo2Form('${button.variant}'`)
+				)
+				.flatMap(([path]) => owners(path));
 		else if (button.source === 'SmsLogin.svelte')
 			locations = [
 				...owners('LoginModal.svelte'),

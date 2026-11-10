@@ -188,18 +188,6 @@
 				></div>
 
 				<div class="p-8 lg:p-12">
-					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-soft"
-					>
-						<svg class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-							/>
-						</svg>
-					</div>
 					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
 						03. Логистика
 					</div>
@@ -216,18 +204,6 @@
 				</div>
 
 				<div class="p-8 lg:p-12">
-					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-soft"
-					>
-						<svg class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-							/>
-						</svg>
-					</div>
 					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
 						04. Транспортировка
 					</div>
@@ -272,7 +248,10 @@
 						<ImageFallback
 							imagePath={['assemblyImage']}
 							loading="lazy"
-							src={String(data?.assemblyImage ?? '')}
+							src={String(
+								data?.assemblyImage ||
+									'https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-assembly-2-9-3-1-20261109.webp'
+							)}
 							alt="Сборка кухни"
 							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
 						/>

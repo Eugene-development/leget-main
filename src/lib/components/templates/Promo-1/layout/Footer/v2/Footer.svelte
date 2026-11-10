@@ -701,6 +701,11 @@
 				&copy; {new Date().getFullYear()}
 				{siteName}. Все права защищены.
 			</p>
+			<a
+				href="/privacy"
+				class="text-sm text-on-dark/80 underline-offset-4 hover:text-on-dark hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+				>Политика конфиденциальности</a
+			>
 			<iframe
 				title="stars"
 				src="https://yandex.ru/sprav/widget/rating-badge/75907151870?type=rating"

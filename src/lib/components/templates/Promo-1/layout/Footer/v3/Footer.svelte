@@ -545,6 +545,11 @@
 			data-reveal-delay="180"
 		>
 			<p>&copy; {new Date().getFullYear()} {siteName}. Все права защищены.</p>
+			<a
+				href="/privacy"
+				class="p1-body p1-accent-hover text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+				>Политика конфиденциальности</a
+			>
 			<iframe
 				title="stars"
 				src="https://yandex.ru/sprav/widget/rating-badge/75907151870?type=rating"
