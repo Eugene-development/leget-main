@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.1.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -65,10 +66,10 @@
 						</div>
 						<div>
 							<div class="text-sm font-bold text-white">
-								{String(data?.floatingTitle ?? '3D-визуализация')}
+								{editableText(data?.floatingTitle, '3D-визуализация')}
 							</div>
 							<div class="text-xs text-surface-300">
-								{String(data?.floatingSubtitle ?? 'Бесплатно для заказов')}
+								{editableText(data?.floatingSubtitle, 'Бесплатно для заказов')}
 							</div>
 						</div>
 					</div>
@@ -80,7 +81,7 @@
 				<EditableField
 					fieldKey="Banner.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Для дизайнеров')}
+					value={editableText(data?.label, 'Для дизайнеров')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -93,7 +94,7 @@
 				<EditableField
 					fieldKey="Banner.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Визуализируйте пространство до покупки')}
+					value={editableText(data?.heading, 'Визуализируйте пространство до покупки')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="mt-4 block"
@@ -105,9 +106,9 @@
 				<EditableField
 					fieldKey="Banner.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Наши специалисты создадут 3D-раскладку плитки в вашем интерьере. Увидьте результат до начала ремонта и будьте уверены в выборе.'
+					value={editableText(
+						data?.description,
+						'Наши специалисты создадут 3D-раскладку плитки в вашем интерьере. Увидьте результат до начала ремонта и будьте уверены в выборе.'
 					)}
 					{isEditable}
 					multiline
@@ -139,7 +140,7 @@
 				<EditableField
 					fieldKey="Banner.ctaText"
 					label="Кнопка"
-					value={String(data?.ctaText ?? 'Заказать визуализацию')}
+					value={editableText(data?.ctaText, 'Заказать визуализацию')}
 					{isEditable}
 					onSave={(v) => saveField('ctaText', v)}
 				>

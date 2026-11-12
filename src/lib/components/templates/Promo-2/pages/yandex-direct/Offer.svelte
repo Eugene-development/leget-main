@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.14.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -67,7 +69,7 @@
 				<EditableField
 					fieldKey="Offer.badge"
 					label="Лейбл"
-					value={String(data?.badge ?? 'Ограниченное предложение')}
+					value={editableText(data?.badge, 'Ограниченное предложение')}
 					{isEditable}
 					onSave={(v) => saveField('badge', v)}
 				>
@@ -84,7 +86,7 @@
 				<EditableField
 					fieldKey="Offer.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Закажите сейчас — получите скидку 15%')}
+					value={editableText(data?.title, 'Закажите сейчас — получите скидку 15%')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -102,9 +104,9 @@
 				<EditableField
 					fieldKey="Offer.subtitle"
 					label="Подзаголовок"
-					value={String(
-						data?.subtitle ??
-							'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ'
+					value={editableText(
+						data?.subtitle,
+						'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ'
 					)}
 					{isEditable}
 					multiline
@@ -131,7 +133,7 @@
 						<EditableField
 							fieldKey="Offer.buttonText"
 							label="Текст кнопки"
-							value={String(data?.buttonText ?? 'Получить скидку')}
+							value={editableText(data?.buttonText, 'Получить скидку')}
 							{isEditable}
 							onSave={(v) => saveField('buttonText', v)}
 						>
@@ -151,7 +153,18 @@
 							/>
 						</svg>
 					</button>
-					<p class="mt-4 text-xs text-muted">Перезвоним в течение 15 минут</p>
+					<p class="mt-4 text-xs text-muted">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Offer"
+							path={['copy', 'callbackText']}
+							fallback={'Перезвоним в течение 15 минут'}
+							label="Перезвоним в течение 15 минут"
+							multiline
+						/>
+					</p>
 				</div>
 			</div>
 
@@ -161,7 +174,18 @@
 				class:animate-slide-right={visible}
 				style="animation-delay: 0.2s"
 			>
-				<p class="mb-8 text-[11px] tracking-[0.3em] text-secondary uppercase">В стоимость входит</p>
+				<p class="mb-8 text-[11px] tracking-[0.3em] text-secondary uppercase">
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Offer"
+						path={['copy', 'includesHeading']}
+						fallback={'В стоимость входит'}
+						label="В стоимость входит"
+						multiline
+					/>
+				</p>
 				<div class="flex flex-col gap-0">
 					{#each includes as item, i}
 						<div
@@ -178,7 +202,18 @@
 							>
 								<polyline points="20 6 9 17 4 12" />
 							</svg>
-							<span class="text-sm text-primary">{item}</span>
+							<span class="text-sm text-primary"
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="Offer"
+									path={['includes', includes.indexOf(item)]}
+									fallback={item}
+									label="Текст"
+									defaults={{ includes }}
+								/></span
+							>
 						</div>
 					{/each}
 				</div>

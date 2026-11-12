@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.38.6.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
 	import RichText from '$lib/components/RichText.svelte';
@@ -43,7 +44,7 @@
 			<EditableField
 				fieldKey="DveriComplex.title"
 				label="Заголовок"
-				value={String(data.title || 'Комплексное решение')}
+				value={editableText(data.title, 'Комплексное решение')}
 				{isEditable}
 				inline
 				onSave={(v) => saveField('title', v)}
@@ -55,9 +56,9 @@
 			<EditableField
 				fieldKey="DveriComplex.description"
 				label="Описание"
-				value={String(
-					data.description ||
-						'Согласуем двери с мебелью, отделкой и общей планировкой. Поможем выбрать размеры, материалы и комплектацию.'
+				value={editableText(
+					data.description,
+					'Согласуем двери с мебелью, отделкой и общей планировкой. Поможем выбрать размеры, материалы и комплектацию.'
 				)}
 				{isEditable}
 				inline

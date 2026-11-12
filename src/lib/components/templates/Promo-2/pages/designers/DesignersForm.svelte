@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.13.5.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -107,7 +109,7 @@
 				<EditableField
 					fieldKey="DesignersForm.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Начните сегодня')}
+					value={editableText(data?.label, 'Начните сегодня')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -121,7 +123,7 @@
 				<EditableField
 					fieldKey="DesignersForm.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Оставьте заявку — мы позвоним первыми')}
+					value={editableText(data?.heading, 'Оставьте заявку — мы позвоним первыми')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -139,9 +141,9 @@
 				<EditableField
 					fieldKey="DesignersForm.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Расскажите о себе, и мы предложим наиболее подходящие условия сотрудничества.'
+					value={editableText(
+						data?.description,
+						'Расскажите о себе, и мы предложим наиболее подходящие условия сотрудничества.'
 					)}
 					{isEditable}
 					multiline
@@ -175,7 +177,7 @@
 						<EditableField
 							fieldKey="DesignersForm.phone"
 							label="Телефон"
-							value={String(data?.phone ?? '+7 000 000-00-00')}
+							value={editableText(data?.phone, '+7 000 000-00-00')}
 							{isEditable}
 							richText={false}
 							onSave={(v) => saveField('phone', v)}
@@ -204,7 +206,7 @@
 						<EditableField
 							fieldKey="DesignersForm.email"
 							label="Электронная почта"
-							value={String(data?.email ?? 'info@mysite.com')}
+							value={editableText(data?.email, 'info@mysite.com')}
 							{isEditable}
 							richText={false}
 							onSave={(v) => saveField('email', v)}
@@ -223,7 +225,7 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.2s"
 			>
-				{#if formSent}
+				{#if formSent || isEditable}
 					<div class="flex h-full flex-col items-center justify-center py-12 text-center">
 						<div
 							class="flex h-16 w-16 items-center justify-center border border-accent/30 bg-accent/10"
@@ -239,24 +241,61 @@
 							</svg>
 						</div>
 						<h3 class="mt-6 text-2xl text-white" style="font-family: var(--font-heading);">
-							Заявка принята
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersForm"
+								path={['copy', 'successHeading']}
+								fallback={'Заявка принята'}
+								label="Заявка принята"
+							/>
 						</h3>
 						<p class="mt-3 max-w-xs text-sm text-white/50">
-							Менеджер свяжется с вами в течение одного рабочего дня.
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersForm"
+								path={['copy', 'body1']}
+								fallback={'Менеджер свяжется с вами в течение одного рабочего дня.'}
+								label="Менеджер свяжется с вами в течение одного рабочего дня."
+								multiline
+							/>
 						</p>
 					</div>
-				{:else}
+				{/if}
+				{#if !formSent}
 					<form
 						onsubmit={handleSubmit}
 						class="border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:p-10"
 					>
 						<h3 class="mb-8 text-xl text-white" style="font-family: var(--font-heading);">
-							Заявка на партнёрство
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersForm"
+								path={['copy', 'formHeading']}
+								fallback={'Заявка на партнёрство'}
+								label="Заявка на партнёрство"
+							/>
 						</h3>
 
 						<!-- Type -->
 						<div class="mb-6">
-							<p class="mb-3 text-[11px] tracking-[0.2em] text-white/40 uppercase">Я работаю как</p>
+							<p class="mb-3 text-[11px] tracking-[0.2em] text-white/40 uppercase">
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="DesignersForm"
+									path={['copy', 'partnerTypeLabel']}
+									fallback={'Я работаю как'}
+									label="Я работаю как"
+									multiline
+								/>
+							</p>
 							<div class="flex gap-3">
 								<label
 									class="flex flex-1 cursor-pointer items-center gap-3 rounded-sm border px-4 py-3 transition-colors duration-300 {formType ===
@@ -273,7 +312,18 @@
 									>
 										{#if formType === 'studio'}<span class="h-2 w-2 bg-accent"></span>{/if}
 									</span>
-									<span class="text-sm text-white/80">Студия</span>
+									<span class="text-sm text-white/80"
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="DesignersForm"
+											path={['copy', 'studioLabel']}
+											fallback={'Студия'}
+											label="Студия"
+											richText={false}
+										/></span
+									>
 								</label>
 								<label
 									class="flex flex-1 cursor-pointer items-center gap-3 rounded-sm border px-4 py-3 transition-colors duration-300 {formType ===
@@ -290,7 +340,18 @@
 									>
 										{#if formType === 'freelance'}<span class="h-2 w-2 bg-accent"></span>{/if}
 									</span>
-									<span class="text-sm text-white/80">Фрилансер</span>
+									<span class="text-sm text-white/80"
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="DesignersForm"
+											path={['copy', 'freelancerLabel']}
+											fallback={'Фрилансер'}
+											label="Фрилансер"
+											richText={false}
+										/></span
+									>
 								</label>
 							</div>
 						</div>
@@ -299,7 +360,16 @@
 							<label
 								for="form-name"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>Имя и фамилия*</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="DesignersForm"
+									path={['copy', 'nameLabel']}
+									fallback={'Имя и фамилия*'}
+									label="Имя и фамилия*"
+									richText={false}
+								/></label
 							>
 							<input
 								id="form-name"
@@ -315,7 +385,16 @@
 							<label
 								for="form-phone"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>Телефон*</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="DesignersForm"
+									path={['copy', 'phoneLabel']}
+									fallback={'Телефон*'}
+									label="Телефон*"
+									richText={false}
+								/></label
 							>
 							<input
 								id="form-phone"
@@ -331,7 +410,16 @@
 							<label
 								for="form-email"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>Email*</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="DesignersForm"
+									path={['copy', 'emailLabel']}
+									fallback={'Email*'}
+									label="Email*"
+									richText={false}
+								/></label
 							>
 							<input
 								id="form-email"
@@ -359,9 +447,27 @@
 								<span
 									class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"
 								></span>
-								Отправка...
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="DesignersForm"
+									path={['copy', 'sendingText']}
+									fallback={'Отправка...'}
+									label="Отправка..."
+									richText={false}
+								/>
 							{:else}
-								Отправить заявку
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="DesignersForm"
+									path={['copy', 'submitText']}
+									fallback={'Отправить заявку'}
+									label="Отправить заявку"
+									richText={false}
+								/>
 								<svg
 									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"
@@ -379,7 +485,16 @@
 						</button>
 
 						<p class="mt-4 text-center text-[11px] text-white/25">
-							Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersForm"
+								path={['copy', 'body2']}
+								fallback={'Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности'}
+								label="Нажимая кнопку, вы соглашаетесь с политикой конфиденциаль…"
+								multiline
+							/>
 						</p>
 					</form>
 				{/if}

@@ -1,4 +1,5 @@
 <script module lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Browser module memory survives client navigation, but resets on a full reload.
 	let noticeDismissed = false;
 </script>
@@ -592,7 +593,7 @@
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
-						value={String(data?.buttonText ?? 'Дизайн-проект с расчётом стоимости')}
+						value={editableText(data?.buttonText, 'Дизайн-проект с расчётом стоимости')}
 						{isEditable}
 						visible={visibility.isVisible('button')}
 						visibilityLabel="кнопку"
@@ -619,7 +620,7 @@
 					<EditableField
 						fieldKey="HeroMain.promoButtonText"
 						label="Текст кнопки промокода"
-						value={String(data?.promoButtonText ?? 'Получить промокод')}
+						value={editableText(data?.promoButtonText, 'Получить промокод')}
 						{isEditable}
 						visible={visibility.isVisible('promoButton')}
 						visibilityLabel="кнопку промокода"

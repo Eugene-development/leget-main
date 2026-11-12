@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.2.3.1 — см. docs/architecture/component-articles-map.md
 	import { tick } from 'svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -94,7 +95,7 @@
 				<EditableField
 					fieldKey="Mission.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Наша миссия')}
+					value={editableText(data?.title, 'Наша миссия')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="ab-item block"

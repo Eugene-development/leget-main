@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.21.7.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
@@ -40,7 +41,7 @@
 					<EditableField
 						fieldKey="SantehnikaComplex.title"
 						label="Заголовок"
-						value={String(data.title || 'Комплект для кухни')}
+						value={editableText(data.title, 'Комплект для кухни')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('title', v)}
@@ -52,9 +53,9 @@
 					<EditableField
 						fieldKey="SantehnikaComplex.description"
 						label="Описание"
-						value={String(
-							data.description ||
-								'Закажите мойку вместе со смесителем, измельчителем и диспенсером — получите скидку до 20% на комплект.'
+						value={editableText(
+							data.description,
+							'Закажите мойку вместе со смесителем, измельчителем и диспенсером — получите скидку до 20% на комплект.'
 						)}
 						{isEditable}
 						inline
@@ -98,7 +99,7 @@
 					<EditableField
 						fieldKey="SantehnikaComplex.buttonText"
 						label="Кнопка"
-						value={String(data.buttonText || 'Собрать комплект')}
+						value={editableText(data.buttonText, 'Собрать комплект')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('buttonText', v)}

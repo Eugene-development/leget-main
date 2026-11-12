@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.9.1 — см. docs/architecture/component-articles-map.md
 	//
 	// Номер 9, а не освободившийся 7: `component_number` не переприсваивается,
@@ -80,8 +81,8 @@
 	const DEFAULT_DESCRIPTION =
 		'Специальные предложения от партнёров для компании «Новострой» — собрали их для вас ниже.';
 
-	const title = $derived(String(data?.title ?? DEFAULT_TITLE));
-	const description = $derived(String(data?.description ?? DEFAULT_DESCRIPTION));
+	const title = $derived(editableText(data?.title, DEFAULT_TITLE));
+	const description = $derived(editableText(data?.description, DEFAULT_DESCRIPTION));
 
 	const offers = $derived(
 		Array.isArray(data?.offers) && data.offers.length > 0

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.4.1.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -78,7 +79,7 @@
 					<EditableField
 						fieldKey="Hero.eyebrow"
 						label="Надпись над заголовком"
-						value={String(data?.eyebrow ?? 'Выгодные предложения')}
+						value={editableText(data?.eyebrow, 'Выгодные предложения')}
 						{isEditable}
 						onSave={(v) => saveField('eyebrow', v)}
 						class="block"
@@ -103,7 +104,7 @@
 					<EditableField
 						fieldKey="Hero.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Акции, скидки и подарки')}
+						value={editableText(data?.title, 'Акции, скидки и подарки')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="block"
@@ -134,9 +135,9 @@
 				<EditableField
 					fieldKey="Hero.subtitle"
 					label="Подзаголовок"
-					value={String(
-						data?.subtitle ??
-							'Получите актуальные акции наших партнёров и узнайте о подарках и скидках на проекты и услуги'
+					value={editableText(
+						data?.subtitle,
+						'Получите актуальные акции наших партнёров и узнайте о подарках и скидках на проекты и услуги'
 					)}
 					{isEditable}
 					multiline
@@ -164,7 +165,7 @@
 		richText={false}
 		fieldKey="Hero.highlights"
 		label="Бегущая строка (разделитель «·»)"
-		value={String(data?.highlights ?? DEFAULT_HIGHLIGHTS)}
+		value={editableText(data?.highlights, DEFAULT_HIGHLIGHTS)}
 		{isEditable}
 		onSave={(v) => saveField('highlights', v)}
 		class="z-10 block"

@@ -24,9 +24,11 @@
 		{#each topLinks as link}
 			<a
 				href={link.href}
-				class="{largeText ? 'text-sm' : 'text-xs'} tracking-wider transition-colors duration-300 {dark
+				class="{largeText
+					? 'text-sm'
+					: 'text-xs'} tracking-wider transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
-					: 'text-secondary hover:text-primary'}"
+					: 'text-primary hover:text-primary-light'}"
 			>
 				{link.label}
 			</a>
@@ -38,9 +40,11 @@
 		{#if phone}
 			<a
 				href={sitePhoneHref(phone)}
-				class="flex items-center gap-1.5 {largeText ? 'text-sm' : 'text-xs'} tracking-wide transition-colors duration-300 {dark
+				class="flex items-center gap-1.5 {largeText
+					? 'text-sm'
+					: 'text-xs'} tracking-wide transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
-					: 'text-secondary hover:text-primary'}"
+					: 'text-primary hover:text-primary-light'}"
 			>
 				<svg
 					class="h-3.5 w-3.5"
@@ -62,9 +66,11 @@
 		{#if email}
 			<a
 				href="mailto:{email}"
-				class="flex items-center gap-1.5 {largeText ? 'text-sm' : 'text-xs'} tracking-wide transition-colors duration-300 {dark
+				class="flex items-center gap-1.5 {largeText
+					? 'text-sm'
+					: 'text-xs'} tracking-wide transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
-					: 'text-secondary hover:text-primary'}"
+					: 'text-primary hover:text-primary-light'}"
 			>
 				<svg
 					class="h-3.5 w-3.5"

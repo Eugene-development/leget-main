@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.21.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -20,9 +21,9 @@
 		data.bgImage || 'https://storage.yandexcloud.net/leget-main/templates/promo-1/plumbing_hero.png'
 	);
 	const primaryButton = $derived(
-		!data.primaryButton || data.primaryButton === 'Подобрать комплект'
+		data.primaryButton === undefined || data.primaryButton === 'Подобрать комплект'
 			? 'Подобрать сантехнику'
-			: String(data.primaryButton)
+			: editableText(data.primaryButton)
 	);
 
 	async function saveField(field: string, value: string) {
@@ -53,7 +54,7 @@
 				<EditableField
 					fieldKey="SantehnikaHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Сантехника')}
+					value={editableText(data.title, 'Сантехника')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
@@ -66,9 +67,9 @@
 				<EditableField
 					fieldKey="SantehnikaHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Кухонные мойки, смесители, измельчители и аксессуары от ведущих производителей. Подберём идеальное сочетание цвета и формы для вашей кухни.'
+					value={editableText(
+						data.description,
+						'Кухонные мойки, смесители, измельчители и аксессуары от ведущих производителей. Подберём идеальное сочетание цвета и формы для вашей кухни.'
 					)}
 					{isEditable}
 					inline

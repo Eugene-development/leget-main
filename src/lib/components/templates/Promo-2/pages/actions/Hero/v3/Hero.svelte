@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.8.1.3 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { blockTheme } from '$lib/utils/block-theme';
@@ -47,7 +49,17 @@
 		<div class="ah-poster-grid">
 			<div class="ah-poster-offer">
 				<div class="ah-offer">
-					<span class="ah-note">Скидки до</span>
+					<span class="ah-note"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['copy', 'discountPrefix']}
+							fallback={'Скидки до'}
+							label="Скидки до"
+						/></span
+					>
 					<div class="ah-discount">
 						<HeroField
 							bind:data
@@ -78,7 +90,7 @@
 					src={String(
 						data?.image ?? 'https://storage.yandexcloud.net/zovtop/bg/promosfvmwklfvmk.jpg'
 					)}
-					alt={String(data?.title ?? 'Акции на мебель')}
+					alt={editableText(data?.title, 'Акции на мебель')}
 					class="ah-photo"
 					loading="eager"
 					fetchpriority="high"
@@ -87,7 +99,17 @@
 		</div>
 		<div class="ah-poster-footer">
 			<HeroStats bind:data {editContext} {isEditable} /><a class="ah-browse" href="#actions-cards"
-				>Смотреть акции <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'actionsLinkText']}
+					fallback={'Смотреть акции'}
+					label="Смотреть акции"
+					richText={false}
+				/>
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
 					><path
 						d="M12 4v16m-6-6 6 6 6-6"
 						stroke="currentColor"

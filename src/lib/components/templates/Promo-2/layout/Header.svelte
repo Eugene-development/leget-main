@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '../ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.М.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RequestModal from '../forms/RequestModal.svelte';
@@ -22,7 +24,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Фабрика');
+	const siteName = $derived(editableText(data?.siteName, 'Фабрика'));
 	const showLogo = $derived(data?.logoMode !== 'text' && Boolean(data?.logoUrl));
 	const phone = $derived(topBarPhone(data));
 	const email = $derived(topBarEmail(data));
@@ -40,7 +42,7 @@
 				]
 	);
 
-	const ctaText = $derived(typeof data?.ctaText === 'string' ? data.ctaText : 'Записаться в салон');
+	const ctaText = $derived(editableText(data?.ctaText, 'Записаться в салон'));
 
 	let scrolled = $state(false);
 	let showTopBar = $state(true);
@@ -126,7 +128,17 @@
 						title={siteName}
 						style="font-family: var(--font-heading);"
 					>
-						{siteName}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Header"
+							scope="Header"
+							path={['siteName']}
+							fallback={siteName}
+							label="Текст меню"
+							richText={false}
+						/>
 					</span>
 				{/if}
 			</a>
@@ -139,7 +151,18 @@
 						class="group relative rounded-sm px-3 py-2.5 text-lg tracking-wide text-primary transition-colors duration-300 hover:text-secondary xl:px-5"
 						style="font-family: var(--font-heading);"
 					>
-						{item.label}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Header"
+							scope="Header"
+							path={['links', mainNav.indexOf(item), 'label']}
+							fallback={item.label}
+							label="Текст меню"
+							defaults={{ links: mainNav }}
+							richText={false}
+						/>
 						<span
 							class="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-secondary transition-all duration-500 group-hover:w-3/4"
 						></span>
@@ -161,7 +184,19 @@
 					}}
 				>
 					<span class="cta-shimmer"></span>
-					<span class="relative z-10">{ctaText}</span>
+					<span class="relative z-10"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Header"
+							scope="Header"
+							path={['ctaText']}
+							fallback={ctaText}
+							label="Текст меню"
+							richText={false}
+						/></span
+					>
 					<svg
 						class="relative z-10 h-3.5 w-3.5 shrink-0 opacity-70 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
 						fill="none"
@@ -228,7 +263,18 @@
 				style="font-family: var(--font-heading);"
 				onclick={closeMenu}
 			>
-				{item.label}
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Header"
+					scope="Header"
+					path={['links', mainNav.indexOf(item), 'label']}
+					fallback={item.label}
+					label="Текст меню"
+					defaults={{ links: mainNav }}
+					richText={false}
+				/>
 			</a>
 		{/each}
 	</nav>
@@ -258,7 +304,19 @@
 			}}
 		>
 			<span class="cta-shimmer"></span>
-			<span class="relative z-10">{ctaText}</span>
+			<span class="relative z-10"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Header"
+					scope="Header"
+					path={['ctaText']}
+					fallback={ctaText}
+					label="Текст меню"
+					richText={false}
+				/></span
+			>
 			<svg
 				class="relative z-10 h-3.5 w-3.5 shrink-0 opacity-70 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
 				fill="none"
@@ -335,7 +393,7 @@
 
 {#if $promo2Request && !isEditable}
 	{#key $promo2Request}
-		<RequestModal request={$promo2Request} />
+		<RequestModal request={$promo2Request} {data} />
 	{/key}
 {/if}
 

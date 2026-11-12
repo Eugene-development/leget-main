@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.5.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -43,7 +44,26 @@
 	<div class="p2-container mx-auto">
 		<div class="mb-16 opacity-0 lg:mb-24" class:animate-fade-up={true}>
 			<h2 class="text-4xl text-primary lg:text-5xl" style="font-family: var(--font-heading);">
-				Коллекция <span class="text-secondary">фасадов</span>
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FacadesCatalog"
+					path={['copy', 'body1']}
+					fallback={'Коллекция'}
+					label="Коллекция"
+				/>
+				<span class="text-secondary"
+					><ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="FacadesCatalog"
+						path={['copy', 'body2']}
+						fallback={'фасадов'}
+						label="фасадов"
+					/></span
+				>
 			</h2>
 		</div>
 
@@ -78,41 +98,156 @@
 						style="animation-delay: 0.4s"
 					>
 						<h3 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
-							{facade.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="FacadesCatalog"
+								path={['facades', facades.indexOf(facade), 'title']}
+								fallback={facade.title}
+								label="Заголовок"
+								defaults={{ facades }}
+							/>
 						</h3>
 						<p class="mt-6 text-base leading-relaxed text-secondary">
-							{facade.description}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="FacadesCatalog"
+								path={['facades', facades.indexOf(facade), 'description']}
+								fallback={facade.description}
+								label="Описание"
+								defaults={{ facades }}
+								multiline
+							/>
 						</p>
 
 						<!-- Specifications Table -->
 						<div class="mt-10 border-t border-border-light pt-6">
 							<dl class="flex flex-col gap-4">
 								<div class="flex items-center justify-between border-b border-border-light/50 pb-4">
-									<dt class="text-xs tracking-wider text-muted uppercase">Материал основы</dt>
-									<dd class="text-right text-sm font-medium text-primary">{facade.details.base}</dd>
-								</div>
-								<div class="flex items-center justify-between border-b border-border-light/50 pb-4">
-									<dt class="text-xs tracking-wider text-muted uppercase">Покрытие</dt>
+									<dt class="text-xs tracking-wider text-muted uppercase">
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['copy', 'baseLabel']}
+											fallback={'Материал основы'}
+											label="Материал основы"
+										/>
+									</dt>
 									<dd class="text-right text-sm font-medium text-primary">
-										{facade.details.coating}
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['facades', facades.indexOf(facade), 'details', 'base']}
+											fallback={facade.details.base}
+											label="Текст"
+											defaults={{ facades }}
+										/>
 									</dd>
 								</div>
 								<div class="flex items-center justify-between border-b border-border-light/50 pb-4">
-									<dt class="text-xs tracking-wider text-muted uppercase">Толщина</dt>
+									<dt class="text-xs tracking-wider text-muted uppercase">
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['copy', 'coatingLabel']}
+											fallback={'Покрытие'}
+											label="Покрытие"
+										/>
+									</dt>
 									<dd class="text-right text-sm font-medium text-primary">
-										{facade.details.thickness}
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['facades', facades.indexOf(facade), 'details', 'coating']}
+											fallback={facade.details.coating}
+											label="Текст"
+											defaults={{ facades }}
+										/>
+									</dd>
+								</div>
+								<div class="flex items-center justify-between border-b border-border-light/50 pb-4">
+									<dt class="text-xs tracking-wider text-muted uppercase">
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['copy', 'thicknessLabel']}
+											fallback={'Толщина'}
+											label="Толщина"
+										/>
+									</dt>
+									<dd class="text-right text-sm font-medium text-primary">
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['facades', facades.indexOf(facade), 'details', 'thickness']}
+											fallback={facade.details.thickness}
+											label="Текст"
+											defaults={{ facades }}
+										/>
 									</dd>
 								</div>
 								<div class="flex items-start justify-between pb-2">
 									<dt class="mt-0.5 text-xs tracking-wider text-muted uppercase">
-										Размеры <span class="text-[10px] opacity-70">(мин / макс)</span>
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['copy', 'sizeLabel']}
+											fallback={'Размеры'}
+											label="Размеры"
+										/>
+										<span class="text-[10px] opacity-70"
+											><ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="FacadesCatalog"
+												path={['copy', 'sizeRangeLabel']}
+												fallback={'(мин / макс)'}
+												label="(мин / макс)"
+											/></span
+										>
 									</dt>
 									<dd class="text-right text-sm font-medium text-primary">
-										{facade.details.minSize}
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['facades', facades.indexOf(facade), 'details', 'minSize']}
+											fallback={facade.details.minSize}
+											label="Текст"
+											defaults={{ facades }}
+										/>
 										<br />
 										<span class="mx-1 text-xs text-muted">—</span>
 										<br class="sm:hidden" />
-										{facade.details.maxSize}
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="FacadesCatalog"
+											path={['facades', facades.indexOf(facade), 'details', 'maxSize']}
+											fallback={facade.details.maxSize}
+											label="Текст"
+											defaults={{ facades }}
+										/>
 									</dd>
 								</div>
 							</dl>

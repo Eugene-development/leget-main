@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.8.1.1 — см. docs/architecture/component-articles-map.md
 	import PageHero from '../_shared/PageHero.svelte';
 	import type { HeroPalette } from '../_shared/hero';
@@ -46,14 +47,14 @@
 	title={{
 		key: 'title',
 		label: 'Заголовок',
-		value: String(data?.title ?? 'Рассрочка без переплаты')
+		value: editableText(data?.title, 'Рассрочка без переплаты')
 	}}
 	text={{
 		key: 'subtitle',
 		label: 'Подзаголовок',
-		value: String(
-			data?.subtitle ??
-				'Купите мебель и технику сейчас — платите частями до 12 месяцев. Быстрое одобрение, минимум документов.'
+		value: editableText(
+			data?.subtitle,
+			'Купите мебель и технику сейчас — платите частями до 12 месяцев. Быстрое одобрение, минимум документов.'
 		)
 	}}
 >

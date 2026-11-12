@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.9.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -65,7 +66,7 @@
 				<EditableField
 					fieldKey="WhatsCovered.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Что покрывает гарантия')}
+					value={editableText(data?.title, 'Что покрывает гарантия')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="gt-item block"
@@ -80,9 +81,9 @@
 				<EditableField
 					fieldKey="WhatsCovered.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Наша гарантия распространяется на производственные дефекты материалов и качество сборки. Мы несём ответственность за каждый элемент вашей мебели.'
+					value={editableText(
+						data?.description,
+						'Наша гарантия распространяется на производственные дефекты материалов и качество сборки. Мы несём ответственность за каждый элемент вашей мебели.'
 					)}
 					{isEditable}
 					multiline

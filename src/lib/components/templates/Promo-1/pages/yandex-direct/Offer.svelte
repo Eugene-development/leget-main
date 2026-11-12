@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.10.6.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -47,7 +48,7 @@
 					<EditableField
 						fieldKey="Offer.badge"
 						label="Бейдж"
-						value={String(data?.badge ?? 'Ограниченное предложение')}
+						value={editableText(data?.badge, 'Ограниченное предложение')}
 						{isEditable}
 						onSave={(v) => saveField('badge', v)}
 						class="inline"
@@ -59,7 +60,7 @@
 				<EditableField
 					fieldKey="Offer.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Закажите сейчас — получите скидку 15%')}
+					value={editableText(data?.title, 'Закажите сейчас — получите скидку 15%')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -72,9 +73,9 @@
 				<EditableField
 					fieldKey="Offer.subtitle"
 					label="Подзаголовок"
-					value={String(
-						data?.subtitle ??
-							'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ'
+					value={editableText(
+						data?.subtitle,
+						'Оставьте заявку до конца месяца и получите дополнительную скидку на весь заказ'
 					)}
 					{isEditable}
 					multiline
@@ -111,7 +112,7 @@
 					<EditableField
 						fieldKey="Offer.buttonText"
 						label="Текст кнопки"
-						value={String(data?.buttonText ?? 'Получить скидку')}
+						value={editableText(data?.buttonText, 'Получить скидку')}
 						{isEditable}
 						onSave={(v) => saveField('buttonText', v)}
 						class="inline"

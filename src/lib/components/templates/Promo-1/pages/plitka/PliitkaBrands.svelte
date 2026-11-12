@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.23.3.1 — см. docs/architecture/component-articles-map.md
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
@@ -21,7 +22,9 @@
 
 {#if brands.length > 0}
 	<div class="mebel-container mt-12 mb-12">
-		<h2 class="mb-6 text-2xl text-ink-900">{data.title || 'Работаем с лучшими брендами'}</h2>
+		<h2 class="mb-6 text-2xl text-ink-900">
+			{editableText(data.title, 'Работаем с лучшими брендами')}
+		</h2>
 		<div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
 			{#each brands.slice(0, 12) as brand, i}
 				<a

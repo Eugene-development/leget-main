@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.8.7.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -84,7 +85,7 @@
 					<EditableField
 						fieldKey="InstallmentCTA.eyebrow"
 						label="Надзаголовок"
-						value={String(data?.eyebrow ?? 'Рассрочка и кредит')}
+						value={editableText(data?.eyebrow, 'Рассрочка и кредит')}
 						{isEditable}
 						onSave={(v) => saveField('eyebrow', v)}
 						class="it-item it-d1 mt-8 block"
@@ -103,7 +104,7 @@
 					<EditableField
 						fieldKey="InstallmentCTA.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Оформите рассрочку сегодня')}
+						value={editableText(data?.title, 'Оформите рассрочку сегодня')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="it-item it-d2 mt-5 block"
@@ -118,9 +119,9 @@
 					<EditableField
 						fieldKey="InstallmentCTA.subtitle"
 						label="Подзаголовок"
-						value={String(
-							data?.subtitle ??
-								'Получите мебель и технику не откладывая покупку — платите комфортными частями'
+						value={editableText(
+							data?.subtitle,
+							'Получите мебель и технику не откладывая покупку — платите комфортными частями'
 						)}
 						{isEditable}
 						multiline
@@ -144,7 +145,7 @@
 							<EditableField
 								fieldKey="InstallmentCTA.buttonText"
 								label="Текст кнопки"
-								value={String(data?.buttonText ?? 'Консультация')}
+								value={editableText(data?.buttonText, 'Консультация')}
 								{isEditable}
 								onSave={(v) => saveField('buttonText', v)}
 								class="inline"

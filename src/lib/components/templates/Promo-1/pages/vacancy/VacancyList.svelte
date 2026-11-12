@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.27.2.1 — см. docs/architecture/component-articles-map.md
 	import { editStore } from '$lib/stores/edit.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -360,7 +361,7 @@
 			<EditableField
 				fieldKey="VacancyList.label"
 				label="Метка"
-				value={String(data?.label ?? 'Открытые позиции')}
+				value={editableText(data?.label, 'Открытые позиции')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 				class="vc-item block"
@@ -373,7 +374,7 @@
 			<EditableField
 				fieldKey="VacancyList.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Кого мы ищем')}
+				value={editableText(data?.title, 'Кого мы ищем')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="vc-item vc-d1 mt-5 block"
@@ -388,8 +389,9 @@
 			<EditableField
 				fieldKey="VacancyList.description"
 				label="Пояснение"
-				value={String(
-					data?.description ?? 'Нажмите на позицию, чтобы раскрыть обязанности и требования.'
+				value={editableText(
+					data?.description,
+					'Нажмите на позицию, чтобы раскрыть обязанности и требования.'
 				)}
 				{isEditable}
 				multiline

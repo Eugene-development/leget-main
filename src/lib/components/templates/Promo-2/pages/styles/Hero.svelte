@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.4.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -60,7 +62,7 @@
 		<EditableField
 			fieldKey="Hero.label"
 			label="Лейбл"
-			value={String(data?.label ?? 'Коллекции')}
+			value={editableText(data?.label, 'Коллекции')}
 			{isEditable}
 			onSave={(v) => saveField('label', v)}
 		>
@@ -74,7 +76,7 @@
 		<EditableField
 			fieldKey="Hero.heading"
 			label="Заголовок"
-			value={String(data?.heading ?? 'Стили кухонь')}
+			value={editableText(data?.heading, 'Стили кухонь')}
 			{isEditable}
 			onSave={(v) => saveField('heading', v)}
 			class="block"
@@ -92,8 +94,9 @@
 		<EditableField
 			fieldKey="Hero.description"
 			label="Описание"
-			value={String(
-				data?.description ?? 'Откройте для себя наше портфолио. От строгой классики до минимализма.'
+			value={editableText(
+				data?.description,
+				'Откройте для себя наше портфолио. От строгой классики до минимализма.'
 			)}
 			{isEditable}
 			multiline
@@ -114,7 +117,16 @@
 				href="#styles-grid"
 				class="group inline-flex items-center justify-center gap-3 rounded-sm border border-primary bg-surface-warm px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-300 hover:bg-primary hover:text-surface-warm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
 			>
-				Выбрать стиль
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'stylesLinkText']}
+					fallback={'Выбрать стиль'}
+					label="Выбрать стиль"
+					richText={false}
+				/>
 				<svg
 					class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1"
 					fill="none"
@@ -135,7 +147,17 @@
 		style="animation-delay: 1s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-xs tracking-[0.3em] text-primary uppercase">Вниз</span>
+			<span class="text-xs tracking-[0.3em] text-primary uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Вниз'}
+					label="Вниз"
+				/></span
+			>
 			<div class="h-10 w-px bg-gradient-to-b from-primary to-transparent"></div>
 		</div>
 	</div>

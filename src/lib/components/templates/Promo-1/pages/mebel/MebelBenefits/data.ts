@@ -1,3 +1,5 @@
+import { editableText } from '$lib/utils/editable-text';
+
 export type MebelBenefitItem = {
 	title: string;
 	desc: string;
@@ -47,8 +49,8 @@ export function resolveMebelBenefits(raw: unknown): MebelBenefitItem[] {
 		const fallback = MEBEL_BENEFITS_DEFAULT_ITEMS[index] ?? MEBEL_BENEFITS_DEFAULT_ITEMS[0];
 		if (!isBenefitItem(entry)) return { ...fallback };
 		return {
-			title: typeof entry.title === 'string' && entry.title ? entry.title : fallback.title,
-			desc: typeof entry.desc === 'string' ? entry.desc : fallback.desc,
+			title: editableText(entry.title, fallback.title),
+			desc: editableText(entry.desc, fallback.desc),
 			icon: typeof entry.icon === 'string' && entry.icon ? entry.icon : fallback.icon
 		};
 	});

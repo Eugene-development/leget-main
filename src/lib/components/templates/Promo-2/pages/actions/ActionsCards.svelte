@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -124,7 +126,7 @@
 				<EditableField
 					fieldKey="ActionsCards.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Текущие предложения')}
+					value={editableText(data?.label, 'Текущие предложения')}
 					{isEditable}
 					onSave={async (v) => {
 						if (!editContext) return;
@@ -143,7 +145,7 @@
 				<EditableField
 					fieldKey="ActionsCards.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Все акции')}
+					value={editableText(data?.heading, 'Все акции')}
 					{isEditable}
 					onSave={async (v) => {
 						if (!editContext) return;
@@ -166,7 +168,7 @@
 
 			<!-- Filter Tabs -->
 			<div class="flex flex-wrap gap-2">
-				{#each filters as filter}
+				{#each filters as filter, filterIndex}
 					<button
 						onclick={() => (activeFilter = filter.key)}
 						class="border px-5 py-2.5 text-xs tracking-[0.12em] uppercase transition-all duration-300"
@@ -178,7 +180,17 @@
 						class:hover:border-secondary={activeFilter !== filter.key}
 						class:hover:text-secondary={activeFilter !== filter.key}
 					>
-						{filter.label}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="ActionsCards"
+							path={['filters', filters.indexOf(filter), 'label']}
+							fallback={filter.label}
+							label="Текст"
+							defaults={{ filters }}
+							richText={false}
+						/>
 					</button>
 				{/each}
 			</div>
@@ -216,7 +228,16 @@
 								class:text-white={card.tagColor === 'secondary' || card.tagColor === 'primary'}
 								class:bg-primary={card.tagColor === 'primary'}
 							>
-								{card.tag}
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="ActionsCards"
+									path={['cards', cards.indexOf(card), 'tag']}
+									fallback={card.tag}
+									label="Текст"
+									defaults={{ cards }}
+								/>
 							</span>
 						</div>
 
@@ -225,7 +246,18 @@
 							<div
 								class="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-white/20 text-center text-xs font-medium text-white backdrop-blur-md"
 							>
-								<span class="leading-tight">{card.discount}</span>
+								<span class="leading-tight"
+									><ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="ActionsCards"
+										path={['cards', cards.indexOf(card), 'discount']}
+										fallback={card.discount}
+										label="Текст"
+										defaults={{ cards }}
+									/></span
+								>
 							</div>
 						</div>
 					</div>
@@ -236,28 +268,117 @@
 							class="text-xl text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
 							style="font-family: var(--font-heading);"
 						>
-							{card.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="ActionsCards"
+								path={['cards', cards.indexOf(card), 'title']}
+								fallback={card.title}
+								label="Заголовок"
+								defaults={{ cards }}
+							/>
 						</h3>
-						<p class="mt-3 text-sm leading-relaxed text-secondary">{card.description}</p>
+						<p class="mt-3 text-sm leading-relaxed text-secondary">
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="ActionsCards"
+								path={['cards', cards.indexOf(card), 'description']}
+								fallback={card.description}
+								label="Описание"
+								defaults={{ cards }}
+								multiline
+							/>
+						</p>
 
 						<!-- Price -->
 						<div class="mt-auto pt-5">
 							<div class="flex items-end justify-between">
 								<div>
 									{#if card.oldPrice}
-										<p class="text-xs text-muted line-through">{card.oldPrice} ₽</p>
+										<p class="text-xs text-muted line-through">
+											<ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="ActionsCards"
+												path={['cards', cards.indexOf(card), 'oldPrice']}
+												fallback={card.oldPrice}
+												label="Описание"
+												defaults={{ cards }}
+												richText={false}
+												multiline
+											/>
+											<ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="ActionsCards"
+												path={['copy', 'currencyText']}
+												fallback={'₽'}
+												label="₽"
+												multiline
+											/>
+										</p>
 									{/if}
 									<p
 										class="text-2xl font-light text-primary"
 										style="font-family: var(--font-heading);"
 									>
-										{card.newPrice}
-										<span class="text-base"> ₽</span>
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="ActionsCards"
+											path={['cards', cards.indexOf(card), 'newPrice']}
+											fallback={card.newPrice}
+											label="Описание"
+											defaults={{ cards }}
+											richText={false}
+											multiline
+										/>
+										<span class="text-base">
+											<ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="ActionsCards"
+												path={['copy', 'currencyText']}
+												fallback={'₽'}
+												label="₽"
+											/></span
+										>
 									</p>
 								</div>
 								<div class="text-right">
-									<p class="text-[10px] tracking-[0.1em] text-muted uppercase">До</p>
-									<p class="text-xs text-secondary">{card.until}</p>
+									<p class="text-[10px] tracking-[0.1em] text-muted uppercase">
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="ActionsCards"
+											path={['copy', 'untilPrefix']}
+											fallback={'До'}
+											label="До"
+											multiline
+										/>
+									</p>
+									<p class="text-xs text-secondary">
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="ActionsCards"
+											path={['cards', cards.indexOf(card), 'until']}
+											fallback={card.until}
+											label="Описание"
+											defaults={{ cards }}
+											richText={false}
+											multiline
+										/>
+									</p>
 								</div>
 							</div>
 
@@ -272,7 +393,16 @@
 										if (!isEditable) openPromo2Form('action-consultation', card.title);
 									}}
 								>
-									Консультация
+									<ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="ActionsCards"
+										path={['copy', 'consultationText']}
+										fallback={'Консультация'}
+										label="Консультация"
+										richText={false}
+									/>
 									<svg
 										class="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1"
 										fill="none"
@@ -311,7 +441,18 @@
 					/>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
 				</svg>
-				<p class="mt-4 text-base text-muted">Акций в этой категории пока нет</p>
+				<p class="mt-4 text-base text-muted">
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="ActionsCards"
+						path={['copy', 'body1']}
+						fallback={'Акций в этой категории пока нет'}
+						label="Акций в этой категории пока нет"
+						multiline
+					/>
+				</p>
 			</div>
 		{/if}
 	</div>

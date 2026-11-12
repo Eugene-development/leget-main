@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.7.1.1 — см. docs/architecture/component-articles-map.md
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('promo2-contact');
@@ -60,7 +62,7 @@
 		<EditableField
 			fieldKey="ContactForm.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Контакты')}
+			value={editableText(data?.title, 'Контакты')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="block"
@@ -70,20 +72,51 @@
 			{/snippet}
 		</EditableField>
 
-		{#if data?.email}
+		{#if data?.email || isEditable}
 			<p class="mt-2 text-stone-500">
-				<a href="mailto:{data.email}" class="hover:text-stone-900">{data.email}</a>
+				<a href="mailto:{data.email}" class="hover:text-stone-900"
+					><ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="ContactForm"
+						path={['email']}
+						fallback={data.email}
+						label="Текст"
+						richText={false}
+					/></a
+				>
 			</p>
 		{/if}
 
-		{#if submitted}
+		{#if submitted || isEditable}
 			<div class="mt-10 rounded-2xl bg-green-50 p-8 text-center text-green-700">
-				Спасибо! Мы свяжемся с вами в ближайшее время.
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="ContactForm"
+					path={['copy', 'body1']}
+					fallback={'Спасибо! Мы свяжемся с вами в ближайшее время.'}
+					label="Спасибо! Мы свяжемся с вами в ближайшее время."
+				/>
 			</div>
-		{:else}
+		{/if}
+		{#if !submitted}
 			<form aria-busy={loading} onsubmit={handleSubmit} class="mt-10 space-y-6">
 				<div>
-					<label for="name" class="block text-sm font-medium text-stone-700">Имя</label>
+					<label for="name" class="block text-sm font-medium text-stone-700"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="ContactForm"
+							path={['copy', 'nameLabel']}
+							fallback={'Имя'}
+							label="Имя"
+							richText={false}
+						/></label
+					>
 					<input
 						id="name"
 						type="text"
@@ -93,7 +126,18 @@
 					/>
 				</div>
 				<div>
-					<label for="phone" class="block text-sm font-medium text-stone-700">Телефон</label>
+					<label for="phone" class="block text-sm font-medium text-stone-700"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="ContactForm"
+							path={['copy', 'phoneLabel']}
+							fallback={'Телефон'}
+							label="Телефон"
+							richText={false}
+						/></label
+					>
 					<input
 						id="phone"
 						type="tel"
@@ -103,7 +147,18 @@
 					/>
 				</div>
 				<div>
-					<label for="message" class="block text-sm font-medium text-stone-700">Сообщение</label>
+					<label for="message" class="block text-sm font-medium text-stone-700"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="ContactForm"
+							path={['copy', 'messageLabel']}
+							fallback={'Сообщение'}
+							label="Сообщение"
+							richText={false}
+						/></label
+					>
 					<textarea
 						id="message"
 						bind:value={message}
@@ -118,7 +173,16 @@
 					disabled={loading}
 					class="w-full rounded-xl bg-stone-900 px-6 py-4 text-base font-medium text-white shadow-sm transition hover:bg-stone-700"
 				>
-					Отправить
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="ContactForm"
+						path={['copy', 'submitText']}
+						fallback={'Отправить'}
+						label="Отправить"
+						richText={false}
+					/>
 				</button>
 				{#if formError}<p role="alert">{formError}</p>{/if}
 			</form>

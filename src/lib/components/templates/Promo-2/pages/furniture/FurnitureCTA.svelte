@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.6.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -53,7 +55,7 @@
 			<EditableField
 				fieldKey="FurnitureCTA.eyebrow"
 				label="Надпись"
-				value={String(data?.eyebrow ?? 'Консультация')}
+				value={editableText(data?.eyebrow, 'Консультация')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
 			>
@@ -67,7 +69,7 @@
 			<EditableField
 				fieldKey="FurnitureCTA.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Поможем выбрать лучшую систему для вашей мебели')}
+				value={editableText(data?.heading, 'Поможем выбрать лучшую систему для вашей мебели')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -83,8 +85,16 @@
 			</EditableField>
 
 			<p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/60 lg:text-base">
-				Наши дизайнеры подберут фурнитуру, которая идеально подойдет под ваши потребности,
-				дизайн-проект и бюджет.
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FurnitureCTA"
+					path={['copy', 'body1']}
+					fallback={'Наши дизайнеры подберут фурнитуру, которая идеально подойдет под ваши потребности, дизайн-проект и бюджет.'}
+					label="Наши дизайнеры подберут фурнитуру, которая идеально подой…"
+					multiline
+				/>
 			</p>
 
 			<div class="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -100,7 +110,7 @@
 					<EditableField
 						fieldKey="FurnitureCTA.ctaText"
 						label="Кнопка"
-						value={String(data?.ctaText ?? 'Записаться в салон')}
+						value={editableText(data?.ctaText, 'Записаться в салон')}
 						{isEditable}
 						onSave={(v) => saveField('ctaText', v)}
 					>

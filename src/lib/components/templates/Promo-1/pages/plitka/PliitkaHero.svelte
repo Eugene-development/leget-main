@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.23.2.1 — см. docs/architecture/component-articles-map.md
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
@@ -53,7 +54,7 @@
 				<EditableField
 					fieldKey="PliitkaHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Плитка')}
+					value={editableText(data.title, 'Плитка')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
@@ -66,9 +67,9 @@
 				<EditableField
 					fieldKey="PliitkaHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Керамическая плитка, керамогранит и мозаика от ведущих мировых производителей. Подберём оптимальное решение для любого интерьера.'
+					value={editableText(
+						data.description,
+						'Керамическая плитка, керамогранит и мозаика от ведущих мировых производителей. Подберём оптимальное решение для любого интерьера.'
 					)}
 					{isEditable}
 					inline
@@ -90,7 +91,7 @@
 					<EditableField
 						fieldKey="PliitkaHero.primaryButton"
 						label="Кнопка"
-						value={String(data.primaryButton || 'Подобрать плитку')}
+						value={editableText(data.primaryButton, 'Подобрать плитку')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('primaryButton', v)}

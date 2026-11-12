@@ -476,7 +476,11 @@
 				{editContext}
 				{isEditable}
 				componentId={String(element.data?._componentId ?? element.id ?? '') || null}
-				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
+				sitePhone={typeof headerDataState.phone === 'string'
+					? headerDataState.phone
+					: headerDataState.phone === null
+						? ''
+						: null}
 			/>
 		</div>
 	{/if}
@@ -584,7 +588,11 @@
 		{/snippet}
 		<div class="relative" data-field-toolbar-scope>
 			<Footer
-				sitePhone={typeof headerDataState.phone === 'string' ? headerDataState.phone : null}
+				sitePhone={typeof headerDataState.phone === 'string'
+					? headerDataState.phone
+					: headerDataState.phone === null
+						? ''
+						: null}
 				data={footerComponent
 					? {
 							// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает

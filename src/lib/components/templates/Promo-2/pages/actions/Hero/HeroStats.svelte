@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import HeroField from './HeroField.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 	let {
@@ -14,7 +15,17 @@
 
 <dl class="ah-stats">
 	<div>
-		<dt>Акций сейчас</dt>
+		<dt>
+			<ContentText
+				bind:data
+				{editContext}
+				{isEditable}
+				componentType="Hero"
+				path={['copy', 'statCountLabel']}
+				fallback={'Акций сейчас'}
+				label="Акций сейчас"
+			/>
+		</dt>
 		<dd>
 			<HeroField
 				bind:data
@@ -27,7 +38,17 @@
 		</dd>
 	</div>
 	<div>
-		<dt>Максимальная скидка</dt>
+		<dt>
+			<ContentText
+				bind:data
+				{editContext}
+				{isEditable}
+				componentType="Hero"
+				path={['copy', 'statDiscountLabel']}
+				fallback={'Максимальная скидка'}
+				label="Максимальная скидка"
+			/>
+		</dt>
 		<dd>
 			<HeroField
 				bind:data
@@ -40,7 +61,27 @@
 		</dd>
 	</div>
 	<div class="ah-delivery">
-		<dt>За доставку</dt>
-		<dd>0 ₽</dd>
+		<dt>
+			<ContentText
+				bind:data
+				{editContext}
+				{isEditable}
+				componentType="Hero"
+				path={['copy', 'statDeliveryLabel']}
+				fallback={'За доставку'}
+				label="За доставку"
+			/>
+		</dt>
+		<dd>
+			<ContentText
+				bind:data
+				{editContext}
+				{isEditable}
+				componentType="Hero"
+				path={['copy', 'statDelivery']}
+				fallback={'0 ₽'}
+				label="0 ₽"
+			/>
+		</dd>
 	</div>
 </dl>

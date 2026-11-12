@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.9.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -65,7 +67,7 @@
 			<EditableField
 				fieldKey="Hero.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Мебельная фабрика')}
+				value={editableText(data?.label, 'Мебельная фабрика')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -81,7 +83,7 @@
 			<EditableField
 				fieldKey="Hero.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Создание вашей идеальной кухни')}
+				value={editableText(data?.title, 'Создание вашей идеальной кухни')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -101,9 +103,9 @@
 			<EditableField
 				fieldKey="Hero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'От детального проектирования до бережной сборки — каждый этап контролируется нашими специалистами'
+				value={editableText(
+					data?.description,
+					'От детального проектирования до бережной сборки — каждый этап контролируется нашими специалистами'
 				)}
 				{isEditable}
 				multiline
@@ -131,7 +133,7 @@
 				<EditableField
 					fieldKey="Hero.ctaText"
 					label="Кнопка"
-					value={String(data?.ctaText ?? 'Спроектировать кухню')}
+					value={editableText(data?.ctaText, 'Спроектировать кухню')}
 					{isEditable}
 					onSave={(v) => saveField('ctaText', v)}
 				>
@@ -159,7 +161,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-white/40 uppercase">Листайте</span>
+			<span class="text-[10px] tracking-[0.3em] text-white/40 uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Листайте'}
+					label="Листайте"
+				/></span
+			>
 			<div class="h-10 w-px bg-gradient-to-b from-white/40 to-transparent"></div>
 		</div>
 	</div>

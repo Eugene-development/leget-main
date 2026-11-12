@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.М.1.1 — см. docs/architecture/component-articles-map.md
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
@@ -19,10 +20,8 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'PLITKA');
-	const siteTagline = $derived(
-		typeof data?.siteTagline === 'string' ? data.siteTagline : 'Интерьер & Дизайн'
-	);
+	const siteName = $derived(editableText(data?.siteName, 'PLITKA'));
+	const siteTagline = $derived(editableText(data?.siteTagline, 'Интерьер & Дизайн'));
 	const phone = $derived(typeof data?.phone === 'string' ? data.phone : '');
 
 	const navLinks = $derived(

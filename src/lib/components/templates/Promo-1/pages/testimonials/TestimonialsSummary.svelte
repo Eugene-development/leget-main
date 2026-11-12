@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.7.3.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -43,7 +44,7 @@
 			: defaultStats
 	);
 
-	const rating = $derived(String(data?.rating ?? '4.9'));
+	const rating = $derived(editableText(data?.rating, '4.9'));
 
 	/**
 	 * Доля заполнения каждой из пяти звёзд. Рейтинг приходит строкой и правится
@@ -135,8 +136,9 @@
 					<EditableField
 						fieldKey="TestimonialsSummary.ratingCaption"
 						label="Подпись под оценкой"
-						value={String(
-							data?.ratingCaption ?? 'на основе отзывов покупателей за всё время работы'
+						value={editableText(
+							data?.ratingCaption,
+							'на основе отзывов покупателей за всё время работы'
 						)}
 						{isEditable}
 						multiline
@@ -154,7 +156,7 @@
 					<EditableField
 						fieldKey="TestimonialsSummary.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Нам доверяют')}
+						value={editableText(data?.title, 'Нам доверяют')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="block"
@@ -169,8 +171,9 @@
 					<EditableField
 						fieldKey="TestimonialsSummary.subtitle"
 						label="Подзаголовок"
-						value={String(
-							data?.subtitle ?? 'Каждый отзыв — результат работы дизайнеров, мастеров и сборщиков'
+						value={editableText(
+							data?.subtitle,
+							'Каждый отзыв — результат работы дизайнеров, мастеров и сборщиков'
 						)}
 						{isEditable}
 						multiline

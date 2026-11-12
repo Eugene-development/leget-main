@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -82,7 +84,7 @@
 			<EditableField
 				fieldKey="USP.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Почему мы')}
+				value={editableText(data?.label, 'Почему мы')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -96,7 +98,7 @@
 			<EditableField
 				fieldKey="USP.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Уникальное торговое предложение')}
+				value={editableText(data?.title, 'Уникальное торговое предложение')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -114,9 +116,9 @@
 			<EditableField
 				fieldKey="USP.subtitle"
 				label="Подзаголовок"
-				value={String(
-					data?.subtitle ??
-						'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас'
+				value={editableText(
+					data?.subtitle,
+					'То, что отличает нас от конкурентов и делает сотрудничество выгодным для вас'
 				)}
 				{isEditable}
 				multiline
@@ -139,14 +141,47 @@
 					class:animate-slide-right={visible}
 					style="animation-delay: {0.1 + i * 0.12}s"
 				>
-					<span class="mt-0.5 shrink-0 text-xs font-medium text-accent">{item.number}</span>
+					<span class="mt-0.5 shrink-0 text-xs font-medium text-accent"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="USP"
+							path={['items', items.indexOf(item), 'number']}
+							fallback={item.number}
+							label="Текст"
+							defaults={{ items }}
+							richText={false}
+						/></span
+					>
 					<div>
 						<h3
 							class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
 						>
-							{item.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="USP"
+								path={['items', items.indexOf(item), 'title']}
+								fallback={item.title}
+								label="Заголовок"
+								defaults={{ items }}
+							/>
 						</h3>
-						<p class="mt-2 text-sm leading-relaxed text-secondary">{item.description}</p>
+						<p class="mt-2 text-sm leading-relaxed text-secondary">
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="USP"
+								path={['items', items.indexOf(item), 'description']}
+								fallback={item.description}
+								label="Описание"
+								defaults={{ items }}
+								multiline
+							/>
+						</p>
 					</div>
 				</div>
 			{/each}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.4.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -144,18 +145,46 @@
 						class="mb-3 text-3xl text-primary transition-colors group-hover:text-secondary"
 						style="font-family: var(--font-heading);"
 					>
-						{style.name}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="StylesGrid"
+							path={['styles', styles.indexOf(style), 'name']}
+							fallback={style.name}
+							label="Заголовок"
+							defaults={{ styles }}
+						/>
 					</h2>
 					<p class="mb-6 line-clamp-3 text-lg leading-relaxed text-secondary">
-						{style.description}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="StylesGrid"
+							path={['styles', styles.indexOf(style), 'description']}
+							fallback={style.description}
+							label="Описание"
+							defaults={{ styles }}
+							multiline
+						/>
 					</p>
 
 					<div class="mt-auto flex flex-wrap justify-center gap-2">
-						{#each style.tags as tag}
+						{#each style.tags as tag, tagIndex}
 							<span
 								class="rounded-sm border border-border-light bg-transparent px-3 py-1 text-xs text-muted transition-colors group-hover:border-secondary/40 group-hover:text-secondary"
 							>
-								{tag}
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="StylesGrid"
+									path={['styles', styles.indexOf(style), 'tags', style.tags.indexOf(tag)]}
+									fallback={tag}
+									label="Текст"
+									defaults={{ styles }}
+								/>
 							</span>
 						{/each}
 					</div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.27.3.1 — см. docs/architecture/component-articles-map.md
 	import { getContext, onMount } from 'svelte';
 	import {
@@ -148,7 +149,7 @@
 			<EditableField
 				fieldKey="VacancyForm.label"
 				label="Метка"
-				value={String(data?.label ?? 'Отклик на вакансию')}
+				value={editableText(data?.label, 'Отклик на вакансию')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 				class="vc-item block"
@@ -165,7 +166,7 @@
 			<EditableField
 				fieldKey="VacancyForm.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Напишите нам')}
+				value={editableText(data?.title, 'Напишите нам')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="vc-item vc-d1 mt-5 block"
@@ -180,9 +181,9 @@
 			<EditableField
 				fieldKey="VacancyForm.description"
 				label="Подзаголовок"
-				value={String(
-					data?.description ??
-						'Укажите имя и телефон — мы свяжемся с вами, обсудим детали и договоримся о встрече.'
+				value={editableText(
+					data?.description,
+					'Укажите имя и телефон — мы свяжемся с вами, обсудим детали и договоримся о встрече.'
 				)}
 				{isEditable}
 				multiline
@@ -283,8 +284,9 @@
 					<EditableField
 						fieldKey="VacancyForm.consent"
 						label="Согласие на обработку данных"
-						value={String(
-							data?.consent ?? 'Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.'
+						value={editableText(
+							data?.consent,
+							'Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.'
 						)}
 						{isEditable}
 						multiline

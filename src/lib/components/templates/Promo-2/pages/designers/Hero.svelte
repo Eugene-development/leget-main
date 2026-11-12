@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.13.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -103,7 +105,7 @@
 				<EditableField
 					fieldKey="Hero.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Для дизайнеров и студий')}
+					value={editableText(data?.title, 'Для дизайнеров и студий')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -123,9 +125,9 @@
 				<EditableField
 					fieldKey="Hero.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Станьте партнёром фабрики — и предлагайте клиентам премиальную мебель с эксклюзивными условиями.'
+					value={editableText(
+						data?.description,
+						'Станьте партнёром фабрики — и предлагайте клиентам премиальную мебель с эксклюзивными условиями.'
 					)}
 					{isEditable}
 					multiline
@@ -154,7 +156,16 @@
 						if (!isEditable) openPromo2Form('partnership', '');
 					}}
 				>
-					Стать партнёром
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Hero"
+						path={['copy', 'partnerButtonText']}
+						fallback={'Стать партнёром'}
+						label="Стать партнёром"
+						richText={false}
+					/>
 					<svg
 						class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 						fill="none"
@@ -173,7 +184,16 @@
 					href="#how-it-works"
 					class="inline-flex items-center gap-2 rounded-sm border border-white/20 px-8 py-4 text-xs tracking-[0.15em] text-white/80 uppercase transition-all duration-500 hover:border-white/50 hover:text-white"
 				>
-					Как это работает
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Hero"
+						path={['copy', 'stepsLinkText']}
+						fallback={'Как это работает'}
+						label="Как это работает"
+						richText={false}
+					/>
 				</a>
 			</div>
 		</div>
@@ -184,13 +204,35 @@
 			class:animate-fade-up={visible}
 			style="animation-delay: 1s"
 		>
-			{#each stats as stat}
+			{#each stats as stat, statIndex}
 				<div class="stats-glass-item flex flex-col gap-1.5 px-6 py-6 xl:px-8">
 					<span
 						class="text-3xl font-light text-accent-light"
-						style="font-family: var(--font-heading);">{stat.value}</span
+						style="font-family: var(--font-heading);"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['stats', stats.indexOf(stat), 'value']}
+							fallback={stat.value}
+							label="Текст"
+							defaults={{ stats }}
+							richText={false}
+						/></span
 					>
-					<span class="text-xs tracking-wide text-white/80">{stat.label}</span>
+					<span class="text-xs tracking-wide text-white/80"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['stats', stats.indexOf(stat), 'label']}
+							fallback={stat.label}
+							label="Текст"
+							defaults={{ stats }}
+						/></span
+					>
 				</div>
 			{/each}
 		</div>

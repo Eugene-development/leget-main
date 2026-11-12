@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.16.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -28,14 +29,14 @@
 			'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png'
 	);
 	const primaryButton = $derived(
-		!data.primaryButton || data.primaryButton === 'Ваш проект'
+		data.primaryButton === undefined || data.primaryButton === 'Ваш проект'
 			? 'Составить проект мебели'
-			: String(data.primaryButton)
+			: editableText(data.primaryButton)
 	);
 	const secondaryButton = $derived(
-		!data.secondaryButton || data.secondaryButton === 'Бесплатный замер'
+		data.secondaryButton === undefined || data.secondaryButton === 'Бесплатный замер'
 			? 'Заказать замер помещения'
-			: String(data.secondaryButton)
+			: editableText(data.secondaryButton)
 	);
 </script>
 
@@ -60,7 +61,7 @@
 				<EditableField
 					fieldKey="MebelHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Мебель на заказ')}
+					value={editableText(data.title, 'Мебель на заказ')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
@@ -75,9 +76,9 @@
 				<EditableField
 					fieldKey="MebelHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Создаём уникальную корпусную мебель по вашим размерам и дизайну. Индивидуальный подход к каждому проекту.'
+					value={editableText(
+						data.description,
+						'Создаём уникальную корпусную мебель по вашим размерам и дизайну. Индивидуальный подход к каждому проекту.'
 					)}
 					{isEditable}
 					inline

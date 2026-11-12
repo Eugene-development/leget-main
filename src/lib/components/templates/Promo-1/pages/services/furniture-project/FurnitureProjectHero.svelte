@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.14.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -23,15 +24,15 @@
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 	const badge = $derived(
-		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+		data?.badge === 'Услуга' ? 'Услуга компании' : editableText(data?.badge, 'Услуга компании')
 	);
 	const isLegacyTitle = $derived(
 		data?.title_part1 === 'Проектирование' && data?.title_part2 === 'мебели'
 	);
 	const titlePart1 = $derived(
-		isLegacyTitle ? 'Создание проекта' : String(data?.title_part1 ?? 'Создание проекта')
+		isLegacyTitle ? 'Создание проекта' : editableText(data?.title_part1, 'Создание проекта')
 	);
-	const titlePart2 = $derived(isLegacyTitle ? 'мебели' : String(data?.title_part2 ?? 'мебели'));
+	const titlePart2 = $derived(isLegacyTitle ? 'мебели' : editableText(data?.title_part2, 'мебели'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -112,9 +113,9 @@
 			<EditableField
 				fieldKey="FurnitureProjectHero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Индивидуальная мебель, спроектированная под ваше пространство с учётом ваших пожеланий. От стартового эскиза до рабочих чертежей для производства.'
+				value={editableText(
+					data?.description,
+					'Индивидуальная мебель, спроектированная под ваше пространство с учётом ваших пожеланий. От стартового эскиза до рабочих чертежей для производства.'
 				)}
 				{isEditable}
 				multiline
@@ -129,7 +130,7 @@
 			<ServiceHeroForm
 				serviceType="furniture-project"
 				ctaFieldKey="FurnitureProjectHero.cta_text"
-				ctaValue={String(data?.cta_text ?? 'Заказать проект мебели')}
+				ctaValue={editableText(data?.cta_text, 'Заказать проект мебели')}
 				note="В ближайшее время с вами свяжется специалист."
 				nameId="furniture-project-hero-name"
 				phoneId="furniture-project-hero-phone"

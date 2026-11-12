@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { withPromoMotion } from '$lib/motion/transition';
 
 	import RichText from '$lib/components/RichText.svelte';
@@ -98,7 +99,7 @@
 		headerActions?: Snippet;
 	} = $props();
 
-	const title = $derived(String(data?.title || defaultTitle));
+	const title = $derived(editableText(data?.title, defaultTitle));
 	let expandedMaterials = $state<Record<string, boolean>>({});
 	const sidebarId = $props.id();
 	const activeMaterial = $derived(String(data?.activeSlug ?? ''));

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.6.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -91,7 +92,7 @@
 <section class="relative bg-surface-warm pb-section-sm lg:pb-section">
 	<div class="p2-container mx-auto pt-20">
 		<div class="flex flex-col gap-24 lg:gap-32">
-			{#each brands as brand (brand.id)}
+			{#each brands as brand, brandIndex (brand.id)}
 				<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16" data-brand-id={brand.id}>
 					<!-- Content Box -->
 					<div
@@ -99,27 +100,72 @@
 						class:animate-fade-up={brandVisibility[brand.id]}
 						style="animation-delay: 0.2s"
 					>
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase">{brand.origin}</span
+						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="BrandsSection"
+								path={['brands', brands.indexOf(brand), 'origin']}
+								fallback={brand.origin}
+								label="Текст"
+								defaults={{ brands }}
+							/></span
 						>
 						<h3
 							class="mt-3 text-4xl text-primary lg:text-6xl"
 							style="font-family: var(--font-heading);"
 						>
-							{brand.name}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="BrandsSection"
+								path={['brands', brands.indexOf(brand), 'name']}
+								fallback={brand.name}
+								label="Заголовок"
+								defaults={{ brands }}
+							/>
 						</h3>
 						<div class="bg-border-strong mt-4 mb-8 h-px w-12"></div>
 						<p class="text-base leading-relaxed text-secondary">
-							{brand.description}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="BrandsSection"
+								path={['brands', brands.indexOf(brand), 'description']}
+								fallback={brand.description}
+								label="Описание"
+								defaults={{ brands }}
+								multiline
+							/>
 						</p>
 						<ul class="mt-8 flex flex-col gap-4">
-							{#each brand.features as feature}
+							{#each brand.features as feature, featureIndex}
 								<li class="flex items-start gap-4">
 									<div
 										class="mt-1 flex h-3 w-3 shrink-0 items-center justify-center border border-secondary"
 									>
 										<div class="h-1 w-1 bg-secondary"></div>
 									</div>
-									<span class="text-sm text-primary">{feature}</span>
+									<span class="text-sm text-primary"
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="BrandsSection"
+											path={[
+												'brands',
+												brands.indexOf(brand),
+												'features',
+												brand.features.indexOf(feature)
+											]}
+											fallback={feature}
+											label="Текст"
+											defaults={{ brands }}
+										/></span
+									>
 								</li>
 							{/each}
 						</ul>

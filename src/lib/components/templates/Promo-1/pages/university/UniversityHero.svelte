@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.32.1.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -21,7 +22,7 @@
 	} = $props();
 	const isLight = $derived(isLightBlock(data, 'light'));
 	function fieldValue(key: keyof typeof defaults) {
-		const value = data[key] ?? defaults[key];
+		const value = editableText(data[key], String(defaults[key]));
 		if (key === 'brandName' && value === 'Универ') return defaults.brandName;
 		if (key === 'title' && value === 'Хороший дом начинается с понимания.') return defaults.title;
 		return String(value);
@@ -87,7 +88,10 @@
 						<a
 							class="uni-primary-link"
 							href="#university-program"
-							aria-label={String(data.buttonText ?? defaults.buttonText).replace(/<[^>]*>/g, '')}
+							aria-label={editableText(data.buttonText, defaults.buttonText).replace(
+								/<[^>]*>/g,
+								''
+							)}
 						>
 							{@render field('buttonText', 'Текст ссылки')}
 							<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"

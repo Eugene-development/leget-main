@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.2.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -29,7 +30,7 @@
 				<EditableField
 					fieldKey="Mission.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Наша миссия')}
+					value={editableText(data?.label, 'Наша миссия')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -41,7 +42,7 @@
 				<EditableField
 					fieldKey="Mission.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Красота в каждом квадратном метре')}
+					value={editableText(data?.heading, 'Красота в каждом квадратном метре')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -53,9 +54,9 @@
 				<EditableField
 					fieldKey="Mission.text1"
 					label="Абзац 1"
-					value={String(
-						data?.text1 ??
-							'Мы появились из простой идеи: каждый человек заслуживает красивого дома, а красивый дом начинается с правильных материалов. Мы убрали лишних посредников, наладили прямые поставки и собрали команду настоящих экспертов.'
+					value={editableText(
+						data?.text1,
+						'Мы появились из простой идеи: каждый человек заслуживает красивого дома, а красивый дом начинается с правильных материалов. Мы убрали лишних посредников, наладили прямые поставки и собрали команду настоящих экспертов.'
 					)}
 					{isEditable}
 					multiline
@@ -69,9 +70,9 @@
 				<EditableField
 					fieldKey="Mission.text2"
 					label="Абзац 2"
-					value={String(
-						data?.text2 ??
-							'Сегодня мы работаем с частными клиентами, дизайнерами и застройщиками по всей России. Наш принцип неизменен: предлагать лучшее качество по честной цене и помогать на каждом этапе — от выбора до укладки.'
+					value={editableText(
+						data?.text2,
+						'Сегодня мы работаем с частными клиентами, дизайнерами и застройщиками по всей России. Наш принцип неизменен: предлагать лучшее качество по честной цене и помогать на каждом этапе — от выбора до укладки.'
 					)}
 					{isEditable}
 					multiline
@@ -95,9 +96,9 @@
 					<EditableField
 						fieldKey="Mission.quote"
 						label="Цитата"
-						value={String(
-							data?.quote ??
-								'Плитка — это не просто материал. Это основа атмосферы, которую вы создаёте в своём доме.'
+						value={editableText(
+							data?.quote,
+							'Плитка — это не просто материал. Это основа атмосферы, которую вы создаёте в своём доме.'
 						)}
 						{isEditable}
 						multiline
@@ -116,7 +117,7 @@
 						</div>
 						<div>
 							<div class="text-sm font-semibold text-white">
-								{String(data?.quoteName ?? 'Александр Петров')}
+								{editableText(data?.quoteName, 'Александр Петров')}
 							</div>
 							<div class="text-xs text-surface-300">
 								{String(data?.quoteRole ?? 'Основатель компании')}

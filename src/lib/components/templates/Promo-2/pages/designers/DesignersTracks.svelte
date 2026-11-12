@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.13.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -89,7 +91,7 @@
 			<EditableField
 				fieldKey="DesignersTracks.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Выберите формат')}
+				value={editableText(data?.label, 'Выберите формат')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -103,7 +105,7 @@
 			<EditableField
 				fieldKey="DesignersTracks.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Программы сотрудничества')}
+				value={editableText(data?.heading, 'Программы сотрудничества')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -125,7 +127,7 @@
 			class:animate-fade-up={visible}
 			style="animation-delay: 0.15s"
 		>
-			{#each tracks as track}
+			{#each tracks as track, trackIndex}
 				<button
 					class="relative pb-4 text-sm tracking-wide transition-colors duration-300 {activeTrack ===
 					track.id
@@ -133,7 +135,17 @@
 						: 'text-muted hover:text-secondary'}"
 					onclick={() => (activeTrack = track.id)}
 				>
-					{track.label}
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="DesignersTracks"
+						path={['tracks', tracks.indexOf(track), 'label']}
+						fallback={track.label}
+						label="Текст"
+						defaults={{ tracks }}
+						richText={false}
+					/>
 					{#if activeTrack === track.id}
 						<span class="absolute bottom-0 left-0 h-0.5 w-full bg-secondary"></span>
 					{/if}
@@ -142,7 +154,7 @@
 		</div>
 
 		<!-- Content -->
-		{#each tracks as track}
+		{#each tracks as track, trackIndex}
 			{#if activeTrack === track.id}
 				<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
 					<div
@@ -151,9 +163,30 @@
 						style="animation-delay: 0.25s"
 					>
 						<h3 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
-							{track.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersTracks"
+								path={['tracks', tracks.indexOf(track), 'title']}
+								fallback={track.title}
+								label="Заголовок"
+								defaults={{ tracks }}
+							/>
 						</h3>
-						<p class="mt-5 text-base leading-relaxed text-secondary">{track.description}</p>
+						<p class="mt-5 text-base leading-relaxed text-secondary">
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersTracks"
+								path={['tracks', tracks.indexOf(track), 'description']}
+								fallback={track.description}
+								label="Описание"
+								defaults={{ tracks }}
+								multiline
+							/>
+						</p>
 						<button
 							class="group mt-8 inline-flex items-center gap-3 rounded-sm border border-primary bg-primary px-7 py-3.5 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 							type="button"
@@ -163,7 +196,16 @@
 								if (!isEditable) openPromo2Form('partnership', track.title);
 							}}
 						>
-							Оставить заявку
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersTracks"
+								path={['copy', 'requestText']}
+								fallback={'Оставить заявку'}
+								label="Оставить заявку"
+								richText={false}
+							/>
 							<svg
 								class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 								fill="none"
@@ -189,9 +231,35 @@
 							{#each track.points as point, j}
 								<li class="flex items-start gap-4 py-4">
 									<span class="mt-0.5 shrink-0 text-xs font-medium text-accent tabular-nums"
-										>0{j + 1}</span
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="DesignersTracks"
+											path={['tracks', tracks.indexOf(track), 'pointNumbers', `point:${j}`]}
+											fallback={String(j + 1).padStart(2, '0')}
+											label="Номер пункта"
+											richText={false}
+											defaults={{ tracks }}
+										/></span
 									>
-									<span class="text-sm leading-relaxed text-primary">{point}</span>
+									<span class="text-sm leading-relaxed text-primary"
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="DesignersTracks"
+											path={[
+												'tracks',
+												tracks.indexOf(track),
+												'points',
+												track.points.indexOf(point)
+											]}
+											fallback={point}
+											label="Текст"
+											defaults={{ tracks }}
+										/></span
+									>
 								</li>
 							{/each}
 						</ul>

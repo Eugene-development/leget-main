@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -78,7 +80,7 @@
 				<EditableField
 					fieldKey="Advantages.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Наши преимущества')}
+					value={editableText(data?.label, 'Наши преимущества')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -92,7 +94,7 @@
 				<EditableField
 					fieldKey="Advantages.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Цифры говорят за нас')}
+					value={editableText(data?.title, 'Цифры говорят за нас')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -119,9 +121,30 @@
 								class="text-3xl font-light text-secondary lg:text-4xl"
 								style="font-family: var(--font-heading);"
 							>
-								{stat.value}
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="Advantages"
+									path={['stats', stats.indexOf(stat), 'value']}
+									fallback={stat.value}
+									label="Текст"
+									defaults={{ stats }}
+									richText={false}
+								/>
 							</div>
-							<div class="mt-1 text-sm text-muted">{stat.label}</div>
+							<div class="mt-1 text-sm text-muted">
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="Advantages"
+									path={['stats', stats.indexOf(stat), 'label']}
+									fallback={stat.label}
+									label="Текст"
+									defaults={{ stats }}
+								/>
+							</div>
 						</div>
 					{/each}
 				</div>
@@ -133,7 +156,18 @@
 				class:animate-slide-right={visible}
 				style="animation-delay: 0.2s"
 			>
-				<p class="mb-8 text-[11px] tracking-[0.3em] text-secondary uppercase">Что вы получаете</p>
+				<p class="mb-8 text-[11px] tracking-[0.3em] text-secondary uppercase">
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Advantages"
+						path={['copy', 'featuresHeading']}
+						fallback={'Что вы получаете'}
+						label="Что вы получаете"
+						multiline
+					/>
+				</p>
 				<div class="flex flex-col gap-0">
 					{#each features as feature, i}
 						<div
@@ -142,7 +176,18 @@
 							style="animation-delay: {0.3 + i * 0.08}s"
 						>
 							<div class="h-px w-6 shrink-0 bg-accent"></div>
-							<span class="text-sm leading-relaxed text-primary">{feature}</span>
+							<span class="text-sm leading-relaxed text-primary"
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="Advantages"
+									path={['features', features.indexOf(feature)]}
+									fallback={feature}
+									label="Текст"
+									defaults={{ features }}
+								/></span
+							>
 						</div>
 					{/each}
 				</div>

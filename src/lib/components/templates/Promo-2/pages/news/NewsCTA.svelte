@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.3.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -52,7 +54,7 @@
 			<EditableField
 				fieldKey="NewsCTA.eyebrow"
 				label="Надпись"
-				value={String(data?.eyebrow ?? 'Хотите узнавать первыми?')}
+				value={editableText(data?.eyebrow, 'Хотите узнавать первыми?')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
 			>
@@ -66,7 +68,7 @@
 			<EditableField
 				fieldKey="NewsCTA.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Посетите наши салоны')}
+				value={editableText(data?.heading, 'Посетите наши салоны')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -84,8 +86,9 @@
 			<EditableField
 				fieldKey="NewsCTA.description"
 				label="Описание"
-				value={String(
-					data?.description ?? 'Наши дизайнеры всегда в курсе последних новинок и акций.'
+				value={editableText(
+					data?.description,
+					'Наши дизайнеры всегда в курсе последних новинок и акций.'
 				)}
 				{isEditable}
 				multiline
@@ -107,7 +110,7 @@
 					<EditableField
 						fieldKey="NewsCTA.ctaText"
 						label="Кнопка"
-						value={String(data?.ctaText ?? 'Найти ближайший салон')}
+						value={editableText(data?.ctaText, 'Найти ближайший салон')}
 						{isEditable}
 						onSave={(v) => saveField('ctaText', v)}
 					>
@@ -133,7 +136,16 @@
 					href="/actions"
 					class="inline-flex items-center gap-2 rounded-sm border border-border-medium px-8 py-3.5 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:border-secondary hover:text-secondary"
 				>
-					Смотреть акции
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="NewsCTA"
+						path={['copy', 'actionsLinkText']}
+						fallback={'Смотреть акции'}
+						label="Смотреть акции"
+						richText={false}
+					/>
 				</a>
 			</div>
 		</div>

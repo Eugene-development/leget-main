@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.34.1.1 — см. docs/architecture/component-articles-map.md
 	import { tick } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -102,7 +103,7 @@
 			<EditableField
 				fieldKey="GlassRequest.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Стекло и Зеркала')}
+				value={editableText(data?.title, 'Стекло и Зеркала')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -114,9 +115,9 @@
 			<EditableField
 				fieldKey="GlassRequest.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Для мебели и интерьера. Расскажите, что вы задумали — поможем подобрать стекло или зеркало под ваш проект.'
+				value={editableText(
+					data?.description,
+					'Для мебели и интерьера. Расскажите, что вы задумали — поможем подобрать стекло или зеркало под ваш проект.'
 				)}
 				{isEditable}
 				onSave={(v) => saveField('description', v)}
@@ -153,7 +154,7 @@
 					<EditableField
 						fieldKey="GlassRequest.formTitle"
 						label="Заголовок формы"
-						value={String(data?.formTitle ?? 'Обсудим ваш проект')}
+						value={editableText(data?.formTitle, 'Обсудим ваш проект')}
 						{isEditable}
 						onSave={(v) => saveField('formTitle', v)}
 						class="block"
@@ -228,7 +229,7 @@
 					<EditableField
 						fieldKey="GlassRequest.buttonText"
 						label="Текст кнопки"
-						value={String(data?.buttonText ?? 'Отправить заявку')}
+						value={editableText(data?.buttonText, 'Отправить заявку')}
 						{isEditable}
 						onSave={(v) => saveField('buttonText', v)}
 						class="mt-8 block"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.19.5.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -35,7 +36,7 @@
 
 <div class="mebel-container mt-12 mb-12">
 	<h2 class="mb-8 text-2xl text-ink-900">
-		{data.title || 'Популярные решения'}
+		{editableText(data.title, 'Популярные решения')}
 	</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2">

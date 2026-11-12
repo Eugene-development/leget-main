@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.9.1.1 — см. docs/architecture/component-articles-map.md
 	import PageHero from '../_shared/PageHero.svelte';
 	import type { HeroPalette } from '../_shared/hero';
@@ -39,13 +40,17 @@
 	{isEditable}
 	componentType="GuaranteesHero"
 	{palette}
-	title={{ key: 'title', label: 'Заголовок', value: String(data?.title ?? 'Гарантия качества') }}
+	title={{
+		key: 'title',
+		label: 'Заголовок',
+		value: editableText(data?.title, 'Гарантия качества')
+	}}
 	text={{
 		key: 'subtitle',
 		label: 'Подзаголовок',
-		value: String(
-			data?.subtitle ??
-				'Мы уверены в качестве продукции наших партнёров. Вся продукция имеет расширенную гарантию на материалы и работу мастеров.'
+		value: editableText(
+			data?.subtitle,
+			'Мы уверены в качестве продукции наших партнёров. Вся продукция имеет расширенную гарантию на материалы и работу мастеров.'
 		)
 	}}
 >

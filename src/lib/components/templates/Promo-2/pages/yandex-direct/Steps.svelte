@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -78,7 +80,7 @@
 			<EditableField
 				fieldKey="Steps.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Как мы работаем')}
+				value={editableText(data?.label, 'Как мы работаем')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -92,7 +94,7 @@
 			<EditableField
 				fieldKey="Steps.title"
 				label="Заголовок"
-				value={String(data?.title ?? '4 простых шага к вашей идеальной мебели')}
+				value={editableText(data?.title, '4 простых шага к вашей идеальной мебели')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -121,7 +123,17 @@
 						class="mb-6 text-5xl font-light text-border-medium transition-colors duration-300 group-hover:text-accent lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
-						{step.number}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Steps"
+							path={['steps', steps.indexOf(step), 'number']}
+							fallback={step.number}
+							label="Текст"
+							defaults={{ steps }}
+							richText={false}
+						/>
 					</div>
 
 					<!-- Accent line -->
@@ -130,10 +142,29 @@
 					<h3
 						class="text-base text-primary transition-colors duration-300 group-hover:text-secondary"
 					>
-						{step.title}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Steps"
+							path={['steps', steps.indexOf(step), 'title']}
+							fallback={step.title}
+							label="Заголовок"
+							defaults={{ steps }}
+						/>
 					</h3>
 					<p class="mt-3 text-sm leading-relaxed text-secondary">
-						{step.description}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Steps"
+							path={['steps', steps.indexOf(step), 'description']}
+							fallback={step.description}
+							label="Описание"
+							defaults={{ steps }}
+							multiline
+						/>
 					</p>
 				</div>
 			{/each}

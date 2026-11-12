@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.5.3.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -67,7 +68,7 @@
 				<EditableField
 					fieldKey="Courier.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Курьер с образцами')}
+					value={editableText(data?.label, 'Курьер с образцами')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -79,7 +80,7 @@
 				<EditableField
 					fieldKey="Courier.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Образцы привезём к вам')}
+					value={editableText(data?.heading, 'Образцы привезём к вам')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -91,9 +92,9 @@
 				<EditableField
 					fieldKey="Courier.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Не можете приехать в салон? Наш курьер доставит образцы понравившихся коллекций прямо к вам домой или в офис. Бесплатно, в удобное время.'
+					value={editableText(
+						data?.description,
+						'Не можете приехать в салон? Наш курьер доставит образцы понравившихся коллекций прямо к вам домой или в офис. Бесплатно, в удобное время.'
 					)}
 					{isEditable}
 					multiline
@@ -123,7 +124,7 @@
 				<EditableField
 					fieldKey="Courier.ctaText"
 					label="Кнопка"
-					value={String(data?.ctaText ?? 'Заказать доставку образцов')}
+					value={editableText(data?.ctaText, 'Заказать доставку образцов')}
 					{isEditable}
 					onSave={(v) => saveField('ctaText', v)}
 				>

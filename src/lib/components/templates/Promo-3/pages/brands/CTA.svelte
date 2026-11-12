@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.3.3.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -34,7 +35,7 @@
 		<EditableField
 			fieldKey="CTA.heading"
 			label="Заголовок"
-			value={String(data?.heading ?? 'Не нашли нужный бренд?')}
+			value={editableText(data?.heading, 'Не нашли нужный бренд?')}
 			{isEditable}
 			onSave={(v) => saveField('heading', v)}
 			class="block"
@@ -46,9 +47,9 @@
 		<EditableField
 			fieldKey="CTA.description"
 			label="Описание"
-			value={String(
-				data?.description ??
-					'Свяжитесь с нами — мы работаем с широким кругом производителей и поможем найти нужную коллекцию под ваш проект.'
+			value={editableText(
+				data?.description,
+				'Свяжитесь с нами — мы работаем с широким кругом производителей и поможем найти нужную коллекцию под ваш проект.'
 			)}
 			{isEditable}
 			multiline
@@ -63,7 +64,7 @@
 			<EditableField
 				fieldKey="CTA.ctaPrimary"
 				label="Кнопка 1"
-				value={String(data?.ctaPrimary ?? 'Связаться с нами')}
+				value={editableText(data?.ctaPrimary, 'Связаться с нами')}
 				{isEditable}
 				onSave={(v) => saveField('ctaPrimary', v)}
 			>
@@ -86,7 +87,7 @@
 			<EditableField
 				fieldKey="CTA.ctaSecondary"
 				label="Кнопка 2"
-				value={String(data?.ctaSecondary ?? 'Смотреть каталог')}
+				value={editableText(data?.ctaSecondary, 'Смотреть каталог')}
 				{isEditable}
 				onSave={(v) => saveField('ctaSecondary', v)}
 			>

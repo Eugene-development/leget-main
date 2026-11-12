@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.12.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -72,17 +74,19 @@
 		}
 	];
 
-	const departments = $derived(
-		Array.isArray(data?.departments) && (data.departments as unknown[]).length > 0
-			? (data.departments as string[])
-			: defaultDepartments
-	);
-
 	const vacancies = $derived(
 		Array.isArray(data?.vacancies) && (data.vacancies as unknown[]).length > 0
 			? (data.vacancies as typeof defaultVacancies)
 			: defaultVacancies
 	);
+
+	const departments = $derived([
+		...new Set([
+			...defaultDepartments,
+			...(Array.isArray(data?.departments) ? (data.departments as string[]) : []),
+			...vacancies.map((item) => item.dept)
+		])
+	]);
 
 	let activeDept = $state('Все');
 	let expandedId = $state<number | null>(null);
@@ -119,7 +123,7 @@
 				<EditableField
 					fieldKey="CareersVacancies.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Открытые позиции')}
+					value={editableText(data?.label, 'Открытые позиции')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -133,7 +137,7 @@
 				<EditableField
 					fieldKey="CareersVacancies.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Вакансии')}
+					value={editableText(data?.heading, 'Вакансии')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -175,7 +179,16 @@
 						expandedId = null;
 					}}
 				>
-					{dept}
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="CareersVacancies"
+						path={['copy', 'departments', `label:${dept}`]}
+						fallback={dept}
+						label="Текст"
+						richText={false}
+					/>
 				</button>
 			{/each}
 		</div>
@@ -201,20 +214,86 @@
 										class="text-base text-primary transition-colors duration-300 group-hover:text-secondary"
 										style="font-family: var(--font-heading);"
 									>
-										{vac.title}
+										<ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="CareersVacancies"
+											path={['vacancies', vacancies.indexOf(vac), 'title']}
+											fallback={vac.title}
+											label="Заголовок"
+											defaults={{ vacancies }}
+											richText={false}
+										/>
 									</h3>
 									<div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
-										<span class="text-xs text-muted">{vac.city}</span>
+										<span class="text-xs text-muted"
+											><ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="CareersVacancies"
+												path={['vacancies', vacancies.indexOf(vac), 'city']}
+												fallback={vac.city}
+												label="Текст"
+												defaults={{ vacancies }}
+												richText={false}
+											/></span
+										>
 										<span class="h-1 w-1 rounded-full bg-border-medium"></span>
-										<span class="text-xs text-muted">{vac.type}</span>
+										<span class="text-xs text-muted"
+											><ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="CareersVacancies"
+												path={['vacancies', vacancies.indexOf(vac), 'type']}
+												fallback={vac.type}
+												label="Текст"
+												defaults={{ vacancies }}
+												richText={false}
+											/></span
+										>
 										<span class="h-1 w-1 rounded-full bg-border-medium"></span>
-										<span class="text-xs text-muted">Опыт: {vac.experience}</span>
+										<span class="text-xs text-muted"
+											><ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="CareersVacancies"
+												path={['copy', 'body1']}
+												fallback={'Опыт:'}
+												label="Опыт:"
+												richText={false}
+											/>
+											<ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="CareersVacancies"
+												path={['vacancies', vacancies.indexOf(vac), 'experience']}
+												fallback={vac.experience}
+												label="Текст"
+												defaults={{ vacancies }}
+												richText={false}
+											/></span
+										>
 									</div>
 								</div>
 								<div class="flex shrink-0 flex-col items-start gap-1.5 sm:items-end">
 									<span
 										class="inline-block border border-border-medium px-2.5 py-0.5 text-[10px] tracking-wider text-muted uppercase"
-										>{vac.dept}</span
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="CareersVacancies"
+											path={['vacancies', vacancies.indexOf(vac), 'dept']}
+											fallback={vac.dept}
+											label="Текст"
+											defaults={{ vacancies }}
+											richText={false}
+										/></span
 									>
 								</div>
 							</div>
@@ -239,12 +318,33 @@
 
 					{#if expandedId === vac.id}
 						<div class="border-t border-border-light bg-surface-warm px-6 py-6 pb-8 sm:px-8">
-							<p class="max-w-2xl text-sm leading-relaxed text-secondary">{vac.description}</p>
+							<p class="max-w-2xl text-sm leading-relaxed text-secondary">
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersVacancies"
+									path={['vacancies', vacancies.indexOf(vac), 'description']}
+									fallback={vac.description}
+									label="Описание"
+									defaults={{ vacancies }}
+									multiline
+								/>
+							</p>
 							<div class="mt-5 flex flex-wrap gap-2">
-								{#each vac.tags as tag}
+								{#each vac.tags as tag, tagIndex}
 									<span
 										class="border border-border-medium bg-white px-3 py-1 text-[11px] tracking-wider text-muted uppercase"
-										>{tag}</span
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="CareersVacancies"
+											path={['vacancies', vacancies.indexOf(vac), 'tags', vac.tags.indexOf(tag)]}
+											fallback={tag}
+											label="Текст"
+											defaults={{ vacancies }}
+										/></span
 									>
 								{/each}
 							</div>
@@ -258,7 +358,16 @@
 										if (!isEditable) openPromo2Form('careers', vac.title);
 									}}
 								>
-									Откликнуться
+									<ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="CareersVacancies"
+										path={['copy', 'applyText']}
+										fallback={'Откликнуться'}
+										label="Откликнуться"
+										richText={false}
+									/>
 									<svg
 										class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 										fill="none"
@@ -281,7 +390,18 @@
 
 			{#if filteredVacancies.length === 0}
 				<div class="px-8 py-16 text-center text-muted">
-					<p class="text-sm">Вакансий в этой категории не найдено.</p>
+					<p class="text-sm">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="CareersVacancies"
+							path={['copy', 'body2']}
+							fallback={'Вакансий в этой категории не найдено.'}
+							label="Вакансий в этой категории не найдено."
+							multiline
+						/>
+					</p>
 				</div>
 			{/if}
 		</div>

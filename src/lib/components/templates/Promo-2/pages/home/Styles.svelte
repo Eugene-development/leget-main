@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.1.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -35,7 +37,8 @@
 		{
 			title: 'Классический',
 			description: 'Элегантность мебельных традиций с вниманием к каждой детали фасада',
-			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/a0b0ebe5383d7e4155876b5294adaa3094b26fda62cfddefbf5265b5664c0a36.webp'
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/a0b0ebe5383d7e4155876b5294adaa3094b26fda62cfddefbf5265b5664c0a36.webp'
 		},
 		{
 			title: 'Лофт',
@@ -72,7 +75,7 @@
 				<EditableField
 					fieldKey="HomeStyles.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Коллекции')}
+					value={editableText(data?.label, 'Коллекции')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -86,7 +89,7 @@
 				<EditableField
 					fieldKey="HomeStyles.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Найдите свой стиль')}
+					value={editableText(data?.heading, 'Найдите свой стиль')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -109,7 +112,7 @@
 				<EditableField
 					fieldKey="HomeStyles.allLinkText"
 					label="Текст ссылки"
-					value={String(data?.allLinkText ?? 'Все стили')}
+					value={editableText(data?.allLinkText, 'Все стили')}
 					{isEditable}
 					onSave={(v) => saveField('allLinkText', v)}
 				>
@@ -159,10 +162,31 @@
 					<!-- Content -->
 					<div class="p-6 lg:p-8">
 						<h3 class="text-2xl text-primary lg:text-3xl" style="font-family: var(--font-heading);">
-							{style.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="HomeStyles"
+								path={['styles', styles.indexOf(style), 'title']}
+								fallback={style.title}
+								label="Заголовок"
+								defaults={{ styles }}
+								richText={false}
+							/>
 						</h3>
 						<p class="mt-2 text-sm leading-relaxed text-secondary">
-							{style.description}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="HomeStyles"
+								path={['styles', styles.indexOf(style), 'description']}
+								fallback={style.description}
+								label="Описание"
+								defaults={{ styles }}
+								richText={false}
+								multiline
+							/>
 						</p>
 					</div>
 				</a>

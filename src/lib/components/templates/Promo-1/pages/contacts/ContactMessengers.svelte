@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.5.4.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -58,7 +59,7 @@
 				<EditableField
 					fieldKey="ContactMessengers.eyebrow"
 					label="Надпись над заголовком"
-					value={String(data?.eyebrow ?? 'Социальные сети')}
+					value={editableText(data?.eyebrow, 'Социальные сети')}
 					{isEditable}
 					onSave={(v) => saveField('eyebrow', v)}
 					class="ct-item inline-block"
@@ -74,7 +75,7 @@
 				<EditableField
 					fieldKey="ContactMessengers.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Мы в Телеграм')}
+					value={editableText(data?.title, 'Мы в Телеграм')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="ct-item ct-d1 mt-5 block"
@@ -90,7 +91,7 @@
 					richText={false}
 					fieldKey="ContactMessengers.telegramUrl"
 					label="Ссылка на Telegram"
-					value={String(data?.telegramUrl || 'https://t.me/')}
+					value={editableText(data?.telegramUrl, 'https://t.me/')}
 					{isEditable}
 					onSave={(v) => saveField('telegramUrl', v)}
 					class="ct-item ct-d2 block"

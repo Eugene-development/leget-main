@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -37,7 +39,7 @@
 		<ImageFallback
 			imagePath={['image']}
 			src={String(data?.image ?? 'https://storage.yandexcloud.net/zovtop/bg/promosfvmwklfvmk.jpg')}
-			alt={String(data?.title ?? 'Акции')}
+			alt={editableText(data?.title, 'Акции')}
 			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible
 				? 'scale-105'
 				: ''}"
@@ -63,7 +65,15 @@
 			class="block text-[140px] leading-none font-light tracking-tighter text-primary/5 xl:text-[180px]"
 			style="font-family: var(--font-heading);"
 		>
-			SALE
+			<ContentText
+				bind:data
+				{editContext}
+				{isEditable}
+				componentType="Hero"
+				path={['copy', 'saleLabel']}
+				fallback={'SALE'}
+				label="SALE"
+			/>
 		</span>
 	</div>
 
@@ -76,7 +86,17 @@
 		<div
 			class="flex h-24 w-24 flex-col items-center justify-center border border-secondary/30 bg-white/50 text-center shadow-soft backdrop-blur-sm"
 		>
-			<span class="text-xs tracking-[0.2em] text-secondary/70 uppercase">до</span>
+			<span class="text-xs tracking-[0.2em] text-secondary/70 uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'discountPrefix']}
+					fallback={'до'}
+					label="до"
+				/></span
+			>
 			<span
 				class="text-3xl leading-none font-light text-secondary"
 				style="font-family: var(--font-heading);"
@@ -84,14 +104,24 @@
 				<EditableField
 					fieldKey="Hero.discountBadge"
 					label="Бейдж скидки"
-					value={String(data?.discountBadge ?? '−30%')}
+					value={editableText(data?.discountBadge, '−30%')}
 					{isEditable}
 					onSave={(v) => saveField('discountBadge', v)}
 				>
 					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</span>
-			<span class="mt-0.5 text-xs tracking-[0.15em] text-muted uppercase">скидка</span>
+			<span class="mt-0.5 text-xs tracking-[0.15em] text-muted uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'discountLabel']}
+					fallback={'скидка'}
+					label="скидка"
+				/></span
+			>
 		</div>
 	</div>
 
@@ -109,7 +139,7 @@
 				<EditableField
 					fieldKey="Hero.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Скидки & акции')}
+					value={editableText(data?.title, 'Скидки & акции')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -129,8 +159,10 @@
 				<EditableField
 					fieldKey="Hero.description"
 					label="Описание"
-					value={String(data?.description ?? '').trim() ||
-						'Выберите подходящее предложение на мебель для вашего дома. Поможем разобраться в условиях акций и рассчитать стоимость вашего проекта.'}
+					value={editableText(
+						data?.description,
+						'Выберите подходящее предложение на мебель для вашего дома. Поможем разобраться в условиях акций и рассчитать стоимость вашего проекта.'
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
@@ -158,9 +190,27 @@
 							class="text-2xl font-light text-primary"
 							style="font-family: var(--font-heading);"
 						>
-							{String(data?.statCount ?? '6+')}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['statCount']}
+								fallback={editableText(data?.statCount, '6+')}
+								label="Текст"
+							/>
 						</span>
-						<span class="text-xs tracking-[0.15em] text-secondary uppercase">акций сейчас</span>
+						<span class="text-xs tracking-[0.15em] text-secondary uppercase"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['copy', 'statCountLabel']}
+								fallback={'акций сейчас'}
+								label="акций сейчас"
+							/></span
+						>
 					</div>
 					<div class="h-8 w-px bg-border-medium"></div>
 					<div class="flex flex-col gap-1">
@@ -168,16 +218,52 @@
 							class="text-2xl font-light text-primary"
 							style="font-family: var(--font-heading);"
 						>
-							{String(data?.statDiscount ?? '−30%')}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['statDiscount']}
+								fallback={editableText(data?.statDiscount, '−30%')}
+								label="Текст"
+							/>
 						</span>
-						<span class="text-xs tracking-[0.15em] text-secondary uppercase">макс. скидка</span>
+						<span class="text-xs tracking-[0.15em] text-secondary uppercase"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['copy', 'statDiscountLabel']}
+								fallback={'макс. скидка'}
+								label="макс. скидка"
+							/></span
+						>
 					</div>
 					<div class="hidden h-8 w-px bg-border-medium sm:block"></div>
 					<div class="hidden flex-col gap-1 sm:flex">
 						<span class="text-2xl font-light text-primary" style="font-family: var(--font-heading);"
-							>0 ₽</span
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['copy', 'statDelivery']}
+								fallback={'0 ₽'}
+								label="0 ₽"
+							/></span
 						>
-						<span class="text-xs tracking-[0.15em] text-secondary uppercase">за доставку</span>
+						<span class="text-xs tracking-[0.15em] text-secondary uppercase"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['copy', 'statDeliveryLabel']}
+								fallback={'за доставку'}
+								label="за доставку"
+							/></span
+						>
 					</div>
 				</div>
 
@@ -190,7 +276,7 @@
 					<EditableField
 						fieldKey="Hero.ctaText"
 						label="Текст кнопки"
-						value={String(data?.ctaText ?? 'Расчёт проекта за час')}
+						value={editableText(data?.ctaText, 'Расчёт проекта за час')}
 						{isEditable}
 						onSave={(v) => saveField('ctaText', v)}
 					>
@@ -233,7 +319,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-xs tracking-[0.3em] text-muted uppercase">Листайте</span>
+			<span class="text-xs tracking-[0.3em] text-muted uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Листайте'}
+					label="Листайте"
+				/></span
+			>
 			<div class="h-10 w-px bg-gradient-to-b from-text-muted to-transparent"></div>
 		</div>
 	</div>

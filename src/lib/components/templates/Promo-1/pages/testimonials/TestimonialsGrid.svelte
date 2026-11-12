@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.7.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -291,7 +292,7 @@
 
 	/** Инициалы автора для аватара-плашки. */
 	function initials(name: string): string {
-		return name
+		return editableText(name)
 			.trim()
 			.split(/\s+/)
 			.slice(0, 2)

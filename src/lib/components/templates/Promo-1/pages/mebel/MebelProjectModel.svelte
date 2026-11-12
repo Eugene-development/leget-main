@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.18.6.1 — см. docs/architecture/component-articles-map.md
 	import { tick } from 'svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -75,7 +76,7 @@
 				<EditableField
 					fieldKey="MebelProjectModel.text"
 					label="Текст блока 3D"
-					value={String(data.text ?? 'Доступен просмотр 3D модели проекта')}
+					value={editableText(data.text, 'Доступен просмотр 3D модели проекта')}
 					{isEditable}
 					inline
 					onSave={(value) => save('text', value)}
@@ -87,7 +88,7 @@
 				<EditableField
 					fieldKey="MebelProjectModel.buttonText"
 					label="Текст кнопки 3D"
-					value={String(data.buttonText || 'Посмотреть в 3D')}
+					value={editableText(data.buttonText, 'Посмотреть в 3D')}
 					{isEditable}
 					inline
 					richText={false}

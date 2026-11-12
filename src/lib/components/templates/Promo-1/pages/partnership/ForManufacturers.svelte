@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.6.3.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -118,7 +119,7 @@
 				<EditableField
 					fieldKey="ForManufacturers.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Для производителей и поставщиков')}
+					value={editableText(data?.title, 'Для производителей и поставщиков')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="fm-item fm-d1 block"

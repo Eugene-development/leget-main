@@ -1,3 +1,5 @@
+import { editableText } from '$lib/utils/editable-text';
+
 /**
  * Один контракт данных для всех версий блока 1.1.2 (Message).
  *
@@ -114,7 +116,7 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 ];
 
 function asText(value: unknown, fallback: string): string {
-	return typeof value === 'string' ? value : fallback;
+	return value === null || typeof value === 'string' ? editableText(value) : fallback;
 }
 
 /**

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.5.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -67,7 +68,7 @@
 					<EditableField
 						fieldKey="ContactChannels.phoneTitle"
 						label="Заголовок"
-						value={String(data?.phoneTitle || 'Телефон')}
+						value={editableText(data?.phoneTitle, 'Телефон')}
 						{isEditable}
 						onSave={(v) => saveField('phoneTitle', v)}
 						class="mt-6 block"
@@ -80,8 +81,9 @@
 					<EditableField
 						fieldKey="ContactChannels.phoneDescription"
 						label="Описание"
-						value={String(
-							data?.phoneDescription || 'Позвоните нам, и мы проконсультируем вас по любым вопросам'
+						value={editableText(
+							data?.phoneDescription,
+							'Позвоните нам, и мы проконсультируем вас по любым вопросам'
 						)}
 						{isEditable}
 						multiline
@@ -149,7 +151,7 @@
 					<EditableField
 						fieldKey="ContactChannels.emailTitle"
 						label="Заголовок"
-						value={String(data?.emailTitle || 'Почта')}
+						value={editableText(data?.emailTitle, 'Почта')}
 						{isEditable}
 						onSave={(v) => saveField('emailTitle', v)}
 						class="mt-6 block"
@@ -162,8 +164,9 @@
 					<EditableField
 						fieldKey="ContactChannels.emailDescription"
 						label="Описание"
-						value={String(
-							data?.emailDescription || 'Напишите нам, и мы обязательно ответим в течение 24 часов'
+						value={editableText(
+							data?.emailDescription,
+							'Напишите нам, и мы обязательно ответим в течение 24 часов'
 						)}
 						{isEditable}
 						multiline
@@ -179,7 +182,7 @@
 						richText={false}
 						fieldKey="ContactChannels.email"
 						label="Email"
-						value={String(data?.email || 'info@leget.ru')}
+						value={editableText(data?.email, 'info@leget.ru')}
 						{isEditable}
 						onSave={(v) => saveField('email', v)}
 						class="mt-6 block"
@@ -231,7 +234,7 @@
 					<EditableField
 						fieldKey="ContactChannels.chatTitle"
 						label="Заголовок"
-						value={String(data?.chatTitle || 'Онлайн-чат')}
+						value={editableText(data?.chatTitle, 'Онлайн-чат')}
 						{isEditable}
 						onSave={(v) => saveField('chatTitle', v)}
 						class="mt-6 block"
@@ -244,8 +247,9 @@
 					<EditableField
 						fieldKey="ContactChannels.chatDescription"
 						label="Описание"
-						value={String(
-							data?.chatDescription || 'Мы готовы помочь вам в режиме реального времени'
+						value={editableText(
+							data?.chatDescription,
+							'Мы готовы помочь вам в режиме реального времени'
 						)}
 						{isEditable}
 						multiline
@@ -260,7 +264,7 @@
 					<EditableField
 						fieldKey="ContactChannels.chatLabel"
 						label="Текст статуса"
-						value={String(data?.chatLabel || 'Чат на экране')}
+						value={editableText(data?.chatLabel, 'Чат на экране')}
 						{isEditable}
 						onSave={(v) => saveField('chatLabel', v)}
 						class="mt-6 block"

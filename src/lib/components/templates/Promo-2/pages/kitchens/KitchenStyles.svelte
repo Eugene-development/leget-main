@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.9.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -76,7 +78,7 @@
 			<EditableField
 				fieldKey="KitchenStyles.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Варианты стилистических решений')}
+				value={editableText(data?.heading, 'Варианты стилистических решений')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -94,7 +96,10 @@
 			<EditableField
 				fieldKey="KitchenStyles.description"
 				label="Описание"
-				value={String(data?.description ?? 'Мы адаптируем индивидуальный проект под любой стиль.')}
+				value={editableText(
+					data?.description,
+					'Мы адаптируем индивидуальный проект под любой стиль.'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}
@@ -127,9 +132,30 @@
 					</div>
 					<div class="p-8">
 						<h3 class="mb-3 text-xl text-primary" style="font-family: var(--font-heading);">
-							{style.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="KitchenStyles"
+								path={['styles', styles.indexOf(style), 'title']}
+								fallback={style.title}
+								label="Заголовок"
+								defaults={{ styles }}
+							/>
 						</h3>
-						<p class="text-sm leading-relaxed text-secondary">{style.description}</p>
+						<p class="text-sm leading-relaxed text-secondary">
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="KitchenStyles"
+								path={['styles', styles.indexOf(style), 'description']}
+								fallback={style.description}
+								label="Описание"
+								defaults={{ styles }}
+								multiline
+							/>
+						</p>
 					</div>
 				</div>
 			{/each}

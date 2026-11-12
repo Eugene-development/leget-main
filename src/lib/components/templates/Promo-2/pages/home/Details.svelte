@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.1.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -126,7 +127,7 @@
 				</EditableField>
 
 				<ul class="mt-8 flex flex-col gap-4">
-					{#each items as item}
+					{#each items as item, itemIndex}
 						<li class="flex items-start gap-3 text-sm text-primary">
 							<svg
 								class="mt-0.5 h-4 w-4 flex-shrink-0 text-accent"
@@ -137,7 +138,17 @@
 							>
 								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
 							</svg>
-							{item}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="HomeDetails"
+								path={['items', items.indexOf(item)]}
+								fallback={item}
+								label="Текст"
+								defaults={{ items }}
+								multiline
+							/>
 						</li>
 					{/each}
 				</ul>

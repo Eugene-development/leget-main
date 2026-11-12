@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.6.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -49,7 +50,7 @@
 			<EditableField
 				fieldKey="FurnitureIntro.eyebrow"
 				label="Надпись"
-				value={String(data?.eyebrow ?? 'Качество в деталях')}
+				value={editableText(data?.eyebrow, 'Качество в деталях')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
 			>
@@ -63,7 +64,7 @@
 			<EditableField
 				fieldKey="FurnitureIntro.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Надежность, которую вы чувствуете каждый день')}
+				value={editableText(data?.heading, 'Надежность, которую вы чувствуете каждый день')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -81,9 +82,9 @@
 			<EditableField
 				fieldKey="FurnitureIntro.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Фурнитура — это невидимое сердце любой мебели. От нее зависит, насколько плавно будут открываться дверцы, как тихо будут закрываться ящики и сколько лет мебель прослужит без единого скрипа.'
+				value={editableText(
+					data?.description,
+					'Фурнитура — это невидимое сердце любой мебели. От нее зависит, насколько плавно будут открываться дверцы, как тихо будут закрываться ящики и сколько лет мебель прослужит без единого скрипа.'
 				)}
 				{isEditable}
 				multiline

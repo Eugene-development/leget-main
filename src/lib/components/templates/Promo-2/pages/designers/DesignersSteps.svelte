@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.13.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -74,7 +76,7 @@
 			<EditableField
 				fieldKey="DesignersSteps.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Просто и быстро')}
+				value={editableText(data?.label, 'Просто и быстро')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -88,7 +90,7 @@
 			<EditableField
 				fieldKey="DesignersSteps.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Как стать партнёром')}
+				value={editableText(data?.heading, 'Как стать партнёром')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -116,16 +118,47 @@
 							class="text-5xl leading-none font-light text-border-medium"
 							style="font-family: var(--font-heading);"
 						>
-							{step.num}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersSteps"
+								path={['steps', steps.indexOf(step), 'num']}
+								fallback={step.num}
+								label="Текст"
+								defaults={{ steps }}
+								richText={false}
+							/>
 						</span>
 						{#if i < steps.length - 1}
 							<div class="hidden h-px flex-1 bg-border-light lg:block"></div>
 						{/if}
 					</div>
 					<h3 class="text-lg text-primary" style="font-family: var(--font-heading);">
-						{step.title}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="DesignersSteps"
+							path={['steps', steps.indexOf(step), 'title']}
+							fallback={step.title}
+							label="Заголовок"
+							defaults={{ steps }}
+						/>
 					</h3>
-					<p class="mt-3 text-sm leading-relaxed text-secondary">{step.text}</p>
+					<p class="mt-3 text-sm leading-relaxed text-secondary">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="DesignersSteps"
+							path={['steps', steps.indexOf(step), 'text']}
+							fallback={step.text}
+							label="Описание"
+							defaults={{ steps }}
+							multiline
+						/>
+					</p>
 				</div>
 			{/each}
 		</div>

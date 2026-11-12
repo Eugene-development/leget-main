@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.1.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -174,7 +176,7 @@
 			<ImageFallback
 				imagePath={['mobileImage']}
 				src={String(data?.mobileImage ?? '')}
-				alt={String(data?.title ?? 'Hero')}
+				alt={editableText(data?.title, 'Hero')}
 				class="h-full w-full object-cover md:hidden"
 			/>
 			<!-- Desktop: crossfade videos -->
@@ -289,7 +291,7 @@
 						<EditableField
 							fieldKey="HomeHero.ctaPrimary"
 							label="Кнопка «Выездной дизайнер»"
-							value={String(data?.ctaPrimary ?? 'Выездной дизайнер')}
+							value={editableText(data?.ctaPrimary, 'Выездной дизайнер')}
 							{isEditable}
 							onSave={(v) => saveField('ctaPrimary', v)}
 						>
@@ -324,7 +326,7 @@
 						<EditableField
 							fieldKey="HomeHero.ctaSecondary"
 							label="Кнопка «Запись в салон»"
-							value={String(data?.ctaSecondary ?? 'Запись в салон')}
+							value={editableText(data?.ctaSecondary, 'Запись в салон')}
 							{isEditable}
 							onSave={(v) => saveField('ctaSecondary', v)}
 						>
@@ -354,7 +356,17 @@
 			style="animation-delay: 1.3s"
 		>
 			<div class="flex flex-col items-center gap-2">
-				<span class="text-[10px] tracking-[0.3em] text-muted uppercase">Листайте</span>
+				<span class="text-[10px] tracking-[0.3em] text-muted uppercase"
+					><ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Hero"
+						path={['copy', 'scrollHint']}
+						fallback={'Листайте'}
+						label="Листайте"
+					/></span
+				>
 				<div class="h-10 w-px bg-gradient-to-b from-text-muted to-transparent"></div>
 			</div>
 		</div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.5.1.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -52,7 +53,7 @@
 			<EditableField
 				fieldKey="ContactsHero.eyebrow"
 				label="Надпись над заголовком"
-				value={String(data?.eyebrow ?? 'Связь с нами')}
+				value={editableText(data?.eyebrow, 'Связь с нами')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
 				class="ct-item inline-block"
@@ -68,7 +69,7 @@
 			<EditableField
 				fieldKey="ContactsHero.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Контакты')}
+				value={editableText(data?.title, 'Контакты')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="ct-item ct-d1 mt-5 block"
@@ -81,9 +82,9 @@
 			<EditableField
 				fieldKey="ContactsHero.subtitle"
 				label="Подзаголовок"
-				value={String(
-					data?.subtitle ??
-						'Мы работаем с понедельника по субботу с 10:00 до 20:00. В иное время воспользуйтесь онлайн-чатом или почтой.'
+				value={editableText(
+					data?.subtitle,
+					'Мы работаем с понедельника по субботу с 10:00 до 20:00. В иное время воспользуйтесь онлайн-чатом или почтой.'
 				)}
 				{isEditable}
 				multiline

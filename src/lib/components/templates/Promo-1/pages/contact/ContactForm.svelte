@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.3.1.1 — см. docs/architecture/component-articles-map.md
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('promo1-contact');
@@ -60,7 +61,7 @@
 		<EditableField
 			fieldKey="ContactForm.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Контакты')}
+			value={editableText(data?.title, 'Контакты')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="block"

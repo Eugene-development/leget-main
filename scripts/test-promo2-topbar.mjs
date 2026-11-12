@@ -24,6 +24,8 @@ test('missing data uses defaults while deliberately emptied data stays empty', (
 	assert.equal(topBarLinks({}).length, 5);
 	assert.equal(topBarPhone({ phone: ' ' }), '');
 	assert.equal(topBarEmail({ email: '' }), '');
+	assert.equal(topBarPhone({ phone: null }), '');
+	assert.equal(topBarEmail({ email: null }), '');
 	assert.deepEqual(topBarLinks({ topLinks: [] }), []);
 });
 

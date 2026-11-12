@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.12.4.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -105,7 +107,7 @@
 				<EditableField
 					fieldKey="CareersForm.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Открытое резюме')}
+					value={editableText(data?.label, 'Открытое резюме')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -119,7 +121,7 @@
 				<EditableField
 					fieldKey="CareersForm.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Отправьте ваше резюме')}
+					value={editableText(data?.heading, 'Отправьте ваше резюме')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -137,9 +139,9 @@
 				<EditableField
 					fieldKey="CareersForm.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Отправьте открытое резюме — мы сохраняем его в базе и свяжемся, когда появится подходящая позиция.'
+					value={editableText(
+						data?.description,
+						'Отправьте открытое резюме — мы сохраняем его в базе и свяжемся, когда появится подходящая позиция.'
 					)}
 					{isEditable}
 					multiline
@@ -170,7 +172,17 @@
 								/>
 							</svg>
 						</div>
-						<span class="text-sm text-white/60">{String(data?.email ?? 'info@example.com')}</span>
+						<span class="text-sm text-white/60"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="CareersForm"
+								path={['email']}
+								fallback={editableText(data?.email, 'info@example.com')}
+								label="Текст"
+							/></span
+						>
 					</div>
 					<div class="flex items-center gap-3">
 						<div class="flex h-9 w-9 shrink-0 items-center justify-center border border-white/10">
@@ -188,7 +200,17 @@
 								/>
 							</svg>
 						</div>
-						<span class="text-sm text-white/60">{String(data?.phone ?? '')}</span>
+						<span class="text-sm text-white/60"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="CareersForm"
+								path={['phone']}
+								fallback={String(data?.phone ?? '')}
+								label="Текст"
+							/></span
+						>
 					</div>
 				</div>
 			</div>
@@ -199,7 +221,7 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.2s"
 			>
-				{#if resumeSent}
+				{#if resumeSent || isEditable}
 					<div class="flex h-full flex-col items-center justify-center py-12 text-center">
 						<div
 							class="flex h-16 w-16 items-center justify-center border border-accent/30 bg-accent/10"
@@ -215,26 +237,61 @@
 							</svg>
 						</div>
 						<h3 class="mt-6 text-2xl text-white" style="font-family: var(--font-heading);">
-							Отклик принят
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="CareersForm"
+								path={['copy', 'successHeading']}
+								fallback={'Отклик принят'}
+								label="Отклик принят"
+							/>
 						</h3>
 						<p class="mt-3 max-w-xs text-sm text-white/50">
-							Мы рассмотрим вашу кандидатуру и свяжемся при появлении подходящей вакансии.
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="CareersForm"
+								path={['copy', 'body1']}
+								fallback={'Мы рассмотрим вашу кандидатуру и свяжемся при появлении подходящей вакансии.'}
+								label="Мы рассмотрим вашу кандидатуру и свяжемся при появлении п…"
+								multiline
+							/>
 						</p>
 					</div>
-				{:else}
+				{/if}
+				{#if !resumeSent}
 					<form
 						onsubmit={submitResume}
 						class="border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:p-10"
 					>
 						<h3 class="mb-8 text-xl text-white" style="font-family: var(--font-heading);">
-							Открытое резюме
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="CareersForm"
+								path={['copy', 'formHeading']}
+								fallback={'Открытое резюме'}
+								label="Открытое резюме"
+							/>
 						</h3>
 
 						<div class="mb-5">
 							<label
 								for="resume-name"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>Имя и фамилия*</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersForm"
+									path={['copy', 'nameLabel']}
+									fallback={'Имя и фамилия*'}
+									label="Имя и фамилия*"
+									richText={false}
+								/></label
 							>
 							<input
 								id="resume-name"
@@ -250,7 +307,16 @@
 							<label
 								for="resume-phone"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>Телефон*</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersForm"
+									path={['copy', 'phoneLabel']}
+									fallback={'Телефон*'}
+									label="Телефон*"
+									richText={false}
+								/></label
 							>
 							<input
 								id="resume-phone"
@@ -266,7 +332,16 @@
 							<label
 								for="resume-email"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>Email*</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersForm"
+									path={['copy', 'emailLabel']}
+									fallback={'Email*'}
+									label="Email*"
+									richText={false}
+								/></label
 							>
 							<input
 								id="resume-email"
@@ -282,7 +357,16 @@
 							<label
 								for="resume-msg"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
-								>О себе / желаемая должность</label
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersForm"
+									path={['copy', 'messageLabel']}
+									fallback={'О себе / желаемая должность'}
+									label="О себе / желаемая должность"
+									richText={false}
+								/></label
 							>
 							<textarea
 								id="resume-msg"
@@ -309,9 +393,27 @@
 								<span
 									class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"
 								></span>
-								Отправка...
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersForm"
+									path={['copy', 'sendingText']}
+									fallback={'Отправка...'}
+									label="Отправка..."
+									richText={false}
+								/>
 							{:else}
-								Отправить резюме
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="CareersForm"
+									path={['copy', 'submitText']}
+									fallback={'Отправить резюме'}
+									label="Отправить резюме"
+									richText={false}
+								/>
 								<svg
 									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 									fill="none"
@@ -329,7 +431,16 @@
 						</button>
 
 						<p class="mt-4 text-center text-[11px] text-white/25">
-							Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="CareersForm"
+								path={['copy', 'body2']}
+								fallback={'Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности'}
+								label="Нажимая кнопку, вы соглашаетесь с политикой конфиденциаль…"
+								multiline
+							/>
 						</p>
 					</form>
 				{/if}

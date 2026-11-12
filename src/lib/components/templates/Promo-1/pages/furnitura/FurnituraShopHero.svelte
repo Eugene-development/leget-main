@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.36.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 
 	let { data }: { data: Record<string, unknown> } = $props();
 
-	const title = $derived(String(data.title || 'Магазин фурнитуры'));
+	const title = $derived(editableText(data.title, 'Магазин фурнитуры'));
 	const logo = $derived(String(data.logo || ''));
 </script>
 

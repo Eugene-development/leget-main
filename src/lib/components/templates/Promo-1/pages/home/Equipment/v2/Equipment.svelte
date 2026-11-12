@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.4.2 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -93,7 +94,7 @@
 	}
 
 	function fieldValue(key: string, fallback: string) {
-		return String(data?.[key] ?? fallback);
+		return editableText(data?.[key], fallback);
 	}
 </script>
 

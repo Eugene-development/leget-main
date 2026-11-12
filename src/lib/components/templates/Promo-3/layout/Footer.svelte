@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
@@ -25,19 +26,16 @@
 		else showLoginModal = true;
 	}
 
-	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'PLITKA');
-	const siteTagline = $derived(
-		typeof data?.siteTagline === 'string' ? data.siteTagline : 'Плитка & Дизайн'
-	);
+	const siteName = $derived(editableText(data?.siteName, 'PLITKA'));
+	const siteTagline = $derived(editableText(data?.siteTagline, 'Плитка & Дизайн'));
 	const description = $derived(
-		typeof data?.description === 'string'
-			? data.description
-			: 'Качественная плитка для вашего интерьера. Широкий ассортимент коллекций от ведущих мировых и российских производителей.'
+		editableText(
+			data?.description,
+			'Качественная плитка для вашего интерьера. Широкий ассортимент коллекций от ведущих мировых и российских производителей.'
+		)
 	);
 	const copyright = $derived(
-		typeof data?.copyright === 'string'
-			? data.copyright
-			: `© ${new Date().getFullYear()} ${siteName}. Все права защищены.`
+		editableText(data?.copyright, `© ${new Date().getFullYear()} ${siteName}. Все права защищены.`)
 	);
 	const privacyLink = $derived(
 		typeof data?.privacyLink === 'string' ? data.privacyLink : '/privacy'

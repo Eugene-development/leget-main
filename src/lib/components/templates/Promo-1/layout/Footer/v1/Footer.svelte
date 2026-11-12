@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	//
 	// Композиция: приёмная стойка. Верхний ярус — опись контактов слева и
@@ -204,7 +205,7 @@
 										visibilityLabel={contacts.label('email') + ' в футере'}
 										onToggleVisibility={(event) => contacts.toggle('email', event)}
 										label="Email"
-										value={String(data?.email ?? 'info@site.ru')}
+										value={editableText(data?.email, 'info@site.ru')}
 										onSave={(val) => saveField('email', val)}
 										{isEditable}
 									>
@@ -237,7 +238,7 @@
 										visibilityLabel={contacts.label('address') + ' в футере'}
 										onToggleVisibility={(event) => contacts.toggle('address', event)}
 										label="Адрес"
-										value={String(data?.address ?? 'г. Москва, ул. Ленина, д. 10')}
+										value={editableText(data?.address, 'г. Москва, ул. Ленина, д. 10')}
 										onSave={(val) => saveField('address', val)}
 										{isEditable}
 										multiline
@@ -266,7 +267,7 @@
 										visibilityLabel={contacts.label('hours') + ' в футере'}
 										onToggleVisibility={(event) => contacts.toggle('hours', event)}
 										label="Режим работы"
-										value={String(data?.hours ?? 'Пн–Вс: 9:00 — 21:00')}
+										value={editableText(data?.hours, 'Пн–Вс: 9:00 — 21:00')}
 										onSave={(val) => saveField('hours', val)}
 										{isEditable}
 									>
@@ -352,7 +353,7 @@
 				<EditableField
 					fieldKey="Footer.subscribeTitle"
 					label="Заголовок подписки"
-					value={String(data?.subscribeTitle ?? 'Подписка на новости')}
+					value={editableText(data?.subscribeTitle, 'Подписка на новости')}
 					onSave={(val) => saveField('subscribeTitle', val)}
 					{isEditable}
 				>
@@ -366,8 +367,9 @@
 				<EditableField
 					fieldKey="Footer.subscribeText"
 					label="Текст подписки"
-					value={String(
-						data?.subscribeText ?? 'Подпишитесь на новости и будьте в курсе всех новинок и акций.'
+					value={editableText(
+						data?.subscribeText,
+						'Подпишитесь на новости и будьте в курсе всех новинок и акций.'
 					)}
 					onSave={(val) => saveField('subscribeText', val)}
 					{isEditable}
@@ -566,9 +568,9 @@
 				&copy; {new Date().getFullYear()} Компания "<EditableField
 					fieldKey="Footer.siteName"
 					label="Название в копирайте"
-					value={!data?.siteName || data.siteName === 'Новострой'
+					value={data?.siteName === undefined || data.siteName === 'Новострой'
 						? 'Логотип'
-						: String(data.siteName)}
+						: editableText(data.siteName)}
 					onSave={(val) => saveField('siteName', val)}
 					{isEditable}
 					inline

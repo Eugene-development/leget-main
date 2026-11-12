@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.23.5.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -30,7 +31,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="mb-8 text-2xl text-ink-900">{data.title || 'Популярные категории'}</h2>
+	<h2 class="mb-8 text-2xl text-ink-900">{editableText(data.title, 'Популярные категории')}</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2">
 		{#each items as item, i}

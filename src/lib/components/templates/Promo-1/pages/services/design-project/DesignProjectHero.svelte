@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.12.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -25,12 +26,12 @@
 	const badge = $derived(
 		data?.badge === 'Проектирование полного цикла' || data?.badge === 'Услуга'
 			? 'Услуга компании'
-			: String(data?.badge ?? 'Услуга компании')
+			: editableText(data?.badge, 'Услуга компании')
 	);
 	const isLegacyTitle = $derived(data?.title_part1 === 'Проект' && data?.title_part2 === 'дизайна');
-	const titlePart1 = $derived(isLegacyTitle ? 'Дизайн' : String(data?.title_part1 ?? 'Дизайн'));
+	const titlePart1 = $derived(isLegacyTitle ? 'Дизайн' : editableText(data?.title_part1, 'Дизайн'));
 	const titlePart2 = $derived(
-		isLegacyTitle ? 'вашего интерьера' : String(data?.title_part2 ?? 'вашего интерьера')
+		isLegacyTitle ? 'вашего интерьера' : editableText(data?.title_part2, 'вашего интерьера')
 	);
 
 	async function saveField(field: string, value: string) {
@@ -112,9 +113,9 @@
 			<EditableField
 				fieldKey="DesignProjectHero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Создаем не просто красивые картинки, а детально проработанные технические решения для безупречной реализации вашего интерьера.'
+				value={editableText(
+					data?.description,
+					'Создаем не просто красивые картинки, а детально проработанные технические решения для безупречной реализации вашего интерьера.'
 				)}
 				{isEditable}
 				multiline
@@ -129,7 +130,7 @@
 			<ServiceHeroForm
 				serviceType="design-project"
 				ctaFieldKey="DesignProjectHero.cta_text"
-				ctaValue={String(data?.cta_text ?? 'Начать проект')}
+				ctaValue={editableText(data?.cta_text, 'Начать проект')}
 				note="В ближайшее время с вами свяжется специалист."
 				nameId="design-project-hero-name"
 				phoneId="design-project-hero-phone"

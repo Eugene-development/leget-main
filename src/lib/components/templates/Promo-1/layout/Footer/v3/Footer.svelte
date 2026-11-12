@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.Ф.1.3 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/state';
 	import { auth } from '$lib/stores/auth';
@@ -53,15 +54,13 @@
 	const cabinet = $derived(cabinetHref(client?.role));
 
 	const siteName = $derived(
-		typeof data?.siteName === 'string' && data.siteName && data.siteName !== 'Новострой'
-			? data.siteName
-			: 'Логотип'
+		data?.siteName === 'Новострой' ? 'Логотип' : editableText(data?.siteName, 'Логотип')
 	);
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
-	const email = $derived(String(data?.email ?? 'info@site.ru'));
-	const address = $derived(String(data?.address ?? 'г. Москва, ул. Ленина, д. 10'));
-	const hours = $derived(String(data?.hours ?? 'Пн–Вс: 9:00 — 21:00'));
+	const email = $derived(editableText(data?.email, 'info@site.ru'));
+	const address = $derived(editableText(data?.address, 'г. Москва, ул. Ленина, д. 10'));
+	const hours = $derived(editableText(data?.hours, 'Пн–Вс: 9:00 — 21:00'));
 	const telegram = $derived(String(data?.telegram ?? ''));
 	const whatsapp = $derived(String(data?.whatsapp ?? ''));
 

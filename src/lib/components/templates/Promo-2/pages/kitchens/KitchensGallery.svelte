@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.9.2.1 — см. docs/architecture/component-articles-map.md
 	import ProductCatalogModal from '../_shared/ProductCatalogModal.svelte';
 	import type { CatalogProduct } from '../_shared/product-catalog';
@@ -205,7 +207,7 @@
 				<EditableField
 					fieldKey="KitchensGallery.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Галерея')}
+					value={editableText(data?.label, 'Галерея')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -219,7 +221,7 @@
 				<EditableField
 					fieldKey="KitchensGallery.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Наши гарнитуры')}
+					value={editableText(data?.heading, 'Наши гарнитуры')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -237,7 +239,11 @@
 				<EditableField
 					fieldKey="KitchensGallery.description"
 					label="Описание"
-					value={String(data?.description ?? 'Ознакомьтесь с вариантами решений для вашей кухни.')}
+					value={String(
+						data?.description === undefined
+							? 'Ознакомьтесь с вариантами решений для вашей кухни.'
+							: (data.description ?? '')
+					)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
@@ -266,7 +272,16 @@
 		{/if}
 		{#if items.length === 0}
 			<p class="py-12 text-center text-secondary">
-				Кухонь пока нет.{isEditable ? ' Добавьте товары через «Управлять кухнями».' : ''}
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="KitchensGallery"
+					path={['copy', 'body1']}
+					fallback={'Кухонь пока нет.'}
+					label="Кухонь пока нет."
+					multiline
+				/>{isEditable ? ' Добавьте товары через «Управлять кухнями».' : ''}
 			</p>
 		{/if}
 		{#if items.length > 3}
@@ -291,13 +306,29 @@
 							</svg>
 						</button>
 						<span class="text-[10px] tracking-[0.2em] text-secondary/50 uppercase"
-							>Листайте влево</span
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="KitchensGallery"
+								path={['copy', 'scrollLeftText']}
+								fallback={'Листайте влево'}
+								label="Листайте влево"
+							/></span
 						>
 					</div>
 				{/if}
 				<div class="ml-auto flex items-center gap-6">
 					<span class="text-[10px] tracking-[0.2em] text-secondary/50 uppercase"
-						>Листайте вправо</span
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="KitchensGallery"
+							path={['copy', 'scrollRightText']}
+							fallback={'Листайте вправо'}
+							label="Листайте вправо"
+						/></span
 					>
 					<button
 						onclick={scrollRight}

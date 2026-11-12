@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.7.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -46,7 +47,7 @@
 			<iframe
 				title="Карта"
 				src="https://yandex.ru/map-widget/v1/?text={encodeURIComponent(
-					String(data?.address ?? 'Москва')
+					editableText(data?.address, 'Москва')
 				)}&z=14"
 				width="100%"
 				height="100%"

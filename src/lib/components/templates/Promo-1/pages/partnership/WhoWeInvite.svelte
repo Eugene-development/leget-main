@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.6.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -21,7 +22,7 @@
 	const platformButtonText = $derived(
 		data?.platformButtonText === 'Перейти на платформу'
 			? 'RUBONUS.PRO'
-			: String(data?.platformButtonText || 'RUBONUS.PRO')
+			: editableText(data?.platformButtonText, 'RUBONUS.PRO')
 	);
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
@@ -150,7 +151,7 @@
 			<EditableField
 				fieldKey="WhoWeInvite.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'У вас есть клиент?')}
+				value={editableText(data?.title, 'У вас есть клиент?')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="wi-item block"
@@ -164,8 +165,9 @@
 			<EditableField
 				fieldKey="WhoWeInvite.subtitle"
 				label="Подзаголовок"
-				value={String(
-					data?.subtitle ?? 'Партнёрство для профессионалов в сфере интерьера и ремонта'
+				value={editableText(
+					data?.subtitle,
+					'Партнёрство для профессионалов в сфере интерьера и ремонта'
 				)}
 				{isEditable}
 				onSave={(v) => saveField('subtitle', v)}
@@ -270,9 +272,9 @@
 					<EditableField
 						fieldKey="WhoWeInvite.platformText"
 						label="Текст о платформе"
-						value={String(
-							data?.platformText ??
-								'Профессиональная платформа для автоматизации партнёрских продаж: регистрируйте новые заказы, отслеживайте статус реализации проектов в реальном времени и управляйте начислениями бонусов через единую прозрачную систему.'
+						value={editableText(
+							data?.platformText,
+							'Профессиональная платформа для автоматизации партнёрских продаж: регистрируйте новые заказы, отслеживайте статус реализации проектов в реальном времени и управляйте начислениями бонусов через единую прозрачную систему.'
 						)}
 						{isEditable}
 						multiline
@@ -290,7 +292,7 @@
 						richText={false}
 						fieldKey="WhoWeInvite.platformUrl"
 						label="Ссылка на платформу"
-						value={String(data?.platformUrl || 'https://rubonus.pro/')}
+						value={editableText(data?.platformUrl, 'https://rubonus.pro/')}
 						{isEditable}
 						onSave={(v) => saveField('platformUrl', v)}
 						class="mt-8 inline-block"

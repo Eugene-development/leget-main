@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.1.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -43,7 +44,7 @@
 		<ImageFallback
 			imagePath={['image']}
 			src={String(data?.image ?? '')}
-			alt={String(data?.title ?? 'Плитка')}
+			alt={editableText(data?.title, 'Плитка')}
 			class="size-full object-cover"
 		/>
 		<div
@@ -69,7 +70,7 @@
 			<EditableField
 				fieldKey="Hero.tag"
 				label="Тег"
-				value={String(data?.tag ?? 'Коллекция 2026')}
+				value={editableText(data?.tag, 'Коллекция 2026')}
 				{isEditable}
 				onSave={(v) => saveField('tag', v)}
 			>
@@ -85,7 +86,7 @@
 		<EditableField
 			fieldKey="Hero.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Искусство плитки в каждой детали')}
+			value={editableText(data?.title, 'Искусство плитки в каждой детали')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="block"
@@ -101,9 +102,9 @@
 		<EditableField
 			fieldKey="Hero.subtitle"
 			label="Подзаголовок"
-			value={String(
-				data?.subtitle ??
-					'Качественная плитка из разных материалов от ведущих мировых производителей.'
+			value={editableText(
+				data?.subtitle,
+				'Качественная плитка из разных материалов от ведущих мировых производителей.'
 			)}
 			{isEditable}
 			multiline
@@ -122,7 +123,7 @@
 			<EditableField
 				fieldKey="Hero.ctaPrimary"
 				label="Кнопка 1"
-				value={String(data?.ctaPrimary ?? 'Промокод на скидку 10%')}
+				value={editableText(data?.ctaPrimary, 'Промокод на скидку 10%')}
 				{isEditable}
 				onSave={(v) => saveField('ctaPrimary', v)}
 			>
@@ -147,7 +148,7 @@
 			<EditableField
 				fieldKey="Hero.ctaSecondary"
 				label="Кнопка 2"
-				value={String(data?.ctaSecondary ?? 'Курьер с образцом')}
+				value={editableText(data?.ctaSecondary, 'Курьер с образцом')}
 				{isEditable}
 				onSave={(v) => saveField('ctaSecondary', v)}
 			>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.16.5.2 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -28,7 +29,7 @@
 
 	async function saveStepField(index: number, field: string, value: string) {
 		if (!editContext) return;
-		const updatedSteps = [...(data.steps || [])];
+		const updatedSteps = [...steps];
 		if (!updatedSteps[index]) {
 			updatedSteps[index] = { ...steps[index] };
 		}
@@ -63,7 +64,7 @@
 			<EditableField
 				fieldKey="MebelProcess.title"
 				label="Заголовок"
-				value={String(data.title || 'Как мы работаем')}
+				value={editableText(data.title, 'Как мы работаем')}
 				{isEditable}
 				inline
 				onSave={(v) => saveField('title', v)}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.23.6.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
@@ -40,7 +41,7 @@
 					<EditableField
 						fieldKey="PliitkaComplex.title"
 						label="Заголовок"
-						value={String(data.title || 'Комплексное решение')}
+						value={editableText(data.title, 'Комплексное решение')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('title', v)}
@@ -52,9 +53,9 @@
 					<EditableField
 						fieldKey="PliitkaComplex.description"
 						label="Описание"
-						value={String(
-							data.description ||
-								'Закажите плитку вместе с дизайн-проектом и получите скидку на весь комплект. Наши дизайнеры подберут плитку, которая идеально впишется в ваш интерьер.'
+						value={editableText(
+							data.description,
+							'Закажите плитку вместе с дизайн-проектом и получите скидку на весь комплект. Наши дизайнеры подберут плитку, которая идеально впишется в ваш интерьер.'
 						)}
 						{isEditable}
 						inline
@@ -97,7 +98,7 @@
 					<EditableField
 						fieldKey="PliitkaComplex.buttonText"
 						label="Кнопка"
-						value={String(data.buttonText || 'Заказать дизайн-проект')}
+						value={editableText(data.buttonText, 'Заказать дизайн-проект')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('buttonText', v)}

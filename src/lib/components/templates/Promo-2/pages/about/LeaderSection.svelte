@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -85,7 +87,7 @@
 							data?.image ??
 								'https://storage.yandexcloud.net/leget-main/templates/promo-2/zovdir.png'
 						)}
-						alt={String(data?.name ?? 'Руководитель фабрики')}
+						alt={editableText(data?.name, 'Руководитель фабрики')}
 						class="relative z-10 w-64 object-cover transition-transform duration-1000 hover:scale-105 md:w-80 lg:w-[22rem]"
 					/>
 				</div>
@@ -111,7 +113,7 @@
 				<EditableField
 					fieldKey="LeaderSection.quote"
 					label="Цитата"
-					value={String(data?.quote ?? 'Мы вкладываем весь свой опыт и душу в создание мебели')}
+					value={editableText(data?.quote, 'Мы вкладываем весь свой опыт и душу в создание мебели')}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('quote', v)}
@@ -129,11 +131,28 @@
 
 				<div class="mt-8 space-y-4">
 					<p class="text-base leading-relaxed text-secondary">
-						Каждая кухня, гардероб и любая другая мебель — это результат кропотливого труда нашей
-						большой команды, где передовые технологии сочетаются с любовью к своему делу.
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="LeaderSection"
+							path={['copy', 'body1']}
+							fallback={'Каждая кухня, гардероб и любая другая мебель — это результат кропотливого труда нашей большой команды, где передовые технологии сочетаются с любовью к своему делу.'}
+							label="Каждая кухня, гардероб и любая другая мебель — это резуль…"
+							multiline
+						/>
 					</p>
 					<p class="text-base leading-relaxed text-secondary">
-						Мы гордимся тем, что можем стать частью вашей повседневной жизни.
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="LeaderSection"
+							path={['copy', 'body2']}
+							fallback={'Мы гордимся тем, что можем стать частью вашей повседневной жизни.'}
+							label="Мы гордимся тем, что можем стать частью вашей повседневно…"
+							multiline
+						/>
 					</p>
 				</div>
 
@@ -144,7 +163,7 @@
 						<EditableField
 							fieldKey="LeaderSection.name"
 							label="Имя"
-							value={String(data?.name ?? 'Зуховицкий О.В.')}
+							value={editableText(data?.name, 'Зуховицкий О.В.')}
 							{isEditable}
 							onSave={(v) => saveField('name', v)}
 						>
@@ -157,7 +176,7 @@
 						<EditableField
 							fieldKey="LeaderSection.role"
 							label="Должность"
-							value={String(data?.role ?? 'Руководитель фабрики')}
+							value={editableText(data?.role, 'Руководитель фабрики')}
 							{isEditable}
 							onSave={(v) => saveField('role', v)}
 						>

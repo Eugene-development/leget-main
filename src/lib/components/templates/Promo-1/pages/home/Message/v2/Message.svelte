@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.2.2 — см. docs/architecture/component-articles-map.md
 	//
 	// «Паспорт работы»: та же опись выполненных проектов, что и в v1, но каждая
@@ -149,7 +150,7 @@
 			<EditableField
 				fieldKey="Message.title"
 				label="Заголовок"
-				value={String(data?.title ?? MESSAGE_DEFAULT_TITLE)}
+				value={editableText(data?.title, MESSAGE_DEFAULT_TITLE)}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -165,7 +166,7 @@
 				<EditableField
 					fieldKey="Message.text"
 					label="Текст"
-					value={String(data?.text ?? MESSAGE_DEFAULT_TEXT)}
+					value={editableText(data?.text, MESSAGE_DEFAULT_TEXT)}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('text', v)}

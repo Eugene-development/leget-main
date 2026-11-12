@@ -1,3 +1,5 @@
+import { editableText } from '$lib/utils/editable-text';
+
 export type IncentiveGalleryItem = {
 	src: string;
 	alt: string;
@@ -50,7 +52,7 @@ export function resolveIncentivesGallery(value: unknown): IncentiveGalleryItem[]
 		return {
 			src: typeof item.src === 'string' && item.src.trim() ? item.src : fallback.src,
 			alt: typeof item.alt === 'string' && item.alt.trim() ? item.alt : fallback.alt,
-			label: typeof item.label === 'string' ? item.label : fallback.label
+			label: editableText(item.label, fallback.label)
 		};
 	});
 }

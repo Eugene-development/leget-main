@@ -4,6 +4,7 @@
 	import FieldVisibilityToggle from './FieldVisibilityToggle.svelte';
 	import { getContext } from 'svelte';
 	import { editStore } from '$lib/stores/edit.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import {
 		EDITABLE_VISIBILITY_CONTEXT,
 		type EditableVisibility
@@ -101,14 +102,17 @@
 	const anyActive = $derived(editStore.activeField !== null);
 
 	// Отображаемое значение: draft (live preview) когда активно, иначе сохранённое
-	const displayValue = $derived(isActive ? (editStore.activeField?.draft ?? value) : value);
+	const savedValue = $derived(editableText(value));
+	const displayValue = $derived(
+		isActive ? (editStore.activeField?.draft ?? savedValue) : savedValue
+	);
 
 	function openModal() {
 		editStore.open({
 			key: fieldKey,
 			kind,
 			label,
-			value,
+			value: savedValue,
 			multiline,
 			richText: kind === 'text' && richText,
 			legacyHtml,

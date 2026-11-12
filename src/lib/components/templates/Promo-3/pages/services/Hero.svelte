@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.7.1.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -42,7 +43,7 @@
 			<EditableField
 				fieldKey="Hero.tag"
 				label="Тег"
-				value={String(data?.tag ?? 'Для вашего проекта')}
+				value={editableText(data?.tag, 'Для вашего проекта')}
 				{isEditable}
 				onSave={(v) => saveField('tag', v)}
 			>
@@ -55,7 +56,7 @@
 		<EditableField
 			fieldKey="Hero.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Услуги')}
+			value={editableText(data?.title, 'Услуги')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="block"
@@ -67,9 +68,9 @@
 		<EditableField
 			fieldKey="Hero.description"
 			label="Описание"
-			value={String(
-				data?.description ??
-					'Берём на себя все этапы — от доставки материалов до реализации дизайн-проекта «под ключ». Работаем профессионально и в срок.'
+			value={editableText(
+				data?.description,
+				'Берём на себя все этапы — от доставки материалов до реализации дизайн-проекта «под ключ». Работаем профессионально и в срок.'
 			)}
 			{isEditable}
 			multiline

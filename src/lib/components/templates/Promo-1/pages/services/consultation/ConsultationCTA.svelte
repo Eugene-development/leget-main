@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.11.4.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
@@ -33,7 +34,7 @@
 		<EditableField
 			fieldKey="ConsultationCTA.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Готовы преобразить пространство?')}
+			value={editableText(data?.title, 'Готовы преобразить пространство?')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="block"
@@ -48,9 +49,9 @@
 		<EditableField
 			fieldKey="ConsultationCTA.description"
 			label="Описание"
-			value={String(
-				data?.description ??
-					'Запишитесь на консультацию сегодня и сделайте первый уверенный шаг к созданию интерьера вашей мечты.'
+			value={editableText(
+				data?.description,
+				'Запишитесь на консультацию сегодня и сделайте первый уверенный шаг к созданию интерьера вашей мечты.'
 			)}
 			{isEditable}
 			multiline
@@ -68,7 +69,7 @@
 			<EditableField
 				fieldKey="ConsultationCTA.cta_text"
 				label="Текст кнопки"
-				value={String(data?.cta_text ?? 'Заказать консультацию')}
+				value={editableText(data?.cta_text, 'Заказать консультацию')}
 				{isEditable}
 				onSave={(v) => saveField('cta_text', v)}
 				class="inline-block"

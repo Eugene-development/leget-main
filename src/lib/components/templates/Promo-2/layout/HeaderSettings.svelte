@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
+	import { requestCopyFields, requestText } from '../forms/copy';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
@@ -29,10 +31,14 @@
 	let mode = $state<'image' | 'text'>('text');
 	let logoUrl = $state('');
 	let siteName = $state('');
+	let requestCopy = $state<Record<string, string>>({});
 
 	function openSettings() {
 		logoUrl = typeof data.logoUrl === 'string' ? data.logoUrl : '';
-		siteName = typeof data.siteName === 'string' ? data.siteName : 'Фабрика';
+		siteName = editableText(data.siteName, 'Фабрика');
+		requestCopy = Object.fromEntries(
+			requestCopyFields.map(({ key, fallback }) => [key, requestText(data, key, fallback)])
+		);
 		mode = data.logoMode === 'text' || !logoUrl ? 'text' : 'image';
 		error = '';
 		picking = false;
@@ -53,7 +59,12 @@
 				return;
 			}
 		}
-		const fields = { logoMode: mode, logoUrl: logoUrl.trim(), siteName: siteName.trim() };
+		const fields = {
+			logoMode: mode,
+			logoUrl: logoUrl.trim(),
+			siteName: siteName.trim(),
+			requestCopy: { ...requestCopy }
+		};
 		saving = true;
 		try {
 			await saveLayoutData(editContext, 'Header', { ...data, ...fields });
@@ -138,6 +149,25 @@
 					</label>
 				{/if}
 			</fieldset>
+			<details class="rounded-xl border border-on-dark/15 p-4 text-on-dark">
+				<summary class="cursor-pointer text-sm font-medium">Тексты модальных форм</summary>
+				<p class="mt-3 text-sm text-on-dark/70">
+					Общие для всех страниц сайта. Выберите заголовок, описание или подпись поля; сохраните
+					изменения кнопкой ниже.
+				</p>
+				<fieldset disabled={saving} class="mt-4 flex flex-col gap-4 disabled:opacity-60">
+					{#each requestCopyFields as field (field.key)}
+						<label class="flex flex-col gap-2 text-sm">
+							{field.label}
+							<textarea
+								bind:value={requestCopy[field.key]}
+								rows="2"
+								class="min-h-11 w-full rounded-xl border border-on-dark/20 bg-transparent p-3 text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400"
+							></textarea>
+						</label>
+					{/each}
+				</fieldset>
+			</details>
 			{#if error}<p role="alert" class="text-sm text-on-dark">{error}</p>{/if}
 			<button
 				type="button"

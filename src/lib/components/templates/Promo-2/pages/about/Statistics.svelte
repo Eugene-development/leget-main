@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -21,24 +22,24 @@
 	}
 
 	// Default statistics data
-	const stats = [
+	const stats = $derived([
 		{
-			value: data?.stat1_value ?? '15+',
-			label: data?.stat1_label ?? 'Лет опыта'
+			value: editableText(data?.stat1_value, '15+'),
+			label: editableText(data?.stat1_label, 'Лет опыта')
 		},
 		{
-			value: data?.stat2_value ?? '500+',
-			label: data?.stat2_label ?? 'Довольных клиентов'
+			value: editableText(data?.stat2_value, '500+'),
+			label: editableText(data?.stat2_label, 'Довольных клиентов')
 		},
 		{
-			value: data?.stat3_value ?? '1000+',
-			label: data?.stat3_label ?? 'Проектов реализовано'
+			value: editableText(data?.stat3_value, '1000+'),
+			label: editableText(data?.stat3_label, 'Проектов реализовано')
 		},
 		{
-			value: data?.stat4_value ?? '50+',
-			label: data?.stat4_label ?? 'Сотрудников'
+			value: editableText(data?.stat4_value, '50+'),
+			label: editableText(data?.stat4_label, 'Сотрудников')
 		}
-	];
+	]);
 </script>
 
 <section class="relative overflow-hidden bg-stone-900 py-20 text-white lg:py-32">
@@ -50,7 +51,7 @@
 			<EditableField
 				fieldKey="Statistics.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Наши достижения')}
+				value={editableText(data?.title, 'Наши достижения')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"

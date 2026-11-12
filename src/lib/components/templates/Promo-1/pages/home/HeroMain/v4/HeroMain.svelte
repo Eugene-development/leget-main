@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.1.4 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -211,7 +212,7 @@
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
-						value={String(data?.buttonText ?? 'Дизайн-проект с расчётом стоимости')}
+						value={editableText(data?.buttonText, 'Дизайн-проект с расчётом стоимости')}
 						{isEditable}
 						onSave={(v) => saveField('buttonText', v)}
 						class="block w-full sm:w-auto"

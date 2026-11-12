@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.8.3.1 — см. docs/architecture/component-articles-map.md
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('promo3-vacancy');
@@ -75,7 +76,7 @@
 				<EditableField
 					fieldKey="Form.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Отклик на вакансию')}
+					value={editableText(data?.label, 'Отклик на вакансию')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -87,7 +88,7 @@
 				<EditableField
 					fieldKey="Form.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Напишите нам')}
+					value={editableText(data?.heading, 'Напишите нам')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -99,9 +100,9 @@
 				<EditableField
 					fieldKey="Form.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Укажите имя и телефон — мы свяжемся с вами, обсудим детали и договоримся о встрече.'
+					value={editableText(
+						data?.description,
+						'Укажите имя и телефон — мы свяжемся с вами, обсудим детали и договоримся о встрече.'
 					)}
 					{isEditable}
 					multiline
@@ -203,7 +204,7 @@
 									>Отправляем...</span
 								>
 							{:else}
-								{String(data?.buttonText ?? 'Отправить отклик')}
+								{editableText(data?.buttonText, 'Отправить отклик')}
 							{/if}
 						</button>
 						{#if formError}<p role="alert">{formError}</p>{/if}

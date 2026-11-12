@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.6.1 — см. docs/architecture/component-articles-map.md
 	//
 	// Версия остаётся тем, чем была: мозаика из четырёх кадров с подписью на
@@ -172,7 +173,7 @@
 				<EditableField
 					fieldKey="Incentives.title"
 					label="Заголовок"
-					value={String(data?.title ?? INCENTIVES_DEFAULT_TITLE)}
+					value={editableText(data?.title, INCENTIVES_DEFAULT_TITLE)}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -192,7 +193,7 @@
 						legacyHtml
 						fieldKey="Incentives.text"
 						label="Текст"
-						value={String(data?.text ?? INCENTIVES_DEFAULT_TEXT)}
+						value={editableText(data?.text, INCENTIVES_DEFAULT_TEXT)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('text', v)}
@@ -230,7 +231,7 @@
 						<EditableField
 							fieldKey="Incentives.ctaText"
 							label="Текст кнопки"
-							value={String(data?.ctaText ?? 'Получить консультацию')}
+							value={editableText(data?.ctaText, 'Получить консультацию')}
 							{isEditable}
 							onSave={(v) => saveField('ctaText', v)}
 							class="inline"

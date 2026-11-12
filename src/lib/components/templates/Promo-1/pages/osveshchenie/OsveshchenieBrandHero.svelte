@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.37.2.1 — см. docs/architecture/component-articles-map.md
 	// Шапка страницы бренда (/osveshchenie/{brand}). Заголовок и описание
 	// приезжают из справочника: RenderPage кладёт в `data` строку бренда, как
@@ -22,7 +23,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const title = $derived(String(data.title || 'Бренд'));
+	const title = $derived(editableText(data.title, 'Бренд'));
 	const logo = $derived(String(data.logo || ''));
 
 	async function saveField(field: string, value: string) {
@@ -109,7 +110,7 @@
 						<EditableField
 							fieldKey="OsveshchenieBrandHero.buttonText"
 							label="Текст кнопки"
-							value={String(data.buttonText || 'Подобрать освещение')}
+							value={editableText(data.buttonText, 'Подобрать освещение')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('buttonText', v)}

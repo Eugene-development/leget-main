@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -85,7 +87,7 @@
 						<EditableField
 							fieldKey="ActionsTimer.badge"
 							label="Бейдж"
-							value={String(data?.badge ?? 'Главные акции сезона')}
+							value={editableText(data?.badge, 'Главные акции сезона')}
 							{isEditable}
 							onSave={(v) => saveField('badge', v)}
 						>
@@ -97,7 +99,7 @@
 				<EditableField
 					fieldKey="ActionsTimer.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Сезонные акции')}
+					value={editableText(data?.heading, 'Сезонные акции')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -115,7 +117,7 @@
 				<EditableField
 					fieldKey="ActionsTimer.description"
 					label="Описание"
-					value={String(data?.description ?? 'Успейте оформить заказ до окончания акции')}
+					value={editableText(data?.description, 'Успейте оформить заказ до окончания акции')}
 					{isEditable}
 					multiline
 					onSave={(v) => saveField('description', v)}
@@ -132,7 +134,7 @@
 					<EditableField
 						fieldKey="ActionsTimer.ctaText"
 						label="Текст кнопки"
-						value={String(data?.ctaText ?? 'Консультация по акциям')}
+						value={editableText(data?.ctaText, 'Консультация по акциям')}
 						{isEditable}
 						onSave={(v) => saveField('ctaText', v)}
 					>
@@ -146,7 +148,7 @@
 									if (!isEditable)
 										openPromo2Form(
 											'action-consultation',
-											String(data?.heading ?? 'Сезонные акции')
+											editableText(data?.heading, 'Сезонные акции')
 										);
 								}}
 							>
@@ -187,7 +189,17 @@
 								{pad(unit.v)}
 							</span>
 						</div>
-						<span class="text-[10px] tracking-[0.25em] text-secondary uppercase">{unit.l}</span>
+						<span class="text-[10px] tracking-[0.25em] text-secondary uppercase"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="ActionsTimer"
+								path={['copy', 'timeLabels', ['days', 'hours', 'minutes', 'seconds'][i]]}
+								fallback={unit.l}
+								label="Текст"
+							/></span
+						>
 					</div>
 					{#if i < 3}
 						<div

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.Б.1.2 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/stores';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -60,8 +61,8 @@
 	// Те же поля/дефолты, что в v1 — редактирование и сохранение идентичны.
 	const links = $derived(resolveBannerLinks(data));
 
-	const phone = $derived(data?.phone ? String(data.phone) : '+7 (999) 000-00-00');
-	const email = $derived(data?.email ? String(data.email) : 'info@leget.ru');
+	const phone = $derived(editableText(data?.phone, '+7 (999) 000-00-00'));
+	const email = $derived(editableText(data?.email, 'info@leget.ru'));
 
 	// Ссылка на контакты для мобильной полосы — из того же списка, что и строка
 	// ссылок на десктопе: переименование пункта в редакторе доезжает и сюда,

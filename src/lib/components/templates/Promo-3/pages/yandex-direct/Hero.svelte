@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.9.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -41,7 +42,7 @@
 		<ImageFallback
 			imagePath={['bgImage']}
 			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')}
-			alt={String(data?.title ?? 'Мебель на заказ')}
+			alt={editableText(data?.title, 'Мебель на заказ')}
 			class="size-full object-cover"
 		/>
 		<div
@@ -67,7 +68,7 @@
 			<EditableField
 				fieldKey="Hero.badge"
 				label="Тег"
-				value={String(data?.badge ?? 'Специальное предложение')}
+				value={editableText(data?.badge, 'Специальное предложение')}
 				{isEditable}
 				onSave={(v) => saveField('badge', v)}
 			>
@@ -83,7 +84,7 @@
 		<EditableField
 			fieldKey="Hero.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Мебель на заказ по вашим размерам')}
+			value={editableText(data?.title, 'Мебель на заказ по вашим размерам')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="block"
@@ -99,9 +100,9 @@
 		<EditableField
 			fieldKey="Hero.subtitle"
 			label="Подзаголовок"
-			value={String(
-				data?.subtitle ??
-					'Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект'
+			value={editableText(
+				data?.subtitle,
+				'Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект'
 			)}
 			{isEditable}
 			multiline
@@ -120,7 +121,7 @@
 			<EditableField
 				fieldKey="Hero.primaryButton"
 				label="Кнопка 1"
-				value={String(data?.primaryButton ?? 'Рассчитать стоимость')}
+				value={editableText(data?.primaryButton, 'Рассчитать стоимость')}
 				{isEditable}
 				onSave={(v) => saveField('primaryButton', v)}
 			>
@@ -147,7 +148,7 @@
 			<EditableField
 				fieldKey="Hero.secondaryButton"
 				label="Кнопка 2"
-				value={String(data?.secondaryButton ?? 'Позвонить')}
+				value={editableText(data?.secondaryButton, 'Позвонить')}
 				{isEditable}
 				onSave={(v) => saveField('secondaryButton', v)}
 			>

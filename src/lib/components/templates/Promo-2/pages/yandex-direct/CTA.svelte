@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.14.7.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -57,7 +59,7 @@
 			<EditableField
 				fieldKey="CTA.eyebrow"
 				label="Надпись над заголовком"
-				value={String(data?.eyebrow ?? 'Готовы начать?')}
+				value={editableText(data?.eyebrow, 'Готовы начать?')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
 			>
@@ -71,7 +73,7 @@
 			<EditableField
 				fieldKey="CTA.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Готовы обсудить ваш проект?')}
+				value={editableText(data?.title, 'Готовы обсудить ваш проект?')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="mt-4 block"
@@ -89,9 +91,9 @@
 			<EditableField
 				fieldKey="CTA.subtitle"
 				label="Описание"
-				value={String(
-					data?.subtitle ??
-						'Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы'
+				value={editableText(
+					data?.subtitle,
+					'Оставьте заявку — мы перезвоним в течение 15 минут и ответим на все вопросы'
 				)}
 				{isEditable}
 				multiline
@@ -110,7 +112,7 @@
 				<EditableField
 					fieldKey="CTA.primaryButton"
 					label="Основная кнопка"
-					value={String(data?.primaryButton ?? 'Оставить заявку')}
+					value={editableText(data?.primaryButton, 'Оставить заявку')}
 					{isEditable}
 					onSave={(v) => saveField('primaryButton', v)}
 				>
@@ -146,7 +148,7 @@
 				<EditableField
 					fieldKey="CTA.phoneButton"
 					label="Кнопка телефона"
-					value={String(data?.phoneButton ?? 'Позвонить нам')}
+					value={editableText(data?.phoneButton, 'Позвонить нам')}
 					{isEditable}
 					onSave={(v) => saveField('phoneButton', v)}
 				>
@@ -180,15 +182,39 @@
 			>
 				<div class="flex items-center gap-2 text-[11px] tracking-[0.15em] text-white/40 uppercase">
 					<div class="h-px w-4 bg-white/20"></div>
-					Безопасная сделка
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="CTA"
+						path={['copy', 'secureDealText']}
+						fallback={'Безопасная сделка'}
+						label="Безопасная сделка"
+					/>
 				</div>
 				<div class="flex items-center gap-2 text-[11px] tracking-[0.15em] text-white/40 uppercase">
 					<div class="h-px w-4 bg-white/20"></div>
-					Данные защищены
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="CTA"
+						path={['copy', 'secureDataText']}
+						fallback={'Данные защищены'}
+						label="Данные защищены"
+					/>
 				</div>
 				<div class="flex items-center gap-2 text-[11px] tracking-[0.15em] text-white/40 uppercase">
 					<div class="h-px w-4 bg-white/20"></div>
-					Без спама
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="CTA"
+						path={['copy', 'noSpamText']}
+						fallback={'Без спама'}
+						label="Без спама"
+					/>
 				</div>
 			</div>
 		</div>

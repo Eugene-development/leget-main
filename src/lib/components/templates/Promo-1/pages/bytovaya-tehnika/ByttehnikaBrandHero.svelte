@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.28.2.1 — см. docs/architecture/component-articles-map.md
 	//
 	// Шапка страницы бренда (/bytovaya-tehnika/{brand}). Заголовок и описание
@@ -23,7 +24,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const title = $derived(String(data.title || 'Бренд'));
+	const title = $derived(editableText(data.title, 'Бренд'));
 	const logo = $derived(String(data.logo || ''));
 
 	async function saveField(field: string, value: string) {
@@ -112,7 +113,7 @@
 						<EditableField
 							fieldKey="ByttehnikaBrandHero.buttonText"
 							label="Текст кнопки"
-							value={String(data.buttonText || 'Подобрать технику')}
+							value={editableText(data.buttonText, 'Подобрать технику')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('buttonText', v)}

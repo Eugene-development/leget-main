@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.19.7.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
@@ -36,7 +37,7 @@
 			<EditableField
 				fieldKey="StoleshnicaCTA.title"
 				label="Заголовок CTA"
-				value={String(data.title || 'Рассчитайте стоимость столешницы')}
+				value={editableText(data.title, 'Рассчитайте стоимость столешницы')}
 				{isEditable}
 				inline
 				onSave={(v) => saveField('title', v)}
@@ -49,9 +50,9 @@
 			<EditableField
 				fieldKey="StoleshnicaCTA.description"
 				label="Описание CTA"
-				value={String(
-					data.description ||
-						'Оставьте заявку и получите расчёт стоимости с учётом всех вырезов и монтажа'
+				value={editableText(
+					data.description,
+					'Оставьте заявку и получите расчёт стоимости с учётом всех вырезов и монтажа'
 				)}
 				{isEditable}
 				inline
@@ -73,7 +74,7 @@
 				<EditableField
 					fieldKey="StoleshnicaCTA.buttonText"
 					label="Текст кнопки"
-					value={String(data.buttonText || 'Получить расчёт')}
+					value={editableText(data.buttonText, 'Получить расчёт')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('buttonText', v)}

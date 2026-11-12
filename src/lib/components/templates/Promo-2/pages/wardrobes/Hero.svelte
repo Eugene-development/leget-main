@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.10.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -55,7 +56,7 @@
 			<EditableField
 				fieldKey="Hero.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Системы хранения')}
+				value={editableText(data?.label, 'Системы хранения')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -69,7 +70,7 @@
 			<EditableField
 				fieldKey="Hero.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Идеальный порядок в каждой детали')}
+				value={editableText(data?.title, 'Идеальный порядок в каждой детали')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -87,9 +88,9 @@
 			<EditableField
 				fieldKey="Hero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Мы создаем уникальные встроенные и корпусные шкафы, которые становятся органичным продолжением вашей квартиры.'
+				value={editableText(
+					data?.description,
+					'Мы создаем уникальные встроенные и корпусные шкафы, которые становятся органичным продолжением вашей квартиры.'
 				)}
 				{isEditable}
 				multiline
@@ -115,7 +116,7 @@
 				<EditableField
 					fieldKey="Hero.ctaText"
 					label="Кнопка"
-					value={String(data?.ctaText ?? 'Спроектировать шкаф')}
+					value={editableText(data?.ctaText, 'Спроектировать шкаф')}
 					{isEditable}
 					onSave={(v) => saveField('ctaText', v)}
 				>

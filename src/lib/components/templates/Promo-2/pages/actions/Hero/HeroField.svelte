@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -32,7 +33,7 @@
 <EditableField
 	fieldKey={`Hero.${field}`}
 	{label}
-	value={String(data?.[field] ?? fallback)}
+	value={editableText(data?.[field], fallback)}
 	{isEditable}
 	{multiline}
 	inline={!multiline}

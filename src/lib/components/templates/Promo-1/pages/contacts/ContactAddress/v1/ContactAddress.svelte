@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.5.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -47,7 +48,7 @@
 				<EditableField
 					fieldKey="ContactAddress.title"
 					label="Заголовок"
-					value={String(data?.title || 'Личная консультация')}
+					value={editableText(data?.title, 'Личная консультация')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="ct-item ct-d1 block"
@@ -60,9 +61,9 @@
 				<EditableField
 					fieldKey="ContactAddress.description"
 					label="Описание"
-					value={String(
-						data?.description ||
-							'Для обсуждения деталей мы можем организовать с вами встречу в одном из салонов наших партнёров или на вашем объекте'
+					value={editableText(
+						data?.description,
+						'Для обсуждения деталей мы можем организовать с вами встречу в одном из салонов наших партнёров или на вашем объекте'
 					)}
 					{isEditable}
 					multiline
@@ -79,7 +80,7 @@
 						<EditableField
 							fieldKey="ContactAddress.buttonText"
 							label="Текст кнопки"
-							value={String(data?.buttonText || 'Записаться на консультацию')}
+							value={editableText(data?.buttonText, 'Записаться на консультацию')}
 							{isEditable}
 							onSave={(v) => saveField('buttonText', v)}
 							class="inline"
@@ -120,7 +121,7 @@
 							<EditableField
 								fieldKey="ContactAddress.addressTitle"
 								label="Заголовок адреса"
-								value={String(data?.addressTitle || 'Адрес')}
+								value={editableText(data?.addressTitle, 'Адрес')}
 								{isEditable}
 								onSave={(v) => saveField('addressTitle', v)}
 								class="block"
@@ -132,7 +133,7 @@
 							<EditableField
 								fieldKey="ContactAddress.addressText"
 								label="Адрес"
-								value={String(data?.addressText || 'г. Москва, ул. Большая Полянка, д. 1')}
+								value={editableText(data?.addressText, 'г. Москва, ул. Большая Полянка, д. 1')}
 								{isEditable}
 								onSave={(v) => saveField('addressText', v)}
 								class="mt-1 block"
@@ -166,7 +167,7 @@
 							<EditableField
 								fieldKey="ContactAddress.hoursTitle"
 								label="Заголовок часов работы"
-								value={String(data?.hoursTitle || 'Часы работы')}
+								value={editableText(data?.hoursTitle, 'Часы работы')}
 								{isEditable}
 								onSave={(v) => saveField('hoursTitle', v)}
 								class="block"
@@ -178,7 +179,7 @@
 							<EditableField
 								fieldKey="ContactAddress.hoursText"
 								label="Часы работы"
-								value={String(data?.hoursText || 'Пн-Сб: 10:00 — 20:00')}
+								value={editableText(data?.hoursText, 'Пн-Сб: 10:00 — 20:00')}
 								{isEditable}
 								onSave={(v) => saveField('hoursText', v)}
 								class="mt-1 block"
@@ -212,7 +213,7 @@
 							<EditableField
 								fieldKey="ContactAddress.parkingTitle"
 								label="Заголовок парковки"
-								value={String(data?.parkingTitle || 'Парковка')}
+								value={editableText(data?.parkingTitle, 'Парковка')}
 								{isEditable}
 								onSave={(v) => saveField('parkingTitle', v)}
 								class="block"
@@ -224,7 +225,7 @@
 							<EditableField
 								fieldKey="ContactAddress.parkingText"
 								label="Информация о парковке"
-								value={String(data?.parkingText || 'Бесплатная гостевая парковка')}
+								value={editableText(data?.parkingText, 'Бесплатная гостевая парковка')}
 								{isEditable}
 								onSave={(v) => saveField('parkingText', v)}
 								class="mt-1 block"

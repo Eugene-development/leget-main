@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -83,7 +85,7 @@
 				<EditableField
 					fieldKey="Principles.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Наши ценности')}
+					value={editableText(data?.label, 'Наши ценности')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -97,7 +99,7 @@
 				<EditableField
 					fieldKey="Principles.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Принципы компании')}
+					value={editableText(data?.heading, 'Принципы компании')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -113,8 +115,16 @@
 				</EditableField>
 
 				<p class="mt-4 max-w-xl text-base leading-relaxed text-secondary">
-					Компания основывается на принципах индивидуального подхода, высокого качества материалов и
-					соблюдения сроков.
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Principles"
+						path={['copy', 'body1']}
+						fallback={'Компания основывается на принципах индивидуального подхода, высокого качества материалов и соблюдения сроков.'}
+						label="Компания основывается на принципах индивидуального подход…"
+						multiline
+					/>
 				</p>
 			</div>
 		</div>
@@ -127,15 +137,46 @@
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.2 + i * 0.1}s; opacity: 0;"
 				>
-					<span class="text-xs font-medium text-accent">0{i + 1}</span>
+					<span class="text-xs font-medium text-accent"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Principles"
+							path={['principles', i, 'number']}
+							fallback={String(i + 1).padStart(2, '0')}
+							label="Номер принципа"
+							richText={false}
+							defaults={{ principles }}
+						/></span
+					>
 					<h3
 						class="mt-4 text-xl text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
 						style="font-family: var(--font-heading);"
 					>
-						{principle.title}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Principles"
+							path={['principles', principles.indexOf(principle), 'title']}
+							fallback={principle.title}
+							label="Заголовок"
+							defaults={{ principles }}
+						/>
 					</h3>
 					<p class="mt-3 text-sm leading-relaxed text-secondary">
-						{principle.text}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Principles"
+							path={['principles', principles.indexOf(principle), 'text']}
+							fallback={principle.text}
+							label="Описание"
+							defaults={{ principles }}
+							multiline
+						/>
 					</p>
 				</div>
 			{/each}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.17.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -54,13 +55,13 @@
 	}
 
 	const primaryButton = $derived(
-		!data.primaryButton || data.primaryButton === 'Создать проект'
-			? data.buttonText && data.buttonText !== 'Создать проект'
-				? String(data.buttonText)
+		data.primaryButton === undefined || data.primaryButton === 'Создать проект'
+			? data.buttonText !== undefined && data.buttonText !== 'Создать проект'
+				? editableText(data.buttonText)
 				: 'Составить проект мебели'
-			: String(data.primaryButton)
+			: editableText(data.primaryButton)
 	);
-	const secondaryButton = $derived(String(data.secondaryButton || 'Заказать замер помещения'));
+	const secondaryButton = $derived(editableText(data.secondaryButton, 'Заказать замер помещения'));
 </script>
 
 <div class="mebel-container">
@@ -85,7 +86,7 @@
 				<EditableField
 					fieldKey="MebelCategoryHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Категория')}
+					value={editableText(data.title, 'Категория')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { withPromoMotion } from '$lib/motion/transition';
 
 	// Артикул: 1.8.2.1 — см. docs/architecture/component-articles-map.md
@@ -321,7 +322,7 @@
 			<EditableField
 				fieldKey="InstallmentPlans.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Программы рассрочки')}
+				value={editableText(data?.title, 'Программы рассрочки')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="it-item block"
@@ -335,7 +336,7 @@
 			<EditableField
 				fieldKey="InstallmentPlans.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'Выберите удобный срок и условия оплаты')}
+				value={editableText(data?.subtitle, 'Выберите удобный срок и условия оплаты')}
 				{isEditable}
 				onSave={(v) => saveField('subtitle', v)}
 				class="it-item it-d1 mt-4 block"

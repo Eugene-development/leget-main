@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.25.1.1 — см. docs/architecture/component-articles-map.md
 	import { browser } from '$app/environment';
 	import RichText from '$lib/components/RichText.svelte';
@@ -95,7 +96,7 @@
 		<EditableField
 			fieldKey="NotFound.title"
 			label="Заголовок"
-			value={String(data?.title ?? 'Страница не найдена')}
+			value={editableText(data?.title, 'Страница не найдена')}
 			{isEditable}
 			onSave={(v) => saveField('title', v)}
 			class="nf-item nf-d1 mt-4 block"
@@ -110,9 +111,9 @@
 		<EditableField
 			fieldKey="NotFound.subtitle"
 			label="Подзаголовок"
-			value={String(
-				data?.subtitle ??
-					'Возможно, страница была перемещена или удалена, а ссылка устарела. Вернитесь на главную или к предыдущему разделу.'
+			value={editableText(
+				data?.subtitle,
+				'Возможно, страница была перемещена или удалена, а ссылка устарела. Вернитесь на главную или к предыдущему разделу.'
 			)}
 			{isEditable}
 			multiline
@@ -148,7 +149,7 @@
 				<EditableField
 					fieldKey="NotFound.homeButtonText"
 					label="Кнопка «На главную»"
-					value={String(data?.homeButtonText ?? 'На главную')}
+					value={editableText(data?.homeButtonText, 'На главную')}
 					{isEditable}
 					onSave={(v) => saveField('homeButtonText', v)}
 					class="inline"
@@ -160,7 +161,7 @@
 			</a>
 
 			{#if hasBack}
-				{@const backLabel = String(data?.backButtonText ?? 'Вернуться назад')}
+				{@const backLabel = editableText(data?.backButtonText, 'Вернуться назад')}
 				<!--
 					Ссылка и кнопка — одна и та же роль, но разной природы: реферер
 					адресуем ссылкой (работает средним кликом, видно в статусной строке),

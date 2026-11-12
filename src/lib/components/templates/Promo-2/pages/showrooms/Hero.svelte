@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.11.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -77,7 +79,7 @@
 					<EditableField
 						fieldKey="Hero.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Наши салоны')}
+						value={editableText(data?.title, 'Наши салоны')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="block"
@@ -97,9 +99,9 @@
 					<EditableField
 						fieldKey="Hero.description"
 						label="Описание"
-						value={String(
-							data?.description ??
-								'Посетите один из наших фирменных салонов. Оцените качество материалов вживую.'
+						value={editableText(
+							data?.description,
+							'Посетите один из наших фирменных салонов. Оцените качество материалов вживую.'
 						)}
 						{isEditable}
 						multiline
@@ -122,7 +124,7 @@
 						<EditableField
 							fieldKey="Hero.ctaText"
 							label="Кнопка"
-							value={String(data?.ctaText ?? 'Посмотреть карту')}
+							value={editableText(data?.ctaText, 'Посмотреть карту')}
 							{isEditable}
 							onSave={(v) => saveField('ctaText', v)}
 						>
@@ -156,7 +158,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-xs tracking-[0.3em] text-white/50 uppercase">Вниз</span>
+			<span class="text-xs tracking-[0.3em] text-white/50 uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Вниз'}
+					label="Вниз"
+				/></span
+			>
 			<div class="h-10 w-px bg-gradient-to-b from-white/50 to-transparent"></div>
 		</div>
 	</div>

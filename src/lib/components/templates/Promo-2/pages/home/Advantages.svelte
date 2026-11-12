@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.1.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -47,6 +48,12 @@
 			title: 'Гарантия качества',
 			description:
 				'Многоступенчатый фабричный контроль качества и гарантия до 5 лет на всю продукцию'
+		},
+		{
+			number: '05',
+			title: 'Сопровождение проекта',
+			description:
+				'Помогаем с выбором материалов и сопровождаем проект от замера до установки мебели'
 		}
 	];
 
@@ -59,11 +66,12 @@
 		{ value: '200+', label: 'оттенков фасадов' }
 	];
 
-	const advantages = $derived(
-		Array.isArray(data?.advantages)
-			? (data.advantages as { number: string; title: string; description: string }[])
-			: defaultAdvantages
-	);
+	const advantages = $derived.by(() => {
+		if (!Array.isArray(data?.advantages)) return defaultAdvantages;
+		const items = data.advantages as typeof defaultAdvantages;
+		// Добавляем новый пункт и к ранее сохранённым спискам из четырёх преимуществ.
+		return items.length === 4 ? [...items, defaultAdvantages[4]] : items;
+	});
 
 	const stats = $derived(
 		Array.isArray(data?.stats) ? (data.stats as { value: string; label: string }[]) : defaultStats
@@ -115,7 +123,7 @@
 				<EditableField
 					fieldKey="HomeAdvantages.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Преимущества')}
+					value={editableText(data?.label, 'Преимущества')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -129,7 +137,7 @@
 				<EditableField
 					fieldKey="HomeAdvantages.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Почему выбирают нас')}
+					value={editableText(data?.heading, 'Почему выбирают нас')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { blockTheme } from '$lib/utils/block-theme';
 	import type { EditContext } from '$lib/utils/page-edit';
@@ -55,7 +56,18 @@
 	<dl class="p2fc-specs">
 		{#each Object.entries(detailLabels) as [key, label]}
 			<div>
-				<dt>{label}</dt>
+				<dt>
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="FacadesCatalog"
+						path={['copy', `${key}Label`]}
+						fallback={label}
+						label="Подпись характеристики"
+						richText={false}
+					/>
+				</dt>
 				<dd>{@render field(index, key, true)}</dd>
 			</div>
 		{/each}
@@ -64,13 +76,32 @@
 <section id="facades-catalog" class="facades-collection" data-p1-theme={blockTheme(data)}>
 	<div class="p2fc-shell">
 		<header class="p2fc-header" class:p2fc-header-stacked={layout === 'gallery'}>
-			<h2>Коллекция фасадов</h2>
+			<h2>
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FacadesCatalog"
+					path={['copy', 'heading']}
+					fallback={'Коллекция фасадов'}
+					label="Коллекция фасадов"
+				/>
+			</h2>
 			<p>
-				{layout === 'comparison'
-					? 'Сравните покрытия, основу и размеры — найдите материал для вашего проекта.'
-					: layout === 'selector'
-						? 'Рассмотрите фактуру. Изучите детали. Выберите характер вашей мебели.'
-						: 'От натурального дерева до безупречного глянца — у каждого материала свой характер. Подберите фактуру и покрытие под ваш интерьер.'}
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FacadesCatalog"
+					path={['copy', 'body1']}
+					fallback={layout === 'comparison'
+						? 'Сравните покрытия, основу и размеры — найдите материал для вашего проекта.'
+						: layout === 'selector'
+							? 'Рассмотрите фактуру. Изучите детали. Выберите характер вашей мебели.'
+							: 'От натурального дерева до безупречного глянца — у каждого материала свой характер. Подберите фактуру и покрытие под ваш интерьер.'}
+					label="Описание"
+					multiline
+				/>
 			</p>
 		</header>
 		{#if layout === 'gallery'}
@@ -80,13 +111,33 @@
 						<div class="p2fc-media">{@render image(index)}</div>
 						<div class="p2fc-item-heading">
 							<h3>{@render field(index, 'title')}</h3>
-							<span class="p2fc-thickness">{facade.details.thickness}</span>
+							<span class="p2fc-thickness"
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="FacadesCatalog"
+									path={['facades', index, 'details', 'thickness']}
+									fallback={facade.details.thickness}
+									label="Текст"
+									defaults={{ facades }}
+								/></span
+							>
 						</div>
 						<div class="p2fc-description">{@render field(index, 'description', false, true)}</div>
 						<details class="p2fc-disclosure">
-							<summary>Характеристики <span aria-hidden="true">+</span></summary>{@render specs(
-								index
-							)}
+							<summary
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="FacadesCatalog"
+									path={['copy', 'specsHeading']}
+									fallback={'Характеристики'}
+									label="Характеристики"
+									richText={false}
+								/> <span aria-hidden="true">+</span></summary
+							>{@render specs(index)}
 						</details>
 					</article>
 				{/each}
@@ -103,7 +154,19 @@
 							data-goal-ignore="Переключение материала в коллекции фасадов"
 							onclick={() => (selectedId = facade.id)}
 						>
-							<span>{facade.title}</span><svg
+							<span
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="FacadesCatalog"
+									path={['facades', facades.indexOf(facade), 'title']}
+									fallback={facade.title}
+									label="Текст"
+									defaults={{ facades }}
+									richText={false}
+								/></span
+							><svg
 								aria-hidden="true"
 								viewBox="0 0 24 24"
 								fill="none"
@@ -144,7 +207,18 @@
 					</figure>
 				{/each}
 			</div>
-			<p class="p2fc-scroll-hint">Прокрутите таблицу, чтобы сравнить все материалы</p>
+			<p class="p2fc-scroll-hint">
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FacadesCatalog"
+					path={['copy', 'body2']}
+					fallback={'Прокрутите таблицу, чтобы сравнить все материалы'}
+					label="Прокрутите таблицу, чтобы сравнить все материалы"
+					multiline
+				/>
+			</p>
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex — клавиатурная прокрутка широкой таблицы. -->
 			<div
 				class="p2fc-table-scroll"
@@ -153,18 +227,47 @@
 				aria-label="Сравнение характеристик фасадов"
 			>
 				<table style={`min-width: ${Math.max(900, (facades.length + 1) * 170)}px`}>
-					<caption class="sr-only">Материалы и технические характеристики фасадов</caption>
+					<caption class="sr-only"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="FacadesCatalog"
+							path={['copy', 'body3']}
+							fallback={'Материалы и технические характеристики фасадов'}
+							label="Материалы и технические характеристики фасадов"
+						/></caption
+					>
 					<thead
 						><tr
-							><th scope="col">Характеристики</th>{#each facades as facade, index}<th scope="col"
-									>{@render field(index, 'title')}</th
+							><th scope="col"
+								><ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="FacadesCatalog"
+									path={['copy', 'specsHeading']}
+									fallback={'Характеристики'}
+									label="Характеристики"
+								/></th
+							>{#each facades as facade, index}<th scope="col">{@render field(index, 'title')}</th
 								>{/each}</tr
 						></thead
 					>
 					<tbody
 						>{#each Object.entries(detailLabels) as [key, label]}<tr
-								><th scope="row">{label}</th>{#each facades as facade, index}<td
-										>{@render field(index, key, true)}</td
+								><th scope="row"
+									><ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="FacadesCatalog"
+										path={['copy', `${key}Label`]}
+										fallback={label}
+										label="Подпись характеристики"
+										richText={false}
+									/></th
+								>{#each facades as facade, index}<td>{@render field(index, key, true)}</td
 									>{/each}</tr
 							>{/each}</tbody
 					>
@@ -172,7 +275,19 @@
 			</div>
 			<div class="p2fc-material-notes">
 				{#each facades as facade, index}<details class="p2fc-disclosure">
-						<summary>{facade.title}<span aria-hidden="true">+</span></summary>
+						<summary
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="FacadesCatalog"
+								path={['facades', facades.indexOf(facade), 'title']}
+								fallback={facade.title}
+								label="Текст"
+								defaults={{ facades }}
+								richText={false}
+							/><span aria-hidden="true">+</span></summary
+						>
 						<div class="p2fc-description">{@render field(index, 'description', false, true)}</div>
 					</details>{/each}
 			</div>

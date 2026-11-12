@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.9.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -50,7 +51,7 @@
 			<EditableField
 				fieldKey="ProductionCycle.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Этапы')}
+				value={editableText(data?.label, 'Этапы')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -64,7 +65,7 @@
 			<EditableField
 				fieldKey="ProductionCycle.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Производственный цикл')}
+				value={editableText(data?.heading, 'Производственный цикл')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -82,8 +83,9 @@
 			<EditableField
 				fieldKey="ProductionCycle.description"
 				label="Описание"
-				value={String(
-					data?.description ?? 'Отточенный годами процесс создания премиальной мебели.'
+				value={editableText(
+					data?.description,
+					'Отточенный годами процесс создания премиальной мебели.'
 				)}
 				{isEditable}
 				multiline
@@ -106,20 +108,52 @@
 				style="animation-delay: 0.1s"
 			>
 				<div class="order-2 lg:order-1 lg:w-1/2">
-					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
-						01. Проектирование
-					</div>
-					<h3
-						class="mb-6 text-3xl text-primary lg:text-4xl"
-						style="font-family: var(--font-heading);"
+					<EditableField
+						fieldKey="ProductionCycle.designLabel"
+						label="Проектирование: подпись"
+						value={editableText(data?.designLabel, '01. Проектирование')}
+						{isEditable}
+						onSave={(v) => saveField('designLabel', v)}
 					>
-						Проектирование технологами
-					</h3>
-					<p class="mb-6 leading-relaxed text-secondary">
-						Дизайн начинается задолго до производства. Наши инженеры-технологи детально
-						прорабатывают проект, учитывая миллиметровые зазоры, нагрузку на фурнитуру, особенности
-						материалов и эргономику пространства.
-					</p>
+						{#snippet children(displayValue)}
+							<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
+								<RichText value={displayValue} />
+							</div>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.designHeading"
+						label="Проектирование: заголовок"
+						value={editableText(data?.designHeading, 'Проектирование технологами')}
+						{isEditable}
+						onSave={(v) => saveField('designHeading', v)}
+					>
+						{#snippet children(displayValue)}
+							<h3
+								class="mb-6 text-3xl text-primary lg:text-4xl"
+								style="font-family: var(--font-heading);"
+							>
+								<RichText value={displayValue} />
+							</h3>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.designDescription"
+						label="Проектирование: описание"
+						value={editableText(
+							data?.designDescription,
+							'Дизайн начинается задолго до производства. Наши инженеры-технологи детально прорабатывают проект, учитывая миллиметровые зазоры, нагрузку на фурнитуру, особенности материалов и эргономику пространства.'
+						)}
+						{isEditable}
+						multiline
+						onSave={(v) => saveField('designDescription', v)}
+					>
+						{#snippet children(displayValue)}
+							<p class="mb-6 leading-relaxed text-secondary">
+								<RichText value={displayValue} />
+							</p>
+						{/snippet}
+					</EditableField>
 					<div class="h-px w-24 bg-accent"></div>
 				</div>
 				<div class="order-1 lg:order-2 lg:w-1/2">
@@ -159,20 +193,52 @@
 					</div>
 				</div>
 				<div class="lg:w-1/2">
-					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
-						02. Производство
-					</div>
-					<h3
-						class="mb-6 text-3xl text-primary lg:text-4xl"
-						style="font-family: var(--font-heading);"
+					<EditableField
+						fieldKey="ProductionCycle.productionLabel"
+						label="Производство: подпись"
+						value={editableText(data?.productionLabel, '02. Производство')}
+						{isEditable}
+						onSave={(v) => saveField('productionLabel', v)}
 					>
-						Работа в наших цехах
-					</h3>
-					<p class="mb-6 leading-relaxed text-secondary">
-						Производство — это симбиоз передовых роботизированных линий и ручного мастерства. Мы
-						используем европейское оборудование сверхвысокой точности для распила и кромления, что
-						гарантирует идеальную геометрию фасадов.
-					</p>
+						{#snippet children(displayValue)}
+							<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
+								<RichText value={displayValue} />
+							</div>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.productionHeading"
+						label="Производство: заголовок"
+						value={editableText(data?.productionHeading, 'Работа в наших цехах')}
+						{isEditable}
+						onSave={(v) => saveField('productionHeading', v)}
+					>
+						{#snippet children(displayValue)}
+							<h3
+								class="mb-6 text-3xl text-primary lg:text-4xl"
+								style="font-family: var(--font-heading);"
+							>
+								<RichText value={displayValue} />
+							</h3>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.productionDescription"
+						label="Производство: описание"
+						value={editableText(
+							data?.productionDescription,
+							'Производство — это симбиоз передовых роботизированных линий и ручного мастерства. Мы используем европейское оборудование сверхвысокой точности для распила и кромления, что гарантирует идеальную геометрию фасадов.'
+						)}
+						{isEditable}
+						multiline
+						onSave={(v) => saveField('productionDescription', v)}
+					>
+						{#snippet children(displayValue)}
+							<p class="mb-6 leading-relaxed text-secondary">
+								<RichText value={displayValue} />
+							</p>
+						{/snippet}
+					</EditableField>
 					<div class="h-px w-24 bg-accent"></div>
 				</div>
 			</div>
@@ -188,35 +254,101 @@
 				></div>
 
 				<div class="p-8 lg:p-12">
-					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
-						03. Логистика
-					</div>
-					<h3
-						class="mb-6 text-2xl text-primary lg:text-3xl"
-						style="font-family: var(--font-heading);"
+					<EditableField
+						fieldKey="ProductionCycle.packagingLabel"
+						label="Упаковка: подпись"
+						value={editableText(data?.packagingLabel, '03. Логистика')}
+						{isEditable}
+						onSave={(v) => saveField('packagingLabel', v)}
 					>
-						Бережная упаковка
-					</h3>
-					<p class="leading-relaxed text-secondary">
-						Каждая деталь проходит многоуровневый контроль качества. Затем элементы бережно
-						упаковываются в плотный многослойный картон с защитными профилями.
-					</p>
+						{#snippet children(displayValue)}
+							<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
+								<RichText value={displayValue} />
+							</div>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.packagingHeading"
+						label="Упаковка: заголовок"
+						value={editableText(data?.packagingHeading, 'Бережная упаковка')}
+						{isEditable}
+						onSave={(v) => saveField('packagingHeading', v)}
+					>
+						{#snippet children(displayValue)}
+							<h3
+								class="mb-6 text-2xl text-primary lg:text-3xl"
+								style="font-family: var(--font-heading);"
+							>
+								<RichText value={displayValue} />
+							</h3>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.packagingDescription"
+						label="Упаковка: описание"
+						value={editableText(
+							data?.packagingDescription,
+							'Каждая деталь проходит многоуровневый контроль качества. Затем элементы бережно упаковываются в плотный многослойный картон с защитными профилями.'
+						)}
+						{isEditable}
+						multiline
+						onSave={(v) => saveField('packagingDescription', v)}
+					>
+						{#snippet children(displayValue)}
+							<p class="leading-relaxed text-secondary">
+								<RichText value={displayValue} />
+							</p>
+						{/snippet}
+					</EditableField>
 				</div>
 
 				<div class="p-8 lg:p-12">
-					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
-						04. Транспортировка
-					</div>
-					<h3
-						class="mb-6 text-2xl text-primary lg:text-3xl"
-						style="font-family: var(--font-heading);"
+					<EditableField
+						fieldKey="ProductionCycle.deliveryLabel"
+						label="Доставка: подпись"
+						value={editableText(data?.deliveryLabel, '04. Транспортировка')}
+						{isEditable}
+						onSave={(v) => saveField('deliveryLabel', v)}
 					>
-						Безопасная доставка
-					</h3>
-					<p class="leading-relaxed text-secondary">
-						Доставка осуществляется собственным автопарком, оборудованным специальными
-						пневматическими креплениями для перевозки элитной мебели.
-					</p>
+						{#snippet children(displayValue)}
+							<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
+								<RichText value={displayValue} />
+							</div>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.deliveryHeading"
+						label="Доставка: заголовок"
+						value={editableText(data?.deliveryHeading, 'Безопасная доставка')}
+						{isEditable}
+						onSave={(v) => saveField('deliveryHeading', v)}
+					>
+						{#snippet children(displayValue)}
+							<h3
+								class="mb-6 text-2xl text-primary lg:text-3xl"
+								style="font-family: var(--font-heading);"
+							>
+								<RichText value={displayValue} />
+							</h3>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.deliveryDescription"
+						label="Доставка: описание"
+						value={editableText(
+							data?.deliveryDescription,
+							'Доставка осуществляется собственным автопарком, оборудованным специальными пневматическими креплениями для перевозки элитной мебели.'
+						)}
+						{isEditable}
+						multiline
+						onSave={(v) => saveField('deliveryDescription', v)}
+					>
+						{#snippet children(displayValue)}
+							<p class="leading-relaxed text-secondary">
+								<RichText value={displayValue} />
+							</p>
+						{/snippet}
+					</EditableField>
 				</div>
 			</div>
 
@@ -227,20 +359,52 @@
 				style="animation-delay: 0.4s"
 			>
 				<div class="order-2 lg:order-1 lg:w-1/2">
-					<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
-						05. Финал
-					</div>
-					<h3
-						class="mb-6 text-3xl text-primary lg:text-4xl"
-						style="font-family: var(--font-heading);"
+					<EditableField
+						fieldKey="ProductionCycle.assemblyLabel"
+						label="Сборка: подпись"
+						value={editableText(data?.assemblyLabel, '05. Финал')}
+						{isEditable}
+						onSave={(v) => saveField('assemblyLabel', v)}
 					>
-						Профессиональная сборка
-					</h3>
-					<p class="mb-6 leading-relaxed text-secondary">
-						Сборкой занимаются собственные бригады сертифицированных специалистов. Они монтируют
-						корпуса, выставляют идеальные зазоры фасадов, подключают встраиваемую технику и
-						интегрируют освещение.
-					</p>
+						{#snippet children(displayValue)}
+							<div class="mb-4 text-sm font-medium tracking-[0.2em] text-accent uppercase">
+								<RichText value={displayValue} />
+							</div>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.assemblyHeading"
+						label="Сборка: заголовок"
+						value={editableText(data?.assemblyHeading, 'Профессиональная сборка')}
+						{isEditable}
+						onSave={(v) => saveField('assemblyHeading', v)}
+					>
+						{#snippet children(displayValue)}
+							<h3
+								class="mb-6 text-3xl text-primary lg:text-4xl"
+								style="font-family: var(--font-heading);"
+							>
+								<RichText value={displayValue} />
+							</h3>
+						{/snippet}
+					</EditableField>
+					<EditableField
+						fieldKey="ProductionCycle.assemblyDescription"
+						label="Сборка: описание"
+						value={editableText(
+							data?.assemblyDescription,
+							'Сборкой занимаются собственные бригады сертифицированных специалистов. Они монтируют корпуса, выставляют идеальные зазоры фасадов, подключают встраиваемую технику и интегрируют освещение.'
+						)}
+						{isEditable}
+						multiline
+						onSave={(v) => saveField('assemblyDescription', v)}
+					>
+						{#snippet children(displayValue)}
+							<p class="mb-6 leading-relaxed text-secondary">
+								<RichText value={displayValue} />
+							</p>
+						{/snippet}
+					</EditableField>
 					<div class="h-px w-24 bg-accent"></div>
 				</div>
 				<div class="order-1 lg:order-2 lg:w-1/2">

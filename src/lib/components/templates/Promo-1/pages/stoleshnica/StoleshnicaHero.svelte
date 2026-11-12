@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.19.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -21,9 +22,9 @@
 			'https://storage.yandexcloud.net/leget-main/templates/promo-1/countertops_hero.png'
 	);
 	const secondaryButton = $derived(
-		!data.secondaryButton || data.secondaryButton === 'Вызвать замерщика'
+		data.secondaryButton === undefined || data.secondaryButton === 'Вызвать замерщика'
 			? 'Заказать замер столешницы'
-			: String(data.secondaryButton)
+			: editableText(data.secondaryButton)
 	);
 
 	async function saveField(field: string, value: string) {
@@ -55,7 +56,7 @@
 				<EditableField
 					fieldKey="StoleshnicaHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Столешницы')}
+					value={editableText(data.title, 'Столешницы')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
@@ -70,9 +71,9 @@
 				<EditableField
 					fieldKey="StoleshnicaHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Изготавливаем столешницы из искусственного камня, кварца, массива и других материалов. Точный раскрой под вашу кухню с вырезами под мойку и варочную панель.'
+					value={editableText(
+						data.description,
+						'Изготавливаем столешницы из искусственного камня, кварца, массива и других материалов. Точный раскрой под вашу кухню с вырезами под мойку и варочную панель.'
 					)}
 					{isEditable}
 					inline
@@ -97,7 +98,7 @@
 					<EditableField
 						fieldKey="StoleshnicaHero.primaryButton"
 						label="Текст кнопки 1"
-						value={String(data.primaryButton || 'Рассчитать стоимость')}
+						value={editableText(data.primaryButton, 'Рассчитать стоимость')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('primaryButton', v)}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -66,7 +68,7 @@
 				<EditableField
 					fieldKey="Mission.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Наша миссия')}
+					value={editableText(data?.label, 'Наша миссия')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -80,7 +82,7 @@
 				<EditableField
 					fieldKey="Mission.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Мы создаём мебель, которая дарит радость')}
+					value={editableText(data?.heading, 'Мы создаём мебель, которая дарит радость')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -97,18 +99,40 @@
 
 				<div class="mt-8 space-y-5">
 					<p class="text-base leading-relaxed text-secondary">
-						Миссия нашей компании заключается в том, чтобы предоставлять клиентам высококачественную
-						мебель, которая не только удовлетворяет функциональные потребности, но и приносит
-						радость и комфорт в их жизни.
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Mission"
+							path={['copy', 'body1']}
+							fallback={'Миссия нашей компании заключается в том, чтобы предоставлять клиентам высококачественную мебель, которая не только удовлетворяет функциональные потребности, но и приносит радость и комфорт в их жизни.'}
+							label="Миссия нашей компании заключается в том, чтобы предоставл…"
+							multiline
+						/>
 					</p>
 					<p class="text-base leading-relaxed text-secondary">
-						Мы уделяем особое внимание каждой детали — от выбора материалов до конечного
-						производства. Тщательно подбираем только самые лучшие материалы, чтобы наша мебель была
-						долговечной и выглядела прекрасно на протяжении многих лет.
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Mission"
+							path={['copy', 'body2']}
+							fallback={'Мы уделяем особое внимание каждой детали — от выбора материалов до конечного производства. Тщательно подбираем только самые лучшие материалы, чтобы наша мебель была долговечной и выглядела прекрасно на протяжении многих лет.'}
+							label="Мы уделяем особое внимание каждой детали — от выбора мате…"
+							multiline
+						/>
 					</p>
 					<p class="text-base leading-relaxed text-secondary">
-						Мы учитываем потребности каждого клиента, чтобы создать мебель, которая идеально
-						подходит его индивидуальному стилю.
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Mission"
+							path={['copy', 'body3']}
+							fallback={'Мы учитываем потребности каждого клиента, чтобы создать мебель, которая идеально подходит его индивидуальному стилю.'}
+							label="Мы учитываем потребности каждого клиента, чтобы создать м…"
+							multiline
+						/>
 					</p>
 				</div>
 			</div>
@@ -126,9 +150,30 @@
 								class="text-4xl font-light text-primary transition-colors duration-300 group-hover:text-secondary lg:text-5xl"
 								style="font-family: var(--font-heading);"
 							>
-								{stat.value}
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="Mission"
+									path={['stats', stats.indexOf(stat), 'value']}
+									fallback={stat.value}
+									label="Текст"
+									defaults={{ stats }}
+									richText={false}
+								/>
 							</div>
-							<div class="mt-1 text-sm text-muted">{stat.label}</div>
+							<div class="mt-1 text-sm text-muted">
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="Mission"
+									path={['stats', stats.indexOf(stat), 'label']}
+									fallback={stat.label}
+									label="Текст"
+									defaults={{ stats }}
+								/>
+							</div>
 						</div>
 					</div>
 				{/each}

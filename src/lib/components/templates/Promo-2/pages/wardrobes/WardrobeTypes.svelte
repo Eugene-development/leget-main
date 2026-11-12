@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.10.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -80,7 +82,7 @@
 				<EditableField
 					fieldKey="WardrobeTypes.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Варианты решений')}
+					value={editableText(data?.label, 'Варианты решений')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -94,7 +96,7 @@
 				<EditableField
 					fieldKey="WardrobeTypes.heading"
 					label="Заголовок"
-					value={String(data?.heading ?? 'Виды систем')}
+					value={editableText(data?.heading, 'Виды систем')}
 					{isEditable}
 					onSave={(v) => saveField('heading', v)}
 					class="block"
@@ -131,9 +133,30 @@
 						/>
 					</div>
 					<h3 class="mb-2 text-xl text-primary" style="font-family: var(--font-heading);">
-						{type.title}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="WardrobeTypes"
+							path={['types', types.indexOf(type), 'title']}
+							fallback={type.title}
+							label="Заголовок"
+							defaults={{ types }}
+						/>
 					</h3>
-					<p class="text-sm leading-relaxed text-secondary">{type.description}</p>
+					<p class="text-sm leading-relaxed text-secondary">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="WardrobeTypes"
+							path={['types', types.indexOf(type), 'description']}
+							fallback={type.description}
+							label="Описание"
+							defaults={{ types }}
+							multiline
+						/>
+					</p>
 				</div>
 			{/each}
 		</div>

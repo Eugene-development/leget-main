@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.7.1.1 — см. docs/architecture/component-articles-map.md
 	import PageHero from '../_shared/PageHero.svelte';
 	import type { HeroPalette } from '../_shared/hero';
@@ -45,11 +46,11 @@
 	{isEditable}
 	componentType="Hero"
 	{palette}
-	title={{ key: 'title', label: 'Заголовок', value: String(data?.title ?? 'Отзывы о нас') }}
+	title={{ key: 'title', label: 'Заголовок', value: editableText(data?.title, 'Отзывы о нас') }}
 	text={{
 		key: 'subtitle',
 		label: 'Подзаголовок',
-		value: String(data?.subtitle ?? 'Мы работаем ради таких отзывов клиентов о нашей работе')
+		value: editableText(data?.subtitle, 'Мы работаем ради таких отзывов клиентов о нашей работе')
 	}}
 >
 	{#snippet icon()}

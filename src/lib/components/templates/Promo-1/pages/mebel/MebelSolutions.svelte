@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.16.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -24,7 +25,7 @@
 
 	async function updateItem(index: number, field: string, value: string) {
 		if (!editContext) return;
-		const updatedItems = [...(data.items || [])];
+		const updatedItems = [...items];
 		if (!updatedItems[index]) {
 			updatedItems[index] = { ...items[index] };
 		}
@@ -55,7 +56,7 @@
 		<EditableField
 			fieldKey="MebelSolutions.title"
 			label="Заголовок"
-			value={String(data.title || 'Популярные решения')}
+			value={editableText(data.title, 'Популярные решения')}
 			{isEditable}
 			inline
 			onSave={(v) => saveField('title', v)}

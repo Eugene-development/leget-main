@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.11.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -54,7 +55,7 @@
 			<EditableField
 				fieldKey="ShowroomsCTA.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Нет времени на поездку в салон?')}
+				value={editableText(data?.heading, 'Нет времени на поездку в салон?')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -69,7 +70,10 @@
 			<EditableField
 				fieldKey="ShowroomsCTA.description"
 				label="Описание"
-				value={String(data?.description ?? 'Закажите выезд дизайнера на дом абсолютно бесплатно.')}
+				value={editableText(
+					data?.description,
+					'Закажите выезд дизайнера на дом абсолютно бесплатно.'
+				)}
 				{isEditable}
 				multiline
 				onSave={(v) => saveField('description', v)}
@@ -95,7 +99,7 @@
 					<EditableField
 						fieldKey="ShowroomsCTA.ctaText"
 						label="Кнопка"
-						value={String(data?.ctaText ?? 'Вызвать дизайнера')}
+						value={editableText(data?.ctaText, 'Вызвать дизайнера')}
 						{isEditable}
 						onSave={(v) => saveField('ctaText', v)}
 					>

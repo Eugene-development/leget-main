@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.15.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -23,16 +24,18 @@
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 	const badge = $derived(
-		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+		data?.badge === 'Услуга' ? 'Услуга компании' : editableText(data?.badge, 'Услуга компании')
 	);
 	const isLegacyTitle = $derived(
 		data?.title_part1 === 'Сборка и' && data?.title_part2 === 'установка'
 	);
 	const titlePart1 = $derived(
-		isLegacyTitle ? 'Сборка мебели' : String(data?.title_part1 ?? 'Сборка мебели')
+		isLegacyTitle ? 'Сборка мебели' : editableText(data?.title_part1, 'Сборка мебели')
 	);
 	const titlePart2 = $derived(
-		isLegacyTitle ? 'с подключением техники' : String(data?.title_part2 ?? 'с подключением техники')
+		isLegacyTitle
+			? 'с подключением техники'
+			: editableText(data?.title_part2, 'с подключением техники')
 	);
 
 	async function saveField(field: string, value: string) {
@@ -114,9 +117,9 @@
 			<EditableField
 				fieldKey="AssemblyHero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Профессиональная сборка и установка мебели любой сложности профессиональным инструментом. Быстро, чисто, аккуратно и с гарантией качества.'
+				value={editableText(
+					data?.description,
+					'Профессиональная сборка и установка мебели любой сложности профессиональным инструментом. Быстро, чисто, аккуратно и с гарантией качества.'
 				)}
 				{isEditable}
 				multiline
@@ -131,7 +134,7 @@
 			<ServiceHeroForm
 				serviceType="assembly"
 				ctaFieldKey="AssemblyHero.cta_text"
-				ctaValue={String(data?.cta_text ?? 'Заказать сборку')}
+				ctaValue={editableText(data?.cta_text, 'Заказать сборку')}
 				note="В ближайшее время с вами свяжется специалист."
 				nameId="assembly-hero-name"
 				phoneId="assembly-hero-phone"

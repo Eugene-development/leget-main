@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -57,7 +58,7 @@
 			<EditableField
 				fieldKey="ActionsCTA.eyebrow"
 				label="Надпись над заголовком"
-				value={String(data?.eyebrow ?? 'Не упустите момент')}
+				value={editableText(data?.eyebrow, 'Не упустите момент')}
 				{isEditable}
 				onSave={(v) => saveField('eyebrow', v)}
 			>
@@ -71,7 +72,7 @@
 			<EditableField
 				fieldKey="ActionsCTA.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Запишитесь на бесплатную консультацию')}
+				value={editableText(data?.title, 'Запишитесь на бесплатную консультацию')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="mt-4 block"
@@ -89,9 +90,9 @@
 			<EditableField
 				fieldKey="ActionsCTA.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Наш дизайнер поможет выбрать подходящую акцию, разработает проект и рассчитает точную стоимость с учётом скидок'
+				value={editableText(
+					data?.description,
+					'Наш дизайнер поможет выбрать подходящую акцию, разработает проект и рассчитает точную стоимость с учётом скидок'
 				)}
 				{isEditable}
 				multiline
@@ -109,7 +110,7 @@
 				<EditableField
 					fieldKey="ActionsCTA.ctaText"
 					label="Текст кнопки"
-					value={String(data?.ctaText ?? 'Записаться на консультацию')}
+					value={editableText(data?.ctaText, 'Записаться на консультацию')}
 					{isEditable}
 					onSave={(v) => saveField('ctaText', v)}
 				>

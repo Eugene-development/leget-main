@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import RichText from '$lib/components/RichText.svelte';
 	import UniversityMark from '../pages/university/UniversityMark.svelte';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
@@ -32,7 +33,7 @@
 		isEditable: boolean;
 	} = $props();
 
-	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Логотип');
+	const siteName = $derived(editableText(data?.siteName, 'Логотип'));
 	const links = $derived(
 		Array.isArray(data?.links) && (data.links as unknown[]).length > 0
 			? (data.links as { href: string; label: string }[])
@@ -194,7 +195,9 @@
 	// замке, — «Новострой» осталось дефолтом старых лицензий и названием
 	// сайта не является.
 	const logoLabel = $derived(
-		!data?.siteName || data.siteName === 'Новострой' ? 'Логотип' : String(data.siteName)
+		data?.siteName === undefined || data.siteName === 'Новострой'
+			? 'Логотип'
+			: editableText(data.siteName)
 	);
 
 	// Телефон, почта и «Контакты» — данные баннера, но живут они в том же
@@ -205,9 +208,9 @@
 	// Номер идёт через общий резолвер, как в подвале и на страницах: он же
 	// несёт фолбэк, а `tel:` собирается из цифр — со скобками и пробелами
 	// в href часть телефонов не набирается.
-	const sitePhone = $derived(resolveSitePhone(data?.phone as string | undefined));
+	const sitePhone = $derived(resolveSitePhone(editableText(data?.phone, '+7 (999) 000-00-00')));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
-	const email = $derived(data?.email ? String(data.email) : 'info@leget.ru');
+	const email = $derived(editableText(data?.email, 'info@leget.ru'));
 	const contactsLink = $derived(resolveContactsLink(data));
 	const informationLinks = $derived(resolveBannerLinks(data));
 
@@ -386,9 +389,9 @@
 							<EditableField
 								fieldKey="Header.siteName"
 								label="Название сайта"
-								value={!data?.siteName || data.siteName === 'Новострой'
+								value={data?.siteName === undefined || data.siteName === 'Новострой'
 									? 'Логотип'
-									: String(data.siteName)}
+									: editableText(data.siteName)}
 								onSave={(val) => saveField('siteName', val)}
 								{isEditable}
 							>

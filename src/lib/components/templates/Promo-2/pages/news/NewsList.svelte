@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.3.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -46,17 +47,19 @@
 		}
 	];
 
-	const categories = $derived(
-		Array.isArray(data?.categories) && (data.categories as unknown[]).length > 0
-			? (data.categories as string[])
-			: defaultCategories
-	);
-
 	const news = $derived(
 		Array.isArray(data?.news) && (data.news as unknown[]).length > 0
 			? (data.news as typeof defaultNews)
 			: defaultNews
 	);
+
+	const categories = $derived([
+		...new Set([
+			...defaultCategories,
+			...(Array.isArray(data?.categories) ? (data.categories as string[]) : []),
+			...news.map((item) => item.category)
+		])
+	]);
 
 	const filteredNews = $derived(
 		activeCategory === 'Все' ? news : news.filter((n) => n.category === activeCategory)
@@ -91,7 +94,16 @@
 					class:hover:border-secondary={activeCategory !== cat}
 					onclick={() => (activeCategory = cat)}
 				>
-					{cat}
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="NewsList"
+						path={['copy', 'categories', `label:${cat}`]}
+						fallback={cat}
+						label="Текст"
+						richText={false}
+					/>
 				</button>
 			{/each}
 		</div>
@@ -112,11 +124,33 @@
 					<div
 						class="flex shrink-0 flex-row items-center gap-3 md:w-44 md:flex-col md:items-start md:gap-1.5"
 					>
-						<time class="text-xs text-muted tabular-nums">{item.date}</time>
+						<time class="text-xs text-muted tabular-nums"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="NewsList"
+								path={['news', news.indexOf(item), 'date']}
+								fallback={item.date}
+								label="Текст"
+								defaults={{ news }}
+								richText={false}
+							/></time
+						>
 						<span
 							class="inline-block border border-secondary/30 px-2 py-0.5 text-[10px] tracking-[0.2em] text-secondary uppercase"
 						>
-							{item.category}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="NewsList"
+								path={['news', news.indexOf(item), 'category']}
+								fallback={item.category}
+								label="Текст"
+								defaults={{ news }}
+								richText={false}
+							/>
 						</span>
 					</div>
 
@@ -126,10 +160,29 @@
 							class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary md:text-xl"
 							style="font-family: var(--font-heading);"
 						>
-							{item.title}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="NewsList"
+								path={['news', news.indexOf(item), 'title']}
+								fallback={item.title}
+								label="Заголовок"
+								defaults={{ news }}
+							/>
 						</h2>
 						<p class="mt-2.5 text-sm leading-relaxed text-secondary">
-							{item.excerpt}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="NewsList"
+								path={['news', news.indexOf(item), 'excerpt']}
+								fallback={item.excerpt}
+								label="Описание"
+								defaults={{ news }}
+								multiline
+							/>
 						</p>
 					</div>
 				</article>
@@ -138,7 +191,18 @@
 
 		{#if filteredNews.length === 0}
 			<div class="py-24 text-center">
-				<p class="text-base text-muted">Новостей в этой категории пока нет</p>
+				<p class="text-base text-muted">
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="NewsList"
+						path={['copy', 'body1']}
+						fallback={'Новостей в этой категории пока нет'}
+						label="Новостей в этой категории пока нет"
+						multiline
+					/>
+				</p>
 			</div>
 		{/if}
 	</div>

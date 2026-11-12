@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.16.2.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -47,7 +49,7 @@
 			<EditableField
 				fieldKey="FavoritesGallery.heading"
 				label="Заголовок подборки"
-				value={String(data?.heading ?? 'Ваш выбор')}
+				value={editableText(data?.heading, 'Ваш выбор')}
 				{isEditable}
 				onSave={(value) => saveField('heading', value)}
 				class="block"
@@ -73,7 +75,16 @@
 							? 'border-primary bg-primary text-surface'
 							: 'border-border-light text-primary hover:bg-surface-warm'}"
 					>
-						{option.label}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="FavoritesGallery"
+							path={['copy', 'filterLabels', option.key]}
+							fallback={option.label}
+							label="Текст"
+							richText={false}
+						/>
 						<span class="ml-1 tabular-nums"
 							>{items.filter((item) => option.key === 'all' || item.kind === option.key)
 								.length}</span
@@ -82,14 +93,25 @@
 				{/each}
 			</div>
 		</div>
-		{#if !ready}<p role="status" class="py-12 text-secondary">Загружаем избранное…</p>
+		{#if !ready}<p role="status" class="py-12 text-secondary">
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FavoritesGallery"
+					path={['copy', 'body1']}
+					fallback={'Загружаем избранное…'}
+					label="Загружаем избранное…"
+					multiline
+				/>
+			</p>
 		{:else if items.length === 0 || isEditable}
 			<div class="py-16 text-center">
 				<div class="mb-6 flex justify-center text-secondary"><Heart class="h-12 w-12" /></div>
 				<EditableField
 					fieldKey="FavoritesGallery.emptyTitle"
 					label="Заголовок пустого списка"
-					value={String(data?.emptyTitle ?? 'Здесь будут ваши идеи')}
+					value={editableText(data?.emptyTitle, 'Здесь будут ваши идеи')}
 					{isEditable}
 					onSave={(value) => saveField('emptyTitle', value)}
 					class="block"
@@ -103,9 +125,9 @@
 				</EditableField><EditableField
 					fieldKey="FavoritesGallery.emptyMessage"
 					label="Текст пустого списка"
-					value={String(
-						data?.emptyMessage ??
-							'Нажмите на сердечко на фотографии кухни или шкафа — понравившийся вариант появится здесь.'
+					value={editableText(
+						data?.emptyMessage,
+						'Нажмите на сердечко на фотографии кухни или шкафа — понравившийся вариант появится здесь.'
 					)}
 					{isEditable}
 					onSave={(value) => saveField('emptyMessage', value)}
@@ -121,7 +143,7 @@
 					<EditableField
 						fieldKey="FavoritesGallery.kitchensLabel"
 						label="Ссылка на кухни"
-						value={String(data?.kitchensLabel ?? 'Смотреть кухни')}
+						value={editableText(data?.kitchensLabel, 'Смотреть кухни')}
 						{isEditable}
 						richText={false}
 						onSave={(value) => saveField('kitchensLabel', value)}
@@ -137,7 +159,7 @@
 					<EditableField
 						fieldKey="FavoritesGallery.wardrobesLabel"
 						label="Ссылка на шкафы"
-						value={String(data?.wardrobesLabel ?? 'Смотреть шкафы')}
+						value={editableText(data?.wardrobesLabel, 'Смотреть шкафы')}
 						{isEditable}
 						richText={false}
 						onSave={(value) => saveField('wardrobesLabel', value)}
@@ -176,7 +198,16 @@
 							<p
 								class="shrink-0 text-xs tracking-widest whitespace-nowrap text-secondary uppercase"
 							>
-								{item.kind === 'kitchen' ? 'Кухня' : 'Шкаф / гардеробная'}
+								<ContentText
+									bind:data
+									{editContext}
+									{isEditable}
+									componentType="FavoritesGallery"
+									path={['copy', 'kindLabels', item.kind]}
+									fallback={item.kind === 'kitchen' ? 'Кухня' : 'Шкаф / гардеробная'}
+									label="Тип мебели"
+									richText={false}
+								/>
 							</p>
 							<h3
 								class="min-w-0 truncate text-2xl text-primary"
@@ -192,8 +223,16 @@
 			</div>
 		{:else if ready && items.length > 0 && !isEditable}
 			<p role="status" class="py-16 text-center text-secondary">
-				В этой категории пока нет сохранённых вариантов. Выберите другую категорию или добавьте
-				мебель из каталога.
+				<ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="FavoritesGallery"
+					path={['copy', 'body2']}
+					fallback={'В этой категории пока нет сохранённых вариантов. Выберите другую категорию или добавьте мебель из каталога.'}
+					label="В этой категории пока нет сохранённых вариантов. Выберите…"
+					multiline
+				/>
 			</p>
 		{/if}
 	</div>

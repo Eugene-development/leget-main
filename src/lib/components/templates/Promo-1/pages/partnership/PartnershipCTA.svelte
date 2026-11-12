@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
 	import { goto } from '$app/navigation';
 	import RichText from '$lib/components/RichText.svelte';
@@ -20,10 +21,10 @@
 		sitePhone?: string | null;
 	} = $props();
 	const buttonText = $derived(
-		!data?.buttonText ||
-			['Обсудить сотрудничество', 'Узнать условия'].includes(String(data.buttonText))
+		data?.buttonText === undefined ||
+			['Обсудить сотрудничество', 'Узнать условия'].includes(editableText(data.buttonText))
 			? 'Стать партнёром'
-			: String(data.buttonText)
+			: editableText(data.buttonText)
 	);
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
@@ -123,7 +124,7 @@
 					<EditableField
 						fieldKey="PartnershipCTA.eyebrow"
 						label="Надзаголовок"
-						value={String(data?.eyebrow ?? 'Партнёрская программа')}
+						value={editableText(data?.eyebrow, 'Партнёрская программа')}
 						{isEditable}
 						onSave={(v) => saveField('eyebrow', v)}
 						class="pca-item pca-d1 mt-8 block"
@@ -144,7 +145,7 @@
 					<EditableField
 						fieldKey="PartnershipCTA.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Присоединяйтесь к нам')}
+						value={editableText(data?.title, 'Присоединяйтесь к нам')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="pca-item pca-d2 mt-5 block"
@@ -159,7 +160,7 @@
 					<EditableField
 						fieldKey="PartnershipCTA.subtitle"
 						label="Подзаголовок"
-						value={String(data?.subtitle ?? 'Начните работать вместе с нами уже сегодня')}
+						value={editableText(data?.subtitle, 'Начните работать вместе с нами уже сегодня')}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('subtitle', v)}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.13.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -84,7 +86,7 @@
 			<EditableField
 				fieldKey="DesignersBenefits.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Что вы получаете')}
+				value={editableText(data?.label, 'Что вы получаете')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -98,7 +100,7 @@
 			<EditableField
 				fieldKey="DesignersBenefits.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Преимущества партнёрства')}
+				value={editableText(data?.heading, 'Преимущества партнёрства')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -138,9 +140,30 @@
 						class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
 						style="font-family: var(--font-heading);"
 					>
-						{b.title}
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="DesignersBenefits"
+							path={['benefits', benefits.indexOf(b), 'title']}
+							fallback={b.title}
+							label="Заголовок"
+							defaults={{ benefits }}
+						/>
 					</h3>
-					<p class="mt-3 text-sm leading-relaxed text-secondary">{b.text}</p>
+					<p class="mt-3 text-sm leading-relaxed text-secondary">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="DesignersBenefits"
+							path={['benefits', benefits.indexOf(b), 'text']}
+							fallback={b.text}
+							label="Описание"
+							defaults={{ benefits }}
+							multiline
+						/>
+					</p>
 				</div>
 			{/each}
 		</div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.10.5.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -52,7 +53,7 @@
 			<EditableField
 				fieldKey="SocialProof.label"
 				label="Метка"
-				value={String(data?.label ?? 'Отзывы клиентов')}
+				value={editableText(data?.label, 'Отзывы клиентов')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 				class="block"
@@ -65,7 +66,7 @@
 			<EditableField
 				fieldKey="SocialProof.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Нам доверяют сотни клиентов')}
+				value={editableText(data?.title, 'Нам доверяют сотни клиентов')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"

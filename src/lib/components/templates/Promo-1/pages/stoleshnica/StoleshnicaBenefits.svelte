@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.19.4.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
 	import RichText from '$lib/components/RichText.svelte';
@@ -57,7 +58,7 @@
 		<EditableField
 			fieldKey="StoleshnicaBenefits.title"
 			label="Заголовок блока"
-			value={String(data.title || 'Работаем напрямую с поставщиками')}
+			value={editableText(data.title, 'Работаем напрямую с поставщиками')}
 			{isEditable}
 			inline
 			onSave={(v) => saveField('title', v)}

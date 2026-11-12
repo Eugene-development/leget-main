@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.12.1.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -71,7 +73,7 @@
 				<EditableField
 					fieldKey="Hero.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Карьера')}
+					value={editableText(data?.label, 'Карьера')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -90,7 +92,7 @@
 				<EditableField
 					fieldKey="Hero.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Строй карьеру вместе с нами')}
+					value={editableText(data?.title, 'Строй карьеру вместе с нами')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -110,9 +112,9 @@
 				<EditableField
 					fieldKey="Hero.description"
 					label="Описание"
-					value={String(
-						data?.description ??
-							'Фабрика — это более 700 специалистов, которые создают премиальную мебель. Присоединяйтесь к команде профессионалов.'
+					value={editableText(
+						data?.description,
+						'Фабрика — это более 700 специалистов, которые создают премиальную мебель. Присоединяйтесь к команде профессионалов.'
 					)}
 					{isEditable}
 					multiline
@@ -136,7 +138,16 @@
 					href="#vacancies"
 					class="group inline-flex items-center gap-3 rounded-sm border border-accent bg-accent px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:border-accent hover:bg-transparent hover:text-accent"
 				>
-					Смотреть вакансии
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Hero"
+						path={['copy', 'vacanciesLinkText']}
+						fallback={'Смотреть вакансии'}
+						label="Смотреть вакансии"
+						richText={false}
+					/>
 					<svg
 						class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 						fill="none"
@@ -160,7 +171,16 @@
 						if (!isEditable) openPromo2Form('careers', '');
 					}}
 				>
-					Отправить резюме
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="Hero"
+						path={['copy', 'submitText']}
+						fallback={'Отправить резюме'}
+						label="Отправить резюме"
+						richText={false}
+					/>
 				</button>
 			</div>
 		</div>
@@ -171,13 +191,35 @@
 			class:animate-fade-up={visible}
 			style="animation-delay: 1s"
 		>
-			{#each stats as stat}
+			{#each stats as stat, statIndex}
 				<div class="flex flex-col gap-1.5 bg-white/5 px-6 py-5 backdrop-blur-sm xl:px-8">
 					<span
 						class="text-3xl font-light text-accent-light"
-						style="font-family: var(--font-heading);">{stat.value}</span
+						style="font-family: var(--font-heading);"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['stats', stats.indexOf(stat), 'value']}
+							fallback={stat.value}
+							label="Текст"
+							defaults={{ stats }}
+							richText={false}
+						/></span
 					>
-					<span class="text-xs tracking-wide text-white/40">{stat.label}</span>
+					<span class="text-xs tracking-wide text-white/40"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['stats', stats.indexOf(stat), 'label']}
+							fallback={stat.label}
+							label="Текст"
+							defaults={{ stats }}
+						/></span
+					>
 				</div>
 			{/each}
 		</div>

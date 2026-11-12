@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.2.1.1 — см. docs/architecture/component-articles-map.md
 	import PageHero from '../_shared/PageHero.svelte';
 	import type { HeroPalette } from '../_shared/hero';
@@ -83,7 +84,7 @@
 	componentType="Hero"
 	{palette}
 	{paletteLight}
-	title={{ key: 'title', label: 'Заголовок', value: String(data?.title ?? 'О проекте') }}
+	title={{ key: 'title', label: 'Заголовок', value: editableText(data?.title, 'О проекте') }}
 	text={textField}
 >
 	{#snippet icon()}

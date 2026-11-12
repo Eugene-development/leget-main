@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.9.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -122,7 +123,7 @@
 			<EditableField
 				fieldKey="GuaranteeTerms.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Сроки гарантии')}
+				value={editableText(data?.title, 'Сроки гарантии')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="gt-item block"
@@ -136,7 +137,10 @@
 			<EditableField
 				fieldKey="GuaranteeTerms.subtitle"
 				label="Подзаголовок"
-				value={String(data?.subtitle ?? 'Официальная гарантия от производителей на все категории')}
+				value={editableText(
+					data?.subtitle,
+					'Официальная гарантия от производителей на все категории'
+				)}
 				{isEditable}
 				onSave={(v) => saveField('subtitle', v)}
 				class="gt-item gt-d1 mt-4 block"

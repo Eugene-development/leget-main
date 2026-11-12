@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -58,7 +59,7 @@
 			<EditableField
 				fieldKey="Factory.label"
 				label="Лейбл"
-				value={String(data?.label ?? 'Производство')}
+				value={editableText(data?.label, 'Производство')}
 				{isEditable}
 				onSave={(v) => saveField('label', v)}
 			>
@@ -72,7 +73,7 @@
 			<EditableField
 				fieldKey="Factory.heading"
 				label="Заголовок"
-				value={String(data?.heading ?? 'Наша фабрика')}
+				value={editableText(data?.heading, 'Наша фабрика')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
@@ -90,9 +91,9 @@
 			<EditableField
 				fieldKey="Factory.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'25 000 м² современного производства, оснащённого передовым европейским оборудованием'
+				value={editableText(
+					data?.description,
+					'25 000 м² современного производства, оснащённого передовым европейским оборудованием'
 				)}
 				{isEditable}
 				multiline

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.33.1.1 — см. docs/architecture/component-articles-map.md
 	import FeedViewToggle from '../projects/ProjectsFeed/FeedViewToggle.svelte';
 	import FeedRows from '../projects/ProjectsFeed/FeedRows.svelte';
@@ -66,7 +67,7 @@
 				<EditableField
 					fieldKey="FavoritesPage.title"
 					label="Название страницы"
-					value={String(data?.title ?? 'Избранное')}
+					value={editableText(data?.title, 'Избранное')}
 					{isEditable}
 					inline
 					richText={false}
@@ -159,7 +160,7 @@
 					<EditableField
 						fieldKey="FavoritesPage.emptyTitle"
 						label="Заголовок пустого избранного"
-						value={String(data?.emptyTitle ?? 'Здесь пока пусто')}
+						value={editableText(data?.emptyTitle, 'Здесь пока пусто')}
 						{isEditable}
 						inline
 						richText={false}
@@ -172,8 +173,9 @@
 					<EditableField
 						fieldKey="FavoritesPage.emptyMessage"
 						label="Подсказка пустого избранного"
-						value={String(
-							data?.emptyMessage ?? 'Нажмите на сердце в карточке проекта — он появится здесь.'
+						value={editableText(
+							data?.emptyMessage,
+							'Нажмите на сердце в карточке проекта — он появится здесь.'
 						)}
 						{isEditable}
 						inline

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -64,7 +66,7 @@
 					<EditableField
 						fieldKey="Hero.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'От нашей фабрики для вашей семьи')}
+						value={editableText(data?.title, 'От нашей фабрики для вашей семьи')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="block"
@@ -85,9 +87,9 @@
 					<EditableField
 						fieldKey="Hero.description"
 						label="Описание"
-						value={String(
-							data?.description ??
-								'Наша фабрика располагает самой крупной сетью мебельных салонов. Предлагаем отличный сервис и доступные цены на мебель премиального качества.'
+						value={editableText(
+							data?.description,
+							'Наша фабрика располагает самой крупной сетью мебельных салонов. Предлагаем отличный сервис и доступные цены на мебель премиального качества.'
 						)}
 						{isEditable}
 						multiline
@@ -117,7 +119,7 @@
 						<EditableField
 							fieldKey="Hero.ctaPrimary"
 							label="Кнопка"
-							value={String(data?.ctaPrimary ?? 'Найти ближайший салон')}
+							value={editableText(data?.ctaPrimary, 'Найти ближайший салон')}
 							{isEditable}
 							onSave={(v) => saveField('ctaPrimary', v)}
 						>
@@ -151,7 +153,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-xs tracking-[0.3em] text-muted uppercase">Листайте</span>
+			<span class="text-xs tracking-[0.3em] text-muted uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Листайте'}
+					label="Листайте"
+				/></span
+			>
 			<div class="h-10 w-px bg-gradient-to-b from-border-medium to-transparent"></div>
 		</div>
 	</div>

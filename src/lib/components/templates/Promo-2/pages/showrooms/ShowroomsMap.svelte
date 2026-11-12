@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.11.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -27,17 +28,22 @@
 	$effect(() => {
 		selectedCity;
 		searchQuery;
+		showrooms;
 		selectedPlace = null;
 	});
 
 	type Place = { address: string; coords: [number, number] };
-	const showrooms = Object.entries(showroomAddresses).flatMap(([country, cities]) =>
+	const defaultShowrooms = Object.entries(showroomAddresses).flatMap(([country, cities]) =>
 		Object.entries(cities).map(([city, addresses]) => ({
 			country,
 			city,
 			key: `${country}/${city}`,
 			places: addresses.map((address): Place => ({ address, coords: showroomCoordinates[address] }))
 		}))
+	);
+
+	const showrooms = $derived(
+		Array.isArray(data?.showrooms) ? (data.showrooms as typeof defaultShowrooms) : defaultShowrooms
 	);
 
 	const filteredShowrooms = $derived(
@@ -161,7 +167,15 @@
 			<!-- Left Column: Locations List -->
 			<div class="flex flex-col opacity-0 lg:col-span-5" class:animate-fade-up={visible}>
 				<h2 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
-					Дилерская сеть салонов
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="ShowroomsMap"
+						path={['copy', 'heading']}
+						fallback={'Дилерская сеть салонов'}
+						label="Дилерская сеть салонов"
+					/>
 				</h2>
 
 				<div
@@ -255,7 +269,21 @@
 											d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
 										/>
 									</svg>
-									{cityData.city}
+									<ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="ShowroomsMap"
+										path={[
+											'showrooms',
+											showrooms.findIndex((group) => group.key === cityData.key),
+											'city'
+										]}
+										fallback={cityData.city}
+										label="Город"
+										richText={false}
+										defaults={{ showrooms }}
+									/>
 								</h3>
 
 								<div class="mt-6 flex flex-col gap-6">
@@ -267,7 +295,27 @@
 												selectedPlace = selectedPlace === place ? null : place;
 											}}
 										>
-											<p class="text-sm text-secondary">{place.address}</p>
+											<p class="text-sm text-secondary">
+												<ContentText
+													bind:data
+													{editContext}
+													{isEditable}
+													componentType="ShowroomsMap"
+													path={[
+														'showrooms',
+														showrooms.findIndex((group) => group.key === cityData.key),
+														'places',
+														showrooms
+															.find((group) => group.key === cityData.key)!
+															.places.indexOf(place),
+														'address'
+													]}
+													fallback={place.address}
+													label="Адрес салона"
+													richText={false}
+													defaults={{ showrooms }}
+												/>
+											</p>
 										</button>
 									{/each}
 								</div>
@@ -295,9 +343,29 @@
 									/>
 								</svg>
 								<p class="mt-4 text-sm text-secondary">
-									В выбранном городе пока нет наших фирменных салонов.
+									<ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="ShowroomsMap"
+										path={['copy', 'body1']}
+										fallback={'В выбранном городе пока нет наших фирменных салонов.'}
+										label="В выбранном городе пока нет наших фирменных салонов."
+										multiline
+									/>
 								</p>
-								<p class="mt-2 text-xs text-muted">Вы можете оформить заявку на выездной расчет.</p>
+								<p class="mt-2 text-xs text-muted">
+									<ContentText
+										bind:data
+										{editContext}
+										{isEditable}
+										componentType="ShowroomsMap"
+										path={['copy', 'body2']}
+										fallback={'Вы можете оформить заявку на выездной расчет.'}
+										label="Вы можете оформить заявку на выездной расчет."
+										multiline
+									/>
+								</p>
 							</div>
 						{/if}
 					</div>
@@ -318,7 +386,16 @@
 							if (!isEditable) openPromo2Form('showroom', '');
 						}}
 					>
-						Запись в салон
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="ShowroomsMap"
+							path={['copy', 'ctaText']}
+							fallback={'Запись в салон'}
+							label="Запись в салон"
+							richText={false}
+						/>
 						<svg
 							class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
 							fill="none"

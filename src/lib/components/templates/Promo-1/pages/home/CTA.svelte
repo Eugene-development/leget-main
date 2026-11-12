@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -39,7 +40,7 @@
 		<EditableField
 			fieldKey="CTA.buttonText"
 			label="Текст кнопки"
-			value={String(data?.buttonText ?? 'Написать')}
+			value={editableText(data?.buttonText, 'Написать')}
 			{isEditable}
 			onSave={(v) => saveField('buttonText', v)}
 			class="mt-8 inline-block"

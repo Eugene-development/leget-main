@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.8.1.4 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { blockTheme } from '$lib/utils/block-theme';
@@ -28,14 +30,24 @@
 				src={String(
 					data?.image ?? 'https://storage.yandexcloud.net/zovtop/bg/promosfvmwklfvmk.jpg'
 				)}
-				alt={String(data?.title ?? 'Акции на мебель')}
+				alt={editableText(data?.title, 'Акции на мебель')}
 				class="ah-photo"
 				loading="eager"
 				fetchpriority="high"
 			/>
 			<div class="ah-gallery-offer">
 				<div class="ah-offer">
-					<span class="ah-note">Скидки до</span>
+					<span class="ah-note"
+						><ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['copy', 'discountPrefix']}
+							fallback={'Скидки до'}
+							label="Скидки до"
+						/></span
+					>
 					<div class="ah-discount">
 						<HeroField
 							bind:data

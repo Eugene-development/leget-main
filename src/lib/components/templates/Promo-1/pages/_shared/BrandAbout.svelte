@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикулы: 1.28.5.1, 1.30.5.1, 1.31.5.1, 1.36.3.1, 1.37.3.1, 1.39.3.1, 1.41.3.1 — см. docs/architecture/component-articles-map.md
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -15,7 +16,7 @@
 		isEditable?: boolean;
 	} = $props();
 
-	const title = $derived(String(data.title || 'О бренде'));
+	const title = $derived(editableText(data.title, 'О бренде'));
 	const description = $derived(String(data.description || ''));
 
 	async function saveField(field: string, value: string) {

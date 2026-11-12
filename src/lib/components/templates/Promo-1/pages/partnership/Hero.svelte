@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.6.1.1 — см. docs/architecture/component-articles-map.md
 	import { goto } from '$app/navigation';
 	import RichText from '$lib/components/RichText.svelte';
@@ -27,10 +28,10 @@
 	}
 
 	const buttonText = $derived(
-		!data?.buttonText ||
-			['Обсудить сотрудничество', 'Узнать условия'].includes(String(data.buttonText))
+		data?.buttonText === undefined ||
+			['Обсудить сотрудничество', 'Узнать условия'].includes(editableText(data.buttonText))
 			? 'Стать партнёром'
-			: String(data.buttonText)
+			: editableText(data.buttonText)
 	);
 
 	const quoteName = $derived(String(data?.quoteName ?? '').trim());
@@ -84,7 +85,7 @@
 				<EditableField
 					fieldKey="PartnershipHero.badge"
 					label="Бейдж"
-					value={String(data?.badge ?? 'Партнёрская программа')}
+					value={editableText(data?.badge, 'Партнёрская программа')}
 					{isEditable}
 					onSave={(v) => saveField('badge', v)}
 					class="ph-item inline-block"
@@ -121,7 +122,7 @@
 				<EditableField
 					fieldKey="PartnershipHero.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Растём вместе')}
+					value={editableText(data?.title, 'Растём вместе')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="ph-item ph-d1 mt-6 block"
@@ -140,9 +141,9 @@
 				<EditableField
 					fieldKey="PartnershipHero.text"
 					label="Описание"
-					value={String(
-						data?.text ??
-							'Приглашаем к сотрудничеству дизайнеров интерьеров, ремонтные бригады и продавцов мебели. Выгодные условия и прозрачная система вознаграждений.'
+					value={editableText(
+						data?.text,
+						'Приглашаем к сотрудничеству дизайнеров интерьеров, ремонтные бригады и продавцов мебели. Выгодные условия и прозрачная система вознаграждений.'
 					)}
 					{isEditable}
 					multiline
@@ -236,9 +237,9 @@
 							<EditableField
 								fieldKey="PartnershipHero.quote"
 								label="Цитата"
-								value={String(
-									data?.quote ??
-										'Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.'
+								value={editableText(
+									data?.quote,
+									'Партнёрство открывает новые горизонты и возможности для совместного роста. Вместе мы достигнем большего.'
 								)}
 								{isEditable}
 								multiline
@@ -306,7 +307,7 @@
 									<EditableField
 										fieldKey="PartnershipHero.quoteAuthor"
 										label="Подпись автора цитаты"
-										value={String(data?.quoteAuthor ?? 'Коллектив компании Новострой')}
+										value={editableText(data?.quoteAuthor, 'Коллектив компании Новострой')}
 										{isEditable}
 										onSave={(v) => saveField('quoteAuthor', v)}
 										class="block"

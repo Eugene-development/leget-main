@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.4.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -41,7 +42,7 @@
 				<EditableField
 					fieldKey="Equipment.badge"
 					label="Метка"
-					value={String(data?.badge ?? 'Дополнительно')}
+					value={editableText(data?.badge, 'Дополнительно')}
 					{isEditable}
 					onSave={(v) => saveField('badge', v)}
 					class="inline"
@@ -52,7 +53,7 @@
 			<EditableField
 				fieldKey="Equipment.title"
 				label="Заголовок"
-				value={String(data?.title ?? 'Комплектация проектов')}
+				value={editableText(data?.title, 'Комплектация проектов')}
 				{isEditable}
 				onSave={(v) => saveField('title', v)}
 				class="block"
@@ -83,7 +84,7 @@
 						<EditableField
 							fieldKey="Equipment.item1Title"
 							label="Заголовок"
-							value={String(data?.item1Title ?? 'Столешницы')}
+							value={editableText(data?.item1Title, 'Столешницы')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('item1Title', v)}
@@ -96,9 +97,9 @@
 						<EditableField
 							fieldKey="Equipment.item1Description"
 							label="Описание"
-							value={String(
-								data?.item1Description ??
-									'Широкий выбор дизайнов для вашей кухни. Качественные столешницы от ведущих производителей. Большой выбор материалов и цветов'
+							value={editableText(
+								data?.item1Description,
+								'Широкий выбор дизайнов для вашей кухни. Качественные столешницы от ведущих производителей. Большой выбор материалов и цветов'
 							)}
 							{isEditable}
 							multiline
@@ -129,7 +130,7 @@
 						<EditableField
 							fieldKey="Equipment.item2Title"
 							label="Заголовок"
-							value={String(data?.item2Title ?? 'Системы выдвижения')}
+							value={editableText(data?.item2Title, 'Системы выдвижения')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('item2Title', v)}
@@ -142,9 +143,9 @@
 						<EditableField
 							fieldKey="Equipment.item2Description"
 							label="Описание"
-							value={String(
-								data?.item2Description ??
-									'Современные механизмы Hettich и BLUM, обеспечивающие плавность, надежность и бесшумность. Широкий ассортимент для комфортного хранения'
+							value={editableText(
+								data?.item2Description,
+								'Современные механизмы Hettich и BLUM, обеспечивающие плавность, надежность и бесшумность. Широкий ассортимент для комфортного хранения'
 							)}
 							{isEditable}
 							multiline
@@ -175,7 +176,7 @@
 						<EditableField
 							fieldKey="Equipment.item3Title"
 							label="Заголовок"
-							value={String(data?.item3Title ?? 'Бытовая техника')}
+							value={editableText(data?.item3Title, 'Бытовая техника')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('item3Title', v)}
@@ -188,9 +189,9 @@
 						<EditableField
 							fieldKey="Equipment.item3Description"
 							label="Описание"
-							value={String(
-								data?.item3Description ??
-									'Встраиваемая и отдельностояящая техника от проверенных производителей с гарантией'
+							value={editableText(
+								data?.item3Description,
+								'Встраиваемая и отдельностояящая техника от проверенных производителей с гарантией'
 							)}
 							{isEditable}
 							multiline
@@ -221,7 +222,7 @@
 						<EditableField
 							fieldKey="Equipment.item4Title"
 							label="Заголовок"
-							value={String(data?.item4Title ?? 'Мойки и смесители')}
+							value={editableText(data?.item4Title, 'Мойки и смесители')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('item4Title', v)}
@@ -234,9 +235,9 @@
 						<EditableField
 							fieldKey="Equipment.item4Description"
 							label="Описание"
-							value={String(
-								data?.item4Description ??
-									'Качественная сантехника от ведущих мировых производителей с гарантией до 5 лет'
+							value={editableText(
+								data?.item4Description,
+								'Качественная сантехника от ведущих мировых производителей с гарантией до 5 лет'
 							)}
 							{isEditable}
 							multiline
@@ -267,7 +268,7 @@
 						<EditableField
 							fieldKey="Equipment.item5Title"
 							label="Заголовок"
-							value={String(data?.item5Title ?? 'Зональное освещение')}
+							value={editableText(data?.item5Title, 'Зональное освещение')}
 							{isEditable}
 							inline
 							onSave={(v) => saveField('item5Title', v)}
@@ -280,9 +281,9 @@
 						<EditableField
 							fieldKey="Equipment.item5Description"
 							label="Описание"
-							value={String(
-								data?.item5Description ??
-									'Комфортное освещение для создания уютной атмосферы в каждом уголке вашего дома'
+							value={editableText(
+								data?.item5Description,
+								'Комфортное освещение для создания уютной атмосферы в каждом уголке вашего дома'
 							)}
 							{isEditable}
 							multiline

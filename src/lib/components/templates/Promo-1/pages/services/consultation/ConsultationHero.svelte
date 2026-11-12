@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.11.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -23,7 +24,7 @@
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 	const badge = $derived(
-		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+		data?.badge === 'Услуга' ? 'Услуга компании' : editableText(data?.badge, 'Услуга компании')
 	);
 	const legacyDescriptions = [
 		'Трансформируйте свои идеи в безупречный интерьер. Получите экспертные рекомендации по стилю, эргономике и материалам от ведущих специалистов отрасли.',
@@ -39,7 +40,7 @@
 	const description = $derived(
 		legacyDescriptions.includes(String(data?.description))
 			? defaultDescription
-			: String(data?.description ?? defaultDescription)
+			: editableText(data?.description, defaultDescription)
 	);
 
 	async function saveField(field: string, value: string) {
@@ -95,7 +96,7 @@
 				<EditableField
 					fieldKey="ConsultationHero.title_part1"
 					label="Заголовок часть 1"
-					value={String(data?.title_part1 ?? 'Консультация')}
+					value={editableText(data?.title_part1, 'Консультация')}
 					{isEditable}
 					onSave={(v) => saveField('title_part1', v)}
 					class="inline-block"
@@ -107,7 +108,7 @@
 				<EditableField
 					fieldKey="ConsultationHero.title_part2"
 					label="Заголовок часть 2"
-					value={String(data?.title_part2 ?? 'дизайнера')}
+					value={editableText(data?.title_part2, 'дизайнера')}
 					{isEditable}
 					onSave={(v) => saveField('title_part2', v)}
 					class="inline-block"
@@ -135,7 +136,7 @@
 			<ServiceHeroForm
 				serviceType="consultation"
 				ctaFieldKey="ConsultationHero.cta_text"
-				ctaValue={String(data?.cta_text ?? 'Заказать консультацию')}
+				ctaValue={editableText(data?.cta_text, 'Заказать консультацию')}
 				note="В ближайшее время с вами свяжется специалист."
 				nameId="consultation-hero-name"
 				phoneId="consultation-hero-phone"

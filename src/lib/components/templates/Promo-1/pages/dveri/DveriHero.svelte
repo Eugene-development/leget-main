@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.38.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -49,7 +50,7 @@
 				<EditableField
 					fieldKey="DveriHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Двери')}
+					value={editableText(data.title, 'Двери')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
@@ -62,9 +63,9 @@
 				<EditableField
 					fieldKey="DveriHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Подберём двери под размеры, интерьер и бюджет. Поможем сравнить бренды и выбрать подходящее решение.'
+					value={editableText(
+						data.description,
+						'Подберём двери под размеры, интерьер и бюджет. Поможем сравнить бренды и выбрать подходящее решение.'
 					)}
 					{isEditable}
 					inline
@@ -87,7 +88,7 @@
 					<EditableField
 						fieldKey="DveriHero.primaryButton"
 						label="Кнопка"
-						value={String(data.primaryButton || 'Подобрать двери')}
+						value={editableText(data.primaryButton, 'Подобрать двери')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('primaryButton', v)}

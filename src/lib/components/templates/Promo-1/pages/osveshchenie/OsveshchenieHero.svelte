@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.35.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -56,7 +57,7 @@
 				<EditableField
 					fieldKey="OsveshchenieHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Освещение')}
+					value={editableText(data.title, 'Освещение')}
 					{isEditable}
 					inline
 					onSave={(value) => saveField('title', value)}
@@ -69,9 +70,9 @@
 				<EditableField
 					fieldKey="OsveshchenieHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Подберём светильники для разных зон дома: общий, рабочий и акцентный свет.'
+					value={editableText(
+						data.description,
+						'Подберём светильники для разных зон дома: общий, рабочий и акцентный свет.'
 					)}
 					{isEditable}
 					inline
@@ -93,7 +94,7 @@
 				<EditableField
 					fieldKey="OsveshchenieHero.buttonText"
 					label="Текст кнопки"
-					value={String(data.buttonText || 'Подобрать освещение')}
+					value={editableText(data.buttonText, 'Подобрать освещение')}
 					{isEditable}
 					inline
 					onSave={(value) => saveField('buttonText', value)}

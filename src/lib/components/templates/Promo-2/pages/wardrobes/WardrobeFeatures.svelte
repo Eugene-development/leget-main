@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.10.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -76,7 +78,7 @@
 		<EditableField
 			fieldKey="WardrobeFeatures.heading"
 			label="Заголовок"
-			value={String(data?.heading ?? 'Безупречное качество от замера до установки')}
+			value={editableText(data?.heading, 'Безупречное качество от замера до установки')}
 			{isEditable}
 			onSave={(v) => saveField('heading', v)}
 			class="block"
@@ -100,12 +102,43 @@
 					class="absolute top-8 right-8 text-6xl font-normal text-secondary"
 					style="font-family: var(--font-heading);"
 				>
-					0{i + 1}
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="WardrobeFeatures"
+						path={['features', i, 'number']}
+						fallback={String(i + 1).padStart(2, '0')}
+						label="Номер преимущества"
+						richText={false}
+						defaults={{ features }}
+					/>
 				</div>
 				<h3 class="mb-3 text-2xl text-primary" style="font-family: var(--font-heading);">
-					{feature.title}
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="WardrobeFeatures"
+						path={['features', features.indexOf(feature), 'title']}
+						fallback={feature.title}
+						label="Заголовок"
+						defaults={{ features }}
+					/>
 				</h3>
-				<p class="leading-relaxed text-secondary">{feature.desc}</p>
+				<p class="leading-relaxed text-secondary">
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="WardrobeFeatures"
+						path={['features', features.indexOf(feature), 'desc']}
+						fallback={feature.desc}
+						label="Описание"
+						defaults={{ features }}
+						multiline
+					/>
+				</p>
 			</div>
 		{/each}
 	</div>

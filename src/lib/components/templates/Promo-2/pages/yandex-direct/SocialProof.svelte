@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.5.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -80,7 +82,7 @@
 				<EditableField
 					fieldKey="SocialProof.label"
 					label="Лейбл"
-					value={String(data?.label ?? 'Отзывы клиентов')}
+					value={editableText(data?.label, 'Отзывы клиентов')}
 					{isEditable}
 					onSave={(v) => saveField('label', v)}
 				>
@@ -94,7 +96,7 @@
 				<EditableField
 					fieldKey="SocialProof.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Нам доверяют сотни клиентов')}
+					value={editableText(data?.title, 'Нам доверяют сотни клиентов')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -122,8 +124,29 @@
 					{/each}
 				</div>
 				<div>
-					<div class="text-sm font-medium text-primary">4.9 / 5</div>
-					<div class="text-[11px] tracking-widest text-muted uppercase">200+ отзывов</div>
+					<div class="text-sm font-medium text-primary">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="SocialProof"
+							path={['copy', 'ratingText']}
+							fallback={'4.9 / 5'}
+							label="Рейтинг"
+							richText={false}
+						/>
+					</div>
+					<div class="text-[11px] tracking-widest text-muted uppercase">
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="SocialProof"
+							path={['copy', 'reviewCountText']}
+							fallback={'200+ отзывов'}
+							label="200+ отзывов"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -157,7 +180,17 @@
 					<div class="h-px w-8 bg-accent"></div>
 
 					<p class="flex-1 text-sm leading-relaxed text-secondary italic">
-						«{review.text}»
+						«<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="SocialProof"
+							path={['reviews', reviews.indexOf(review), 'text']}
+							fallback={review.text}
+							label="Описание"
+							defaults={{ reviews }}
+							multiline
+						/>»
 					</p>
 
 					<!-- Author -->
@@ -165,9 +198,30 @@
 						<div
 							class="flex h-9 w-9 items-center justify-center border border-border-medium text-xs font-medium text-secondary"
 						>
-							{review.initials}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="SocialProof"
+								path={['reviews', reviews.indexOf(review), 'initials']}
+								fallback={review.initials}
+								label="Текст"
+								defaults={{ reviews }}
+								richText={false}
+							/>
 						</div>
-						<span class="text-sm font-medium text-primary">{review.name}</span>
+						<span class="text-sm font-medium text-primary"
+							><ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="SocialProof"
+								path={['reviews', reviews.indexOf(review), 'name']}
+								fallback={review.name}
+								label="Текст"
+								defaults={{ reviews }}
+							/></span
+						>
 					</div>
 				</div>
 			{/each}

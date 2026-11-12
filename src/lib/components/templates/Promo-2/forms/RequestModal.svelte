@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { requestText } from './copy';
 	import { onMount } from 'svelte';
 	import { createFormSender } from '$lib/utils/form-submission';
 	import { cleanPhone } from '$lib/utils/phone';
 	import { formDefinitions, promo2Request, type Promo2Request } from './request';
 
-	let { request }: { request: Promo2Request } = $props();
+	let { request, data = {} }: { request: Promo2Request; data?: Record<string, unknown> } = $props();
 	const definition = $derived(formDefinitions[request.kind]);
 	// The parent keys this component by request; its sender lives for that form session.
 	// svelte-ignore state_referenced_locally
@@ -119,26 +120,38 @@
 				><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5" /></svg
 			>
 		</button>
-		{#if submitted}<p class="p2-eyebrow">Спасибо за обращение</p>{/if}
-		<h2 id="p2-request-title">{submitted ? 'Заявка принята' : definition.title}</h2>
+		{#if submitted}<p class="p2-eyebrow">
+				{requestText(data, 'thanks', 'Спасибо за обращение')}
+			</p>{/if}
+		<h2 id="p2-request-title">
+			{submitted
+				? requestText(data, 'successTitle', 'Заявка принята')
+				: requestText(data, `title.${request.kind}`, definition.title)}
+		</h2>
 		<p id="p2-request-description" class="p2-description">
-			{submitted ? 'Мы свяжемся с вами по указанным контактам.' : definition.description}
+			{submitted
+				? requestText(data, 'successDescription', 'Мы свяжемся с вами по указанным контактам.')
+				: requestText(data, `description.${request.kind}`, definition.description)}
 		</p>
 		{#if submitted}
-			<div role="status" class="p2-success">Ваше обращение сохранено.</div>
+			<div role="status" class="p2-success">
+				{requestText(data, 'successNotice', 'Ваше обращение сохранено.')}
+			</div>
 			<button
 				type="button"
 				class="p2-submit"
 				data-metrika-goal="request_modal_success_close"
 				data-goal-action="close"
 				data-goal-variant={request.kind}
-				onclick={close}>Вернуться на сайт</button
+				onclick={close}>{requestText(data, 'closeText', 'Вернуться на сайт')}</button
 			>
 		{:else}
 			{#if request.subject}<p class="p2-subject">{request.subject}</p>{/if}
 			<form onsubmit={submit} aria-busy={loading}>
 				<fieldset disabled={loading}>
-					<label for="p2-name">Ваше имя <span aria-hidden="true">*</span></label>
+					<label for="p2-name"
+						>{requestText(data, 'nameLabel', 'Ваше имя')} <span aria-hidden="true">*</span></label
+					>
 					<input
 						id="p2-name"
 						name="name"
@@ -148,7 +161,9 @@
 						pattern=".*\S.*"
 						bind:value={name}
 					/>
-					<label for="p2-phone">Телефон <span aria-hidden="true">*</span></label>
+					<label for="p2-phone"
+						>{requestText(data, 'phoneLabel', 'Телефон')} <span aria-hidden="true">*</span></label
+					>
 					<input
 						id="p2-phone"
 						name="phone"
@@ -156,14 +171,17 @@
 						autocomplete="tel"
 						required
 						maxlength="50"
-						placeholder="+7 (999) 123-45-67"
+						placeholder={requestText(data, 'phonePlaceholder', '+7 (999) 123-45-67')}
 						bind:value={phone}
 						aria-invalid={!!phoneError}
 						aria-describedby={phoneError ? 'p2-phone-error' : undefined}
 					/>
 					{#if phoneError}<p class="p2-error" id="p2-phone-error" role="alert">{phoneError}</p>{/if}
 					{#if request.kind === 'partnership' || request.kind === 'careers'}
-						<label for="p2-email">Электронная почта <span aria-hidden="true">*</span></label>
+						<label for="p2-email"
+							>{requestText(data, 'emailLabel', 'Электронная почта')}
+							<span aria-hidden="true">*</span></label
+						>
 						<input
 							id="p2-email"
 							type="email"
@@ -174,7 +192,7 @@
 						/>
 					{/if}
 					<label for="p2-city"
-						>Город{#if request.kind === 'showroom'}
+						>{requestText(data, 'cityLabel', 'Город')}{#if request.kind === 'showroom'}
 							<span aria-hidden="true">*</span>{/if}</label
 					>
 					<input
@@ -185,16 +203,25 @@
 						bind:value={city}
 					/>
 					{#if request.kind === 'showroom'}
-						<label for="p2-showroom">Предпочтительный салон</label>
+						<label for="p2-showroom"
+							>{requestText(data, 'showroomLabel', 'Предпочтительный салон')}</label
+						>
 						<input
 							id="p2-showroom"
 							maxlength="255"
-							placeholder="Адрес или название, если знаете"
+							placeholder={requestText(
+								data,
+								'showroomPlaceholder',
+								'Адрес или название, если знаете'
+							)}
 							bind:value={showroom}
 						/>
 					{/if}
 					{#if request.kind === 'home-designer'}
-						<label for="p2-address">Адрес выезда <span aria-hidden="true">*</span></label>
+						<label for="p2-address"
+							>{requestText(data, 'addressLabel', 'Адрес выезда')}
+							<span aria-hidden="true">*</span></label
+						>
 						<input
 							id="p2-address"
 							autocomplete="street-address"
@@ -205,36 +232,36 @@
 						/>
 					{/if}
 					{#if request.kind === 'showroom' || request.kind === 'home-designer'}
-						<label for="p2-time">Удобное время</label>
+						<label for="p2-time">{requestText(data, 'timeLabel', 'Удобное время')}</label>
 						<input
 							id="p2-time"
 							maxlength="160"
-							placeholder="Например, в субботу после 12:00"
+							placeholder={requestText(data, 'timePlaceholder', 'Например, в субботу после 12:00')}
 							bind:value={visitTime}
 						/>
 					{/if}
 					{#if request.kind === 'partnership'}
-						<label for="p2-partner">Формат работы</label>
+						<label for="p2-partner">{requestText(data, 'partnerLabel', 'Формат работы')}</label>
 						<select id="p2-partner" bind:value={partnerKind}
-							><option value="studio">Студия</option><option value="freelancer"
-								>Частный дизайнер</option
+							><option value="studio">{requestText(data, 'studioLabel', 'Студия')}</option><option
+								value="freelancer"
+								>{requestText(data, 'freelancerLabel', 'Частный дизайнер')}</option
 							></select
 						>
 					{/if}
 					<label for="p2-message"
 						>{request.kind === 'careers'
-							? 'Опыт и ссылка на резюме'
+							? requestText(data, 'resumeLabel', 'Опыт и ссылка на резюме')
 							: request.kind === 'estimate'
-								? 'Размеры и пожелания к мебели'
-								: 'Ваши пожелания'}</label
+								? requestText(data, 'estimateLabel', 'Размеры и пожелания к мебели')
+								: requestText(data, 'messageLabel', 'Ваши пожелания')}</label
 					>
 					<textarea id="p2-message" rows="3" maxlength="2000" bind:value={message}></textarea>
 					<label class="p2-consent"
 						><input type="checkbox" required bind:checked={consent} /><span
-							>Согласен на обработку персональных данных. <a
-								href="/privacy"
-								target="_blank"
-								rel="noopener noreferrer">Политика конфиденциальности</a
+							>{requestText(data, 'consentText', 'Согласен на обработку персональных данных.')}
+							<a href="/privacy" target="_blank" rel="noopener noreferrer"
+								>{requestText(data, 'privacyText', 'Политика конфиденциальности')}</a
 							></span
 						></label
 					>
@@ -246,7 +273,10 @@
 					disabled={loading}
 					data-metrika-goal="request_modal_submit"
 					data-goal-action="submit_click"
-					data-goal-variant={request.kind}>{loading ? 'Отправляем…' : 'Отправить заявку'}</button
+					data-goal-variant={request.kind}
+					>{loading
+						? requestText(data, 'sendingText', 'Отправляем…')
+						: requestText(data, 'submitText', 'Отправить заявку')}</button
 				>
 			</form>
 		{/if}

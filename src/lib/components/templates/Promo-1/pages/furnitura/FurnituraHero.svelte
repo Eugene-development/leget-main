@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	// Артикул: 1.22.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -56,7 +57,7 @@
 				<EditableField
 					fieldKey="FurnituraHero.title"
 					label="Заголовок"
-					value={String(data.title || 'Фурнитура')}
+					value={editableText(data.title, 'Фурнитура')}
 					{isEditable}
 					inline
 					onSave={(v) => saveField('title', v)}
@@ -69,9 +70,9 @@
 				<EditableField
 					fieldKey="FurnituraHero.description"
 					label="Описание"
-					value={String(
-						data.description ||
-							'Каталог интернет-магазинов и поставщиков мебельной фурнитуры. Петли, направляющие, подъёмники и системы хранения от проверенных поставщиков.'
+					value={editableText(
+						data.description,
+						'Каталог интернет-магазинов и поставщиков мебельной фурнитуры. Петли, направляющие, подъёмники и системы хранения от проверенных поставщиков.'
 					)}
 					{isEditable}
 					inline
@@ -93,7 +94,7 @@
 					<EditableField
 						fieldKey="FurnituraHero.primaryButton"
 						label="Кнопка"
-						value={String(data.primaryButton || 'Подобрать фурнитуру')}
+						value={editableText(data.primaryButton, 'Подобрать фурнитуру')}
 						{isEditable}
 						inline
 						onSave={(v) => saveField('primaryButton', v)}

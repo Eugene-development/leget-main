@@ -40,9 +40,11 @@ export function topBarLinks(data: Record<string, unknown>): TopBarLink[] {
 }
 
 export function topBarPhone(data: Record<string, unknown>): string {
+	if (data.phone === null) return '';
 	return typeof data.phone === 'string' ? data.phone.trim() : '8 (915) 400-00-20';
 }
 
 export function topBarEmail(data: Record<string, unknown>): string {
+	if (data.email === null) return '';
 	return typeof data.email === 'string' ? data.email.trim() : 'info@mebelzov.com';
 }

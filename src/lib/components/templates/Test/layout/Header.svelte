@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -12,7 +13,7 @@
 				<ImageFallback
 					imagePath={['logo']}
 					src={data.logo}
-					alt={data?.siteName ?? 'Logo'}
+					alt={editableText(data?.siteName, 'Logo')}
 					class="h-8 w-auto"
 				/>
 			</a>

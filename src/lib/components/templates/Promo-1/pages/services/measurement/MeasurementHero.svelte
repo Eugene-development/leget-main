@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.13.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -23,7 +24,7 @@
 	// Дефолт 'dark': блок задуман тёмным, переключатель инвертирует исходный вид.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 	const badge = $derived(
-		data?.badge === 'Услуга' ? 'Услуга компании' : String(data?.badge ?? 'Услуга компании')
+		data?.badge === 'Услуга' ? 'Услуга компании' : editableText(data?.badge, 'Услуга компании')
 	);
 
 	async function saveField(field: string, value: string) {
@@ -79,7 +80,7 @@
 				<EditableField
 					fieldKey="MeasurementHero.title_part1"
 					label="Заголовок часть 1"
-					value={String(data?.title_part1 ?? 'Проектный замер')}
+					value={editableText(data?.title_part1, 'Проектный замер')}
 					{isEditable}
 					onSave={(v) => saveField('title_part1', v)}
 					class="inline-block"
@@ -91,7 +92,7 @@
 				<EditableField
 					fieldKey="MeasurementHero.title_part2"
 					label="Заголовок часть 2"
-					value={String(data?.title_part2 ?? 'помещения')}
+					value={editableText(data?.title_part2, 'помещения')}
 					{isEditable}
 					onSave={(v) => saveField('title_part2', v)}
 					class="inline-block"
@@ -105,9 +106,9 @@
 			<EditableField
 				fieldKey="MeasurementHero.description"
 				label="Описание"
-				value={String(
-					data?.description ??
-						'Точные обмеры — основа качественного дизайн-проекта. Профессиональный замер с фиксацией всех коммуникаций и особенностей помещения.'
+				value={editableText(
+					data?.description,
+					'Точные обмеры — основа качественного дизайн-проекта. Профессиональный замер с фиксацией всех коммуникаций и особенностей помещения.'
 				)}
 				{isEditable}
 				multiline
@@ -122,7 +123,7 @@
 			<ServiceHeroForm
 				serviceType="measurement"
 				ctaFieldKey="MeasurementHero.cta_text"
-				ctaValue={String(data?.cta_text ?? 'Заказать замер')}
+				ctaValue={editableText(data?.cta_text, 'Заказать замер')}
 				note="В ближайшее время с вами свяжется специалист."
 				nameId="measurement-hero-name"
 				phoneId="measurement-hero-phone"

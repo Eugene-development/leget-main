@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.29.2.1, 1.30.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -21,13 +22,14 @@
 			'https://storage.yandexcloud.net/leget-main/templates/promo-1/countertops_hero.png'
 	);
 
-	const title = $derived(String(data.title || 'Бренд'));
+	const title = $derived(editableText(data.title, 'Бренд'));
 	const primaryButton = $derived(
-		!data.primaryButton && (!data.buttonText || data.buttonText === 'Подобрать столешницу')
+		data.primaryButton === undefined &&
+			(data.buttonText === undefined || data.buttonText === 'Подобрать столешницу')
 			? 'Рассчитать стоимость'
-			: String(data.primaryButton || data.buttonText)
+			: editableText(data.primaryButton, editableText(data.buttonText))
 	);
-	const secondaryButton = $derived(String(data.secondaryButton || 'Заказать замер столешницы'));
+	const secondaryButton = $derived(editableText(data.secondaryButton, 'Заказать замер столешницы'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;

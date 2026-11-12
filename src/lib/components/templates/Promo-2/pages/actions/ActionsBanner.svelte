@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -67,7 +68,7 @@
 					<EditableField
 						fieldKey="ActionsBanner.eyebrow"
 						label="Надпись над заголовком"
-						value={String(data?.eyebrow ?? 'Специальное предложение')}
+						value={editableText(data?.eyebrow, 'Специальное предложение')}
 						{isEditable}
 						onSave={(v) => saveField('eyebrow', v)}
 					>
@@ -81,7 +82,7 @@
 					<EditableField
 						fieldKey="ActionsBanner.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Кухня мечты −30%')}
+						value={editableText(data?.title, 'Кухня мечты −30%')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="mt-4 block"
@@ -116,7 +117,7 @@
 						<EditableField
 							fieldKey="ActionsBanner.ctaText"
 							label="Текст кнопки"
-							value={String(data?.ctaText ?? 'Консультация по акции')}
+							value={editableText(data?.ctaText, 'Консультация по акции')}
 							{isEditable}
 							onSave={(v) => saveField('ctaText', v)}
 						>
@@ -130,7 +131,7 @@
 										if (!isEditable)
 											openPromo2Form(
 												'action-consultation',
-												String(data?.title ?? 'Кухня мечты −30%')
+												editableText(data?.title, 'Кухня мечты −30%')
 											);
 									}}
 								>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.26.1.1 — см. docs/architecture/component-articles-map.md
 	//
 	// Блок сменил роль 24.08.2026 и сменил её целиком. Раньше это был Hero на
@@ -91,7 +92,7 @@
 			<EditableField
 				fieldKey="ProjectsHero.title"
 				label="Название страницы"
-				value={String(data?.title ?? 'Проекты')}
+				value={editableText(data?.title, 'Проекты')}
 				{isEditable}
 				inline
 				onSave={saveTitle}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.5.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -54,7 +56,7 @@
 					<EditableField
 						fieldKey="Hero.label"
 						label="Лейбл"
-						value={String(data?.label ?? 'Материалы')}
+						value={editableText(data?.label, 'Материалы')}
 						{isEditable}
 						onSave={(v) => saveField('label', v)}
 					>
@@ -73,7 +75,7 @@
 					<EditableField
 						fieldKey="Hero.title"
 						label="Заголовок"
-						value={String(data?.title ?? 'Фасад это лицо вашей мебели')}
+						value={editableText(data?.title, 'Фасад это лицо вашей мебели')}
 						{isEditable}
 						onSave={(v) => saveField('title', v)}
 						class="block"
@@ -94,8 +96,9 @@
 					<EditableField
 						fieldKey="Hero.description"
 						label="Описание"
-						value={String(
-							data?.description ?? 'Фасады задают характер вашего домашнего интерьера.'
+						value={editableText(
+							data?.description,
+							'Фасады задают характер вашего домашнего интерьера.'
 						)}
 						{isEditable}
 						multiline
@@ -115,7 +118,16 @@
 						href="#facades-catalog"
 						class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-secondary bg-secondary px-8 py-4 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:bg-transparent"
 					>
-						Узнать больше
+						<ContentText
+							bind:data
+							{editContext}
+							{isEditable}
+							componentType="Hero"
+							path={['copy', 'moreText']}
+							fallback={'Узнать больше'}
+							label="Узнать больше"
+							richText={false}
+						/>
 						<svg
 							class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1"
 							fill="none"
@@ -142,7 +154,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-white/50 uppercase">Вниз</span>
+			<span class="text-[10px] tracking-[0.3em] text-white/50 uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Вниз'}
+					label="Вниз"
+				/></span
+			>
 			<div class="h-10 w-px bg-gradient-to-b from-white/50 to-transparent"></div>
 		</div>
 	</div>

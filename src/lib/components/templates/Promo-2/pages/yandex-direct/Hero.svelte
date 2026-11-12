@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
+	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.14.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -24,6 +26,11 @@
 		data = updated;
 	}
 
+	const features = $derived(
+		Array.isArray(data?.features)
+			? (data.features as string[])
+			: ['Замер бесплатно', 'Гарантия 5 лет', 'Рассрочка 0%']
+	);
 	let heroVisible = $state(false);
 
 	onMount(() => {
@@ -37,7 +44,7 @@
 		<ImageFallback
 			imagePath={['bgImage']}
 			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/zovtop/bg/hero-2.jpg')}
-			alt={String(data?.title ?? 'Мебель на заказ')}
+			alt={editableText(data?.title, 'Мебель на заказ')}
 			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible
 				? 'scale-105'
 				: ''}"
@@ -56,7 +63,15 @@
 			class="block text-[160px] leading-none font-light tracking-tighter text-primary/4 xl:text-[200px]"
 			style="font-family: var(--font-heading);"
 		>
-			ZOV
+			<ContentText
+				bind:data
+				{editContext}
+				{isEditable}
+				componentType="Hero"
+				path={['copy', 'brandText']}
+				fallback={'ZOV'}
+				label="ZOV"
+			/>
 		</span>
 	</div>
 
@@ -76,7 +91,7 @@
 						<EditableField
 							fieldKey="Hero.badge"
 							label="Лейбл"
-							value={String(data?.badge ?? 'Специальное предложение')}
+							value={editableText(data?.badge, 'Специальное предложение')}
 							{isEditable}
 							onSave={(v) => saveField('badge', v)}
 						>
@@ -89,7 +104,7 @@
 				<EditableField
 					fieldKey="Hero.title"
 					label="Заголовок"
-					value={String(data?.title ?? 'Мебель на заказ по вашим размерам')}
+					value={editableText(data?.title, 'Мебель на заказ по вашим размерам')}
 					{isEditable}
 					onSave={(v) => saveField('title', v)}
 					class="block"
@@ -114,9 +129,9 @@
 					<EditableField
 						fieldKey="Hero.subtitle"
 						label="Описание"
-						value={String(
-							data?.subtitle ??
-								'Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект'
+						value={editableText(
+							data?.subtitle,
+							'Кухни, шкафы, гардеробные — от замера до установки за 14 дней. Рассрочка 0% и бесплатный дизайн-проект'
 						)}
 						{isEditable}
 						multiline
@@ -136,10 +151,19 @@
 					class:animate-fade-up={heroVisible}
 					style="animation-delay: 0.8s"
 				>
-					{#each ['Замер бесплатно', 'Гарантия 5 лет', 'Рассрочка 0%'] as feat}
+					{#each features as feat, featIndex}
 						<div class="flex items-center gap-2 text-xs tracking-widest text-secondary uppercase">
 							<div class="h-px w-4 bg-accent"></div>
-							{feat}
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="Hero"
+								path={['features', features.indexOf(feat)]}
+								fallback={feat}
+								label="Текст"
+								defaults={{ features }}
+							/>
 						</div>
 					{/each}
 				</div>
@@ -153,7 +177,7 @@
 					<EditableField
 						fieldKey="Hero.primaryButton"
 						label="Кнопка 1"
-						value={String(data?.primaryButton ?? 'Рассчитать стоимость')}
+						value={editableText(data?.primaryButton, 'Рассчитать стоимость')}
 						{isEditable}
 						onSave={(v) => saveField('primaryButton', v)}
 					>
@@ -188,7 +212,7 @@
 					<EditableField
 						fieldKey="Hero.secondaryButton"
 						label="Кнопка 2"
-						value={String(data?.secondaryButton ?? 'Позвонить')}
+						value={editableText(data?.secondaryButton, 'Позвонить')}
 						{isEditable}
 						onSave={(v) => saveField('secondaryButton', v)}
 					>
@@ -226,7 +250,17 @@
 		style="animation-delay: 1.3s"
 	>
 		<div class="flex flex-col items-center gap-2">
-			<span class="text-[10px] tracking-[0.3em] text-muted uppercase">Листайте</span>
+			<span class="text-[10px] tracking-[0.3em] text-muted uppercase"
+				><ContentText
+					bind:data
+					{editContext}
+					{isEditable}
+					componentType="Hero"
+					path={['copy', 'scrollHint']}
+					fallback={'Листайте'}
+					label="Листайте"
+				/></span
+			>
 			<div class="h-10 w-px bg-linear-to-b from-text-muted to-transparent"></div>
 		</div>
 	</div>
