@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Editor } from '@tiptap/core';
-	import { editorContent, serializeRichText } from '$lib/utils/rich-text';
+	import {
+		editorContent,
+		FONT_SIZES,
+		normalizeFontSize,
+		serializeRichText
+	} from '$lib/utils/rich-text';
 
 	let {
 		value,
@@ -26,6 +31,28 @@
 	let editor = $state.raw<Editor | null>(null);
 	let revision = $state(0);
 	let loadError = $state('');
+	const selectedSize = $derived.by(() => {
+		revision;
+		if (!editor) return '';
+		const { from, to, empty } = editor.state.selection;
+		if (empty) return normalizeFontSize(editor.getAttributes('fontSize').size) ?? '';
+		const sizes = new Set<string>();
+		editor.state.doc.nodesBetween(from, to, (node) => {
+			if (node.isText)
+				sizes.add(
+					normalizeFontSize(node.marks.find((mark) => mark.type.name === 'fontSize')?.attrs.size) ??
+						''
+				);
+		});
+		return sizes.size > 1 ? 'mixed' : ([...sizes][0] ?? '');
+	});
+
+	function setFontSize(value: string) {
+		if (!editor || disabled) return;
+		const chain = editor.chain().focus();
+		if (value === '') chain.unsetMark('fontSize').run();
+		else if (normalizeFontSize(value)) chain.setMark('fontSize', { size: value }).run();
+	}
 	const tools = [
 		{ label: 'Жирный', type: 'bold', icon: 'M6 4h7a4 4 0 0 1 0 8H6zm0 8h8a4 4 0 0 1 0 8H6z' },
 		{ label: 'Курсив', type: 'italic', icon: 'M10 4h9M5 20h9M15 4 9 20' },
@@ -112,11 +139,36 @@
 		let disposed = false;
 		// Load only when an owner opens a text field, never in the visitor's initial bundle.
 		Promise.all([import('@tiptap/core'), import('@tiptap/starter-kit')])
-			.then(([{ Editor }, { StarterKit }]) => {
+			.then(([{ Editor, Mark }, { StarterKit }]) => {
 				if (disposed) return;
+				const FontSize = Mark.create({
+					name: 'fontSize',
+					addAttributes() {
+						return {
+							size: {
+								default: null,
+								parseHTML: (element) => normalizeFontSize(element.style.fontSize),
+								renderHTML: ({ size }) =>
+									normalizeFontSize(size) ? { style: `font-size: ${size}` } : {}
+							}
+						};
+					},
+					parseHTML() {
+						return [
+							{
+								tag: 'span[style]',
+								getAttrs: (element) => (normalizeFontSize(element.style.fontSize) ? null : false)
+							}
+						];
+					},
+					renderHTML({ HTMLAttributes }) {
+						return ['span', HTMLAttributes, 0];
+					}
+				});
 				editor = new Editor({
 					element,
 					extensions: [
+						FontSize,
 						StarterKit.configure({
 							heading: false,
 							code: false,
@@ -171,6 +223,23 @@
 		aria-label="Форматирование текста"
 		class="flex flex-wrap gap-1 border-b border-ink-200 bg-ink-50 p-2"
 	>
+		<select
+			aria-label="Размер шрифта"
+			title="Размер выделенного текста"
+			value={selectedSize}
+			disabled={!editor || disabled}
+			onchange={(event) => setFontSize(event.currentTarget.value)}
+			class="h-10 max-w-full rounded-lg border border-ink-200 bg-surface-raised px-2 text-sm text-ink-700 focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35"
+		>
+			<option value="">По умолчанию</option>
+			{#if selectedSize === 'mixed'}<option value="mixed" disabled>Разные размеры</option>{/if}
+			{#if selectedSize && selectedSize !== 'mixed' && !FONT_SIZES.some((size) => `${size}px` === selectedSize)}
+				<option value={selectedSize}>{selectedSize.replace('px', '')} px</option>
+			{/if}
+			{#each FONT_SIZES as size}
+				<option value={`${size}px`}>{size} px</option>
+			{/each}
+		</select>
 		{#each states as tool}
 			<button
 				type="button"

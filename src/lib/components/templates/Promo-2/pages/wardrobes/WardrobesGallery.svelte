@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.10.2.1 — см. docs/architecture/component-articles-map.md
+	import FavoriteButton from '../../favorites/FavoriteButton.svelte';
+	import { favoriteVariant } from '../../favorites/storage';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
@@ -316,6 +318,9 @@
 							alt={project.title}
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						/>
+						<div class="absolute top-4 right-4 z-20">
+							<FavoriteButton item={favoriteVariant('wardrobe', project)} />
+						</div>
 						{#if !isEditable}
 							<button
 								type="button"

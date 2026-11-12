@@ -35,6 +35,8 @@ const expected = new Map([
 const actual = new Map([...expected.keys()].map((name) => [name, new Set()]));
 const promo2ActionsExpected = declarations.get('promo2ActionsComponentsWithSwitcher');
 const promo2ActionsActual = new Set();
+const promo2HomeExpected = declarations.get('promo2HomeComponentsWithSwitcher');
+const promo2HomeActual = new Set();
 const promo2FacadesExpected = declarations.get('promo2FacadesComponentsWithSwitcher');
 const promo2FacadesActual = new Set();
 const errors = [];
@@ -67,6 +69,12 @@ function inspect(directory) {
 				return;
 			}
 			if (!path.includes('/Promo-1/')) {
+				if (path.includes('/Promo-2/pages/home/') && node.name === 'VersionSwitcher') {
+					promo2HomeActual.add(type);
+					if (!promo2HomeExpected?.has(type))
+						errors.push(`${path}: ${type} получит вторую панель из PageRenderer`);
+					return;
+				}
 				if (path.includes('/Promo-2/pages/facades/') && node.name === 'VersionSwitcher') {
 					promo2FacadesActual.add(type);
 					if (!promo2FacadesExpected?.has(type))
@@ -110,6 +118,10 @@ for (const [kind, types] of expected) {
 			errors.push(`${type}: запись ${kind} не соответствует каталогу`);
 }
 if (!promo2ActionsExpected) errors.push('Не найден реестр панелей Promo-2 /actions');
+if (!promo2HomeExpected) errors.push('Не найден реестр панелей Promo-2 /');
+for (const type of promo2HomeExpected ?? []) {
+	if (!promo2HomeActual.has(type)) errors.push(`Promo-2 / ${type}: нет встроенной панели`);
+}
 for (const type of promo2ActionsExpected ?? []) {
 	if (!promo2ActionsActual.has(type))
 		errors.push(`Promo-2 /actions ${type}: нет встроенной панели`);

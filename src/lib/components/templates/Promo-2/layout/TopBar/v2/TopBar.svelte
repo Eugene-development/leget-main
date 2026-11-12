@@ -6,5 +6,5 @@
 </script>
 
 <div class="border-b border-inverse/10 bg-primary text-inverse">
-	<TopBarContent {data} {isEditable} dark={true} />
+	<TopBarContent {data} {isEditable} dark={true} largeText={true} />
 </div>

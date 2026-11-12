@@ -1,15 +1,14 @@
 <script lang="ts">
 	// Артикул: 2.М.1.1 — см. docs/architecture/component-articles-map.md
-	import { useImageEditing } from '$lib/utils/image-editing.svelte';
-	const imageEditing = useImageEditing();
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RequestModal from '../forms/RequestModal.svelte';
 	import { openPromo2Form, promo2Request } from '../forms/request';
 	import { auth } from '$lib/stores/auth';
 	import LoginModal from '$lib/components/LoginModal.svelte';
-	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
+	import HeaderSettings from './HeaderSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
 	import { sitePhoneHref } from '$lib/utils/site-phone';
+	import FavoritesLink from '../favorites/FavoritesLink.svelte';
 	import TopBar from './TopBar/index.svelte';
 	import { topBarPhone, topBarEmail, topBarLinks } from './top-bar';
 
@@ -24,6 +23,7 @@
 	} = $props();
 
 	const siteName = $derived(typeof data?.siteName === 'string' ? data.siteName : 'Фабрика');
+	const showLogo = $derived(data?.logoMode !== 'text' && Boolean(data?.logoUrl));
 	const phone = $derived(topBarPhone(data));
 	const email = $derived(topBarEmail(data));
 	const topLinks = $derived(topBarLinks(data));
@@ -106,21 +106,24 @@
 			: 'border-b border-border-light bg-white'}"
 	>
 		<div class="absolute top-3 right-16 z-[100] lg:right-3">
-			<LayoutArticleSettings {editContext} {isEditable} type="Header" title="Меню" />
+			<HeaderSettings bind:data {editContext} {isEditable} />
 		</div>
-		<div class="p2-container mx-auto flex h-16 items-center justify-between lg:h-20">
+		<div
+			class="p2-container mx-auto flex min-h-16 items-center justify-between gap-3 py-2 lg:grid lg:min-h-20 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6"
+		>
 			<!-- Logo -->
-			<a href="/" class="group flex shrink-0 items-center gap-3" onclick={closeMenu}>
-				{#if data?.logoUrl || imageEditing?.editable}
+			<a href="/" class="group flex min-w-0 flex-1 items-center gap-3" onclick={closeMenu}>
+				{#if showLogo}
 					<ImageFallback
-						imagePath={['logoUrl']}
+						imageRole="preview"
 						class="h-12 w-auto max-w-44 object-contain object-left transition-transform duration-300 group-hover:scale-105 lg:h-16 lg:max-w-52"
 						src={String(data.logoUrl ?? '')}
 						alt="Логотип {siteName}"
 					/>
 				{:else}
 					<span
-						class="text-3xl font-medium tracking-[0.2em] text-primary transition-colors duration-300 group-hover:text-secondary lg:text-4xl"
+						class="min-w-0 text-3xl leading-tight font-medium tracking-[0.2em] wrap-anywhere text-primary transition-colors duration-300 group-hover:text-secondary lg:max-w-xs lg:text-4xl"
+						title={siteName}
 						style="font-family: var(--font-heading);"
 					>
 						{siteName}
@@ -129,11 +132,11 @@
 			</a>
 
 			<!-- Desktop Nav -->
-			<nav class="hidden items-center gap-1 lg:flex">
+			<nav class="hidden shrink-0 items-center gap-1 lg:flex">
 				{#each mainNav as item}
 					<a
 						href={item.href}
-						class="group relative rounded-sm px-5 py-2.5 text-lg tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
+						class="group relative rounded-sm px-3 py-2.5 text-lg tracking-wide text-primary transition-colors duration-300 hover:text-secondary xl:px-5"
 						style="font-family: var(--font-heading);"
 					>
 						{item.label}
@@ -144,10 +147,11 @@
 				{/each}
 			</nav>
 
-			<!-- CTA Desktop -->
-			<div class="hidden items-center gap-4 lg:flex">
+			<!-- Header actions -->
+			<div class="ml-auto flex shrink-0 items-center gap-3 lg:ml-0 lg:gap-4 lg:justify-self-end">
+				<FavoritesLink onclick={closeMenu} />
 				<button
-					class="cta-btn group relative flex items-center gap-2 overflow-hidden rounded-lg px-5 py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-[0.98]"
+					class="cta-btn group relative hidden items-center gap-2 overflow-hidden rounded-lg px-5 py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] lg:flex"
 					type="button"
 					data-metrika-goal="layout_header_showroom_open_1"
 					data-goal-action="open"
@@ -176,7 +180,7 @@
 
 			<!-- Mobile Burger -->
 			<button
-				class="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+				class="relative z-50 flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5 lg:hidden"
 				bind:this={menuButton}
 				onclick={toggleMenu}
 				aria-label="Меню"

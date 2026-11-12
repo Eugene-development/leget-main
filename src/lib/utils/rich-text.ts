@@ -2,10 +2,18 @@ import sanitizeHtml from 'sanitize-html';
 
 /** The marker distinguishes formatted content from literal text containing angle brackets. */
 export const RICH_TEXT_PREFIX = '<!--leget-rich-text:v1-->';
-const tags = ['p', 'br', 'strong', 'em', 'u', 's', 'ul', 'ol', 'li', 'blockquote'];
+export const FONT_SIZES = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 56, 64, 72, 96];
+const fontSizePattern = /^(?:[89]|[1-8]\d|9[0-6])px$/;
+
+export function normalizeFontSize(value: unknown): string | null {
+	return typeof value === 'string' && fontSizePattern.test(value) ? value : null;
+}
+
+const tags = ['p', 'br', 'strong', 'em', 'u', 's', 'ul', 'ol', 'li', 'blockquote', 'span'];
 const options: sanitizeHtml.IOptions = {
 	allowedTags: tags,
-	allowedAttributes: { ol: ['start'] },
+	allowedAttributes: { ol: ['start'], span: ['style'] },
+	allowedStyles: { span: { 'font-size': [fontSizePattern] } },
 	transformTags: {
 		b: 'strong',
 		i: 'em',
@@ -56,7 +64,7 @@ export function serializeRichText(html: string): string {
 
 /** Safe in any existing phrasing container (headings, paragraphs, buttons and links).
  * List semantics use ARIA because native block tags would break those containers on SSR.
- * Every emitted attribute is owned here; author styles, links, handlers and media are removed.
+ * Only a bounded font size is preserved from author styles; links, handlers and media are removed.
  */
 export function renderRichText(value: string, legacyHtml = false): string {
 	if (!isRichText(value) && !legacyHtml) return escapeText(value);

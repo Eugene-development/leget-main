@@ -1800,6 +1800,18 @@
 		"source": "legal/PrivacyPolicy.svelte"
 	},
 	{
+		"article": "2.16.1.1",
+		"template": "Promo-2",
+		"page": "/favorites",
+		"source": "templates/Promo-2/pages/favorites/FavoritesHero.svelte"
+	},
+	{
+		"article": "2.16.2.1",
+		"template": "Promo-2",
+		"page": "/favorites",
+		"source": "templates/Promo-2/pages/favorites/FavoritesGallery.svelte"
+	},
+	{
 		"article": "2.В.1.1",
 		"template": "Promo-2",
 		"page": "(layout)",

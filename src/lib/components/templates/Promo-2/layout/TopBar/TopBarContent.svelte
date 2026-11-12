@@ -5,8 +5,9 @@
 	let {
 		data,
 		isEditable = false,
-		dark = false
-	}: PageComponentProps & { dark?: boolean } = $props();
+		dark = false,
+		largeText = false
+	}: PageComponentProps & { dark?: boolean; largeText?: boolean } = $props();
 	const phone = $derived(topBarPhone(data));
 	const email = $derived(topBarEmail(data));
 	const topLinks = $derived(topBarLinks(data));
@@ -23,7 +24,7 @@
 		{#each topLinks as link}
 			<a
 				href={link.href}
-				class="text-xs tracking-wider transition-colors duration-300 {dark
+				class="{largeText ? 'text-sm' : 'text-xs'} tracking-wider transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
 					: 'text-secondary hover:text-primary'}"
 			>
@@ -37,7 +38,7 @@
 		{#if phone}
 			<a
 				href={sitePhoneHref(phone)}
-				class="flex items-center gap-1.5 text-xs tracking-wide transition-colors duration-300 {dark
+				class="flex items-center gap-1.5 {largeText ? 'text-sm' : 'text-xs'} tracking-wide transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
 					: 'text-secondary hover:text-primary'}"
 			>
@@ -61,7 +62,7 @@
 		{#if email}
 			<a
 				href="mailto:{email}"
-				class="flex items-center gap-1.5 text-xs tracking-wide transition-colors duration-300 {dark
+				class="flex items-center gap-1.5 {largeText ? 'text-sm' : 'text-xs'} tracking-wide transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
 					: 'text-secondary hover:text-primary'}"
 			>

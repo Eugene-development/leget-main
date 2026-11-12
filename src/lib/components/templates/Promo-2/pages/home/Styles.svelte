@@ -35,7 +35,7 @@
 		{
 			title: 'Классический',
 			description: 'Элегантность мебельных традиций с вниманием к каждой детали фасада',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/claskjdgnbkdgmj.jpg'
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/a0b0ebe5383d7e4155876b5294adaa3094b26fda62cfddefbf5265b5664c0a36.webp'
 		},
 		{
 			title: 'Лофт',

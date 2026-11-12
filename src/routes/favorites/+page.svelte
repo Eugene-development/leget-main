@@ -16,8 +16,11 @@
 </script>
 
 <svelte:head>
-	<title>Избранное{site?.name ? ` — ${site.name}` : ''}</title>
-	<meta name="description" content="Сохранённые проекты" />
+	<title>{page?.seo?.title ?? `Избранное${site?.name ? ` — ${site.name}` : ''}`}</title>
+	<meta
+		name="description"
+		content={page?.seo?.description ?? 'Сохранённые кухни, шкафы и проекты'}
+	/>
 	{#if site?.faviconUrl}
 		<link rel="icon" href={site.faviconUrl} />
 	{/if}
@@ -29,7 +32,7 @@
 	headerData={site?.header?.data ?? null}
 	footerData={site?.footer?.data ?? null}
 	actionCards={site?.actionCards ?? null}
-	seo={null}
+	seo={page?.seo ?? null}
 	components={(page?.componentsData as PageComponent[] | undefined) ?? []}
 	editContext={pageId && licenseId
 		? { pageId, licenseId, templateId: site?.templateId ?? null, slug: '/favorites' }

@@ -9,6 +9,9 @@ import TopBar from './layout/TopBar/index.svelte';
 import Footer from './layout/Footer.svelte';
 export { Header, TopBar, Footer };
 
+import FavoritesHero from './pages/favorites/FavoritesHero.svelte';
+import FavoritesGallery from './pages/favorites/FavoritesGallery.svelte';
+
 // Home page components
 import HomeHero from './pages/home/Hero.svelte';
 import HomeStyles from './pages/home/Styles.svelte';
@@ -102,6 +105,7 @@ import YandexDirectCTA from './pages/yandex-direct/CTA.svelte';
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
 	'/privacy': { PrivacyPolicy },
+	'/favorites': { FavoritesHero, FavoritesGallery },
 	'/': {
 		Hero: HomeHero,
 		Styles: HomeStyles,

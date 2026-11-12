@@ -225,11 +225,15 @@
 	]);
 
 	const promo2ActionsComponentsWithSwitcher = new Set(['Hero']);
+	const promo2HomeComponentsWithSwitcher = new Set(['Hero']);
 	const promo2FacadesComponentsWithSwitcher = new Set(['FacadesCatalog']);
 
 	function componentHasOwnSwitcher(type: string): boolean {
 		return (
 			(Number(editContext?.templateId) === 1 && promo1ComponentsWithSwitcher.has(type)) ||
+			(Number(editContext?.templateId) === 2 &&
+				(slug === '/' || slug === null || slug === 'home') &&
+				promo2HomeComponentsWithSwitcher.has(type)) ||
 			(Number(editContext?.templateId) === 2 &&
 				slug === '/actions' &&
 				promo2ActionsComponentsWithSwitcher.has(type)) ||
@@ -503,7 +507,7 @@
 		{/snippet}
 		{#if Header}
 			<!-- У Promo-1 sticky принадлежит общей обёртке вместе с верхними полосами. -->
-			{#if isEditable && editContext && Number(editContext.templateId) !== 1}
+			{#if isEditable && editContext && ![1, 2].includes(Number(editContext.templateId))}
 				<div class="relative">
 					<Header bind:data={headerDataState} {editContext} {isEditable} />
 					<LayoutImageSettings

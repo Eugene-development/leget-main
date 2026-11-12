@@ -30,7 +30,7 @@ const SLOT_KEYS: Record<string, string[]> = {
 	'2:/facades:Hero': ['image'],
 	'2:/furniture:Hero': ['image'],
 	'2:/:Details': ['image'],
-	'2:/:Hero': ['mobileImage'],
+	'2:/:Hero': ['mobileImage', 'logoUrl'],
 	'2:/kitchens:Hero': ['image'],
 	'2:/kitchens:ProductionCycle': ['designImage', 'productionImage', 'assemblyImage'],
 	'2:/showrooms:Hero': ['image'],

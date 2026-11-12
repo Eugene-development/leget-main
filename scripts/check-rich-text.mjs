@@ -12,6 +12,7 @@ const module = { exports: {} };
 new Function('require', 'module', 'exports', compiled)(require, module, module.exports);
 const {
 	RICH_TEXT_PREFIX: prefix,
+	normalizeFontSize,
 	editorContent,
 	serializeRichText,
 	renderRichText,
@@ -52,6 +53,46 @@ for (const payload of [
 	assert.doesNotMatch(serializeRichText(payload), /<script|<img|onclick|onerror|javascript:/i);
 }
 assert.match(renderRichText('<p>Старый <b>HTML</b></p>', true), /<strong>HTML<\/strong>/);
+const sizedText =
+	'<p><span style="font-size:24px"><strong>Крупный текст</strong></span> и обычный</p>';
+assert.equal(
+	editorContent(serializeRichText(sizedText)),
+	sizedText,
+	'font size survives reopening'
+);
+assert.match(
+	renderRichText(serializeRichText(sizedText)),
+	/<span style="font-size:24px"><strong>Крупный текст<\/strong><\/span>/
+);
+assert.equal(richTextToPlainText(serializeRichText(sizedText)), 'Крупный текст и обычный');
+assert.equal(normalizeFontSize('24px'), '24px');
+for (const value of [
+	'7px',
+	'97px',
+	'9999px',
+	'-12px',
+	'1em',
+	'24px!important',
+	'24px; color:red',
+	null
+])
+	assert.equal(normalizeFontSize(value), null);
+for (const style of [
+	'font-size:9999px',
+	'font-size:expression(alert(1))',
+	'position:fixed;inset:0',
+	'font-size:24px;background:url(x);color:red'
+]) {
+	const html = serializeRichText(
+		`<p><span style="${style}" class="bad" onclick="alert(1)">Текст</span></p>`
+	);
+	assert.doesNotMatch(html, /9999|expression|position|inset|background|color|onclick|class=/);
+	assert.doesNotMatch(
+		renderRichText(html),
+		/9999|expression|position|inset|background|color|onclick|class="bad"/
+	);
+}
+assert.equal(serializeRichText('<p><span style="font-size:24px"><br></span></p>'), '');
 const { parse } = require('svelte/compiler');
 const graph = JSON.parse(readFileSync(resolve('../../graphify-out/graph.json'), 'utf8'));
 const files = [
