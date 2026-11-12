@@ -23,7 +23,7 @@ const shared = [
 ];
 // Content CRUD is owner-only, not a visitor conversion (see metrika-goals.md).
 const ownerOnly =
-	/Mebel(ProjectModal|ProjectEditModal|ProjectDeleteDialog|TagModal)|^templates\/Promo-1\/pages\/bytovaya-tehnika\/BrandModal\.svelte$/;
+	/Mebel(ProjectModal|ProjectEditModal|ProjectDeleteDialog|TagModal)|^templates\/Promo-1\/pages\/bytovaya-tehnika\/BrandModal\.svelte$|^templates\/Promo-2\/pages\/_shared\/ProductCatalogModal\.svelte$/;
 function pageRouteShared(file) {
 	return ['calculator', 'selection/[token]', 'orders'].some(
 		(route) => file === join(root, 'src/routes', route, '+page.svelte')

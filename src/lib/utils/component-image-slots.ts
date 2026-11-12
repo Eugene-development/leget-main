@@ -131,3 +131,14 @@ export function hiddenWhenEmptyImageKeys(context: EditContext, componentType: st
 	const key = `${Number(context.templateId ?? 0)}:${normalizeSlug(context.slug)}:${componentType}`;
 	return EMPTY_ONLY_HIDDEN_KEYS[key] ?? [];
 }
+
+/** Catalog photos belong to their own editor, even when included in the render data. */
+export function externallyManagedImagePrefixes(
+	context: EditContext,
+	componentType: string
+): string[] {
+	return Number(context.templateId) === 2 &&
+		['KitchensGallery', 'WardrobesGallery'].includes(componentType)
+		? ['items']
+		: [];
+}

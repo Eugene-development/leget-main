@@ -15,10 +15,10 @@
 		isEditable?: boolean;
 	} = $props();
 
-	async function saveField(field: string, value: string) {
+	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
-		await saveComponentData(editContext, 'HomeAdvantages', updated);
+		await saveComponentData(editContext, 'Advantages', updated);
 		data = updated;
 	}
 
@@ -68,6 +68,24 @@
 	const stats = $derived(
 		Array.isArray(data?.stats) ? (data.stats as { value: string; label: string }[]) : defaultStats
 	);
+
+	async function saveAdvantage(
+		index: number,
+		field: 'number' | 'title' | 'description',
+		value: string
+	) {
+		await saveField(
+			'advantages',
+			advantages.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+		);
+	}
+
+	async function saveStat(index: number, field: 'value' | 'label', value: string) {
+		await saveField(
+			'stats',
+			stats.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+		);
+	}
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -150,13 +168,33 @@
 							class:animate-fade-up={visible}
 							style="animation-delay: {0.3 + i * 0.1}s"
 						>
-							<div
-								class="text-3xl font-light text-secondary lg:text-4xl"
-								style="font-family: var(--font-heading);"
+							<EditableField
+								fieldKey={`HomeAdvantages.stats.${i}.value`}
+								label={`Статистика ${i + 1}: значение`}
+								value={stat.value}
+								{isEditable}
+								onSave={(v) => saveStat(i, 'value', v)}
 							>
-								{stat.value}
-							</div>
-							<div class="mt-1 text-sm text-muted">{stat.label}</div>
+								{#snippet children(displayValue)}
+									<div
+										class="text-3xl font-light text-secondary lg:text-4xl"
+										style="font-family: var(--font-heading);"
+									>
+										<RichText value={displayValue} />
+									</div>
+								{/snippet}
+							</EditableField>
+							<EditableField
+								fieldKey={`HomeAdvantages.stats.${i}.label`}
+								label={`Статистика ${i + 1}: подпись`}
+								value={stat.label}
+								{isEditable}
+								onSave={(v) => saveStat(i, 'label', v)}
+							>
+								{#snippet children(displayValue)}
+									<div class="mt-1 text-sm text-muted"><RichText value={displayValue} /></div>
+								{/snippet}
+							</EditableField>
 						</div>
 					{/each}
 				</div>
@@ -170,16 +208,50 @@
 						class:animate-slide-right={visible}
 						style="animation-delay: {0.2 + i * 0.15}s"
 					>
-						<span class="mt-0.5 text-xs font-medium text-accent">{adv.number}</span>
+						<EditableField
+							fieldKey={`HomeAdvantages.advantages.${i}.number`}
+							label={`Преимущество ${i + 1}: номер`}
+							value={adv.number}
+							{isEditable}
+							onSave={(v) => saveAdvantage(i, 'number', v)}
+							class="mt-0.5 shrink-0"
+						>
+							{#snippet children(displayValue)}
+								<span class="text-xs font-medium text-accent"
+									><RichText value={displayValue} /></span
+								>
+							{/snippet}
+						</EditableField>
 						<div>
-							<h3
-								class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
+							<EditableField
+								fieldKey={`HomeAdvantages.advantages.${i}.title`}
+								label={`Преимущество ${i + 1}: заголовок`}
+								value={adv.title}
+								{isEditable}
+								onSave={(v) => saveAdvantage(i, 'title', v)}
 							>
-								{adv.title}
-							</h3>
-							<p class="mt-2 text-sm leading-relaxed text-secondary">
-								{adv.description}
-							</p>
+								{#snippet children(displayValue)}
+									<h3
+										class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary"
+									>
+										<RichText value={displayValue} />
+									</h3>
+								{/snippet}
+							</EditableField>
+							<EditableField
+								fieldKey={`HomeAdvantages.advantages.${i}.description`}
+								label={`Преимущество ${i + 1}: описание`}
+								value={adv.description}
+								{isEditable}
+								multiline
+								onSave={(v) => saveAdvantage(i, 'description', v)}
+							>
+								{#snippet children(displayValue)}
+									<p class="mt-2 text-sm leading-relaxed text-secondary">
+										<RichText value={displayValue} />
+									</p>
+								{/snippet}
+							</EditableField>
 						</div>
 					</div>
 				{/each}

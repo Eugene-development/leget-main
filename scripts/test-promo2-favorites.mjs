@@ -4,6 +4,7 @@ import {
 	FAVORITES_KEY,
 	favoriteVariant,
 	readFavorites,
+	sameFavorite,
 	subscribeFavorites,
 	toggleFavorite
 } from '../src/lib/components/templates/Promo-2/favorites/storage.ts';
@@ -17,6 +18,20 @@ const wardrobe = favoriteVariant('wardrobe', {
 	title: 'Шкаф',
 	description: 'Крашеные фасады',
 	image: 'https://storage.yandexcloud.net/zovtop/wardrobes/hbhfbvjkfnvkdfjv.webp'
+});
+
+test('existing favorites stay selected when kitchens move from image keys to database IDs', () => {
+	browser();
+	toggleFavorite(kitchen);
+	const persisted = favoriteVariant('kitchen', { ...kitchen, id: 'database-id' });
+	assert.equal(sameFavorite(readFavorites()[0], persisted), true);
+	assert.deepEqual(toggleFavorite(persisted), { saved: true, selected: false });
+	assert.deepEqual(readFavorites(), []);
+	toggleFavorite(persisted);
+	assert.equal(
+		sameFavorite(persisted, { ...persisted, image: 'https://example.com/new.webp' }),
+		true
+	);
 });
 
 function browser() {

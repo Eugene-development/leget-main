@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.9.2.1 — см. docs/architecture/component-articles-map.md
+	import ProductCatalogModal from '../_shared/ProductCatalogModal.svelte';
+	import type { CatalogProduct } from '../_shared/product-catalog';
 	import FavoriteButton from '../../favorites/FavoriteButton.svelte';
 	import { favoriteVariant } from '../../favorites/storage';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -25,89 +27,12 @@
 		data = updated;
 	}
 
-	const defaultItems = [
-		{
-			title: 'Бостон',
-			description: 'Крашеные фасады',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/cam-1-1600x0.webp'
-		},
-		{
-			title: 'Эйвон',
-			description: 'Фасады в термопластике',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/jnvjkfnvrgejkvnfdf.webp'
-		},
-		{
-			title: 'Каселла',
-			description: 'Фасады ЛМДФ Тимбер',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/jgkfbniregbnjgrbn.webp'
-		},
-		{
-			title: 'Рокко',
-			description: 'Фасады ЛМДФ Тимбер и краска',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/guvbhubnnuk.webp'
-		},
-		{
-			title: 'Мари',
-			description: 'Фасады МДФ крашеный по системе Пазл',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/jbjnjknkjnkj.webp'
-		},
-		{
-			title: 'Фабиана',
-			description: 'Фасады шпон дуба и крашеный МДФ',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/khjnhbujbghbhg.webp'
-		},
-		{
-			title: 'Лия',
-			description: 'Фасады МДФ крашеный',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/kjbndkgjbnkgjbngj.webp'
-		},
-		{
-			title: 'Флавио',
-			description: 'Фасады МДФ крашеный и ЛМДФ Тимбер',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/nbkjgfnbjkgfbmjg.webp'
-		},
-		{
-			title: 'Мармо',
-			description: 'Фасады ЛМДФ SUPRAMAT',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/kdmvflkdlfcfdld.webp'
-		},
-		{
-			title: 'Этна',
-			description: 'Фасады МДФ термопластик',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/ghghbghgvhgvgh.webp'
-		},
-		{
-			title: 'Трент',
-			description: 'Фасады МДФ термопластик 22мм',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/fdjnvkfjdnvkjfd.webp'
-		},
-		{
-			title: 'Амато',
-			description: 'Массив дуба',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/jnkmfvjkemdfvkf.webp'
-		},
-		{
-			title: 'Ливон',
-			description: 'Фасады МДФ термопластик 22мм',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/dfjkvnkdfvmkjdfvmk.webp'
-		},
-		{
-			title: 'Нордик',
-			description: 'Фасады МДФ Fenix и Массив дуба',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/nffvdkvnfdjkgfk.webp'
-		},
-		{
-			title: 'Флитвуд',
-			description: 'Фасады ЛМДФ SUPRAMAT',
-			image: 'https://storage.yandexcloud.net/zovtop/kitchens/jhbhbjhbjhbkmkl.webp'
-		}
-	];
-
-	const items = $derived(
-		Array.isArray(data?.items) && (data.items as unknown[]).length > 0
-			? (data.items as typeof defaultItems)
-			: defaultItems
-	);
+	// Catalog rows supplied by RenderPage; an empty collection stays empty.
+	const items = $derived(Array.isArray(data?.items) ? (data.items as CatalogProduct[]) : []);
+	let managingProducts = $state(false);
+	function productsChanged(next: CatalogProduct[]) {
+		data = { ...data, items: next };
+	}
 
 	let selectedPhoto = $state<{ image: string; title: string } | null>(null);
 	let photoDialog: HTMLDialogElement;
@@ -115,7 +40,7 @@
 	let saveError = $state('');
 	let saveController: AbortController | null = null;
 
-	function openPhoto(event: MouseEvent, project: (typeof defaultItems)[number]) {
+	function openPhoto(event: MouseEvent, project: CatalogProduct) {
 		const image =
 			event.currentTarget instanceof HTMLElement
 				? event.currentTarget.parentElement?.querySelector('img')
@@ -207,7 +132,14 @@
 		function restartAutoScroll() {
 			clearTimeout(autoScrollTimer);
 			autoScrollTimer = setTimeout(() => {
-				if (inViewport && !document.hidden && !pointerDown && !isEditable && !selectedPhoto) {
+				if (
+					inViewport &&
+					!document.hidden &&
+					!pointerDown &&
+					!isEditable &&
+					!selectedPhoto &&
+					!managingProducts
+				) {
 					const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
 					if (maxScroll > 1) {
 						if (scrollContainer.scrollLeft >= maxScroll - 1) {
@@ -320,6 +252,23 @@
 			</div>
 		</div>
 
+		{#if isEditable && editContext?.licenseId}
+			<div class="mb-6 flex justify-end">
+				<button
+					type="button"
+					onclick={() => (managingProducts = true)}
+					data-goal-ignore="Управление товарами владельцем сайта"
+					class="min-h-11 rounded-lg border border-border-light bg-surface-warm px-5 py-2 text-sm text-primary transition-colors hover:bg-primary hover:text-on-dark focus-visible:outline-2 focus-visible:outline-accent"
+				>
+					Управлять кухнями
+				</button>
+			</div>
+		{/if}
+		{#if items.length === 0}
+			<p class="py-12 text-center text-secondary">
+				Кухонь пока нет.{isEditable ? ' Добавьте товары через «Управлять кухнями».' : ''}
+			</p>
+		{/if}
 		{#if items.length > 3}
 			<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
 				{#if canScrollLeft}
@@ -375,15 +324,14 @@
 				onscroll={() => (canScrollLeft = scrollContainer.scrollLeft > 1)}
 				class="no-scrollbar -mx-6 flex snap-x snap-mandatory scroll-pl-6 gap-8 overflow-x-auto scroll-smooth px-6 pb-12 lg:mx-0 lg:scroll-pl-0 lg:px-0"
 			>
-				{#each items as project, i}
+				{#each items as project, i (project.id)}
 					<div
 						class="group relative aspect-[4/3] min-w-[85vw] snap-start overflow-hidden rounded-2xl bg-white opacity-0 shadow-soft transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated md:min-w-[45vw] lg:min-w-[calc(50%-16px)]"
 						class:animate-fade-up={visible}
 						style="animation-delay: {0.1 + i * 0.05}s"
 					>
 						<ImageFallback
-							imagePath={['items', i, 'image']}
-							imageDefaults={{ items }}
+							imageRole="preview"
 							loading="lazy"
 							src={project.image}
 							alt={project.title}
@@ -419,6 +367,15 @@
 	</div>
 </section>
 
+{#if managingProducts && isEditable && editContext?.licenseId}
+	<ProductCatalogModal
+		licenseId={editContext.licenseId}
+		kind="kitchen"
+		onclose={() => (managingProducts = false)}
+		onchanged={productsChanged}
+	/>
+{/if}
+
 <dialog
 	bind:this={photoDialog}
 	onclose={closePhoto}
@@ -453,9 +410,10 @@
 		</button>
 	</div>
 	{#if selectedPhoto}
-		<img
+		<ImageFallback
 			src={selectedPhoto.image}
 			alt={selectedPhoto.title}
+			imageRole="preview"
 			class="mx-auto max-h-[70dvh] w-full object-contain"
 		/>
 		<div class="flex flex-wrap items-center justify-end gap-4 px-4 py-4 sm:px-6">

@@ -23,6 +23,13 @@ export function favoriteVariant(
 	};
 }
 
+/** Keep selections made before catalog rows acquired stable database IDs. */
+export function sameFavorite(entry: FavoriteVariant, item: FavoriteVariant): boolean {
+	return (
+		entry.id === item.id || (entry.kind === item.kind && entry.id === `${item.kind}:${item.image}`)
+	);
+}
+
 function normalize(value: unknown): FavoriteVariant[] {
 	if (!Array.isArray(value)) return [];
 	const unique = new Map<string, FavoriteVariant>();
@@ -65,12 +72,12 @@ export function readFavorites(): FavoriteVariant[] {
 export function toggleFavorite(item: FavoriteVariant): { saved: boolean; selected: boolean } {
 	if (typeof window === 'undefined') return { saved: false, selected: false };
 	const items = readFavorites();
-	const selected = items.some((entry) => entry.id === item.id);
+	const selected = items.some((entry) => sameFavorite(entry, item));
 	try {
 		window.localStorage.setItem(
 			FAVORITES_KEY,
 			JSON.stringify(
-				normalize(selected ? items.filter((entry) => entry.id !== item.id) : [...items, item])
+				normalize(selected ? items.filter((entry) => !sameFavorite(entry, item)) : [...items, item])
 			)
 		);
 		window.dispatchEvent(new Event(CHANGED_EVENT));

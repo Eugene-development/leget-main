@@ -9,7 +9,11 @@
 		setComponentImage,
 		type ComponentImageField
 	} from '$lib/utils/component-images';
-	import { componentImageSlots, hiddenWhenEmptyImageKeys } from '$lib/utils/component-image-slots';
+	import {
+		componentImageSlots,
+		hiddenWhenEmptyImageKeys,
+		externallyManagedImagePrefixes
+	} from '$lib/utils/component-image-slots';
 	import { fade, fly } from 'svelte/transition';
 
 	let {
@@ -44,8 +48,12 @@
 	// плодить пустую карточку рядом с актуальным полем. Непустые остаются:
 	// у тенантов, ещё не мигрировавших, это единственный способ его сменить.
 	const hiddenWhenEmpty = $derived(new Set(hiddenWhenEmptyImageKeys(editContext, componentType)));
+	const excludedPrefixes = $derived([
+		...excludePathPrefixes,
+		...externallyManagedImagePrefixes(editContext, componentType)
+	]);
 	const isExcluded = (pathKey: string) =>
-		excludePathPrefixes.some(
+		excludedPrefixes.some(
 			(prefix) =>
 				pathKey === prefix || pathKey.startsWith(`${prefix}.`) || pathKey.startsWith(`${prefix}[`)
 		);

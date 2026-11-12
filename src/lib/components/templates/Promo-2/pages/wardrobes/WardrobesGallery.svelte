@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Артикул: 2.10.2.1 — см. docs/architecture/component-articles-map.md
+	import ProductCatalogModal from '../_shared/ProductCatalogModal.svelte';
+	import type { CatalogProduct } from '../_shared/product-catalog';
 	import FavoriteButton from '../../favorites/FavoriteButton.svelte';
 	import { favoriteVariant } from '../../favorites/storage';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -25,34 +27,11 @@
 		data = updated;
 	}
 
-	const defaultItems = [
-		{
-			title: 'Шкаф/гардеробная',
-			description: 'Индивидуальное наполнение, фасады крашеные',
-			image: 'https://storage.yandexcloud.net/zovtop/wardrobes/hbhfbvjkfnvkdfjv.webp'
-		},
-		{
-			title: 'Шкаф/гардеробная',
-			description: 'Индивидуальное наполнение, фасады крашеные',
-			image: 'https://storage.yandexcloud.net/zovtop/wardrobes/djfnbksdlgkmbkldg.webp'
-		},
-		{
-			title: 'Шкаф/гардеробная',
-			description: 'Индивидуальное наполнение, фасады крашеные',
-			image: 'https://storage.yandexcloud.net/zovtop/wardrobes/dfmklefmvkdkff.webp'
-		},
-		{
-			title: 'Шкаф/гардеробная',
-			description: 'Индивидуальное наполнение, фасады крашеные',
-			image: 'https://storage.yandexcloud.net/zovtop/wardrobes/jfgnbjkfgbmfgkl.webp'
-		}
-	];
-
-	const items = $derived(
-		Array.isArray(data?.items) && (data.items as unknown[]).length > 0
-			? (data.items as typeof defaultItems)
-			: defaultItems
-	);
+	const items = $derived(Array.isArray(data?.items) ? (data.items as CatalogProduct[]) : []);
+	let managingProducts = $state(false);
+	function productsChanged(next: CatalogProduct[]) {
+		data = { ...data, items: next };
+	}
 
 	let selectedPhoto = $state<{ image: string; title: string } | null>(null);
 	let photoDialog: HTMLDialogElement;
@@ -60,7 +39,7 @@
 	let saveError = $state('');
 	let saveController: AbortController | null = null;
 
-	function openPhoto(event: MouseEvent, project: (typeof defaultItems)[number]) {
+	function openPhoto(event: MouseEvent, project: CatalogProduct) {
 		const image =
 			event.currentTarget instanceof HTMLElement
 				? event.currentTarget.parentElement?.querySelector('img')
@@ -152,7 +131,14 @@
 		function restartAutoScroll() {
 			clearTimeout(autoScrollTimer);
 			autoScrollTimer = setTimeout(() => {
-				if (inViewport && !document.hidden && !pointerDown && !isEditable && !selectedPhoto) {
+				if (
+					inViewport &&
+					!document.hidden &&
+					!pointerDown &&
+					!isEditable &&
+					!selectedPhoto &&
+					!managingProducts
+				) {
 					const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
 					if (maxScroll > 1) {
 						if (scrollContainer.scrollLeft >= maxScroll - 1) {
@@ -249,6 +235,23 @@
 			</div>
 		</div>
 
+		{#if isEditable && editContext?.licenseId}
+			<div class="mb-6 flex justify-end">
+				<button
+					type="button"
+					onclick={() => (managingProducts = true)}
+					data-goal-ignore="Управление товарами владельцем сайта"
+					class="min-h-11 rounded-lg border border-border-light bg-surface-warm px-5 py-2 text-sm text-primary transition-colors hover:bg-primary hover:text-on-dark focus-visible:outline-2 focus-visible:outline-accent"
+				>
+					Управлять шкафами
+				</button>
+			</div>
+		{/if}
+		{#if items.length === 0}
+			<p class="py-12 text-center text-secondary">
+				Шкафов пока нет.{isEditable ? ' Добавьте товары через «Управлять шкафами».' : ''}
+			</p>
+		{/if}
 		{#if items.length > 3}
 			<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
 				{#if canScrollLeft}
@@ -304,15 +307,14 @@
 				onscroll={() => (canScrollLeft = scrollContainer.scrollLeft > 1)}
 				class="no-scrollbar -mx-6 flex snap-x snap-mandatory scroll-pl-6 gap-8 overflow-x-auto scroll-smooth px-6 pb-12 lg:mx-0 lg:scroll-pl-0 lg:px-0"
 			>
-				{#each items as project, i}
+				{#each items as project, i (project.id)}
 					<div
 						class="group relative aspect-[4/3] min-w-[85vw] snap-start overflow-hidden rounded-2xl bg-surface-warm opacity-0 shadow-soft transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated md:min-w-[45vw] lg:min-w-[calc(50%-16px)]"
 						class:animate-fade-up={visible}
 						style="animation-delay: {0.1 + i * 0.1}s"
 					>
 						<ImageFallback
-							imagePath={['items', i, 'image']}
-							imageDefaults={{ items }}
+							imageRole="preview"
 							loading="lazy"
 							src={project.image}
 							alt={project.title}
@@ -348,6 +350,15 @@
 	</div>
 </section>
 
+{#if managingProducts && isEditable && editContext?.licenseId}
+	<ProductCatalogModal
+		licenseId={editContext.licenseId}
+		kind="wardrobe"
+		onclose={() => (managingProducts = false)}
+		onchanged={productsChanged}
+	/>
+{/if}
+
 <dialog
 	bind:this={photoDialog}
 	onclose={closePhoto}
@@ -382,7 +393,8 @@
 		</button>
 	</div>
 	{#if selectedPhoto}
-		<img
+		<ImageFallback
+			imageRole="preview"
 			src={selectedPhoto.image}
 			alt={selectedPhoto.title}
 			class="mx-auto max-h-[70dvh] w-full object-contain"

@@ -2,6 +2,7 @@
 	import Heart from './Heart.svelte';
 	import {
 		readFavorites,
+		sameFavorite,
 		subscribeFavorites,
 		toggleFavorite,
 		type FavoriteVariant
@@ -11,7 +12,7 @@
 	let error = $state('');
 	$effect(() => {
 		const sync = (items: FavoriteVariant[]) => {
-			selected = items.some((entry) => entry.id === item.id);
+			selected = items.some((entry) => sameFavorite(entry, item));
 		};
 		sync(readFavorites());
 		return subscribeFavorites(sync);
