@@ -48,8 +48,8 @@ function inspect(directory) {
 	}
 }
 inspect(root);
-assert.equal(triggers, 28, 'Audit new CTA locations when this changes');
+assert.equal(triggers, 29, 'Audit new CTA locations when this changes');
 assert.equal(kinds.size, 10, 'Every target form must have a trigger');
 console.log(
-	'PASS: 28 Promo-2 CTA locations open 10 target forms; no contact redirects; goals and editor guards present.'
+	'PASS: 29 Promo-2 CTA locations open 10 target forms; no contact redirects; goals and editor guards present.'
 );

@@ -14,6 +14,7 @@
 		fallback = '',
 		defaults = {},
 		label = 'Текст',
+		placeholder = '',
 		multiline = false,
 		richText = true,
 		scope = 'page'
@@ -26,6 +27,7 @@
 		fallback?: unknown;
 		defaults?: Record<string, unknown>;
 		label?: string;
+		placeholder?: string;
 		multiline?: boolean;
 		richText?: boolean;
 		scope?: 'page' | 'Header' | 'Footer';
@@ -53,6 +55,10 @@
 	onSave={save}
 >
 	{#snippet children(displayValue)}
-		<RichText value={displayValue} />
+		{#if isEditable && editContext && !displayValue.trim() && placeholder}
+			<span>{placeholder}</span>
+		{:else}
+			<RichText value={displayValue} />
+		{/if}
 	{/snippet}
 </EditableField>

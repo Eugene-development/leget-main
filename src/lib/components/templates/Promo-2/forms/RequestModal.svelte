@@ -88,7 +88,7 @@
 	bind:this={dialog}
 	class="p2-request"
 	aria-labelledby="p2-request-title"
-	aria-describedby="p2-request-description"
+	aria-describedby={submitted ? 'p2-request-description' : undefined}
 	oncancel={(event) => {
 		event.preventDefault();
 		close();
@@ -128,12 +128,10 @@
 				? requestText(data, 'successTitle', 'Заявка принята')
 				: requestText(data, `title.${request.kind}`, definition.title)}
 		</h2>
-		<p id="p2-request-description" class="p2-description">
-			{submitted
-				? requestText(data, 'successDescription', 'Мы свяжемся с вами по указанным контактам.')
-				: requestText(data, `description.${request.kind}`, definition.description)}
-		</p>
 		{#if submitted}
+			<p id="p2-request-description" class="p2-description">
+				{requestText(data, 'successDescription', 'Мы свяжемся с вами по указанным контактам.')}
+			</p>
 			<div role="status" class="p2-success">
 				{requestText(data, 'successNotice', 'Ваше обращение сохранено.')}
 			</div>
@@ -260,7 +258,8 @@
 					<label class="p2-consent"
 						><input type="checkbox" required bind:checked={consent} /><span
 							>{requestText(data, 'consentText', 'Согласен на обработку персональных данных.')}
-							<a href="/privacy" target="_blank" rel="noopener noreferrer"
+							<!-- Временно скрыта во всех формах Promo-2. -->
+							<a hidden href="/privacy" target="_blank" rel="noopener noreferrer"
 								>{requestText(data, 'privacyText', 'Политика конфиденциальности')}</a
 							></span
 						></label

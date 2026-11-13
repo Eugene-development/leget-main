@@ -9,6 +9,7 @@ const defaultLinks: TopBarLink[] = [
 	{ href: '/styles', label: 'Стили' },
 	{ href: '/facades', label: 'Фасады' },
 	{ href: '/furniture', label: 'Фурнитура' },
+	{ href: '/equipment', label: 'Комплектация' },
 	{ href: '/designers', label: 'Дизайнерам' }
 ];
 

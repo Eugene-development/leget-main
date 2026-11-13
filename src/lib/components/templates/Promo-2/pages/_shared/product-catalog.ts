@@ -13,6 +13,7 @@ export interface CatalogProduct {
 
 export type CatalogProductInput = Omit<CatalogProduct, 'id'> & { id?: string };
 const fields = 'id title description image isActive sortOrder';
+export const CATALOG_PHOTO_MAX_BYTES = 2 * 1024 * 1024;
 
 export async function loadCatalogProducts(
 	licenseId: string,
@@ -52,6 +53,9 @@ export async function deleteCatalogProduct(licenseId: string, kind: ProductKind,
 }
 
 export async function uploadCatalogPhoto(licenseId: string, file: File) {
+	if (file.type !== 'image/webp' || file.size === 0 || file.size > CATALOG_PHOTO_MAX_BYTES) {
+		throw new Error('Перед загрузкой подготовьте фотографию в WebP размером до 2 МБ.');
+	}
 	const result = await projectRequest<{
 		generateUploadUrl: { uploadUrl: string; objectUrl: string };
 	}>(

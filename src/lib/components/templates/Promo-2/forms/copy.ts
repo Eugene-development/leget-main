@@ -2,14 +2,11 @@ import { editableText } from '$lib/utils/editable-text';
 import { formDefinitions } from './request';
 
 export const requestCopyFields = [
-	...Object.entries(formDefinitions).flatMap(([kind, definition]) => [
-		{ key: `title.${kind}`, label: `${definition.title}: заголовок`, fallback: definition.title },
-		{
-			key: `description.${kind}`,
-			label: `${definition.title}: описание`,
-			fallback: definition.description
-		}
-	]),
+	...Object.entries(formDefinitions).map(([kind, definition]) => ({
+		key: `title.${kind}`,
+		label: `${definition.title}: заголовок`,
+		fallback: definition.title
+	})),
 	...Object.entries({
 		thanks: 'Спасибо за обращение',
 		successTitle: 'Заявка принята',

@@ -24,7 +24,9 @@
 	function portal(node: HTMLElement) {
 		const previousFocus =
 			document.activeElement instanceof HTMLElement ? document.activeElement : null;
-		document.body.appendChild(node);
+		// Native modal dialogs occupy the top layer; a portal in body would be inert behind them.
+		const modal = node.closest('dialog[open]');
+		(modal ?? document.body).appendChild(node);
 		queueMicrotask(() => node.focus());
 
 		return {

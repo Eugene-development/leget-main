@@ -136,25 +136,6 @@
 					{/snippet}
 				</EditableField>
 
-				<EditableField
-					fieldKey="CareersForm.description"
-					label="Описание"
-					value={editableText(
-						data?.description,
-						'Отправьте открытое резюме — мы сохраняем его в базе и свяжемся, когда появится подходящая позиция.'
-					)}
-					{isEditable}
-					multiline
-					onSave={(v) => saveField('description', v)}
-					class="block"
-				>
-					{#snippet children(displayValue)}
-						<p class="mt-6 text-base leading-relaxed text-white/55">
-							<RichText value={displayValue} />
-						</p>
-					{/snippet}
-				</EditableField>
-
 				<div class="mt-10 space-y-4">
 					<div class="flex items-center gap-3">
 						<div class="flex h-9 w-9 shrink-0 items-center justify-center border border-white/10">

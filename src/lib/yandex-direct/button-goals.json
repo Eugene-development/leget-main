@@ -2116,6 +2116,7 @@
 		"variant": "consultation",
 		"serviceType": null,
 		"locations": [
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
 			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
 		]
@@ -2279,6 +2280,7 @@
 		"variant": "consultation",
 		"serviceType": null,
 		"locations": [
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
 			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
 		]
@@ -2442,6 +2444,7 @@
 		"variant": "consultation",
 		"serviceType": null,
 		"locations": [
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
 			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
 		]
@@ -2776,6 +2779,16 @@
 		"route": "/designers",
 		"mock": false,
 		"locations": [{ "template": "Promo-2", "page": "/designers", "article": "2.13.1.1" }]
+	},
+	{
+		"id": "pages_equipment_equipmentcta_open",
+		"action": "open",
+		"label": "Обсудить комплектацию",
+		"templates": ["Promo-2"],
+		"source": "templates/Promo-2/pages/equipment/EquipmentCTA.svelte",
+		"route": "/equipment",
+		"mock": false,
+		"locations": [{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" }]
 	},
 	{
 		"id": "pages_facades_facadescta_open",

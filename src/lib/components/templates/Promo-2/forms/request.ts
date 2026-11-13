@@ -3,53 +3,43 @@ import { writable } from 'svelte/store';
 export const formDefinitions = {
 	consultation: {
 		title: 'Бесплатная консультация',
-		type: 'consultation',
-		description: 'Оставьте контакты — обсудим ваши пожелания и поможем с выбором мебели.'
+		type: 'consultation'
 	},
 	showroom: {
 		title: 'Записаться в салон',
-		type: 'showroom-visit',
-		description: 'Укажите город и удобное время. Мы свяжемся с вами, чтобы согласовать встречу.'
+		type: 'showroom-visit'
 	},
 	'home-designer': {
 		title: 'Вызвать дизайнера на дом',
-		type: 'design-project',
-		description: 'Расскажите, куда пригласить дизайнера. Мы позвоним и согласуем выезд.'
+		type: 'design-project'
 	},
 	'kitchen-project': {
 		title: 'Спроектировать кухню',
-		type: 'design-project',
-		description: 'Расскажите о будущей кухне. Дизайнер свяжется с вами, чтобы обсудить проект.'
+		type: 'design-project'
 	},
 	'wardrobe-project': {
 		title: 'Спроектировать шкаф',
-		type: 'design-project',
-		description: 'Расскажите о системе хранения, которую хотите создать.'
+		type: 'design-project'
 	},
 	'design-project': {
 		title: 'Заказать дизайн-проект',
-		type: 'design-project',
-		description: 'Обсудим планировку, материалы и ваши пожелания к мебели.'
+		type: 'design-project'
 	},
 	estimate: {
 		title: 'Рассчитать стоимость мебели',
-		type: 'furniture-estimate',
-		description: 'Укажите размеры и пожелания. Мы свяжемся с вами для уточнения расчёта.'
+		type: 'furniture-estimate'
 	},
 	'action-consultation': {
 		title: 'Консультация по акции',
-		type: 'consultation',
-		description: 'Поможем разобраться в условиях предложения и подобрать подходящий вариант.'
+		type: 'consultation'
 	},
 	partnership: {
 		title: 'Заявка на партнёрство',
-		type: 'partnership',
-		description: 'Расскажите о вашей работе. Мы свяжемся с вами и обсудим сотрудничество.'
+		type: 'partnership'
 	},
 	careers: {
 		title: 'Отклик на вакансию',
-		type: 'careers',
-		description: 'Оставьте контакты и расскажите о своём опыте.'
+		type: 'careers'
 	}
 } as const;
 export type Promo2FormKind = keyof typeof formDefinitions;

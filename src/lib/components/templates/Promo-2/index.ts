@@ -12,6 +12,15 @@ export { Header, TopBar, Footer };
 import FavoritesHero from './pages/favorites/FavoritesHero.svelte';
 import FavoritesGallery from './pages/favorites/FavoritesGallery.svelte';
 
+// Equipment page components
+import EquipmentHero from './pages/equipment/EquipmentHero.svelte';
+import EquipmentAppliances from './pages/equipment/EquipmentAppliances.svelte';
+import EquipmentWorktops from './pages/equipment/EquipmentWorktops.svelte';
+import EquipmentPlumbing from './pages/equipment/EquipmentPlumbing.svelte';
+import EquipmentLighting from './pages/equipment/EquipmentLighting.svelte';
+import EquipmentStorage from './pages/equipment/EquipmentStorage.svelte';
+import EquipmentCTA from './pages/equipment/EquipmentCTA.svelte';
+
 // Home page components
 import HomeHero from './pages/home/Hero.svelte';
 import HomeStyles from './pages/home/Styles.svelte';
@@ -104,6 +113,15 @@ import YandexDirectCTA from './pages/yandex-direct/CTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/equipment': {
+		EquipmentHero,
+		EquipmentAppliances,
+		EquipmentWorktops,
+		EquipmentPlumbing,
+		EquipmentLighting,
+		EquipmentStorage,
+		EquipmentCTA
+	},
 	'/privacy': { PrivacyPolicy },
 	'/favorites': { FavoritesHero, FavoritesGallery },
 	'/': {

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { onDestroy, onMount, tick } from 'svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import ImageCropper from '$lib/components/ImageCropper.svelte';
 	import {
 		loadCatalogProducts,
 		saveCatalogProduct,
 		deleteCatalogProduct,
 		uploadCatalogPhoto,
+		CATALOG_PHOTO_MAX_BYTES,
 		type CatalogProduct,
 		type ProductKind,
 		type CatalogProductInput
@@ -75,6 +77,7 @@
 	let original = $state('');
 	let file = $state<File | null>(null);
 	let preview = $state('');
+	let pendingFile = $state<File | null>(null);
 	let deleteConfirm = $state(false);
 	let titleInput = $state<HTMLInputElement>();
 	let fileInput = $state<HTMLInputElement>();
@@ -89,6 +92,7 @@
 	}
 	onDestroy(() => {
 		disposed = true;
+		pendingFile = null;
 		releasePreview();
 	});
 	onMount(() => {
@@ -114,7 +118,11 @@
 			: 'Не удалось выполнить действие. Повторите попытку.';
 	}
 	function canLeave() {
-		return !busy && (!dirty || window.confirm('Изменения не сохранены. Закрыть без сохранения?'));
+		return (
+			!busy &&
+			!pendingFile &&
+			(!dirty || window.confirm('Изменения не сохранены. Закрыть без сохранения?'))
+		);
 	}
 	function close() {
 		if (canLeave()) onclose();
@@ -154,7 +162,8 @@
 	}
 	function chooseFile(event: Event) {
 		const selected = (event.currentTarget as HTMLInputElement).files?.[0];
-		if (!selected || busy) return;
+		if (fileInput) fileInput.value = '';
+		if (!selected || busy || pendingFile) return;
 		if (
 			!['image/jpeg', 'image/png', 'image/webp'].includes(selected.type) ||
 			selected.size === 0 ||
@@ -164,9 +173,23 @@
 			if (fileInput) fileInput.value = '';
 			return;
 		}
+		pendingFile = selected;
+		error = '';
+	}
+	function cropped(processed: File) {
+		if (disposed || !pendingFile) return;
+		pendingFile = null;
+		if (
+			processed.type !== 'image/webp' ||
+			processed.size === 0 ||
+			processed.size > CATALOG_PHOTO_MAX_BYTES
+		) {
+			error = 'Не удалось подготовить фотографию в WebP размером до 2 МБ. Попробуйте другой файл.';
+			return;
+		}
 		releasePreview();
-		file = selected;
-		preview = URL.createObjectURL(selected);
+		file = processed;
+		preview = URL.createObjectURL(processed);
 		error = '';
 	}
 	function publish() {
@@ -175,7 +198,7 @@
 	}
 	async function save(event: SubmitEvent) {
 		event.preventDefault();
-		if (!form || busy) return;
+		if (!form || busy || pendingFile) return;
 		if (!form.title.trim()) {
 			error = copy.nameRequired;
 			titleInput?.focus();
@@ -212,7 +235,7 @@
 		}
 	}
 	async function remove() {
-		if (!form?.id || busy) return;
+		if (!form?.id || busy || pendingFile) return;
 		busy = true;
 		error = '';
 		try {
@@ -377,7 +400,8 @@
 									class="block w-full text-sm file:mr-3 file:rounded-lg file:border file:border-border-light file:bg-surface file:px-3 file:py-2 file:text-primary"
 								/>
 								<p id={`${uid}-photo-help`} class="mt-2 text-xs text-secondary">
-									JPEG, PNG или WebP, до 10 МБ.
+									JPEG, PNG или WebP, до 10 МБ. После выбора откроется кадрирование. Фото
+									автоматически сжимается и сохраняется в WebP до 2 МБ.
 								</p>
 							</div>
 							<div class="flex flex-wrap items-end gap-5">
@@ -449,5 +473,20 @@
 				{:else}<p class="py-10 text-secondary">{copy.select}</p>{/if}
 			</div>
 		</div>
+	{/if}
+	{#if pendingFile}
+		{#key pendingFile}
+			<ImageCropper
+				imageFile={pendingFile}
+				aspectRatio={4 / 3}
+				maxOutputWidth={2560}
+				maxOutputHeight={2560}
+				outputMimeType="image/webp"
+				outputQuality={0.85}
+				maxOutputBytes={CATALOG_PHOTO_MAX_BYTES}
+				onCrop={cropped}
+				onCancel={() => (pendingFile = null)}
+			/>
+		{/key}
 	{/if}
 </dialog>

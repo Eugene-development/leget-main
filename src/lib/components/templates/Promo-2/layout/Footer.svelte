@@ -67,6 +67,7 @@
 					{
 						title: 'Покупателям',
 						links: [
+							{ label: 'Комплектация', href: '/equipment' },
 							{ label: 'Стили', href: '/styles' },
 							{ label: 'Акции', href: '/actions' },
 							{ label: 'Салоны', href: '/showrooms' },
@@ -195,8 +196,8 @@
 				<div class="mt-1 flex flex-col gap-1">
 					{#if phone || isEditable}
 						<a
-							href="tel:{phone}"
-							class="text-sm text-white/65 transition-colors duration-300 hover:text-accent-light"
+							href={phone ? `tel:${phone}` : undefined}
+							class="text-sm wrap-anywhere text-white/65 transition-colors duration-300 hover:text-accent-light"
 						>
 							<ContentText
 								bind:data
@@ -207,14 +208,15 @@
 								path={['phone']}
 								fallback={phone}
 								label="Телефон"
+								placeholder="Добавить телефон"
 								richText={false}
 							/>
 						</a>
 					{/if}
 					{#if email || isEditable}
 						<a
-							href="mailto:{email}"
-							class="text-sm text-white/65 transition-colors duration-300 hover:text-accent-light"
+							href={email ? `mailto:${email}` : undefined}
+							class="text-sm wrap-anywhere text-white/65 transition-colors duration-300 hover:text-accent-light"
 						>
 							<ContentText
 								bind:data
@@ -224,7 +226,8 @@
 								scope="Footer"
 								path={['email']}
 								fallback={email}
-								label="Email"
+								label="Почта"
+								placeholder="Добавить почту"
 								richText={false}
 							/>
 						</a>
@@ -233,7 +236,7 @@
 
 				{#if address || isEditable}
 					<div class="mt-6">
-						<p class="text-[10px] tracking-[0.2em] text-white/30 uppercase">
+						<p class="text-xs tracking-[0.2em] text-white/30 uppercase">
 							<ContentText
 								bind:data
 								{editContext}
@@ -263,7 +266,7 @@
 				{/if}
 
 				<div class="mt-6">
-					<p class="text-[10px] tracking-[0.2em] text-white/30 uppercase">
+					<p class="text-xs tracking-[0.2em] text-white/30 uppercase">
 						<ContentText
 							bind:data
 							{editContext}
@@ -313,7 +316,9 @@
 				/>
 			</p>
 			<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:justify-end">
+				<!-- Ссылка на политику временно скрыта. -->
 				<a
+					hidden
 					href={privacyLink}
 					class="text-xs text-white/35 transition-colors duration-300 hover:text-white/60"
 				>
