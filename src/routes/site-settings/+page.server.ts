@@ -153,22 +153,22 @@ function field(formData: FormData, name: string): string {
 }
 
 async function requireSession(cookies: Cookies): Promise<string> {
-	const token = cookies.get(COOKIE_NAME);
+	const token = cookies.get(COOKIE_NAME) || cookies.get('leget_client_jwt');
 	if (!token) redirect(303, '/');
 
+	let response: Response;
 	try {
-		const response = await adminAuthApi('/auth/me', {
+		response = await adminAuthApi('/auth/me', {
 			headers: { Authorization: `Bearer ${token}` }
 		});
-
-		if (!response.ok) {
-			cookies.delete(COOKIE_NAME, { path: COOKIE_PATH });
-			redirect(303, '/');
-		}
 	} catch {
+		error(502, 'Не удалось проверить сессию. Попробуйте позже.');
+	}
+	if (response.status === 401 || response.status === 403) {
 		cookies.delete(COOKIE_NAME, { path: COOKIE_PATH });
 		redirect(303, '/');
 	}
+	if (!response.ok) error(502, 'Не удалось проверить сессию. Попробуйте позже.');
 
 	return token;
 }
@@ -280,6 +280,7 @@ function publicSettings(license: LicenseSettings) {
 
 function parseAppearance(formData: FormData): {
 	appearance?: SiteAppearance;
+	values: SiteAppearance;
 	errors: Record<string, string>;
 } {
 	const errors: Record<string, string> = {};
@@ -320,6 +321,7 @@ function parseAppearance(formData: FormData): {
 
 	return {
 		errors,
+		values: { primaryColor, accentColor, surfaceColor, textColor, fontPreset, radiusPreset },
 		appearance: Object.keys(errors).length
 			? undefined
 			: { primaryColor, accentColor, surfaceColor, textColor, fontPreset, radiusPreset }
@@ -374,9 +376,9 @@ export const actions: Actions = {
 		const googleAnalytics = field(formData, 'googleAnalytics').toUpperCase();
 		const designSystem = field(formData, 'designSystem');
 		const appearanceEnabled = formData.get('appearanceEnabled') === 'on';
-		const { appearance, errors } = appearanceEnabled
+		const { appearance, values: appearanceValues, errors } = appearanceEnabled
 			? parseAppearance(formData)
-			: { appearance: undefined, errors: {} as Record<string, string> };
+			: { appearance: undefined, values: undefined, errors: {} as Record<string, string> };
 
 		if (!isValidYandexCounterId(yandexMetrica)) {
 			errors.yandexMetrica = 'Укажите только числовой ID счётчика Яндекс Метрики.';
@@ -399,7 +401,7 @@ export const actions: Actions = {
 			googleAnalytics,
 			appearanceEnabled,
 			designSystem,
-			...(appearance ?? {})
+			...(appearanceValues ?? {})
 		};
 		if (Object.keys(errors).length || (appearanceEnabled && !appearance)) {
 			return fail(400, { success: false, message: 'Проверьте отмеченные поля.', errors, values });

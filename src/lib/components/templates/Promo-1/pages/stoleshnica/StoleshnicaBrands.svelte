@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	const imageEditing = useImageEditing();
@@ -24,6 +26,7 @@
 			? items
 			: items.filter((brand: { is_enabled?: boolean }) => brand.is_enabled !== false);
 	});
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if brands.length > 0}
@@ -32,11 +35,15 @@
 			{editableText(data.title, 'Другие бренды материала')}
 		</h2>
 
-		<div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+		<div
+			class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6"
+			in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
+		>
 			{#each brands as brand, i (brand.id ?? brand.href)}
 				<a
 					href={brand.href}
 					class="group flex min-h-20 flex-col items-center justify-center gap-1 rounded-xl bg-surface-raised p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600"
+					in:p1_fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 				>
 					{#if brand.logo || imageEditing?.editable}
 						<ImageFallback

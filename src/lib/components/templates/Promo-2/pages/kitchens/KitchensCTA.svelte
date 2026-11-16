@@ -43,7 +43,7 @@
 
 <section
 	bind:this={sectionEl}
-	class="bg-primary px-6 py-section-sm text-center text-white lg:py-section xl:px-1"
+	class="bg-primary px-6 py-section-sm text-center text-on-primary lg:py-section xl:px-1"
 >
 	<div
 		class="mx-auto max-w-4xl opacity-0 transition-all duration-700"
@@ -77,14 +77,14 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto mb-10 max-w-2xl text-lg font-light text-white/70">
+				<p class="mx-auto mb-10 max-w-2xl text-lg font-light text-on-primary">
 					<RichText value={displayValue} />
 				</p>
 			{/snippet}
 		</EditableField>
 
 		<button
-			class="group inline-flex items-center gap-2 rounded-sm border border-accent bg-accent px-8 py-4 text-sm tracking-wider text-white transition-all duration-300 hover:bg-transparent hover:text-accent"
+			class="group inline-flex items-center gap-2 rounded-sm border border-primary-accent bg-primary-accent px-8 py-4 text-sm tracking-wider text-on-primary-accent transition-all duration-300 hover:bg-primary-accent-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent"
 			type="button"
 			data-metrika-goal="pages_kitchens_kitchenscta_open"
 			data-goal-action="open"

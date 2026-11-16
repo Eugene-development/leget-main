@@ -8,7 +8,7 @@
 	onMount(async () => {
 		const token = getAuthToken();
 		if (!token) {
-			await goto('/', { replaceState: true });
+			await goto('/goals', { replaceState: true });
 			return;
 		}
 

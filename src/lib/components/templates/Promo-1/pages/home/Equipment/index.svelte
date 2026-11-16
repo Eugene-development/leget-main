@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import EquipmentV1 from './v1/Equipment.svelte';
 	import EquipmentV2 from './v2/Equipment.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
@@ -20,6 +22,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
 		(data?.equipmentVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -64,11 +67,19 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<EquipmentV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: -1200, duration: 600 }}
+				out:p1_fly={{ x: -1200, duration: 600 }}
+			>
 				<EquipmentV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

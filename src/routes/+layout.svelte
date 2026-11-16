@@ -1,8 +1,8 @@
 <script>
 	import { canonicalUrl } from '$lib/seo.js';
-	import { afterNavigate, onNavigate } from '$app/navigation';
+	import { afterNavigate, onNavigate, replaceState } from '$app/navigation';
 	import { navigating, page } from '$app/state';
-	import { setContext } from 'svelte';
+	import { setContext, tick } from 'svelte';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import ServiceOrderIsland from '$lib/components/ServiceOrderIsland.svelte';
@@ -51,6 +51,18 @@
 			navigating.to?.url.pathname ?? ''
 		)
 	);
+
+	// Кабинеты отправляют гостя на главную с командой открыть вход.
+	// Обрабатываем её после каждого перехода независимо от шаблона и шапки.
+	afterNavigate(async () => {
+		// Первый afterNavigate вызывается до завершения инициализации роутера.
+		await tick();
+		if (page.url.searchParams.get('auth') !== 'client-login') return;
+		const url = new URL(page.url);
+		url.searchParams.delete('auth');
+		replaceState(url, page.state);
+		if (!page.data.client) clientAuthModal.open('login');
+	});
 
 	onNavigate((navigation) => {
 		if (

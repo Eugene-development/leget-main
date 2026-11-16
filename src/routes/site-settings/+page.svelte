@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { flushSync } from 'svelte';
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData, SubmitFunction } from './$types';
 	import { siteAppearanceStyle, type SiteAppearance } from '$lib/site-settings/appearance';
+	import { analyticsSettingsStatus } from '$lib/site-settings/analytics';
 
 	type Feedback = {
 		success?: boolean;
@@ -17,6 +19,34 @@
 	};
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
+	const sections = [
+		{ id: 'favicon', label: 'Фавиконка' },
+		{ id: 'analytics', label: 'Счётчики' },
+		{ id: 'design-system', label: 'Дизайн-система' },
+		{ id: 'appearance', label: 'Базовый стиль' },
+		{ id: 'summary', label: 'Сводка' }
+	] as const;
+	type SectionId = (typeof sections)[number]['id'];
+	let activeSection = $state<SectionId>('favicon');
+
+	function errorSection(errors: Feedback['errors']): SectionId | undefined {
+		if (!errors) return;
+		if (errors.yandexMetrica || errors.googleAnalytics) return 'analytics';
+		if (errors.designSystem) return 'design-system';
+		if (Object.keys(errors).length) return 'appearance';
+	}
+
+	// Reveal the first invalid control before the browser tries to focus it.
+	let revealingInvalidField = false;
+	function revealInvalidField(event: Event) {
+		if (revealingInvalidField || !(event.target instanceof HTMLElement)) return;
+		const sectionId = event.target.closest('section')?.id;
+		const section = sections.find(({ id }) => id === sectionId);
+		if (!section) return;
+		revealingInvalidField = true;
+		flushSync(() => (activeSection = section.id));
+		queueMicrotask(() => (revealingInvalidField = false));
+	}
 	const feedback = $derived((form as Feedback | null) ?? null);
 	const site = $derived(data.site);
 	const faviconUrl = $derived(
@@ -57,6 +87,11 @@
 	// выбор, а данность, и об этом честнее сказать словами, чем показать select с одним
 	// пунктом.
 	const hasSystemChoice = $derived(designSystems.length > 1);
+
+	$effect(() => {
+		const section = errorSection(feedback?.errors);
+		if (section) activeSection = section;
+	});
 
 	$effect(() => {
 		const values = feedback?.values;
@@ -100,8 +135,13 @@
 	const trackSaving: SubmitFunction = () => {
 		saving = true;
 		return async ({ update }) => {
-			await update();
-			saving = false;
+			try {
+				// This is a settings form: native reset would empty unbound color
+				// inputs and uncheck the appearance switch after a successful save.
+				await update({ reset: false });
+			} finally {
+				saving = false;
+			}
 		};
 	};
 </script>
@@ -139,10 +179,6 @@
 						На главную страницу сайта
 					</a>
 					<h1 class="text-4xl text-balance sm:text-5xl">Общие настройки сайта</h1>
-					<p class="mt-4 max-w-[70ch] text-sm text-text-secondary sm:text-base">
-						Фавиконка, счётчики посещаемости и базовый визуальный слой применяются ко всем страницам
-						сайта.
-					</p>
 				</div>
 
 				<div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
@@ -164,16 +200,23 @@
 				<p class="text-sm text-text-secondary">{site.name || 'Сайт без названия'}</p>
 				<p class="mt-1 text-xs text-text-secondary">Шаблон {site.templateId ?? 'не указан'}</p>
 			</div>
-			<nav class="settings-nav flex gap-2 overflow-x-auto py-5 lg:flex-col" aria-label="Оглавление">
-				<a class="settings-nav-link" href="#favicon">Фавиконка</a>
-				<a class="settings-nav-link" href="#analytics">Счётчики</a>
-				<a class="settings-nav-link" href="#design-system">Дизайн-система</a>
-				<a class="settings-nav-link" href="#appearance">Базовый стиль</a>
-				<a class="settings-nav-link" href="#summary">Сводка</a>
+			<nav
+				class="settings-nav flex gap-2 overflow-x-auto py-5 lg:flex-col"
+				aria-label="Разделы настроек"
+			>
+				{#each sections as section (section.id)}
+					<button
+						type="button"
+						class="settings-nav-link"
+						aria-current={activeSection === section.id ? 'true' : undefined}
+						aria-controls={section.id}
+						data-goal-ignore="Переключение раздела настроек сайта"
+						onclick={() => (activeSection = section.id)}
+					>
+						{section.label}
+					</button>
+				{/each}
 			</nav>
-			<p class="hidden text-xs text-text-secondary lg:block">
-				Изменения публикуются на всём сайте после сохранения.
-			</p>
 		</aside>
 
 		<div class="min-w-0">
@@ -188,12 +231,12 @@
 				</div>
 			{/if}
 
-			<section id="favicon" class="scroll-mt-8 border-b border-border-medium pb-10">
+			<section id="favicon" hidden={activeSection !== 'favicon'}>
 				<div class="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(280px,0.7fr)] md:items-start">
 					<div>
 						<h2 class="text-3xl">Фавиконка</h2>
 						<p class="mt-3 max-w-[65ch] text-sm text-text-secondary">
-							Иконка вкладки браузера. Используйте квадратный PNG, ICO или WEBP размером до 1 МБ.
+							Используйте квадратный PNG, ICO или WEBP размером до 1 МБ.
 						</p>
 
 						<form
@@ -265,13 +308,15 @@
 				</div>
 			</section>
 
-			<form method="POST" action="?/save" use:enhance={trackSaving}>
-				<section id="analytics" class="scroll-mt-8 border-b border-border-medium py-10">
+			<form
+				method="POST"
+				action="?/save"
+				use:enhance={trackSaving}
+				hidden={activeSection === 'favicon'}
+				oninvalidcapture={revealInvalidField}
+			>
+				<section id="analytics" hidden={activeSection !== 'analytics'}>
 					<h2 class="text-3xl">Счётчики</h2>
-					<p class="mt-3 max-w-[70ch] text-sm text-text-secondary">
-						После сохранения теги подключаются на всех публичных страницах. Пустое поле отключает
-						соответствующий счётчик.
-					</p>
 
 					<div class="mt-7 divide-y divide-border-light border-y border-border-light">
 						<div class="grid gap-4 py-6 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
@@ -335,13 +380,8 @@
 					</div>
 				</section>
 
-				<section id="design-system" class="scroll-mt-8 border-b border-border-medium py-10">
+				<section id="design-system" hidden={activeSection !== 'design-system'}>
 					<h2 class="text-3xl">Дизайн-система</h2>
-					<p class="mt-3 max-w-[70ch] text-sm text-text-secondary">
-						Задаёт палитру, типографику, ритм и пластику всех блоков сайта. «Базовый стиль» ниже —
-						короткий слой поверх неё, а не замена: система решает характер, слой правит несколько
-						значений.
-					</p>
 
 					<div class="mt-7 grid gap-4 py-2 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
 						<div>
@@ -401,34 +441,53 @@
 					</div>
 				</section>
 
-				<section id="appearance" class="scroll-mt-8 border-b border-border-medium py-10">
+				<section id="appearance" hidden={activeSection !== 'appearance'}>
 					<div class="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
 						<div>
 							<h2 class="text-3xl">Базовый стиль</h2>
-							<p class="mt-3 max-w-[70ch] text-sm text-text-secondary">
-								Это короткий слой поверх выбранной дизайн-системы: основные цвета, пара шрифтов и
-								характер скруглений. Настройки действуют на весь сайт.
-							</p>
 							<label
 								class="mt-6 flex cursor-pointer items-start gap-3 border-y border-border-light py-4 text-sm"
 							>
 								<input
 									type="checkbox"
+									role="switch"
 									name="appearanceEnabled"
 									bind:checked={appearanceEnabled}
-									class="mt-0.5 rounded border-border-medium text-ink-900 focus:ring-link-600"
+									aria-labelledby="appearance-label"
+									aria-describedby="appearance-help"
+									class="peer sr-only"
 								/>
+								<span
+									aria-hidden="true"
+									class="relative mt-0.5 h-7 w-12 shrink-0 rounded-full border border-border-medium transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-link-600 motion-reduce:transition-none"
+									class:bg-ink-900={appearanceEnabled}
+									class:bg-ink-200={!appearanceEnabled}
+								>
+									<span
+										class="absolute top-0.75 left-0.75 h-5 w-5 rounded-full bg-surface-card shadow-sm transition-transform motion-reduce:transition-none"
+										class:translate-x-5={appearanceEnabled}
+									></span>
+								</span>
 								<span>
-									<span class="block text-text-primary">Применить базовый стиль ко всему сайту</span
+									<span id="appearance-label" class="block text-text-primary"
+										>Применить базовый стиль ко всему сайту</span
 									>
-									<span class="mt-1 block text-xs text-text-secondary">
-										Пока переключатель выключен, сохранение счётчиков не меняет текущую
-										дизайн-систему.
+									<span id="appearance-help" class="mt-1 block text-xs text-text-secondary">
+										{#if appearanceEnabled}
+											Включён: настройки ниже применятся ко всему сайту после сохранения.
+										{:else}
+											Выключен: поля недоступны. После сохранения сайт использует оформление
+											дизайн-системы.
+										{/if}
 									</span>
 								</span>
 							</label>
 
-							<fieldset class="mt-8">
+							<fieldset
+								class="mt-8 min-w-0"
+								disabled={!appearanceEnabled}
+								class:opacity-50={!appearanceEnabled}
+							>
 								<legend class="text-sm text-text-primary">Основные цвета</legend>
 								<div class="mt-4 divide-y divide-border-light border-y border-border-light">
 									{@render colorField(
@@ -462,7 +521,12 @@
 								</div>
 							</fieldset>
 
-							<div class="mt-8 grid gap-6 sm:grid-cols-2">
+							<fieldset
+								class="mt-8 grid min-w-0 gap-6 sm:grid-cols-2"
+								disabled={!appearanceEnabled}
+								class:opacity-50={!appearanceEnabled}
+								aria-label="Шрифты и скругления"
+							>
 								<label class="block text-sm" for="font-preset">
 									<span class="mb-2 block text-text-primary">Пара шрифтов</span>
 									<select
@@ -496,11 +560,13 @@
 										Меняет единую шкалу скруглений компонентов.
 									</span>
 								</label>
-							</div>
+							</fieldset>
 						</div>
 
-						<div class="xl:sticky xl:top-8 xl:self-start">
-							<p class="mb-3 text-xs text-text-secondary">Живой образец</p>
+						<div class="xl:sticky xl:top-8 xl:self-start" class:opacity-50={!appearanceEnabled}>
+							<p class="mb-3 text-xs text-text-secondary">
+								{appearanceEnabled ? 'Живой образец' : 'Образец не применяется'}
+							</p>
 							<div class="overflow-hidden border border-border-light bg-surface-card shadow-sm">
 								<div class="p-6" style={previewStyle}>
 									<div class="rounded-2xl bg-surface p-5 text-text-primary">
@@ -511,6 +577,7 @@
 										</p>
 										<button
 											type="button"
+											disabled={!appearanceEnabled}
 											class="mt-5 min-h-11 rounded-xl bg-primary px-5 text-sm text-text-inverse"
 										>
 											Основное действие
@@ -528,7 +595,7 @@
 					</div>
 				</section>
 
-				<section id="summary" class="scroll-mt-8 py-10">
+				<section id="summary" hidden={activeSection !== 'summary'}>
 					<h2 class="text-3xl">Сводка</h2>
 					<dl class="mt-6 divide-y divide-border-light border-y border-border-light text-sm">
 						<div class="flex flex-wrap justify-between gap-3 py-4">
@@ -537,39 +604,35 @@
 						</div>
 						<div class="flex flex-wrap justify-between gap-3 py-4">
 							<dt class="text-text-secondary">Яндекс Метрика</dt>
-							<dd>{yandexMetrica.trim() ? 'Будет подключена' : 'Отключена'}</dd>
+							<dd>{analyticsSettingsStatus(yandexMetrica, site.yandexMetrica, 'yandex')}</dd>
 						</div>
 						<div class="flex flex-wrap justify-between gap-3 py-4">
 							<dt class="text-text-secondary">Google tag</dt>
-							<dd>{googleAnalytics.trim() ? 'Будет подключён' : 'Отключён'}</dd>
+							<dd>{analyticsSettingsStatus(googleAnalytics, site.googleAnalytics, 'google')}</dd>
 						</div>
 						<div class="flex flex-wrap justify-between gap-3 py-4">
 							<dt class="text-text-secondary">Базовый стиль</dt>
 							<dd>{appearanceEnabled ? `${fontPreset} · ${radiusPreset}` : 'Не применяется'}</dd>
 						</div>
 					</dl>
-
-					<div
-						class="mt-8 flex flex-col gap-3 border-t border-border-medium pt-6 sm:flex-row sm:items-center sm:justify-between"
-					>
-						<p class="max-w-[65ch] text-xs text-text-secondary">
-							Сохранение обновляет настройки лицензии и очищает кеш опубликованного сайта.
-						</p>
-						<button
-							type="submit"
-							class="settings-primary-button"
-							disabled={saving}
-							aria-busy={saving ? 'true' : undefined}
-						>
-							{#if saving}
-								<span class="settings-button-spinner" aria-hidden="true"></span>
-								Сохраняем…
-							{:else}
-								Сохранить настройки
-							{/if}
-						</button>
-					</div>
 				</section>
+				<div
+					class="mt-8 flex flex-col gap-3 border-t border-border-medium pt-6 sm:flex-row sm:items-center sm:justify-end"
+				>
+					<button
+						type="submit"
+						class="settings-primary-button"
+						disabled={saving}
+						aria-busy={saving ? 'true' : undefined}
+					>
+						{#if saving}
+							<span class="settings-button-spinner" aria-hidden="true"></span>
+							Сохраняем…
+						{:else}
+							Сохранить настройки
+						{/if}
+					</button>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -644,6 +707,12 @@
 	:global(.settings-nav-link:hover) {
 		background: var(--ds-color-surface-card);
 		color: var(--ds-color-text-primary);
+	}
+
+	:global(.settings-nav-link[aria-current='true']) {
+		background: var(--ds-color-surface-card);
+		color: var(--ds-color-text-primary);
+		font-weight: 600;
 	}
 
 	:global(.settings-nav-link:focus-visible),

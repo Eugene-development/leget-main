@@ -8,7 +8,8 @@ export function templateGoalName(template: string, id: string): string {
 export function installGoalTracking(
 	doc: Document,
 	getConfig: () => { counterId: string | null; template: string; enabled: boolean },
-	send: (counterId: number, method: string, goal: string) => void
+	send: (counterId: number, method: string, goal: string) => void,
+	guard?: (event: MouseEvent, template: string, goal: string, deliver: () => void) => void
 ) {
 	function click(event: MouseEvent) {
 		const target = event.target;
@@ -28,7 +29,10 @@ export function installGoalTracking(
 		);
 		if (!goal) return;
 		try {
-			send(Number(config.counterId), 'reachGoal', templateGoalName(config.template, goal.id));
+			const name = templateGoalName(config.template, goal.id);
+			const deliver = () => send(Number(config.counterId), 'reachGoal', name);
+			if (guard) guard(event, config.template, name, deliver);
+			else deliver();
 		} catch {
 			// Аналитика не должна прерывать открытие, отправку или закрытие формы.
 		}

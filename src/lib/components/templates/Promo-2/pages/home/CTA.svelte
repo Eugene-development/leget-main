@@ -58,7 +58,7 @@
 				onSave={(v) => saveField('label', v)}
 			>
 				{#snippet children(displayValue)}
-					<span class="text-[11px] tracking-[0.3em] text-accent uppercase"
+					<span class="text-[11px] tracking-[0.3em] text-primary-accent uppercase"
 						><RichText value={displayValue} /></span
 					>
 				{/snippet}
@@ -74,7 +74,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-4 text-4xl text-white lg:text-6xl"
+						class="mt-4 text-4xl text-on-primary lg:text-6xl"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -92,7 +92,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-6 max-w-lg text-base leading-relaxed text-white/60">
+					<p class="mx-auto mt-6 max-w-lg text-base leading-relaxed text-on-primary">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -108,7 +108,7 @@
 				>
 					{#snippet children(displayValue)}
 						<button
-							class="group inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-sm border border-accent bg-accent px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:border-accent-light hover:bg-accent-light sm:w-auto"
+							class="group inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-sm border border-primary-accent bg-primary-accent px-8 py-4 text-xs tracking-[0.15em] text-on-primary-accent uppercase transition-all duration-500 hover:border-primary-accent-hover hover:bg-primary-accent-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent sm:w-auto"
 							type="button"
 							data-metrika-goal="pages_home_cta_open"
 							data-goal-action="open"

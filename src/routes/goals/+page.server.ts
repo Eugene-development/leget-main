@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies, url, setHeaders }) => {
 	setHeaders({ 'Cache-Control': 'private, no-store' });
-	if (!cookies.get(GOALS_COOKIE)) redirect(303, '/');
+	if (!cookies.get('leget_client_jwt') && !cookies.get(GOALS_COOKIE)) redirect(303, '/');
 	const { site, counterId } = await requireGoalsSite(cookies, url.hostname);
 	return {
 		metrikaConfigured: !!env.YANDEX_METRIKA_OAUTH_TOKEN?.trim(),

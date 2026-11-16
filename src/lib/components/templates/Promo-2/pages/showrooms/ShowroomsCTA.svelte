@@ -61,7 +61,10 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl text-white lg:text-5xl" style="font-family: var(--font-heading);">
+					<h2
+						class="text-3xl text-on-primary lg:text-5xl"
+						style="font-family: var(--font-heading);"
+					>
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -80,7 +83,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70">
+					<p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-on-primary">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -88,7 +91,7 @@
 
 			<div class="mt-10 flex flex-wrap items-center justify-center gap-4">
 				<button
-					class="group inline-flex items-center gap-3 rounded-sm border border-secondary bg-secondary px-8 py-4 text-xs tracking-[0.15em] text-white uppercase transition-all duration-500 hover:bg-transparent hover:text-secondary"
+					class="group inline-flex items-center gap-3 rounded-sm border border-primary-accent bg-primary-accent px-8 py-4 text-xs tracking-[0.15em] text-on-primary-accent uppercase transition-all duration-500 hover:bg-primary-accent-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent"
 					type="button"
 					data-metrika-goal="pages_showrooms_showroomscta_open"
 					data-goal-action="open"

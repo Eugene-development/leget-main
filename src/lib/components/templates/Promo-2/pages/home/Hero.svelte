@@ -209,8 +209,8 @@
 							class:animate-fade-up={heroVisible}
 							style="animation-delay: 0.3s"
 						>
-							<span
-								class="inline-flex items-center gap-2 border border-secondary/30 bg-white/60 px-4 py-2 text-[11px] tracking-[0.25em] text-secondary uppercase backdrop-blur-sm"
+							<div
+								class="inline-flex items-center justify-center gap-2 border border-secondary/30 bg-white/60 px-4 py-2 text-[11px] leading-normal tracking-[0.25em] text-secondary uppercase backdrop-blur-sm"
 							>
 								<EditableField
 									fieldKey="HomeHero.label"
@@ -223,7 +223,7 @@
 										<RichText value={displayValue} />
 									{/snippet}
 								</EditableField>
-							</span>
+							</div>
 						</div>
 					{/if}
 
@@ -262,7 +262,7 @@
 
 					<!-- Description -->
 					<div
-						class="mt-8 max-w-2xl bg-white/10 p-4 opacity-0 backdrop-blur-sm md:p-6"
+						class="mt-8 max-w-2xl bg-white/10 p-3 opacity-0 backdrop-blur-sm md:p-4"
 						class:animate-fade-up={heroVisible}
 						style="animation-delay: 0.7s"
 					>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.23.5.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
@@ -28,6 +30,7 @@
 			}
 		]
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-12">
@@ -37,6 +40,7 @@
 		{#each items as item, i}
 			<div
 				class="group relative overflow-hidden rounded-2xl bg-linear-to-br {item.gradient} p-8 transition-all duration-300 hover:shadow-lg"
+				in:p1_fly={{ y: 20, duration: 500, delay: i * 100, easing: cubicOut }}
 			>
 				<h3 class="p1-title-sub text-xl text-ink-900">{item.title}</h3>
 				<p class="mt-2 text-sm text-ink-600">{item.desc ?? ''}</p>

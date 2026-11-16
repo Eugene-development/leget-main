@@ -149,7 +149,8 @@
 </div>
 
 <style>
-	:global(body) {
+	/* Белая подложка принадлежит этой странице, а не всем импортированным шаблонам. */
+	:global(body:has(.mebel-hero):not(:has([data-site-appearance]))) {
 		background-color: #ffffff !important;
 	}
 

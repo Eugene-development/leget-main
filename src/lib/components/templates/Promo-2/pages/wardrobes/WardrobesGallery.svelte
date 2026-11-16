@@ -264,18 +264,18 @@
 			</p>
 		{/if}
 		{#if items.length > 3}
-			<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+			<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
 				{#if canScrollLeft}
-					<div class="flex items-center gap-6">
+					<div class="flex items-center gap-2 sm:gap-4">
 						<button
 							type="button"
 							onclick={scrollLeft}
 							data-goal-ignore="Прокрутка галереи влево"
-							class="group hidden h-10 w-10 items-center justify-center rounded-full border border-border-light bg-white/80 text-primary shadow-soft transition-all duration-300 hover:bg-primary hover:text-white lg:flex"
+							class="group flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary bg-primary text-on-dark shadow-soft transition-colors duration-300 hover:bg-primary-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
 							aria-label="Листать влево"
 						>
 							<svg
-								class="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
+								class="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -284,7 +284,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
 							</svg>
 						</button>
-						<span class="text-[10px] tracking-[0.2em] text-secondary/50 uppercase"
+						<span class="text-xs font-semibold tracking-[0.06em] text-primary uppercase sm:text-sm"
 							><ContentText
 								bind:data
 								{editContext}
@@ -297,8 +297,8 @@
 						>
 					</div>
 				{/if}
-				<div class="ml-auto flex items-center gap-6">
-					<span class="text-[10px] tracking-[0.2em] text-secondary/50 uppercase"
+				<div class="ml-auto flex items-center gap-2 sm:gap-4">
+					<span class="text-xs font-semibold tracking-[0.06em] text-primary uppercase sm:text-sm"
 						><ContentText
 							bind:data
 							{editContext}
@@ -311,11 +311,11 @@
 					>
 					<button
 						onclick={scrollRight}
-						class="group hidden h-10 w-10 items-center justify-center rounded-full border border-border-light bg-white/80 text-primary shadow-soft transition-all duration-300 hover:bg-primary hover:text-white lg:flex"
+						class="group flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary bg-primary text-on-dark shadow-soft transition-colors duration-300 hover:bg-primary-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
 						aria-label="Листать вправо"
 					>
 						<svg
-							class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+							class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"

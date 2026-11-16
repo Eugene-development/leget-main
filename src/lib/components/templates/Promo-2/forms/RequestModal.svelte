@@ -352,7 +352,7 @@
 	h2 {
 		padding-right: 0.75rem;
 		font-family: var(--font-heading);
-		font-size: clamp(2rem, 6vw, 2.75rem);
+		font-size: clamp(1.75rem, 5vw, 2.25rem);
 		text-wrap: balance;
 	}
 	.p2-description {
@@ -370,7 +370,7 @@
 		overflow-wrap: anywhere;
 	}
 	form {
-		margin-top: 1.75rem;
+		margin-top: 1.5rem;
 	}
 	fieldset {
 		padding: 0;
@@ -386,11 +386,11 @@
 	textarea,
 	select {
 		width: 100%;
-		min-height: 2.875rem;
-		margin-bottom: 1.125rem;
+		min-height: 2.625rem;
+		margin-bottom: 0.875rem;
 		border: 1px solid var(--color-secondary);
 		border-radius: var(--radius-sm);
-		padding: 0.75rem;
+		padding: 0.625rem 0.75rem;
 		background: var(--color-surface);
 		color: var(--color-primary);
 		font: inherit;
@@ -423,7 +423,7 @@
 		display: block;
 		width: 100%;
 		min-height: 3.25rem;
-		margin-top: 1.5rem;
+		margin-top: 1.25rem;
 		padding: 0.875rem 1.5rem;
 		border: 1px solid var(--color-primary);
 		border-radius: var(--radius-sm);

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.38.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -22,6 +24,7 @@
 			? items
 			: items.filter((brand: { is_enabled?: boolean }) => brand.is_enabled !== false);
 	});
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if brands.length > 0}
@@ -30,11 +33,15 @@
 			{editableText(data.title, 'Работаем с лучшими брендами')}
 		</h2>
 
-		<div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+		<div
+			class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6"
+			in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
+		>
 			{#each brands as brand, i (brand.slug)}
 				<a
 					href="/dveri/{brand.slug}"
 					class="group flex min-h-28 flex-col items-center justify-center gap-3 rounded-xl bg-surface-raised p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+					in:p1_fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 				>
 					{#if brand.logo}
 						<ImageFallback

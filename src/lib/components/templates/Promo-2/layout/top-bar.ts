@@ -29,7 +29,7 @@ export function isTopBarHref(href: string): boolean {
 /** Keep the existing header_data keys: no migration or second contact source. */
 export function topBarLinks(data: Record<string, unknown>): TopBarLink[] {
 	const links = Array.isArray(data.topLinks) ? data.topLinks : defaultLinks;
-	return links.filter((link): link is TopBarLink =>
+	const validLinks = links.filter((link): link is TopBarLink =>
 		Boolean(
 			link &&
 			typeof link.label === 'string' &&
@@ -38,6 +38,10 @@ export function topBarLinks(data: Record<string, unknown>): TopBarLink[] {
 			isTopBarHref(link.href)
 		)
 	);
+	return [
+		...validLinks.filter((link) => link.href !== '/designers'),
+		...validLinks.filter((link) => link.href === '/designers')
+	];
 }
 
 export function topBarPhone(data: Record<string, unknown>): string {

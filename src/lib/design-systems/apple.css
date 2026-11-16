@@ -52,6 +52,11 @@
 	   Это разделение проходит через всю систему ниже. */
 	--ds-color-primary: #1d1d1f;
 	--ds-color-primary-light: #424245;
+	/* Contrast pairs for content and actions on the primary surface. */
+	--ds-color-on-primary: #ffffff;
+	--ds-color-primary-accent: #2686e7;
+	--ds-color-primary-accent-hover: #4095ea;
+	--ds-color-on-primary-accent: #000000;
 	--ds-color-secondary: #6e6e73;
 	--ds-color-secondary-light: #86868b;
 	--ds-color-accent: #0071e3;

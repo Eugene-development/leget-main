@@ -10,6 +10,12 @@ const { isPrivateAnalyticsUrl, stopSiteAnalytics } = loadServerModule(
 test('private SPA destinations and query capabilities are never eligible for collection', () => {
 	for (const path of [
 		'/orders',
+		'/partner',
+		'/curator',
+		'/favorites',
+		'/_ds',
+		'/reset-password',
+		'/university/student',
 		'/orders/invitation/secret',
 		'/crm/deals/1',
 		'/admin',

@@ -6,5 +6,5 @@
 </script>
 
 <div class="border-b border-border-light bg-surface-warm">
-	<TopBarContent {data} {isEditable} dark={false} largeText={true} />
+	<TopBarContent {data} {isEditable} dark={false} largeText={true} largeContacts={true} />
 </div>

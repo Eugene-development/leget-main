@@ -21,31 +21,11 @@
 	 * Сердце уходит в бренд, вход и город — в `link`: бренд в этой зоне
 	 * закреплён за избранным.
 	 */
-	import { browser } from '$app/environment';
-	import { page } from '$app/state';
-	import { replaceState } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import { createClientAccount } from '$lib/stores/client-account.svelte';
 	import IconHint from '$lib/components/IconHint.svelte';
 
 	const account = createClientAccount();
 	let { compact = false }: { compact?: boolean } = $props();
-
-	/**
-	 * `/cabinet` уводит гостя редиректом с `?auth=client-login` — по этой метке
-	 * сразу открываем форму входа, чтобы человек не искал кнопку глазами.
-	 * Живёт здесь, а не в `createClientAccount()`: правило нужно один раз на
-	 * страницу, а компонент этот на странице один.
-	 */
-	onMount(() => {
-		if (!browser || page.url.searchParams.get('auth') !== 'client-login') return;
-		// Consume the redirect command once; a reload must not reopen the dialog.
-		const url = new URL(page.url);
-		url.searchParams.delete('auth');
-		replaceState(url, page.state);
-		if (!account.client) clientAuthModal.open('login');
-	});
 
 	const iconClass =
 		'group relative flex cursor-pointer items-center justify-center bg-linear-to-r from-ink-100/20 to-ink-50/80 ring-1 ring-ink-200/50 transition-all duration-300 hover:shadow-lg hover:shadow-link-500/10 hover:ring-link-200 disabled:cursor-default disabled:opacity-60';

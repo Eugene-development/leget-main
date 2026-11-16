@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import HeroV1 from './v1/HeroMain.svelte';
 	import HeroV2 from './v2/HeroMain.svelte';
 	import HeroV3 from './v3/HeroMain.svelte';
@@ -23,6 +25,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'v4' | 'disabled'>(
 		(data?.heroVersion as 'v1' | 'v2' | 'v3' | 'v4' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -77,15 +80,27 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v4'}
-			<div class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full">
+			<div
+				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
+				in:p1_fly={{ x: 500, y: 500, duration: 600 }}
+				out:p1_fly={{ x: -500, y: -500, duration: 600 }}
+			>
 				<HeroV4 bind:data {editContext} {isEditable} />
 			</div>
 		{:else if selectedVersion === 'v3'}
-			<div class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full">
+			<div
+				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
+				in:p1_fly={{ y: 800, duration: 600 }}
+				out:p1_fly={{ y: -800, duration: 600 }}
+			>
 				<HeroV3 bind:data {editContext} {isEditable} />
 			</div>
 		{:else if selectedVersion === 'v2'}
-			<div class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full">
+			<div
+				class="relative h-auto w-full lg:absolute lg:inset-0 lg:h-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: -1200, duration: 600 }}
+			>
 				<HeroV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.23.3.1 — см. docs/architecture/component-articles-map.md
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
@@ -18,10 +20,11 @@
 	} = $props();
 
 	const brands = $derived(data.brands || []);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if brands.length > 0}
-	<div class="mebel-container mt-12 mb-12">
+	<div class="mebel-container mt-12 mb-12" in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}>
 		<h2 class="mb-6 text-2xl text-ink-900">
 			{editableText(data.title, 'Работаем с лучшими брендами')}
 		</h2>
@@ -30,6 +33,7 @@
 				<a
 					href="/plitka/{brand.slug}"
 					class="group flex h-20 items-center justify-center rounded-xl bg-surface-raised p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+					in:p1_fly={{ y: 10, duration: 400, delay: i * 50, easing: cubicOut }}
 				>
 					{#if brand.logo || imageEditing?.editable}
 						<ImageFallback

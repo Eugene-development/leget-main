@@ -16,6 +16,9 @@
  * любая другая система перекрывает дефолт независимо от порядка импортов. На это
  * рассчитывать обязательно: Tailwind кладёт свои `@theme`-переменные тоже в `:root`.
  *
+ * Promo-2 использует нейтральную светло-серую палитру Базовой (в конце файла).
+ * Значения остальных шаблонов и явно выбранных систем остаются прежними.
+ *
  * Контракт имён — docs/architecture/design-system-tokens.md. Коротко:
  *   --ds-color-*    палитра бренда, одна на систему
  *   --ds-light-*    нейтраль для блока в светлой теме
@@ -55,6 +58,11 @@
 	   Тёплая светлая гамма Promo-1 / Promo-2. */
 	--ds-color-primary: #2c2c2c;
 	--ds-color-primary-light: #4a4a4a;
+	/* Contrast pairs for content and actions on the primary surface. */
+	--ds-color-on-primary: #ffffff;
+	--ds-color-primary-accent: #c4a87c;
+	--ds-color-primary-accent-hover: #cbb28c;
+	--ds-color-on-primary-accent: #000000;
 	--ds-color-secondary: #8b7355;
 	--ds-color-secondary-light: #a89070;
 	--ds-color-accent: #c4a87c;
@@ -845,4 +853,36 @@
 	/* cat-14 — был fuchsia */
 	--ds-cat-14-300: oklch(83.3% 0.145 321.434);
 	--ds-cat-14-600: oklch(59.1% 0.293 322.896);
+}
+
+/* Нейтральный холст Promo-2 в Базовой. Маркер приходит из данных страницы,
+   а не из hostname: правило работает и на собственных доменах клиентов.
+   Токены задаём на :root, где разрешаются алиасы @theme и фон body;
+   обёртка display: contents сама поверхность не рисует.
+   :has обновляется также при клиентской навигации. Выбранные дизайн-системы
+   и индивидуальный siteAppearance сохраняют собственные значения. */
+:root[data-ds='base']:has([data-site-template='2']) {
+	--ds-color-primary: #25282c;
+	--ds-color-primary-light: #44494f;
+	--ds-color-secondary: #50565e;
+	--ds-color-secondary-light: #656b73;
+	--ds-color-surface: #f2f3f5;
+	--ds-color-surface-warm: #e9ebee;
+	--ds-color-surface-card: #ffffff;
+	--ds-color-surface-muted: #dfe2e6;
+	--ds-color-text-primary: #25282c;
+	--ds-color-text-secondary: #50565e;
+	--ds-color-text-muted: #656b73;
+	--ds-color-border-light: #dadde2;
+	--ds-color-border-medium: #c7cbd1;
+
+	--ds-light-surface: #f2f3f5;
+	--ds-light-surface-alt: #e9ebee;
+	--ds-light-surface-paper: #e9ebee;
+	--ds-light-card-hover: #e9ebee;
+	--ds-light-title: #25282c;
+	--ds-light-body: #50565e;
+	--ds-light-muted: #656b73;
+	--ds-light-border: rgb(37 40 44 / 0.14);
+	--ds-light-line: rgb(37 40 44 / 0.08);
 }

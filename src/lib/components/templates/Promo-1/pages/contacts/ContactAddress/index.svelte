@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import ContactAddressV1 from './v1/ContactAddress.svelte';
 	import ContactAddressV2 from './v2/ContactAddress.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
@@ -20,6 +22,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
 		(data?.contactAddressVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -71,11 +74,19 @@
 		-->
 		<div class="grid w-full">
 			{#if selectedVersion === 'v2'}
-				<div class="col-start-1 row-start-1 w-full">
+				<div
+					class="col-start-1 row-start-1 w-full"
+					in:p1_fly={{ x: 1200, duration: 600 }}
+					out:p1_fly={{ x: 1200, duration: 600 }}
+				>
 					<ContactAddressV2 bind:data {editContext} {isEditable} />
 				</div>
 			{:else}
-				<div class="col-start-1 row-start-1 w-full">
+				<div
+					class="col-start-1 row-start-1 w-full"
+					in:p1_fly={{ x: -1200, duration: 600 }}
+					out:p1_fly={{ x: -1200, duration: 600 }}
+				>
 					<ContactAddressV1 bind:data {editContext} {isEditable} />
 				</div>
 			{/if}

@@ -174,7 +174,7 @@
 						class="border px-5 py-2.5 text-xs tracking-[0.12em] uppercase transition-all duration-300"
 						class:border-primary={activeFilter === filter.key}
 						class:bg-primary={activeFilter === filter.key}
-						class:text-white={activeFilter === filter.key}
+						class:text-inverse={activeFilter === filter.key}
 						class:border-border-medium={activeFilter !== filter.key}
 						class:text-secondary={activeFilter !== filter.key}
 						class:hover:border-secondary={activeFilter !== filter.key}
@@ -200,7 +200,7 @@
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each filteredCards as card, i (card.id)}
 				<div
-					class="group relative flex flex-col overflow-hidden bg-white opacity-0 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated"
+					class="group relative flex flex-col overflow-hidden bg-surface-card opacity-0 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated"
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.15 + i * 0.1}s"
 				>
@@ -221,12 +221,7 @@
 						<!-- Tag badge -->
 						<div class="absolute top-4 left-4">
 							<span
-								class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-medium tracking-[0.2em] uppercase"
-								class:bg-accent={card.tagColor === 'accent'}
-								class:text-primary={card.tagColor === 'accent'}
-								class:bg-secondary={card.tagColor === 'secondary'}
-								class:text-white={card.tagColor === 'secondary' || card.tagColor === 'primary'}
-								class:bg-primary={card.tagColor === 'primary'}
+								class="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-[10px] font-medium tracking-[0.2em] text-on-accent uppercase"
 							>
 								<ContentText
 									bind:data
@@ -385,7 +380,7 @@
 							<!-- CTA -->
 							<div class="mt-4">
 								<button
-									class="group/btn flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-4 py-3 text-[10px] tracking-[0.12em] text-white uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
+									class="group/btn flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-4 py-3 text-[10px] tracking-[0.12em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary hover:text-on-accent"
 									type="button"
 									data-metrika-goal="pages_actions_actionscards_open"
 									data-goal-action="open"

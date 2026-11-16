@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.22.3.1 — см. docs/architecture/component-articles-map.md
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
@@ -37,13 +39,17 @@
 	function getGradient(i: number) {
 		return gradients[i % gradients.length];
 	}
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-16">
 	<h2 class="mb-6 text-2xl text-ink-900">{editableText(data.title, 'Магазины и поставщики')}</h2>
 
 	{#if shops.length === 0}
-		<div class="mt-6 rounded-xl bg-surface-raised p-12 text-center shadow-sm">
+		<div
+			class="mt-6 rounded-xl bg-surface-raised p-12 text-center shadow-sm"
+			in:p1_fly={{ y: 20, duration: 400, easing: cubicOut }}
+		>
 			<svg
 				class="mx-auto h-12 w-12 text-ink-300"
 				fill="none"
@@ -64,7 +70,10 @@
 		<div class="grid gap-6 sm:grid-cols-2">
 			{#each shops as shop, i}
 				{@const g = getGradient(i)}
-				<div class="rounded-xl bg-surface-raised p-6 shadow-sm transition-shadow hover:shadow-md">
+				<div
+					class="rounded-xl bg-surface-raised p-6 shadow-sm transition-shadow hover:shadow-md"
+					in:p1_fly={{ y: 20, duration: 500, delay: i * 80, easing: cubicOut }}
+				>
 					<!-- Шапка карточки -->
 					<div class="flex flex-col items-start gap-4 lg:flex-row">
 						<div

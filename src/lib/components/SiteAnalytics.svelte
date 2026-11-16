@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
+	import { env } from '$env/dynamic/public';
+	import { documentVisitGate } from '$lib/antibot/visit-gate';
+	import { documentEngagementBudget, checkEngagement } from '$lib/antibot/engagement';
 	import { page } from '$app/state';
 	import { installGoalTracking } from '$lib/yandex-direct/tracking';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
@@ -23,17 +26,55 @@
 	// Public pages use renderPage; calculator/university expose site directly.
 	const template = $derived(siteData.pageData?.site?.templateId ?? siteData.site?.templateId);
 	const trackingEnabled = $derived(enabled && !isPrivateAnalyticsUrl(page.url));
-	onMount(() =>
-		installGoalTracking(
+	const protectedAnalytics = () => env.PUBLIC_ANTIBOT_ENABLED !== 'false';
+	let visitGate: ReturnType<typeof documentVisitGate> | undefined;
+	let unsubscribeVisit: (() => void) | undefined;
+	let pendingGoals = new AbortController();
+	onMount(() => {
+		visitGate = documentVisitGate(document);
+		const takeBudget = documentEngagementBudget(document);
+		syncTracking();
+		const remove = installGoalTracking(
 			document,
 			() => ({
 				counterId: yandexId,
 				template: template && [1, 2, 3].includes(template) ? `Promo-${template}` : 'Test',
 				enabled: trackingEnabled
 			}),
-			(counter, method, goal) => (window as unknown as AnalyticsWindow).ym?.(counter, method, goal)
-		)
-	);
+			(counter, method, goal) => (window as unknown as AnalyticsWindow).ym?.(counter, method, goal),
+			(event, goalTemplate, goal, deliver) => {
+				if (!protectedAnalytics()) {
+					deliver();
+					return;
+				}
+				if (!visitGate?.activate(event)) return;
+				// Activate/init synchronously so the very first CTA isn't lost.
+				syncTracking();
+				if (!takeBudget(`${page.url.host}:${yandexId}`, goal)) return;
+				const signal = pendingGoals.signal;
+				const context = `${page.url.host}:${yandexId}:${template}`;
+				void checkEngagement(goalTemplate, goal, signal).then((allowed) => {
+					if (
+						allowed &&
+						!signal.aborted &&
+						trackingEnabled &&
+						context === `${page.url.host}:${yandexId}:${template}`
+					) {
+						try {
+							deliver();
+						} catch {
+							/* Analytics never blocks the UI. */
+						}
+					}
+				});
+			}
+		);
+		return () => {
+			remove();
+			unsubscribeVisit?.();
+			unsubscribeVisit = undefined;
+		};
+	});
 
 	const yandexId = $derived(normalizeYandexCounterId(data?.yandexMetrica));
 	const googleId = $derived(normalizeGoogleTagId(data?.googleAnalytics));
@@ -41,9 +82,14 @@
 	let lastGoogleHit = '';
 	let configuredIds = '';
 
-	function stop() {
+	function stop(resetVisit = true) {
 		if (!browser) return;
-		stopSiteAnalytics(window as unknown as AnalyticsWindow);
+		pendingGoals.abort();
+		pendingGoals = new AbortController();
+		unsubscribeVisit?.();
+		unsubscribeVisit = undefined;
+		if (resetVisit) visitGate?.reset();
+		if (resetVisit) stopSiteAnalytics(window as unknown as AnalyticsWindow);
 		lastYandexHit = '';
 		lastGoogleHit = '';
 		configuredIds = '';
@@ -65,7 +111,7 @@
 			window.location.assign(destination.href);
 		}
 	});
-	onDestroy(stop);
+	onDestroy(() => stop(false));
 
 	function ensureScript(id: string, source: string) {
 		if (document.getElementById(id)) return;
@@ -76,7 +122,7 @@
 		document.head.appendChild(script);
 	}
 
-	function installYandex(counterId: string) {
+	function installYandex(counterId: string, url: string, referrer: string) {
 		const analyticsWindow = window as unknown as AnalyticsWindow;
 		analyticsWindow.ym ??= Object.assign(
 			(...args: unknown[]) => {
@@ -98,7 +144,7 @@
 			});
 			analyticsWindow.__legetYandexCounters[counterId] = true;
 		}
-		analyticsWindow.ym(Number(counterId), 'hit', page.url.href);
+		analyticsWindow.ym(Number(counterId), 'hit', url, { referer: referrer });
 	}
 
 	function installGoogle(tagId: string) {
@@ -133,23 +179,36 @@
 		configuredIds = ids;
 		const yandexHit = `${yandexId}:${page.url.href}`;
 		const googleHit = `${googleId}:${page.url.href}`;
-		if (yandexId && yandexHit !== lastYandexHit) {
-			installYandex(yandexId);
-			lastYandexHit = yandexHit;
+		if (yandexId && visitGate) {
+			const key = `${page.url.host}:${yandexId}`;
+			if (visitGate.key && visitGate.key !== key) {
+				stop();
+				configuredIds = ids;
+			}
+			const landing = visitGate.remember(key, page.url.href, isSafeReferrer(document.referrer));
+			lastYandexHit = visitGate.lastHit ? `${yandexId}:${visitGate.lastHit}` : '';
+			if (protectedAnalytics() && !unsubscribeVisit)
+				unsubscribeVisit = visitGate.subscribe(syncTracking);
+			if ((!protectedAnalytics() || visitGate.ready) && yandexHit !== lastYandexHit) {
+				if (!lastYandexHit) installYandex(yandexId, landing.url, landing.referrer);
+				if (lastYandexHit || landing.url !== page.url.href)
+					installYandex(yandexId, page.url.href, visitGate.lastHit || landing.url);
+				lastYandexHit = yandexHit;
+				visitGate.sent(page.url.href);
+			}
 		}
 		if (googleId && googleHit !== lastGoogleHit) {
 			installGoogle(googleId);
 			lastGoogleHit = googleHit;
 		}
 	}
+	function isSafeReferrer(value: string) {
+		try {
+			return isPrivateAnalyticsUrl(new URL(value)) ? '' : value;
+		} catch {
+			return '';
+		}
+	}
 	$effect(syncTracking);
 	afterNavigate(syncTracking);
 </script>
-
-{#if trackingEnabled && yandexId}
-	<noscript>
-		<div class="pointer-events-none absolute h-px w-px overflow-hidden" aria-hidden="true">
-			<img src={`https://mc.yandex.ru/watch/${yandexId}`} alt="" />
-		</div>
-	</noscript>
-{/if}

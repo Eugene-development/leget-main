@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикулы: 1.19.6.1, 1.29.4.1, 1.30.4.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
@@ -22,17 +24,24 @@
 			{ title: 'Доставка и монтаж', desc: 'Профессиональная установка' }
 		]
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<div class="rounded-2xl bg-surface-raised p-8 shadow-sm">
+	<div
+		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
+		in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
+	>
 		<h2 class="text-2xl text-ink-900">
 			{editableText(data.title, 'Что входит в стоимость')}
 		</h2>
 
 		<div class="mt-6 grid gap-4 sm:grid-cols-2">
 			{#each services as service, i}
-				<div class="flex items-start gap-3">
+				<div
+					class="flex items-start gap-3"
+					in:p1_fly={{ y: 10, duration: 400, delay: i * 80, easing: cubicOut }}
+				>
 					<svg
 						class="h-6 w-6 shrink-0 text-cat-2-500"
 						fill="none"

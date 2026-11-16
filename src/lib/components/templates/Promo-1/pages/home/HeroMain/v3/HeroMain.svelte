@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.1.3 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -129,6 +131,8 @@
 					}
 				]
 	);
+	const p1_fade = withPromoMotion(fade);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <!-- lg:h-full — ровно высота .hero-wrapper (100dvh − banner − header).
@@ -142,7 +146,7 @@
 	<!-- Фоновое изображение с плавным переходом -->
 	<div class="absolute inset-0 z-0">
 		{#key activeSkillIndex}
-			<div class="absolute inset-0">
+			<div class="absolute inset-0" in:p1_fade={{ duration: 800 }}>
 				<ImageFallback
 					imagePath={['skillImages', activeSkill.id]}
 					src={activeSkill.bgImage}
@@ -439,7 +443,10 @@
 
 								<!-- Стрелка активности -->
 								{#if activeSkillIndex === idx}
-									<div class="flex h-6 w-6 items-center justify-center self-center text-cat-4-500">
+									<div
+										class="flex h-6 w-6 items-center justify-center self-center text-cat-4-500"
+										in:p1_fly={{ x: -6, duration: 250 }}
+									>
 										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 											<path
 												stroke-linecap="round"
@@ -461,7 +468,7 @@
 							: 'border-on-dark/5 bg-ink-950/40'}"
 					>
 						{#key activeSkillIndex}
-							<div class="flex flex-col gap-3">
+							<div class="flex flex-col gap-3" in:p1_fade={{ duration: 300 }}>
 								<!-- Описание выбранного скилла -->
 								<p
 									class="text-xs leading-relaxed font-semibold sm:text-[12.5px] {isLight

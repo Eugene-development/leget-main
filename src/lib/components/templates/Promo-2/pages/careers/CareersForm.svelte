@@ -112,7 +112,7 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-accent uppercase"
+						<span class="text-[11px] tracking-[0.3em] text-primary-accent uppercase"
 							><RichText value={displayValue} /></span
 						>
 					{/snippet}
@@ -128,7 +128,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-4 text-4xl text-white lg:text-5xl"
+							class="mt-4 text-4xl text-on-primary lg:text-5xl"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -140,7 +140,7 @@
 					<div class="flex items-center gap-3">
 						<div class="flex h-9 w-9 shrink-0 items-center justify-center border border-white/10">
 							<svg
-								class="h-4 w-4 text-accent"
+								class="h-4 w-4 text-primary-accent"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -153,7 +153,7 @@
 								/>
 							</svg>
 						</div>
-						<span class="text-sm text-white/60"
+						<span class="text-sm text-on-primary"
 							><ContentText
 								bind:data
 								{editContext}
@@ -168,7 +168,7 @@
 					<div class="flex items-center gap-3">
 						<div class="flex h-9 w-9 shrink-0 items-center justify-center border border-white/10">
 							<svg
-								class="h-4 w-4 text-accent"
+								class="h-4 w-4 text-primary-accent"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -181,7 +181,7 @@
 								/>
 							</svg>
 						</div>
-						<span class="text-sm text-white/60"
+						<span class="text-sm text-on-primary"
 							><ContentText
 								bind:data
 								{editContext}
@@ -205,10 +205,10 @@
 				{#if resumeSent || isEditable}
 					<div class="flex h-full flex-col items-center justify-center py-12 text-center">
 						<div
-							class="flex h-16 w-16 items-center justify-center border border-accent/30 bg-accent/10"
+							class="flex h-16 w-16 items-center justify-center border border-primary-accent/30 bg-primary-accent/10"
 						>
 							<svg
-								class="h-8 w-8 text-accent"
+								class="h-8 w-8 text-primary-accent"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -217,7 +217,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
 							</svg>
 						</div>
-						<h3 class="mt-6 text-2xl text-white" style="font-family: var(--font-heading);">
+						<h3 class="mt-6 text-2xl text-on-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -228,7 +228,7 @@
 								label="Отклик принят"
 							/>
 						</h3>
-						<p class="mt-3 max-w-xs text-sm text-white/50">
+						<p class="mt-3 max-w-xs text-sm text-on-primary">
 							<ContentText
 								bind:data
 								{editContext}
@@ -247,7 +247,7 @@
 						onsubmit={submitResume}
 						class="border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:p-10"
 					>
-						<h3 class="mb-8 text-xl text-white" style="font-family: var(--font-heading);">
+						<h3 class="mb-6 text-lg text-on-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -259,10 +259,10 @@
 							/>
 						</h3>
 
-						<div class="mb-5">
+						<div class="mb-4">
 							<label
 								for="resume-name"
-								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
+								class="mb-2 block text-[11px] tracking-[0.2em] text-on-primary uppercase"
 								><ContentText
 									bind:data
 									{editContext}
@@ -280,14 +280,14 @@
 								bind:value={resumeName}
 								required
 								placeholder="Иван Петров"
-								class="w-full border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full border border-white/15 bg-transparent px-4 py-2.5 text-sm text-on-primary placeholder-white/25 transition-colors duration-300 outline-none focus:border-primary-accent/60"
 							/>
 						</div>
 
-						<div class="mb-5">
+						<div class="mb-4">
 							<label
 								for="resume-phone"
-								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
+								class="mb-2 block text-[11px] tracking-[0.2em] text-on-primary uppercase"
 								><ContentText
 									bind:data
 									{editContext}
@@ -305,14 +305,14 @@
 								bind:value={resumePhone}
 								required
 								placeholder="+7 (900) 000-00-00"
-								class="w-full border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full border border-white/15 bg-transparent px-4 py-2.5 text-sm text-on-primary placeholder-white/25 transition-colors duration-300 outline-none focus:border-primary-accent/60"
 							/>
 						</div>
 
-						<div class="mb-5">
+						<div class="mb-4">
 							<label
 								for="resume-email"
-								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
+								class="mb-2 block text-[11px] tracking-[0.2em] text-on-primary uppercase"
 								><ContentText
 									bind:data
 									{editContext}
@@ -330,14 +330,14 @@
 								bind:value={resumeEmail}
 								required
 								placeholder="your@email.com"
-								class="w-full border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full border border-white/15 bg-transparent px-4 py-2.5 text-sm text-on-primary placeholder-white/25 transition-colors duration-300 outline-none focus:border-primary-accent/60"
 							/>
 						</div>
 
-						<div class="mb-8">
+						<div class="mb-6">
 							<label
 								for="resume-msg"
-								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
+								class="mb-2 block text-[11px] tracking-[0.2em] text-on-primary uppercase"
 								><ContentText
 									bind:data
 									{editContext}
@@ -354,7 +354,7 @@
 								bind:value={resumeMessage}
 								rows="3"
 								placeholder="Расскажите коротко о себе и опыте..."
-								class="w-full resize-none border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full resize-none border border-white/15 bg-transparent px-4 py-2.5 text-sm text-on-primary placeholder-white/25 transition-colors duration-300 outline-none focus:border-primary-accent/60"
 							></textarea>
 						</div>
 
@@ -368,7 +368,7 @@
 							data-goal-action="submit_click"
 							type="submit"
 							disabled={isSubmitting}
-							class="group flex w-full items-center justify-center gap-3 border border-accent bg-accent py-4 text-xs tracking-[0.2em] text-primary uppercase transition-all duration-500 hover:border-accent hover:bg-transparent hover:text-accent disabled:opacity-70"
+							class="group flex w-full items-center justify-center gap-3 border border-primary-accent bg-primary-accent py-4 text-xs tracking-[0.2em] text-on-primary-accent uppercase transition-all duration-500 hover:border-primary-accent hover:bg-primary-accent-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent disabled:opacity-70"
 						>
 							{#if isSubmitting}
 								<span
@@ -411,7 +411,7 @@
 							{/if}
 						</button>
 
-						<p class="mt-4 text-center text-[11px] text-white/25">
+						<p class="mt-4 text-center text-[11px] text-on-primary">
 							<ContentText
 								bind:data
 								{editContext}

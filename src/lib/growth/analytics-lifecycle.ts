@@ -11,7 +11,9 @@ export type AnalyticsWindow = Window & {
 /** Capability URLs and account/CRM pages cannot be passed to third-party tags. */
 export function isPrivateAnalyticsUrl(url: URL): boolean {
 	if (
-		/^\/(?:orders|crm|admin|cabinet|site-settings|goals|sms|selection)(?:\/|$)/.test(url.pathname)
+		/^\/(?:orders|crm|admin|cabinet|partner|curator|site-settings|goals|sms|selection|favorites|_ds|reset-password|university\/(?:learn|student|auth|resources|interviews|certificate))(?:\/|$)/.test(
+			url.pathname
+		)
 	)
 		return true;
 	return [...url.searchParams.keys()].some((key) =>

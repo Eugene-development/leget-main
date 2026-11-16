@@ -17,7 +17,7 @@ export function siteTemplate(site: GoalsSite): string {
 		: 'Test';
 }
 export async function requireGoalsSite(cookies: Cookies, hostname: string) {
-	const token = cookies.get(GOALS_COOKIE);
+	const token = cookies.get(GOALS_COOKIE) || cookies.get('leget_client_jwt');
 	if (!token) error(401, 'Войдите в управление целями.');
 	let response: Response;
 	try {

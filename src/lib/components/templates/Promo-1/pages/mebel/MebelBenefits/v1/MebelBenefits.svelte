@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	import RichText from '$lib/components/RichText.svelte';
 	// Артикулы: 1.16.3.1, 1.17.4.1 — см. docs/architecture/component-articles-map.md
@@ -37,6 +39,7 @@
 		clock: 'bg-cat-2-100 text-cat-2-600 group-hover:bg-cat-2-500 group-hover:text-on-accent',
 		design: 'bg-cat-1-100 text-cat-1-600 group-hover:bg-cat-1-500 group-hover:text-on-accent'
 	};
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-12">
@@ -59,6 +62,7 @@
 		{#each items as item, i}
 			<div
 				class="group rounded-2xl border border-ink-50 bg-surface-raised p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink-200/50"
+				in:p1_fly={{ y: 20, duration: 600, delay: i * 100, easing: cubicOut }}
 			>
 				<div
 					class="flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 {iconColors[

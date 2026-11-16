@@ -6,8 +6,9 @@
 		data,
 		isEditable = false,
 		dark = false,
-		largeText = false
-	}: PageComponentProps & { dark?: boolean; largeText?: boolean } = $props();
+		largeText = false,
+		largeContacts = false
+	}: PageComponentProps & { dark?: boolean; largeText?: boolean; largeContacts?: boolean } = $props();
 	const phone = $derived(topBarPhone(data));
 	const email = $derived(topBarEmail(data));
 	const topLinks = $derived(topBarLinks(data));
@@ -40,7 +41,9 @@
 		{#if phone}
 			<a
 				href={sitePhoneHref(phone)}
-				class="flex items-center gap-1.5 {largeText
+				class="flex items-center gap-1.5 {largeContacts
+					? 'text-base'
+					: largeText
 					? 'text-sm'
 					: 'text-xs'} tracking-wide transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'
@@ -66,7 +69,9 @@
 		{#if email}
 			<a
 				href="mailto:{email}"
-				class="flex items-center gap-1.5 {largeText
+				class="flex items-center gap-1.5 {largeContacts
+					? 'text-base'
+					: largeText
 					? 'text-sm'
 					: 'text-xs'} tracking-wide transition-colors duration-300 {dark
 					? 'text-inverse/70 hover:text-accent-light'

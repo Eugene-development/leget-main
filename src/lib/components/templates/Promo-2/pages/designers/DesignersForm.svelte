@@ -206,52 +206,12 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.2s"
 			>
-				{#if formSent || isEditable}
-					<div class="flex h-full flex-col items-center justify-center py-12 text-center">
-						<div
-							class="flex h-16 w-16 items-center justify-center border border-accent/30 bg-accent/10"
-						>
-							<svg
-								class="h-8 w-8 text-accent"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								stroke-width="1.5"
-							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-							</svg>
-						</div>
-						<h3 class="mt-6 text-2xl text-white" style="font-family: var(--font-heading);">
-							<ContentText
-								bind:data
-								{editContext}
-								{isEditable}
-								componentType="DesignersForm"
-								path={['copy', 'successHeading']}
-								fallback={'Заявка принята'}
-								label="Заявка принята"
-							/>
-						</h3>
-						<p class="mt-3 max-w-xs text-sm text-white/50">
-							<ContentText
-								bind:data
-								{editContext}
-								{isEditable}
-								componentType="DesignersForm"
-								path={['copy', 'body1']}
-								fallback={'Менеджер свяжется с вами в течение одного рабочего дня.'}
-								label="Менеджер свяжется с вами в течение одного рабочего дня."
-								multiline
-							/>
-						</p>
-					</div>
-				{/if}
 				{#if !formSent}
 					<form
 						onsubmit={handleSubmit}
 						class="border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:p-10"
 					>
-						<h3 class="mb-8 text-xl text-white" style="font-family: var(--font-heading);">
+						<h3 class="mb-6 text-lg text-white" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -337,7 +297,7 @@
 							</div>
 						</div>
 
-						<div class="mb-5">
+						<div class="mb-4">
 							<label
 								for="form-name"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
@@ -358,11 +318,11 @@
 								bind:value={formName}
 								required
 								placeholder="Анна Смирнова"
-								class="w-full border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full border border-white/15 bg-transparent px-4 py-2.5 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
 							/>
 						</div>
 
-						<div class="mb-5">
+						<div class="mb-4">
 							<label
 								for="form-phone"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
@@ -383,11 +343,11 @@
 								bind:value={formPhone}
 								required
 								placeholder="+7 (900) 000-00-00"
-								class="w-full border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full border border-white/15 bg-transparent px-4 py-2.5 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
 							/>
 						</div>
 
-						<div class="mb-8">
+						<div class="mb-6">
 							<label
 								for="form-email"
 								class="mb-2 block text-[11px] tracking-[0.2em] text-white/40 uppercase"
@@ -408,7 +368,7 @@
 								bind:value={formEmail}
 								required
 								placeholder="your@email.com"
-								class="w-full border border-white/15 bg-transparent px-4 py-3 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
+								class="w-full border border-white/15 bg-transparent px-4 py-2.5 text-sm text-white placeholder-white/25 transition-colors duration-300 outline-none focus:border-accent/60"
 							/>
 						</div>
 
@@ -478,6 +438,49 @@
 							/>
 						</p>
 					</form>
+				{/if}
+				{#if formSent || isEditable}
+					<div
+						class="flex flex-col items-center justify-center py-12 text-center"
+						class:h-full={formSent}
+					>
+						<div
+							class="flex h-16 w-16 items-center justify-center border border-accent/30 bg-accent/10"
+						>
+							<svg
+								class="h-8 w-8 text-accent"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								stroke-width="1.5"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+							</svg>
+						</div>
+						<h3 class="mt-6 text-2xl text-white" style="font-family: var(--font-heading);">
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersForm"
+								path={['copy', 'successHeading']}
+								fallback={'Заявка принята'}
+								label="Заявка принята"
+							/>
+						</h3>
+						<p class="mt-3 max-w-xs text-sm text-white/50">
+							<ContentText
+								bind:data
+								{editContext}
+								{isEditable}
+								componentType="DesignersForm"
+								path={['copy', 'body1']}
+								fallback={'Менеджер свяжется с вами в течение одного рабочего дня.'}
+								label="Менеджер свяжется с вами в течение одного рабочего дня."
+								multiline
+							/>
+						</p>
+					</div>
 				{/if}
 			</div>
 		</div>

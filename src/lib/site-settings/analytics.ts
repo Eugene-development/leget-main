@@ -20,3 +20,27 @@ export function isValidYandexCounterId(value: string): boolean {
 export function isValidGoogleTagId(value: string): boolean {
 	return value === '' || GOOGLE_TAG_ID.test(value);
 }
+
+/** Compares the form draft with persisted settings, without claiming delivery of analytics events. */
+export function analyticsSettingsStatus(
+	value: string,
+	savedValue: string,
+	provider: 'yandex' | 'google'
+): string {
+	const current = value.trim();
+	const normalize = provider === 'yandex' ? normalizeYandexCounterId : normalizeGoogleTagId;
+	const normalized = normalize(current);
+	if (current && !normalized) return 'Некорректный ID';
+	if (normalized === normalize(savedValue)) {
+		if (normalized) return provider === 'yandex' ? 'Подключена' : 'Подключён';
+		return provider === 'yandex' ? 'Отключена' : 'Отключён';
+	}
+	if (!normalized) {
+		return provider === 'yandex'
+			? 'Будет отключена после сохранения'
+			: 'Будет отключён после сохранения';
+	}
+	return provider === 'yandex'
+		? 'Будет подключена после сохранения'
+		: 'Будет подключён после сохранения';
+}

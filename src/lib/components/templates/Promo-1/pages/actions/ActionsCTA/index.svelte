@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import ActionsCTAV1 from './v1/ActionsCTA.svelte';
 	import ActionsCTAV2 from './v2/ActionsCTA.svelte';
 	import ActionsCTAV3 from './v3/ActionsCTA.svelte';
@@ -24,6 +26,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'v4' | 'disabled'>(
 		(data?.actionsCTAVersion as 'v1' | 'v2' | 'v3' | 'v4' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -69,19 +72,35 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v4'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<ActionsCTAV4 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else if selectedVersion === 'v3'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<ActionsCTAV3 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else if selectedVersion === 'v2'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<ActionsCTAV2 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{:else}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: -1200, duration: 600 }}
+				out:p1_fly={{ x: -1200, duration: 600 }}
+			>
 				<ActionsCTAV1 bind:data {editContext} {isEditable} {sitePhone} />
 			</div>
 		{/if}

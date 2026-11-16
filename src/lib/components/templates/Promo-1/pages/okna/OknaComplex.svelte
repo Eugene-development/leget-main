@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.40.6.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
@@ -36,10 +38,14 @@
 			'Согласование комплектации'
 		]
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<div class="rounded-2xl bg-surface-raised p-8 shadow-sm">
+	<div
+		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
+		in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
+	>
 		<h2 class="text-2xl text-ink-900">
 			<EditableField
 				fieldKey="OknaComplex.title"
@@ -71,7 +77,10 @@
 
 		<ul class="mt-5 space-y-2">
 			{#each perks as perk, i}
-				<li class="flex items-center gap-2 text-sm text-ink-600">
+				<li
+					class="flex items-center gap-2 text-sm text-ink-600"
+					in:p1_fly={{ x: -10, duration: 400, delay: i * 80, easing: cubicOut }}
+				>
 					<svg
 						class="h-5 w-5 shrink-0 text-cat-2-500"
 						fill="none"

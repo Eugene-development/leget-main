@@ -63,7 +63,6 @@
 	const motionDisabled = $derived(reducedMotion || !animationsEnabled);
 	const displayedBgIndex = $derived(animationsEnabled ? activeBgIndex : 0);
 	let glassPanel = $state<HTMLDivElement>();
-	let heroStage = $state<HTMLElement>();
 	let noticeVisible = $state(false);
 	let noticeClosed = $state(false);
 	let noticeExpanded = $state(false);
@@ -89,23 +88,6 @@
 			? String(data?.[key] ?? '')
 			: noticeDefaults[key];
 	}
-
-	$effect(() => {
-		if (!heroStage || isEditable || !animationsEnabled) return;
-		const root = heroStage;
-		let disposed = false;
-		let stop: (() => void) | undefined;
-		// Load GSAP only for this version in the browser; SSR stays fully visible.
-		void import('./motion')
-			.then(({ animateHeroEntrance }) => {
-				if (!disposed) stop = animateHeroEntrance(root);
-			})
-			.catch((error) => console.warn('HeroMain entrance unavailable', error));
-		return () => {
-			disposed = true;
-			stop?.();
-		};
-	});
 
 	function closeNotice() {
 		noticeClosed = true;
@@ -457,7 +439,6 @@
 </div>
 
 <section
-	bind:this={heroStage}
 	class:hero-motion-disabled={!animationsEnabled}
 	class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900"
 >
@@ -949,6 +930,23 @@
 	@supports not (backdrop-filter: blur(1px)) {
 		.glass-panel {
 			background: var(--ds-surface-raised);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-shell {
+			animation: glass-arrive var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-soft);
+		}
+	}
+
+	@keyframes glass-arrive {
+		from {
+			opacity: 0.5;
+			transform: translateY(1.5rem) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
 		}
 	}
 

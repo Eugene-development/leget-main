@@ -382,6 +382,10 @@ body.page-entering {
 	/* Палитра бренда */
 	--color-primary: var(--ds-color-primary);
 	--color-primary-light: var(--ds-color-primary-light);
+	--color-on-primary: var(--ds-color-on-primary);
+	--color-primary-accent: var(--ds-color-primary-accent);
+	--color-primary-accent-hover: var(--ds-color-primary-accent-hover);
+	--color-on-primary-accent: var(--ds-color-on-primary-accent);
 	--color-secondary: var(--ds-color-secondary);
 	--color-secondary-light: var(--ds-color-secondary-light);
 	--color-accent: var(--ds-color-accent);

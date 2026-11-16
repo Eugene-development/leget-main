@@ -123,7 +123,7 @@
 
 		<!-- Tab switcher -->
 		<div
-			class="mb-10 flex gap-2 border-b border-border-light opacity-0 transition-all duration-700"
+			class="mb-10 flex gap-8 border-b border-border-light opacity-0 transition-all duration-700"
 			class:animate-fade-up={visible}
 			style="animation-delay: 0.15s"
 		>

@@ -10,9 +10,9 @@
 
 <section class="relative overflow-hidden bg-surface-warm">
 	<div
-		class="p2-container mx-auto grid items-center gap-10 py-14 md:py-20 lg:grid-cols-2 lg:gap-16 lg:py-24"
+		class="p2-container mx-auto grid items-center gap-10 py-14 md:py-20 lg:grid-cols-2 lg:gap-16 lg:py-0"
 	>
-		<div>
+		<div class="lg:py-24">
 			<h1
 				class="text-5xl text-primary md:text-6xl lg:text-7xl"
 				style="font-family: var(--font-heading);"

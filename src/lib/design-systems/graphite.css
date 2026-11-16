@@ -54,6 +54,11 @@
 	/* ─── Палитра бренда ────────────────────────────────────────────────────── */
 	--ds-color-primary: #1e293b;
 	--ds-color-primary-light: #334155;
+	/* Contrast pairs for content and actions on the primary surface. */
+	--ds-color-on-primary: #ffffff;
+	--ds-color-primary-accent: #5e8cf0;
+	--ds-color-primary-accent-hover: #719af2;
+	--ds-color-on-primary-accent: #000000;
 	--ds-color-secondary: #475569;
 	--ds-color-secondary-light: #64748b;
 	--ds-color-accent: #2563eb;

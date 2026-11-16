@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.19.3.1 — см. docs/architecture/component-articles-map.md
 	import { cubicOut } from 'svelte/easing';
@@ -80,6 +82,7 @@
 		sky: 'bg-link-100 text-link-700',
 		red: 'bg-brand-100 text-brand-700'
 	};
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-12">
@@ -87,7 +90,10 @@
 		{editableText(data.title, 'Сравнение материалов')}
 	</h2>
 
-	<div class="overflow-hidden rounded-2xl bg-surface-raised shadow-sm">
+	<div
+		class="overflow-hidden rounded-2xl bg-surface-raised shadow-sm"
+		in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
+	>
 		<div class="overflow-x-auto">
 			<table class="w-full text-left text-sm">
 				<thead class="bg-ink-50">

@@ -116,6 +116,34 @@ function mix(first: string, second: string, firstPercent: number): string {
 	return `color-mix(in srgb, ${first} ${firstPercent}%, ${second})`;
 }
 
+function blend(first: string, second: string, amount: number): string {
+	const a = rgb(first);
+	const b = rgb(second);
+	return `#${(['red', 'green', 'blue'] as const)
+		.map((channel) =>
+			Math.round(a[channel] + (b[channel] - a[channel]) * amount)
+				.toString(16)
+				.padStart(2, '0')
+		)
+		.join('')}`;
+}
+
+/** Keep the selected hue where possible, adapting it to the actual primary surface. */
+function primarySurfaceColors(primary: string, accent: string) {
+	const onPrimary = foreground(primary, '#ffffff', '#000000');
+	let adapted = accent;
+	for (let step = 1; contrastRatio(adapted, primary) < 4.5 && step <= 100; step++) {
+		adapted = blend(accent, onPrimary, step / 100);
+	}
+	const hover = blend(adapted, onPrimary, 0.12);
+	const onAccent = ['#000000', '#ffffff'].sort(
+		(a, b) =>
+			Math.min(contrastRatio(b, adapted), contrastRatio(b, hover)) -
+			Math.min(contrastRatio(a, adapted), contrastRatio(a, hover))
+	)[0];
+	return { onPrimary, accent: adapted, hover, onAccent };
+}
+
 function scale(
 	prefix: string,
 	color: string,
@@ -146,6 +174,7 @@ export function siteAppearanceStyle(value: unknown): string {
 	if (!hasSiteAppearance(value)) return '';
 
 	const appearance = normalizeSiteAppearance(value);
+	const primaryColors = primarySurfaceColors(appearance.primaryColor, appearance.accentColor);
 	const fonts = FONT_VALUES[appearance.fontPreset];
 	const radii = RADIUS_VALUES[appearance.radiusPreset];
 	const surfaceAlt = mix(appearance.surfaceColor, appearance.textColor, 96);
@@ -196,6 +225,10 @@ export function siteAppearanceStyle(value: unknown): string {
 	const variables: Array<[string, string]> = [
 		['--ds-color-primary', appearance.primaryColor],
 		['--ds-color-primary-light', appearance.primaryColor],
+		['--ds-color-on-primary', primaryColors.onPrimary],
+		['--ds-color-primary-accent', primaryColors.accent],
+		['--ds-color-primary-accent-hover', primaryColors.hover],
+		['--ds-color-on-primary-accent', primaryColors.onAccent],
 		['--ds-color-secondary', appearance.accentColor],
 		['--ds-color-secondary-light', mix(appearance.accentColor, appearance.surfaceColor, 72)],
 		['--ds-color-accent', appearance.accentColor],
@@ -276,7 +309,23 @@ export function siteAppearanceStyle(value: unknown): string {
 		...categoryScale
 	];
 
-	return variables.map(([name, token]) => `${name}: ${token}`).join('; ');
+	// CSS aliases resolve where they are declared. Rebind them here as well:
+	// an inline settings preview must not inherit aliases already resolved on :root.
+	const aliases: Array<[string, string]> = variables
+		.filter(([name]) => /^--ds-(?:color-|font-|radius-)/.test(name))
+		.map(([name]) => [name.replace('--ds-', '--'), `var(${name})`]);
+
+	return [...variables, ...aliases].map(([name, token]) => `${name}: ${token}`).join('; ');
+}
+
+/** Root overrides must outrank every design system, including template defaults. */
+export function siteAppearanceStylesheet(value: unknown): string {
+	const declarations = siteAppearanceStyle(value);
+	if (!declarations) return '';
+	return `:root { ${declarations
+		.split('; ')
+		.map((entry) => `${entry} !important`)
+		.join('; ')} }`;
 }
 
 export function isHexColor(value: string): boolean {

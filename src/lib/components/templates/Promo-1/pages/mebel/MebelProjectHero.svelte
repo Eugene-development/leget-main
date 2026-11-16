@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
 	import { setSharedProjectVisibility } from './project-visibility';
 	import MebelProjectEditModal from './MebelProjectEditModal.svelte';
@@ -174,6 +176,7 @@
 			document.body.style.overflow = previousOverflow;
 		};
 	});
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if isDeleted || isHidden}
@@ -547,7 +550,7 @@
 			<div
 				class="relative flex h-[85vh] w-[90vw] max-w-5xl items-center justify-center overflow-hidden rounded-xl bg-ink-900/50 shadow-2xl"
 			>
-				<div class="h-full w-full">
+				<div class="h-full w-full" in:p1_fly={{ y: 20, duration: 400, easing: cubicOut }}>
 					<ImageFallback
 						imagePath={['projectImages', String(project.id), String(selectedImageIndex)]}
 						src={images[selectedImageIndex]?.url ?? ''}

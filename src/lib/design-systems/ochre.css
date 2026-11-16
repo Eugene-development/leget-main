@@ -54,6 +54,11 @@
 	   и это ровно тот хардкод, который система и должна выявлять. */
 	--ds-color-primary: #402011;
 	--ds-color-primary-light: #6b2e12;
+	/* Contrast pairs for content and actions on the primary surface. */
+	--ds-color-on-primary: #ffffff;
+	--ds-color-primary-accent: #faae33;
+	--ds-color-primary-accent-hover: #fbb84b;
+	--ds-color-on-primary-accent: #000000;
 	--ds-color-secondary: #9f531b;
 	--ds-color-secondary-light: #c47a2e;
 	--ds-color-accent: #faae33;

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fade } from 'svelte/transition';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.1.1.2 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -259,6 +261,7 @@
 	];
 
 	const activeStyle = $derived(styleOptions[activeStyleIndex]);
+	const p1_fade = withPromoMotion(fade);
 </script>
 
 <section
@@ -838,7 +841,7 @@
 						class="hero-media group/img relative aspect-[4/3] overflow-hidden rounded-2xl border border-on-dark/10 bg-ink-950"
 					>
 						{#key activeStyleIndex}
-							<div class="h-full w-full">
+							<div class="h-full w-full" in:p1_fade={{ duration: 400 }}>
 								<ImageFallback
 									imagePath={['styleImages', String(activeStyleIndex)]}
 									src={activeStyle.image}

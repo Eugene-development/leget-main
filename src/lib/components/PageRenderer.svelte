@@ -33,7 +33,8 @@
 		createEditableVisibility,
 		EDITABLE_VISIBILITY_CONTEXT
 	} from '$lib/utils/editable-visibility.svelte';
-	import { siteAppearanceStyle } from '$lib/site-settings/appearance';
+	import { hasSiteAppearance } from '$lib/site-settings/appearance';
+	import SiteAppearance from '$lib/components/SiteAppearance.svelte';
 	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 	import PageDraftToolbar from '$lib/growth/PageDraftToolbar.svelte';
@@ -486,7 +487,13 @@
 	{/if}
 {/snippet}
 
-<div class="contents" style={siteAppearanceStyle(headerDataState.siteAppearance)}>
+<SiteAppearance value={headerDataState.siteAppearance} />
+
+<div
+	class="contents"
+	data-site-template={editContext?.templateId ?? undefined}
+	data-site-appearance={hasSiteAppearance(headerDataState.siteAppearance) ? '' : undefined}
+>
 	{#if !draftMode}<SiteAnalytics data={headerDataState} enabled={!isEditable} />{/if}
 
 	{#if browser && isOwner && editContext && !sharedPreview}

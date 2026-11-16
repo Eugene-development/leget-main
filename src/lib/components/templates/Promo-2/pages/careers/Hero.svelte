@@ -79,9 +79,11 @@
 				>
 					{#snippet children(displayValue)}
 						<span
-							class="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-4 py-2 text-[11px] tracking-[0.3em] text-accent uppercase backdrop-blur-sm"
+							class="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-4 py-2 text-[11px] tracking-[0.3em] text-primary-accent uppercase backdrop-blur-sm"
 						>
-							<span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+							<span
+								class="h-1.5 w-1.5 rounded-full bg-primary-accent hover:bg-primary-accent-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent"
+							></span>
 							<RichText value={displayValue} />
 						</span>
 					{/snippet}
@@ -99,7 +101,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="mt-6 text-5xl text-white md:text-6xl lg:text-7xl"
+							class="mt-6 text-5xl text-on-primary md:text-6xl lg:text-7xl"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -122,7 +124,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-7 max-w-lg text-base leading-relaxed text-white/60 md:text-lg">
+						<p class="mt-7 max-w-lg text-base leading-relaxed text-on-primary md:text-lg">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -136,7 +138,7 @@
 			>
 				<a
 					href="#vacancies"
-					class="group inline-flex items-center gap-3 rounded-sm border border-accent bg-accent px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:border-accent hover:bg-transparent hover:text-accent"
+					class="group inline-flex items-center gap-3 rounded-sm border border-primary-accent bg-primary-accent px-8 py-4 text-xs tracking-[0.15em] text-on-primary-accent uppercase transition-all duration-500 hover:border-primary-accent hover:bg-primary-accent-hover hover:text-primary-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent"
 				>
 					<ContentText
 						bind:data
@@ -163,7 +165,7 @@
 					</svg>
 				</a>
 				<button
-					class="inline-flex items-center gap-2 rounded-sm border border-white/20 px-8 py-4 text-xs tracking-[0.15em] text-white/80 uppercase transition-all duration-500 hover:border-white/50 hover:text-white"
+					class="inline-flex items-center gap-2 rounded-sm border border-white/20 px-8 py-4 text-xs tracking-[0.15em] text-on-primary uppercase transition-all duration-500 hover:border-white/50 hover:text-on-primary"
 					type="button"
 					data-metrika-goal="pages_careers_hero_open"
 					data-goal-action="open"
@@ -194,7 +196,7 @@
 			{#each stats as stat, statIndex}
 				<div class="flex flex-col gap-1.5 bg-white/5 px-6 py-5 backdrop-blur-sm xl:px-8">
 					<span
-						class="text-3xl font-light text-accent-light"
+						class="text-3xl font-light text-primary-accent-hover"
 						style="font-family: var(--font-heading);"
 						><ContentText
 							bind:data
@@ -208,7 +210,7 @@
 							richText={false}
 						/></span
 					>
-					<span class="text-xs tracking-wide text-white/40"
+					<span class="text-xs tracking-wide text-on-primary"
 						><ContentText
 							bind:data
 							{editContext}

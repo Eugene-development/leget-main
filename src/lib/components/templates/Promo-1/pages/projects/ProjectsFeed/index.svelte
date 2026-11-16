@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import ProjectsFeedV1 from './v1/ProjectsFeed.svelte';
 	import ProjectsFeedV2 from './v2/ProjectsFeed.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
@@ -20,6 +22,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
 		(data?.projectsFeedVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 <!--
@@ -71,11 +74,19 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<ProjectsFeedV2 bind:data />
 			</div>
 		{:else}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: -1200, duration: 600 }}
+				out:p1_fly={{ x: -1200, duration: 600 }}
+			>
 				<ProjectsFeedV1 bind:data />
 			</div>
 		{/if}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import ContactCTAV1 from './v1/ContactCTA.svelte';
 	import ContactCTAV2 from './v2/ContactCTA.svelte';
 	import ContactCTAV3 from './v3/ContactCTA.svelte';
@@ -23,6 +25,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'disabled'>(
 		(data?.contactCTAVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -76,11 +79,19 @@
 					<ContactCTAV3 bind:data {editContext} {isEditable} {sitePhone} />
 				</div>
 			{:else if selectedVersion === 'v2'}
-				<div class="col-start-1 row-start-1 w-full">
+				<div
+					class="col-start-1 row-start-1 w-full"
+					in:p1_fly={{ x: 1200, duration: 600 }}
+					out:p1_fly={{ x: 1200, duration: 600 }}
+				>
 					<ContactCTAV2 bind:data {editContext} {isEditable} {sitePhone} />
 				</div>
 			{:else}
-				<div class="col-start-1 row-start-1 w-full">
+				<div
+					class="col-start-1 row-start-1 w-full"
+					in:p1_fly={{ x: -1200, duration: 600 }}
+					out:p1_fly={{ x: -1200, duration: 600 }}
+				>
 					<ContactCTAV1 bind:data {editContext} {isEditable} {sitePhone} />
 				</div>
 			{/if}

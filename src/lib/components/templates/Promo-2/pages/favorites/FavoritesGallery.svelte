@@ -194,9 +194,10 @@
 							</a>
 							<div class="absolute top-4 right-4 z-20"><FavoriteButton {item} /></div>
 						</div>
-						<div class="mt-5 flex items-baseline gap-3">
+						<div class="mt-5 flex items-baseline gap-1">
 							<p
-								class="shrink-0 text-xs tracking-widest whitespace-nowrap text-secondary uppercase"
+								class="shrink-0 whitespace-nowrap text-2xl text-primary"
+								style="font-family: var(--font-heading);"
 							>
 								<ContentText
 									bind:data

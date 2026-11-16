@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import DirectionV1 from './v1/Direction.svelte';
 	import DirectionV2 from './v2/Direction.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
@@ -20,6 +22,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'disabled'>(
 		(data?.directionVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -64,11 +67,19 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v2'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<DirectionV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: -1200, duration: 600 }}
+				out:p1_fly={{ x: -1200, duration: 600 }}
+			>
 				<DirectionV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

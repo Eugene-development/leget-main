@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { withPromoMotion } from '$lib/motion/transition';
+	import { fly } from 'svelte/transition';
 	import IncentivesV1 from './v1/Incentives.svelte';
 	import IncentivesV2 from './v2/Incentives.svelte';
 	import IncentivesV3 from './v3/Incentives.svelte';
@@ -21,6 +23,7 @@
 	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'disabled'>(
 		(data?.incentivesVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
 	);
+	const p1_fly = withPromoMotion(fly);
 </script>
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -66,15 +69,27 @@
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
 		{#if selectedVersion === 'v3'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<IncentivesV3 bind:data {editContext} {isEditable} />
 			</div>
 		{:else if selectedVersion === 'v2'}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
 				<IncentivesV2 bind:data {editContext} {isEditable} />
 			</div>
 		{:else}
-			<div class="w-full">
+			<div
+				class="w-full"
+				in:p1_fly={{ x: -1200, duration: 600 }}
+				out:p1_fly={{ x: -1200, duration: 600 }}
+			>
 				<IncentivesV1 bind:data {editContext} {isEditable} />
 			</div>
 		{/if}

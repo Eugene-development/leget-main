@@ -68,7 +68,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl text-stone-900"><RichText value={displayValue} /></h2>
+				<h2 class="text-2xl text-stone-900"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 
@@ -103,7 +103,7 @@
 			</div>
 		{/if}
 		{#if !submitted}
-			<form aria-busy={loading} onsubmit={handleSubmit} class="mt-10 space-y-6">
+			<form aria-busy={loading} onsubmit={handleSubmit} class="mt-8 space-y-5">
 				<div>
 					<label for="name" class="block text-sm font-medium text-stone-700"
 						><ContentText
@@ -122,7 +122,7 @@
 						type="text"
 						bind:value={name}
 						required
-						class="mt-1 block w-full rounded-xl border border-stone-200 px-4 py-3 text-stone-900 shadow-sm focus:border-stone-400 focus:outline-none"
+						class="mt-1 block w-full rounded-xl border border-stone-200 px-4 py-2.5 text-stone-900 shadow-sm focus:border-stone-400 focus:outline-none"
 					/>
 				</div>
 				<div>
@@ -143,7 +143,7 @@
 						type="tel"
 						bind:value={phone}
 						required
-						class="mt-1 block w-full rounded-xl border border-stone-200 px-4 py-3 text-stone-900 shadow-sm focus:border-stone-400 focus:outline-none"
+						class="mt-1 block w-full rounded-xl border border-stone-200 px-4 py-2.5 text-stone-900 shadow-sm focus:border-stone-400 focus:outline-none"
 					/>
 				</div>
 				<div>
@@ -163,7 +163,7 @@
 						id="message"
 						bind:value={message}
 						rows="4"
-						class="mt-1 block w-full rounded-xl border border-stone-200 px-4 py-3 text-stone-900 shadow-sm focus:border-stone-400 focus:outline-none"
+						class="mt-1 block w-full rounded-xl border border-stone-200 px-4 py-2.5 text-stone-900 shadow-sm focus:border-stone-400 focus:outline-none"
 					></textarea>
 				</div>
 				<button

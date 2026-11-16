@@ -79,27 +79,24 @@
 {#if isEditable && isOwner}
 	<a
 		href="/site-settings/unlock"
-		target="_blank"
-		rel="noopener noreferrer"
 		class="relative flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center transition-colors after:absolute after:-inset-1 after:content-[''] focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 {triggerClass}"
 		title="Общие настройки сайта"
-		aria-label="Открыть общие настройки сайта в новой вкладке"
+		aria-label="Открыть общие настройки сайта"
 	>
 		<svg
 			class="h-[18px] w-[18px]"
-			viewBox="0 0 24 24"
 			fill="none"
+			viewBox="0 0 24 24"
 			stroke="currentColor"
 			aria-hidden="true"
 		>
 			<path
-				d="M4 7h10M18 7h2M4 17h2M10 17h10M8 4v6M8 14v6M16 4v6M16 14v6"
 				stroke-linecap="round"
 				stroke-linejoin="round"
+				d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"
 				style="stroke-width: var(--ds-icon-stroke)"
 			/>
-			<circle cx="16" cy="7" r="2" fill="currentColor" stroke="none" />
-			<circle cx="8" cy="17" r="2" fill="currentColor" stroke="none" />
+			<circle cx="12" cy="12" r="3" style="stroke-width: var(--ds-icon-stroke)" />
 		</svg>
 	</a>
 {/if}

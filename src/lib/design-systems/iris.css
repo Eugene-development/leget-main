@@ -101,6 +101,11 @@
 	   индиго — «a single confident violet accent». */
 	--ds-color-primary: #171717;
 	--ds-color-primary-light: #404040;
+	/* Contrast pairs for content and actions on the primary surface. */
+	--ds-color-on-primary: #ffffff;
+	--ds-color-primary-accent: #7f70e4;
+	--ds-color-primary-accent-hover: #8e81e7;
+	--ds-color-on-primary-accent: #000000;
 	--ds-color-secondary: #312c85;
 	--ds-color-secondary-light: #4f39f6;
 	--ds-color-accent: #432dd7;
