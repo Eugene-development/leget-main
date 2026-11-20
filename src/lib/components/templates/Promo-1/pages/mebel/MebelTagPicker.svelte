@@ -117,7 +117,7 @@
 				<header
 					class="flex shrink-0 items-center justify-between gap-4 border-b border-ink-200 px-5 py-4"
 				>
-					<h2 id={`${id}-title`} class="text-xl">Выбрать теги</h2>
+					<h2 id={`${id}-title`} class="ds-title-sub text-xl">Выбрать теги</h2>
 					<button
 						type="button"
 						onclick={() => (open = false)}

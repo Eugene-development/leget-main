@@ -118,7 +118,7 @@
 </script>
 
 <svelte:head><title>Настройки расчёта кухни — CRM</title></svelte:head>
-<GrowthFrame title="Расчёт кухни" sites={data.sites} site={data.site.id} base={data.base}>
+<GrowthFrame title="Расчёт кухни">
 	<p>
 		{data.site.name || data.site.domain}. Задайте собственные ставки. Диапазон считается как длина в
 		метрах × ставка × коэффициент планировки × коэффициент материала, плюс стоимость выбранного

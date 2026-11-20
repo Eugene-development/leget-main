@@ -270,7 +270,7 @@
 		<div>
 			<h2
 				id={`${uid}-heading`}
-				class="text-xl sm:text-2xl"
+				class="text-card-title"
 				style="font-family: var(--font-heading)"
 			>
 				{copy.heading}

@@ -15,9 +15,9 @@
 		MESSAGE_DEFAULT_TITLE,
 		MESSAGE_PROJECT_LINK_LABEL,
 		isExternalProjectLink,
-		resolveMessageProjects,
 		type MessageProject
 	} from '../data';
+	import { hasProjectContent, resolveProjectCards } from './projects';
 	import '../../../../theme.css';
 
 	let {
@@ -33,7 +33,7 @@
 	// Нейтральная палитра — из классов p1-*; акценты от темы не зависят.
 	const isLight = $derived(isLightBlock(data, 'light'));
 
-	const projects = $derived<MessageProject[]>(resolveMessageProjects(data?.cards));
+	const projects = $derived(resolveProjectCards(data?.cards, isEditable && Boolean(editContext)));
 
 	let editingCardImageIndex = $state<number | null>(null);
 	const editingCard = $derived(
@@ -52,10 +52,18 @@
 		field: 'title' | 'description' | 'link',
 		value: string
 	) {
-		if (!editContext) return;
 		const updatedCards = [...projects];
 		updatedCards[index] = { ...updatedCards[index], [field]: value };
-		const updated = { ...data, cards: updatedCards };
+		await saveCards(updatedCards);
+	}
+
+	async function saveCards(updatedCards: MessageProject[]) {
+		if (!editContext) return;
+		const savedCount = Array.isArray(data?.cards) ? data.cards.length : 0;
+		const cards = updatedCards.filter(
+			(card, index) => index < savedCount || hasProjectContent(card)
+		);
+		const updated = { ...data, cards };
 		await saveComponentData(editContext, 'Message', updated);
 		data = updated;
 	}
@@ -75,9 +83,7 @@
 		const updatedCards = projects.map((card, index) =>
 			index === targetIndex ? { ...card, image: url } : card
 		);
-		const updated = { ...data, cards: updatedCards };
-		await saveComponentData(editContext, 'Message', updated);
-		data = updated;
+		await saveCards(updatedCards);
 		closeCardImagePicker();
 	}
 
@@ -146,9 +152,10 @@
 		</div>
 
 		<!-- Опись работ -->
-		<div class="mx-auto mt-14 max-w-7xl px-6 lg:px-8">
-			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-				{#each projects as card, i}
+		<div class="mx-auto mt-14 max-w-[90rem] px-6">
+			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-5">
+				{#each projects as card, i (i)}
+					{@const imageAction = `${card.image ? 'Заменить' : 'Добавить'} фотографию проекта ${card.title ? `«${card.title}»` : i + 1}`}
 					<!-- `relative` здесь несущий: по нему растягивается зона нажатия
 					     ссылки (`after:inset-0`), поэтому кликабельна вся карточка,
 					     а ссылка в разметке остаётся одна. -->
@@ -161,8 +168,8 @@
 								type="button"
 								onclick={() => openCardImagePicker(i)}
 								class="group/image p1-body relative block aspect-[4/3] w-full cursor-pointer overflow-hidden text-left focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none focus-visible:ring-inset"
-								aria-label={`${card.image ? 'Заменить' : 'Добавить'} фотографию проекта «${card.title}»`}
-								title={`${card.image ? 'Заменить' : 'Добавить'} фотографию проекта «${card.title}»`}
+								aria-label={imageAction}
+								title={imageAction}
 							>
 								<ImageFallback
 									imagePath={['cards', i, 'image']}
@@ -195,7 +202,13 @@
 									onSave={(v) => saveCardField(i, 'title', v)}
 									class="inline"
 								>
-									{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
+									{#snippet children(displayValue)}
+										{#if isEditable && !displayValue}
+											<span class="p1-muted">Добавить название</span>
+										{:else}
+											<RichText value={displayValue} />
+										{/if}
+									{/snippet}
 								</EditableField>
 							</h3>
 							<!-- Описание работы — роль `p1-body`, а не `p1-muted`: это содержание

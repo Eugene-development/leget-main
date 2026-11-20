@@ -146,7 +146,8 @@
 	}
 
 	.ms-add:hover {
-		background: var(--p1-catalog-accent-50, var(--ds-link-50));
+		background: var(--ds-ink-100);
+		color: var(--ds-light-title);
 		transform: scale(1.08) rotate(90deg);
 	}
 

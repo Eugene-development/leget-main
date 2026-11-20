@@ -142,7 +142,11 @@ test('SMS, profile restoration and logout share the temporary session', async ()
 	auth.logout();
 	assert.equal(session.getAuthToken(), null);
 	assert.equal(snapshot.isAuthenticated, false);
-	assert.equal(calls.length, 3);
+	assert.deepEqual(calls.slice(1).map(({ url, options }) => [url, options.method]), [
+		['/goals/session', 'DELETE'],
+		['/site-settings/session', 'DELETE'],
+		['/crm-access/session', 'DELETE']
+	]);
 	unsubscribe();
 });
 

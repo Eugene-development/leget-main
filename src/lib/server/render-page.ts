@@ -2,6 +2,12 @@ import { error, type RequestEvent } from '@sveltejs/kit';
 import { ClientError, type GraphQLClient } from 'graphql-request';
 import { createGraphQLClient } from '$lib/utils/graphql-client';
 import { readDesignSystem } from '$lib/design-systems/registry';
+import {
+	loadOfflinePage,
+	savePublicPage,
+	removePublicPage,
+	removePublicSite
+} from '$lib/server/offline-pages';
 
 /** Слаг страницы 404 в шаблоне — см. config/templates.php в leget-api. */
 const NOT_FOUND_SLUG = '/404';
@@ -100,17 +106,27 @@ export interface RenderPageResponse {
 export async function loadRenderPage(event: RequestEvent, slug: string) {
 	const hostname = new URL(event.request.url).hostname;
 	const draftToken = event.url.searchParams.get('draft');
-	if (draftToken !== null && !/^[a-f0-9]{64}$/.test(draftToken)) error(404, 'Предпросмотр не найден.');
-	const client = createGraphQLClient({
-		'X-Forwarded-Host': hostname,
-		...(draftToken ? { 'X-Leget-Draft': draftToken } : {})
-	});
-	if (draftToken) event.setHeaders({ 'cache-control': 'private, no-store', 'x-robots-tag': 'noindex, nofollow', 'referrer-policy': 'no-referrer' });
+	if (draftToken !== null && !/^[a-f0-9]{64}$/.test(draftToken))
+		error(404, 'Предпросмотр не найден.');
+	const client = createGraphQLClient(
+		{
+			'X-Forwarded-Host': hostname,
+			...(draftToken ? { 'X-Leget-Draft': draftToken } : {})
+		},
+		3500
+	);
+	if (draftToken)
+		event.setHeaders({
+			'cache-control': 'private, no-store',
+			'x-robots-tag': 'noindex, nofollow',
+			'referrer-policy': 'no-referrer'
+		});
 
 	try {
 		const data = await client.request<RenderPageResponse>(RENDER_PAGE_QUERY, { slug });
 
 		event.locals.designSystem = readDesignSystem(data.renderPage.site.header?.data);
+		if (!draftToken) await savePublicPage(hostname, slug, data.renderPage);
 
 		return {
 			pageData: {
@@ -127,6 +143,7 @@ export async function loadRenderPage(event: RequestEvent, slug: string) {
 			}
 
 			if (code === 'PAGE_NOT_FOUND') {
+				if (!draftToken) await removePublicPage(hostname, slug);
 				const notFound = await loadNotFoundPage(client, slug);
 
 				// 404 сайта рисуется его же системой: страница обязана выглядеть страницей
@@ -140,21 +157,39 @@ export async function loadRenderPage(event: RequestEvent, slug: string) {
 			}
 
 			if (code === 'SITE_NOT_FOUND') {
+				if (!draftToken) await removePublicSite(hostname);
 				// Сайт не резолвится по домену — шаблона нет, показать нечего,
 				// кроме нейтральной заглушки из +error.svelte.
 				error(404, 'Not found');
 			}
 
 			if (code === 'SITE_SUSPENDED') {
+				if (!draftToken) await removePublicSite(hostname);
 				error(403, 'Site suspended');
 			}
 
-			error(502, 'Bad gateway');
+			// Business/validation errors must not be hidden behind stale content.
+			const errors = err.response.errors ?? [];
+			const unavailable =
+				err.response.status >= 500 ||
+				errors.some(
+					(item) =>
+						item.message === 'Internal server error' ||
+						item.extensions?.code === 'INTERNAL_SERVER_ERROR'
+				);
+			if (!unavailable) error(502, 'Bad gateway');
 		}
 
-		const message = err instanceof Error ? err.message : 'Bad gateway';
-		console.error('[leget-main] Failed to reach leget-api:', message);
-		error(502, 'Bad gateway');
+		if (!draftToken) {
+			const offline = await loadOfflinePage(hostname, slug);
+			if (offline) {
+				event.locals.designSystem = readDesignSystem(offline.site.header?.data);
+				event.setHeaders({ 'cache-control': 'private, no-store', 'x-robots-tag': 'noindex' });
+				return { pageData: offline, backendUnavailable: true };
+			}
+		}
+		console.error('[leget-main] Public page backend unavailable');
+		error(503, 'Сайт временно недоступен. Попробуйте зайти позже.');
 	}
 }
 

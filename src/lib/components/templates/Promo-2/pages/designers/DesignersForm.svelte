@@ -130,7 +130,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-4 text-4xl text-white lg:text-5xl"
+							class="mt-4 text-section-title text-white"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -211,7 +211,7 @@
 						onsubmit={handleSubmit}
 						class="border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:p-10"
 					>
-						<h3 class="mb-6 text-lg text-white" style="font-family: var(--font-heading);">
+						<h3 class="mb-6 text-card-title text-white" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -457,7 +457,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
 							</svg>
 						</div>
-						<h3 class="mt-6 text-2xl text-white" style="font-family: var(--font-heading);">
+						<h3 class="mt-6 text-card-title text-white" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -468,7 +468,7 @@
 								label="Заявка принята"
 							/>
 						</h3>
-						<p class="mt-3 max-w-xs text-sm text-white/50">
+						<p class="mt-3 max-w-xs text-prose text-white/50">
 							<ContentText
 								bind:data
 								{editContext}

@@ -3,6 +3,8 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -14,6 +16,8 @@
 		isEditable?: boolean;
 	} = $props();
 
+	const theme = $derived(blockTheme(data, 'dark'));
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
@@ -23,7 +27,8 @@
 </script>
 
 <section
-	class="relative flex min-h-[70vh] items-center justify-center bg-linear-to-br from-indigo-900 to-purple-800 px-6 py-32 text-center"
+	class="p1-surface-alt relative flex min-h-[70vh] items-center justify-center px-6 py-32 text-center"
+	data-p1-theme={theme}
 >
 	<ImageFallback
 		imagePath={['backgroundImage']}
@@ -32,10 +37,14 @@
 		class="absolute inset-0 h-full w-full object-cover"
 	/>
 	{#if data?.backgroundImage}
-		<div class="absolute inset-0 bg-indigo-900/60"></div>
+		<div class="bg-scrim/60 pointer-events-none absolute inset-0" aria-hidden="true"></div>
 	{/if}
 
-	<div class="relative z-10 max-w-4xl">
+	<div
+		class="ds-media-panel relative z-10 max-w-4xl"
+		data-ds-surface={theme}
+		style:background-color="var(--p1-surface)"
+	>
 		{#if data?.title || isEditable}
 			<EditableField
 				fieldKey="Hero.title"
@@ -46,7 +55,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h1 class="text-5xl text-white drop-shadow-lg sm:text-6xl md:text-7xl">
+					<h1 class="p1-title text-5xl sm:text-6xl md:text-7xl">
 						<RichText value={displayValue} />
 					</h1>
 				{/snippet}
@@ -64,7 +73,7 @@
 				class="mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mt-6 text-xl text-indigo-200 sm:text-2xl">
+					<p class="ds-copy mt-6 text-xl sm:text-2xl">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -83,7 +92,7 @@
 				{#snippet children(displayValue)}
 					<a
 						href={String(data?.ctaUrl ?? '#')}
-						class="mt-10 inline-block rounded-full bg-white px-8 py-3 text-lg font-semibold text-indigo-900 shadow-lg transition hover:bg-indigo-50"
+						class="ds-action mt-10 inline-block rounded-full px-8 py-3 text-lg font-semibold shadow-lg transition"
 					>
 						<RichText value={displayValue} />
 					</a>

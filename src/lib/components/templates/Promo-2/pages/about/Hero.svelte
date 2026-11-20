@@ -7,6 +7,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -26,13 +28,14 @@
 	}
 
 	let visible = $state(false);
+	const theme = $derived(blockTheme(data));
 
 	onMount(() => {
 		visible = true;
 	});
 </script>
 
-<section class="relative min-h-[90vh] overflow-hidden bg-surface" id="about-hero">
+<section class="p1-surface relative min-h-[90vh] overflow-hidden" id="about-hero" data-p1-theme={theme}>
 	<!-- Background Image -->
 	<div class="absolute inset-0">
 		<ImageFallback
@@ -47,20 +50,24 @@
 				? 'scale-105'
 				: ''}"
 		/>
-		<div class="absolute inset-0 bg-linear-to-r from-white/65 via-white/35 to-transparent"></div>
-		<div class="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent"></div>
+		<div class="hero-veil pointer-events-none absolute inset-0" aria-hidden="true"></div>
 	</div>
 
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center pb-24">
 		<div class="p2-container mx-auto w-full">
 			<div
-				class="hero-glass relative isolate max-w-2xl rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
+				data-ds-surface={theme === 'light' ? 'white' : undefined}
+				class="hero-glass relative isolate max-w-2xl rounded-2xl border p-6 backdrop-blur-xl md:p-10 {theme === 'light'
+					? 'border-white/60 bg-white/70 shadow-[0_20px_60px] shadow-primary/10 supports-[backdrop-filter:blur(1px)]:bg-white/35'
+					: 'p1-overlay p1-border'}"
 			>
-				<div
-					class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/50 via-white/10 to-transparent"
-					aria-hidden="true"
-				></div>
+				{#if theme === 'light'}
+					<div
+						class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/50 via-white/10 to-transparent"
+						aria-hidden="true"
+					></div>
+				{/if}
 				<!-- Heading -->
 				<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.5s">
 					<EditableField
@@ -73,7 +80,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-5xl text-primary md:text-6xl lg:text-7xl"
+								class="p1-title text-page-title"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -98,7 +105,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p
-								class="mt-8 max-w-lg text-base leading-relaxed font-medium text-primary md:text-lg"
+								class="p1-title mt-8 max-w-lg text-prose font-medium"
 							>
 								<RichText value={displayValue} />
 							</p>
@@ -170,9 +177,20 @@
 </section>
 
 <style>
+	.hero-veil {
+		background:
+			linear-gradient(
+				to right,
+				color-mix(in srgb, var(--p1-surface) 65%, transparent),
+				color-mix(in srgb, var(--p1-surface) 35%, transparent),
+				transparent
+			),
+			linear-gradient(to top, color-mix(in srgb, var(--p1-surface) 20%, transparent), transparent);
+	}
+
 	@media (prefers-reduced-transparency: reduce) {
 		.hero-glass {
-			background: var(--color-surface);
+			background: var(--p1-surface);
 			backdrop-filter: none;
 		}
 	}

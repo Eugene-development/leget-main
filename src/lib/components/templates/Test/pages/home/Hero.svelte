@@ -33,7 +33,11 @@
 		<div class="absolute inset-0 bg-black/50"></div>
 	{/if}
 
-	<div class="relative z-10 max-w-3xl">
+	<div
+		class="ds-media-panel relative z-10 max-w-3xl"
+		data-ds-surface={data?.backgroundImage ? 'dark' : 'surface'}
+		style={data?.backgroundImage ? 'background:var(--ds-dark-surface)' : undefined}
+	>
 		{#if data?.title || isEditable}
 			<EditableField
 				fieldKey="Hero.title"
@@ -44,10 +48,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h1
-						class="text-4xl text-red-700 sm:text-5xl md:text-6xl"
-						class:text-white={data?.backgroundImage}
-					>
+					<h1 class="ds-accent text-4xl sm:text-5xl md:text-6xl">
 						<RichText value={displayValue} />
 					</h1>
 				{/snippet}
@@ -65,11 +66,7 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p
-						class="mt-4 text-lg sm:text-xl"
-						class:text-gray-200={data?.backgroundImage}
-						class:text-gray-600={!data?.backgroundImage}
-					>
+					<p class="ds-copy mt-4 text-lg sm:text-xl">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}

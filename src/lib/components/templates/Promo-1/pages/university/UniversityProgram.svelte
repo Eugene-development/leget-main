@@ -4,7 +4,6 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import Catalog from '$lib/university/Catalog.svelte';
-	import CertificateVerifier from '$lib/university/CertificateVerifier.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { universityProgram as defaults } from './content';
@@ -52,6 +51,5 @@
 			{#snippet heading()}{@render field('title', 'Заголовок программы')}{/snippet}
 			{#snippet description()}{@render field('description', 'Описание программы')}{/snippet}
 		</Catalog>
-		<CertificateVerifier />
 	</div>
 </section>

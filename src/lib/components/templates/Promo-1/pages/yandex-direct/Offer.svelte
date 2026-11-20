@@ -37,13 +37,13 @@
 	);
 </script>
 
-<section class="yd-offer">
+<section data-ds-surface="dark" class="yd-offer">
 	<div class="yd-offer__container">
-		<div class="yd-offer__card">
+		<div data-ds-surface="dark-overlay" class="yd-offer__card">
 			<div class="yd-offer__glow"></div>
 
 			<div class="yd-offer__content">
-				<div class="yd-offer__badge">
+				<div class="ds-accent yd-offer__badge">
 					<span class="yd-offer__badge-pulse"></span>
 					<EditableField
 						fieldKey="Offer.badge"
@@ -66,7 +66,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="yd-offer__title"><RichText value={displayValue} /></h2>
+						<h2 class="ds-copy yd-offer__title"><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
@@ -83,7 +83,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="yd-offer__subtitle"><RichText value={displayValue} /></p>
+						<p class="ds-copy yd-offer__subtitle"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 
@@ -108,7 +108,7 @@
 			</div>
 
 			<div class="yd-offer__action">
-				<a href={String(data?.buttonHref ?? '/contact')} class="yd-offer__btn">
+				<a href={String(data?.buttonHref ?? '/contact')} class="ds-action yd-offer__btn">
 					<EditableField
 						fieldKey="Offer.buttonText"
 						label="Текст кнопки"
@@ -131,7 +131,7 @@
 						<polyline points="12 5 19 12 12 19" />
 					</svg>
 				</a>
-				<p class="yd-offer__note">Перезвоним в течение 15 минут</p>
+				<p class="ds-copy yd-offer__note">Перезвоним в течение 15 минут</p>
 			</div>
 		</div>
 	</div>
@@ -140,7 +140,7 @@
 <style>
 	.yd-offer {
 		padding: 5rem 1.5rem;
-		background: #0f172a;
+		background: var(--ds-dark-surface);
 		position: relative;
 		overflow: hidden;
 	}
@@ -154,7 +154,7 @@
 
 	.yd-offer__card {
 		position: relative;
-		background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+		background: var(--ds-dark-overlay);
 		border-radius: 2rem;
 		padding: 3rem 2rem;
 		border: 1px solid rgba(255, 255, 255, 0.08);

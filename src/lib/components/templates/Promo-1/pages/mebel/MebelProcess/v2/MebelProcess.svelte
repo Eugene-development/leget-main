@@ -60,7 +60,7 @@
 		class="p1-surface-alt rounded-2xl px-6 py-10 sm:px-10 sm:py-12"
 		data-p1-theme={isLight ? 'light' : 'dark'}
 	>
-		<h2 class="p1-title text-2xl sm:text-3xl">
+		<h2 class="p1-title ds-title-sub text-2xl sm:text-3xl">
 			<EditableField
 				fieldKey="MebelProcess.title"
 				label="Заголовок"

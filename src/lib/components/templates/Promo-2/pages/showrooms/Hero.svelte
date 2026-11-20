@@ -44,7 +44,7 @@
 
 <section
 	bind:this={sectionEl}
-	class="relative min-h-[90vh] overflow-hidden bg-surface"
+	class="relative min-h-[90vh] overflow-hidden bg-primary"
 	id="showrooms-hero"
 >
 	<!-- Background Image -->
@@ -69,6 +69,7 @@
 	<div class="relative z-10 flex min-h-[90vh] items-center py-24">
 		<div class="p2-container mx-auto w-full">
 			<div
+				data-ds-surface="primary"
 				class="hero-glass relative isolate max-w-xl rounded-2xl border border-white/25 bg-primary/90 p-6 shadow-[0_20px_60px] shadow-primary/20 backdrop-blur-2xl backdrop-saturate-150 supports-[backdrop-filter:blur(1px)]:bg-primary/45 md:p-10"
 			>
 				<div
@@ -86,7 +87,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-5xl text-white md:text-6xl lg:text-7xl"
+								class="text-page-title text-white"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -109,7 +110,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mt-6 text-base leading-relaxed text-white/90 md:text-lg">
+							<p class="mt-6 text-prose text-white/90">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}

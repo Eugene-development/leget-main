@@ -97,7 +97,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl text-primary lg:text-5xl"
+						class="mt-3 text-section-title text-primary"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -134,7 +134,7 @@
 							<div class="hidden h-px flex-1 bg-border-light lg:block"></div>
 						{/if}
 					</div>
-					<h3 class="text-lg text-primary" style="font-family: var(--font-heading);">
+					<h3 class="text-card-title text-primary" style="font-family: var(--font-heading);">
 						<ContentText
 							bind:data
 							{editContext}
@@ -146,7 +146,7 @@
 							defaults={{ steps }}
 						/>
 					</h3>
-					<p class="mt-3 text-sm leading-relaxed text-secondary">
+					<p class="mt-3 text-prose text-secondary">
 						<ContentText
 							bind:data
 							{editContext}

@@ -28,7 +28,7 @@
 
 {#if brands.length > 0}
 	<div class="mebel-container mt-12 mb-12" in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}>
-		<h2 class="mb-6 text-2xl text-ink-900">{editableText(data.title, 'Бренды сантехники')}</h2>
+		<h2 class="ds-title-sub mb-6 text-2xl text-ink-900">{editableText(data.title, 'Бренды сантехники')}</h2>
 		<div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
 			{#each brands as brand, i (brand.slug)}
 				<a

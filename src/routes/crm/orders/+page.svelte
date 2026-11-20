@@ -116,7 +116,7 @@
 </script>
 
 <svelte:head><title>Кабинет заказчика — CRM</title></svelte:head>
-<GrowthFrame title="Кабинет заказчика" sites={data.sites} site={data.site} base={data.base}>
+<GrowthFrame title="Кабинет заказчика">
 	<p>
 		Укажите этапы работ и откройте нужные документы. Заказчик получит доступ к одному заказу по
 		личному приглашению.

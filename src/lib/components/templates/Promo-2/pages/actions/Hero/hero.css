@@ -17,7 +17,7 @@
 }
 .actions-hero .ah-title {
 	margin: 0;
-	font-size: var(--ds-font-action-display-size);
+	font-size: var(--ds-font-page-title-size);
 	text-wrap: balance;
 	overflow-wrap: anywhere;
 }
@@ -250,9 +250,6 @@
 }
 .ah-gallery .ah-gallery-copy {
 	min-width: 0;
-}
-.ah-gallery .ah-title {
-	font-size: var(--ds-font-statement-size);
 }
 .ah-gallery .ah-label {
 	margin-top: 12px;

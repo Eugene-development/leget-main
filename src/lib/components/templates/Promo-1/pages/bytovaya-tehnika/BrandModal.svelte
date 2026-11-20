@@ -175,7 +175,7 @@
 	class="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto rounded-xl border border-ink-200 bg-surface-raised p-5 text-ink-800 shadow-xl backdrop:bg-scrim/50 sm:p-6"
 >
 	<div class="mb-5 flex items-start justify-between gap-4">
-		<h2 id={`${id}-title`} class="text-xl">{brand ? 'Редактировать бренд' : 'Добавить бренд'}</h2>
+		<h2 id={`${id}-title`} class="ds-title-sub text-xl">{brand ? 'Редактировать бренд' : 'Добавить бренд'}</h2>
 		<button
 			data-goal-ignore="Редактор брендов"
 			type="button"

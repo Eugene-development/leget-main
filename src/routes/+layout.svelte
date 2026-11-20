@@ -85,17 +85,19 @@
 		if (
 			!navigation.from ||
 			navigation.from.url.pathname === navigation.to?.url.pathname ||
-			document.startViewTransition ||
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		)
 			return;
 
-		const body = document.body;
-		if (body.classList.contains('page-entering')) {
-			body.classList.remove('page-entering');
-			void body.offsetWidth;
+		const region = document.querySelector('[data-smooth-navigation]');
+		if (!region && document.startViewTransition) return;
+
+		const target = region ?? document.body;
+		if (target.classList.contains('page-entering')) {
+			target.classList.remove('page-entering');
+			void target.getBoundingClientRect();
 		}
-		body.classList.add('page-entering');
+		target.classList.add('page-entering');
 	});
 
 	const seoCanonical = $derived(canonicalUrl(page.url));
@@ -112,6 +114,12 @@
 <link rel="icon" href={favicon} /></svelte:head>
 
 <LoadingProgress active={loadingPage || pendingContent > 0} />
+{#if page.data.backendUnavailable}
+	<aside role="status" class="offline-notice">
+		Каталог временно недоступен. Информация о компании и услуги доступны.
+		Пожалуйста, повторите попытку позже.
+	</aside>
+{/if}
 <NavigationBody root delegated={navigationBodies > 0} workspace={loadingWorkspace}>
 	{@render children()}
 </NavigationBody>
@@ -121,6 +129,18 @@
 {#if siteSearch.open}
 	<SiteSearchModal />
 {/if}
+
+<style>
+	.offline-notice {
+		position: relative;
+		z-index: 60;
+		padding: 1rem;
+		background: var(--ds-surface-raised, Canvas);
+		color: var(--ds-ink-900, CanvasText);
+		border-bottom: 1px solid currentColor;
+		text-align: center;
+	}
+</style>
 
 <!--
 	Форма входа и регистрации клиента рендерится здесь, а не рядом с кнопками

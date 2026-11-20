@@ -35,7 +35,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mb-4 text-stone-600">
+					<p class="mb-4 text-prose text-stone-600">
 						<span class="font-medium">Адрес:</span>
 						<RichText value={displayValue} />
 					</p>

@@ -46,7 +46,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="mb-8 text-2xl text-ink-900">
+	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">
 		<EditableField
 			fieldKey="ByttehnikaCategories.title"
 			label="Заголовок блока"

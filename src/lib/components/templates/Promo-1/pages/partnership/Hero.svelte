@@ -52,6 +52,7 @@
 	Тема Hero и тема соседней секции независимы.
 -->
 <section
+	data-ds-gradient-tone={isLight ? undefined : 'dark'}
 	class="ph-enter relative isolate overflow-hidden {isLight
 		? 'bg-linear-to-br from-link-50 via-cat-5-50 to-cat-9-50'
 		: 'bg-linear-to-br from-link-600 via-cat-5-600 to-cat-9-600'}"
@@ -65,12 +66,12 @@
 		<div
 			class="ph-glow absolute -top-32 -left-24 size-112 {isLight
 				? 'bg-link-400/15'
-				: 'bg-on-dark/15'}"
+				: 'bg-on-dark/5'}"
 		></div>
 		<div
 			class="ph-glow absolute top-1/3 -right-24 size-96 {isLight
 				? 'bg-cat-9-400/15'
-				: 'bg-cat-9-300/25'}"
+				: 'bg-cat-9-300/10'}"
 		></div>
 		<div
 			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-on-dark/50 to-transparent"
@@ -96,7 +97,7 @@
 								? 'border-ink-900/15'
 								: 'border-on-dark/25'} {isLight
 								? 'bg-surface-raised/70'
-								: 'bg-on-dark/12'} px-4 py-2 text-[11px] font-semibold tracking-[0.2em] {isLight
+								: 'bg-on-dark/8'} px-4 py-2 text-[11px] font-semibold tracking-[0.2em] {isLight
 								? 'text-ink-900'
 								: 'text-on-dark'} uppercase sm:text-xs"
 						>
@@ -196,7 +197,9 @@
 			<!-- Цитата: паспарту с градиентной каймой в 1px -->
 			<div class="ph-card ph-d3 mt-12 lg:mt-0">
 				<div
-					class="rounded-3xl bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40 p-px shadow-[0_50px_120px_-60px] shadow-link-950/80"
+					class="rounded-3xl p-px shadow-[0_50px_120px_-60px] shadow-link-950/80 {isLight
+						? 'bg-linear-to-br from-on-dark/50 via-on-dark/20 to-on-dark/40'
+						: 'ring-1 ring-on-dark/25'}"
 				>
 					<!--
 						Без backdrop-blur: пока на карточке висит transform от анимации
@@ -208,10 +211,12 @@
 					<div
 						class="relative overflow-hidden rounded-[calc(var(--radius-3xl)-1px)] bg-linear-to-br {isLight
 							? 'from-surface-raised/80 via-surface-raised/70 to-surface-raised/60'
-							: 'from-on-dark/20 via-on-dark/12 to-on-dark/5'} p-8 ring-1 ring-on-dark/10 ring-inset sm:p-10"
+							: 'from-scrim/35 via-scrim/25 to-scrim/15'} p-8 ring-1 ring-on-dark/10 ring-inset sm:p-10"
 					>
 						<div
-							class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-on-dark/15 to-transparent"
+							class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b {isLight
+								? 'from-on-dark/15'
+								: 'from-on-dark/5'} to-transparent"
 							aria-hidden="true"
 						></div>
 

@@ -27,22 +27,25 @@
 
 	const defaultStyles = [
 		{
-			title: 'Современный стиль',
+			title: 'Посуда под рукой',
 			description:
-				'Минимализм в каждой детали. Гладкие матовые фасады, скрытая фурнитура, отсутствие лишних визуальных шумов. Идеально для функционального и чистого пространства.',
-			image: null
+				'Глубокий ящик выдвигается целиком, а переставляемые держатели удерживают стопки тарелок на месте.',
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-details-2-9-4-1/dish-drawer.webp'
 		},
 		{
-			title: 'Неоклассика',
+			title: 'Запасы на виду',
 			description:
-				'Утонченное сочетание традиций и современных тенденций. Изящная неглубокая фрезеровка фасадов, пастельная цветовая палитра и премиальные материалы.',
-			image: null
+				'Выдвижная колонна открывает доступ к банкам и бутылкам по всей глубине шкафа.',
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-details-2-9-4-1/pull-out-pantry.webp'
 		},
 		{
-			title: 'Лофт',
+			title: 'Свет там, где готовите',
 			description:
-				'Выразительная фактура натурального дерева, бетона и металла. Брутальные формы, индустриальный шик и максимальный акцент на естественные покрытия.',
-			image: null
+				'Встроенная подсветка под верхними шкафами освещает столешницу вдоль всей рабочей зоны.',
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-details-2-9-4-1/worktop-lighting.webp'
 		}
 	];
 
@@ -78,14 +81,14 @@
 			<EditableField
 				fieldKey="KitchenStyles.heading"
 				label="Заголовок"
-				value={editableText(data?.heading, 'Варианты стилистических решений')}
+				value={editableText(data?.heading, 'Удобство в деталях')}
 				{isEditable}
 				onSave={(v) => saveField('heading', v)}
 				class="block"
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mb-6 text-3xl text-primary uppercase lg:text-4xl"
+						class="mb-6 text-section-title text-primary uppercase"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -98,7 +101,7 @@
 				label="Описание"
 				value={editableText(
 					data?.description,
-					'Мы адаптируем индивидуальный проект под любой стиль.'
+					'Продумываем, где хранить посуду и продукты и как осветить рабочую зону.'
 				)}
 				{isEditable}
 				multiline
@@ -106,7 +109,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-lg leading-relaxed font-light text-secondary">
+					<p class="mx-auto max-w-2xl text-prose font-light text-secondary">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -131,7 +134,7 @@
 						/>
 					</div>
 					<div class="p-8">
-						<h3 class="mb-3 text-xl text-primary" style="font-family: var(--font-heading);">
+						<h3 class="mb-3 text-card-title text-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -143,7 +146,7 @@
 								defaults={{ styles }}
 							/>
 						</h3>
-						<p class="text-sm leading-relaxed text-secondary">
+						<p class="text-prose text-secondary">
 							<ContentText
 								bind:data
 								{editContext}

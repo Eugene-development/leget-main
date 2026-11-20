@@ -1,5 +1,5 @@
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import { CLIENT_COOKIE, readSessionProfile } from '$lib/server/client-session';
+import { CLIENT_COOKIE, CRM_COOKIE, readSessionProfile } from '$lib/server/client-session';
 import { adminApi, authApi } from '$lib/server/admin-api';
 import { env } from '$env/dynamic/private';
 
@@ -7,7 +7,9 @@ export function crmToken(
 	event: Pick<RequestEvent, 'cookies' | 'url'>,
 	admin = event.url.pathname.startsWith('/admin/crm')
 ): string {
-	const token = event.cookies.get(admin ? 'leget_admin_jwt' : CLIENT_COOKIE);
+	const token = admin
+		? event.cookies.get('leget_admin_jwt')
+		: event.cookies.get(CRM_COOKIE) || event.cookies.get(CLIENT_COOKIE);
 	if (!token) redirect(303, admin ? '/admin' : '/?auth=client-login');
 	return token;
 }

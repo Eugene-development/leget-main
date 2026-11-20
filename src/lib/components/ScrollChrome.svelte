@@ -12,49 +12,52 @@
 	} = $props();
 
 	function followScroll(node: HTMLElement) {
-		const upper = node.firstElementChild as HTMLElement;
+		const content = node.firstElementChild as HTMLElement;
+		const upper = content.firstElementChild as HTMLElement;
 		const root = document.documentElement;
 		const previousOverlay = root.style.getPropertyValue('--chrome-overlay');
-		let revealed = false;
-		let previousY = Math.max(0, window.scrollY);
-		let travel = 0;
+		let revealed = true;
+		let lastScrollY = 0;
 		let frame = 0;
 		let motionFrame = 0;
+		// Те же пороги, что у Header Promo-2: не меняем направление перехода
+		// от небольшого движения тачпада или инерции прокрутки.
+		const HIDE_THRESHOLD = 60;
+		const SHOW_THRESHOLD = 40;
 
 		function update() {
 			frame = 0;
 			const y = Math.max(0, Math.min(window.scrollY, root.scrollHeight - window.innerHeight));
-			const delta = y - previousY;
-			previousY = y;
-			// Не переключаем шапку от мелкого дрожания тачпада или упругого скролла.
-			if (delta !== 0) {
-				travel = Math.sign(delta) === Math.sign(travel) ? travel + delta : delta;
-				if (Math.abs(travel) >= 8) {
-					revealed = travel < 0;
-					travel = 0;
-				}
+			if (y <= 50) {
+				revealed = true;
+			} else if (y > lastScrollY + HIDE_THRESHOLD) {
+				revealed = false;
+				lastScrollY = y;
+			} else if (y < lastScrollY - SHOW_THRESHOLD) {
+				revealed = true;
+				lastScrollY = y;
 			}
-			if (y === 0) revealed = false;
 			position();
 		}
 
 		function position() {
-			// Общая sticky-обёртка сохраняет место в потоке. Отрицательный top
-			// прячет только верхние полосы, оставляя строку меню у края окна.
-			node.style.top = revealed ? '0px' : `${-upper.getBoundingClientRect().height}px`;
+			// Как в Promo-2: sticky всегда привязан к top: 0, а transform
+			// поднимает шапку ровно на высоту верхних полос, оставляя меню видимым.
+			const height = upper.getBoundingClientRect().height;
+			content.style.setProperty('--scroll-chrome-offset', revealed ? '0px' : `${-height}px`);
 			measure();
 		}
 
 		function measure() {
 			root.style.setProperty(
 				'--chrome-overlay',
-				`${Math.max(0, node.getBoundingClientRect().bottom)}px`
+				`${Math.max(0, content.getBoundingClientRect().bottom)}px`
 			);
 			node.dispatchEvent(new Event('scroll-chrome-position'));
 		}
 
 		function trackMotion(event: TransitionEvent) {
-			if (event.target !== node || event.propertyName !== 'top') return;
+			if (event.target !== content || event.propertyName !== 'transform') return;
 			if (motionFrame) cancelAnimationFrame(motionFrame);
 			const sample = () => {
 				measure();
@@ -64,7 +67,7 @@
 		}
 
 		function finishMotion(event: TransitionEvent) {
-			if (event.target !== node || event.propertyName !== 'top') return;
+			if (event.target !== content || event.propertyName !== 'transform') return;
 			if (motionFrame) cancelAnimationFrame(motionFrame);
 			motionFrame = 0;
 			measure();
@@ -76,14 +79,16 @@
 
 		function revealForFocus() {
 			revealed = true;
-			travel = 0;
+			lastScrollY = Math.max(0, window.scrollY);
 			position();
 		}
 
 		// Первичный замер выполняем без анимации, затем включаем переходы.
-		node.style.transition = 'none';
+		content.style.transition = 'none';
 		position();
-		node.style.removeProperty('transition');
+		// Фиксируем начальное значение до включения переходов.
+		getComputedStyle(content).transform;
+		content.style.removeProperty('transition');
 		node.addEventListener('transitionrun', trackMotion);
 		node.addEventListener('transitionend', finishMotion);
 		node.addEventListener('transitioncancel', finishMotion);
@@ -114,10 +119,12 @@
 
 {#if enabled}
 	<div class="scroll-chrome" data-scroll-chrome use:followScroll>
-		<div>
-			{@render above()}
+		<div class="scroll-chrome-content">
+			<div>
+				{@render above()}
+			</div>
+			{@render children()}
 		</div>
-		{@render children()}
 	</div>
 {:else}
 	{@render above()}
@@ -127,13 +134,18 @@
 <style>
 	.scroll-chrome {
 		position: sticky;
-		top: calc(-1 * (var(--promo-h, 0px) + var(--banner-h, 0px)));
+		top: 0;
 		z-index: 150;
 	}
 
+	.scroll-chrome-content {
+		position: relative;
+		transform: translateY(var(--scroll-chrome-offset, 0px));
+	}
+
 	@media (prefers-reduced-motion: no-preference) {
-		.scroll-chrome {
-			transition: top var(--ds-motion-duration-ui-slow) var(--ds-motion-ease);
+		.scroll-chrome-content {
+			transition: transform var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-ui);
 		}
 	}
 </style>

@@ -2,6 +2,8 @@
 	import { provideImageEditing } from '$lib/utils/image-editing.svelte';
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
+	import { usePromotionClock } from '$lib/promotions/clock.svelte';
+	import { promotionDeadline, promotionIsActive } from '$lib/promotions/time';
 	import { page } from '$app/state';
 	import {
 		saveLayoutData,
@@ -25,6 +27,7 @@
 	import EditModal from '$lib/components/EditModal.svelte';
 	import LayoutImageSettings from '$lib/components/LayoutImageSettings.svelte';
 	import PageSeoSettings from '$lib/components/PageSeoSettings.svelte';
+	import CrmButton from '$lib/components/CrmButton.svelte';
 	import YandexDirectGoalsButton from '$lib/components/YandexDirectGoalsButton.svelte';
 	import SiteSettingsButton from '$lib/components/SiteSettingsButton.svelte';
 	import SiteAnalytics from '$lib/components/SiteAnalytics.svelte';
@@ -35,6 +38,7 @@
 	} from '$lib/utils/editable-visibility.svelte';
 	import { hasSiteAppearance } from '$lib/site-settings/appearance';
 	import SiteAppearance from '$lib/components/SiteAppearance.svelte';
+	import { readDesignSystem } from '$lib/design-systems/registry';
 	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
 	import type { ComponentMap, TemplateLayout } from '$lib/components/templates/types';
 	import PageDraftToolbar from '$lib/growth/PageDraftToolbar.svelte';
@@ -62,6 +66,7 @@
 	let {
 		layout,
 		componentMap,
+		templateId = null,
 		slug = null,
 		components = [],
 		headerData = null,
@@ -72,6 +77,7 @@
 	}: {
 		layout: TemplateLayout;
 		componentMap: ComponentMap;
+		templateId?: number | null;
 		slug: string | null;
 		components: PageComponent[];
 		headerData: Record<string, unknown> | null;
@@ -106,6 +112,11 @@
 	let headerDataState = $state<Record<string, unknown>>(headerData ?? {});
 	$effect(() => {
 		headerDataState = headerData ?? {};
+	});
+	// svelte-ignore state_referenced_locally — начальное значение нужно для SSR.
+	let footerDataState = $state<Record<string, unknown>>(footerData ?? {});
+	$effect(() => {
+		footerDataState = footerData ?? {};
 	});
 
 	// Banner и Header — соседние layout-компоненты одного headerData blob.
@@ -153,6 +164,21 @@
 		componentsState = components ?? [];
 		orderError = null;
 	});
+
+	function isPromotionBlock(type: string): boolean {
+		return (slug === '/actions' && (type === 'ActionsBanner' || type === 'ActionsTimer')) ||
+			(slug === '/' && type === 'PromoOffer');
+	}
+
+	const promotionNow = usePromotionClock(() => componentsState
+		.filter(({ type }) => isPromotionBlock(type))
+		.map(({ type, data }) => promotionDeadline(data, type === 'ActionsTimer')));
+
+	function promotionBlockVisible(element: PageComponent): boolean {
+		if (!isPromotionBlock(element.type)) return true;
+		if (Number(templateId) === 1 && element.type === 'ActionsBanner' && !element.data.imageUrl) return false;
+		return promotionIsActive(element.data, promotionNow(), element.type === 'ActionsTimer');
+	}
 
 	// Компоненты со своей панелью: PageRenderer не добавляет им вторую.
 	// Реестр сверяется с Svelte-разметкой всех шаблонов через check:component-controls.
@@ -228,6 +254,15 @@
 	const promo2ActionsComponentsWithSwitcher = new Set(['Hero']);
 	const promo2HomeComponentsWithSwitcher = new Set(['Hero']);
 	const promo2FacadesComponentsWithSwitcher = new Set(['FacadesCatalog']);
+	const promo2EquipmentComponentsWithSwitcher = new Set([
+		'EquipmentHero',
+		'EquipmentAppliances',
+		'EquipmentWorktops',
+		'EquipmentPlumbing',
+		'EquipmentLighting',
+		'EquipmentStorage',
+		'EquipmentCTA'
+	]);
 
 	function componentHasOwnSwitcher(type: string): boolean {
 		return (
@@ -240,7 +275,10 @@
 				promo2ActionsComponentsWithSwitcher.has(type)) ||
 			(Number(editContext?.templateId) === 2 &&
 				slug === '/facades' &&
-				promo2FacadesComponentsWithSwitcher.has(type))
+				promo2FacadesComponentsWithSwitcher.has(type)) ||
+			(Number(editContext?.templateId) === 2 &&
+				slug === '/equipment' &&
+				promo2EquipmentComponentsWithSwitcher.has(type))
 		);
 	}
 
@@ -262,8 +300,7 @@
 		);
 	}
 
-	const SINGLE_VERSION_THEME_DEFAULTS: Record<string, 'light' | 'dark'> = {
-		'/privacy:PrivacyPolicy': 'light',
+	const PROMO1_THEME_DEFAULTS: Record<string, 'light' | 'dark'> = {
 		'/mebel/{category}/{project}:MebelProjectModel': 'light',
 		'/:HomeFAQ': 'light',
 		'/actions:Hero': 'dark',
@@ -291,8 +328,27 @@
 		'/partnership:PartnershipCTA': 'dark'
 	};
 
+	const TEMPLATE_THEME_DEFAULTS: Partial<Record<number, Record<string, 'light' | 'dark'>>> = {
+		0: { '/about:Hero': 'dark' },
+		1: PROMO1_THEME_DEFAULTS,
+		2: {
+			'/actions:ActionsCards': 'light',
+			'/actions:ActionsBanner': 'dark',
+			'/about:Hero': 'light',
+			'/about:Mission': 'light',
+			'/about:AboutCTA': 'dark'
+		},
+		3: {
+			'/about:Hero': 'dark',
+			'/about:Mission': 'dark',
+			'/about:Values': 'dark'
+		}
+	};
+
 	function singleVersionThemeDefault(type: string): 'light' | 'dark' | null {
-		return SINGLE_VERSION_THEME_DEFAULTS[`${slug}:${type}`] ?? null;
+		if (slug === '/privacy' && type === 'PrivacyPolicy') return 'light';
+		const id = Number(templateId ?? editContext?.templateId ?? 0);
+		return TEMPLATE_THEME_DEFAULTS[id]?.[`${slug}:${type}`] ?? null;
 	}
 
 	// Инициализируем auth в браузере
@@ -453,7 +509,7 @@
 {#snippet pageBlock(element: PageComponent)}
 	{@const Component = componentMap[element.type] ?? null}
 	{@const singleThemeDefault = singleVersionThemeDefault(element.type)}
-	{#if Component && (isEditable || !isSingleVersionDisabled(element))}
+	{#if Component && (isEditable || (!isSingleVersionDisabled(element) && promotionBlockVisible(element)))}
 		<div
 			use:trackBlock={element.type}
 			data-field-toolbar-scope
@@ -487,11 +543,15 @@
 	{/if}
 {/snippet}
 
-<SiteAppearance value={headerDataState.siteAppearance} />
+<SiteAppearance
+	value={headerDataState.siteAppearance}
+	designSystem={readDesignSystem(headerDataState)}
+/>
 
 <div
 	class="contents"
 	data-site-template={editContext?.templateId ?? undefined}
+	data-ds-contrast-root
 	data-site-appearance={hasSiteAppearance(headerDataState.siteAppearance) ? '' : undefined}
 >
 	{#if !draftMode}<SiteAnalytics data={headerDataState} enabled={!isEditable} />{/if}
@@ -550,7 +610,11 @@
 				{/each}
 			</CatalogHeroRegion>
 		{/if}
-		<NavigationBody catalog={hasCatalogSidebar} intro={!hasCatalogHero}>
+		<NavigationBody
+			catalog={hasCatalogSidebar}
+			intro={!hasCatalogHero}
+			smoothNavigation={Number(templateId ?? editContext?.templateId) === 2}
+		>
 			{#each bodyComponents as element (element.type)}
 				{@render pageBlock(element)}
 			{/each}
@@ -589,36 +653,41 @@
 
 	{#if Footer}
 		{#snippet pageSettings(triggerClass: string)}
+			{#if !sharedPreview}<CrmButton {triggerClass} />{/if}
 			<PageSeoSettings {seo} {editContext} {isEditable} {triggerClass} />
 			<YandexDirectGoalsButton {isEditable} {triggerClass} />
 			<SiteSettingsButton {isEditable} {triggerClass} licenseId={editContext?.licenseId ?? null} />
 		{/snippet}
 		<div class="relative" data-field-toolbar-scope>
-			<Footer
-				sitePhone={typeof headerDataState.phone === 'string'
-					? headerDataState.phone
-					: headerDataState.phone === null
-						? ''
-						: null}
-				data={footerComponent
-					? {
-							// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает
-							// возможные устаревшие копии из сохранённых данных компонента.
-							...footerComponent.data,
-							logoUrl: headerDataState.logoUrl,
-							disabledRubrics: headerDataState.disabledRubrics,
-							disabledServices: headerDataState.disabledServices
-						}
-					: {
-							logoUrl: headerDataState.logoUrl,
-							disabledRubrics: headerDataState.disabledRubrics,
-							disabledServices: headerDataState.disabledServices,
-							...footerData
-						}}
-				editContext={footerComponent ? footerEditContext : editContext}
-				{isEditable}
-				{pageSettings}
-			/>
+			{#if Number(editContext?.templateId) === 2}
+				<Footer bind:data={footerDataState} {editContext} {isEditable} {pageSettings} />
+			{:else}
+				<Footer
+					sitePhone={typeof headerDataState.phone === 'string'
+						? headerDataState.phone
+						: headerDataState.phone === null
+							? ''
+							: null}
+					data={footerComponent
+						? {
+								// Компонентный футер: bridge-поля хэдера последними → живой хэдер перекрывает
+								// возможные устаревшие копии из сохранённых данных компонента.
+								...footerComponent.data,
+								logoUrl: headerDataState.logoUrl,
+								disabledRubrics: headerDataState.disabledRubrics,
+								disabledServices: headerDataState.disabledServices
+							}
+						: {
+								logoUrl: headerDataState.logoUrl,
+								disabledRubrics: headerDataState.disabledRubrics,
+								disabledServices: headerDataState.disabledServices,
+								...footerData
+							}}
+					editContext={footerComponent ? footerEditContext : editContext}
+					{isEditable}
+					{pageSettings}
+				/>
+			{/if}
 		</div>
 	{/if}
 

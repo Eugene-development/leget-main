@@ -90,12 +90,16 @@
 </script>
 
 <svelte:head><title>Результаты сайта — CRM LEGET</title></svelte:head>
-<InsightsShell {data}>
-	<h1>Что приносит сайт</h1>
-	<p class="muted">
-		Заявки за выбранный период и их текущий результат. Сделка учитывается по первой связанной
-		заявке; платежи включают возвраты.
-	</p>
+<InsightsShell site={data.siteId}>
+	<header class="crm-header crm-report-header">
+		<div class="crm-header-title">
+			<h1>Что приносит сайт</h1>
+			<p class="muted">
+				Заявки за выбранный период и их текущий результат. Сделка учитывается по первой связанной
+				заявке; платежи включают возвраты.
+			</p>
+		</div>
+	</header>
 	<form class="date-filter" method="GET">
 		<input type="hidden" name="site" value={data.siteId} />
 		<label>Заявки с <input type="date" name="from" value={data.report?.from} required /></label>
@@ -105,7 +109,7 @@
 		>
 	</form>
 	{#if data.report}
-		<div class="table-wrap">
+		<div class="table-wrap crm-report-table">
 			<table>
 				<caption>Путь обращения к заказу</caption><thead
 					><tr
@@ -128,7 +132,7 @@
 		</div>
 		<h2>Источники и кампании</h2>
 		{#if data.report.sources.length}
-			<div class="table-wrap">
+			<div class="table-wrap crm-report-table">
 				<table>
 					<thead
 						><tr
@@ -170,7 +174,7 @@
 		</p>
 	{/if}
 	{#if data.metrika}
-		<section class="metrika">
+		<section class="metrika crm-panel">
 			<h2>Подтверждённые конверсии в Метрике</h2>
 			<p>
 				Создайте в своём счётчике цели JavaScript с условием «совпадает». Передача начнётся для
@@ -223,7 +227,7 @@
 					{failure}
 				</p>{/if}
 			<h3>Очередь передачи</h3>
-			{#if data.metrika.deliveries.length}<div class="table-wrap">
+			{#if data.metrika.deliveries.length}<div class="table-wrap crm-report-table">
 					<table>
 						<thead
 							><tr
@@ -284,7 +288,11 @@
 		align-items: end;
 		gap: 16px;
 		flex-wrap: wrap;
-		margin: 28px 0;
+		margin: 0 0 20px;
+		background: var(--crm-paper);
+		border: 1px solid var(--crm-line);
+		border-radius: var(--crm-radius);
+		padding: 14px;
 	}
 	label {
 		display: grid;
@@ -322,9 +330,7 @@
 		margin-top: 5px;
 	}
 	.metrika {
-		margin-top: 48px;
-		padding-top: 32px;
-		border-top: 1px solid var(--crm-line);
+		margin-top: 28px;
 	}
 	.settings {
 		display: grid;

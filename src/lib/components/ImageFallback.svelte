@@ -133,6 +133,7 @@
 		<ImageEditButton
 			{target}
 			{label}
+			actionLabel={onImageEdit ? 'Редактировать изображение' : undefined}
 			visibility={imageVisibility}
 			onOpen={onImageEdit ??
 				(() =>

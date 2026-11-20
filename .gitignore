@@ -25,3 +25,5 @@ vite.config.ts.timestamp-*
 
 # Local certificates
 cert/
+# Public page recovery snapshots are runtime data.
+.cache/public-pages/

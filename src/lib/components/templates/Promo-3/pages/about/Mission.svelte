@@ -4,6 +4,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -23,7 +25,10 @@
 	}
 </script>
 
-<section class="relative py-24 lg:py-32">
+<section
+	class="p1-surface relative py-24 lg:py-32"
+	data-p1-theme={blockTheme(data, 'dark')}
+>
 	<div class="px-10 lg:px-24 xl:px-32">
 		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
 			<div>
@@ -47,7 +52,7 @@
 					onSave={(v) => saveField('heading', v)}
 					class="block"
 				>
-					{#snippet children(displayValue)}<h2 class="mt-4 text-4xl text-white lg:text-5xl">
+				{#snippet children(displayValue)}<h2 class="p1-title mt-4 text-4xl lg:text-5xl">
 							<RichText value={displayValue} />
 						</h2>{/snippet}
 				</EditableField>
@@ -63,7 +68,7 @@
 					onSave={(v) => saveField('text1', v)}
 					class="block"
 				>
-					{#snippet children(displayValue)}<p class="mt-6 text-lg leading-relaxed text-surface-300">
+				{#snippet children(displayValue)}<p class="p1-body mt-6 text-lg leading-relaxed">
 							<RichText value={displayValue} />
 						</p>{/snippet}
 				</EditableField>
@@ -79,7 +84,7 @@
 					onSave={(v) => saveField('text2', v)}
 					class="block"
 				>
-					{#snippet children(displayValue)}<p class="mt-4 leading-relaxed text-surface-300">
+				{#snippet children(displayValue)}<p class="p1-body mt-4 leading-relaxed">
 							<RichText value={displayValue} />
 						</p>{/snippet}
 				</EditableField>
@@ -87,7 +92,7 @@
 
 			<div class="relative">
 				<div
-					class="relative rounded-3xl border border-surface-700/50 bg-surface-800/50 p-10 backdrop-blur-sm"
+			class="p1-card relative rounded-3xl border p-10 backdrop-blur-sm"
 				>
 					<div
 						class="absolute -top-px left-10 h-px w-20 bg-linear-to-r from-transparent via-accent-500 to-transparent"
@@ -105,7 +110,7 @@
 						onSave={(v) => saveField('quote', v)}
 						class="block"
 					>
-						{#snippet children(displayValue)}<blockquote class="ds-title-sub text-2xl text-white">
+				{#snippet children(displayValue)}<blockquote class="p1-title ds-title-sub text-2xl">
 								<RichText value={displayValue} />
 							</blockquote>{/snippet}
 					</EditableField>
@@ -116,10 +121,10 @@
 							{String(data?.quoteInitials ?? 'АП')}
 						</div>
 						<div>
-							<div class="text-sm font-semibold text-white">
+					<div class="p1-title text-sm font-semibold">
 								{editableText(data?.quoteName, 'Александр Петров')}
 							</div>
-							<div class="text-xs text-surface-300">
+					<div class="p1-body text-xs">
 								{String(data?.quoteRole ?? 'Основатель компании')}
 							</div>
 						</div>

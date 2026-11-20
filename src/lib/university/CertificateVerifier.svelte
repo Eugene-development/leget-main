@@ -9,7 +9,12 @@
 	let problem = $state('');
 	let invalidId = $state(false);
 	let result = $state<Verification | null>(null);
+	let dialog: HTMLDialogElement;
 	const fieldId = $props.id();
+	export function open() {
+		dialog.showModal();
+	}
+
 	function clearResult() {
 		result = null;
 		problem = '';
@@ -53,115 +58,146 @@
 	}
 </script>
 
-<section
+<dialog
+	bind:this={dialog}
 	class="certificate-verifier"
-	id="university-verification"
-	aria-labelledby="{fieldId}-heading"
+	aria-labelledby="{fieldId}-dialog-heading"
+	aria-describedby="{fieldId}-description"
 >
-	<div class="verification-intro">
-		<h2 id="{fieldId}-heading" class="p1-title">Проверка дизайнера</h2>
-		<p class="p1-body">
-			Проверьте сертификат специалиста, которому собираетесь доверить свой проект. По номеру записи
-			вы увидите имя получателя и все его сертификаты Универа.
-		</p>
-		<p class="verification-note p1-body">Вход и регистрация не нужны.</p>
-	</div>
-	<div class="verification-content">
-		<form onsubmit={verify} class="ym-hide-content" aria-busy={busy}>
-			<label for="{fieldId}-certificate">ID записи сертификата</label>
-			<div class="verification-controls">
-				<input
-					id="{fieldId}-certificate"
-					name="certificate_id"
-					type="text"
-					bind:value={certificateId}
-					oninput={clearResult}
-					disabled={busy}
-					maxlength="80"
-					required
-					autocomplete="off"
-					autocapitalize="none"
-					spellcheck="false"
-					placeholder="Введите номер записи"
-					aria-describedby="{fieldId}-hint"
-					aria-invalid={invalidId}
-				/>
-				<button
-					type="submit"
-					disabled={busy}
-					data-metrika-goal="university_certificate_verify_submit"
-					data-goal-action="submit_click"
-					data-goal-label="Проверить сертификат дизайнера"
-					>{busy ? 'Проверяем…' : 'Проверить'}</button
-				>
-			</div>
-			<p id="{fieldId}-hint" class="verification-note p1-body">
-				Номер записи указан в нижней части сертификата.
-			</p>
-		</form>
-		{#if problem}<p class="verification-problem" role="alert">{problem}</p>{/if}
-		<div aria-live="polite" aria-atomic="true" class="ym-hide-content">
-			{#if result}
-				<div class="verification-result">
-					<p class="verification-confirmed">Сертификат подтверждён</p>
-					<h3 class="p1-title">{result.designer_name}</h3>
-					<p class="verification-note p1-body">Имя получателя в указанном сертификате.</p>
-					<h4 class="verification-list-title p1-title-sub">
-						Сертификаты получателя · {result.certificates.length}
-					</h4>
-					<ul>
-						{#each result.certificates as certificate (certificate.id)}
-							<li class:verification-match={certificate.id === result.matched_certificate_id}>
-								<div class="verification-row-heading">
-									<h5 class="p1-title-sub">{certificate.course_title}</h5>
-									{#if certificate.id === result.matched_certificate_id}<span
-											>Указанный сертификат</span
-										>{/if}
-								</div>
-								<p class="p1-body">
-									{certificate.discipline} · Выдан {dateLabel(certificate.issued_at)}
-								</p>
-								<p class="verification-record p1-body">ID записи: <code>{certificate.id}</code></p>
-							</li>
-						{/each}
-					</ul>
-					<p class="verification-note p1-body">
-						Сертификаты подтверждают прохождение внутренних курсов Универа.
-					</p>
-				</div>
-			{/if}
+	<header class="verification-dialog-header">
+		<h2 id="{fieldId}-dialog-heading" class="p1-title">Проверка дизайнера</h2>
+		<button
+			class="verification-close"
+			type="button"
+			aria-label="Закрыть проверку дизайнера"
+			data-metrika-goal="university_certificate_verify_close"
+			data-goal-action="close"
+			onclick={() => dialog.close()}
+		>
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" />
+			</svg>
+		</button>
+	</header>
+	<p id="{fieldId}-description" class="verification-description p1-body text-sm">
+		По ID записи вы увидите имя получателя и все его сертификаты Универа. Вход и регистрация не
+		нужны.
+	</p>
+	<form onsubmit={verify} class="ym-hide-content" aria-busy={busy}>
+		<label for="{fieldId}-certificate">ID записи сертификата</label>
+		<div class="verification-controls">
+			<input
+				class="text-base"
+				id="{fieldId}-certificate"
+				name="certificate_id"
+				type="text"
+				bind:value={certificateId}
+				oninput={clearResult}
+				disabled={busy}
+				maxlength="80"
+				required
+				autocomplete="off"
+				autocapitalize="none"
+				spellcheck="false"
+				placeholder="Введите номер записи"
+				aria-describedby="{fieldId}-hint"
+				aria-invalid={invalidId}
+			/>
+			<button
+				class="verification-action bg-link-500"
+				type="submit"
+				disabled={busy}
+				data-metrika-goal="university_certificate_verify_submit"
+				data-goal-action="submit_click"
+				data-goal-label="Проверить сертификат дизайнера">{busy ? 'Проверяем…' : 'Проверить'}</button
+			>
 		</div>
+		<p id="{fieldId}-hint" class="verification-note p1-body">
+			Номер записи указан в нижней части сертификата.
+		</p>
+	</form>
+	{#if problem}<p class="verification-problem" role="alert">{problem}</p>{/if}
+	<div aria-live="polite" aria-atomic="true" class="ym-hide-content">
+		{#if result}
+			<div class="verification-result">
+				<p class="verification-confirmed">Сертификат подтверждён</p>
+				<h3 class="p1-title text-3xl md:text-4xl">{result.designer_name}</h3>
+				<p class="verification-note p1-body">Имя получателя в указанном сертификате.</p>
+				<h4 class="verification-list-title p1-title-sub">
+					Сертификаты получателя · {result.certificates.length}
+				</h4>
+				<ul>
+					{#each result.certificates as certificate (certificate.id)}
+						<li class:verification-match={certificate.id === result.matched_certificate_id}>
+							<div class="verification-row-heading">
+								<h5 class="p1-title-sub text-base">{certificate.course_title}</h5>
+								{#if certificate.id === result.matched_certificate_id}<span
+										>Указанный сертификат</span
+									>{/if}
+							</div>
+							<p class="p1-body">
+								{certificate.discipline} · Выдан {dateLabel(certificate.issued_at)}
+							</p>
+							<p class="verification-record p1-body">ID записи: <code>{certificate.id}</code></p>
+						</li>
+					{/each}
+				</ul>
+				<p class="verification-note p1-body">
+					Сертификаты подтверждают прохождение внутренних курсов Универа.
+				</p>
+			</div>
+		{/if}
 	</div>
-</section>
+</dialog>
 
 <style>
-	.certificate-verifier {
-		display: grid;
-		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-		gap: clamp(32px, 5vw, 80px);
-		border-top: 1px solid var(--p1-border);
-		padding: 64px 0 24px;
-		margin-top: 56px;
-		scroll-margin-top: calc(var(--header-h, 100px) + 24px);
+	dialog {
+		box-sizing: border-box;
+		width: min(40rem, calc(100% - 2rem));
+		max-height: calc(100dvh - 2rem);
+		margin: auto;
+		padding: clamp(20px, 5vw, 36px);
+		overflow: auto;
+		overscroll-behavior: contain;
+		border: 1px solid var(--p1-border);
+		border-radius: var(--ds-radius-sm);
+		background: var(--p1-surface-paper);
 		color: var(--p1-title);
+		box-shadow: 0 24px 72px color-mix(in oklab, var(--ds-scrim) 20%, transparent);
 	}
-	.verification-intro h2 {
+	dialog::backdrop {
+		background: color-mix(in oklab, var(--ds-scrim) 55%, transparent);
+	}
+	:global(html):has(.certificate-verifier[open]) {
+		overflow: hidden;
+	}
+	.verification-dialog-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin-bottom: 16px;
+	}
+	.verification-dialog-header h2 {
+		margin: 0;
 		font-family: var(--ds-font-university);
-		font-size: clamp(32px, 3.8vw, 48px);
-		line-height: 1.12;
-		margin: 0 0 22px;
+		font-size: 1.5rem;
+		line-height: 1.15;
 	}
-	.verification-intro > p {
-		max-width: 46ch;
-		font-size: 16px;
-		line-height: 1.7;
+	.verification-close {
+		display: grid;
+		flex: 0 0 44px;
+		place-items: center;
+		height: 44px;
+		padding: 0;
+		border: 1px solid var(--p1-border);
+		border-radius: var(--ds-radius-sm);
+		background: var(--p1-card);
+		color: var(--p1-title);
+		cursor: pointer;
 	}
-	.verification-intro .verification-note {
-		font-size: 14px;
-		margin-top: 18px;
-	}
-	.verification-content {
-		min-width: 0;
+	.verification-description {
+		margin: 0 0 24px;
 	}
 	form label {
 		display: block;
@@ -181,8 +217,7 @@
 		background: var(--p1-card);
 		color: var(--p1-title);
 		padding: 13px 15px;
-		font: inherit;
-		font-size: 16px;
+		font-family: inherit;
 		caret-color: var(--p1-accent);
 	}
 	input::placeholder {
@@ -194,7 +229,7 @@
 		outline: 2px solid var(--p1-accent);
 		outline-offset: 4px;
 	}
-	button {
+	.verification-action {
 		background: var(--p1-accent);
 		color: var(--ds-on-accent);
 		border: 0;
@@ -214,7 +249,7 @@
 		cursor: wait;
 	}
 	.verification-note {
-		font-size: 13px;
+		font-size: 0.875rem;
 		line-height: 1.6;
 		margin-top: 12px;
 	}
@@ -237,7 +272,6 @@
 	}
 	.verification-result h3 {
 		font-family: var(--ds-font-university);
-		font-size: clamp(28px, 3vw, 38px);
 		line-height: 1.2;
 	}
 	.verification-list-title {
@@ -262,9 +296,6 @@
 		gap: 8px 16px;
 		margin-bottom: 8px;
 	}
-	.verification-row-heading h5 {
-		font-size: 17px;
-	}
 	.verification-row-heading span {
 		font-size: 11px;
 		border: 1px solid var(--p1-border);
@@ -284,22 +315,11 @@
 		font-size: 12px;
 		overflow-wrap: anywhere;
 	}
-	@media (max-width: 850px) {
-		.certificate-verifier {
-			grid-template-columns: 1fr;
-			gap: 28px;
-			padding-top: 40px;
-			margin-top: 40px;
-		}
-		.verification-intro > p {
-			max-width: 65ch;
-		}
-	}
 	@media (max-width: 450px) {
 		.verification-controls {
 			flex-direction: column;
 		}
-		button {
+		.verification-action {
 			min-height: 48px;
 		}
 	}

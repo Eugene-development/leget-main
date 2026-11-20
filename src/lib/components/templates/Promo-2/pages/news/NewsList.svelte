@@ -157,7 +157,7 @@
 					<!-- Content -->
 					<div class="min-w-0 flex-1">
 						<h2
-							class="text-lg text-primary transition-colors duration-300 group-hover:text-secondary md:text-xl"
+							class="text-card-title text-primary transition-colors duration-300 group-hover:text-secondary"
 							style="font-family: var(--font-heading);"
 						>
 							<ContentText
@@ -171,7 +171,7 @@
 								defaults={{ news }}
 							/>
 						</h2>
-						<p class="mt-2.5 text-sm leading-relaxed text-secondary">
+						<p class="mt-2.5 text-prose text-secondary">
 							<ContentText
 								bind:data
 								{editContext}
@@ -191,7 +191,7 @@
 
 		{#if filteredNews.length === 0}
 			<div class="py-24 text-center">
-				<p class="text-base text-muted">
+				<p class="text-prose text-muted">
 					<ContentText
 						bind:data
 						{editContext}

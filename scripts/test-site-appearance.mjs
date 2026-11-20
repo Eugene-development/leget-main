@@ -36,61 +36,9 @@ const colors = {
 	radiusPreset: 'sharp'
 };
 
-function primaryPair(style) {
-	return Object.fromEntries(style.split('; ').map((entry) => entry.split(': ').slice(0, 2)));
-}
-
-function assertPrimaryContrast(tokens, primary) {
-	const accent = tokens['--ds-color-primary-accent'];
-	const hover = tokens['--ds-color-primary-accent-hover'];
-	const onAccent = tokens['--ds-color-on-primary-accent'];
-	assert.ok(appearance.contrastRatio(primary, tokens['--ds-color-on-primary']) >= 4.5);
-	for (const fill of [accent, hover]) {
-		assert.ok(appearance.contrastRatio(primary, fill) >= 4.5, `${fill} against ${primary}`);
-		assert.ok(appearance.contrastRatio(onAccent, fill) >= 4.5, `${onAccent} on ${fill}`);
-	}
-}
-
-test('primary surfaces retain readable accents and button text for arbitrary owner palettes', () => {
-	for (const primaryColor of ['#2c2c2c', '#ffffff', '#000000', '#777777', '#8b3f35']) {
-		for (const accentColor of [
-			'#595579',
-			'#432dd7',
-			'#8b3f35',
-			'#ffffff',
-			'#000000',
-			primaryColor
-		]) {
-			const tokens = primaryPair(
-				appearance.siteAppearanceStyle({ ...colors, primaryColor, accentColor })
-			);
-			assertPrimaryContrast(tokens, primaryColor);
-			// Adapting a dark section must not change the site's selected accent elsewhere.
-			assert.equal(tokens['--ds-color-accent'], accentColor);
-		}
-	}
-	const tokens = primaryPair(
-		appearance.siteAppearanceStyle({ ...colors, primaryColor: '#2c2c2c', accentColor: '#c4a87c' })
-	);
-	assert.equal(tokens['--ds-color-primary-accent'], '#c4a87c');
-});
-
-test('all built-in systems provide readable primary surface pairs without owner overrides', () => {
-	for (const slug of ['base', 'apple', 'graphite', 'iris', 'ochre']) {
-		const css = readFileSync(
-			new URL(`../src/lib/design-systems/${slug}.css`, import.meta.url),
-			'utf8'
-		);
-		const tokens = Object.fromEntries(
-			Array.from(css.matchAll(/(--ds-color-[\w-]+):\s*(#[0-9a-f]{6});/g), (m) => [m[1], m[2]])
-		);
-		assertPrimaryContrast(tokens, tokens['--ds-color-primary']);
-	}
-});
-
 test('the first server render includes root overrides, before hydration', () => {
 	const { head } = render(Component, { props: { value: colors } });
-	assert.match(head, /<style data-site-appearance>:root \{/);
+	assert.match(head, /<style data-site-appearance(?:="")?>:root \{/);
 	assert.match(head, /--ds-color-surface: #e5edf4 !important/);
 	assert.match(head, /--color-surface: var\(--ds-color-surface\) !important/);
 	assert.match(head, /--ds-font-heading: 'Inter'/);
@@ -210,6 +158,12 @@ test('saving and disabling use the shared site header without changing another s
 		assert.equal(writes.length, 1);
 		assert.deepEqual(license.headerData.siteAppearance, colors);
 	}
+	const invalidAccent = await save(true, { accentColor: '#oops' });
+	assert.equal(invalidAccent.status, 400);
+	assert.ok(invalidAccent.data.errors.accentColor);
+	assert.equal(writes.length, 1);
+	assert.equal((await save(true, { accentColor: '#ffffcc' })).success, true);
+	assert.equal(license.headerData.siteAppearance.accentColor, '#ffffcc');
 	assert.equal((await save(false)).success, true);
 	assert.equal(license.headerData.siteAppearance, null);
 	assert.doesNotMatch(
@@ -218,5 +172,5 @@ test('saving and disabling use the shared site header without changing another s
 	);
 	assert.equal(license.headerData.phone, 'keep-me');
 	assert.deepEqual(other.headerData, { phone: 'other-site' });
-	assert.equal(writes.length, 2);
+	assert.equal(writes.length, 3);
 });

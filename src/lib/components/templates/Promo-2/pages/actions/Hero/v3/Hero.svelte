@@ -14,11 +14,15 @@
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		showOffer = true,
+		showStats = true
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		showOffer?: boolean;
+		showStats?: boolean;
 	} = $props();
 </script>
 
@@ -48,7 +52,8 @@
 		</div>
 		<div class="ah-poster-grid">
 			<div class="ah-poster-offer">
-				<div class="ah-offer">
+				{#if showOffer}
+<div class="ah-offer">
 					<span class="ah-note"
 						><ContentText
 							bind:data
@@ -71,6 +76,7 @@
 						/>
 					</div>
 				</div>
+{/if}
 				{#if data?.description || isEditable}<div class="ah-description">
 						<HeroField
 							bind:data
@@ -98,7 +104,7 @@
 			</div>
 		</div>
 		<div class="ah-poster-footer">
-			<HeroStats bind:data {editContext} {isEditable} /><a class="ah-browse" href="#actions-cards"
+			{#if showStats}<HeroStats bind:data {editContext} {isEditable} />{/if}<a class="ah-browse" href="#actions-cards"
 				><ContentText
 					bind:data
 					{editContext}

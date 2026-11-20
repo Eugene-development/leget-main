@@ -80,7 +80,7 @@
 						data-goal-action="open"
 						onclick={() => serviceOrderStore.open('furniture-project')}
 						type="button"
-						class="inline-flex items-center gap-3 rounded-full bg-surface-raised px-10 py-5 text-base font-bold text-ink-950 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-cat-8-500 hover:text-on-accent active:scale-95"
+						class="inline-flex items-center gap-3 rounded-full bg-surface-raised px-10 py-5 text-base font-bold text-ink-950 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-cat-8-500 p1-hover-on-dark active:scale-95"
 					>
 						<RichText value={displayValue} />
 					</button>

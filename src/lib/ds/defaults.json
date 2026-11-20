@@ -2077,6 +2077,7 @@
                 "EquipmentLighting": {
                     "heading": "Освещение",
                     "description": "Свет делает мебель удобнее и подчёркивает её линии. Продумываем подсветку вместе с проектом, чтобы провода, профили и выключатели заняли своё место.",
+                    "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/equipment-lighting-20261117.webp",
                     "items": [
                         {
                             "title": "Свет рабочей зоны",
@@ -2171,6 +2172,9 @@
                     "allLinkText": "Все стили",
                     "allLink": "/styles"
                 },
+                "Video": {
+                    "src": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4"
+                },
                 "Advantages": {
                     "label": "Преимущества",
                     "heading": "Почему выбирают нас",
@@ -2219,9 +2223,6 @@
                         "https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg",
                         "https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg"
                     ]
-                },
-                "Video": {
-                    "src": "https://storage.yandexcloud.net/leget-main/templates/promo-2/zov.mp4"
                 },
                 "Principles": {
                     "label": "Наши ценности",
@@ -2485,8 +2486,25 @@
                     "assemblyImage": "https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-assembly-2-9-3-1-20261109.webp"
                 },
                 "KitchenStyles": {
-                    "heading": "Варианты стилистических решений",
-                    "description": "Мы адаптируем индивидуальный проект под любой стиль."
+                    "heading": "Удобство в деталях",
+                    "description": "Продумываем, где хранить посуду и продукты и как осветить рабочую зону.",
+                    "styles": [
+                        {
+                            "title": "Посуда под рукой",
+                            "description": "Глубокий ящик выдвигается целиком, а переставляемые держатели удерживают стопки тарелок на месте.",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-details-2-9-4-1/dish-drawer.webp"
+                        },
+                        {
+                            "title": "Запасы на виду",
+                            "description": "Выдвижная колонна открывает доступ к банкам и бутылкам по всей глубине шкафа.",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-details-2-9-4-1/pull-out-pantry.webp"
+                        },
+                        {
+                            "title": "Свет там, где готовите",
+                            "description": "Встроенная подсветка под верхними шкафами освещает столешницу вдоль всей рабочей зоны.",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/kitchen-details-2-9-4-1/worktop-lighting.webp"
+                        }
+                    ]
                 },
                 "KitchensCTA": {
                     "heading": "Хотите заказать кухню?",
@@ -2513,7 +2531,27 @@
                 },
                 "WardrobeTypes": {
                     "label": "Варианты решений",
-                    "heading": "Виды систем"
+                    "heading": "Виды систем",
+                    "types": [
+                        {
+                            "title": "Встроенные шкафы",
+                            "description": "Монтируются от пола до потолка, скрывая неровности стен и максимально эффективно используя ниши",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/wardrobe-types-2-10-4-1/built-in-sliding-wardrobe.webp",
+                            "offset": ""
+                        },
+                        {
+                            "title": "Корпусные решения",
+                            "description": "Самостоятельные модули, которые можно перемещать. Акцентные фасады и витринные стеклянные элементы",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/wardrobe-types-2-10-4-1/freestanding-wardrobe.webp",
+                            "offset": "lg:-translate-y-8"
+                        },
+                        {
+                            "title": "Гардеробные комнаты",
+                            "description": "Открытые и закрытые модульные системы премиум-класса с умной подсветкой и организаторами",
+                            "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/wardrobe-types-2-10-4-1/walk-in-closet.webp",
+                            "offset": "lg:-translate-y-16"
+                        }
+                    ]
                 },
                 "WardrobesCTA": {
                     "heading": "Закажите расчет стоимости",
@@ -2928,7 +2966,14 @@
         },
         "2": {
             "/actions:Hero": 4,
-            "/facades:FacadesCatalog": 4
+            "/facades:FacadesCatalog": 4,
+            "/equipment:EquipmentHero": 2,
+            "/equipment:EquipmentAppliances": 2,
+            "/equipment:EquipmentWorktops": 2,
+            "/equipment:EquipmentPlumbing": 2,
+            "/equipment:EquipmentLighting": 2,
+            "/equipment:EquipmentStorage": 2,
+            "/equipment:EquipmentCTA": 2
         },
         "3": {}
     }

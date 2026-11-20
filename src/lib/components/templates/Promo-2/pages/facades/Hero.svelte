@@ -32,7 +32,7 @@
 	});
 </script>
 
-<section class="relative min-h-[90vh] overflow-hidden bg-surface">
+<section class="relative min-h-[90vh] overflow-hidden bg-primary">
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['image']}
@@ -82,7 +82,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-5xl text-white md:text-6xl lg:text-7xl"
+								class="text-page-title text-white"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -106,7 +106,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mt-8 max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
+							<p class="mt-8 max-w-xl text-prose text-white/70">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}

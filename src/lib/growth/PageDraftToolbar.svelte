@@ -272,7 +272,9 @@
 							? 'Публикация'
 							: revision.action === 'restore'
 								? 'Восстановление'
-								: 'До изменений'}
+								: revision.action === 'promotion'
+									? 'Изменение акций'
+									: 'До изменений'}
 					</p>
 					<button
 						type="button"

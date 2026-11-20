@@ -85,6 +85,7 @@
 </script>
 
 <dialog
+	data-ds-surface="card"
 	bind:this={dialog}
 	class="p2-request"
 	aria-labelledby="p2-request-title"
@@ -137,7 +138,7 @@
 			</div>
 			<button
 				type="button"
-				class="p2-submit"
+				class="ds-action-primary p2-submit"
 				data-metrika-goal="request_modal_success_close"
 				data-goal-action="close"
 				data-goal-variant={request.kind}
@@ -268,7 +269,7 @@
 				{#if error}<p class="p2-error" role="alert">{error}</p>{/if}
 				<button
 					type="submit"
-					class="p2-submit"
+					class="ds-action-primary p2-submit"
 					disabled={loading}
 					data-metrika-goal="request_modal_submit"
 					data-goal-action="submit_click"
@@ -352,14 +353,14 @@
 	h2 {
 		padding-right: 0.75rem;
 		font-family: var(--font-heading);
-		font-size: clamp(1.75rem, 5vw, 2.25rem);
+		font-size: var(--ds-font-subsection-title-size);
 		text-wrap: balance;
 	}
 	.p2-description {
 		margin-top: 1rem;
 		color: var(--color-text-secondary);
-		font-size: 0.9375rem;
-		line-height: 1.6;
+		font-size: var(--ds-font-prose-size);
+		line-height: var(--ds-font-prose-leading);
 	}
 	.p2-subject,
 	.p2-success {

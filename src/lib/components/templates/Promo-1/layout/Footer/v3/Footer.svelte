@@ -2,7 +2,7 @@
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.Ф.1.3 — см. docs/architecture/component-articles-map.md
 	import { page } from '$app/state';
-	import { auth } from '$lib/stores/auth';
+	import { createFooterAccount } from '$lib/stores/client-account.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
@@ -43,6 +43,9 @@
 	const isLight = $derived(isLightBlock(data, 'light'));
 
 	let showLoginModal = $state(false);
+	const footerAccount = createFooterAccount();
+	const authButtonClass =
+		'p1-border p1-title p1-accent-border-hover p1-accent-hover h-9 rounded-full border px-4 font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none active:scale-[0.98]';
 
 	// Клиентская сессия (см. ClientAuthButtons) — залогиненному не нужны
 	// ссылки «Логин»/«Регистрация», ему нужен путь в кабинет.
@@ -107,14 +110,6 @@
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'Footer', updated);
 		data = updated;
-	}
-
-	function handleAuthClick() {
-		if ($auth.isAuthenticated) {
-			auth.logout();
-		} else {
-			showLoginModal = true;
-		}
 	}
 
 	const reveal: Action<HTMLElement> = (node) => {
@@ -575,15 +570,23 @@
 					{@render pageSettings?.(
 						'rounded-full p1-border border p1-title p1-accent-border-hover p1-accent-hover focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none'
 					)}
-					<button
-						data-metrika-goal="layout_footer_v3_footer_open_3"
-						data-goal-action="open"
-						type="button"
-						onclick={handleAuthClick}
-						class="p1-border p1-title p1-accent-border-hover p1-accent-hover h-9 rounded-full border px-4 font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none active:scale-[0.98]"
-					>
-						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
-					</button>
+					{#if footerAccount.signedIn}
+						<button
+							type="button"
+							class={authButtonClass}
+							disabled={footerAccount.isLoggingOut}
+							onclick={footerAccount.logout}
+							data-goal-ignore="Выход из учётной записи">Выйти</button
+						>
+					{:else}
+						<button
+							type="button"
+							class={authButtonClass}
+							data-metrika-goal="layout_footer_v3_footer_open_3"
+							data-goal-action="open"
+							onclick={() => (showLoginModal = true)}>Админ</button
+						>
+					{/if}
 				</div>
 			</div>
 		</div>

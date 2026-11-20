@@ -113,7 +113,7 @@
 							/></span
 						>
 						<h3
-							class="mt-3 text-4xl text-primary lg:text-6xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<ContentText
@@ -128,7 +128,7 @@
 							/>
 						</h3>
 						<div class="bg-border-strong mt-4 mb-8 h-px w-12"></div>
-						<p class="text-base leading-relaxed text-secondary">
+						<p class="text-prose text-secondary">
 							<ContentText
 								bind:data
 								{editContext}

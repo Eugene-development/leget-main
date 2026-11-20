@@ -68,7 +68,8 @@
 	}
 
 	.image-workspace-backdrop[data-variant='picker'] {
-		z-index: 200;
+		/* На телефоне диалог перекрывает выдвижную панель настроек (z-index: 210). */
+		z-index: 220;
 	}
 
 	.image-workspace-backdrop[data-variant='cropper'] {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { editableText } from '$lib/utils/editable-text';
+	import { RICH_TEXT_PREFIX } from '$lib/utils/rich-text';
 	// Артикул: 2.9.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { onMount } from 'svelte';
@@ -72,7 +73,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mb-6 text-3xl text-primary uppercase lg:text-4xl"
+						class="mb-6 text-section-title text-primary uppercase"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -93,7 +94,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-lg leading-relaxed font-light text-secondary">
+					<p class="mx-auto max-w-2xl text-prose font-light text-secondary">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -130,7 +131,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h3
-								class="mb-6 text-3xl text-primary lg:text-4xl"
+								class="mb-6 text-subsection-title text-primary"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -142,14 +143,14 @@
 						label="Проектирование: описание"
 						value={editableText(
 							data?.designDescription,
-							'Дизайн начинается задолго до производства. Наши инженеры-технологи детально прорабатывают проект, учитывая миллиметровые зазоры, нагрузку на фурнитуру, особенности материалов и эргономику пространства.'
+							`${RICH_TEXT_PREFIX}<p>Дизайн начинается задолго до производства. Наши инженеры-технологи детально прорабатывают проект, учитывая миллиметровые зазоры, нагрузку на фурнитуру, особенности материалов и эргономику пространства.</p><p>На чертежах проверяем, как открываются соседние фасады, где проходят коммуникации и сколько места нужно для встраиваемой техники. Так эти детали можно согласовать до запуска кухни в производство.</p>`
 						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('designDescription', v)}
 					>
 						{#snippet children(displayValue)}
-							<p class="mb-6 leading-relaxed text-secondary">
+							<p class="mb-6 text-prose text-secondary">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -215,7 +216,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h3
-								class="mb-6 text-3xl text-primary lg:text-4xl"
+								class="mb-6 text-subsection-title text-primary"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -227,14 +228,14 @@
 						label="Производство: описание"
 						value={editableText(
 							data?.productionDescription,
-							'Производство — это симбиоз передовых роботизированных линий и ручного мастерства. Мы используем европейское оборудование сверхвысокой точности для распила и кромления, что гарантирует идеальную геометрию фасадов.'
+							`${RICH_TEXT_PREFIX}<p>Производство — это симбиоз передовых роботизированных линий и ручного мастерства. Мы используем европейское оборудование сверхвысокой точности для распила и кромления, что гарантирует идеальную геометрию фасадов.</p><p>По чертежам в деталях делают отверстия под крепёж, петли и направляющие. От их расположения зависит, как состыкуются корпуса и насколько плавно будут открываться ящики.</p>`
 						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('productionDescription', v)}
 					>
 						{#snippet children(displayValue)}
-							<p class="mb-6 leading-relaxed text-secondary">
+							<p class="mb-6 text-prose text-secondary">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -276,7 +277,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h3
-								class="mb-6 text-2xl text-primary lg:text-3xl"
+								class="mb-6 text-subsection-title text-primary"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -288,14 +289,14 @@
 						label="Упаковка: описание"
 						value={editableText(
 							data?.packagingDescription,
-							'Каждая деталь проходит многоуровневый контроль качества. Затем элементы бережно упаковываются в плотный многослойный картон с защитными профилями.'
+							`${RICH_TEXT_PREFIX}<p>Каждая деталь проходит многоуровневый контроль качества. Затем элементы бережно упаковываются в плотный многослойный картон с защитными профилями.</p><p>Особое внимание уделяем углам и кромкам фасадов. Защитные профили принимают на себя нагрузку при переноске, а слои картона предохраняют лицевые поверхности от потёртостей.</p>`
 						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('packagingDescription', v)}
 					>
 						{#snippet children(displayValue)}
-							<p class="leading-relaxed text-secondary">
+							<p class="text-prose text-secondary">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -325,7 +326,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h3
-								class="mb-6 text-2xl text-primary lg:text-3xl"
+								class="mb-6 text-subsection-title text-primary"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -337,14 +338,14 @@
 						label="Доставка: описание"
 						value={editableText(
 							data?.deliveryDescription,
-							'Доставка осуществляется собственным автопарком, оборудованным специальными пневматическими креплениями для перевозки элитной мебели.'
+							`${RICH_TEXT_PREFIX}<p>Доставка осуществляется собственным автопарком, оборудованным специальными пневматическими креплениями для перевозки элитной мебели.</p><p>Упаковки размещаем в кузове с учётом их размеров и веса. Фиксация удерживает длинные панели и тяжёлые короба на месте при поворотах и торможении.</p>`
 						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('deliveryDescription', v)}
 					>
 						{#snippet children(displayValue)}
-							<p class="leading-relaxed text-secondary">
+							<p class="text-prose text-secondary">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -381,7 +382,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h3
-								class="mb-6 text-3xl text-primary lg:text-4xl"
+								class="mb-6 text-subsection-title text-primary"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -393,14 +394,14 @@
 						label="Сборка: описание"
 						value={editableText(
 							data?.assemblyDescription,
-							'Сборкой занимаются собственные бригады сертифицированных специалистов. Они монтируют корпуса, выставляют идеальные зазоры фасадов, подключают встраиваемую технику и интегрируют освещение.'
+							`${RICH_TEXT_PREFIX}<p>Сборкой занимаются собственные бригады сертифицированных специалистов. Они монтируют корпуса, выставляют идеальные зазоры фасадов, подключают встраиваемую технику и интегрируют освещение.</p><p>После монтажа проверяем, как ходят ящики, закрываются дверцы и включается подсветка. Если фасад задевает соседнюю деталь, регулируем петли на месте.</p>`
 						)}
 						{isEditable}
 						multiline
 						onSave={(v) => saveField('assemblyDescription', v)}
 					>
 						{#snippet children(displayValue)}
-							<p class="mb-6 leading-relaxed text-secondary">
+							<p class="mb-6 text-prose text-secondary">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}

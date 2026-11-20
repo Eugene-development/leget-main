@@ -101,7 +101,7 @@
 					</div>
 					<div class="relative">
 						<div
-							class="flex size-14 items-center justify-center rounded-2xl bg-ink-900 text-on-dark transition-all duration-300 group-hover:bg-link-500"
+							class="flex size-14 items-center justify-center rounded-2xl bg-ink-900 text-on-dark transition-all duration-300 group-hover:bg-link-500 p1-hover-on-dark"
 						>
 							<svg
 								class="size-7"

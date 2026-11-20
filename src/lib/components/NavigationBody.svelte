@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { navigating } from '$app/state';
 	import { getContext, onMount, type Snippet } from 'svelte';
 	import NavigationLoading from './NavigationLoading.svelte';
 
@@ -8,7 +9,8 @@
 		catalog = false,
 		intro = true,
 		root = false,
-		delegated = false
+		delegated = false,
+		smoothNavigation = false
 	}: {
 		children: Snippet;
 		workspace?: boolean;
@@ -16,6 +18,7 @@
 		intro?: boolean;
 		root?: boolean;
 		delegated?: boolean;
+		smoothNavigation?: boolean;
 	} = $props();
 	const navigation = getContext<
 		| {
@@ -25,13 +28,17 @@
 		| undefined
 	>('leget-navigation-body');
 	const loading = $derived(Boolean(navigation?.active()) && !delegated);
+	const showPlaceholder = $derived(
+		loading &&
+			!(smoothNavigation && navigating.from?.url.pathname !== navigating.to?.url.pathname)
+	);
 	let region = $state<HTMLDivElement>();
 	let loadingOffset = $state(0);
 	let loadingLeft = $state(0);
 	let loadingRight = $state(0);
 
 	$effect(() => {
-		if (!loading || !region) return;
+		if (!showPlaceholder || !region) return;
 		const node = region;
 		let frame = 0;
 		const measure = () => {
@@ -89,19 +96,20 @@
 	bind:this={region}
 	class="navigation-body"
 	class:root
-	class:loading
+	class:loading={showPlaceholder}
 	aria-busy={loading}
 	data-navigation-body
+	data-smooth-navigation={smoothNavigation ? '' : undefined}
 >
 	<div
 		class="body-content"
-		class:body-pending={loading}
-		inert={loading}
-		aria-hidden={loading ? 'true' : undefined}
+		class:body-pending={showPlaceholder}
+		inert={showPlaceholder}
+		aria-hidden={showPlaceholder ? 'true' : undefined}
 	>
 		{@render children()}
 	</div>
-	{#if loading}
+	{#if showPlaceholder}
 		<div class="body-loading" style:left={`${loadingLeft}px`} style:right={`${loadingRight}px`}>
 			<div class="body-placeholder" style:top={`${loadingOffset}px`}>
 				<NavigationLoading {workspace} {intro} />

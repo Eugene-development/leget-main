@@ -43,7 +43,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-16">
-	<h2 class="mb-6 text-2xl text-ink-900">{editableText(data.title, 'Магазины и поставщики')}</h2>
+	<h2 class="ds-title-sub mb-6 text-2xl text-ink-900">{editableText(data.title, 'Магазины и поставщики')}</h2>
 
 	{#if shops.length === 0}
 		<div

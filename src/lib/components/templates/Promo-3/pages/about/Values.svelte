@@ -4,6 +4,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -52,7 +54,10 @@
 	);
 </script>
 
-<section class="relative bg-surface-800/30 py-24 lg:py-32">
+<section
+	class="p1-surface-alt relative py-24 lg:py-32"
+	data-p1-theme={blockTheme(data, 'dark')}
+>
 	<div class="px-10 lg:px-24 xl:px-32">
 		<div class="mb-16 text-center">
 			<EditableField
@@ -75,7 +80,7 @@
 				onSave={(v) => saveField('heading', v)}
 				class="block"
 			>
-				{#snippet children(displayValue)}<h2 class="mt-3 text-4xl text-white lg:text-5xl">
+				{#snippet children(displayValue)}<h2 class="p1-title mt-3 text-4xl lg:text-5xl">
 						<RichText value={displayValue} />
 					</h2>{/snippet}
 			</EditableField>
@@ -83,11 +88,11 @@
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 			{#each values as val}
 				<div
-					class="group rounded-2xl border border-surface-700/50 bg-surface-800/30 p-8 transition-all duration-500 hover:border-accent-500/20 hover:bg-surface-800/60"
+					class="p1-card p1-card-hover group rounded-2xl border p-8 transition-all duration-500 hover:border-accent-500/20"
 				>
 					<div class="mb-5 text-4xl">{val.icon}</div>
-					<h3 class="text-lg text-white">{val.title}</h3>
-					<p class="mt-3 text-sm leading-relaxed text-surface-300">{val.desc}</p>
+					<h3 class="p1-title text-lg">{val.title}</h3>
+					<p class="p1-body mt-3 text-sm leading-relaxed">{val.desc}</p>
 				</div>
 			{/each}
 		</div>

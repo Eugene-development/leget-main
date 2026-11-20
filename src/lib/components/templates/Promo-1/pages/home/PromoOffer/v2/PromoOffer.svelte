@@ -227,17 +227,17 @@
 
 				<!-- Декоративные парящие круги/элементы (похожие на V1, но с V2 дизайном) -->
 				<div
-					class="absolute -top-4 -right-4 flex h-12 w-12 animate-[promo-float_6s_ease-in-out_infinite_delay-0s] items-center justify-center rounded-full bg-gradient-to-br from-cat-8-400 to-cat-13-500 text-lg font-bold text-on-accent shadow-lg"
+					class="absolute -top-4 -right-4 flex h-12 w-12 animate-[promo-float_6s_ease-in-out_infinite_delay-0s] items-center justify-center rounded-full bg-gradient-to-br from-cat-8-400 to-cat-13-500 text-lg font-bold text-on-dark shadow-lg"
 				>
 					★
 				</div>
 				<div
-					class="absolute bottom-10 -left-4 flex h-10 w-10 animate-[promo-float_6s_ease-in-out_infinite_delay-2s] items-center justify-center rounded-full bg-gradient-to-br from-cat-7-500 to-cat-6-600 text-lg font-bold text-on-accent shadow-lg"
+					class="absolute bottom-10 -left-4 flex h-10 w-10 animate-[promo-float_6s_ease-in-out_infinite_delay-2s] items-center justify-center rounded-full bg-gradient-to-br from-cat-7-500 to-cat-6-600 text-lg font-bold text-on-dark shadow-lg"
 				>
 					❤
 				</div>
 				<div
-					class="absolute right-12 -bottom-4 flex h-9 w-9 animate-[promo-float_6s_ease-in-out_infinite_delay-4s] items-center justify-center rounded-full bg-gradient-to-br from-cat-12-400 to-cat-2-500 text-sm font-bold text-on-accent shadow-lg"
+					class="absolute right-12 -bottom-4 flex h-9 w-9 animate-[promo-float_6s_ease-in-out_infinite_delay-4s] items-center justify-center rounded-full bg-gradient-to-br from-cat-12-400 to-cat-2-500 text-sm font-bold text-on-dark shadow-lg"
 				>
 					✓
 				</div>

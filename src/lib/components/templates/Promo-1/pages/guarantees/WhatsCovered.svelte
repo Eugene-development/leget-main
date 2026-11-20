@@ -103,7 +103,7 @@
 							class="group flex items-start gap-4 rounded-2xl border border-ink-900/10 bg-surface-raised p-4 shadow-[0_20px_50px_-45px] shadow-ink-900/50 transition duration-300 hover:border-brand-500/40 hover:shadow-[0_26px_60px_-40px] hover:shadow-ink-900/55 sm:p-5"
 						>
 							<span
-								class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-500/20 transition duration-300 group-hover:bg-brand-500 group-hover:text-on-accent"
+								class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 ring-1 ring-brand-500/20 transition duration-300 group-hover:bg-brand-500 p1-hover-on-dark"
 								aria-hidden="true"
 							>
 								<svg

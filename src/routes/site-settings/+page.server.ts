@@ -1,3 +1,4 @@
+import { normalizeHeaderButtonColor } from '$lib/site-settings/header-button';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { adminAuthApi } from '$lib/server/admin-api';
 import { createGraphQLClient } from '$lib/utils/graphql-client';
@@ -273,6 +274,7 @@ function publicSettings(license: LicenseSettings) {
 		yandexMetrica: normalizeYandexCounterId(headerData.yandexMetrica),
 		googleAnalytics: normalizeGoogleTagId(headerData.googleAnalytics),
 		appearanceEnabled: hasSiteAppearance(headerData.siteAppearance),
+		headerButtonColor: normalizeHeaderButtonColor(headerData.headerButtonColor),
 		appearance: normalizeSiteAppearance(headerData.siteAppearance),
 		designSystem: readDesignSystem(license.headerData)
 	};
@@ -310,13 +312,6 @@ function parseAppearance(formData: FormData): {
 		const message = 'Контраст текста и фона должен быть не ниже 4,5:1.';
 		errors.surfaceColor = message;
 		errors.textColor = message;
-	}
-	if (
-		isHexColor(accentColor) &&
-		isHexColor(surfaceColor) &&
-		contrastRatio(accentColor, surfaceColor) < 4.5
-	) {
-		errors.accentColor = 'Контраст акцента и фона должен быть не ниже 4,5:1.';
 	}
 
 	return {
@@ -376,9 +371,23 @@ export const actions: Actions = {
 		const googleAnalytics = field(formData, 'googleAnalytics').toUpperCase();
 		const designSystem = field(formData, 'designSystem');
 		const appearanceEnabled = formData.get('appearanceEnabled') === 'on';
-		const { appearance, values: appearanceValues, errors } = appearanceEnabled
+		const headerButtonSettings = formData.get('headerButtonSettings') === '1';
+		const headerButtonColor = headerButtonSettings
+			? formData.get('headerButtonCustom') === 'on'
+				? field(formData, 'headerButtonColor').toLowerCase()
+				: null
+			: normalizeHeaderButtonColor(record(license.headerData).headerButtonColor);
+
+		const {
+			appearance,
+			values: appearanceValues,
+			errors
+		} = appearanceEnabled
 			? parseAppearance(formData)
 			: { appearance: undefined, values: undefined, errors: {} as Record<string, string> };
+
+		if (headerButtonColor !== null && !isHexColor(headerButtonColor))
+			errors.headerButtonColor = 'Выберите цвет в формате #RRGGBB.';
 
 		if (!isValidYandexCounterId(yandexMetrica)) {
 			errors.yandexMetrica = 'Укажите только числовой ID счётчика Яндекс Метрики.';
@@ -397,6 +406,7 @@ export const actions: Actions = {
 		}
 
 		const values = {
+			headerButtonColor,
 			yandexMetrica,
 			googleAnalytics,
 			appearanceEnabled,
@@ -412,6 +422,7 @@ export const actions: Actions = {
 			yandexMetrica: yandexMetrica || null,
 			googleAnalytics: googleAnalytics || null,
 			siteAppearance: appearanceEnabled ? appearance : null,
+			headerButtonColor,
 			// Базовая пишется значением, а не null: у выбора системы нет состояния
 			// «выключено» — сайт всегда нарисован какой-то одной. null здесь означал
 			// бы «владелец не выбирал», а это неотличимо от выбора Базовой и только
@@ -476,6 +487,18 @@ export const actions: Actions = {
 			});
 
 			if (!uploadResponse.ok) throw new Error('Upload failed');
+
+			const publicResponse = await fetch(upload.generateUploadUrl.objectUrl, {
+				method: 'HEAD',
+				redirect: 'error',
+				signal: AbortSignal.timeout(5000)
+			});
+			if (!publicResponse.ok) {
+				return fail(502, {
+					success: false,
+					message: 'Хранилище не подтвердило доступность фавиконки. Загрузите файл ещё раз.'
+				});
+			}
 
 			await client.request(UPDATE_FAVICON_MUTATION, {
 				id: license.id,

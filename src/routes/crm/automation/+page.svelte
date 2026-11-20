@@ -102,15 +102,19 @@
 </script>
 
 <svelte:head><title>Правила CRM — LEGET</title></svelte:head>
-<InsightsShell {data}>
-	<h1>Правила CRM</h1>
-	<p class="muted">
-		Система помогает вовремя разобрать заявку и сделать следующий шаг. При выполнении условия
-		появляется уведомление в кабинете; при необходимости — задача в CRM.
-	</p>
+<InsightsShell site={data.siteId}>
+	<header class="crm-header crm-report-header">
+		<div class="crm-header-title">
+			<h1>Правила CRM</h1>
+			<p class="muted">
+				Система помогает вовремя разобрать заявку и сделать следующий шаг. При выполнении условия
+				появляется уведомление в кабинете; при необходимости — задача в CRM.
+			</p>
+		</div>
+	</header>
 	{#if data.automation}
 		{#if data.automation.rules.length}
-			<div class="table-wrap">
+			<div class="table-wrap crm-report-table">
 				<table>
 					<thead
 						><tr><th>Правило</th><th>Условие</th><th>Действие</th><th>Состояние</th><th></th></tr
@@ -153,7 +157,7 @@
 				</p>
 			</div>{/if}
 		{#if data.automation.manage}
-			<section class="rule-editor">
+			<section class="rule-editor crm-panel">
 				<h2>{draft.id ? 'Изменить правило' : 'Добавить правило'}</h2>
 				<div class="presets" aria-label="Готовые условия">
 					<button
@@ -293,9 +297,7 @@
 		margin-top: 5px;
 	}
 	.rule-editor {
-		border-top: 1px solid var(--crm-line);
-		margin: 40px 0;
-		padding-top: 32px;
+		margin: 24px 0;
 	}
 	.presets,
 	.actions {
@@ -327,9 +329,10 @@
 		accent-color: var(--crm-accent);
 	}
 	.empty {
-		padding: 24px 0;
-		border-top: 1px solid var(--crm-line);
-		border-bottom: 1px solid var(--crm-line);
+		padding: 16px;
+		background: var(--crm-subtle);
+		border: 1px solid var(--crm-line);
+		border-radius: var(--crm-radius);
 	}
 	.runs {
 		list-style: none;

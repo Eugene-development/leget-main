@@ -67,6 +67,8 @@ const FIELD_LABELS: Record<string, string> = {
 	materialImage: 'Текстура материала',
 
 	// Promo-2
+	footerLogoLightUrl: 'Логотип для светлой темы',
+	footerLogoUrl: 'Логотип для тёмной темы',
 	designImage: 'Изображение: проектирование',
 	productionImage: 'Изображение: производство',
 	assemblyImage: 'Изображение: сборка',

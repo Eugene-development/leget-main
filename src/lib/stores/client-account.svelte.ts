@@ -1,5 +1,7 @@
 import { page } from '$app/state';
 import { goto, invalidateAll } from '$app/navigation';
+import { fromStore } from 'svelte/store';
+import { auth } from '$lib/stores/auth';
 import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 import { uiStore } from '$lib/stores/ui.svelte';
 import { cabinetHref, isCabinetPath } from '$lib/utils/cabinet-href';
@@ -70,5 +72,24 @@ export function createClientAccount() {
 		logout,
 		openLogin: () => open('login'),
 		openRegister: () => open('register')
+	};
+}
+
+export function createFooterAccount() {
+	const account = createClientAccount();
+	const editor = fromStore(auth);
+	const isManager = $derived(account.client?.role === 'manager');
+
+	return {
+		get signedIn() {
+			return isManager || editor.current.isAuthenticated;
+		},
+		get isLoggingOut() {
+			return account.isLoggingOut;
+		},
+		logout() {
+			if (editor.current.isAuthenticated) auth.logout();
+			if (isManager) return account.logout();
+		}
 	};
 }

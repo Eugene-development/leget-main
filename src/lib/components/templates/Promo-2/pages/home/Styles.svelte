@@ -96,7 +96,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -141,7 +141,7 @@
 			{#each styles as style, i}
 				<a
 					href={String(data?.allLink ?? '/styles')}
-					class="group relative overflow-hidden bg-white shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-elevated"
+					class="styles-card group relative overflow-hidden shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-elevated"
 					style="animation-delay: {0.2 + i * 0.15}s"
 				>
 					<!-- Image -->
@@ -161,7 +161,7 @@
 
 					<!-- Content -->
 					<div class="p-6 lg:p-8">
-						<h3 class="text-2xl text-primary lg:text-3xl" style="font-family: var(--font-heading);">
+						<h3 class="text-subsection-title" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -174,7 +174,7 @@
 								richText={false}
 							/>
 						</h3>
-						<p class="mt-2 text-sm leading-relaxed text-secondary">
+						<p class="mt-2 text-prose">
 							<ContentText
 								bind:data
 								{editContext}
@@ -194,3 +194,22 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	.styles-card {
+		border: 0;
+		background: var(--ds-color-surface-card);
+		color: var(--ds-contrast-card-copy);
+	}
+
+	.styles-card:hover,
+	.styles-card:focus-visible {
+		background: var(--ds-color-primary);
+		color: var(--ds-contrast-primary-copy);
+	}
+
+	.styles-card:focus-visible {
+		outline: 2px solid var(--ds-c-accent-text);
+		outline-offset: 3px;
+	}
+</style>

@@ -14,11 +14,15 @@
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		showOffer = true,
+		showStats = true
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		showOffer?: boolean;
+		showStats?: boolean;
 	} = $props();
 </script>
 
@@ -58,7 +62,7 @@
 						/>
 					</div>{/if}
 				<div class="ah-action"><HeroLink bind:data {editContext} {isEditable} /></div>
-				<HeroStats bind:data {editContext} {isEditable} />
+				{#if showStats}<HeroStats bind:data {editContext} {isEditable} />{/if}
 			</div>
 			<div class="ah-editorial-media">
 				<ImageFallback
@@ -71,7 +75,8 @@
 					loading="eager"
 					fetchpriority="high"
 				/>
-				<div class="ah-editorial-offer">
+				{#if showOffer}
+<div class="ah-editorial-offer">
 					<div class="ah-offer">
 						<span class="ah-note"
 							><ContentText
@@ -96,6 +101,7 @@
 						</div>
 					</div>
 				</div>
+{/if}
 			</div>
 		</div>
 	</div>

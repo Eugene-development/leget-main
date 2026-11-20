@@ -265,6 +265,7 @@
 </script>
 
 <section
+	data-ds-surface={isLight ? 'ink-50' : 'ink-950'}
 	class="relative flex min-h-0 w-full items-center justify-start overflow-x-hidden transition-colors duration-500 lg:h-full {isLight
 		? 'bg-ink-50 text-ink-900'
 		: 'bg-ink-950 text-on-dark'}"

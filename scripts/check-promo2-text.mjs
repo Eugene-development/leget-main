@@ -17,7 +17,7 @@ for (const path of svelteFiles()) {
 	const file = relative(root, path);
 	// These components are the editor itself; their labels are product UI.
 	if (
-		/^(?:ContentText\.svelte|pages\/_shared\/|layout\/HeaderSettings\.svelte|layout\/TopBar\/)/.test(
+		/^(?:ContentText\.svelte|pages\/_shared\/|pages\/actions\/PromotionCardEditor\.svelte$|layout\/HeaderSettings\.svelte|layout\/TopBar\/)/.test(
 			file
 		)
 	)
@@ -52,6 +52,17 @@ for (const path of svelteFiles()) {
 					? node.data.trim()
 					: source.slice(node.expression.start, node.expression.end);
 			if (!text || (node.type === 'Text' && !/[\p{L}\p{N}]/u.test(text))) return;
+			// Native disclosure labels in the editor are product UI.
+			if (
+				parents.at(-2)?.name === 'summary' &&
+				parents.some(
+					(p, index) =>
+						p.type === 'IfBlock' &&
+						p.test?.name === 'isEditable' &&
+						p.consequent === parents[index + 1]
+				)
+			)
+				return;
 			// Gallery content is edited in the product catalog; favourites display the visitor's saved products.
 			if (/Gallery\.svelte$/.test(file)) {
 				if (parents.some((p) => p.name === 'dialog')) return; // Photo viewer controls.
@@ -69,6 +80,14 @@ for (const path of svelteFiles()) {
 			)
 				return;
 			if (file === 'layout/Footer.svelte' && text.includes('$auth.isAuthenticated')) return;
+			// The promotion deadline is edited as a date, then formatted for display.
+			if (
+				file === 'pages/actions/ActionsCards.svelte' &&
+				node.type === 'ExpressionTag' &&
+				text === 'formatPromotionDeadline(deadline)' &&
+				parents.some((p) => p.name === 'time')
+			)
+				return;
 			// Errors, computed counters and map selector labels derive from editable content or runtime state.
 			if (
 				node.type === 'ExpressionTag' &&

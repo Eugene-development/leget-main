@@ -151,7 +151,7 @@
 							class="group p1-border p1-card p1-body hover:p1-card flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 backdrop-blur-sm transition duration-300 hover:border-brand-500/40"
 						>
 							<span
-								class="p1-accent flex size-8 shrink-0 items-center justify-center rounded-xl bg-brand-500/15 ring-1 ring-brand-500/25 transition duration-300 group-hover:bg-brand-500 group-hover:text-on-accent"
+								class="p1-accent flex size-8 shrink-0 items-center justify-center rounded-xl bg-brand-500/15 ring-1 ring-brand-500/25 transition duration-300 group-hover:bg-brand-500 p1-hover-on-dark"
 								aria-hidden="true"
 							>
 								<svg

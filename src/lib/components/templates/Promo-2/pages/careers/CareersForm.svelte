@@ -36,7 +36,7 @@
 
 	async function submitResume(e: SubmitEvent) {
 		e.preventDefault();
-		if (isSubmitting) return;
+		if (isEditable || isSubmitting) return;
 		isSubmitting = true;
 		errorMessage = '';
 
@@ -128,7 +128,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-4 text-4xl text-on-primary lg:text-5xl"
+							class="mt-4 text-section-title text-on-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -202,7 +202,7 @@
 				class:animate-fade-up={visible}
 				style="animation-delay: 0.2s"
 			>
-				{#if resumeSent || isEditable}
+				{#snippet successMessage()}
 					<div class="flex h-full flex-col items-center justify-center py-12 text-center">
 						<div
 							class="flex h-16 w-16 items-center justify-center border border-primary-accent/30 bg-primary-accent/10"
@@ -217,7 +217,7 @@
 								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
 							</svg>
 						</div>
-						<h3 class="mt-6 text-2xl text-on-primary" style="font-family: var(--font-heading);">
+						<h3 class="mt-6 text-card-title text-on-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -228,7 +228,7 @@
 								label="Отклик принят"
 							/>
 						</h3>
-						<p class="mt-3 max-w-xs text-sm text-on-primary">
+						<p class="mt-3 max-w-xs text-prose text-on-primary">
 							<ContentText
 								bind:data
 								{editContext}
@@ -241,13 +241,15 @@
 							/>
 						</p>
 					</div>
-				{/if}
-				{#if !resumeSent}
+				{/snippet}
+				{#if resumeSent && !isEditable}
+					{@render successMessage()}
+				{:else}
 					<form
 						onsubmit={submitResume}
 						class="border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:p-10"
 					>
-						<h3 class="mb-6 text-lg text-on-primary" style="font-family: var(--font-heading);">
+						<h3 class="mb-6 text-card-title text-on-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -366,7 +368,7 @@
 							data-metrika-goal="pages_careers_careersform_submit_click_1"
 							data-goal-label="Отправить резюме"
 							data-goal-action="submit_click"
-							type="submit"
+							type={isEditable ? 'button' : 'submit'}
 							disabled={isSubmitting}
 							class="group flex w-full items-center justify-center gap-3 border border-primary-accent bg-primary-accent py-4 text-xs tracking-[0.2em] text-on-primary-accent uppercase transition-all duration-500 hover:border-primary-accent hover:bg-primary-accent-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-accent disabled:opacity-70"
 						>
@@ -424,6 +426,12 @@
 							/>
 						</p>
 					</form>
+					{#if isEditable}
+						<details class="mt-4 text-on-primary">
+							<summary class="cursor-pointer py-2 text-sm">Сообщение после отправки</summary>
+							{@render successMessage()}
+						</details>
+					{/if}
 				{/if}
 			</div>
 		</div>

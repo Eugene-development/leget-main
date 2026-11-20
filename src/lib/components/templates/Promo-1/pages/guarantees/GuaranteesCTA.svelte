@@ -66,7 +66,7 @@
 
 				<div class="relative">
 					<div
-						class="gt-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-cat-2-400 to-cat-5-500 text-on-accent shadow-[0_20px_50px_-20px] ring-1 shadow-cat-2-500/90 ring-on-accent/20"
+						class="gt-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-cat-2-400 to-cat-5-500 text-on-dark shadow-[0_20px_50px_-20px] ring-1 shadow-cat-2-500/90 ring-on-accent/20"
 					>
 						<svg
 							class="size-8"

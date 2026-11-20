@@ -38,6 +38,9 @@ COPY --from=build --chown=svelte:sveltegroup /app/build ./build
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Recovery snapshots live outside the build and remain writable by the app user.
+RUN mkdir -p /app/.cache/public-pages && chown -R svelte:sveltegroup /app/.cache
+
 # Switch to non-root user
 USER svelte
 

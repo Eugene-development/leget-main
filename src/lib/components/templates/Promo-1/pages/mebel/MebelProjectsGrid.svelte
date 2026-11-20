@@ -105,7 +105,7 @@
 			</div>
 		{:else}
 			<div class="mb-7 flex items-center justify-between gap-4">
-				<h2 class="text-2xl text-ink-900">Проекты категории</h2>
+				<h2 class="ds-title-sub text-2xl text-ink-900">Проекты категории</h2>
 				<div class="hidden sm:block">
 					<FeedViewToggle {view} onpick={pickView} />
 				</div>

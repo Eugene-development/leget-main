@@ -103,7 +103,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -179,7 +179,7 @@
 					<!-- Quote line -->
 					<div class="h-px w-8 bg-accent"></div>
 
-					<p class="flex-1 text-sm leading-relaxed text-secondary italic">
+					<p class="flex-1 text-prose text-secondary italic">
 						«<ContentText
 							bind:data
 							{editContext}

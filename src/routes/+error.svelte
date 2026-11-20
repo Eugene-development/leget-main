@@ -59,6 +59,10 @@
 				<p class="text-6xl font-bold text-gray-300">403</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Сайт приостановлен</h1>
 				<p class="mt-2 text-gray-500">Site suspended</p>
+			{:else if $page.status === 503}
+				<p class="text-6xl font-bold text-gray-300">503</p>
+				<h1 class="mt-4 text-2xl text-gray-800">Сайт временно недоступен</h1>
+				<p class="mt-2 text-gray-500">Пожалуйста, повторите попытку позже.</p>
 			{:else if $page.status === 502}
 				<p class="text-6xl font-bold text-gray-300">502</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Ошибка сервера</h1>

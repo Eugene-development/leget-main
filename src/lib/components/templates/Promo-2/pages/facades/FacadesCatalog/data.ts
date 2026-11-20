@@ -114,6 +114,22 @@ export const defaultFacades = [
 ];
 
 export type Facade = (typeof defaultFacades)[number];
+
+const glassShowcase: Facade = {
+	id: 'vitriny-glass',
+	title: 'Витрины Glass',
+	description:
+		'Кухонные фасады со стеклянной вставкой. В коллекции ЗОВ есть фотовитрины с рисунком и витрины с гравировкой. На рендере показан вариант с ромбовидной гравировкой.',
+	image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/facades/vitriny-glass.webp',
+	details: {
+		base: 'Стекло',
+		coating: 'Глянцевая лицевая сторона, матовая обратная сторона',
+		thickness: 'Уточняется по проекту',
+		minSize: '200 × 200 мм',
+		maxSize: 'Уточняется по проекту'
+	}
+};
+
 export const detailLabels = {
 	base: 'Материал основы',
 	coating: 'Покрытие',
@@ -121,7 +137,10 @@ export const detailLabels = {
 	minSize: 'Минимальный размер',
 	maxSize: 'Максимальный размер'
 } as const;
-export function resolveFacades(data: Record<string, unknown>): Facade[] {
+export function resolveFacades(
+	data: Record<string, unknown>,
+	includeGlassShowcase = false
+): Facade[] {
 	const items =
 		Array.isArray(data?.facades) && data.facades.length
 			? (data.facades as Facade[])
@@ -134,13 +153,21 @@ export function resolveFacades(data: Record<string, unknown>): Facade[] {
 	const expanded = isOriginalCatalog
 		? [...items, ...defaultFacades.filter((item) => !originalIds.includes(item.id))]
 		: items;
-	return expanded.map((item) => ({
-		...item,
-		image:
-			item.id === 'enamel' &&
-			item.image === 'https://storage.yandexcloud.net/zovtop/foto/kv-1_fonjfgnbisfn.webp'
-				? defaultFacades[0].image
-				: (item.image ?? defaultFacades.find((d) => d.id === item.id)?.image ?? ''),
-		details: { ...defaultFacades.find((d) => d.id === item.id)?.details, ...item.details }
-	}));
+	const catalog =
+		includeGlassShowcase && !expanded.some((item) => item.id === glassShowcase.id)
+			? [...expanded, glassShowcase]
+			: expanded;
+	return catalog.map((item) => {
+		const defaults =
+			item.id === glassShowcase.id ? glassShowcase : defaultFacades.find((d) => d.id === item.id);
+		return {
+			...item,
+			image:
+				item.id === 'enamel' &&
+				item.image === 'https://storage.yandexcloud.net/zovtop/foto/kv-1_fonjfgnbisfn.webp'
+					? defaultFacades[0].image
+					: (item.image ?? defaults?.image ?? ''),
+			details: { ...defaults?.details, ...item.details }
+		};
+	});
 }

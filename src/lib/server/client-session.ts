@@ -17,6 +17,8 @@ import { sessionPersistence } from '$lib/server/session-persistence';
  * с областью `/admin` — пересечься они не могут.
  */
 export const CLIENT_COOKIE = 'leget_client_jwt';
+/** Separate editor-to-CRM session, scoped to /crm. */
+export const CRM_COOKIE = 'leget_crm_jwt';
 
 /** Заявка, вынутая из JWT без проверки подписи — только для отрисовки шапки. */
 export interface ClientDisplay {
@@ -49,6 +51,8 @@ export function setClientSession(
 	expiresIn: unknown,
 	remember: unknown = false
 ): void {
+	// A new cabinet login must not inherit another account's editor CRM session.
+	cookies.delete(CRM_COOKIE, { path: '/crm' });
 	cookies.set(CLIENT_COOKIE, token, {
 		path: '/',
 		httpOnly: true,

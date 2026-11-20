@@ -135,6 +135,7 @@
 <PageRenderer
 	{layout}
 	{componentMap}
+	{templateId}
 	{slug}
 	{components}
 	{headerData}

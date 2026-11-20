@@ -101,8 +101,10 @@
 			>
 				<!-- Large Quote Icon -->
 				<svg
-					class="absolute -top-10 -left-6 -z-10 h-28 w-28 text-primary/[0.03] md:-left-12 lg:-top-16 lg:-left-20 lg:h-48 lg:w-48"
+					class="ds-copy pointer-events-none absolute -top-10 -left-6 -z-10 h-28 w-28 md:-left-12 lg:-top-16 lg:-left-20 lg:h-48 lg:w-48"
+					aria-hidden="true"
 					fill="currentColor"
+					fill-opacity="0.1"
 					viewBox="0 0 24 24"
 				>
 					<path
@@ -121,16 +123,16 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-3xl text-primary md:text-4xl lg:text-[2.5rem]"
+							class="ds-copy text-subsection-title italic"
 							style="font-family: var(--font-heading);"
 						>
-							<span class="text-secondary italic"><RichText value={displayValue} /></span>
+							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
 				</EditableField>
 
 				<div class="mt-8 space-y-4">
-					<p class="text-base leading-relaxed text-secondary">
+					<p class="text-prose text-secondary">
 						<ContentText
 							bind:data
 							{editContext}
@@ -142,7 +144,7 @@
 							multiline
 						/>
 					</p>
-					<p class="text-base leading-relaxed text-secondary">
+					<p class="text-prose text-secondary">
 						<ContentText
 							bind:data
 							{editContext}

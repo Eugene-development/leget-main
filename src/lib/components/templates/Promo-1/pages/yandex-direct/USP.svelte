@@ -62,7 +62,7 @@
 	};
 </script>
 
-<section class="yd-usp">
+<section data-ds-surface="light" class="yd-usp">
 	<div class="yd-usp__container">
 		<div class="yd-usp__header">
 			<EditableField
@@ -74,7 +74,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<span class="yd-usp__label"><RichText value={displayValue} /></span>
+					<span class="ds-copy yd-usp__label"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -87,7 +87,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="yd-usp__title"><RichText value={displayValue} /></h2>
+					<h2 class="ds-copy yd-usp__title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -104,15 +104,19 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="yd-usp__subtitle"><RichText value={displayValue} /></p>
+					<p class="ds-copy yd-usp__subtitle"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>
 
 		<div class="yd-usp__grid">
 			{#each items as item, i}
-				<div class="yd-usp__card" style="animation-delay: {i * 100}ms">
-					<div class="yd-usp__card-icon">
+				<div
+					data-ds-surface="light-overlay"
+					class="yd-usp__card"
+					style="animation-delay: {i * 100}ms"
+				>
+					<div data-ds-surface="light-overlay" class="ds-accent yd-usp__card-icon">
 						<svg
 							width="24"
 							height="24"
@@ -126,8 +130,12 @@
 							<path d={iconPaths[item.icon] ?? iconPaths.shield} />
 						</svg>
 					</div>
-					<h3 class="p1-title-sub yd-usp__card-title">{item.title}</h3>
-					<p class="yd-usp__card-text">{item.description}</p>
+					<h3 data-ds-surface="light-overlay" class="ds-copy p1-title-sub yd-usp__card-title">
+						{item.title}
+					</h3>
+					<p data-ds-surface="light-overlay" class="ds-copy yd-usp__card-text">
+						{item.description}
+					</p>
 				</div>
 			{/each}
 		</div>
@@ -137,7 +145,7 @@
 <style>
 	.yd-usp {
 		padding: 5rem 1.5rem;
-		background: #f8fafc;
+		background: var(--ds-light-surface);
 	}
 
 	.yd-usp__container {
@@ -183,7 +191,7 @@
 	}
 
 	.yd-usp__card {
-		background: white;
+		background: var(--ds-light-overlay);
 		border-radius: 1.25rem;
 		padding: 2rem;
 		border: 1px solid #e2e8f0;

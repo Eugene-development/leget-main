@@ -139,6 +139,7 @@
 		поэтому с прежним `z-50` шапка перекрывала верх формы заявки своим слоем.
 	-->
 	<div
+		data-ds-contrast-root
 		class="fixed inset-0 z-200 flex justify-end overflow-hidden bg-scrim/40 backdrop-blur-sm"
 		onclick={handleBackdropClick}
 		transition:fade={{ duration: 300 }}

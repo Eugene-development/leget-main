@@ -112,7 +112,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl text-primary lg:text-5xl"
+						class="mt-3 text-section-title text-primary"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -162,7 +162,7 @@
 						class:animate-fade-up={visible}
 						style="animation-delay: 0.25s"
 					>
-						<h3 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
+						<h3 class="text-subsection-title text-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -174,7 +174,7 @@
 								defaults={{ tracks }}
 							/>
 						</h3>
-						<p class="mt-5 text-base leading-relaxed text-secondary">
+						<p class="mt-5 text-prose text-secondary">
 							<ContentText
 								bind:data
 								{editContext}
@@ -243,7 +243,7 @@
 											defaults={{ tracks }}
 										/></span
 									>
-									<span class="text-sm leading-relaxed text-primary"
+									<span class="text-prose text-primary"
 										><ContentText
 											bind:data
 											{editContext}

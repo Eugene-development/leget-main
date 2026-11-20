@@ -51,7 +51,7 @@
 	);
 </script>
 
-<section class="yd-adv">
+<section data-ds-surface="light" class="yd-adv">
 	<div class="yd-adv__container">
 		<div class="yd-adv__left">
 			<EditableField
@@ -63,7 +63,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<span class="yd-adv__label"><RichText value={displayValue} /></span>
+					<span class="ds-copy yd-adv__label"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -76,28 +76,32 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="yd-adv__title"><RichText value={displayValue} /></h2>
+					<h2 class="ds-copy yd-adv__title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
 			<!-- Статистика -->
 			<div class="yd-adv__stats">
 				{#each advantages as stat}
-					<div class="yd-adv__stat">
-						<span class="yd-adv__stat-number">{stat.number}</span>
-						<span class="yd-adv__stat-label">{stat.label}</span>
+					<div data-ds-surface="light-overlay" class="yd-adv__stat">
+						<span data-ds-surface="light-overlay" class="ds-accent yd-adv__stat-number"
+							>{stat.number}</span
+						>
+						<span data-ds-surface="light-overlay" class="ds-copy yd-adv__stat-label"
+							>{stat.label}</span
+						>
 					</div>
 				{/each}
 			</div>
 		</div>
 
 		<div class="yd-adv__right">
-			<div class="yd-adv__features-card">
-				<h3 class="p1-title-sub yd-adv__features-title">Что вы получаете</h3>
+			<div data-ds-surface="light-overlay" class="yd-adv__features-card">
+				<h3 class="ds-copy p1-title-sub yd-adv__features-title">Что вы получаете</h3>
 				<ul class="yd-adv__features-list">
 					{#each features as feature}
-						<li class="yd-adv__features-item">
-							<div class="yd-adv__features-check">
+						<li class="ds-copy yd-adv__features-item">
+							<div class="ds-accent yd-adv__features-check">
 								<svg
 									width="14"
 									height="14"
@@ -121,7 +125,7 @@
 <style>
 	.yd-adv {
 		padding: 5rem 1.5rem;
-		background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+		background: var(--ds-light-surface);
 	}
 
 	.yd-adv__container {
@@ -164,7 +168,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1.5rem;
-		background: white;
+		background: var(--ds-light-overlay);
 		border-radius: 1rem;
 		border: 1px solid #e2e8f0;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -193,7 +197,7 @@
 	}
 
 	.yd-adv__features-card {
-		background: linear-gradient(145deg, #0f172a, #1e293b);
+		background: var(--ds-light-overlay);
 		border-radius: 1.5rem;
 		padding: 2.5rem;
 		border: 1px solid rgba(255, 255, 255, 0.06);

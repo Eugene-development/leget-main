@@ -58,7 +58,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="mb-8 text-3xl uppercase lg:text-4xl" style="font-family: var(--font-heading);">
+				<h2 class="mb-8 text-section-title uppercase" style="font-family: var(--font-heading);">
 					<RichText value={displayValue} />
 				</h2>
 			{/snippet}
@@ -77,7 +77,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto mb-10 max-w-2xl text-lg font-light text-on-primary">
+				<p class="mx-auto mb-10 max-w-2xl text-prose font-light text-on-primary">
 					<RichText value={displayValue} />
 				</p>
 			{/snippet}

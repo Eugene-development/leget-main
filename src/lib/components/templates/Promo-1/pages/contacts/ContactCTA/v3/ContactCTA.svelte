@@ -80,15 +80,15 @@
 							<rect x="2.25" y="6.75" width="19.5" height="12.75" rx="2.25" />
 							<path
 								class="contact-button__flap"
-								fill="var(--color-on-accent)"
+								fill="var(--contact-button-on)"
 								d="M2.25 6.75 12 13.5l9.75-6.75Z"
 							/>
 							<g class="contact-button__letter">
-								<rect x="6" y="8" width="12" height="10" rx="1" fill="var(--color-on-accent)" />
+								<rect x="6" y="8" width="12" height="10" rx="1" fill="var(--contact-button-on)" />
 								<path d="M9 11h6m-6 3h4" />
 							</g>
 							<path
-								fill="var(--color-on-accent)"
+								fill="var(--contact-button-on)"
 								d="M2.25 6.75 12 13.5l9.75-6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25Z"
 							/>
 						{/if}
@@ -217,9 +217,10 @@
 		text-underline-offset: 0.2em;
 	}
 	.contact-button {
-		--contact-button-color: var(--p1-accent);
+		--contact-button-color: var(--ds-c-link-fill);
 		--contact-button-bg: var(--contact-button-color);
-		color: var(--color-on-accent);
+		--contact-button-on: var(--ds-c-link-on);
+		color: var(--contact-button-on);
 		background-color: var(--contact-button-bg);
 		box-shadow: 0 12px 35px -8px color-mix(in oklab, var(--contact-button-color) 75%, transparent);
 		transition:
@@ -228,10 +229,15 @@
 	}
 	.contact-button--telegram {
 		--contact-button-color: var(--color-telegram);
-		color: var(--color-on-dark);
+		--contact-button-on: var(--color-on-dark);
 	}
 	.contact-desk__action:is(:hover, :focus-visible) .contact-button {
+		--contact-button-bg: var(--ds-c-link-hover);
+		--contact-button-on: var(--ds-c-link-on-hover);
+	}
+	.contact-desk__action:is(:hover, :focus-visible) .contact-button--telegram {
 		--contact-button-bg: color-mix(in oklab, var(--contact-button-color) 90%, var(--color-ink-950));
+		--contact-button-on: var(--color-on-dark);
 	}
 	.contact-button__ring {
 		border-color: color-mix(in oklab, var(--contact-button-color) 35%, transparent);

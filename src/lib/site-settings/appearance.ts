@@ -1,3 +1,5 @@
+import { CONTRAST_SEEDS } from '$lib/design-systems/contrast-seeds';
+import { contrastDeclarations } from '$lib/design-systems/contrast';
 export const FONT_PRESETS = ['editorial', 'modern', 'classic'] as const;
 export const RADIUS_PRESETS = ['sharp', 'balanced', 'soft'] as const;
 
@@ -116,34 +118,6 @@ function mix(first: string, second: string, firstPercent: number): string {
 	return `color-mix(in srgb, ${first} ${firstPercent}%, ${second})`;
 }
 
-function blend(first: string, second: string, amount: number): string {
-	const a = rgb(first);
-	const b = rgb(second);
-	return `#${(['red', 'green', 'blue'] as const)
-		.map((channel) =>
-			Math.round(a[channel] + (b[channel] - a[channel]) * amount)
-				.toString(16)
-				.padStart(2, '0')
-		)
-		.join('')}`;
-}
-
-/** Keep the selected hue where possible, adapting it to the actual primary surface. */
-function primarySurfaceColors(primary: string, accent: string) {
-	const onPrimary = foreground(primary, '#ffffff', '#000000');
-	let adapted = accent;
-	for (let step = 1; contrastRatio(adapted, primary) < 4.5 && step <= 100; step++) {
-		adapted = blend(accent, onPrimary, step / 100);
-	}
-	const hover = blend(adapted, onPrimary, 0.12);
-	const onAccent = ['#000000', '#ffffff'].sort(
-		(a, b) =>
-			Math.min(contrastRatio(b, adapted), contrastRatio(b, hover)) -
-			Math.min(contrastRatio(a, adapted), contrastRatio(a, hover))
-	)[0];
-	return { onPrimary, accent: adapted, hover, onAccent };
-}
-
 function scale(
 	prefix: string,
 	color: string,
@@ -170,11 +144,10 @@ function scale(
  * Component versions still consume the complete design-system token contract;
  * this string only remaps the roles exposed on the settings page.
  */
-export function siteAppearanceStyle(value: unknown): string {
+export function siteAppearanceStyle(value: unknown, designSystem = 'base'): string {
 	if (!hasSiteAppearance(value)) return '';
 
 	const appearance = normalizeSiteAppearance(value);
-	const primaryColors = primarySurfaceColors(appearance.primaryColor, appearance.accentColor);
 	const fonts = FONT_VALUES[appearance.fontPreset];
 	const radii = RADIUS_VALUES[appearance.radiusPreset];
 	const surfaceAlt = mix(appearance.surfaceColor, appearance.textColor, 96);
@@ -218,17 +191,14 @@ export function siteAppearanceStyle(value: unknown): string {
 		appearance.surfaceColor,
 		appearance.textColor
 	);
-	const categoryScale = Array.from({ length: 14 }, (_, index) =>
-		scale(`cat-${index + 1}`, appearance.accentColor, appearance.surfaceColor, appearance.textColor)
-	).flat();
 
 	const variables: Array<[string, string]> = [
 		['--ds-color-primary', appearance.primaryColor],
 		['--ds-color-primary-light', appearance.primaryColor],
-		['--ds-color-on-primary', primaryColors.onPrimary],
-		['--ds-color-primary-accent', primaryColors.accent],
-		['--ds-color-primary-accent-hover', primaryColors.hover],
-		['--ds-color-on-primary-accent', primaryColors.onAccent],
+		['--ds-color-on-primary', 'var(--ds-contrast-primary-copy)'],
+		['--ds-color-primary-accent', 'var(--ds-contrast-primary-accent-fill)'],
+		['--ds-color-primary-accent-hover', 'var(--ds-contrast-primary-accent-hover)'],
+		['--ds-color-on-primary-accent', 'var(--ds-contrast-primary-accent-on)'],
 		['--ds-color-secondary', appearance.accentColor],
 		['--ds-color-secondary-light', mix(appearance.accentColor, appearance.surfaceColor, 72)],
 		['--ds-color-accent', appearance.accentColor],
@@ -258,6 +228,8 @@ export function siteAppearanceStyle(value: unknown): string {
 		['--ds-color-accent-500', appearance.accentColor],
 		['--ds-color-accent-600', mix(appearance.accentColor, appearance.textColor, 84)],
 		['--ds-light-surface', appearance.surfaceColor],
+		['--ds-light-overlay', appearance.surfaceColor],
+		['--ds-light-field', appearance.surfaceColor],
 		['--ds-light-surface-alt', surfaceAlt],
 		['--ds-light-surface-paper', surfaceAlt],
 		['--ds-light-card', appearance.surfaceColor],
@@ -270,6 +242,8 @@ export function siteAppearanceStyle(value: unknown): string {
 		['--ds-light-rail', mix(appearance.textColor, appearance.surfaceColor, 28)],
 		['--ds-light-accent', appearance.accentColor],
 		['--ds-dark-surface', darkSurface],
+		['--ds-dark-overlay', darkSurfaceAlt],
+		['--ds-dark-field', darkSurfaceAlt],
 		['--ds-dark-surface-alt', darkSurfaceAlt],
 		['--ds-dark-surface-paper', darkSurfaceAlt],
 		['--ds-dark-card', mix(appearance.surfaceColor, 'transparent', 7)],
@@ -305,9 +279,32 @@ export function siteAppearanceStyle(value: unknown): string {
 		['--ds-radius-4xl', radii[7]],
 		...inkScale,
 		...brandScale,
-		...linkScale,
-		...categoryScale
+		...linkScale
 	];
+
+	variables.push(
+		...Object.entries({
+			action: 'fill',
+			'action-hover': 'hover',
+			'action-active': 'active',
+			'on-action': 'on',
+			'on-action-hover': 'on-hover',
+			'on-action-active': 'on-active',
+			'accent-text': 'text'
+		}).map(([name, role]): [string, string] => [
+			`--ds-color-${name}`,
+			`var(--ds-contrast-surface-accent-${role})`
+		])
+	);
+	variables.push(['--ds-color-surface-copy', 'var(--ds-contrast-surface-copy)']);
+	variables.push(
+		...contrastDeclarations({
+			...(Object.hasOwn(CONTRAST_SEEDS, designSystem)
+				? CONTRAST_SEEDS[designSystem]
+				: CONTRAST_SEEDS.base),
+			...Object.fromEntries(variables)
+		})
+	);
 
 	// CSS aliases resolve where they are declared. Rebind them here as well:
 	// an inline settings preview must not inherit aliases already resolved on :root.
@@ -319,8 +316,8 @@ export function siteAppearanceStyle(value: unknown): string {
 }
 
 /** Root overrides must outrank every design system, including template defaults. */
-export function siteAppearanceStylesheet(value: unknown): string {
-	const declarations = siteAppearanceStyle(value);
+export function siteAppearanceStylesheet(value: unknown, designSystem = 'base'): string {
+	const declarations = siteAppearanceStyle(value, designSystem);
 	if (!declarations) return '';
 	return `:root { ${declarations
 		.split('; ')

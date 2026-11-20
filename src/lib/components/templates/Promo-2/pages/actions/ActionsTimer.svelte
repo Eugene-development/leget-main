@@ -4,6 +4,7 @@
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
+	import { promotionDeadline } from '$lib/promotions/time';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -31,10 +32,8 @@
 	let timerInterval: ReturnType<typeof setInterval>;
 
 	function calcTimeLeft() {
-		const targetStr = String(data?.deadline ?? '2026-12-31T00:00:00');
-		const target = new Date(targetStr);
-		const now = new Date();
-		const diff = target.getTime() - now.getTime();
+		const target = promotionDeadline(data, true);
+		const diff = target === null ? 0 : target - Date.now();
 		if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 		return {
 			days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -106,7 +105,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="text-4xl text-primary md:text-5xl lg:text-6xl"
+							class="text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -124,7 +123,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mx-auto mt-6 max-w-md text-base leading-relaxed text-secondary lg:mx-0">
+						<p class="mx-auto mt-6 max-w-md text-prose text-secondary lg:mx-0">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}

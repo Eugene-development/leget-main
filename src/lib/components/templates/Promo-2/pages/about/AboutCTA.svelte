@@ -6,6 +6,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -26,6 +28,7 @@
 
 	let visible = $state(false);
 	let sectionEl: HTMLElement;
+	const theme = $derived(blockTheme(data, 'dark'));
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -42,12 +45,15 @@
 </script>
 
 <section
-	class="relative overflow-hidden bg-primary py-section-sm lg:py-section"
+	class="relative overflow-hidden py-section-sm lg:py-section {theme === 'dark'
+		? 'bg-primary'
+		: 'p1-surface'}"
+	data-p1-theme={theme}
 	bind:this={sectionEl}
 >
 	<!-- Decorative Elements -->
-	<div class="absolute top-0 left-0 h-32 w-32 border border-white/5 lg:h-64 lg:w-64"></div>
-	<div class="absolute right-0 bottom-0 h-48 w-48 border border-white/5 lg:h-80 lg:w-80"></div>
+	<div class="p1-border absolute top-0 left-0 h-32 w-32 border lg:h-64 lg:w-64"></div>
+	<div class="p1-border absolute right-0 bottom-0 h-48 w-48 border lg:h-80 lg:w-80"></div>
 
 	<div class="relative mx-auto max-w-3xl px-6 text-center xl:px-1">
 		<div class="opacity-0" class:animate-fade-up={visible}>
@@ -75,7 +81,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-4 text-4xl text-white lg:text-6xl"
+						class="p1-title mt-4 text-section-title"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -96,7 +102,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-6 max-w-lg text-base leading-relaxed text-white/60">
+					<p class="p1-body mx-auto mt-6 max-w-lg text-prose">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}

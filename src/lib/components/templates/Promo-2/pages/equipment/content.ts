@@ -66,6 +66,8 @@ export const equipmentDefaults = {
 		heading: 'Освещение',
 		description:
 			'Свет делает мебель удобнее и подчёркивает её линии. Продумываем подсветку вместе с проектом, чтобы провода, профили и выключатели заняли своё место.',
+		image:
+			'https://storage.yandexcloud.net/leget-main/templates/promo-2/equipment-lighting-20261117.webp',
 		items: [
 			{
 				title: 'Свет рабочей зоны',

@@ -6,6 +6,8 @@
  * Контракт: docs/architecture/design-system-tokens.md
  */
 @import '../lib/design-systems/tokens.css';
+@import '../lib/styles/surface-contrast.css';
+@import '../lib/styles/header-action.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
@@ -43,7 +45,7 @@
 
 @keyframes page-fade-in {
 	from {
-		opacity: 0;
+		opacity: var(--page-entry-opacity, 0);
 	}
 }
 
@@ -59,12 +61,20 @@
 	}
 }
 
-body.page-entering {
+:is(body, [data-smooth-navigation]).page-entering {
 	animation: var(--ds-motion-duration-ui) var(--ds-motion-ease-ui) both page-fade-in;
 }
 
+[data-smooth-navigation] {
+	--page-entry-opacity: 0.35;
+}
+
+[data-smooth-navigation].page-entering {
+	animation-fill-mode: backwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
-	body.page-entering {
+	:is(body, [data-smooth-navigation]).page-entering {
 		animation: none;
 	}
 }
@@ -380,7 +390,34 @@ body.page-entering {
 	--color-university-accent-light: var(--ds-university-accent-light);
 	--color-university-accent-deep: var(--ds-university-accent-deep);
 	/* Палитра бренда */
+	--color-header-action-start: var(--ds-header-action-start);
+	--color-header-action-mid: var(--ds-header-action-mid);
+	--color-header-action-end: var(--ds-header-action-end);
+	--color-header-action-outline: var(--ds-header-action-outline);
+	--color-header-action-on: var(--ds-header-action-on);
+	--color-header-action-hover-start: var(--ds-header-action-hover-start);
+	--color-header-action-hover-mid: var(--ds-header-action-hover-mid);
+	--color-header-action-hover-end: var(--ds-header-action-hover-end);
+	--color-header-action-shadow: var(--ds-header-action-shadow);
+	--color-header-action-glint: var(--ds-header-action-glint);
+	--color-header-action-start: var(--ds-header-action-start);
+	--color-header-action-mid: var(--ds-header-action-mid);
+	--color-header-action-end: var(--ds-header-action-end);
+	--color-header-action-hover-start: var(--ds-header-action-hover-start);
+	--color-header-action-hover-mid: var(--ds-header-action-hover-mid);
+	--color-header-action-hover-end: var(--ds-header-action-hover-end);
+	--color-header-action-on: var(--ds-header-action-on);
+	--color-header-action-shadow: var(--ds-header-action-shadow);
+	--color-header-action-glint: var(--ds-header-action-glint);
 	--color-primary: var(--ds-color-primary);
+	--color-action: var(--ds-color-action);
+	--color-action-hover: var(--ds-color-action-hover);
+	--color-action-active: var(--ds-color-action-active);
+	--color-on-action: var(--ds-color-on-action);
+	--color-on-action-hover: var(--ds-color-on-action-hover);
+	--color-on-action-active: var(--ds-color-on-action-active);
+	--color-accent-text: var(--ds-color-accent-text);
+	--color-surface-copy: var(--ds-color-surface-copy);
 	--color-primary-light: var(--ds-color-primary-light);
 	--color-on-primary: var(--ds-color-on-primary);
 	--color-primary-accent: var(--ds-color-primary-accent);
@@ -449,6 +486,10 @@ body.page-entering {
 	--text-statement--line-height: var(--ds-font-statement-leading);
 	--font-weight-statement: var(--ds-font-statement-weight);
 	--tracking-statement: var(--ds-font-statement-tracking);
+	--text-page-title: var(--ds-font-page-title-size);
+	--text-section-title: var(--ds-font-section-title-size);
+	--text-subsection-title: var(--ds-font-subsection-title-size);
+	--text-card-title: var(--ds-font-card-title-size);
 	--text-prose: var(--ds-font-prose-size);
 	--color-paper-light: var(--ds-light-paper-surface);
 	--color-paper-dark: var(--ds-dark-paper-surface);
@@ -892,6 +933,10 @@ h6 {
 	letter-spacing: var(--ds-font-heading-tracking);
 }
 
+:where(.text-page-title, .text-section-title, .text-subsection-title, .text-card-title) {
+	overflow-wrap: anywhere;
+}
+
 /**
  * ═══ Роли типографики. Дом ролей — здесь, а не в шаблоне ═══
  *
@@ -1197,4 +1242,11 @@ h6 {
 	font-weight: var(--ds-font-catalog-display-weight);
 	line-height: var(--ds-font-catalog-display-leading);
 	letter-spacing: var(--ds-font-catalog-display-tracking);
+}
+
+/* A known surface behind copy over arbitrary photos/video. Media itself is unchanged. */
+.ds-media-panel {
+	background: var(--ds-dark-surface);
+	border-radius: var(--ds-radius-xl);
+	padding: 1.5rem;
 }

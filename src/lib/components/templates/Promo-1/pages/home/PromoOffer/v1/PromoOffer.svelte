@@ -47,12 +47,21 @@
 	}
 </script>
 
-<section class="promo-alt" data-p1-theme={isLight ? 'light' : 'dark'}>
+<section
+	style="background:var(--p1-surface)"
+	class="promo-alt"
+	data-p1-theme={isLight ? 'light' : 'dark'}
+>
 	<div class="promo-alt__glow promo-alt__glow--top"></div>
 	<div class="promo-alt__glow promo-alt__glow--bottom"></div>
 	<div class="promo-alt__grid-pattern"></div>
 
-	<div class="promo-alt__container" class:promo-alt__container--visible={isVisible}>
+	<div
+		data-ds-surface={isLight ? 'light-overlay' : 'dark-overlay'}
+		style="background:var(--p1-overlay)"
+		class="promo-alt__container"
+		class:promo-alt__container--visible={isVisible}
+	>
 		<!-- Изображение -->
 		<div class="promo-alt__image-wrapper">
 			<div class="promo-alt__image-frame">
@@ -85,7 +94,7 @@
 
 		<!-- Контент -->
 		<div class="promo-alt__content">
-			<div class="promo-alt__badge">
+			<div class="ds-accent promo-alt__badge">
 				<span class="promo-alt__badge-dot"></span>
 				<EditableField
 					fieldKey="PromoOffer.badge"
@@ -99,7 +108,7 @@
 				</EditableField>
 			</div>
 
-			<h2 class="promo-alt__title">
+			<h2 class="ds-copy promo-alt__title">
 				<EditableField
 					fieldKey="PromoOffer.title"
 					label="Заголовок"
@@ -109,7 +118,7 @@
 					class="inline"
 				>
 					{#snippet children(displayValue)}
-						<span class="promo-alt__title-accent"><RichText value={displayValue} /></span>
+						<span class="ds-accent promo-alt__title-accent"><RichText value={displayValue} /></span>
 					{/snippet}
 				</EditableField>
 			</h2>
@@ -124,7 +133,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="promo-alt__text-primary"><RichText value={displayValue} /></p>
+						<p class="ds-copy promo-alt__text-primary"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 
@@ -137,7 +146,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="promo-alt__text-secondary"><RichText value={displayValue} /></p>
+						<p class="ds-copy promo-alt__text-secondary"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 			</div>
@@ -156,7 +165,7 @@
 							)}
 					>
 						{#snippet children(displayValue)}
-							<div class="promo-alt__feature">
+							<div class="ds-copy promo-alt__feature">
 								<div class="promo-alt__feature-icon">
 									<svg
 										width="18"
@@ -183,7 +192,7 @@
 					data-goal-action="open"
 					type="button"
 					onclick={() => serviceOrderStore.open('consultation')}
-					class="promo-alt__btn promo-alt__btn--primary text-center"
+					class="ds-action promo-alt__btn promo-alt__btn--primary text-center"
 				>
 					<EditableField
 						fieldKey="PromoOffer.primaryButton"
@@ -209,7 +218,7 @@
 				</button>
 				<a
 					href={String(data?.secondaryHref ?? '/about')}
-					class="promo-alt__btn promo-alt__btn--secondary"
+					class="ds-outline promo-alt__btn promo-alt__btn--secondary"
 				>
 					<EditableField
 						fieldKey="PromoOffer.secondaryButton"

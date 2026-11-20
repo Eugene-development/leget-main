@@ -1,13 +1,29 @@
 <script lang="ts">
+	import { usePromotionClock } from '$lib/promotions/clock.svelte';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.3.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import { onMount } from 'svelte';
+	import { getContext, onMount, tick } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import { editStore } from '$lib/stores/edit.svelte';
+	import PromotionCardEditor from './PromotionCardEditor.svelte';
+	import {
+		EDITABLE_VISIBILITY_CONTEXT,
+		type EditableVisibility
+	} from '$lib/utils/editable-visibility.svelte';
+	import {
+		formatPromotionDeadline,
+		promotionDeadline,
+		removePromotion,
+		type PromotionCard,
+		type PromotionCardFields
+	} from './promotion-cards';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -19,16 +35,10 @@
 		isEditable?: boolean;
 	} = $props();
 
-	async function saveCards(updated: typeof defaultCards) {
-		if (!editContext) return;
-		const updatedData = { ...data, cards: updated };
-		await saveComponentData(editContext, 'ActionsCards', updatedData);
-		data = updatedData;
-	}
-
 	let visible = $state(false);
-	let sectionEl: HTMLElement;
+	let sectionEl = $state<HTMLElement>();
 	let activeFilter = $state('all');
+	const theme = $derived(blockTheme(data));
 
 	const defaultFilters = [
 		{ key: 'all', label: 'Все акции' },
@@ -37,7 +47,7 @@
 		{ key: 'tech', label: 'Техника' }
 	];
 
-	const defaultCards = [
+	const defaultCards: PromotionCard[] = [
 		{
 			id: 1,
 			category: 'furniture',
@@ -86,14 +96,79 @@
 	);
 
 	const cards = $derived(
-		Array.isArray(data?.cards) && (data.cards as unknown[]).length > 0
-			? (data.cards as typeof defaultCards)
-			: defaultCards
+		Array.isArray(data?.cards) ? (data.cards as PromotionCard[]) : defaultCards
 	);
 
-	const filteredCards = $derived(
-		activeFilter === 'all' ? cards : cards.filter((c) => c.category === activeFilter)
+	const promotionEntries = $derived(
+		cards.map((card, index) => ({
+			card,
+			index,
+			deadline: promotionDeadline(card)
+		}))
 	);
+	const now = usePromotionClock(() => promotionEntries.map(({ deadline }) => deadline));
+	const filteredCards = $derived(
+		promotionEntries.filter(
+			({ card, deadline }) =>
+				(isEditable || (card.enabled !== false && (deadline === null || deadline > now()))) &&
+				(activeFilter === 'all' || card.category === activeFilter)
+		)
+	);
+
+	type ManagementAction = { mode: 'add' | 'edit' | 'remove'; id: PromotionCard['id'] };
+	const visibilityEditor = getContext<EditableVisibility | null>(EDITABLE_VISIBILITY_CONTEXT);
+	const canManage = $derived(isEditable && !!editContext);
+	const managementBusy = $derived(
+		editStore.activeField !== null || visibilityEditor?.isPending('cards') === true
+	);
+	const categories = $derived(filters.filter(({ key }) => key !== 'all'));
+	let addButton: HTMLButtonElement;
+	let management = $state<ManagementAction | null>(null);
+	const selectedCard = $derived(cards.find(({ id }) => id === management?.id));
+	const managementButton =
+		'p1-border p1-title min-h-10 rounded-sm border px-3 py-1.5 text-sm font-medium hover:border-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-600 disabled:opacity-50';
+	function openManagement(mode: ManagementAction['mode'], card?: PromotionCard) {
+		if (!canManage || managementBusy || management) return;
+		management = { mode, id: card?.id ?? crypto.randomUUID() };
+	}
+
+	async function closeManagement(saved = false) {
+		const restoreToAdd = saved && management?.mode === 'remove';
+		management = null;
+		if (restoreToAdd) {
+			await tick();
+			addButton?.focus();
+		}
+	}
+
+	async function saveManagement(values: PromotionCardFields) {
+		if (!canManage || !editContext || !management) throw new Error('Редактирование недоступно.');
+		const { mode, id } = management;
+		const index = cards.findIndex((card) => card.id === id);
+		if (mode !== 'add' && index === -1) {
+			throw new Error('Акция уже удалена. Закройте окно и обновите страницу.');
+		}
+
+		const { title, category, expiresAt } = values;
+		let updatedData: Record<string, unknown>;
+		if (mode === 'remove') {
+			updatedData = removePromotion(data, cards, index);
+		} else if (mode === 'add') {
+			updatedData = { ...data, cards: [...cards, { id, title, category, expiresAt }] };
+		} else {
+			const updatedCards = cards.map((card, i) =>
+				i === index
+					? { ...card, category, ...(expiresAt !== undefined ? { expiresAt } : {}) }
+					: card
+			);
+			updatedData = { ...data, cards: updatedCards };
+		}
+
+		const componentId = await saveComponentData(editContext, 'ActionsCards', updatedData);
+		if (!componentId) throw new Error('Не удалось сохранить изменения. Повторите попытку.');
+		data = updatedData;
+		if (mode === 'add' || (mode === 'edit' && activeFilter !== category)) activeFilter = 'all';
+	}
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -105,14 +180,55 @@
 			{ threshold: 0.1 }
 		);
 		if (sectionEl) observer.observe(sectionEl);
-		return () => observer.disconnect();
+		return () => {
+			observer.disconnect();
+		};
 	});
 </script>
 
-<section id="actions-cards" class="relative py-section-sm lg:py-section" bind:this={sectionEl}>
+{#snippet addPromotionSettings()}
+	<button
+		bind:this={addButton}
+		type="button"
+		class={managementButton}
+		disabled={managementBusy}
+		data-goal-ignore="Добавление акции в редакторе сайта"
+		onclick={() => openManagement('add')}>Добавить акцию</button
+	>
+{/snippet}
+
+{#snippet cardSettings(card: PromotionCard, deadline: number | null)}
+	<div class="p1-body p1-border flex flex-wrap items-center gap-2 border-t p-4">
+		<button
+			type="button"
+			class={managementButton}
+			disabled={managementBusy}
+			data-goal-ignore="Изменение категории и срока акции в редакторе сайта"
+			onclick={() => openManagement('edit', card)}>Настройки акции</button
+		>
+		<button
+			type="button"
+			class={managementButton}
+			disabled={managementBusy}
+			data-goal-ignore="Удаление акции в редакторе сайта"
+			onclick={() => openManagement('remove', card)}>Удалить</button
+		>
+		{#if deadline !== null && deadline <= now()}
+			<span class="text-xs font-medium">Акция завершена</span>
+		{/if}
+	</div>
+{/snippet}
+
+<section
+	id="actions-cards"
+	class="relative py-section-sm lg:py-section"
+	class:p1-surface={theme === 'dark'}
+	data-p1-theme={theme}
+	bind:this={sectionEl}
+>
 	<!-- Subtle Background Pattern -->
 	<div
-		class="absolute inset-0 opacity-[0.03]"
+		class="pointer-events-none absolute inset-0 opacity-[0.03]"
 		style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%232c2c2c\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
 	></div>
 
@@ -136,7 +252,7 @@
 					}}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase"
+						<span class="p1-body text-[11px] tracking-[0.3em] uppercase"
 							><RichText value={displayValue} /></span
 						>
 					{/snippet}
@@ -157,7 +273,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="p1-title mt-3 text-section-title"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -168,24 +284,23 @@
 
 			<!-- Filter Tabs -->
 			<div class="flex flex-wrap gap-2">
-				{#each filters as filter, filterIndex}
+				{#each filters as filter, filterIndex (filter.key)}
 					<button
 						onclick={() => (activeFilter = filter.key)}
 						class="border px-5 py-2.5 text-xs tracking-[0.12em] uppercase transition-all duration-300"
 						class:border-primary={activeFilter === filter.key}
 						class:bg-primary={activeFilter === filter.key}
 						class:text-inverse={activeFilter === filter.key}
-						class:border-border-medium={activeFilter !== filter.key}
-						class:text-secondary={activeFilter !== filter.key}
+						class:p1-border={activeFilter !== filter.key}
+						class:p1-body={activeFilter !== filter.key}
 						class:hover:border-secondary={activeFilter !== filter.key}
-						class:hover:text-secondary={activeFilter !== filter.key}
 					>
 						<ContentText
 							bind:data
 							{editContext}
 							{isEditable}
 							componentType="ActionsCards"
-							path={['filters', filters.indexOf(filter), 'label']}
+							path={['filters', filterIndex, 'label']}
 							fallback={filter.label}
 							label="Текст"
 							defaults={{ filters }}
@@ -197,17 +312,29 @@
 		</div>
 
 		<!-- Cards Grid -->
+		{#if canManage}
+			<div class="mb-6">{@render addPromotionSettings()}</div>
+		{/if}
+		{#if canManage && management}
+			<PromotionCardEditor
+				mode={management.mode}
+				card={selectedCard}
+				{categories}
+				onSave={saveManagement}
+				onClose={closeManagement}
+			/>
+		{/if}
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{#each filteredCards as card, i (card.id)}
+			{#each filteredCards as { card, index, deadline }, i (card.id)}
 				<div
-					class="group relative flex flex-col overflow-hidden bg-surface-card opacity-0 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated"
+					class="p1-card group relative flex flex-col overflow-hidden opacity-0 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated"
 					class:animate-fade-up={visible}
 					style="animation-delay: {0.15 + i * 0.1}s"
 				>
 					<!-- Image -->
 					<div class="relative aspect-[3/2] overflow-hidden">
 						<ImageFallback
-							imagePath={['cards', cards.indexOf(card), 'image']}
+							imagePath={['cards', index, 'image']}
 							imageDefaults={{ cards }}
 							loading="lazy"
 							src={card.image || undefined}
@@ -219,70 +346,75 @@
 						></div>
 
 						<!-- Tag badge -->
-						<div class="absolute top-4 left-4">
-							<span
-								class="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-[10px] font-medium tracking-[0.2em] text-on-accent uppercase"
-							>
-								<ContentText
-									bind:data
-									{editContext}
-									{isEditable}
-									componentType="ActionsCards"
-									path={['cards', cards.indexOf(card), 'tag']}
-									fallback={card.tag}
-									label="Текст"
-									defaults={{ cards }}
-								/>
-							</span>
-						</div>
-
-						<!-- Discount badge -->
-						<div class="absolute right-4 bottom-4">
-							<div
-								class="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-white/20 text-center text-xs font-medium text-white backdrop-blur-md"
-							>
-								<span class="leading-tight"
-									><ContentText
+						{#if card.tag || canManage}
+							<div class="absolute top-4 left-4">
+								<span
+									class="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-xs font-medium tracking-[0.2em] text-on-accent uppercase"
+								>
+									<ContentText
 										bind:data
 										{editContext}
 										{isEditable}
 										componentType="ActionsCards"
-										path={['cards', cards.indexOf(card), 'discount']}
-										fallback={card.discount}
-										label="Текст"
+										path={['cards', index, 'tag']}
+										fallback={card.tag}
+										label="Метка акции"
+										placeholder="Метка"
 										defaults={{ cards }}
-									/></span
-								>
+									/>
+								</span>
 							</div>
-						</div>
+						{/if}
+
+						<!-- Discount badge -->
+						{#if card.discount || canManage}
+							<div class="absolute right-4 bottom-4">
+								<div
+									class="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-white/20 text-center text-xs font-medium text-white backdrop-blur-md"
+								>
+									<span class="leading-tight"
+										><ContentText
+											bind:data
+											{editContext}
+											{isEditable}
+											componentType="ActionsCards"
+											path={['cards', index, 'discount']}
+											fallback={card.discount}
+											label="Размер скидки"
+											placeholder="Скидка"
+											defaults={{ cards }}
+										/></span
+									>
+								</div>
+							</div>
+						{/if}
 					</div>
 
 					<!-- Content -->
 					<div class="flex flex-1 flex-col p-6 lg:p-8">
-						<h3
-							class="text-xl text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
-							style="font-family: var(--font-heading);"
-						>
+						<h3 class="p1-title text-card-title" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
 								{isEditable}
 								componentType="ActionsCards"
-								path={['cards', cards.indexOf(card), 'title']}
+								path={['cards', index, 'title']}
 								fallback={card.title}
 								label="Заголовок"
+								placeholder="Название акции"
 								defaults={{ cards }}
 							/>
 						</h3>
-						<p class="mt-3 text-sm leading-relaxed text-secondary">
+						<p class="p1-body mt-3 text-prose">
 							<ContentText
 								bind:data
 								{editContext}
 								{isEditable}
 								componentType="ActionsCards"
-								path={['cards', cards.indexOf(card), 'description']}
+								path={['cards', index, 'description']}
 								fallback={card.description}
 								label="Описание"
+								placeholder="Добавить описание"
 								defaults={{ cards }}
 								multiline
 							/>
@@ -292,95 +424,105 @@
 						<div class="mt-auto pt-5">
 							<div class="flex items-end justify-between">
 								<div>
-									{#if card.oldPrice}
-										<p class="text-xs text-muted line-through">
+									{#if card.oldPrice || canManage}
+										<p class="p1-muted text-xs" class:line-through={!!card.oldPrice}>
 											<ContentText
 												bind:data
 												{editContext}
 												{isEditable}
 												componentType="ActionsCards"
-												path={['cards', cards.indexOf(card), 'oldPrice']}
+												path={['cards', index, 'oldPrice']}
 												fallback={card.oldPrice}
-												label="Описание"
+												label="Старая цена"
+												placeholder="Старая цена"
 												defaults={{ cards }}
 												richText={false}
 												multiline
 											/>
+											{#if card.oldPrice}<ContentText
+													bind:data
+													{editContext}
+													{isEditable}
+													componentType="ActionsCards"
+													path={['copy', 'currencyText']}
+													fallback={'₽'}
+													label="₽"
+													multiline
+												/>{/if}
+										</p>
+									{/if}
+									{#if card.newPrice || canManage}
+										<p
+											class="p1-title text-2xl font-light"
+											style="font-family: var(--font-heading);"
+										>
 											<ContentText
 												bind:data
 												{editContext}
 												{isEditable}
 												componentType="ActionsCards"
-												path={['copy', 'currencyText']}
-												fallback={'₽'}
-												label="₽"
+												path={['cards', index, 'newPrice']}
+												fallback={card.newPrice}
+												label="Цена по акции"
+												placeholder="Цена по акции"
+												defaults={{ cards }}
+												richText={false}
+												multiline
+											/>
+											{#if card.newPrice}<span class="text-base">
+													<ContentText
+														bind:data
+														{editContext}
+														{isEditable}
+														componentType="ActionsCards"
+														path={['copy', 'currencyText']}
+														fallback={'₽'}
+														label="₽"
+													/></span
+												>{/if}
+										</p>
+									{/if}
+								</div>
+								{#if (card.expiresAt === undefined && card.until) || deadline !== null}
+									<div class="text-right">
+										<p class="p1-muted text-xs tracking-[0.1em] uppercase">
+											<ContentText
+												bind:data
+												{editContext}
+												{isEditable}
+												componentType="ActionsCards"
+												path={['copy', 'untilPrefix']}
+												fallback={'До'}
+												label="До"
 												multiline
 											/>
 										</p>
-									{/if}
-									<p
-										class="text-2xl font-light text-primary"
-										style="font-family: var(--font-heading);"
-									>
-										<ContentText
-											bind:data
-											{editContext}
-											{isEditable}
-											componentType="ActionsCards"
-											path={['cards', cards.indexOf(card), 'newPrice']}
-											fallback={card.newPrice}
-											label="Описание"
-											defaults={{ cards }}
-											richText={false}
-											multiline
-										/>
-										<span class="text-base">
-											<ContentText
-												bind:data
-												{editContext}
-												{isEditable}
-												componentType="ActionsCards"
-												path={['copy', 'currencyText']}
-												fallback={'₽'}
-												label="₽"
-											/></span
-										>
-									</p>
-								</div>
-								<div class="text-right">
-									<p class="text-[10px] tracking-[0.1em] text-muted uppercase">
-										<ContentText
-											bind:data
-											{editContext}
-											{isEditable}
-											componentType="ActionsCards"
-											path={['copy', 'untilPrefix']}
-											fallback={'До'}
-											label="До"
-											multiline
-										/>
-									</p>
-									<p class="text-xs text-secondary">
-										<ContentText
-											bind:data
-											{editContext}
-											{isEditable}
-											componentType="ActionsCards"
-											path={['cards', cards.indexOf(card), 'until']}
-											fallback={card.until}
-											label="Описание"
-											defaults={{ cards }}
-											richText={false}
-											multiline
-										/>
-									</p>
-								</div>
+										<p class="p1-body text-xs">
+											{#if card.expiresAt && deadline !== null}
+												<time datetime={card.expiresAt}>{formatPromotionDeadline(deadline)}</time>
+											{:else}
+												<ContentText
+													bind:data
+													{editContext}
+													{isEditable}
+													componentType="ActionsCards"
+													path={['cards', index, 'until']}
+													fallback={card.until}
+													label="Подпись срока действия"
+													defaults={{ cards }}
+													richText={false}
+													multiline
+												/>
+											{/if}
+										</p>
+									</div>
+								{/if}
 							</div>
 
 							<!-- CTA -->
 							<div class="mt-4">
 								<button
-									class="group/btn flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-4 py-3 text-[10px] tracking-[0.12em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary hover:text-on-accent"
+									class="group/btn flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-primary bg-primary px-4 py-3 text-xs tracking-[0.12em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary hover:text-on-accent"
 									type="button"
 									data-metrika-goal="pages_actions_actionscards_open"
 									data-goal-action="open"
@@ -415,6 +557,9 @@
 							</div>
 						</div>
 					</div>
+					{#if canManage}
+						{@render cardSettings(card, deadline)}
+					{/if}
 				</div>
 			{/each}
 		</div>
@@ -436,7 +581,7 @@
 					/>
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
 				</svg>
-				<p class="mt-4 text-base text-muted">
+				<p class="p1-body mt-4 text-prose">
 					<ContentText
 						bind:data
 						{editContext}

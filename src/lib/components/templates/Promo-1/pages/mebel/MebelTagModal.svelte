@@ -162,7 +162,7 @@
 >
 	<div class="mb-5 flex items-start justify-between gap-4">
 		<div>
-			<h2 id={`${id}-title`} class="text-xl">{title}</h2>
+			<h2 id={`${id}-title`} class="ds-title-sub text-xl">{title}</h2>
 			<p class="mt-2 text-sm text-ink-600">
 				Теги брендов появляются автоматически. Их названия меняются на странице бренда. Остальные
 				теги можно добавить здесь.

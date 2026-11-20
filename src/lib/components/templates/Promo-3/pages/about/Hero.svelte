@@ -4,6 +4,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -14,6 +16,8 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	const theme = $derived(blockTheme(data, 'dark'));
 
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -37,15 +41,20 @@
 	);
 </script>
 
-<section class="relative flex min-h-[55vh] items-center overflow-hidden">
+<section
+	data-p1-theme={theme}
+	class="p1-surface relative flex min-h-[55vh] items-center overflow-hidden"
+>
+	{#if theme === 'dark'}
+		<div
+			class="pointer-events-none absolute inset-0 bg-gradient-to-br from-surface-900 via-surface-900 to-surface-800"
+			aria-hidden="true"
+		></div>
+	{/if}
 	<div
-		class="absolute inset-0 bg-gradient-to-br from-surface-900 via-surface-900 to-surface-800"
-	></div>
-	<div
-		class="pointer-events-none absolute inset-0 opacity-[0.03]"
-		style="background-image: linear-gradient(rgba(201,169,110,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(201,169,110,0.5) 1px, transparent 1px); background-size: 60px 60px;"
-	></div>
-	<div class="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2">
+		class="pointer-events-none absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2"
+		aria-hidden="true"
+	>
 		<div class="size-[600px] rounded-full bg-accent-500/6 blur-3xl"></div>
 	</div>
 
@@ -76,10 +85,10 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="text-5xl text-white sm:text-6xl lg:text-7xl">
+				<h1 class="p1-title text-5xl sm:text-6xl lg:text-7xl">
 					<RichText value={displayValue} />
 					<br /><span
-						class="bg-linear-to-r from-accent-500 to-accent-300 bg-clip-text text-transparent"
+						class="text-accent-500"
 						>{String(data?.titleAccent ?? '')}</span
 					>
 				</h1>
@@ -98,16 +107,16 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}<p
-					class="mt-6 max-w-2xl text-lg leading-relaxed text-surface-300"
+					class="p1-body mt-6 max-w-2xl text-lg leading-relaxed"
 				>
 					<RichText value={displayValue} />
 				</p>{/snippet}
 		</EditableField>
-		<div class="mt-14 flex flex-wrap gap-10 border-t border-surface-700/50 pt-8">
-			{#each stats as stat}
+		<div class="p1-border mt-14 flex flex-wrap gap-10 border-t pt-8">
+			{#each stats as stat (stat)}
 				<div>
 					<div class="ds-numeric text-2xl text-accent-500">{stat.value}</div>
-					<div class="mt-1 text-xs tracking-wide text-surface-300">{stat.label}</div>
+					<div class="p1-body mt-1 text-xs tracking-wide">{stat.label}</div>
 				</div>
 			{/each}
 		</div>

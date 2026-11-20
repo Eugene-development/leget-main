@@ -28,7 +28,7 @@
 	}
 </script>
 
-<section class="yd-cta">
+<section data-ds-surface="dark" class="yd-cta">
 	<div class="yd-cta__container">
 		<div class="yd-cta__inner">
 			<EditableField
@@ -40,7 +40,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="yd-cta__title"><RichText value={displayValue} /></h2>
+					<h2 class="ds-copy yd-cta__title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -57,12 +57,15 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="yd-cta__subtitle"><RichText value={displayValue} /></p>
+					<p class="ds-copy yd-cta__subtitle"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 
 			<div class="yd-cta__actions">
-				<a href={String(data?.primaryHref ?? '/contact')} class="yd-cta__btn yd-cta__btn--primary">
+				<a
+					href={String(data?.primaryHref ?? '/contact')}
+					class="ds-action yd-cta__btn yd-cta__btn--primary"
+				>
 					<EditableField
 						fieldKey="CTA.primaryButton"
 						label="Основная кнопка"
@@ -74,7 +77,7 @@
 						{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 					</EditableField>
 				</a>
-				<a href={phoneHref} class="yd-cta__btn yd-cta__btn--secondary">
+				<a href={phoneHref} class="ds-outline yd-cta__btn yd-cta__btn--secondary">
 					<svg
 						width="18"
 						height="18"
@@ -101,7 +104,7 @@
 			</div>
 
 			<div class="yd-cta__trust">
-				<div class="yd-cta__trust-item">
+				<div class="ds-copy yd-cta__trust-item">
 					<svg
 						width="16"
 						height="16"
@@ -114,7 +117,7 @@
 					</svg>
 					<span>Безопасная сделка</span>
 				</div>
-				<div class="yd-cta__trust-item">
+				<div class="ds-copy yd-cta__trust-item">
 					<svg
 						width="16"
 						height="16"
@@ -128,7 +131,7 @@
 					</svg>
 					<span>Данные защищены</span>
 				</div>
-				<div class="yd-cta__trust-item">
+				<div class="ds-copy yd-cta__trust-item">
 					<svg
 						width="16"
 						height="16"

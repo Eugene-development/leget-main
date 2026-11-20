@@ -67,7 +67,6 @@
 	let noticeClosed = $state(false);
 	let noticeExpanded = $state(false);
 	const noticeId = $props.id();
-	let noticeHeaderBottom = $state(0);
 	const noticeDefaults = {
 		noticeTitleV1: 'Наши услуги бесплатны',
 		noticeIntroV1: 'Наш сервис — место, где встречаются покупатели и поставщики товаров и услуг.',
@@ -94,24 +93,6 @@
 		noticeDismissed = true;
 		noticeVisible = false;
 	}
-
-	onMount(() => {
-		const header = document.querySelector('header[data-field-toolbar-scope]');
-		if (!header) return;
-		const update = () => {
-			noticeHeaderBottom = Math.max(0, header.getBoundingClientRect().bottom);
-		};
-		update();
-		const observer = new ResizeObserver(update);
-		observer.observe(header);
-		window.addEventListener('scroll', update, { passive: true });
-		window.addEventListener('resize', update);
-		return () => {
-			observer.disconnect();
-			window.removeEventListener('scroll', update);
-			window.removeEventListener('resize', update);
-		};
-	});
 
 	let noticeTimer: ReturnType<typeof setTimeout>;
 	const scheduleNotice = () => {
@@ -352,96 +333,96 @@
 	const p1_slide = withPromoMotion(slide);
 </script>
 
-<div aria-live="polite" aria-atomic="true">
-	{#if !noticeClosed && (noticeVisible || isEditable)}
-		<aside
-			class="free-services-notice glass-panel rounded-3xl"
-			style:--notice-header-bottom={`${noticeHeaderBottom}px`}
-			aria-label="Об услугах компании"
-			transition:p1_fly={{ y: -12, duration: motionDisabled ? 0 : 480 }}
-		>
-			<button
-				type="button"
-				class="notice-close"
-				aria-label="Закрыть уведомление"
-				data-goal-ignore="Закрытие информационного уведомления без формы"
-				onclick={closeNotice}
+<section
+	class:hero-motion-disabled={!animationsEnabled}
+	class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900"
+>
+	<div aria-live="polite" aria-atomic="true">
+		{#if !noticeClosed && (noticeVisible || isEditable)}
+			<aside
+				data-ds-surface="light"
+				class="free-services-notice glass-panel rounded-3xl"
+				aria-label="Об услугах компании"
+				transition:p1_fly={{ y: -12, duration: motionDisabled ? 0 : 480 }}
 			>
-				<svg
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.5"
-					aria-hidden="true"
-				>
-					<path d="m6 6 12 12M18 6 6 18" stroke-linecap="round" />
-				</svg>
-			</button>
-			<EditableField
-				fieldKey="HeroMain.noticeTitleV1"
-				label="Уведомление: заголовок"
-				value={noticeText('noticeTitleV1')}
-				{isEditable}
-				onSave={(value) => saveField('noticeTitleV1', value)}
-			>
-				{#snippet children(displayValue)}
-					<p class="notice-title"><RichText value={displayValue} /></p>
-				{/snippet}
-			</EditableField>
-			{#if !isEditable}
 				<button
 					type="button"
-					class="notice-details"
-					aria-expanded={noticeExpanded}
-					aria-controls={noticeId}
-					data-goal-ignore="Раскрытие пояснения о бесплатных услугах, не форма"
-					onclick={() => (noticeExpanded = !noticeExpanded)}
+					class="notice-close"
+					aria-label="Закрыть уведомление"
+					data-goal-ignore="Закрытие информационного уведомления без формы"
+					onclick={closeNotice}
 				>
-					{noticeExpanded ? 'Свернуть' : 'Подробнее'}
 					<svg
-						width="16"
-						height="16"
+						width="18"
+						height="18"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
 						stroke-width="1.5"
 						aria-hidden="true"
-						class:notice-chevron-open={noticeExpanded}
 					>
-						<path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+						<path d="m6 6 12 12M18 6 6 18" stroke-linecap="round" />
 					</svg>
 				</button>
-			{/if}
-			<div id={noticeId}>
-				{#if noticeExpanded || isEditable}
-					<div transition:p1_slide={{ duration: motionDisabled ? 0 : 260 }}>
-						{#each noticeParagraphs as paragraph (paragraph.key)}
-							<EditableField
-								fieldKey={`HeroMain.${paragraph.key}`}
-								label={paragraph.label}
-								value={noticeText(paragraph.key)}
-								{isEditable}
-								multiline
-								onSave={(value) => saveField(paragraph.key, value)}
-							>
-								{#snippet children(displayValue)}
-									<p class="notice-comment text-sm"><RichText value={displayValue} /></p>
-								{/snippet}
-							</EditableField>
-						{/each}
-					</div>
+				<EditableField
+					fieldKey="HeroMain.noticeTitleV1"
+					label="Уведомление: заголовок"
+					value={noticeText('noticeTitleV1')}
+					{isEditable}
+					onSave={(value) => saveField('noticeTitleV1', value)}
+				>
+					{#snippet children(displayValue)}
+						<p class="notice-title"><RichText value={displayValue} /></p>
+					{/snippet}
+				</EditableField>
+				{#if !isEditable}
+					<button
+						type="button"
+						class="notice-details"
+						aria-expanded={noticeExpanded}
+						aria-controls={noticeId}
+						data-goal-ignore="Раскрытие пояснения о бесплатных услугах, не форма"
+						onclick={() => (noticeExpanded = !noticeExpanded)}
+					>
+						{noticeExpanded ? 'Свернуть' : 'Подробнее'}
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+							class:notice-chevron-open={noticeExpanded}
+						>
+							<path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</button>
 				{/if}
-			</div>
-		</aside>
-	{/if}
-</div>
+				<div id={noticeId}>
+					{#if noticeExpanded || isEditable}
+						<div transition:p1_slide={{ duration: motionDisabled ? 0 : 260 }}>
+							{#each noticeParagraphs as paragraph (paragraph.key)}
+								<EditableField
+									fieldKey={`HeroMain.${paragraph.key}`}
+									label={paragraph.label}
+									value={noticeText(paragraph.key)}
+									{isEditable}
+									multiline
+									onSave={(value) => saveField(paragraph.key, value)}
+								>
+									{#snippet children(displayValue)}
+										<p class="notice-comment text-sm"><RichText value={displayValue} /></p>
+									{/snippet}
+								</EditableField>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			</aside>
+		{/if}
+	</div>
 
-<section
-	class:hero-motion-disabled={!animationsEnabled}
-	class="hero-stage relative flex min-h-full w-full items-end overflow-hidden text-ink-900"
->
 	<!-- Фоновое изображение -->
 	<div class="hero-background absolute inset-0 z-0 bg-surface-raised" bind:this={bgViewport}>
 		{#each bgImages as bgImage, index (`${index}:${bgImage}`)}
@@ -501,6 +482,7 @@
 	<div class="hero-shell relative z-10 w-full">
 		<!-- Стеклянная панель -->
 		<div
+			data-ds-surface="raised"
 			bind:this={glassPanel}
 			class="glass-panel relative flex w-full flex-col rounded-3xl border border-on-dark/40"
 		>
@@ -700,7 +682,7 @@
 																	onToggle: (event) => visibility.toggle(`brand:${index}`, event)
 																}}
 																imageDefaults={{ brands }}
-																class="max-h-full max-w-full object-contain"
+																class="max-h-full max-w-full rounded bg-white object-contain px-1 py-1"
 																src={brand.logo}
 																alt={copyIndex === 1 ? '' : brand.name}
 															/>
@@ -716,7 +698,7 @@
 															<ImageFallback
 																imagePath={['brands', index, 'logo']}
 																imageDefaults={{ brands }}
-																class="max-h-full max-w-full object-contain"
+																class="max-h-full max-w-full rounded bg-white object-contain px-1 py-1"
 																src={brand.logo}
 																alt={copyIndex === 1 ? '' : brand.name}
 															/>
@@ -728,7 +710,7 @@
 															<ImageFallback
 																imagePath={['brands', index, 'logo']}
 																imageDefaults={{ brands }}
-																class="max-h-full max-w-full object-contain"
+																class="max-h-full max-w-full rounded bg-white object-contain px-1 py-1"
 																src={brand.logo}
 																alt={copyIndex === 1 ? '' : brand.name}
 															/>
@@ -769,12 +751,13 @@
 
 <style>
 	.free-services-notice {
-		position: fixed;
-		top: calc(max(var(--notice-header-bottom), env(safe-area-inset-top)) + 1rem);
+		/* Уведомление прокручивается и обрезается вместе с Hero, без слежения за шапкой. */
+		position: absolute;
+		top: calc(env(safe-area-inset-top) + 1rem);
 		right: max(1rem, env(safe-area-inset-right));
-		z-index: 160;
+		z-index: 20;
 		width: min(23rem, calc(100vw - 2rem));
-		max-height: calc(100dvh - max(var(--notice-header-bottom), env(safe-area-inset-top)) - 2rem);
+		max-height: calc(100% - env(safe-area-inset-top) - 2rem);
 		overflow-y: auto;
 		padding: 1.25rem;
 		color: var(--ds-light-title);
@@ -869,6 +852,7 @@
 				transparent
 			)
 		);
+		background-color: var(--ds-surface-raised);
 		backdrop-filter: blur(var(--ds-liquid-glass-blur)) saturate(var(--ds-liquid-glass-saturation));
 		box-shadow:
 			var(--ds-light-shadow),
@@ -1100,7 +1084,7 @@
 
 	@media (max-width: 767px) {
 		.free-services-notice {
-			top: calc(max(var(--notice-header-bottom), env(safe-area-inset-top)) + 0.5rem);
+			top: calc(env(safe-area-inset-top) + 0.5rem);
 			right: max(0.75rem, env(safe-area-inset-right));
 			width: min(17.5rem, calc(100vw - 1.5rem));
 			padding: 0.75rem;

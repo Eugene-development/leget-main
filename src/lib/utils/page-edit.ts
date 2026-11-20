@@ -232,7 +232,10 @@ export async function saveComponentData(
 	// синхронизируем id прямо в переданный blob: чинит появление кнопки «Сброс»
 	// сразу после первого сохранения нового блока (без перезагрузки) и для
 	// свитчер-, и для не-свитчер-компонентов.
-	const id = result.data?.upsertPageComponent?.id ?? null;
+	const saved = result.data?.upsertPageComponent;
+	const version = saved?.data?._promotionVersion;
+	if (typeof version === 'string') data._promotionVersion = version;
+	const id = saved?.id ?? null;
 	if (id && !data._componentId) {
 		data._componentId = id;
 	}
@@ -348,8 +351,8 @@ export async function saveLayoutData(
 }
 
 const LIST_BUCKET_FILES_QUERY = `
-  query ListBucketFiles($folder: String, $maxKeys: Int) {
-    listBucketFiles(folder: $folder, maxKeys: $maxKeys) {
+  query ListBucketFiles($folder: String, $maxKeys: Int, $licenseId: ID) {
+    listBucketFiles(folder: $folder, maxKeys: $maxKeys, licenseId: $licenseId) {
       key
       url
       size
@@ -379,8 +382,13 @@ export interface BucketFile {
  *
  * @param folder  - папка внутри бакета (например «bg»). По умолчанию «bg».
  * @param maxKeys - максимальное количество файлов (до 200). По умолчанию 100.
+ * @param licenseId - лицензия открытого в редакторе сайта
  */
-export async function listBucketFiles(folder = 'bg', maxKeys = 100): Promise<BucketFile[]> {
+export async function listBucketFiles(
+	folder = 'bg',
+	maxKeys = 100,
+	licenseId?: string
+): Promise<BucketFile[]> {
 	const token = getAuthToken();
 
 	if (!token) {
@@ -398,7 +406,7 @@ export async function listBucketFiles(folder = 'bg', maxKeys = 100): Promise<Buc
 		},
 		body: JSON.stringify({
 			query: LIST_BUCKET_FILES_QUERY,
-			variables: { folder, maxKeys }
+			variables: { folder, maxKeys, licenseId }
 		})
 	});
 

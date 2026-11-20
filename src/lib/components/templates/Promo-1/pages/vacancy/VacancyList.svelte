@@ -230,7 +230,7 @@
 -->
 {#snippet row(vacancy: Vacancy, i: number)}
 	<span
-		class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-cat-4-400 to-cat-4-500 text-on-accent sm:size-14"
+		class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-cat-4-400 to-cat-4-500 text-on-dark sm:size-14"
 		aria-hidden="true"
 	>
 		<svg
@@ -289,7 +289,9 @@
 		завести с тем же ключом правки, и карандашей на одно поле стало бы два.
 	-->
 	<span class="order-last basis-full sm:order-none sm:basis-auto">
-		<span class="p1-numeric inline-block rounded-full border px-4 py-1.5 text-sm {accent.pill}">
+		<span
+			class="ds-copy p1-numeric inline-block rounded-full border px-4 py-1.5 text-sm {accent.pill}"
+		>
 			<EditableField
 				fieldKey="VacancyList.{i}.salary"
 				label="Оклад"

@@ -6,6 +6,7 @@
 	import { createFormSender } from '$lib/utils/form-submission';
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import NavigationBody from '$lib/components/NavigationBody.svelte';
+	import CrmIcon from './CrmIcon.svelte';
 	import EditForm from './EditForm.svelte';
 	import ManagerForm from './ManagerForm.svelte';
 	import TemplateEditor from './TemplateEditor.svelte';
@@ -20,41 +21,48 @@
 		type Row,
 		type Field
 	} from './api';
-	import './crm.css';
+	import { crmSections, crmSiteId, getCrmCountsUpdater, type CrmSite } from './navigation';
 	let { data }: { data: Row } = $props();
-	const navigation = [
-		['incoming', 'Входящие'],
-		['deals', 'Сделки'],
-		['clients', 'Клиенты'],
-		['companies', 'Компании'],
-		['tasks', 'Задачи'],
-		['insights', 'Результаты сайта'],
-		['automation', 'Правила CRM'],
-		['orders', 'Кабинет заказчика'],
-		['calculator', 'Калькулятор'],
-		['launch', 'Запуск сайта'],
-		['members', 'Сотрудники'],
-		['settings', 'Настройки']
-	];
+	const updateCounts = getCrmCountsUpdater();
 	const titles: Record<string, string> = Object.fromEntries([
-		...navigation,
-		['members', 'Сотрудники'],
+		...crmSections,
 		['stages', 'Этапы воронки'],
 		['templates', 'Шаблоны документов'],
 		['unassigned', 'Без привязки к сайту']
 	]);
+	const incomingTabs = [
+		['', 'Все заявки'],
+		['new', 'Новые'],
+		['processed', 'В работе'],
+		['completed', 'Обработанные'],
+		['cancelled', 'Нецелевые']
+	] as const;
+	const createLabels: Record<string, string> = {
+		incoming: 'Добавить офлайн-заявку',
+		members: 'Назначить менеджера',
+		templates: 'Создать шаблон',
+		deals: 'Новая сделка',
+		tasks: 'Новая задача',
+		clients: 'Новый клиент',
+		companies: 'Новая компания',
+		stages: 'Новый этап'
+	};
+	const incomingStatus = $derived(page.url.searchParams.get('status') || '');
+	const hasFilters = $derived(
+		Boolean(
+			incomingStatus ||
+			['search', 'stage_id', 'source', 'assigned_to', 'overdue', 'client_id'].some((key) =>
+				page.url.searchParams.get(key)
+			)
+		)
+	);
 	const base = $derived(String(data.base));
 	const route = $derived(page.url.pathname.slice(base.length).split('/').filter(Boolean));
 	const section = $derived(route[0] || 'incoming');
 	const id = $derived(route[1] || '');
-	const sites = $derived<Row[]>(data.context.sites || []);
+	const sites = $derived<CrmSite[]>(data.context.sites || []);
 	const site = $derived(
-		String(
-			page.url.searchParams.get('site') ||
-				sites.find((s) => s.id === data.context.current_site?.id)?.id ||
-				sites[0]?.id ||
-				''
-		)
+		crmSiteId(sites, data.context.current_site?.id, page.url.searchParams.get('site'))
 	);
 	const activeSite = $derived(sites.find((s) => s.id === site));
 	let dashboard = $state<Row>({ stages: [], members: [], counts: {} });
@@ -128,6 +136,14 @@
 		q.set('page', String(number));
 		return `${base}/${section}?${q}`;
 	}
+	function statusHref(status: string) {
+		const params = new URLSearchParams(page.url.searchParams);
+		params.set('site', site);
+		params.delete('page');
+		if (status) params.set('status', status);
+		else params.delete('status');
+		return `${base}/incoming?${params}`;
+	}
 	function stageName(key: string) {
 		return dashboard.stages?.find((s: Row) => s.id === key)?.name || '—';
 	}
@@ -196,6 +212,7 @@
 			const query = new URLSearchParams(view.query);
 			for (const key of [
 				'page',
+				'status',
 				'search',
 				'stage_id',
 				'assigned_to',
@@ -221,6 +238,7 @@
 			if (!keepCreated) specification = body.item?.specification || [];
 			if (view.section === 'settings') {
 				dashboard = body;
+				updateCounts(view.site, body.counts || {});
 				dashboardReady = true;
 			}
 			// Related entities already returned by the detail endpoint need no second request.
@@ -237,6 +255,7 @@
 					.then((value) => {
 						if (isCurrent()) {
 							dashboard = value;
+							updateCounts(view.site, value.counts || {});
 							dashboardReady = true;
 						}
 					})
@@ -248,6 +267,7 @@
 		} catch (e) {
 			if (!isCurrent()) return;
 			controller.abort(); // Do not let metadata repopulate a denied/failed view.
+			updateCounts(view.site, {});
 			result = {};
 			dashboardReady = false;
 			dashboard = { stages: [], members: [], counts: {} };
@@ -547,87 +567,69 @@
 	};
 </script>
 
+{#snippet recordStatus(entry: Row)}
+	{#if section === 'incoming'}
+		<span class="crm-status" data-state={entry.status}>
+			{entry.status === 'completed' ? 'Обработана' : labels[entry.status] || '—'}
+		</span>
+	{:else if section === 'tasks'}
+		<span class="crm-status" data-state={entry.completed_at ? 'completed' : 'processed'}>
+			{entry.completed_at ? 'Выполнена' : 'В работе'}
+		</span>
+	{:else if section === 'members'}
+		<span class="crm-status" data-state={entry.status}>{labels[entry.status] || '—'}</span>
+	{/if}
+{/snippet}
+
 <svelte:head
 	><title>{titles[section] || 'CRM'} — LEGET</title><meta
 		name="robots"
 		content="noindex,nofollow"
 	/></svelte:head
 >
-<div class="crm-shell">
-	<aside class="crm-sidebar">
-		<a class="crm-brand" href={base}>LEGET <span>CRM</span></a>
-		{#if sites.length}<label class="crm-site"
-				>Рабочий сайт<select
-					aria-label="Рабочий сайт"
-					value={site}
-					onchange={(e) => goto(`${base}/${section}?site=${e.currentTarget.value}`)}
-					>{#each sites as s (s.id)}<option value={s.id}>{s.name}</option>{/each}</select
-				></label
-			>{/if}
-		<nav aria-label="Разделы CRM">
-			{#each navigation.filter(([key]) => !['members', 'automation', 'calculator', 'launch'].includes(key) || canManage) as [key, label]}<a
-					class:active={section === key ||
-						(key === 'settings' && ['members', 'stages', 'templates'].includes(section))}
-					href={href(key)}
-					aria-current={section === key ? 'page' : undefined}
-					><span>{label}</span>{#if key === 'incoming' && dashboard.counts?.incoming}<b
-							>{dashboard.counts.incoming}</b
-						>{/if}{#if key === 'tasks' && dashboard.counts?.overdue}<b>{dashboard.counts.overdue}</b
-						>{/if}</a
-				>{/each}
-			{#if data.context.current_site && !sites.some((s) => s.id === data.context.current_site.id)}<a
-					href={`${base}/access`}>Доступ к этому сайту</a
-				>{/if}
-			{#if data.context.role === 'superadmin'}<a
-					class:active={section === 'unassigned'}
-					href={href('unassigned')}>Без привязки</a
-				>{/if}
-		</nav>
-		<div class="crm-profile">
-			<strong>{data.profile.name}</strong><span
-				>{data.context.role === 'superadmin'
-					? 'Суперадмин'
-					: canManage
-						? 'Админ сайта'
-						: 'Менеджер'}</span
-			><a href={data.context.role === 'superadmin' ? '/admin/study' : '/university/auth'}
-				>Обучение</a
-			><a href="/">Вернуться на сайт</a>
-		</div>
-	</aside>
-	<main class="crm-main">
-		<NavigationBody workspace>
+<main class="crm-main">
+	<NavigationBody workspace>
 		<header class="crm-header">
-			<div>
-				{#if id}<a class="back" href={href(section)}>← {titles[section]}</a>{/if}
+			<div class="crm-header-title">
+				{#if id}<a class="back" href={href(section)} aria-label={`К разделу «${titles[section]}»`}
+						><CrmIcon name="back" />{titles[section]}</a
+					>{/if}
 				<h1>{row?.title || row?.name || row?.user?.name || titles[section] || 'CRM'}</h1>
-				<p>
-					{id
-						? section === 'deals'
-							? `${stageName(row?.stage_id)} · ${money(row?.amount)}`
-							: 'Карточка и история работы'
-						: section === 'incoming'
-							? 'Все обращения. Каждое — под контролем.'
-							: section === 'deals'
-								? 'От первого контакта до исполненного договора'
-								: activeSite?.domain || 'Рабочее пространство'}
-				</p>
+				{#if section === 'deals' && row}
+					<div class="crm-header-details">
+						<span class="crm-status" data-state={row.closed_at ? 'completed' : 'new'}
+							>{stageName(row.stage_id)}</span
+						>
+						{#if row.paused}<span class="crm-status" data-state="pending">Приостановлена</span>{/if}
+						<strong>{money(row.amount)}</strong>
+					</div>
+				{:else if row && ['incoming', 'tasks', 'members'].includes(section)}
+					<div class="crm-header-details">
+						{@render recordStatus(row)}
+						{#if section === 'incoming'}<span>{labels[row.service_type] || row.service_type}</span
+							>{/if}
+						{#if section === 'tasks'}<span>{dateTime(row.due_at)}</span>{/if}
+					</div>
+				{:else if !id && section === 'incoming'}
+					<p>Заявки с сайта и обращения, добавленные вручную.</p>
+				{:else if !id && section === 'deals'}
+					<p>Этапы воронки, ответственные и суммы сделок.</p>
+				{/if}
 			</div>
-			{#if !id && ['incoming', 'clients', 'companies', 'deals', 'tasks', 'stages', 'templates', 'members'].includes(section) && site && (canManage || !['stages', 'templates', 'members'].includes(section))}<button
-					class="primary"
+			{#if !id && createLabels[section] && site && (canManage || !['stages', 'templates', 'members'].includes(section))}
+				<button
+					class:primary={!creating}
+					class="crm-create"
+					aria-expanded={creating}
+					aria-controls={creating ? 'crm-create-form' : undefined}
 					onclick={begin}
-					data-metrika-goal="crm_record_form_open"
-					data-goal-action="open"
-					>{creating
+					data-metrika-goal={creating ? 'crm_record_form_close' : 'crm_record_form_open'}
+					data-goal-action={creating ? 'close' : 'open'}
+					><CrmIcon name={creating ? 'close' : 'plus'} />{creating
 						? 'Закрыть форму'
-						: section === 'members'
-							? 'Назначить менеджера'
-							: section === 'incoming'
-								? 'Добавить офлайн-заявку'
-								: section === 'templates'
-									? 'Создать шаблон'
-									: 'Добавить'}</button
-				>{/if}
+						: createLabels[section]}</button
+				>
+			{/if}
 		</header>
 		{#if detailRefreshing}<ContentLoading
 				><p class="muted" role="status">
@@ -670,7 +672,7 @@
 					>
 				</section>{/if}
 			{#if creating}
-				<section class="crm-panel">
+				<section class="crm-panel crm-create-panel" id="crm-create-form">
 					<h2>
 						{section === 'incoming'
 							? 'Новое офлайн-обращение'
@@ -1310,12 +1312,31 @@
 					{/if}
 				{/key}
 			{:else}
+				{#if section === 'incoming'}
+					<nav class="crm-tabs" aria-label="Статус заявок">
+						{#each incomingTabs as [status, title] (status)}
+							<a
+								href={statusHref(status)}
+								aria-current={incomingStatus === status ? 'page' : undefined}
+							>
+								{title}
+								{#if status === 'new' && dashboard.counts?.incoming}<small
+										>{dashboard.counts.incoming}</small
+									>{/if}
+							</a>
+						{/each}
+					</nav>
+				{/if}
 				{#if section !== 'unassigned'}<form class="crm-filters" onsubmit={filter}>
-						<input
-							aria-label="Поиск"
-							placeholder="Поиск по записям"
-							bind:value={search}
-						/>{#if section === 'deals'}<select aria-label="Этап" bind:value={stageFilter}
+						<label class="crm-search">
+							<CrmIcon name="search" />
+							<input
+								type="search"
+								aria-label="Поиск"
+								placeholder="Поиск по записям"
+								bind:value={search}
+							/>
+						</label>{#if section === 'deals'}<select aria-label="Этап" bind:value={stageFilter}
 								><option value="">Все этапы</option>{#each stageOptions as s}<option value={s.value}
 										>{s.label}</option
 									>{/each}</select
@@ -1333,28 +1354,46 @@
 							>{/if}{#if ['deals', 'tasks'].includes(section)}<label class="crm-check"
 								><input type="checkbox" bind:checked={overdue} />Просрочено</label
 							>{/if}<button type="submit" data-goal-ignore="Фильтр CRM">Найти</button
-						>{#if section === 'deals'}<button
-								type="button"
-								onclick={() => (view = view === 'board' ? 'table' : 'board')}
-								data-goal-ignore="Вид воронки CRM">{view === 'board' ? 'Таблица' : 'Канбан'}</button
-							>{/if}
+						>{#if section === 'deals'}
+							<div class="crm-view-switch" role="group" aria-label="Вид сделок">
+								<button
+									type="button"
+									aria-pressed={view === 'board'}
+									onclick={() => (view = 'board')}
+									data-goal-ignore="Вид воронки CRM"><CrmIcon name="deals" />Канбан</button
+								>
+								<button
+									type="button"
+									aria-pressed={view === 'table'}
+									onclick={() => (view = 'table')}
+									data-goal-ignore="Вид воронки CRM"><CrmIcon name="table" />Таблица</button
+								>
+							</div>
+						{/if}
 					</form>{/if}
+				{#if result.items && (records.length || hasFilters)}
+					<div class="crm-list-meta">
+						<span>{hasFilters ? 'Найдено' : 'Всего'} <strong>{result.items.total}</strong></span>
+						{#if hasFilters}<a href={href(section)}>Сбросить фильтры</a>{/if}
+					</div>
+				{/if}
 				{#if section === 'deals' && view === 'board' && dashboard.stages?.length}
-					<p class="muted">
-						{result.items?.total || 0} сделок · карточку можно перенести или открыть и выбрать этап
-					</p>
-					<div class="crm-board">
-						{#each dashboard.stages.filter((s: Row) => !s.archived) as stage}<section
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable board also needs keyboard access when empty.) -->
+					<div class="crm-board" role="region" aria-label="Воронка сделок" tabindex="0">
+						{#each dashboard.stages.filter((s: Row) => !s.archived) as stage (stage.id)}
+							{@const deals = records.filter((d) => d.stage_id === stage.id)}
+							<section
 								class="crm-lane"
+								data-kind={stage.kind}
 								aria-label={stage.name}
 								ondragover={(e) => e.preventDefault()}
 								ondrop={(e) => drop(stage, e)}
 							>
 								<header>
 									<h2>{stage.name}</h2>
-									<span>{records.filter((d) => d.stage_id === stage.id).length}</span>
+									<span>{deals.length}</span>
 								</header>
-								{#each records.filter((d) => d.stage_id === stage.id) as d}<a
+								{#each deals as d (d.id)}<a
 										class="crm-deal-card"
 										href={href(`deals/${d.id}`)}
 										draggable="true"
@@ -1362,12 +1401,17 @@
 										ondragend={() => (dragging = null)}
 										><strong>{d.title}</strong><span class="crm-card-amount">{money(d.amount)}</span
 										><span
-											>{lookups.clients.find((c: Row) => c.id === d.client_id)?.name ||
+											>{d.client_name ||
+												lookups.clients.find((c: Row) => c.id === d.client_id)?.name ||
 												'Клиент'}</span
 										>
 										<footer>
 											{memberName(d.assigned_to)}<small
-												>{d.paused ? 'Приостановлена' : date(d.due_at)}</small
+												>{d.paused
+													? 'Приостановлена'
+													: d.due_at
+														? date(d.due_at)
+														: 'Без срока'}</small
 											>
 										</footer></a
 									>{:else}<p class="crm-lane-empty">Пока нет сделок</p>{/each}
@@ -1376,31 +1420,34 @@
 				{:else if records.length}<div class="crm-mobile-records">
 						{#each records as entry (entry.id)}
 							<article>
-								{#if section === 'unassigned'}<strong
-										>{entry.name || entry.email || 'Обращение'}</strong
-									>{:else}<a href={href(`${section}/${entry.id}`)}
-										>{entry.title ||
-											entry.name ||
-											entry.user?.name ||
-											entry.email ||
-											'Обращение'}</a
-									>{/if}
+								<div class="crm-mobile-title">
+									{#if section === 'unassigned'}<strong
+											>{entry.name || entry.email || 'Обращение'}</strong
+										>{:else}<a href={href(`${section}/${entry.id}`)}
+											>{entry.title ||
+												entry.name ||
+												entry.user?.name ||
+												entry.email ||
+												'Обращение'}</a
+										>{/if}
+									{@render recordStatus(entry)}
+								</div>
 								<p>
 									{section === 'clients'
 										? entry.phone || entry.email || 'Контакты не указаны'
 										: section === 'deals'
 											? `${stageName(entry.stage_id)} · ${money(entry.amount)}`
 											: section === 'members'
-												? `${labels[entry.status]} · ${entry.user?.email}`
+												? `${entry.user?.email || '—'}`
 												: section === 'templates'
 													? entry.published_version
 														? `Версия ${entry.published_version}`
 														: 'Черновик'
 													: section === 'tasks'
-														? entry.completed_at
-															? 'Выполнена'
-															: memberName(entry.assigned_to)
-														: labels[entry.status || entry.channel] || entry.contact_name || '—'}
+														? memberName(entry.assigned_to)
+														: section === 'incoming'
+															? labels[entry.channel] || '—'
+															: entry.contact_name || '—'}
 								</p>
 								{#if entry.message}<p>{entry.message.slice(0, 140)}</p>{/if}
 								<small
@@ -1431,13 +1478,15 @@
 							<thead
 								><tr
 									><th
-										>{section === 'deals'
-											? 'Сделка'
-											: section === 'tasks'
-												? 'Задача'
-												: section === 'members'
-													? 'Сотрудник'
-													: 'Название / имя'}</th
+										>{section === 'incoming'
+											? 'Заявка'
+											: section === 'deals'
+												? 'Сделка'
+												: section === 'tasks'
+													? 'Задача'
+													: section === 'members'
+														? 'Сотрудник'
+														: 'Название / имя'}</th
 									><th
 										>{section === 'clients'
 											? 'Контакты'
@@ -1450,7 +1499,15 @@
 											: section === 'deals'
 												? 'Сумма'
 												: 'Ответственный / детали'}</th
-									><th>{section === 'stages' ? 'Порядок' : 'Дата'}</th></tr
+									><th
+										>{section === 'stages'
+											? 'Порядок'
+											: section === 'incoming'
+												? 'Получена'
+												: section === 'tasks'
+													? 'Срок'
+													: 'Дата'}</th
+									></tr
 								></thead
 							><tbody
 								>{#each records as entry (entry.id)}<tr
@@ -1464,28 +1521,28 @@
 														entry.email ||
 														'Обращение'}</a
 												>{/if}{#if section === 'incoming'}<small
-													>{entry.message?.slice(0, 100)}</small
+													>{[labels[entry.channel], entry.message?.slice(0, 100)]
+														.filter(Boolean)
+														.join(' · ')}</small
 												>{/if}</td
-										><td
-											>{section === 'clients'
-												? entry.phone || entry.email || '—'
-												: section === 'deals'
-													? stageName(entry.stage_id)
-													: section === 'stages'
-														? entry.archived
-															? 'Архив'
-															: 'Активен'
-														: section === 'tasks'
-															? entry.completed_at
-																? 'Выполнена'
-																: 'В работе'
+										><td>
+											{#if ['incoming', 'tasks', 'members'].includes(section)}
+												{@render recordStatus(entry)}
+											{:else}{section === 'clients'
+													? entry.phone || entry.email || '—'
+													: section === 'deals'
+														? stageName(entry.stage_id)
+														: section === 'stages'
+															? entry.archived
+																? 'Архив'
+																: 'Активен'
 															: section === 'templates'
 																? entry.published_version
 																	? `Версия ${entry.published_version}`
 																	: 'Черновик'
 																: labels[entry.status || entry.kind || entry.channel] ||
 																	entry.inn ||
-																	'—'}</td
+																	'—'}{/if}</td
 										><td
 											>{section === 'clients'
 												? entry.rating
@@ -1505,9 +1562,11 @@
 										><td
 											>{section === 'stages'
 												? entry.sort_order
-												: date(
-														entry.due_at || entry.created_at
-													)}{#if section === 'unassigned' && site}<button
+												: section === 'tasks'
+													? dateTime(entry.due_at)
+													: date(
+															entry.due_at || entry.created_at
+														)}{#if section === 'unassigned' && site}<button
 													onclick={() =>
 														run(async () => {
 															const reason = window.prompt(
@@ -1527,14 +1586,17 @@
 							>
 						</table>
 					</div>
-				{:else}<section class="crm-empty">
-						<h2>Здесь пока нет записей</h2>
+				{:else if !error}<section class="crm-empty">
+						<span class="crm-empty-icon"><CrmIcon name={section} /></span>
+						<h2>{hasFilters ? 'По этим условиям ничего не найдено' : 'Здесь пока нет записей'}</h2>
 						<p>
-							{section === 'incoming'
-								? 'Заявки с форм сайта появятся автоматически. Обращения по телефону или при встрече добавьте вручную.'
-								: section === 'templates'
-									? 'Создайте шаблон, заполните текст и опубликуйте его для менеджеров.'
-									: 'Добавьте первую запись или измените фильтры.'}
+							{hasFilters
+								? 'Измените поисковый запрос или сбросьте фильтры.'
+								: section === 'incoming'
+									? 'Заявки с форм сайта появятся автоматически. Обращения по телефону или при встрече добавьте вручную.'
+									: section === 'templates'
+										? 'Создайте шаблон, заполните текст и опубликуйте его для менеджеров.'
+										: 'Добавьте первую запись или измените фильтры.'}
 						</p>
 					</section>{/if}
 				{#if result.items?.last_page > 1}<nav class="crm-pagination" aria-label="Страницы">
@@ -1550,6 +1612,5 @@
 					</nav>{/if}
 			{/if}
 		{/if}
-		</NavigationBody>
-	</main>
-</div>
+	</NavigationBody>
+</main>

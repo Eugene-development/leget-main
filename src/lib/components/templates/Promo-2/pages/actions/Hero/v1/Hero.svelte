@@ -12,11 +12,15 @@
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false
+		isEditable = false,
+		showOffer = true,
+		showStats = true
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
+		showOffer?: boolean;
+		showStats?: boolean;
 	} = $props();
 
 	async function saveField(field: string, value: string) {
@@ -77,6 +81,7 @@
 		</span>
 	</div>
 
+	{#if showOffer}
 	<!-- Floating discount badge -->
 	<div
 		class="absolute top-1/4 right-8 hidden opacity-0 lg:flex lg:flex-col lg:items-center lg:gap-1"
@@ -125,10 +130,13 @@
 		</div>
 	</div>
 
+	{/if}
+
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center pt-40 pb-32">
 		<div class="p2-container mx-auto w-full">
 			<div
+				data-ds-surface="white"
 				class="hero-glass relative isolate max-w-2xl rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
 			>
 				<div
@@ -146,7 +154,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-5xl text-primary opacity-0 md:text-6xl lg:text-7xl"
+							class="text-page-title text-primary opacity-0"
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>
@@ -170,7 +178,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="mt-6 max-w-lg text-base leading-relaxed font-medium text-primary opacity-0 md:text-lg"
+							class="mt-6 max-w-lg text-prose font-medium text-primary opacity-0"
 							class:animate-fade-up={heroVisible}
 							style="animation-delay: 0.65s"
 						>
@@ -179,6 +187,7 @@
 					{/snippet}
 				</EditableField>
 
+				{#if showStats}
 				<!-- Stats row -->
 				<div
 					class="mt-10 flex items-center gap-8 opacity-0"
@@ -267,6 +276,8 @@
 					</div>
 				</div>
 
+				{/if}
+
 				<!-- CTA Button -->
 				<div
 					class="mt-10 flex flex-wrap items-center gap-4 opacity-0"
@@ -338,7 +349,8 @@
 <style>
 	@media (prefers-reduced-transparency: reduce) {
 		.hero-glass {
-			background: var(--color-surface);
+			/* Match bg-white and the explicit white content surface, not the page canvas. */
+			background: #fff;
 			backdrop-filter: none;
 		}
 	}

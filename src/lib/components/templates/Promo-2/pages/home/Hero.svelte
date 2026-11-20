@@ -111,7 +111,7 @@
 
 {#snippet logoSettings()}
 	<section class="flex flex-col gap-4 text-on-dark">
-		<h4 class="text-sm font-medium">Логотип перед заголовком</h4>
+		<h4 class="text-sm">Логотип перед заголовком</h4>
 		<p class="text-sm leading-relaxed text-ink-300">
 			Добавьте логотип в разделе «Изображения» ниже. Высота подстраивается под его пропорции.
 		</p>
@@ -238,7 +238,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-3xl text-primary opacity-0 md:text-5xl lg:text-6xl"
+								class="text-page-title text-primary opacity-0"
 								style="font-family: var(--font-heading); animation-delay: 0.5s"
 								class:animate-fade-up={heroVisible}
 							>
@@ -275,7 +275,7 @@
 							onSave={(v) => saveField('description', v)}
 						>
 							{#snippet children(displayValue)}
-								<p class="text-sm leading-relaxed font-light text-primary md:text-lg lg:text-xl">
+								<p class="text-prose font-light text-primary">
 									<RichText value={displayValue} />
 								</p>
 							{/snippet}

@@ -23,6 +23,7 @@
 </script>
 
 <button
+	data-ds-contrast-ignore
 	type="button"
 	class="relative flex h-[26px] w-[46px] cursor-pointer items-center rounded-full border p-[2px] shadow-2xl backdrop-blur-xl transition-all duration-300 active:scale-98 sm:h-[38px] sm:w-[68px] sm:p-[3px] {isLight
 		? 'border-ink-300/80 bg-ink-200/60 hover:border-ink-400/80'

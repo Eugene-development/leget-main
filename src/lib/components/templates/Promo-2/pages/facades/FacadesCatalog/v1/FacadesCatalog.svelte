@@ -43,7 +43,7 @@
 <section class="relative bg-surface py-section" id="facades-catalog" bind:this={sectionEl}>
 	<div class="p2-container mx-auto">
 		<div class="mb-16 opacity-0 lg:mb-24" class:animate-fade-up={true}>
-			<h2 class="text-4xl text-primary lg:text-5xl" style="font-family: var(--font-heading);">
+			<h2 class="text-section-title text-primary" style="font-family: var(--font-heading);">
 				<ContentText
 					bind:data
 					{editContext}
@@ -97,7 +97,7 @@
 						class:animate-fade-up={itemVisibility[facade.id]}
 						style="animation-delay: 0.4s"
 					>
-						<h3 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
+						<h3 class="text-subsection-title text-primary" style="font-family: var(--font-heading);">
 							<ContentText
 								bind:data
 								{editContext}
@@ -109,7 +109,7 @@
 								defaults={{ facades }}
 							/>
 						</h3>
-						<p class="mt-6 text-base leading-relaxed text-secondary">
+						<p class="mt-6 text-prose text-secondary">
 							<ContentText
 								bind:data
 								{editContext}

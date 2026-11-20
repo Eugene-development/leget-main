@@ -229,7 +229,12 @@ for (const [handler, name, path] of [
 ]) {
 	const jar = cookies({ [name]: 'old-token', unrelated: 'keep' });
 	await handler({ cookies: jar });
-	assert.deepEqual(jar.deletes, [{ name, options: { path } }]);
+	assert.deepEqual(jar.deletes, [
+		{ name, options: { path } },
+		...(handler === cabinet.DELETE
+			? [{ name: 'leget_crm_jwt', options: { path: '/crm' } }]
+			: [])
+	]);
 	assert.equal(jar.get(name), undefined);
 	assert.equal(jar.get('unrelated'), 'keep');
 }

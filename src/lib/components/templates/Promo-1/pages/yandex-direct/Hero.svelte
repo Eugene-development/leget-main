@@ -28,7 +28,7 @@
 	}
 </script>
 
-<section class="yd-hero">
+<section data-ds-surface="dark" class="yd-hero">
 	<div class="yd-hero__bg">
 		<div class="yd-hero__gradient"></div>
 		<div class="yd-hero__pattern"></div>
@@ -36,7 +36,7 @@
 
 	<div class="yd-hero__container">
 		<!-- Бейдж -->
-		<div class="yd-hero__badge">
+		<div class="ds-accent yd-hero__badge">
 			<span class="yd-hero__badge-icon">🔥</span>
 			<EditableField
 				fieldKey="Hero.badge"
@@ -60,7 +60,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="yd-hero__title"><RichText value={displayValue} /></h1>
+				<h1 class="ds-copy yd-hero__title"><RichText value={displayValue} /></h1>
 			{/snippet}
 		</EditableField>
 
@@ -78,13 +78,16 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="yd-hero__subtitle"><RichText value={displayValue} /></p>
+				<p class="ds-copy yd-hero__subtitle"><RichText value={displayValue} /></p>
 			{/snippet}
 		</EditableField>
 
 		<!-- Кнопки -->
 		<div class="yd-hero__actions">
-			<a href={String(data?.primaryHref ?? '/contact')} class="yd-hero__btn yd-hero__btn--primary">
+			<a
+				href={String(data?.primaryHref ?? '/contact')}
+				class="ds-action yd-hero__btn yd-hero__btn--primary"
+			>
 				<EditableField
 					fieldKey="Hero.primaryButton"
 					label="Основная кнопка"
@@ -96,7 +99,7 @@
 					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 				</EditableField>
 			</a>
-			<a href={phoneHref} class="yd-hero__btn yd-hero__btn--secondary">
+			<a href={phoneHref} class="ds-outline yd-hero__btn yd-hero__btn--secondary">
 				<svg
 					class="yd-hero__phone-icon"
 					width="18"
@@ -125,7 +128,7 @@
 
 		<!-- Мини-преимущества -->
 		<div class="yd-hero__mini-features">
-			<div class="yd-hero__mini-feature">
+			<div class="ds-copy yd-hero__mini-feature">
 				<svg
 					width="16"
 					height="16"
@@ -136,7 +139,7 @@
 				>
 				<span>Замер бесплатно</span>
 			</div>
-			<div class="yd-hero__mini-feature">
+			<div class="ds-copy yd-hero__mini-feature">
 				<svg
 					width="16"
 					height="16"
@@ -147,7 +150,7 @@
 				>
 				<span>Гарантия 5 лет</span>
 			</div>
-			<div class="yd-hero__mini-feature">
+			<div class="ds-copy yd-hero__mini-feature">
 				<svg
 					width="16"
 					height="16"
@@ -165,6 +168,7 @@
 <style>
 	.yd-hero {
 		position: relative;
+		background: var(--ds-dark-surface);
 		width: 100%;
 		min-height: 90vh;
 		display: flex;
@@ -181,7 +185,7 @@
 	.yd-hero__gradient {
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f172a 100%);
+		background: var(--ds-dark-surface);
 	}
 
 	.yd-hero__pattern {

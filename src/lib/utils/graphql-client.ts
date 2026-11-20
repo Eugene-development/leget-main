@@ -8,8 +8,12 @@ import { LEGET_API_URL } from '$env/static/private';
  * @param headers - Optional headers to include in requests (e.g., X-Forwarded-Host)
  * @returns A configured GraphQLClient instance
  */
-export function createGraphQLClient(headers?: Record<string, string>): GraphQLClient {
+export function createGraphQLClient(
+	headers?: Record<string, string>,
+	timeoutMs?: number
+): GraphQLClient {
 	return new GraphQLClient(`${LEGET_API_URL}/graphql`, {
-		headers: headers ?? {}
+		headers: headers ?? {},
+		...(timeoutMs ? { signal: AbortSignal.timeout(timeoutMs) } : {})
 	});
 }

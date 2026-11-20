@@ -51,6 +51,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-surface-warm/25"></div>
 
 	<div
+		data-ds-surface="white"
 		class="hero-glass relative isolate z-10 mx-auto max-w-4xl rounded-2xl border border-white/60 bg-white/70 p-6 opacity-0 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
 		class:animate-fade-up={visible}
 		style="animation-delay: 0.2s"
@@ -83,7 +84,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h1
-					class="mb-8 text-6xl text-primary md:text-8xl"
+					class="mb-8 text-page-title text-primary"
 					style="font-family: var(--font-heading);"
 				>
 					<RichText value={displayValue} />
@@ -105,7 +106,7 @@
 		>
 			{#snippet children(displayValue)}
 				<p
-					class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed font-normal text-primary md:text-xl"
+					class="mx-auto mt-8 max-w-2xl text-prose font-normal text-primary"
 				>
 					<RichText value={displayValue} />
 				</p>
@@ -115,7 +116,7 @@
 		<div class="mt-12">
 			<a
 				href="#styles-grid"
-				class="group inline-flex items-center justify-center gap-3 rounded-sm border border-primary bg-surface-warm px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-300 hover:bg-primary hover:text-surface-warm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+				class="group inline-flex items-center justify-center gap-3 rounded-sm bg-surface-warm px-8 py-4 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-300 hover:bg-primary hover:text-surface-warm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
 			>
 				<ContentText
 					bind:data
@@ -166,7 +167,8 @@
 <style>
 	@media (prefers-reduced-transparency: reduce) {
 		.hero-glass {
-			background: var(--color-surface);
+			/* Match bg-white and the explicit white content surface, not the page canvas. */
+			background: #fff;
 			backdrop-filter: none;
 		}
 	}

@@ -76,7 +76,7 @@
 	class="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl border border-ink-200 bg-surface-raised p-6 text-ink-800 shadow-2xl backdrop:bg-scrim/60"
 >
 	<form onsubmit={remove} aria-busy={deleting}>
-		<h2 id={`${uid}-title`} class="text-xl">Удалить проект?</h2>
+		<h2 id={`${uid}-title`} class="ds-title-sub text-xl">Удалить проект?</h2>
 		<p class="mt-3 text-sm font-medium wrap-anywhere">{projectName}</p>
 		<p id={`${uid}-description`} class="mt-2 text-sm text-ink-600">
 			Проект исчезнет с сайта. Запись в базе, фотографии и теги сохранятся.

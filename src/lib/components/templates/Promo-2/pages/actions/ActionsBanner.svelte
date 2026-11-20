@@ -7,6 +7,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -42,7 +44,7 @@
 	});
 </script>
 
-<section class="relative z-10" bind:this={sectionEl}>
+<section class="relative z-10" data-p1-theme={blockTheme(data, 'dark')} bind:this={sectionEl}>
 	<div class="p2-container mx-auto">
 		<div
 			class="relative overflow-hidden opacity-0 transition-all duration-700"
@@ -58,9 +60,7 @@
 				alt="Современная кухня с дубовыми фасадами и светлой каменной столешницей"
 				class="h-[400px] w-full object-cover lg:h-[520px]"
 			/>
-			<div
-				class="absolute inset-0 bg-linear-to-r from-primary/90 via-primary/60 to-transparent"
-			></div>
+			<div class="banner-scrim pointer-events-none absolute inset-0" aria-hidden="true"></div>
 
 			<!-- Overlay Content -->
 			<div class="absolute inset-0 flex items-center p-8 lg:p-16">
@@ -89,7 +89,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h2
-								class="mt-4 text-3xl text-white lg:text-5xl"
+								class="p1-title mt-4 text-section-title"
 								style="font-family: var(--font-heading);"
 							>
 								<RichText value={displayValue} />
@@ -107,7 +107,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mt-4 max-w-md text-sm leading-relaxed text-white/75 lg:text-base">
+							<p class="p1-body mt-4 max-w-md text-prose">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -158,3 +158,20 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	.banner-scrim {
+		background: linear-gradient(
+			to right,
+			var(--p1-surface) 28%,
+			color-mix(in srgb, var(--p1-surface) 88%, transparent) 54%,
+			transparent
+		);
+	}
+
+	@media (width < 64rem) {
+		.banner-scrim {
+			background: color-mix(in srgb, var(--p1-surface) 90%, transparent);
+		}
+	}
+</style>

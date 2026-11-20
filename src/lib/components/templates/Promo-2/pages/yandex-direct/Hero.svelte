@@ -111,7 +111,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-4xl text-primary opacity-0 md:text-5xl lg:text-6xl"
+							class="text-page-title text-primary opacity-0"
 							style="font-family: var(--font-heading); animation-delay: 0.5s"
 							class:animate-fade-up={heroVisible}
 						>
@@ -138,7 +138,7 @@
 						onSave={(v) => saveField('subtitle', v)}
 					>
 						{#snippet children(displayValue)}
-							<p class="text-sm leading-relaxed font-light text-primary md:text-lg">
+							<p class="text-prose font-light text-primary">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}

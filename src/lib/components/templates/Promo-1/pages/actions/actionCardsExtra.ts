@@ -1,8 +1,9 @@
+import { promotionIsActive, type PromotionSchedule } from '../../../../../promotions/time';
 import { richTextToPlainText } from '$lib/utils/rich-text';
 import { actionText, normalizeActionCard } from './actionCardData';
 
 /** Карточки второго блока страницы акций, общие для блока и верхней ленты. */
-export interface ExtraCard {
+export interface ExtraCard extends PromotionSchedule {
 	id: string;
 	title: string;
 	description: string;
@@ -119,13 +120,13 @@ export function actionCompanies(data: Record<string, unknown>): ActionCompany[] 
 	];
 }
 
-export function activeExtraActionCards(saved: unknown) {
+export function activeExtraActionCards(saved: unknown, now = Date.now()) {
 	if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
 		return actionCompanies(saved as Record<string, unknown>)
 			.filter((company) => company.enabled !== false)
 			.flatMap((company) =>
 				company.cards
-					.filter((card) => card.enabled !== false)
+					.filter((card) => promotionIsActive(card, now))
 					.map((card) => ({
 						id: `extra-${company.id}-${card.id}`,
 						title: `${richTextToPlainText(company.name ?? '')}: ${richTextToPlainText(card.title ?? '')}`,
@@ -135,6 +136,6 @@ export function activeExtraActionCards(saved: unknown) {
 	}
 	if (Array.isArray(saved) && saved.length === 0) return [];
 	return mergeExtraCards(saved as ExtraCard[] | undefined)
-		.filter((card) => card.enabled !== false)
+		.filter((card) => promotionIsActive(card, now))
 		.map((card) => ({ id: `extra-${card.id}`, title: card.title, badge: card.badge }));
 }

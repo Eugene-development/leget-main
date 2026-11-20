@@ -16,7 +16,7 @@
 	let sending = $state(false);
 	let sendError = $state('');
 	import { page } from '$app/state';
-	import { auth } from '$lib/stores/auth';
+	import { createFooterAccount } from '$lib/stores/client-account.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -71,6 +71,9 @@
 	let formState = $state<'idle' | 'error' | 'done'>('idle');
 	let subscribedTo = $state('');
 	let showLoginModal = $state(false);
+	const footerAccount = createFooterAccount();
+	const authButtonClass =
+		'p1-border p1-muted p1-accent-hover p1-accent-border-hover h-9 rounded-xl border px-3 text-xs font-semibold transition-colors';
 
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
@@ -146,14 +149,6 @@
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'Footer', updated);
 		data = updated;
-	}
-
-	function handleAuthClick() {
-		if ($auth.isAuthenticated) {
-			auth.logout();
-		} else {
-			showLoginModal = true;
-		}
 	}
 </script>
 
@@ -600,15 +595,23 @@
 				{@render pageSettings?.(
 					'rounded-xl border p1-border p1-muted p1-accent-hover p1-accent-border-hover transition-colors'
 				)}
-				<button
-					data-metrika-goal="layout_footer_v1_footer_open_3"
-					data-goal-action="open"
-					type="button"
-					onclick={handleAuthClick}
-					class="p1-border p1-muted p1-accent-hover p1-accent-border-hover h-9 rounded-xl border px-3 text-xs font-semibold transition-colors"
-				>
-					{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
-				</button>
+				{#if footerAccount.signedIn}
+					<button
+						type="button"
+						class={authButtonClass}
+						disabled={footerAccount.isLoggingOut}
+						onclick={footerAccount.logout}
+						data-goal-ignore="Выход из учётной записи">Выйти</button
+					>
+				{:else}
+					<button
+						type="button"
+						class={authButtonClass}
+						data-metrika-goal="layout_footer_v1_footer_open_3"
+						data-goal-action="open"
+						onclick={() => (showLoginModal = true)}>Админ</button
+					>
+				{/if}
 			</div>
 		</div>
 	</div>

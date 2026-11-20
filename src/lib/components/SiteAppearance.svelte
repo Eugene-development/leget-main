@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { siteAppearanceStylesheet } from '$lib/site-settings/appearance';
 
-	let { value }: { value: unknown } = $props();
+	let { value, designSystem = 'base' }: { value: unknown; designSystem?: string } = $props();
 	// Only validated hex colors and fixed font/radius presets enter this CSS.
 	// Svelte owns the head node in SSR and on navigation, including its removal.
-	const stylesheet = $derived(siteAppearanceStylesheet(value));
-	const markup = $derived(stylesheet ? `<style data-site-appearance>${stylesheet}</style>` : '');
+	const stylesheet = $derived(siteAppearanceStylesheet(value, designSystem));
 </script>
 
 <svelte:head>
-	{@html markup}
+	{#if stylesheet}
+		<svelte:element this={'style'} data-site-appearance>{stylesheet}</svelte:element>
+	{/if}
 </svelte:head>

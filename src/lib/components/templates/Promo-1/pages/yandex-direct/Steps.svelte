@@ -55,7 +55,7 @@
 	);
 </script>
 
-<section class="yd-steps">
+<section data-ds-surface="light" class="yd-steps">
 	<div class="yd-steps__container">
 		<div class="yd-steps__header">
 			<EditableField
@@ -67,7 +67,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<span class="yd-steps__label"><RichText value={displayValue} /></span>
+					<span class="ds-copy yd-steps__label"><RichText value={displayValue} /></span>
 				{/snippet}
 			</EditableField>
 
@@ -80,17 +80,21 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="yd-steps__title"><RichText value={displayValue} /></h2>
+					<h2 class="ds-copy yd-steps__title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 		</div>
 
 		<div class="yd-steps__grid">
 			{#each steps as item, i}
-				<div class="yd-steps__card">
-					<div class="yd-steps__card-number">{item.step}</div>
-					<h3 class="p1-title-sub yd-steps__card-title">{item.title}</h3>
-					<p class="yd-steps__card-text">{item.description}</p>
+				<div data-ds-surface="light-overlay" class="yd-steps__card">
+					<div data-ds-surface="light-overlay" class="yd-steps__card-number">{item.step}</div>
+					<h3 data-ds-surface="light-overlay" class="ds-copy p1-title-sub yd-steps__card-title">
+						{item.title}
+					</h3>
+					<p data-ds-surface="light-overlay" class="ds-copy yd-steps__card-text">
+						{item.description}
+					</p>
 					{#if i < steps.length - 1}
 						<div class="yd-steps__connector">
 							<svg
@@ -114,7 +118,7 @@
 <style>
 	.yd-steps {
 		padding: 5rem 1.5rem;
-		background: white;
+		background: var(--ds-light-surface);
 	}
 
 	.yd-steps__container {
@@ -153,14 +157,14 @@
 	.yd-steps__card {
 		position: relative;
 		padding: 2rem;
-		background: #f8fafc;
+		background: var(--ds-light-overlay);
 		border-radius: 1.25rem;
 		border: 1px solid #e2e8f0;
 		transition: all 0.3s ease;
 	}
 
 	.yd-steps__card:hover {
-		background: white;
+		background: var(--ds-light-overlay);
 		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 		border-color: rgba(249, 115, 22, 0.2);
 	}

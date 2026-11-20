@@ -21,7 +21,7 @@
 >
 	<Heart filled={count > 0} />
 	{#if count > 0}<span
-			class="absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[#b8860b] px-1 text-xs text-white tabular-nums"
+			class="absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-(--ds-header-action-start) px-1 text-xs text-(color:--ds-header-action-on) tabular-nums"
 			aria-hidden="true">{count}</span
 		>{/if}
 </a>

@@ -106,7 +106,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -114,7 +114,7 @@
 					{/snippet}
 				</EditableField>
 
-				<p class="mt-4 max-w-xl text-base leading-relaxed text-secondary">
+				<p class="mt-4 max-w-xl text-prose text-secondary">
 					<ContentText
 						bind:data
 						{editContext}
@@ -151,7 +151,7 @@
 						/></span
 					>
 					<h3
-						class="mt-4 text-xl text-primary transition-colors duration-300 group-hover:text-secondary lg:text-2xl"
+						class="mt-4 text-card-title text-primary transition-colors duration-300 group-hover:text-secondary"
 						style="font-family: var(--font-heading);"
 					>
 						<ContentText
@@ -165,7 +165,7 @@
 							defaults={{ principles }}
 						/>
 					</h3>
-					<p class="mt-3 text-sm leading-relaxed text-secondary">
+					<p class="mt-3 text-prose text-secondary">
 						<ContentText
 							bind:data
 							{editContext}

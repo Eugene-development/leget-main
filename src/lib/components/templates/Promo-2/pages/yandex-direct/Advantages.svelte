@@ -101,7 +101,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -176,7 +176,7 @@
 							style="animation-delay: {0.3 + i * 0.08}s"
 						>
 							<div class="h-px w-6 shrink-0 bg-accent"></div>
-							<span class="text-sm leading-relaxed text-primary"
+							<span class="text-prose text-primary"
 								><ContentText
 									bind:data
 									{editContext}

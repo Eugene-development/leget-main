@@ -192,7 +192,7 @@
 	}
 	section :global(.mission-paragraph) {
 		/* Сохраняем системную светлоту ink-800, убираем цветность линии. */
-		border-left-color: oklch(from var(--ds-ink-800) l 0 0);
+		border-left-color: var(--ds-copy, var(--p1-body));
 		background: linear-gradient(var(--p1-veil), var(--p1-veil)), var(--p1-surface-alt);
 	}
 </style>

@@ -159,14 +159,21 @@ try {
 		if (/\/(?:HeroField|HeroLink|HeroStats|FacadeField|CatalogLayout)\.svelte$/.test(name))
 			continue;
 		const component = await server.ssrLoadModule('/' + relative(root, file));
-		render(component.default, { props: { data: {}, isEditable: false } }).body;
-		render(component.default, {
+		const visitor = render(component.default, { props: { data: {}, isEditable: false } }).body;
+		const editor = render(component.default, {
 			props: {
 				data: {},
 				isEditable: true,
 				editContext: { pageId: 'preview', licenseId: 'preview' }
 			}
 		}).body;
+		if (name === 'pages/careers/CareersForm.svelte') {
+			assert.match(visitor, /<form\b/);
+			assert.doesNotMatch(visitor, /Отклик принят/);
+			assert.match(editor, /<form\b[\s\S]*<\/form>[\s\S]*<details\b/);
+			assert.doesNotMatch(editor, /<details\b[^>]*\sopen[\s=>]/);
+			assert.match(editor, /<details\b[^>]*>[\s\S]*Отклик принят[\s\S]*<\/details>/);
+		}
 		rendered++;
 	}
 	const { requestText, requestCopyFields } = await server.ssrLoadModule(

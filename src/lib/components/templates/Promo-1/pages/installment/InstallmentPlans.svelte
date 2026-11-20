@@ -356,6 +356,7 @@
 					белой карточки) — структура и порядок полей у обоих вариантов общие.
 				-->
 				<div
+					data-ds-gradient={plan.featured ? 'brand-500--brand-700' : undefined}
 					class="it-card group relative flex flex-col overflow-hidden rounded-3xl p-8 transition duration-300 motion-safe:hover:-translate-y-1 {plan.featured
 						? 'border border-brand-400/40 bg-linear-to-br from-brand-500 to-brand-700 shadow-[0_40px_90px_-45px] shadow-brand-700/80 hover:shadow-[0_46px_100px_-40px] hover:shadow-brand-700/90'
 						: 'border border-ink-900/10 bg-surface-raised shadow-[0_30px_80px_-50px] shadow-ink-900/35 hover:border-brand-500/40 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45'}"
@@ -369,7 +370,7 @@
 					></div>
 					<div
 						class="pointer-events-none absolute -top-10 -right-10 size-36 rounded-full blur-2xl transition-opacity duration-500 {plan.featured
-							? 'bg-on-dark/20 opacity-60 group-hover:opacity-100'
+							? 'ds-gradient-wash opacity-60 group-hover:opacity-100'
 							: 'bg-brand-500/10 opacity-0 group-hover:opacity-100'}"
 						aria-hidden="true"
 					></div>
@@ -377,7 +378,7 @@
 					<div class="relative flex flex-1 flex-col">
 						<div
 							class="inline-flex self-start rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.16em] uppercase {plan.featured
-								? 'bg-on-dark/20 text-on-dark ring-1 ring-on-dark/30'
+								? 'ds-gradient-wash text-on-dark ring-1 ring-on-dark/30'
 								: 'bg-brand-50 text-brand-700 ring-1 ring-brand-500/20'}"
 						>
 							<EditableField
@@ -471,7 +472,7 @@
 								>
 									<span
 										class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full {plan.featured
-											? 'bg-on-dark/20 text-on-dark'
+											? 'ds-gradient-wash text-on-dark'
 											: 'bg-brand-50 text-brand-600'}"
 										aria-hidden="true"
 									>
@@ -539,6 +540,7 @@
 			transition:p1_fly={{ y: 28, duration: 260, easing: cubicOut }}
 		>
 			<div
+				data-ds-surface="raised"
 				class="sticky top-0 z-10 flex items-start justify-between gap-5 border-b border-ink-900/10 bg-surface-raised/95 px-5 py-5 backdrop-blur-lg sm:px-8"
 			>
 				<div>

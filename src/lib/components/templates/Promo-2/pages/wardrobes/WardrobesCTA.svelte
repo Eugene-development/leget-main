@@ -59,7 +59,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h2
-					class="mb-8 text-3xl text-primary lg:text-5xl"
+					class="mb-8 text-section-title text-primary"
 					style="font-family: var(--font-heading);"
 				>
 					<RichText value={displayValue} />

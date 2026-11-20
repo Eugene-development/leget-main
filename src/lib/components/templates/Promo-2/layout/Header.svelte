@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ContentText from '../ContentText.svelte';
+	import { headerButtonStyle } from '$lib/site-settings/header-button';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.М.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -174,7 +175,8 @@
 			<div class="ml-auto flex shrink-0 items-center gap-3 lg:ml-0 lg:gap-4 lg:justify-self-end">
 				<FavoritesLink onclick={closeMenu} />
 				<button
-					class="cta-btn group relative hidden items-center gap-2 overflow-hidden rounded-lg px-5 py-2.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] lg:flex"
+					style={headerButtonStyle(data?.headerButtonColor)}
+					class="ds-header-action cta-btn group relative hidden items-center gap-2 overflow-hidden rounded-lg px-5 py-2.5 text-sm font-medium tracking-wide shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] lg:flex"
 					type="button"
 					data-metrika-goal="layout_header_showroom_open_1"
 					data-goal-action="open"
@@ -198,7 +200,7 @@
 						/></span
 					>
 					<svg
-						class="relative z-10 h-3.5 w-3.5 shrink-0 opacity-70 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
+						class="relative z-10 h-3.5 w-3.5 shrink-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke="currentColor"
@@ -293,7 +295,8 @@
 
 	<div class="mt-auto px-8 pt-6 pb-4">
 		<button
-			class="cta-btn group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-lg px-5 py-3.5 text-sm font-medium tracking-wide text-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-[0.98]"
+			style={headerButtonStyle(data?.headerButtonColor)}
+			class="ds-header-action cta-btn group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-lg px-5 py-3.5 text-sm font-medium tracking-wide shadow-md transition-all duration-300 hover:shadow-lg active:scale-[0.98]"
 			type="button"
 			data-metrika-goal="layout_header_showroom_open_2"
 			data-goal-action="open"
@@ -318,7 +321,7 @@
 				/></span
 			>
 			<svg
-				class="relative z-10 h-3.5 w-3.5 shrink-0 opacity-70 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
+				class="relative z-10 h-3.5 w-3.5 shrink-0 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
@@ -402,36 +405,5 @@
 		.promo2-header {
 			transform: translateY(var(--top-bar-offset));
 		}
-	}
-
-	.cta-btn {
-		background: linear-gradient(135deg, #b8860b 0%, #8b6508 45%, #c9950c 100%);
-		position: relative;
-		box-shadow: 0 4px 15px rgba(184, 134, 11, 0.35);
-	}
-
-	.cta-btn:hover {
-		background: linear-gradient(135deg, #c9950c 0%, #9a720a 45%, #daa520 100%);
-		box-shadow: 0 6px 20px rgba(184, 134, 11, 0.5);
-	}
-
-	.cta-shimmer {
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			105deg,
-			transparent 30%,
-			rgba(255, 255, 255, 0.25) 50%,
-			transparent 70%
-		);
-		transform: translateX(-100%);
-		transition: transform 0s;
-		z-index: 1;
-		pointer-events: none;
-	}
-
-	.cta-btn:hover .cta-shimmer {
-		transform: translateX(100%);
-		transition: transform 0.6s ease;
 	}
 </style>

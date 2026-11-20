@@ -87,7 +87,10 @@
 
 <div data-p1-theme={isLight ? 'light' : 'dark'}>
 	<!-- Desktop Banner -->
-	<div class="p1-chrome-quiet p1-line z-50 hidden items-center border-b px-4 sm:px-8 lg:flex">
+	<div
+		data-ds-surface={isLight ? undefined : 'dark-alt'}
+		class="p1-chrome-quiet p1-line z-50 hidden items-center border-b px-4 sm:px-8 lg:flex"
+	>
 		<!-- Левая часть: навигационные ссылки -->
 		<div class="hidden flex-1 justify-start lg:flex">
 			<div class="flex items-center space-x-3.5 tracking-wide">
@@ -98,7 +101,7 @@
 						class={link.href === '/university'
 							? 'university-link my-1.5 text-[13px] whitespace-nowrap'
 							: $page.url.pathname === link.href
-								? 'text-[13px] whitespace-nowrap text-university-link'
+								? `${isLight ? 'text-university-link' : 'p1-accent'} text-[13px] whitespace-nowrap`
 								: `${isLight ? 'p1-title' : 'p1-muted'} p1-accent-hover text-[13px] whitespace-nowrap transition-colors`}
 						class:brightness-90={isLight &&
 							link.href !== '/university' &&
@@ -109,7 +112,9 @@
 					{#if i < links.length - 1}
 						<svg
 							viewBox="0 0 2 2"
-							class="inline h-0.5 w-0.5 shrink-0 fill-current text-university-link"
+							class="inline h-0.5 w-0.5 shrink-0 fill-current {isLight
+								? 'text-university-link'
+								: 'p1-accent'}"
 							aria-hidden="true"
 						>
 							<circle cx={1} cy={1} r={1} />
@@ -151,7 +156,9 @@
 					{#if phone && email}
 						<svg
 							viewBox="0 0 2 2"
-							class="mx-1 inline h-0.5 w-0.5 shrink-0 fill-current text-university-link"
+							class="mx-1 inline h-0.5 w-0.5 shrink-0 fill-current {isLight
+								? 'text-university-link'
+								: 'p1-accent'}"
 							aria-hidden="true"
 						>
 							<circle cx={1} cy={1} r={1} />

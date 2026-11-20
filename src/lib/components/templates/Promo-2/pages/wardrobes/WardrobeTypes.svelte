@@ -25,33 +25,43 @@
 		data = updated;
 	}
 
-	const defaultTypes = [
+	type WardrobeType = {
+		title: string;
+		description: string;
+		image?: string | null;
+		offset: string;
+	};
+
+	const defaultTypes: WardrobeType[] = [
 		{
 			title: 'Встроенные шкафы',
 			description:
 				'Монтируются от пола до потолка, скрывая неровности стен и максимально эффективно используя ниши',
-			image: null,
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/wardrobe-types-2-10-4-1/built-in-sliding-wardrobe.webp',
 			offset: ''
 		},
 		{
 			title: 'Корпусные решения',
 			description:
 				'Самостоятельные модули, которые можно перемещать. Акцентные фасады и витринные стеклянные элементы',
-			image: null,
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/wardrobe-types-2-10-4-1/freestanding-wardrobe.webp',
 			offset: 'lg:-translate-y-8'
 		},
 		{
 			title: 'Гардеробные комнаты',
 			description:
 				'Открытые и закрытые модульные системы премиум-класса с умной подсветкой и организаторами',
-			image: null,
+			image:
+				'https://storage.yandexcloud.net/leget-main/templates/promo-2/wardrobe-types-2-10-4-1/walk-in-closet.webp',
 			offset: 'lg:-translate-y-16'
 		}
 	];
 
 	const types = $derived(
 		Array.isArray(data?.types) && (data.types as unknown[]).length > 0
-			? (data.types as typeof defaultTypes)
+			? (data.types as WardrobeType[])
 			: defaultTypes
 	);
 
@@ -102,7 +112,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
+						<h2 class="text-section-title text-primary" style="font-family: var(--font-heading);">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
@@ -127,12 +137,12 @@
 							imagePath={['types', i, 'image']}
 							imageDefaults={{ types }}
 							loading="lazy"
-							src={type.image || undefined}
+							src={type.image ?? defaultTypes[i]?.image}
 							alt={type.title}
 							class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						/>
 					</div>
-					<h3 class="mb-2 text-xl text-primary" style="font-family: var(--font-heading);">
+					<h3 class="mb-2 text-card-title text-primary" style="font-family: var(--font-heading);">
 						<ContentText
 							bind:data
 							{editContext}
@@ -144,7 +154,7 @@
 							defaults={{ types }}
 						/>
 					</h3>
-					<p class="text-sm leading-relaxed text-secondary">
+					<p class="text-prose text-secondary">
 						<ContentText
 							bind:data
 							{editContext}

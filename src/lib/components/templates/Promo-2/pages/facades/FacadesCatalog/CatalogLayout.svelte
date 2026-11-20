@@ -18,7 +18,7 @@
 		isEditable?: boolean;
 		layout: 'gallery' | 'selector' | 'comparison';
 	} = $props();
-	const facades = $derived(resolveFacades(data));
+	const facades = $derived(resolveFacades(data, layout === 'gallery'));
 	// Меняем только порядок показа: индексы редактирования остаются в исходном массиве.
 	const galleryItems = $derived(
 		facades
@@ -40,7 +40,7 @@
 </script>
 
 {#snippet field(index: number, name: string, detail = false, multiline = false)}
-	<FacadeField bind:data {editContext} {isEditable} {index} field={name} {detail} {multiline} />
+	<FacadeField bind:data {editContext} {isEditable} {facades} {index} field={name} {detail} {multiline} />
 {/snippet}
 {#snippet image(index: number, eager = false)}
 	<ImageFallback
@@ -160,7 +160,7 @@
 									{editContext}
 									{isEditable}
 									componentType="FacadesCatalog"
-									path={['facades', facades.indexOf(facade), 'title']}
+									path={['facades', index, 'title']}
 									fallback={facade.title}
 									label="Текст"
 									defaults={{ facades }}
@@ -281,7 +281,7 @@
 								{editContext}
 								{isEditable}
 								componentType="FacadesCatalog"
-								path={['facades', facades.indexOf(facade), 'title']}
+								path={['facades', index, 'title']}
 								fallback={facade.title}
 								label="Текст"
 								defaults={{ facades }}

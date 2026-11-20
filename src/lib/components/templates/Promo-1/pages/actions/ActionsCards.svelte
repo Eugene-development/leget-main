@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { promotionDeadline, promotionIsActive } from '$lib/promotions/time';
+	import { usePromotionClock } from '$lib/promotions/clock.svelte';
 	// Артикул: 1.4.2.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import ActionIconPicker from './ActionIconPicker.svelte';
@@ -25,6 +27,7 @@
 	const isLight = $derived(isLightBlock(data, 'light'));
 
 	const localCards = $derived(mergeActionCards(data?.cards));
+	const now = usePromotionClock(() => localCards.map((card) => promotionDeadline(card)));
 	let saving = $state(false);
 	let saveError = $state('');
 
@@ -52,7 +55,7 @@
 		}
 	}
 
-	const hasVisibleCards = $derived(isEditable || localCards.some((c) => c.enabled !== false));
+	const hasVisibleCards = $derived(isEditable || localCards.some((card) => promotionIsActive(card, now())));
 </script>
 
 {#if hasVisibleCards}
@@ -61,7 +64,7 @@
 			<h2 class="p1-title p1-title-section mb-8 text-2xl sm:text-3xl">Акции Новостроя</h2>
 			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{#each localCards as card, i}
-					{#if isEditable || card.enabled !== false}
+					{#if isEditable || promotionIsActive(card, now())}
 						<div
 							class="p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-brand-500 {isEditable &&
 							card.enabled === false

@@ -23,7 +23,10 @@
 	}
 </script>
 
-<section class="relative flex min-h-[48vh] items-center overflow-hidden">
+<section
+	data-ds-surface="surface-900"
+	class="relative flex min-h-[48vh] items-center overflow-hidden"
+>
 	<div
 		class="absolute inset-0 bg-gradient-to-br from-surface-900 via-surface-900 to-surface-800"
 	></div>

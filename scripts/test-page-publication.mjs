@@ -159,6 +159,7 @@ test('preview SSR forwards only capability and sets private noindex headers', as
 	let forwarded;
 	let headers;
 	const loaders = loadServerModule(new URL('../src/lib/server/render-page.ts', import.meta.url), {
+		'$lib/server/offline-pages': {},
 		'@sveltejs/kit': {
 			error: (status, message) => {
 				throw Object.assign(new Error(message), { status });

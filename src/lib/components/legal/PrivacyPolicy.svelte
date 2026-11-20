@@ -339,6 +339,17 @@
 	.policy-intro {
 		line-height: 1.75;
 	}
+
+	:global([data-site-template='2']) .policy-header h1 {
+		font-size: var(--ds-font-page-title-size);
+	}
+	:global([data-site-template='2']) .policy-body h2 {
+		font-size: var(--ds-font-subsection-title-size);
+	}
+	:global([data-site-template='2']) :is(.policy-body, .policy-intro) {
+		font-size: var(--ds-font-prose-size);
+		line-height: var(--ds-font-prose-leading);
+	}
 	.policy-body p + p,
 	.editor-note p + p {
 		margin-top: 1rem;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import PartnerOffersV1 from './v1/PartnerOffers.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
+	import { saveComponentData } from '$lib/utils/page-edit';
 
 	let {
 		data = $bindable(),
@@ -17,7 +18,75 @@
 	let selectedVersion = $state<'v1' | 'disabled'>(
 		(data?.partnerOffersVersion as 'v1' | 'disabled') ?? 'v1'
 	);
+	let savingAutoplay = $state(false);
+	let autoplayError = $state('');
+	const autoplayInterval = $derived(
+		typeof data?.autoplayInterval === 'number' && Number.isFinite(data.autoplayInterval)
+			? Math.min(60, Math.max(1, data.autoplayInterval))
+			: 3
+	);
+
+	async function saveAutoplay(
+		field: 'autoplayEnabled' | 'autoplayInterval',
+		value: boolean | number
+	) {
+		if (!editContext || savingAutoplay) return;
+		savingAutoplay = true;
+		autoplayError = '';
+		const previous = data;
+		const updated = { ...data, [field]: value };
+		data = updated;
+		try {
+			await saveComponentData(editContext, 'PartnerOffers', updated);
+		} catch {
+			data = previous;
+			autoplayError = 'Не удалось сохранить автопрокрутку. Попробуйте ещё раз.';
+		} finally {
+			savingAutoplay = false;
+		}
+	}
 </script>
+
+{#snippet autoplaySettings()}
+	<fieldset class="space-y-4" disabled={savingAutoplay}>
+		<legend class="mb-3 text-sm font-semibold text-ink-100">Автопрокрутка слайдов</legend>
+		<label class="flex cursor-pointer items-center gap-3 text-sm text-ink-200">
+			<input
+				type="checkbox"
+				checked={data?.autoplayEnabled !== false}
+				onchange={(event) => saveAutoplay('autoplayEnabled', event.currentTarget.checked)}
+				data-goal-ignore="Настройка автопрокрутки компонента в редакторе"
+				class="h-4 w-4 rounded border-ink-600 accent-brand-500"
+			/>
+			Переключать слайды автоматически
+		</label>
+		<label class="block space-y-2 text-sm text-ink-200">
+			<span>Интервал, секунды</span>
+			<input
+				type="number"
+				min="1"
+				max="60"
+				step="1"
+				value={autoplayInterval}
+				disabled={data?.autoplayEnabled === false}
+				onchange={(event) => {
+					const input = event.currentTarget;
+					if (input.value !== '' && input.checkValidity())
+						saveAutoplay('autoplayInterval', input.valueAsNumber);
+					else input.value = String(autoplayInterval);
+				}}
+				data-goal-ignore="Настройка интервала автопрокрутки в редакторе"
+				class="w-full rounded-xl border border-ink-700 bg-ink-950 px-3 py-2 text-ink-100 focus:border-brand-500 focus:outline-none disabled:opacity-50"
+			/>
+		</label>
+		<p class="text-xs leading-relaxed text-ink-400">
+			По умолчанию — каждые 3 секунды, когда видно не менее 80% блока. Лента появляется при трёх и
+			более предложениях. При наведении, фокусе и в режиме редактирования — пауза.
+		</p>
+		{#if savingAutoplay}<p role="status" class="text-xs text-ink-400">Сохранение…</p>{/if}
+		{#if autoplayError}<p role="alert" class="text-sm text-ink-100">{autoplayError}</p>{/if}
+	</fieldset>
+{/snippet}
 
 {#if selectedVersion !== 'disabled' || isEditable}
 	<!-- `overflow-clip`, а не `overflow-hidden`: режет одинаково, но не заводит
@@ -50,6 +119,7 @@
 					themeDefault="dark"
 					title="Спецпредложения партнёров"
 					bind:selectedVersion
+					settings={autoplaySettings}
 				/>
 			</div>
 		{/if}

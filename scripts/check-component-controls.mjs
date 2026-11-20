@@ -39,6 +39,8 @@ const promo2HomeExpected = declarations.get('promo2HomeComponentsWithSwitcher');
 const promo2HomeActual = new Set();
 const promo2FacadesExpected = declarations.get('promo2FacadesComponentsWithSwitcher');
 const promo2FacadesActual = new Set();
+const promo2EquipmentExpected = declarations.get('promo2EquipmentComponentsWithSwitcher');
+const promo2EquipmentActual = new Set();
 const errors = [];
 let files = 0;
 let controls = 0;
@@ -87,6 +89,12 @@ function inspect(directory) {
 						errors.push(`${path}: ${type} получит вторую панель из PageRenderer`);
 					return;
 				}
+				if (path.includes('/Promo-2/pages/equipment/') && node.name === 'VersionSwitcher') {
+					promo2EquipmentActual.add(type);
+					if (!promo2EquipmentExpected?.has(type))
+						errors.push(`${path}: ${type} получит вторую панель из PageRenderer`);
+					return;
+				}
 				errors.push(`${path}: встроенная панель нового шаблона не учтена PageRenderer`);
 				return;
 			}
@@ -130,6 +138,11 @@ if (!promo2FacadesExpected) errors.push('Не найден реестр пане
 for (const type of promo2FacadesExpected ?? []) {
 	if (!promo2FacadesActual.has(type))
 		errors.push(`Promo-2 /facades ${type}: нет встроенной панели`);
+}
+if (!promo2EquipmentExpected) errors.push('Не найден реестр панелей Promo-2 /equipment');
+for (const type of promo2EquipmentExpected ?? []) {
+	if (!promo2EquipmentActual.has(type))
+		errors.push(`Promo-2 /equipment ${type}: нет встроенной панели`);
 }
 // Main actions must only be rendered inside the gear popover, never alongside it.
 for (const name of ['VersionSwitcher.svelte', 'templates/Promo-1/layout/Footer/index.svelte']) {

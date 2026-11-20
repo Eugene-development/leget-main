@@ -6,6 +6,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { onMount } from 'svelte';
+	import { defaultStageBackground } from '../backgrounds';
 
 	let {
 		data = $bindable(),
@@ -132,10 +133,7 @@
 <section class="p1-stage-screen relative isolate overflow-hidden bg-ink-950 py-section-xs">
 	<ImageFallback
 		imagePath={['bgImage']}
-		src={String(
-			data?.bgImage ||
-				'https://storage.yandexcloud.net/leget-main/templates/promo-1/stage-1.1.5.1-abstract-20261106.webp'
-		)}
+		src={String(data?.bgImage || defaultStageBackground)}
 		alt=""
 		class="absolute inset-0 -z-20 h-full w-full object-cover text-ink-300"
 	/>

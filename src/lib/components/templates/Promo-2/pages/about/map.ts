@@ -3,7 +3,6 @@ import Hero from './Hero.svelte';
 import LeaderSection from './LeaderSection.svelte';
 import Mission from './Mission.svelte';
 import Factory from './Factory.svelte';
-import Video from './Video.svelte';
 import Principles from './Principles.svelte';
 import AboutCTA from './AboutCTA.svelte';
 
@@ -13,7 +12,6 @@ export const aboutMap: ComponentMap = {
 	LeaderSection,
 	Mission,
 	Factory,
-	Video,
 	Principles,
 	AboutCTA
 };

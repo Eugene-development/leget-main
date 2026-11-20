@@ -143,7 +143,7 @@
 					</p>
 					<button
 						type="button"
-						class="glass-button mt-10"
+						class="ds-action glass-button mt-10"
 						onclick={resetForm}
 						data-metrika-goal="glass_mirrors_reset"
 						data-goal-action="reset">Отправить ещё одну заявку</button
@@ -183,7 +183,7 @@
 								maxlength="100"
 								autocomplete="name"
 								placeholder="Как к вам обращаться"
-								class="glass-field p1-title"
+								class="p1-field glass-field p1-title"
 							/>
 						</div>
 						<div>
@@ -202,7 +202,7 @@
 								required
 								maxlength="20"
 								placeholder="+7 (___) ___-__-__"
-								class="glass-field p1-title"
+								class="p1-field glass-field p1-title"
 								aria-invalid={phoneError ? 'true' : undefined}
 								aria-describedby={phoneError ? 'glass-phone-error' : undefined}
 							/>
@@ -221,7 +221,7 @@
 								rows="3"
 								maxlength="2000"
 								placeholder="Например, зеркало в прихожую 800 × 1800 мм, с подсветкой"
-								class="glass-field p1-title"
+								class="p1-field glass-field p1-title"
 							></textarea>
 						</div>
 					</fieldset>
@@ -237,7 +237,7 @@
 						{#snippet children(value)}
 							<button
 								type="submit"
-								class="glass-button w-full"
+								class="ds-action glass-button w-full"
 								disabled={loading}
 								data-metrika-goal="glass_mirrors_submit"
 								data-goal-action="submit_click"

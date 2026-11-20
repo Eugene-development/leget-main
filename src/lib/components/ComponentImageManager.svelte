@@ -21,6 +21,7 @@
 		editContext,
 		componentType,
 		slots = [],
+		previewClassByPath = {},
 		excludePathPrefixes = [],
 		onSaveData
 	}: {
@@ -28,6 +29,7 @@
 		editContext: EditContext;
 		componentType: string;
 		slots?: import('$lib/utils/component-images').ComponentImageSlot[];
+		previewClassByPath?: Record<string, string>;
 		/** Пути, которыми владеет специализированная секция настроек блока. */
 		excludePathPrefixes?: string[];
 		onSaveData: (next: Record<string, unknown>) => void | Promise<void>;
@@ -170,7 +172,12 @@
 			{#each images as image (image.pathKey)}
 				<div class="rounded-2xl border border-on-dark/10 bg-on-dark/3 p-3">
 					<div class="flex min-w-0 items-center gap-3">
-						<div class="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-ink-900 text-ink-500">
+						<div
+							class={[
+								'h-16 w-20 shrink-0 overflow-hidden rounded-xl text-ink-500',
+								previewClassByPath[image.pathKey] ?? 'bg-ink-900'
+							]}
+						>
 							<ImageFallback
 								src={image.value}
 								alt={image.value ? image.label : `${image.label}: изображение не выбрано`}

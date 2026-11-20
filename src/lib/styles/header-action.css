@@ -1,0 +1,55 @@
+/* A separate DS role: general accent/surface adaptation does not own this control. */
+.ds-header-action {
+	position: relative;
+	border: 1px solid var(--ds-header-action-outline);
+	color: var(--ds-header-action-on);
+	background: linear-gradient(
+		135deg,
+		var(--ds-header-action-start) 0%,
+		var(--ds-header-action-mid) 45%,
+		var(--ds-header-action-end) 100%
+	);
+	box-shadow: 0 4px 15px color-mix(in srgb, var(--ds-header-action-shadow) 35%, transparent);
+}
+.ds-header-action:hover {
+	color: var(--ds-header-action-on);
+	background: linear-gradient(
+		135deg,
+		var(--ds-header-action-hover-start) 0%,
+		var(--ds-header-action-hover-mid) 45%,
+		var(--ds-header-action-hover-end) 100%
+	);
+	box-shadow: 0 6px 20px color-mix(in srgb, var(--ds-header-action-shadow) 50%, transparent);
+}
+.ds-header-action:focus-visible {
+	outline: 2px solid var(--ds-header-action-mid);
+	outline-offset: 3px;
+}
+.ds-header-action .cta-shimmer {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		105deg,
+		transparent 30%,
+		var(--ds-header-action-glint) 50%,
+		transparent 70%
+	);
+	transform: translateX(-100%);
+	transition: transform 0s;
+	z-index: 1;
+	pointer-events: none;
+}
+.ds-header-action:hover .cta-shimmer {
+	transform: translateX(100%);
+	transition: transform 0.6s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+	.ds-header-action .cta-shimmer {
+		display: none;
+	}
+}
+
+.ds-header-action:focus-visible {
+	outline: 2px solid var(--ds-header-action-outline);
+	outline-offset: 3px;
+}

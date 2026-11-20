@@ -86,7 +86,7 @@
 					onSave={(v) => saveField('label', v)}
 				>
 					{#snippet children(displayValue)}
-						<span class="text-[11px] tracking-[0.3em] text-secondary uppercase"
+						<span class="ds-label text-secondary"
 							><RichText value={displayValue} /></span
 						>
 					{/snippet}
@@ -102,7 +102,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -120,7 +120,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-6 text-base leading-relaxed text-secondary">
+						<p class="mt-6 max-w-[65ch] text-prose text-secondary">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -128,9 +128,9 @@
 
 				<ul class="mt-8 flex flex-col gap-4">
 					{#each items as item, itemIndex}
-						<li class="flex items-start gap-3 text-sm text-primary">
+						<li class="flex items-start gap-3 text-prose text-primary">
 							<svg
-								class="mt-0.5 h-4 w-4 flex-shrink-0 text-accent"
+								class="mt-1.5 h-4 w-4 shrink-0 text-accent"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"

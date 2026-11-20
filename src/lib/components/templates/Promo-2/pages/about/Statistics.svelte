@@ -57,7 +57,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-4xl sm:text-5xl"><RichText value={displayValue} /></h2>
+					<h2 class="text-section-title"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -72,7 +72,7 @@
 			>
 				{#snippet children(displayValue)}
 					{#if displayValue}
-						<p class="mx-auto mt-4 max-w-2xl text-xl text-stone-300">
+						<p class="mx-auto mt-4 max-w-2xl text-prose text-stone-300">
 							<RichText value={displayValue} />
 						</p>
 					{/if}

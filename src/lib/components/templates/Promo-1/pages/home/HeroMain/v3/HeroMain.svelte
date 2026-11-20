@@ -139,6 +139,7 @@
      Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
+	data-ds-surface={isLight ? 'ink-50' : 'ink-950'}
 	class="relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
 		? 'bg-ink-50 text-ink-900'
 		: 'bg-ink-950 text-on-dark'}"
@@ -227,7 +228,7 @@
 					>
 						{#snippet children(displayValue)}
 							<span
-								class="shadow-glow inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md md:text-sm {isLight
+								class="ds-copy shadow-glow inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-bold tracking-wider uppercase backdrop-blur-md md:text-sm {isLight
 									? 'border-cat-4-200 bg-cat-4-100/50 text-cat-4-600'
 									: 'border-cat-4-500/20 bg-cat-4-950/40 text-cat-4-300'}"
 							>

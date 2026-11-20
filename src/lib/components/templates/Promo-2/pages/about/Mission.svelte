@@ -6,6 +6,8 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { blockTheme } from '$lib/utils/block-theme';
+	import '../../../Promo-1/theme.css';
 
 	let {
 		data = $bindable(),
@@ -26,6 +28,7 @@
 
 	let visible = $state(false);
 	let sectionEl: HTMLElement;
+	const theme = $derived(blockTheme(data));
 
 	const defaultStats = [
 		{ value: '25000+', label: 'площадь производства' },
@@ -54,7 +57,12 @@
 	});
 </script>
 
-<section class="relative overflow-hidden py-section-sm lg:py-section" bind:this={sectionEl}>
+<section
+	class="relative overflow-hidden py-section-sm lg:py-section"
+	class:p1-surface={theme === 'dark'}
+	data-p1-theme={theme}
+	bind:this={sectionEl}
+>
 	<!-- Subtle Background Pattern -->
 	<div
 		class="absolute inset-0 opacity-[0.03]"
@@ -89,7 +97,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="p1-title mt-3 text-section-title"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -98,7 +106,7 @@
 				</EditableField>
 
 				<div class="mt-8 space-y-5">
-					<p class="text-base leading-relaxed text-secondary">
+					<p class="p1-body text-prose">
 						<ContentText
 							bind:data
 							{editContext}
@@ -110,7 +118,7 @@
 							multiline
 						/>
 					</p>
-					<p class="text-base leading-relaxed text-secondary">
+					<p class="p1-body text-prose">
 						<ContentText
 							bind:data
 							{editContext}
@@ -122,7 +130,7 @@
 							multiline
 						/>
 					</p>
-					<p class="text-base leading-relaxed text-secondary">
+					<p class="p1-body text-prose">
 						<ContentText
 							bind:data
 							{editContext}
@@ -141,13 +149,13 @@
 			<div class="flex flex-col justify-center">
 				{#each stats as stat, i}
 					<div
-						class="group flex gap-6 rounded-sm border-b border-border-light py-8 opacity-0 transition-colors duration-300 first:border-t hover:bg-surface-warm/50 lg:px-6 xl:px-1"
+						class="p1-border group flex gap-6 rounded-sm border-b py-8 opacity-0 transition-colors duration-300 first:border-t hover:bg-(--p1-card-hover) lg:px-6 xl:px-1"
 						class:animate-slide-right={visible}
 						style="animation-delay: {0.2 + i * 0.15}s"
 					>
 						<div>
 							<div
-								class="text-4xl font-light text-primary transition-colors duration-300 group-hover:text-secondary lg:text-5xl"
+							class="p1-title text-4xl font-light transition-colors duration-300 group-hover:text-secondary lg:text-5xl"
 								style="font-family: var(--font-heading);"
 							>
 								<ContentText
@@ -155,20 +163,20 @@
 									{editContext}
 									{isEditable}
 									componentType="Mission"
-									path={['stats', stats.indexOf(stat), 'value']}
+									path={['stats', i, 'value']}
 									fallback={stat.value}
 									label="Текст"
 									defaults={{ stats }}
 									richText={false}
 								/>
 							</div>
-							<div class="mt-1 text-sm text-muted">
+						<div class="p1-body mt-1 text-sm">
 								<ContentText
 									bind:data
 									{editContext}
 									{isEditable}
 									componentType="Mission"
-									path={['stats', stats.indexOf(stat), 'label']}
+									path={['stats', i, 'label']}
 									fallback={stat.label}
 									label="Текст"
 									defaults={{ stats }}

@@ -40,7 +40,7 @@
 </script>
 
 <svelte:head><title>Запуск сайта — CRM</title></svelte:head>
-<GrowthFrame title="Запуск сайта" sites={data.sites} site={data.site} base={data.base}>
+<GrowthFrame title="Запуск сайта">
 	<p>
 		Готово {checklist.ready} из {checklist.total} проверок. Настройки проверяются автоматически. Проверку
 		страниц и устройства подтвердите после просмотра.

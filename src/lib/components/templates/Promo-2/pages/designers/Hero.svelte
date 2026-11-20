@@ -112,7 +112,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-5xl text-white md:text-6xl lg:text-7xl"
+							class="text-page-title text-white"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -135,7 +135,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="mt-7 max-w-xl text-base leading-relaxed text-white/60 md:text-lg">
+						<p class="mt-7 max-w-xl text-prose text-white/60">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -207,7 +207,7 @@
 			{#each stats as stat, statIndex}
 				<div class="stats-glass-item flex flex-col gap-1.5 px-6 py-6 xl:px-8">
 					<span
-						class="text-3xl font-light text-accent-light"
+						class="text-3xl font-light text-white"
 						style="font-family: var(--font-heading);"
 						><ContentText
 							bind:data

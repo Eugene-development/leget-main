@@ -13,7 +13,7 @@ export interface PageDraft {
 }
 export interface PageRevision {
 	id: string;
-	action: 'baseline' | 'publish' | 'restore';
+	action: 'baseline' | 'publish' | 'restore' | 'promotion';
 	content_hash: string;
 	created_at: string;
 }

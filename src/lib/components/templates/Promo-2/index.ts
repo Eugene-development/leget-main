@@ -13,17 +13,18 @@ import FavoritesHero from './pages/favorites/FavoritesHero.svelte';
 import FavoritesGallery from './pages/favorites/FavoritesGallery.svelte';
 
 // Equipment page components
-import EquipmentHero from './pages/equipment/EquipmentHero.svelte';
-import EquipmentAppliances from './pages/equipment/EquipmentAppliances.svelte';
-import EquipmentWorktops from './pages/equipment/EquipmentWorktops.svelte';
-import EquipmentPlumbing from './pages/equipment/EquipmentPlumbing.svelte';
-import EquipmentLighting from './pages/equipment/EquipmentLighting.svelte';
-import EquipmentStorage from './pages/equipment/EquipmentStorage.svelte';
-import EquipmentCTA from './pages/equipment/EquipmentCTA.svelte';
+import EquipmentHero from './pages/equipment/EquipmentHero/index.svelte';
+import EquipmentAppliances from './pages/equipment/EquipmentAppliances/index.svelte';
+import EquipmentWorktops from './pages/equipment/EquipmentWorktops/index.svelte';
+import EquipmentPlumbing from './pages/equipment/EquipmentPlumbing/index.svelte';
+import EquipmentLighting from './pages/equipment/EquipmentLighting/index.svelte';
+import EquipmentStorage from './pages/equipment/EquipmentStorage/index.svelte';
+import EquipmentCTA from './pages/equipment/EquipmentCTA/index.svelte';
 
 // Home page components
 import HomeHero from './pages/home/Hero.svelte';
 import HomeStyles from './pages/home/Styles.svelte';
+import HomeVideo from './pages/home/Video.svelte';
 import HomeAdvantages from './pages/home/Advantages.svelte';
 import HomeDetails from './pages/home/Details.svelte';
 import HomeCTA from './pages/home/CTA.svelte';
@@ -33,7 +34,6 @@ import AboutHero from './pages/about/Hero.svelte';
 import AboutLeaderSection from './pages/about/LeaderSection.svelte';
 import AboutMission from './pages/about/Mission.svelte';
 import AboutFactory from './pages/about/Factory.svelte';
-import AboutVideo from './pages/about/Video.svelte';
 import AboutPrinciples from './pages/about/Principles.svelte';
 import AboutCTA from './pages/about/AboutCTA.svelte';
 
@@ -127,6 +127,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 	'/': {
 		Hero: HomeHero,
 		Styles: HomeStyles,
+		Video: HomeVideo,
 		Advantages: HomeAdvantages,
 		Details: HomeDetails,
 		CTA: HomeCTA
@@ -136,7 +137,6 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		LeaderSection: AboutLeaderSection,
 		Mission: AboutMission,
 		Factory: AboutFactory,
-		Video: AboutVideo,
 		Principles: AboutPrinciples,
 		AboutCTA: AboutCTA
 	},

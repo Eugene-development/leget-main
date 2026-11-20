@@ -103,7 +103,7 @@
 					</div>
 					<div class="relative">
 						<div
-							class="flex size-16 items-center justify-center rounded-2xl bg-ink-900 text-on-dark shadow-xl shadow-ink-900/10 transition-all duration-500 group-hover:bg-cat-2-500"
+							class="flex size-16 items-center justify-center rounded-2xl bg-ink-900 text-on-dark shadow-xl shadow-ink-900/10 transition-all duration-500 group-hover:bg-cat-2-500 p1-hover-on-dark"
 						>
 							<svg
 								class="size-8"

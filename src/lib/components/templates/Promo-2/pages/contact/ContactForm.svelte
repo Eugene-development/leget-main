@@ -68,12 +68,12 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-2xl text-stone-900"><RichText value={displayValue} /></h2>
+				<h2 class="text-section-title text-stone-900"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 
 		{#if data?.email || isEditable}
-			<p class="mt-2 text-stone-500">
+			<p class="mt-2 text-prose text-stone-500">
 				<a href="mailto:{data.email}" class="hover:text-stone-900"
 					><ContentText
 						bind:data
@@ -171,7 +171,7 @@
 					data-goal-action="submit_click"
 					type="submit"
 					disabled={loading}
-					class="w-full rounded-xl bg-stone-900 px-6 py-4 text-base font-medium text-white shadow-sm transition hover:bg-stone-700"
+					class="ds-action-primary w-full rounded-xl bg-stone-900 px-6 py-4 text-base font-medium text-white shadow-sm transition hover:bg-stone-700"
 				>
 					<ContentText
 						bind:data

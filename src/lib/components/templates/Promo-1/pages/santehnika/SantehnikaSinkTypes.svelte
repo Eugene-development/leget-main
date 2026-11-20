@@ -41,14 +41,14 @@
 
 	const colorClasses: Record<string, string> = {
 		slate: 'bg-ink-100 text-ink-600 group-hover:bg-ink-700 group-hover:text-on-dark',
-		amber: 'bg-cat-1-100 text-cat-1-600 group-hover:bg-cat-1-500 group-hover:text-on-accent',
-		sky: 'bg-link-100 text-link-600 group-hover:bg-link-500 group-hover:text-on-accent'
+		amber: 'bg-cat-1-100 text-cat-1-600 group-hover:bg-cat-1-500 p1-hover-on-dark',
+		sky: 'bg-link-100 text-link-600 group-hover:bg-link-500 p1-hover-on-dark'
 	};
 	const p1_fly = withPromoMotion(fly);
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="mb-8 text-2xl text-ink-900">{editableText(data.title, 'Типы кухонных моек')}</h2>
+	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">{editableText(data.title, 'Типы кухонных моек')}</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 		{#each items as item, i}

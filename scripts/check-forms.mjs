@@ -19,6 +19,7 @@ const exceptions = new Map([
 		'templates/Promo-2/pages/_shared/ProductCatalogModal.svelte',
 		'Owner-only product CRUD, not a service request'
 	],
+	['templates/Promo-2/pages/actions/PromotionCardEditor.svelte', 'Owner-only promotion CRUD'],
 	['templates/Promo-1/pages/mebel/MebelProjectModal.svelte', 'Content editor']
 ]);
 // A business operation is exempt only at its explicit route and purpose.

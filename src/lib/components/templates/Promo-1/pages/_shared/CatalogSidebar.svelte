@@ -459,7 +459,6 @@
 	</nav>
 
 	<div class="ms-cta" class:ms-cta--sheet={context === 'sheet'}>
-		<span class="ms-cta-glow" aria-hidden="true"></span>
 		<div class="relative">
 			<h4 class="p1-title-sub ms-cta-title">{ctaContent.title}</h4>
 			<p class="ms-cta-text">{ctaContent.text}</p>
@@ -652,17 +651,16 @@
 			transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
 			box-shadow 0.22s ease;
 	}
-	.ms-brand-link:hover {
-		transform: scale(1.02);
-	}
-	.ms-brand-link:hover,
-	.ms-brand-link[aria-current='page'] {
-		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
-	}
-	.ms-brand-link:hover,
 	.ms-brand-link[aria-current='page'] {
 		background: var(--ms-accent-wash);
 		color: var(--ms-accent-deep);
+		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
+	}
+	.ms-brand-link:hover {
+		background: var(--ds-ink-100);
+		color: var(--ds-light-title);
+		box-shadow: none;
+		transform: scale(1.02);
 	}
 	.ms-nav:has(a:hover) .ms-brand-link[aria-current='page']:not(:hover) {
 		background: transparent;
@@ -684,27 +682,19 @@
 		font-family: var(--ds-font-body);
 		--ms-accent: var(--p1-catalog-accent-500, var(--ds-link-500));
 		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-link-700));
-		--ms-accent-light: var(--p1-catalog-accent-400, var(--ds-link-400));
 		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-link-50));
-		--ms-glow: var(--ms-accent);
-		--ms-glow-light: var(--ms-accent-light);
 		--ms-shadow: var(--ms-accent-deep);
-		--ms-shadow-light: var(--ms-accent-light);
 	}
 
 	[data-accent='amber'] {
 		--ms-accent: var(--p1-catalog-accent-500, var(--ds-cat-1-500));
 		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-cat-1-700));
-		--ms-accent-light: var(--p1-catalog-accent-400, var(--ds-cat-1-400));
 		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-cat-1-50));
 	}
 
-	/* Мебель: нейтральные тени без цветной дымки на поверхностях. */
+	/* Мебель: нейтральная тень активного пункта. */
 	[data-component='MebelSidebar'] {
-		--ms-glow: transparent;
-		--ms-glow-light: transparent;
 		--ms-shadow: var(--ds-light-title);
-		--ms-shadow-light: var(--ds-light-title);
 	}
 
 	/* ---------------------------------------------------------------- *
@@ -738,17 +728,11 @@
 		padding: 1.5rem 1.25rem 1.25rem;
 		border-radius: var(--ds-radius-3xl);
 		border: 1px solid color-mix(in srgb, var(--ds-light-title) 6%, transparent);
-		background:
-			radial-gradient(
-				120% 60% at 50% 0%,
-				color-mix(in srgb, var(--ms-glow) 6%, transparent),
-				transparent 70%
-			),
-			linear-gradient(180deg, var(--ds-light-overlay) 0%, var(--ds-light-surface-alt) 100%);
+		background: var(--ds-light-overlay);
 		box-shadow:
 			0 1px 2px color-mix(in srgb, var(--ds-light-title) 4%, transparent),
 			0 12px 28px -14px color-mix(in srgb, var(--ds-light-title) 14.000000000000002%, transparent),
-			0 44px 80px -60px color-mix(in srgb, var(--ms-shadow) 40%, transparent);
+			0 44px 80px -60px color-mix(in srgb, var(--ds-light-title) 40%, transparent);
 	}
 
 	/* ---------------------------------------------------------------- *
@@ -763,11 +747,7 @@
 		display: block;
 		height: 1px;
 		margin-top: 1.15rem;
-		background: linear-gradient(
-			90deg,
-			color-mix(in srgb, var(--ds-light-title) 12%, transparent),
-			transparent
-		);
+		background: color-mix(in srgb, var(--ds-light-title) 12%, transparent);
 	}
 
 	.ms-head {
@@ -824,26 +804,19 @@
 		animation-delay: calc(var(--i) * 45ms);
 	}
 
-	/* Подложка-заливка принадлежит ссылке, а не кнопке раскрытия списка. */
+	/* Нейтральная подложка сохраняет цвет, пока затухает после наведения. */
 	.ms-item::before {
 		content: '';
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
-		background: linear-gradient(90deg, var(--ms-accent-wash) 0%, transparent 100%);
+		background: var(--ds-ink-100);
 		opacity: 0;
 		transform: translateX(-6px);
 		transition:
 			opacity 0.28s ease,
-			transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-			box-shadow 0.22s ease;
+			transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 		pointer-events: none;
-	}
-
-	.ms-item--link:has(> a.ms-link:hover)::before {
-		opacity: 1;
-		transform: translateX(0);
-		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
 	}
 
 	/* Акцентная полоса активного пункта. */
@@ -855,7 +828,7 @@
 		width: 3px;
 		height: 22px;
 		border-radius: var(--ds-radius-full);
-		background: linear-gradient(180deg, var(--ms-accent-light), var(--ms-accent-deep));
+		background: var(--ms-accent-deep);
 		transform: translateY(-50%) scaleY(0);
 		transform-origin: center;
 		opacity: 0;
@@ -865,14 +838,18 @@
 		pointer-events: none;
 	}
 
-	.ms-item--link.ms-item--active::before {
-		opacity: 1;
-		transform: translateX(0);
+	.ms-item--link.ms-item--active {
+		background: var(--ms-accent-wash);
 		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
 	}
-	.ms-nav:has(a:hover) .ms-item--link.ms-item--active:not(:has(> a.ms-link:hover))::before {
-		opacity: 0;
+	.ms-nav:has(a:hover) .ms-item--link.ms-item--active {
+		background: transparent;
 		box-shadow: none;
+	}
+
+	.ms-item:has(> .ms-link:hover)::before {
+		opacity: 1;
+		transform: translateX(0);
 	}
 
 	.ms-item--active::after {
@@ -902,13 +879,13 @@
 			transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.ms-item:hover .ms-link,
 	.ms-item--active .ms-link {
 		color: var(--ms-accent-deep);
+		font-weight: 600;
 	}
 
-	.ms-item--active .ms-link {
-		font-weight: 600;
+	.ms-link:hover {
+		color: var(--ds-light-title);
 	}
 
 	a.ms-link:hover {
@@ -934,7 +911,7 @@
 			transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.ms-item:hover .ms-chevron,
+	.ms-link:hover .ms-chevron,
 	.ms-item--active .ms-chevron {
 		opacity: 1;
 		transform: translateX(1px);
@@ -1054,23 +1031,6 @@
 		box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--ds-light-title) 70%, transparent);
 	}
 
-	.ms-cta-glow {
-		position: absolute;
-		top: -55%;
-		right: -25%;
-		width: 180px;
-		height: 180px;
-		border-radius: var(--ds-radius-full);
-		background: radial-gradient(
-			circle,
-			color-mix(in srgb, var(--ms-glow-light) 45%, transparent),
-			transparent 65%
-		);
-		filter: blur(6px);
-		animation: ms-float 7s ease-in-out infinite;
-		pointer-events: none;
-	}
-
 	.ms-cta-title {
 		font-size: var(--text-base);
 		color: var(--ds-dark-title);
@@ -1097,33 +1057,12 @@
 		cursor: pointer;
 		transition:
 			transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-			box-shadow 0.25s ease;
-	}
-
-	/* Блик, пробегающий по кнопке при наведении. */
-	.ms-cta-btn::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -120%;
-		width: 60%;
-		height: 100%;
-		background: linear-gradient(
-			100deg,
-			transparent,
-			color-mix(in srgb, var(--ms-glow) 28%, transparent),
-			transparent
-		);
-		transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+			background-color 0.2s ease;
 	}
 
 	.ms-cta-btn:hover {
+		background-color: var(--ds-ink-100);
 		transform: translateY(-1px);
-		box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--ms-shadow-light) 80%, transparent);
-	}
-
-	.ms-cta-btn:hover::after {
-		left: 130%;
 	}
 
 	.ms-cta-btn:active {
@@ -1201,13 +1140,7 @@
 		max-height: 85vh;
 		padding: 0.5rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
 		border-radius: var(--ds-radius-3xl) var(--ds-radius-3xl) 0 0;
-		background:
-			radial-gradient(
-				120% 40% at 50% 0%,
-				color-mix(in srgb, var(--ms-glow) 7%, transparent),
-				transparent 70%
-			),
-			linear-gradient(180deg, var(--ds-light-overlay) 0%, var(--ds-light-surface-alt) 100%);
+		background: var(--ds-light-overlay);
 		box-shadow: 0 -20px 60px -20px color-mix(in srgb, var(--ds-light-title) 35%, transparent);
 	}
 
@@ -1314,20 +1247,9 @@
 		}
 	}
 
-	@keyframes ms-float {
-		0%,
-		100% {
-			transform: translate3d(0, 0, 0);
-		}
-		50% {
-			transform: translate3d(-10px, 12px, 0);
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.ms-item,
-		.ms-fab,
-		.ms-cta-glow {
+		.ms-fab {
 			animation: none;
 		}
 
@@ -1335,7 +1257,6 @@
 		.ms-item::after,
 		.ms-chevron,
 		.ms-cta-btn,
-		.ms-cta-btn::after,
 		.ms-close {
 			transition-duration: 0.01ms;
 		}

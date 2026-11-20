@@ -316,7 +316,7 @@
 				class="flex shrink-0 items-center justify-between gap-4 border-b border-ink-200 px-5 py-4 sm:px-7"
 			>
 				<div>
-					<h2 id={`${uid}-title`} class="text-2xl">Добавить проект</h2>
+					<h2 id={`${uid}-title`} class="ds-title-sub text-2xl">Добавить проект</h2>
 				</div>
 				<button
 					type="button"
@@ -609,9 +609,15 @@
 							: 'Поля со звёздочкой обязательны'}
 					</p>
 					<div class="ml-auto flex gap-3">
-						<button type="button" onclick={close} disabled={isSubmitting} class="secondary-button"
-							>Отмена</button
-						><button type="submit" disabled={isSubmitting || !!currentFile} class="primary-button"
+						<button
+							type="button"
+							onclick={close}
+							disabled={isSubmitting}
+							class="ds-outline secondary-button">Отмена</button
+						><button
+							type="submit"
+							disabled={isSubmitting || !!currentFile}
+							class="ds-action primary-button"
 							>{isSubmitting ? 'Сохранение…' : 'Сохранить проект'}</button
 						>
 					</div>

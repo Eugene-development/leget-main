@@ -166,7 +166,7 @@
 		<div class="grid items-start gap-16 lg:grid-cols-12 lg:gap-12">
 			<!-- Left Column: Locations List -->
 			<div class="flex flex-col opacity-0 lg:col-span-5" class:animate-fade-up={visible}>
-				<h2 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
+				<h2 class="text-section-title text-primary" style="font-family: var(--font-heading);">
 					<ContentText
 						bind:data
 						{editContext}
@@ -248,7 +248,7 @@
 						{#each filteredShowrooms as cityData (cityData.city)}
 							<div>
 								<h3
-									class="flex items-center gap-3 text-xl text-primary"
+									class="flex items-center gap-3 text-card-title text-primary"
 									style="font-family: var(--font-heading);"
 								>
 									<svg

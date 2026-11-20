@@ -3,17 +3,20 @@
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import { getLayoutComponentArticle, type EditContext } from '$lib/utils/page-edit';
 	import { stickyComponentControls } from '$lib/utils/sticky-component-controls';
+	import type { Snippet } from 'svelte';
 
 	let {
 		editContext = null,
 		isEditable = false,
 		type,
-		title
+		title,
+		children
 	}: {
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 		type: 'Header' | 'Footer';
 		title: string;
+		children?: Snippet<[EditContext]>;
 	} = $props();
 
 	let open = $state(false);
@@ -31,6 +34,7 @@
 		type="button"
 		class="flex cursor-pointer items-center justify-center rounded-2xl border border-on-dark/10 bg-ink-950/75 p-2.5 text-on-dark shadow-2xl backdrop-blur-xl transition-colors duration-300 hover:border-on-dark/25 active:scale-95"
 		onclick={() => (open = true)}
+		data-goal-ignore="Настройки компонента владельцем сайта"
 		title="Настройки компонента"
 		aria-label="Настройки компонента {title}"
 	>
@@ -52,6 +56,7 @@
 					<ArticleBadge {article} sectionLabel="Раздел" align="left" />
 				{/if}
 			</div>
+			{@render children?.(editContext)}
 		</div>
 	</SideDrawer>
 {/if}

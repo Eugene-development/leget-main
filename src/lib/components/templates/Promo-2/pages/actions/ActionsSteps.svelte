@@ -109,7 +109,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-3 text-4xl text-primary lg:text-5xl"
+						class="mt-3 text-section-title text-primary"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -135,7 +135,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-4 max-w-lg text-base leading-relaxed text-secondary">
+					<p class="mx-auto mt-4 max-w-lg text-prose text-secondary">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -169,7 +169,7 @@
 					</span>
 					<div>
 						<h3
-							class="text-xl text-primary transition-colors duration-300 group-hover:text-secondary"
+							class="text-card-title text-primary transition-colors duration-300 group-hover:text-secondary"
 							style="font-family: var(--font-heading);"
 						>
 							<ContentText
@@ -183,7 +183,7 @@
 								defaults={{ steps }}
 							/>
 						</h3>
-						<p class="mt-3 text-sm leading-relaxed text-secondary">
+						<p class="mt-3 text-prose text-secondary">
 							<ContentText
 								bind:data
 								{editContext}

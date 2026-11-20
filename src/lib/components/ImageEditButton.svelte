@@ -5,11 +5,13 @@
 		target,
 		label,
 		onOpen,
+		actionLabel = 'Добавить изображение по ссылке',
 		visibility
 	}: {
 		target: HTMLElement;
 		label: string;
 		onOpen: () => void;
+		actionLabel?: string;
 		visibility?: {
 			visible: boolean;
 			pending?: boolean;
@@ -23,8 +25,8 @@
 	<button
 		type="button"
 		class="image-add-control"
-		aria-label={`Добавить изображение по ссылке: ${label}`}
-		title={`Добавить изображение по ссылке: ${label}`}
+		aria-label={`${actionLabel}: ${label}`}
+		title={`${actionLabel}: ${label}`}
 		onclick={(event) => {
 			event.preventDefault();
 			event.stopPropagation();

@@ -13,6 +13,7 @@ export interface AuthUser {
 	id: number;
 	name: string;
 	email: string;
+	role?: string;
 }
 
 interface AuthState {
@@ -204,6 +205,7 @@ function createAuthStore() {
 				// с общей пользовательской сессией; ошибка сети не блокирует выход.
 				void fetch('/goals/session', { method: 'DELETE' }).catch(() => undefined);
 				void fetch('/site-settings/session', { method: 'DELETE' }).catch(() => undefined);
+				void fetch('/crm-access/session', { method: 'DELETE' }).catch(() => undefined);
 			}
 			set({ isAuthenticated: false, user: null, userId: null, isLoading: false });
 		}

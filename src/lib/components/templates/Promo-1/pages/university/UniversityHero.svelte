@@ -7,6 +7,7 @@
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import UniversityMark from './UniversityMark.svelte';
 	import LearningObject from '$lib/university/LearningObject.svelte';
+	import CertificateVerifier from '$lib/university/CertificateVerifier.svelte';
 	import { universityHero as defaults } from './content';
 	import '../../theme.css';
 	import './university.css';
@@ -21,6 +22,7 @@
 		isEditable?: boolean;
 	} = $props();
 	const isLight = $derived(isLightBlock(data, 'light'));
+	let verifier: ReturnType<typeof CertificateVerifier>;
 	function fieldValue(key: keyof typeof defaults) {
 		const value = editableText(data[key], String(defaults[key]));
 		if (key === 'brandName' && value === 'Универ') return defaults.brandName;
@@ -99,11 +101,19 @@
 							>
 						</a>
 						<a class="uni-secondary-link" href="/university/student">Моё обучение</a>
-						<a class="uni-secondary-link" href="#university-verification">Проверка дизайнера</a>
+						<button
+							class="uni-secondary-link cursor-pointer"
+							type="button"
+							aria-haspopup="dialog"
+							data-metrika-goal="university_hero_certificate_verify_open"
+							data-goal-action="open"
+							onclick={() => verifier.open()}>Проверка дизайнера</button
+						>
 					</div>
 				</div>
 			</div>
 			<LearningObject />
 		</div>
 	</div>
+	<CertificateVerifier bind:this={verifier} />
 </section>

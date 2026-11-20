@@ -278,7 +278,7 @@
 			class="flex shrink-0 items-center justify-between gap-4 border-b border-ink-200 px-5 py-4 sm:px-7"
 		>
 			<div>
-				<h2 id={`${uid}-title`} class="text-2xl">Редактировать проект</h2>
+				<h2 id={`${uid}-title`} class="ds-title-sub text-2xl">Редактировать проект</h2>
 				<p class="mt-1 text-sm text-ink-600">
 					Описание, характеристики и паспорт выполненной работы
 				</p>

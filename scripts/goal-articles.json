@@ -1416,6 +1416,12 @@
 		"source": "templates/Promo-2/pages/home/CTA.svelte"
 	},
 	{
+		"article": "2.1.6.1",
+		"template": "Promo-2",
+		"page": "/",
+		"source": "templates/Promo-2/pages/home/Video.svelte"
+	},
+	{
 		"article": "2.2.1.1",
 		"template": "Promo-2",
 		"page": "/about",
@@ -1438,12 +1444,6 @@
 		"template": "Promo-2",
 		"page": "/about",
 		"source": "templates/Promo-2/pages/about/Factory.svelte"
-	},
-	{
-		"article": "2.2.5.1",
-		"template": "Promo-2",
-		"page": "/about",
-		"source": "templates/Promo-2/pages/about/Video.svelte"
 	},
 	{
 		"article": "2.2.6.1",
@@ -1815,43 +1815,85 @@
 		"article": "2.17.1.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentHero.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentHero/v1/EquipmentHero.svelte"
+	},
+	{
+		"article": "2.17.1.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentHero/v2/EquipmentHero.svelte"
 	},
 	{
 		"article": "2.17.2.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentAppliances.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentAppliances/v1/EquipmentAppliances.svelte"
+	},
+	{
+		"article": "2.17.2.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentAppliances/v2/EquipmentAppliances.svelte"
 	},
 	{
 		"article": "2.17.3.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentWorktops.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentWorktops/v1/EquipmentWorktops.svelte"
+	},
+	{
+		"article": "2.17.3.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentWorktops/v2/EquipmentWorktops.svelte"
 	},
 	{
 		"article": "2.17.4.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentPlumbing.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentPlumbing/v1/EquipmentPlumbing.svelte"
+	},
+	{
+		"article": "2.17.4.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentPlumbing/v2/EquipmentPlumbing.svelte"
 	},
 	{
 		"article": "2.17.5.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentLighting.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentLighting/v1/EquipmentLighting.svelte"
+	},
+	{
+		"article": "2.17.5.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentLighting/v2/EquipmentLighting.svelte"
 	},
 	{
 		"article": "2.17.6.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentStorage.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentStorage/v1/EquipmentStorage.svelte"
+	},
+	{
+		"article": "2.17.6.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentStorage/v2/EquipmentStorage.svelte"
 	},
 	{
 		"article": "2.17.7.1",
 		"template": "Promo-2",
 		"page": "/equipment",
-		"source": "templates/Promo-2/pages/equipment/EquipmentCTA.svelte"
+		"source": "templates/Promo-2/pages/equipment/EquipmentCTA/v1/EquipmentCTA.svelte"
+	},
+	{
+		"article": "2.17.7.2",
+		"template": "Promo-2",
+		"page": "/equipment",
+		"source": "templates/Promo-2/pages/equipment/EquipmentCTA/v2/EquipmentCTA.svelte"
 	},
 	{
 		"article": "2.В.1.1",

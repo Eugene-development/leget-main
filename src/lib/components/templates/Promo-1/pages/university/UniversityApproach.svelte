@@ -53,6 +53,7 @@
 <section
 	class="uni uni-approach p1-surface-paper"
 	data-p1-theme={isLight ? 'light' : 'dark'}
+	data-ds-surface={isLight ? 'light-title' : 'dark-title'}
 	aria-label="Об Университете"
 >
 	<div class="uni-wrap uni-approach-grid">

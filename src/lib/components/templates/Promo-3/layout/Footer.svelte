@@ -3,7 +3,7 @@
 	// Артикул: 3.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	import LayoutArticleSettings from '$lib/components/LayoutArticleSettings.svelte';
 	import type { EditContext } from '$lib/utils/page-edit';
-	import { auth } from '$lib/stores/auth';
+	import { createFooterAccount } from '$lib/stores/client-account.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import type { Snippet } from 'svelte';
 
@@ -20,11 +20,9 @@
 	} = $props();
 
 	let showLoginModal = $state(false);
-
-	function handleAuthClick() {
-		if ($auth.isAuthenticated) auth.logout();
-		else showLoginModal = true;
-	}
+	const footerAccount = createFooterAccount();
+	const authButtonClass =
+		'h-9 rounded-lg border border-surface-600/60 bg-surface-800/70 px-4 text-xs font-semibold text-surface-300 transition-colors hover:border-accent-500/60 hover:text-accent-500';
 
 	const siteName = $derived(editableText(data?.siteName, 'PLITKA'));
 	const siteTagline = $derived(editableText(data?.siteTagline, 'Плитка & Дизайн'));
@@ -165,15 +163,23 @@
 					{@render pageSettings?.(
 						'rounded-lg border border-surface-600/60 bg-surface-800/70 text-surface-300 hover:border-accent-500/60 hover:text-accent-500'
 					)}
-					<button
-						data-metrika-goal="layout_footer_open_1"
-						data-goal-action="open"
-						type="button"
-						onclick={handleAuthClick}
-						class="h-9 rounded-lg border border-surface-600/60 bg-surface-800/70 px-4 text-xs font-semibold text-surface-300 transition-colors hover:border-accent-500/60 hover:text-accent-500"
-					>
-						{$auth.isAuthenticated ? 'Выйти' : 'Админ'}
-					</button>
+					{#if footerAccount.signedIn}
+						<button
+							type="button"
+							class={authButtonClass}
+							disabled={footerAccount.isLoggingOut}
+							onclick={footerAccount.logout}
+							data-goal-ignore="Выход из учётной записи">Выйти</button
+						>
+					{:else}
+						<button
+							type="button"
+							class={authButtonClass}
+							data-metrika-goal="layout_footer_open_1"
+							data-goal-action="open"
+							onclick={() => (showLoginModal = true)}>Админ</button
+						>
+					{/if}
 				</div>
 			</div>
 		</div>

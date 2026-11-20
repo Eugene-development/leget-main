@@ -3,6 +3,12 @@ import { test } from 'node:test';
 import sanitizeHtml from 'sanitize-html';
 import { loadServerModule } from './test-server-module.mjs';
 
+const promotionTime = loadServerModule(
+	new URL('../src/lib/promotions/time.ts', import.meta.url),
+	{}
+);
+const timeDependency = { '../../../../../promotions/time': promotionTime };
+
 const cardData = loadServerModule(
 	new URL(
 		'../src/lib/components/templates/Promo-1/pages/actions/actionCardData.ts',
@@ -16,11 +22,11 @@ const extra = loadServerModule(
 		'../src/lib/components/templates/Promo-1/pages/actions/actionCardsExtra.ts',
 		import.meta.url
 	),
-	{ 'sanitize-html': sanitizeHtml, './actionCardData': cardData }
+	{ ...timeDependency, 'sanitize-html': sanitizeHtml, './actionCardData': cardData }
 );
 const primary = loadServerModule(
 	new URL('../src/lib/components/templates/Promo-1/pages/actions/actionCards.ts', import.meta.url),
-	{ './actionCardsExtra': extra, './actionCardData': cardData }
+	{ ...timeDependency, './actionCardsExtra': extra, './actionCardData': cardData }
 );
 const { activeActionCards } = primary;
 const { actionIcons, matchingActionIcons } = loadServerModule(
@@ -182,4 +188,48 @@ test('normalization retains rich text, existing icons and arbitrary saved card f
 	};
 	assert.deepEqual(cardData.normalizeActionCard(card), card);
 	assert.equal(cardData.normalizeActionCard({ title: null }).title, '');
+});
+
+const { promotionDeadline, promotionIsActive } = promotionTime;
+
+test('legacy calendars are inclusive in Moscow and exact deadlines end at their timestamp', () => {
+	const limit = Date.parse('2026-05-31T21:00:00Z');
+	for (const data of [
+		{ until: '31 мая 2026' },
+		{ validUntil: '31.05.2026' },
+		{ until: '2026-05-31' }
+	]) {
+		assert.equal(promotionDeadline(data), limit);
+		assert.equal(promotionIsActive(data, limit - 1), true);
+		assert.equal(promotionIsActive(data, limit), false);
+	}
+	assert.equal(promotionDeadline({ deadline: '2026-06-01T00:00:00' }, true), limit);
+	assert.equal(promotionDeadline({ expiresAt: '2026-06-01T00:00:00+03:00' }), limit);
+	assert.equal(promotionDeadline({ expiresAt: null, until: '31 мая 2026' }), null);
+	assert.equal(promotionDeadline({ validUntil: '31.02.2026' }), null);
+	assert.equal(promotionIsActive({ enabled: false }, limit), false);
+});
+
+test('both groups hide cards at the same exact deadline without dropping undated offers', () => {
+	const expiresAt = '2026-11-18T12:00:00Z';
+	const groups = {
+		primary: [{ id: 'a', title: 'Основная', expiresAt }],
+		extra: {
+			companies: [
+				{
+					id: 'x',
+					name: 'Компания',
+					cards: [
+						{ id: 'b', title: 'Срок', expiresAt },
+						{ id: 'c', title: 'Без срока' }
+					]
+				}
+			]
+		}
+	};
+	assert.equal(activeActionCards(groups, Date.parse(expiresAt) - 1).length, 3);
+	assert.deepEqual(
+		activeActionCards(groups, Date.parse(expiresAt)).map(({ title }) => title),
+		['Компания: Без срока']
+	);
 });

@@ -1,24 +1,21 @@
 <script lang="ts">
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.6.6.1 — см. docs/architecture/component-articles-map.md
-	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import { isLightBlock } from '$lib/utils/block-theme';
-	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import '../../theme.css';
 
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false,
-		sitePhone = null
+		isEditable = false
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
-		sitePhone?: string | null;
 	} = $props();
 	const buttonText = $derived(
 		data?.buttonText === undefined ||
@@ -26,11 +23,6 @@
 			? 'Стать партнёром'
 			: editableText(data.buttonText)
 	);
-	const phone = $derived(resolveSitePhone(sitePhone));
-	const phoneHref = $derived(sitePhoneHref(sitePhone));
-
-	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
-	// акцентные плитки и кнопки остаются белым по цвету бренда.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
@@ -59,188 +51,111 @@
 		);
 
 		observer.observe(node);
-		return { destroy: () => observer.disconnect() };
+		return () => observer.disconnect();
 	}
 </script>
 
-<!--
-	Финальный CTA страницы «Партнёрство».
-	Палитра та же, что у Hero (sky → cyan → teal), но на глубокой подложке:
-	секция закрывает страницу и визуально рифмуется с тёмным блоком
-	ForManufacturers. Появление элементов — ступенями, см. <style> ниже.
--->
-<section
-	class="p1-surface relative isolate overflow-hidden py-section-sm sm:py-section"
-	data-p1-theme={isLight ? 'light' : 'dark'}
->
-	<!-- Декор: свечения и волосяные линии по краям секции -->
-	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="pca-glow absolute -top-32 left-1/2 size-144 -translate-x-1/2 bg-cat-5-500/20"></div>
-		<div class="pca-glow absolute -right-24 -bottom-40 size-112 bg-cat-9-400/15"></div>
+<section class="p1-surface py-section-sm sm:py-section" data-p1-theme={isLight ? 'light' : 'dark'}>
+	<div class="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
 		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-cat-5-400/60 to-transparent"
-		></div>
-		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
-		></div>
-	</div>
-
-	<div class="relative mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
-		<!-- Паспарту с градиентной каймой в 1px -->
-		<div
-			use:revealOnScroll
-			class="pca-reveal pca-frame rounded-3xl bg-linear-to-br from-link-400/40 via-cat-5-300/25 to-cat-9-400/40 p-px shadow-[0_50px_120px_-60px] shadow-cat-5-500/55"
+			{@attach revealOnScroll}
+			class="pca-reveal pca-frame p1-card rounded-3xl border px-6 py-14 text-center shadow-none sm:px-12 sm:py-16 lg:px-16"
 		>
 			<div
-				class="relative overflow-hidden rounded-[calc(var(--radius-3xl)-1px)] {isLight
-					? 'bg-surface-raised/85'
-					: 'bg-ink-950/85'} px-6 py-14 text-center backdrop-blur-sm sm:px-12 sm:py-16 lg:px-16"
+				class="pca-item p1-surface-alt p1-border p1-title mx-auto flex size-16 items-center justify-center rounded-2xl border"
 			>
-				<div
-					class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-b from-on-dark/6 to-transparent"
+				<svg
+					class="size-8"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
 					aria-hidden="true"
-				></div>
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+					/>
+				</svg>
+			</div>
 
-				<div class="relative">
-					<div
-						class="pca-item mx-auto flex size-16 items-center justify-center rounded-2xl bg-linear-to-br from-link-500 to-cat-5-500 text-on-accent shadow-[0_20px_50px_-20px] ring-1 shadow-link-500/90 ring-on-accent/20"
+			<EditableField
+				fieldKey="PartnershipCTA.eyebrow"
+				label="Надзаголовок"
+				value={editableText(data?.eyebrow, 'Партнёрская программа')}
+				{isEditable}
+				onSave={(v) => saveField('eyebrow', v)}
+				class="pca-item pca-d1 mt-8 block"
+			>
+				{#snippet children(displayValue)}
+					<p
+						class="p1-body inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase sm:text-xs"
 					>
-						<svg
-							class="size-8"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-hidden="true"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-							/>
-						</svg>
-					</div>
+						<span class="p1-border w-8 shrink-0 border-t" aria-hidden="true"></span>
+						<RichText value={displayValue} />
+						<span class="p1-border w-8 shrink-0 border-t" aria-hidden="true"></span>
+					</p>
+				{/snippet}
+			</EditableField>
 
+			<EditableField
+				fieldKey="PartnershipCTA.title"
+				label="Заголовок"
+				value={editableText(data?.title, 'Присоединяйтесь к нам')}
+				{isEditable}
+				onSave={(v) => saveField('title', v)}
+				class="pca-item pca-d2 mt-5 block"
+			>
+				{#snippet children(displayValue)}
+					<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
+						<RichText value={displayValue} />
+					</h2>
+				{/snippet}
+			</EditableField>
+
+			<EditableField
+				fieldKey="PartnershipCTA.subtitle"
+				label="Подзаголовок"
+				value={editableText(data?.subtitle, 'Начните работать вместе с нами уже сегодня')}
+				{isEditable}
+				multiline
+				onSave={(v) => saveField('subtitle', v)}
+				class="pca-item pca-d3 mt-6 block"
+			>
+				{#snippet children(displayValue)}
+					<p class="p1-body mx-auto max-w-xl text-sm/6 sm:text-base/7">
+						<RichText value={displayValue} />
+					</p>
+				{/snippet}
+			</EditableField>
+
+			<div class="pca-item pca-d4 mt-10 flex justify-center">
+				<a
+					data-metrika-goal="pages_partnership_partnershipcta_open_1"
+					data-goal-label="Стать партнёром (текст кнопки настраивается)"
+					data-goal-action="open"
+					aria-label={buttonText}
+					href={isEditable ? undefined : resolve('/partner/register')}
+					class="ds-action group inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-3.5 text-sm font-semibold transition duration-300 motion-safe:hover:-translate-y-0.5"
+				>
 					<EditableField
-						fieldKey="PartnershipCTA.eyebrow"
-						label="Надзаголовок"
-						value={editableText(data?.eyebrow, 'Партнёрская программа')}
+						fieldKey="PartnershipCTA.buttonText"
+						label="Текст кнопки"
+						value={buttonText}
 						{isEditable}
-						onSave={(v) => saveField('eyebrow', v)}
-						class="pca-item pca-d1 mt-8 block"
+						onSave={(v) => saveField('buttonText', v)}
+						class="inline"
 					>
 						{#snippet children(displayValue)}
-							<p
-								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] {isLight
-									? 'text-cat-5-700'
-									: 'text-cat-5-300'} uppercase sm:text-xs"
-							>
-								<span class="h-px w-8 bg-cat-5-400/80" aria-hidden="true"></span>
-								<RichText value={displayValue} />
-								<span class="h-px w-8 bg-cat-5-400/80" aria-hidden="true"></span>
-							</p>
+							<RichText value={displayValue} />
 						{/snippet}
 					</EditableField>
-
-					<EditableField
-						fieldKey="PartnershipCTA.title"
-						label="Заголовок"
-						value={editableText(data?.title, 'Присоединяйтесь к нам')}
-						{isEditable}
-						onSave={(v) => saveField('title', v)}
-						class="pca-item pca-d2 mt-5 block"
+					<span
+						class="transition-transform duration-300 group-hover:translate-x-1"
+						aria-hidden="true">&rarr;</span
 					>
-						{#snippet children(displayValue)}
-							<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
-								<RichText value={displayValue} />
-							</h2>
-						{/snippet}
-					</EditableField>
-
-					<EditableField
-						fieldKey="PartnershipCTA.subtitle"
-						label="Подзаголовок"
-						value={editableText(data?.subtitle, 'Начните работать вместе с нами уже сегодня')}
-						{isEditable}
-						multiline
-						onSave={(v) => saveField('subtitle', v)}
-						class="pca-item pca-d3 mt-6 block"
-					>
-						{#snippet children(displayValue)}
-							<p class="p1-body mx-auto max-w-xl text-sm/6 sm:text-base/7">
-								<RichText value={displayValue} />
-							</p>
-						{/snippet}
-					</EditableField>
-
-					<div
-						class="pca-item pca-d4 mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
-					>
-						<button
-							data-metrika-goal="pages_partnership_partnershipcta_open_1"
-							data-goal-label="Стать партнёром (текст кнопки настраивается)"
-							data-goal-action="open"
-							type="button"
-							aria-label={buttonText}
-							onclick={() => {
-								if (!isEditable) goto('/partner/register');
-							}}
-							class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-link-500 to-cat-5-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-link-500/95 transition duration-300 hover:from-link-400 hover:to-cat-5-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-cat-5-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cat-5-300 motion-safe:hover:-translate-y-0.5"
-						>
-							<EditableField
-								fieldKey="PartnershipCTA.buttonText"
-								label="Текст кнопки"
-								value={buttonText}
-								{isEditable}
-								onSave={(v) => saveField('buttonText', v)}
-								class="inline"
-							>
-								{#snippet children(displayValue)}
-									<RichText value={displayValue} />
-								{/snippet}
-							</EditableField>
-							<span
-								class="transition-transform duration-300 group-hover:translate-x-1"
-								aria-hidden="true">&rarr;</span
-							>
-						</button>
-
-						<EditableField
-							richText={false}
-							fieldKey="PartnershipCTA.phone"
-							label="Телефон"
-							value={phone}
-							isEditable={false}
-							onSave={(v) => saveField('phone', v)}
-							class="inline-block"
-						>
-							{#snippet children(displayValue)}
-								{#if displayValue}
-									<a
-										href={phoneHref}
-										class="group p1-border p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border px-7 py-3.5 text-sm font-semibold backdrop-blur-sm transition duration-300 hover:border-on-dark/30 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-on-dark/60 motion-safe:hover:-translate-y-0.5"
-									>
-										<svg
-											class="size-4.5 transition-transform duration-300 group-hover:-rotate-12"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											stroke-width="2"
-											aria-hidden="true"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-											/>
-										</svg>
-										{displayValue}
-									</a>
-								{/if}
-							{/snippet}
-						</EditableField>
-					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -252,12 +167,6 @@
 		до них scoped-стили Svelte не доходят.
 	*/
 
-	:global(.pca-glow) {
-		filter: blur(80px);
-		border-radius: 9999px;
-	}
-
-	/* Появление: паспарту, элементы, линейка-разделитель */
 	@keyframes pca-frame {
 		from {
 			opacity: 0;
@@ -280,19 +189,7 @@
 		}
 	}
 
-	@keyframes pca-rule {
-		from {
-			opacity: 0;
-			transform: scaleX(0.4);
-		}
-		to {
-			opacity: 1;
-			transform: scaleX(1);
-		}
-	}
-
 	:global(.pca-reveal .pca-item),
-	:global(.pca-reveal .pca-rule),
 	:global(.pca-frame) {
 		opacity: 0;
 	}
@@ -303,10 +200,6 @@
 
 	:global(.pca-visible .pca-item) {
 		animation: pca-rise 780ms cubic-bezier(0.22, 1, 0.36, 1) var(--pca-delay, 0ms) both;
-	}
-
-	:global(.pca-visible .pca-rule) {
-		animation: pca-rule 780ms cubic-bezier(0.22, 1, 0.36, 1) var(--pca-delay, 0ms) both;
 	}
 
 	/* Ступени задержки через кастомное свойство: shorthand-анимация выше не сбрасывает его */
@@ -325,11 +218,9 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		:global(.pca-reveal .pca-item),
-		:global(.pca-reveal .pca-rule),
 		:global(.pca-frame),
 		:global(.pca-frame.pca-visible),
-		:global(.pca-visible .pca-item),
-		:global(.pca-visible .pca-rule) {
+		:global(.pca-visible .pca-item) {
 			animation: none;
 			opacity: 1;
 			transform: none;

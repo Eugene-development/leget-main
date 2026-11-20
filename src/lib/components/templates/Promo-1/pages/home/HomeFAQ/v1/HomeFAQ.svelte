@@ -233,10 +233,10 @@
 		width: 100%;
 		min-height: 5rem;
 		padding: 1.25rem 1.75rem;
-		border: 1px solid var(--ds-on-accent);
+		border: 1px solid currentColor;
 		border-radius: var(--radius-2xl);
 		background: linear-gradient(110deg, var(--ds-link-800), var(--ds-link-700));
-		color: var(--ds-on-accent);
+		color: var(--ds-contrast-link-700-copy, var(--ds-on-dark));
 		box-shadow: 0 12px 28px -14px color-mix(in srgb, var(--ds-link-900) 45%, transparent);
 		font: inherit;
 		font-size: var(--text-lg);

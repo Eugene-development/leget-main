@@ -330,6 +330,7 @@
 						class="absolute top-full left-1/2 z-50 mt-4 w-88 -translate-x-1/2 rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px] ring-1 shadow-ink-900/45 ring-ink-900/5 backdrop-blur-2xl"
 					>
 						<div
+							data-ds-surface="raised"
 							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 						>
 							<div class="mb-1 flex items-center justify-between px-3 pt-2 pb-1">
@@ -376,6 +377,7 @@
 						class="absolute top-full left-1/2 z-50 mt-4 w-88 -translate-x-1/2 rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px] ring-1 shadow-ink-900/45 ring-ink-900/5 backdrop-blur-2xl"
 					>
 						<div
+							data-ds-surface="raised"
 							class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 						>
 							<div class="mb-1 flex items-center justify-between px-3 pt-2 pb-1">

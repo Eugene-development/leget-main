@@ -76,7 +76,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mx-auto mt-6 max-w-2xl text-3xl text-white lg:text-5xl"
+						class="mx-auto mt-6 max-w-2xl text-section-title text-white"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -84,7 +84,7 @@
 				{/snippet}
 			</EditableField>
 
-			<p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/60 lg:text-base">
+			<p class="mx-auto mt-6 max-w-xl text-prose text-white/60">
 				<ContentText
 					bind:data
 					{editContext}

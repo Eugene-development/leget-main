@@ -94,6 +94,7 @@
      Раньше здесь было min-h-[100vh−header]: на 36px (высота баннера) выше
      контейнера, из-за чего низ секции всегда обрезался overflow-hidden. -->
 <section
+	data-ds-surface={isLight ? 'ink-100' : 'scrim'}
 	class="relative flex min-h-0 w-full items-center justify-start overflow-hidden transition-all duration-500 lg:h-full {isLight
 		? 'bg-ink-100 text-ink-900'
 		: 'bg-scrim text-on-dark'}"
@@ -128,7 +129,7 @@
 			<!-- Координатная метка сетки. Вынесена из фонового слоя в шапку:
 			     правая часть строки остаётся свободной, а ml-auto держит её справа. -->
 			<div
-				class="pointer-events-none ml-auto font-mono text-[9px] tracking-widest uppercase opacity-25 select-none"
+				class="pointer-events-none ml-auto text-[9px] tracking-widest uppercase opacity-25 select-none"
 			>
 				LEGET // GRID_SYSTEM_V4
 			</div>
@@ -156,7 +157,7 @@
 					>
 						{#snippet children(displayValue)}
 							<div
-								class="font-mono text-xs tracking-[0.3em] uppercase {isLight
+								class="text-xs tracking-[0.3em] uppercase {isLight
 									? 'text-ink-500'
 									: 'text-ink-400'}"
 							>
@@ -224,7 +225,7 @@
 								data-goal-action="open"
 								type="button"
 								onclick={() => serviceOrderStore.open('consultation')}
-								class="group relative w-full cursor-pointer rounded-none border-2 px-8 py-4 font-mono text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 sm:w-auto {isLight
+								class="group relative w-full cursor-pointer rounded-none border-2 px-8 py-4 text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1 active:translate-x-0 active:translate-y-0 sm:w-auto {isLight
 									? 'border-scrim bg-scrim text-on-dark shadow-[4px_4px_0px] shadow-ink-400'
 									: 'border-on-dark bg-surface-raised text-scrim shadow-[4px_4px_0px] shadow-on-dark/15'}"
 							>
@@ -236,7 +237,7 @@
 
 				<!-- Переключатель палитр холста -->
 				<div class="flex flex-col gap-2.5">
-					<span class="font-mono text-[10px] tracking-wider uppercase opacity-50"
+					<span class="text-[10px] tracking-wider uppercase opacity-50"
 						>Палитра холста: {activePalette.name}</span
 					>
 					<div class="flex items-center gap-2">
@@ -271,7 +272,7 @@
 					<!-- КАРТОЧКА 1: Архитектурный план (Сзади) -->
 					<!-- svelte-ignore a11y_no_static_element_interactions -->
 					<div
-						class="absolute top-[8%] left-[6%] aspect-[4/3] w-[68%] origin-top-left scale-95 rounded-xl border p-4 font-mono shadow-2xl backdrop-blur-md transition-all duration-500 select-none {hoveredCardId ===
+						class="absolute top-[8%] left-[6%] aspect-[4/3] w-[68%] origin-top-left scale-95 rounded-xl border p-4 shadow-2xl backdrop-blur-md transition-all duration-500 select-none {hoveredCardId ===
 						'blueprint'
 							? 'z-40 border-cat-4-500'
 							: 'z-10'} {isLight
@@ -333,7 +334,7 @@
 							/>
 							<!-- Тег поверх изображения -->
 							<div
-								class="absolute bottom-2.5 left-2.5 rounded bg-scrim/60 px-2 py-1 font-mono text-[8px] tracking-wider text-on-dark backdrop-blur-md"
+								class="absolute bottom-2.5 left-2.5 rounded bg-scrim/60 px-2 py-1 text-[8px] tracking-wider text-on-dark backdrop-blur-md"
 							>
 								CONCEPT_04_SLATE
 							</div>
@@ -365,7 +366,7 @@
 							/>
 						</div>
 						<div class="mt-2 flex items-center justify-between">
-							<span class="font-mono text-[8px] tracking-wider uppercase">Veneer Oak</span>
+							<span class="text-[8px] tracking-wider uppercase">Veneer Oak</span>
 							<span class="h-2 w-2 rounded-full" style="background-color: {activePalette.colors[1]}"
 							></span>
 						</div>
@@ -385,7 +386,7 @@
 						onmouseleave={() => (hoveredCardId = null)}
 					>
 						<div
-							class="mb-2.5 flex items-center justify-between border-b border-ink-700/20 pb-1.5 font-mono text-[8px]"
+							class="mb-2.5 flex items-center justify-between border-b border-ink-700/20 pb-1.5 text-[8px]"
 						>
 							<span>SWATCHES</span>
 							<span class="text-[7px]">VER_4</span>
@@ -397,7 +398,7 @@
 										class="h-3 w-6 shrink-0 rounded border border-ink-700/20"
 										style="background-color: {color}"
 									></div>
-									<span class="font-mono text-[7px] tracking-wider uppercase opacity-60"
+									<span class="text-[7px] tracking-wider uppercase opacity-60"
 										>{color}</span
 									>
 								</div>
@@ -414,7 +415,7 @@
 				? 'border-ink-300'
 				: 'border-ink-800'}"
 		>
-			<span class="font-mono text-[9px] tracking-[0.2em] uppercase opacity-50"
+			<span class="text-[9px] tracking-[0.2em] uppercase opacity-50"
 				>LEGET PARTNERS & HARDWARE:</span
 			>
 			<div class="flex flex-wrap items-center gap-4">
@@ -441,7 +442,7 @@
 				     партнёров: на right-8/bottom-8 она ложилась поверх логотипов
 				     брендов. Здесь остаётся у правого края, но в потоке. -->
 				<span
-					class="pointer-events-none ml-2 font-mono text-[9px] tracking-widest opacity-25 select-none"
+					class="pointer-events-none ml-2 text-[9px] tracking-widest opacity-25 select-none"
 				>
 					SCALE 1:15 | AXIS_X_Y
 				</span>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { flushSync } from 'svelte';
+	import { headerButtonStyle } from '$lib/site-settings/header-button';
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData, SubmitFunction } from './$types';
 	import { siteAppearanceStyle, type SiteAppearance } from '$lib/site-settings/appearance';
@@ -14,6 +15,7 @@
 			googleAnalytics?: string;
 			appearanceEnabled?: boolean;
 			designSystem?: string;
+			headerButtonColor?: string | null;
 		};
 		faviconUrl?: string | null;
 	};
@@ -24,6 +26,7 @@
 		{ id: 'analytics', label: 'Счётчики' },
 		{ id: 'design-system', label: 'Дизайн-система' },
 		{ id: 'appearance', label: 'Базовый стиль' },
+		{ id: 'header-action', label: 'Кнопка в шапке' },
 		{ id: 'summary', label: 'Сводка' }
 	] as const;
 	type SectionId = (typeof sections)[number]['id'];
@@ -32,6 +35,7 @@
 	function errorSection(errors: Feedback['errors']): SectionId | undefined {
 		if (!errors) return;
 		if (errors.yandexMetrica || errors.googleAnalytics) return 'analytics';
+		if (errors.headerButtonColor) return 'header-action';
 		if (errors.designSystem) return 'design-system';
 		if (Object.keys(errors).length) return 'appearance';
 	}
@@ -74,6 +78,10 @@
 	let appearanceEnabled = $state(data.site.appearanceEnabled);
 	// svelte-ignore state_referenced_locally
 	let designSystem = $state(data.site.designSystem);
+	// svelte-ignore state_referenced_locally
+	let headerButtonCustom = $state(Boolean(data.site.headerButtonColor));
+	// svelte-ignore state_referenced_locally
+	let headerButtonColor = $state(data.site.headerButtonColor ?? '#b8860b');
 
 	// Список готовых к выбору систем и признак, удалось ли его получить, приезжают
 	// из load. Владельцу предлагаются только системы, опубликованные для его шаблона
@@ -106,17 +114,25 @@
 		if (values.radiusPreset) radiusPreset = values.radiusPreset;
 		if (typeof values.appearanceEnabled === 'boolean') appearanceEnabled = values.appearanceEnabled;
 		if (typeof values.designSystem === 'string') designSystem = values.designSystem;
+		if ('headerButtonColor' in values) {
+			headerButtonCustom = values.headerButtonColor !== null;
+			if (typeof values.headerButtonColor === 'string')
+				headerButtonColor = values.headerButtonColor;
+		}
 	});
 
 	const previewStyle = $derived(
-		siteAppearanceStyle({
-			primaryColor,
-			accentColor,
-			surfaceColor,
-			textColor,
-			fontPreset,
-			radiusPreset
-		})
+		siteAppearanceStyle(
+			{
+				primaryColor,
+				accentColor,
+				surfaceColor,
+				textColor,
+				fontPreset,
+				radiusPreset
+			},
+			designSystem
+		)
 	);
 	const configuredCount = $derived(
 		(yandexMetrica.trim() ? 1 : 0) + (googleAnalytics.trim() ? 1 : 0)
@@ -204,7 +220,7 @@
 				class="settings-nav flex gap-2 overflow-x-auto py-5 lg:flex-col"
 				aria-label="Разделы настроек"
 			>
-				{#each sections as section (section.id)}
+				{#each sections.filter((section) => section.id !== 'header-action' || site.templateId === 2) as section (section.id)}
 					<button
 						type="button"
 						class="settings-nav-link"
@@ -568,21 +584,31 @@
 								{appearanceEnabled ? 'Живой образец' : 'Образец не применяется'}
 							</p>
 							<div class="overflow-hidden border border-border-light bg-surface-card shadow-sm">
-								<div class="p-6" style={previewStyle}>
-									<div class="rounded-2xl bg-surface p-5 text-text-primary">
-										<p class="text-xs text-text-secondary">Название раздела</p>
-										<h3 class="mt-3 text-3xl">Ваш сайт в одном стиле</h3>
-										<p class="mt-3 text-sm text-text-secondary">
-											Образец показывает сочетание фона, текста, шрифта и формы элементов.
-										</p>
-										<button
-											type="button"
-											disabled={!appearanceEnabled}
-											class="mt-5 min-h-11 rounded-xl bg-primary px-5 text-sm text-text-inverse"
+								<div class="space-y-4 p-4" style={previewStyle} data-ds-contrast-root>
+									{#each ['light', 'dark'] as theme}
+										<div
+											data-ds-surface={theme}
+											class="rounded-xl p-5"
+											style={`background: var(--ds-${theme}-surface); color: var(--ds-contrast-${theme}-copy)`}
 										>
-											Основное действие
-										</button>
-									</div>
+											<p class="ds-accent text-xs">
+												{theme === 'light' ? 'Светлая поверхность' : 'Тёмная поверхность'}
+											</p>
+											<h3 class="mt-3 text-3xl">Ваш сайт в одном стиле</h3>
+											<p class="ds-copy mt-3 text-sm">
+												Текст, ссылка и кнопка адаптируются к фону компонента.
+											</p>
+											<span class="ds-accent mt-3 inline-block text-sm underline"
+												>Пример ссылки</span
+											>
+											<button
+												type="button"
+												disabled={!appearanceEnabled}
+												class="ds-action mt-5 min-h-11 rounded-xl px-5 text-sm"
+												>Основное действие</button
+											>
+										</div>
+									{/each}
 								</div>
 								<div class="grid grid-cols-4 border-t border-border-light" aria-label="Палитра">
 									<span class="h-10" style={`background: ${primaryColor}`} title="Основной"></span>
@@ -594,6 +620,46 @@
 						</div>
 					</div>
 				</section>
+
+				{#if site.templateId === 2}
+					<section id="header-action" hidden={activeSection !== 'header-action'}>
+						<h2 class="text-3xl">Кнопка в шапке</h2>
+						<input type="hidden" name="headerButtonSettings" value="1" />
+						<label class="mt-6 flex min-h-11 items-center gap-3 text-sm">
+							<input type="checkbox" name="headerButtonCustom" bind:checked={headerButtonCustom} />
+							Свой цвет
+						</label>
+						<fieldset
+							disabled={!headerButtonCustom}
+							class="mt-4"
+							class:opacity-50={!headerButtonCustom}
+						>
+							{@render colorField(
+								'headerButtonColor',
+								'Цвет кнопки',
+								'Градиент и читаемый текст подбираются автоматически',
+								headerButtonColor,
+								(value) => (headerButtonColor = value)
+							)}
+						</fieldset>
+						<p class="mt-4 text-sm text-text-secondary">
+							{headerButtonCustom
+								? 'Индивидуальный цвет сайта'
+								: 'Используется цвет дизайн-системы'}
+						</p>
+						<div class="mt-6 border border-border-light bg-surface-card p-6">
+							<button
+								type="button"
+								class="ds-header-action inline-flex min-h-11 items-center gap-2 overflow-hidden rounded-lg px-5 py-3 text-sm font-medium"
+								style={headerButtonStyle(headerButtonCustom ? headerButtonColor : null)}
+							>
+								<span class="cta-shimmer"></span><span class="relative z-10"
+									>Записаться в салон</span
+								>
+							</button>
+						</div>
+					</section>
+				{/if}
 
 				<section id="summary" hidden={activeSection !== 'summary'}>
 					<h2 class="text-3xl">Сводка</h2>
@@ -639,7 +705,9 @@
 </main>
 
 {#snippet colorField(
-	name: keyof Pick<SiteAppearance, 'primaryColor' | 'accentColor' | 'surfaceColor' | 'textColor'>,
+	name:
+		| keyof Pick<SiteAppearance, 'primaryColor' | 'accentColor' | 'surfaceColor' | 'textColor'>
+		| 'headerButtonColor',
 	label: string,
 	description: string,
 	value: string,

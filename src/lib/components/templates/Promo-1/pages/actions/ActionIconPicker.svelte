@@ -161,7 +161,7 @@
 	>
 		<div class="mb-4 flex items-start justify-between gap-4">
 			<div>
-				<h3 class="text-base font-semibold">Значок акции</h3>
+				<h3 class="ds-title-sub text-base">Значок акции</h3>
 				<p class="mt-1 text-sm text-ink-500">
 					{selected ? `Выбран: ${selected.label}` : 'Выберите из коллекции'}
 				</p>

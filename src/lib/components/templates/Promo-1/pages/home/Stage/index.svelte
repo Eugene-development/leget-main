@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { withPromoMotion } from '$lib/motion/transition';
 	import { fly } from 'svelte/transition';
+	import { saveComponentData } from '$lib/utils/page-edit';
+	import { stageBackgrounds, defaultStageBackground } from './backgrounds';
 	import StageV1 from './v1/Stage.svelte';
 	import StageV2 from './v2/Stage.svelte';
+	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 
 	let {
@@ -23,7 +26,64 @@
 		(data?.stageVersion as 'v1' | 'v2' | 'disabled') ?? 'v1'
 	);
 	const p1_fly = withPromoMotion(fly);
+	let savingBackground = $state(false);
+	let backgroundError = $state('');
+	const activeBackground = $derived(data?.bgImage || defaultStageBackground);
+
+	async function selectBackground(url: string) {
+		if (!editContext || savingBackground || activeBackground === url) return;
+		savingBackground = true;
+		backgroundError = '';
+		const previous = data;
+		const updated = { ...data, bgImage: url };
+		data = updated;
+		try {
+			await saveComponentData(editContext, 'Stage', updated);
+		} catch {
+			data = previous;
+			backgroundError = 'Не удалось сохранить фон. Попробуйте ещё раз.';
+		} finally {
+			savingBackground = false;
+		}
+	}
 </script>
+
+{#snippet backgroundSettings()}
+	{#if selectedVersion === 'v1'}
+		<fieldset disabled={savingBackground} aria-busy={savingBackground}>
+			<legend class="mb-3 text-sm font-semibold text-ink-100">Фон блока</legend>
+			<div class="grid grid-cols-2 gap-3">
+				{#each stageBackgrounds as background (background.url)}
+					<button
+						type="button"
+						onclick={() => selectBackground(background.url)}
+						aria-pressed={activeBackground === background.url}
+						data-goal-ignore="Выбор фонового изображения в настройках компонента"
+						class="overflow-hidden rounded-xl border text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400 disabled:cursor-wait {activeBackground ===
+						background.url
+							? 'border-link-400 bg-link-500/15 text-link-200'
+							: 'border-ink-700 bg-ink-900 text-ink-200 hover:border-ink-500'}"
+					>
+						<ImageFallback
+							src={background.url}
+							alt=""
+							imageRole="preview"
+							class="aspect-video w-full object-cover"
+						/>
+						<span class="block px-3 py-2 text-xs font-medium">{background.label}</span>
+					</button>
+				{/each}
+			</div>
+			<p class="mt-3 text-xs leading-relaxed text-ink-400">
+				Выберите готовый фон или загрузите своё изображение ниже.
+			</p>
+			{#if savingBackground}<p role="status" class="mt-2 text-xs text-ink-300">Сохранение…</p>{/if}
+			{#if backgroundError}<p role="alert" class="mt-2 text-sm text-ink-100">
+					{backgroundError}
+				</p>{/if}
+		</fieldset>
+	{/if}
+{/snippet}
 
 {#if selectedVersion !== 'disabled' || isEditable}
 	<div
@@ -41,6 +101,7 @@
 			themeVersions={['v2']}
 			themeDefault="dark"
 			title="Этапы работы"
+			settings={backgroundSettings}
 			bind:selectedVersion
 		/>
 

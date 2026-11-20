@@ -32,7 +32,7 @@
 			class="block"
 		>
 			{#snippet children(value)}<h1
-					class="text-5xl text-primary md:text-7xl"
+					class="text-page-title text-primary"
 					style="font-family: var(--font-heading);"
 				>
 					<RichText {value} />
@@ -50,7 +50,7 @@
 			onSave={(value) => saveField('description', value)}
 			class="block"
 		>
-			{#snippet children(value)}<p class="mt-6 max-w-2xl text-lg leading-relaxed text-secondary">
+			{#snippet children(value)}<p class="mt-6 max-w-2xl text-prose text-secondary">
 					<RichText {value} />
 				</p>{/snippet}
 		</EditableField>

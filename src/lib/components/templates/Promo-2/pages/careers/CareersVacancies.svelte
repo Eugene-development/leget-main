@@ -144,7 +144,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mt-3 text-4xl text-primary lg:text-5xl"
+							class="mt-3 text-section-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -211,7 +211,7 @@
 							<div class="flex flex-1 flex-col gap-1 sm:flex-row sm:items-center sm:gap-8">
 								<div class="min-w-0 flex-1">
 									<h3
-										class="text-base text-primary transition-colors duration-300 group-hover:text-secondary"
+										class="text-card-title text-primary transition-colors duration-300 group-hover:text-secondary"
 										style="font-family: var(--font-heading);"
 									>
 										<ContentText
@@ -318,7 +318,7 @@
 
 					{#if expandedId === vac.id}
 						<div class="border-t border-border-light bg-surface-warm px-6 py-6 pb-8 sm:px-8">
-							<p class="max-w-2xl text-sm leading-relaxed text-secondary">
+							<p class="max-w-2xl text-prose text-secondary">
 								<ContentText
 									bind:data
 									{editContext}

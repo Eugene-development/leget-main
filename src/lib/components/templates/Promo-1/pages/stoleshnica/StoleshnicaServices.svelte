@@ -32,7 +32,7 @@
 		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
 		in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
 	>
-		<h2 class="text-2xl text-ink-900">
+		<h2 class="ds-title-sub text-2xl text-ink-900">
 			{editableText(data.title, 'Что входит в стоимость')}
 		</h2>
 

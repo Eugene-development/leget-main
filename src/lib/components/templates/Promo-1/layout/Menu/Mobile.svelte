@@ -60,67 +60,85 @@
 	// SSR отдавал бы v1 независимо от данных — на живых сайтах это подмена
 	// варианта после гидратации (тот же разбор, что в `Menu/index.svelte`).
 	const version = $derived<MenuVersion>((data?.menuVersion as MenuVersion) ?? 'v1');
+
+	// Fixed-лист привязан к окну, независимо от transform анимированной шапки.
+	// Svelte-контекст остаётся прежним; положение строки приходит через --p1-sheet-top.
+	function portal(node: HTMLElement) {
+		const site = node.closest('[data-site-template]');
+		for (const attribute of ['data-site-template', 'data-site-appearance']) {
+			const value = site?.getAttribute(attribute);
+			if (value != null) node.setAttribute(attribute, value);
+		}
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node);
+			}
+		};
+	}
 </script>
 
-{#if version === 'v4'}
-	<MobileMenuV4
-		{links}
-		{visibleCatalogItems}
-		{visibleServiceItems}
-		{disabledRubrics}
-		{disabledServices}
-		{cities}
-		{sitePhone}
-		{email}
-		{contactsLink}
-		{isEditable}
-		{onToggleRubric}
-		{onToggleService}
-	/>
-{:else if version === 'v3'}
-	<MobileMenuV3
-		{links}
-		{visibleCatalogItems}
-		{visibleServiceItems}
-		{disabledRubrics}
-		{disabledServices}
-		{cities}
-		{sitePhone}
-		{email}
-		{informationLinks}
-		{isEditable}
-		{onToggleRubric}
-		{onToggleService}
-	/>
-{:else if version === 'v2'}
-	<MobileMenuV2
-		{links}
-		{visibleCatalogItems}
-		{visibleServiceItems}
-		{disabledRubrics}
-		{disabledServices}
-		{cities}
-		{sitePhone}
-		{email}
-		{contactsLink}
-		{isEditable}
-		{onToggleRubric}
-		{onToggleService}
-	/>
-{:else}
-	<MobileMenuV1
-		{links}
-		{visibleCatalogItems}
-		{visibleServiceItems}
-		{disabledRubrics}
-		{disabledServices}
-		{cities}
-		{sitePhone}
-		{email}
-		{contactsLink}
-		{informationLinks}
-		{isEditable}
-		{onToggleRubric}
-		{onToggleService}
-	/>
-{/if}
+<div class="contents" data-ds-contrast-root use:portal>
+	{#if version === 'v4'}
+		<MobileMenuV4
+			{links}
+			{visibleCatalogItems}
+			{visibleServiceItems}
+			{disabledRubrics}
+			{disabledServices}
+			{cities}
+			{sitePhone}
+			{email}
+			{contactsLink}
+			{isEditable}
+			{onToggleRubric}
+			{onToggleService}
+		/>
+	{:else if version === 'v3'}
+		<MobileMenuV3
+			{links}
+			{visibleCatalogItems}
+			{visibleServiceItems}
+			{disabledRubrics}
+			{disabledServices}
+			{cities}
+			{sitePhone}
+			{email}
+			{informationLinks}
+			{isEditable}
+			{onToggleRubric}
+			{onToggleService}
+		/>
+	{:else if version === 'v2'}
+		<MobileMenuV2
+			{links}
+			{visibleCatalogItems}
+			{visibleServiceItems}
+			{disabledRubrics}
+			{disabledServices}
+			{cities}
+			{sitePhone}
+			{email}
+			{contactsLink}
+			{isEditable}
+			{onToggleRubric}
+			{onToggleService}
+		/>
+	{:else}
+		<MobileMenuV1
+			{links}
+			{visibleCatalogItems}
+			{visibleServiceItems}
+			{disabledRubrics}
+			{disabledServices}
+			{cities}
+			{sitePhone}
+			{email}
+			{contactsLink}
+			{informationLinks}
+			{isEditable}
+			{onToggleRubric}
+			{onToggleService}
+		/>
+	{/if}
+</div>

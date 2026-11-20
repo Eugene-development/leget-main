@@ -227,7 +227,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="mb-6 text-3xl text-primary uppercase lg:text-4xl"
+							class="mb-6 text-section-title text-primary uppercase"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText value={displayValue} />
@@ -365,7 +365,7 @@
 						<div
 							class="absolute right-0 bottom-0 left-0 translate-y-full bg-white/90 p-6 backdrop-blur-md transition-transform duration-500 group-hover:translate-y-0"
 						>
-							<h3 class="mb-2 text-lg text-primary" style="font-family: var(--font-heading);">
+							<h3 class="mb-2 text-card-title text-primary" style="font-family: var(--font-heading);">
 								{project.title}
 							</h3>
 							<p class="text-sm text-secondary">{project.description}</p>
@@ -399,7 +399,7 @@
 	<div
 		class="flex items-center justify-between gap-4 border-b border-border-light px-4 py-3 sm:px-6"
 	>
-		<h3 class="min-w-0 text-lg" style="font-family: var(--font-heading);">
+		<h3 class="min-w-0 text-card-title" style="font-family: var(--font-heading);">
 			{selectedPhoto?.title ?? ''}
 		</h3>
 		<button

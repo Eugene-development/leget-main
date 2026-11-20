@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { authApi, readApiJson } from '$lib/server/admin-api';
 import { claimAttribution } from '$lib/server/attribution';
-import { clearClientSession, setClientSession } from '$lib/server/client-session';
+import { clearClientSession, setClientSession, CRM_COOKIE } from '$lib/server/client-session';
 import type { RequestHandler } from './$types';
 
 /**
@@ -73,5 +73,6 @@ export const POST: RequestHandler = async ({ request, cookies, url, getClientAdd
 /** Выход: cookie удаляется, серверная сессия клиенту больше не принадлежит. */
 export const DELETE: RequestHandler = async ({ cookies }) => {
 	clearClientSession(cookies);
+	cookies.delete(CRM_COOKIE, { path: '/crm' });
 	return json({ success: true });
 };

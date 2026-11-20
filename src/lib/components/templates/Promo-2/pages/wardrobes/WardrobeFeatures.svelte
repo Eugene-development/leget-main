@@ -84,7 +84,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl text-primary lg:text-4xl" style="font-family: var(--font-heading);">
+				<h2 class="text-section-title text-primary" style="font-family: var(--font-heading);">
 					<RichText value={displayValue} />
 				</h2>
 			{/snippet}
@@ -114,7 +114,7 @@
 						defaults={{ features }}
 					/>
 				</div>
-				<h3 class="mb-3 text-2xl text-primary" style="font-family: var(--font-heading);">
+				<h3 class="mb-3 text-card-title text-primary" style="font-family: var(--font-heading);">
 					<ContentText
 						bind:data
 						{editContext}
@@ -126,7 +126,7 @@
 						defaults={{ features }}
 					/>
 				</h3>
-				<p class="leading-relaxed text-secondary">
+				<p class="text-prose text-secondary">
 					<ContentText
 						bind:data
 						{editContext}

@@ -76,7 +76,12 @@
 	будет только при редактировании, которого здесь нет. Своя копия в $state тут лишь
 	мешала бы — при переходе между карточками она бы залипала на первом значении.
 -->
-<div bind:this={blockEl} data-catalog-rubric={catalogRubric}>
+<div
+	bind:this={blockEl}
+	data-ds-contrast-root
+	data-site-template={data.templateId}
+	data-catalog-rubric={catalogRubric}
+>
 	<EditableComponent
 		component={Block}
 		componentType={data.type}

@@ -2085,6 +2085,16 @@
 		"locations": [{ "template": "Promo-1", "page": "/stoleshnica", "article": "1.19.2.1" }]
 	},
 	{
+		"id": "university_hero_certificate_verify_open",
+		"action": "open",
+		"label": "Проверка дизайнера",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/university/UniversityHero.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "1.32.1.1" }]
+	},
+	{
 		"id": "pages_vacancy_vacancyform_reset_1",
 		"action": "reset",
 		"label": "Отправить ещё один",
@@ -2117,6 +2127,7 @@
 		"serviceType": null,
 		"locations": [
 			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.2" },
 			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
 		]
@@ -2281,6 +2292,7 @@
 		"serviceType": null,
 		"locations": [
 			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.2" },
 			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
 		]
@@ -2445,6 +2457,7 @@
 		"serviceType": null,
 		"locations": [
 			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.2" },
 			{ "template": "Promo-2", "page": "/", "article": "2.1.5.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.7.1" }
 		]
@@ -2785,10 +2798,13 @@
 		"action": "open",
 		"label": "Обсудить комплектацию",
 		"templates": ["Promo-2"],
-		"source": "templates/Promo-2/pages/equipment/EquipmentCTA.svelte",
+		"source": "templates/Promo-2/pages/equipment/EquipmentConsultationButton.svelte",
 		"route": "/equipment",
 		"mock": false,
-		"locations": [{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" }]
+		"locations": [
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.1" },
+			{ "template": "Promo-2", "page": "/equipment", "article": "2.17.7.2" }
+		]
 	},
 	{
 		"id": "pages_facades_facadescta_open",
@@ -3116,6 +3132,16 @@
 		"label": "Стать студентом",
 		"templates": ["Promo-1"],
 		"source": "../university/Catalog.svelte",
+		"route": "/university",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]
+	},
+	{
+		"id": "university_certificate_verify_close",
+		"action": "close",
+		"label": "Закрыть проверку дизайнера",
+		"templates": ["Promo-1"],
+		"source": "../university/CertificateVerifier.svelte",
 		"route": "/university",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/university", "article": "" }]

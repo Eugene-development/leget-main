@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { auth } from '$lib/stores/auth';
+	import { createFooterAccount } from '$lib/stores/client-account.svelte';
 	import LoginModal from '$lib/components/LoginModal.svelte';
 	import type { Snippet } from 'svelte';
 
@@ -19,14 +19,9 @@
 	const copyright = $derived(typeof data?.copyright === 'string' ? data.copyright : null);
 
 	let showLoginModal = $state(false);
-
-	function handleAuthClick() {
-		if ($auth.isAuthenticated) {
-			auth.logout();
-		} else {
-			showLoginModal = true;
-		}
-	}
+	const footerAccount = createFooterAccount();
+	const authButtonClass =
+		'h-9 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:text-gray-900';
 </script>
 
 <footer class="w-full border-t border-gray-200 bg-gray-50">
@@ -61,15 +56,23 @@
 				{@render pageSettings?.(
 					'rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900'
 				)}
-				<button
-					data-metrika-goal="layout_footer_open_1"
-					data-goal-action="open"
-					type="button"
-					onclick={handleAuthClick}
-					class="h-9 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:text-gray-900"
-				>
-					{$auth.isAuthenticated ? 'Выйти' : 'Войти'}
-				</button>
+				{#if footerAccount.signedIn}
+					<button
+						type="button"
+						class={authButtonClass}
+						disabled={footerAccount.isLoggingOut}
+						onclick={footerAccount.logout}
+						data-goal-ignore="Выход из учётной записи">Выйти</button
+					>
+				{:else}
+					<button
+						type="button"
+						class={authButtonClass}
+						data-metrika-goal="layout_footer_open_1"
+						data-goal-action="open"
+						onclick={() => (showLoginModal = true)}>Войти</button
+					>
+				{/if}
 			</div>
 		</div>
 	</div>

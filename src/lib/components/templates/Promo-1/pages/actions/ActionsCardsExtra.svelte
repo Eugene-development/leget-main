@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { promotionDeadline, promotionIsActive } from '$lib/promotions/time';
+	import { usePromotionClock } from '$lib/promotions/clock.svelte';
 	// Артикул: 1.4.3.1 — см. docs/architecture/component-articles-map.md
 	import RichText from '$lib/components/RichText.svelte';
 	import ActionIconPicker from './ActionIconPicker.svelte';
@@ -25,6 +27,7 @@
 
 	const isLight = $derived(isLightBlock(data, 'light'));
 	const companies = $derived(actionCompanies(data));
+	const now = usePromotionClock(() => companies.flatMap(({ cards }) => cards.map((card) => promotionDeadline(card))));
 	let saving = $state(false);
 	let saveError = $state('');
 	let deletedCompanies = $state<ActionCompany[] | null>(null);
@@ -136,7 +139,7 @@
 </script>
 
 {#each companies as company, ci (company.id)}
-	{#if isEditable || (company.enabled !== false && company.cards.some((card) => card.enabled !== false))}
+	{#if isEditable || (company.enabled !== false && company.cards.some((card) => promotionIsActive(card, now())))}
 		<section
 			class="p1-surface-alt relative py-section-sm"
 			data-company-id={company.id}
@@ -204,7 +207,7 @@
 					</p>{/if}
 				<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 					{#each company.cards as card, i (card.id)}
-						{#if isEditable || card.enabled !== false}
+						{#if isEditable || promotionIsActive(card, now())}
 							<div
 								class="p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-cat-1-500 hover:shadow-2xl {isEditable &&
 								card.enabled === false

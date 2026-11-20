@@ -71,7 +71,7 @@
 			>
 				{#snippet children(displayValue)}
 					<h2
-						class="mt-4 text-3xl text-primary lg:text-5xl"
+						class="mt-4 text-section-title text-primary"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText value={displayValue} />
@@ -92,7 +92,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-secondary">
+					<p class="mx-auto mt-6 max-w-2xl text-prose text-secondary">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}

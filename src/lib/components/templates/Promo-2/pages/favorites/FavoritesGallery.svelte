@@ -55,7 +55,7 @@
 				class="block"
 			>
 				{#snippet children(value)}<h2
-						class="text-3xl text-primary md:text-4xl"
+						class="text-section-title text-primary"
 						style="font-family: var(--font-heading);"
 					>
 						<RichText {value} />
@@ -117,7 +117,7 @@
 					class="block"
 				>
 					{#snippet children(value)}<h3
-							class="text-3xl text-primary"
+							class="text-subsection-title text-primary"
 							style="font-family: var(--font-heading);"
 						>
 							<RichText {value} />
@@ -134,7 +134,7 @@
 					class="block"
 				>
 					{#snippet children(value)}<p
-							class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-secondary"
+							class="mx-auto mt-4 max-w-xl text-prose text-secondary"
 						>
 							<RichText {value} />
 						</p>{/snippet}
@@ -211,14 +211,14 @@
 								/>
 							</p>
 							<h3
-								class="min-w-0 truncate text-2xl text-primary"
+								class="min-w-0 truncate text-card-title text-primary"
 								style="font-family: var(--font-heading);"
 								title={item.title}
 							>
 								{item.title}
 							</h3>
 						</div>
-						<p class="mt-2 text-sm leading-relaxed text-secondary">{item.description}</p>
+						<p class="mt-2 text-prose text-secondary">{item.description}</p>
 					</article>
 				{/each}
 			</div>

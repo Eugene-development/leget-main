@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "npm run check:forms && npm run check:goals && vite build",
+		"build": "npm run check:forms && npm run check:goals && npm run check:contrast && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -35,7 +35,12 @@
 		"test:remember": "node --test scripts/test-remember-me.mjs && node scripts/test-remember-session.mjs",
 		"test:favorites": "node --experimental-strip-types --test scripts/test-promo2-favorites.mjs",
 		"test:actions": "node --test scripts/test-action-companies.mjs",
-		"test:publication": "node --test scripts/test-page-publication.mjs scripts/test-analytics-lifecycle.mjs"
+		"test:publication": "node --test scripts/test-page-publication.mjs scripts/test-analytics-lifecycle.mjs",
+		"test:offline": "node --test scripts/test-offline-pages.mjs",
+		"contrast:generate": "node scripts/contrast-palettes.mjs --write && node scripts/contrast-styles.mjs",
+		"check:contrast": "node scripts/contrast-palettes.mjs && node scripts/contrast-styles.mjs --check && node scripts/check-gradient-surfaces.mjs",
+		"test:contrast": "node --test scripts/test-surface-contrast.mjs",
+		"test:header-action": "node --test scripts/test-header-action.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^5.5.4",

@@ -45,6 +45,8 @@
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { animationsEnabled } from '$lib/motion/promo';
 	import { onMount } from 'svelte';
+	import { formatPromotionDeadline, promotionDeadline, promotionIsActive, type PromotionSchedule } from '$lib/promotions/time';
+	import { usePromotionClock } from '$lib/promotions/clock.svelte';
 	import '../../../../theme.css';
 
 	let {
@@ -65,7 +67,7 @@
 	// кадре, — у них роли темы.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 
-	type Offer = {
+	type Offer = PromotionSchedule & {
 		image: string;
 		alt: string;
 		partner: string;
@@ -84,7 +86,7 @@
 	const title = $derived(editableText(data?.title, DEFAULT_TITLE));
 	const description = $derived(editableText(data?.description, DEFAULT_DESCRIPTION));
 
-	const offers = $derived(
+	const allOffers = $derived(
 		Array.isArray(data?.offers) && data.offers.length > 0
 			? (data.offers as Offer[])
 			: [
@@ -113,13 +115,15 @@
 				]
 	);
 
-	// Срок в трёх видах, как его и просили: «с и по», «с» и «по». Пустая строка
-	// значит «границы нет» — тенант, стерший поле, получает открытый срок,
-	// а не строку «с по». Формат даты не разбираем и не переводим: тенант правит
-	// её текстом, и любая нормализация здесь молча испортила бы то, что он ввёл.
+	const now = usePromotionClock(() => allOffers.map((offer) => promotionDeadline(offer)));
+	const offers = $derived(isEditable ? allOffers : allOffers.filter((offer) => promotionIsActive(offer, now())));
+
 	function period(item: Offer) {
 		const from = (item.validFrom ?? '').trim();
-		const to = (item.validUntil ?? '').trim();
+		const deadline = promotionDeadline(item);
+		const to = 'expiresAt' in item
+			? deadline === null ? '' : formatPromotionDeadline(deadline)
+			: (item.validUntil ?? '').trim();
 		if (from && to) return `с ${from} по ${to}`;
 		if (from) return `с ${from}`;
 		if (to) return `по ${to}`;
@@ -144,12 +148,14 @@
 	let scroller = $state<HTMLElement | null>(null);
 	let active = $state(0);
 	let held = $state(false); // курсор/фокус/палец на ленте — автопрокрутка ждёт
-	// Стартует `true`, а не `false`: IntersectionObserver здесь только экономит
-	// работу, пока лента за экраном, и стоить запрошенного поведения это не должно.
-	// С `false` автопрокрутка не завелась бы вовсе везде, где первый колбэк IO
-	// не пришёл, — а отказ «тихо ничего не делает» ровно того сорта, что не виден
-	// ни в одной проверке. Промах в другую сторону стоит лишнего таймера за экраном.
-	let visible = $state(true);
+	let section = $state<HTMLElement | null>(null);
+	let visible = $state(false);
+	const autoplayEnabled = $derived(data?.autoplayEnabled !== false);
+	const autoplayInterval = $derived(
+		typeof data?.autoplayInterval === 'number' && Number.isFinite(data.autoplayInterval)
+			? Math.min(60, Math.max(1, data.autoplayInterval)) * 1000
+			: 3000
+	);
 
 	// Действие и сроки следуют за активным кадром. В гриде активного нет —
 	// там у каждой карточки своя пара, см. разметку.
@@ -237,18 +243,24 @@
 		});
 		ro.observe(el);
 
-		const io = new IntersectionObserver((entries) => (visible = entries[0].isIntersecting), {
-			threshold: 0.2
-		});
-		io.observe(el);
-
 		el.addEventListener('scroll', onScroll, { passive: true });
 		return () => {
 			clearTimeout(settle);
 			el.removeEventListener('scroll', onScroll);
 			ro.disconnect();
-			io.disconnect();
 		};
+	});
+
+	// Порог относится ко всей секции, а не только к ленте карточек.
+	$effect(() => {
+		if (!section || typeof IntersectionObserver === 'undefined') return;
+		visible = false;
+		const io = new IntersectionObserver(
+			([entry]) => (visible = entry.isIntersecting && entry.intersectionRatio >= 0.8),
+			{ threshold: [0, 0.8] }
+		);
+		io.observe(section);
+		return () => io.disconnect();
 	});
 
 	// Автопрокрутка. Стоит, пока лента не видна, пока на ней курсор или фокус,
@@ -256,6 +268,7 @@
 	$effect(() => {
 		if (
 			!isSlider ||
+			!autoplayEnabled ||
 			!scroller ||
 			held ||
 			!visible ||
@@ -266,13 +279,9 @@
 		)
 			return;
 
-		const raw = getComputedStyle(scroller).getPropertyValue('--ds-motion-dwell').trim();
-		const dwell = raw.endsWith('ms') ? parseFloat(raw) : parseFloat(raw) * 1000;
-		if (!Number.isFinite(dwell) || dwell <= 0) return;
-
 		const id = setInterval(() => {
 			if (!document.hidden) step(1);
-		}, dwell);
+		}, autoplayInterval);
 		return () => clearInterval(id);
 	});
 
@@ -287,7 +296,12 @@
 		if (!editContext) return;
 		const updated = {
 			...data,
-			offers: offers.map((offer, i) => (i === index ? { ...offer, [field]: value.trim() } : offer))
+			offers: allOffers.map((offer, i) => {
+				if (i !== index) return offer;
+				const updated = { ...offer, [field]: value.trim() };
+				if (field === 'validUntil') delete updated.expiresAt;
+				return updated;
+			})
 		};
 		await saveComponentData(editContext, 'PartnerOffers', updated);
 		data = updated;
@@ -327,8 +341,8 @@
 			class="pointer-events-none absolute inset-4 rounded-2xl border border-on-dark/15 transition-colors duration-[var(--ds-motion-duration-ui-slow)] group-hover:border-on-dark/40"
 		></div>
 
-		<!-- Срок акции. Лежит НА кадре, поэтому теме не подчиняется: пара
-		     `scrim` / `on-dark`, а не роли темы. Плотность 60% выбрана не на глаз —
+		<!-- Срок акции. Цвет берём напрямую из `--ds-on-dark`, чтобы адаптация
+		     текста секции не перекрашивала его поверх `scrim`. Плотность 60% —
 		     это порог, ниже которого пара перестаёт держать 4,5:1 на худшей из
 		     возможных фотографий (белой): 60% чёрного по белому дают #666, и белый
 		     текст на нём — 5,73:1. Любая более тёмная фотография только добавляет
@@ -339,7 +353,7 @@
 		     режима редактирования. -->
 		{#if isEditable && !clone}
 			<div
-				class="absolute top-7 left-7 z-10 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-scrim/60 px-3 py-2 text-xs text-on-dark sm:top-8 sm:left-8"
+				class="absolute top-7 left-7 z-10 flex items-center gap-2 rounded-xl bg-scrim/60 px-3 py-2 text-xs whitespace-nowrap text-(--ds-on-dark) sm:top-8 sm:left-8"
 			>
 				<EditableField
 					fieldKey={`PartnerOffers.offers.${index}.validFrom`}
@@ -348,6 +362,7 @@
 					{isEditable}
 					richText={false}
 					inline
+					class="min-h-6 content-center"
 					onSave={(value) => saveOfferDate(index, 'validFrom', value)}
 				>
 					{#snippet children(displayValue)}
@@ -361,6 +376,7 @@
 					{isEditable}
 					richText={false}
 					inline
+					class="min-h-6 content-center"
 					onSave={(value) => saveOfferDate(index, 'validUntil', value)}
 				>
 					{#snippet children(displayValue)}
@@ -370,7 +386,7 @@
 			</div>
 		{:else if period(item)}
 			<div
-				class="absolute top-7 left-7 z-10 rounded-xl bg-scrim/60 px-3 py-2 text-xs text-on-dark sm:top-8 sm:left-8"
+				class="absolute top-7 left-7 z-10 rounded-xl bg-scrim/60 px-3 py-2 text-xs text-(--ds-on-dark) sm:top-8 sm:left-8"
 			>
 				{period(item)}
 			</div>
@@ -427,7 +443,9 @@
 
 <!-- Спецпредложения партнёров (PartnerOffers) — экранный блок: шапка, кадры, действие.
      Высота учитывает стабильную строку меню: появление верхних полос не сжимает кадры. -->
+{#if isEditable || offers.length}
 <section
+	bind:this={section}
 	class="p1-surface flex min-h-[calc(100svh-var(--header-h))] flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
@@ -574,6 +592,7 @@
 		</div>
 	{/if}
 </section>
+{/if}
 
 <style>
 	/* Дыхание поля вокруг карточек.

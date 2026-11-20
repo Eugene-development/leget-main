@@ -55,7 +55,7 @@
 	);
 </script>
 
-<section class="relative overflow-hidden py-24 lg:py-32">
+<section data-ds-surface="surface-900" class="relative overflow-hidden py-24 lg:py-32">
 	<div
 		class="absolute inset-0 bg-linear-to-br from-accent-600/5 via-surface-900 to-surface-900"
 	></div>

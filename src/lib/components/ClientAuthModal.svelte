@@ -231,6 +231,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
+	data-ds-contrast-root
 	class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-scrim/50 p-4"
 	onclick={handleBackdropClick}
 >

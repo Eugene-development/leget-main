@@ -131,7 +131,7 @@
 <section class="border-t border-on-dark/10 pt-5">
 	<div class="flex items-start justify-between gap-4">
 		<div>
-			<h4 class="text-xs text-on-dark/40 uppercase">Фоновое слайд-шоу</h4>
+			<h4 class="ds-title-sub text-xs text-on-dark/40 uppercase">Фоновое слайд-шоу</h4>
 			<p class="mt-1 text-xs leading-relaxed text-ink-400">
 				Выключите фон, чтобы пропустить его в слайд-шоу. Изображение останется в списке.
 			</p>

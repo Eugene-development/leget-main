@@ -43,7 +43,7 @@
 	>
 		<div class="lg:flex lg:items-center lg:gap-12">
 			<div class="lg:flex-1">
-				<h2 class="text-2xl text-ink-900">
+				<h2 class="ds-title-sub text-2xl text-ink-900">
 					<EditableField
 						fieldKey="PliitkaComplex.title"
 						label="Заголовок"

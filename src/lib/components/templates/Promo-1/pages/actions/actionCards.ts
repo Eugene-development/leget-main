@@ -1,3 +1,4 @@
+import { promotionIsActive, type PromotionSchedule } from '../../../../../promotions/time';
 import { activeExtraActionCards } from './actionCardsExtra';
 import { normalizeActionCard } from './actionCardData';
 
@@ -18,7 +19,7 @@ import { normalizeActionCard } from './actionCardData';
  */
 
 /** Карточка акции. `enabled === false` — выключена владельцем сайта. */
-export interface ActionCard {
+export interface ActionCard extends PromotionSchedule {
 	id: string;
 	title: string;
 	description: string;
@@ -164,17 +165,17 @@ export function mergeActionCards(propsCards: unknown): ActionCard[] {
  * пустой вход — это «не трогали», и он вернул бы дефолты (так его читает
  * `ActionsCards.svelte`, и менять это нельзя).
  */
-export function activeActionCards(saved: unknown): ActiveAction[] {
+export function activeActionCards(saved: unknown, now = Date.now()): ActiveAction[] {
 	if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
 		const groups = saved as { primary?: unknown; extra?: unknown };
 		return [
-			...activeActionCards(groups.primary ?? null),
-			...activeExtraActionCards(groups.extra ?? null)
+			...activeActionCards(groups.primary ?? null, now),
+			...activeExtraActionCards(groups.extra ?? null, now)
 		];
 	}
 	if (Array.isArray(saved) && saved.length === 0) return [];
 
 	return mergeActionCards(saved)
-		.filter((card) => card.enabled !== false)
+		.filter((card) => promotionIsActive(card, now))
 		.map((card) => ({ id: card.id, title: card.title, badge: card.badge }));
 }

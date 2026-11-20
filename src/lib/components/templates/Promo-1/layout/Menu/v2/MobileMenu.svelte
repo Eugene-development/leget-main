@@ -407,6 +407,7 @@
 			aria-label="Мобильная навигация"
 		>
 			<div
+				data-ds-surface="raised"
 				class="max-h-[70dvh] overflow-y-auto rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 			>
 				{@render accountBlock()}

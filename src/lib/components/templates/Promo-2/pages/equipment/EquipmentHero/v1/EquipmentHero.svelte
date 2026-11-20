@@ -1,9 +1,9 @@
 <script lang="ts">
 	// Артикул: 2.17.1.1 — см. docs/architecture/component-articles-map.md
-	import ContentText from '../../ContentText.svelte';
+	import ContentText from '../../../../ContentText.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import type { PageComponentProps } from '$lib/components/templates/types';
-	import { equipmentDefaults } from './content';
+	import { equipmentDefaults } from '../../content';
 	let { data = $bindable(), editContext = null, isEditable = false }: PageComponentProps = $props();
 	const defaults = equipmentDefaults.EquipmentHero;
 </script>
@@ -14,7 +14,7 @@
 	>
 		<div class="lg:py-24">
 			<h1
-				class="text-5xl text-primary md:text-6xl lg:text-7xl"
+				class="text-page-title text-primary"
 				style="font-family: var(--font-heading);"
 			>
 				<ContentText
@@ -28,7 +28,7 @@
 				/>
 			</h1>
 			<p
-				class="mt-6 max-w-lg text-2xl text-secondary md:text-3xl"
+				class="mt-6 max-w-lg text-subsection-title text-secondary"
 				style="font-family: var(--font-heading);"
 			>
 				<ContentText
@@ -42,7 +42,7 @@
 				/>
 			</p>
 			<div class="my-8 h-px w-16 bg-accent" aria-hidden="true"></div>
-			<p class="max-w-xl text-base leading-relaxed text-secondary lg:text-lg">
+			<p class="max-w-xl text-prose text-secondary">
 				<ContentText
 					bind:data
 					{editContext}

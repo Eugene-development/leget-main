@@ -79,7 +79,10 @@
 	Никакого backdrop-blur на анимируемых узлах: при активном transform
 	backdrop-filter сэмплит другую подложку и тон элемента скачет в конце анимации.
 -->
-<section class="hr-enter relative isolate overflow-hidden {pal.section}">
+<section
+	data-ds-gradient-tone={isLight ? undefined : 'dark'}
+	class="hr-enter relative isolate overflow-hidden {pal.section}"
+>
 	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<div
 			class="absolute inset-0 {pal.patternOpacity}"

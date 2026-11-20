@@ -127,6 +127,7 @@ import MebelBenefits from './pages/mebel/MebelBenefits/index.svelte';
 import MebelSolutions from './pages/mebel/MebelSolutions.svelte';
 import MebelProcess from './pages/mebel/MebelProcess/index.svelte';
 import MebelCTA from './pages/mebel/MebelCTA.svelte';
+import MebelLandingCTA from './pages/mebel/MebelLandingCTA.svelte';
 import MebelSidebar from './pages/mebel/MebelSidebar.svelte';
 import MebelCategoryHero from './pages/mebel/MebelCategoryHero.svelte';
 import MebelProjectsGrid from './pages/mebel/MebelProjectsGrid.svelte';
@@ -340,7 +341,7 @@ export const pageOverrides: Record<string, ComponentMap> = {
 		MebelBenefits,
 		MebelSolutions,
 		MebelProcess,
-		MebelCTA
+		MebelCTA: MebelLandingCTA
 	},
 	'/mebel/{category}': {
 		MebelSidebar,

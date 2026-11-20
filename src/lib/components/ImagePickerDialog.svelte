@@ -126,7 +126,8 @@
 			// для всех логотипов лицензии: показывать её целиком в picker означает
 			// смешивать изображения других брендов и прошлых замен. В режиме логотипа
 			// начинаем только с текущего значения и не запрашиваем историю бакета.
-			const files = folder === 'logos' ? [] : await listBucketFiles(folder, 100);
+			const files =
+				folder === 'logos' ? [] : await listBucketFiles(folder, 100, editContext.licenseId);
 			let allImages: BucketFile[] = [];
 
 			if (folder === 'logos') {
@@ -380,7 +381,7 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <!-- Оба шага используют общий ImageWorkspaceDialog. Кроппер с уровнем 300
-     остаётся поверх picker с уровнем 200. -->
+     остаётся поверх picker с уровнем 220. -->
 {#if cropFile}
 	<ImageCropper
 		imageFile={cropFile}
