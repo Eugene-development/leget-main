@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { parse } from 'svelte/compiler';
 import { format, resolveConfig } from 'prettier';
 import { goalLocations } from './goal-locations.mjs';
+import smsLogin from '../src/lib/utils/sms-login.json' with { type: 'json' };
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const base = join(root, 'src/lib/components');
@@ -19,7 +20,7 @@ const shared = [
 	'ClientAuthModal',
 	'ClientAuthButtons',
 	'LoginModal',
-	'SmsLogin'
+	...(smsLogin.enabled ? ['SmsLogin'] : [])
 ];
 // Content CRUD is owner-only, not a visitor conversion (see metrika-goals.md).
 const ownerOnly =

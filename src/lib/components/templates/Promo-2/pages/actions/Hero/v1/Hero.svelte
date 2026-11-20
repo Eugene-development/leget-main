@@ -4,6 +4,7 @@
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
+	import furniturePromotionsBackground from './furniture-promotions.webp';
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
@@ -42,7 +43,7 @@
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['image']}
-			src={String(data?.image ?? 'https://storage.yandexcloud.net/zovtop/bg/promosfvmwklfvmk.jpg')}
+			src={String(data?.image ?? furniturePromotionsBackground)}
 			alt={editableText(data?.title, 'Акции')}
 			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible
 				? 'scale-105'
@@ -58,28 +59,6 @@
 		class:animate-fade-in={heroVisible}
 		style="animation-delay: 1.2s"
 	></div>
-
-	<!-- Decorative watermark text -->
-	<div
-		class="pointer-events-none absolute right-0 bottom-20 hidden overflow-hidden opacity-0 select-none lg:block"
-		class:animate-fade-in={heroVisible}
-		style="animation-delay: 1s"
-	>
-		<span
-			class="block text-[140px] leading-none font-light tracking-tighter text-primary/5 xl:text-[180px]"
-			style="font-family: var(--font-heading);"
-		>
-			<ContentText
-				bind:data
-				{editContext}
-				{isEditable}
-				componentType="Hero"
-				path={['copy', 'saleLabel']}
-				fallback={'SALE'}
-				label="SALE"
-			/>
-		</span>
-	</div>
 
 	{#if showOffer}
 	<!-- Floating discount badge -->

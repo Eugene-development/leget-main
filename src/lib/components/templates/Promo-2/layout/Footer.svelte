@@ -147,7 +147,8 @@
 						links: [
 							{ label: 'О фабрике', href: '/about' },
 							{ label: 'Вакансии', href: '/careers' },
-							{ label: 'Дизайнерам', href: '/designers' }
+							{ label: 'Дизайнерам', href: '/designers' },
+							{ label: 'Салоны', href: '/showrooms' }
 						]
 					},
 					{
@@ -156,18 +157,34 @@
 							{ label: 'Комплектация', href: '/equipment' },
 							{ label: 'Стили', href: '/styles' },
 							{ label: 'Акции', href: '/actions' },
-							{ label: 'Салоны', href: '/showrooms' },
 							{ label: 'Контакты', href: '/contact' }
 						]
 					}
 				]
 	);
-	const navColumns = $derived(
-		allNavColumns.map((column) => ({
+	const navColumns = $derived.by(() => {
+		const columns = allNavColumns.map((column, columnIndex) => ({
 			...column,
-			links: column.links.filter((link) => link.href !== '/news')
-		}))
-	);
+			// Текст редактируется по исходному пути, даже если ссылка показана в другом столбце.
+			links: column.links
+				.map((link, linkIndex) => ({ ...link, columnIndex, linkIndex }))
+				.filter((link) => link.href !== '/news')
+		}));
+		const company =
+			columns.find((column) => column.title === 'Компания') ??
+			columns.find((column) => column.links.some((link) => link.href === '/about'));
+		if (company && !company.links.some((link) => link.href === '/showrooms')) {
+			const showrooms = columns
+				.flatMap((column) => column.links)
+				.find((link) => link.href === '/showrooms');
+			if (showrooms) {
+				const source = columns[showrooms.columnIndex];
+				source.links = source.links.filter((link) => link !== showrooms);
+				company.links.push(showrooms);
+			}
+		}
+		return columns;
+	});
 </script>
 
 {#snippet footerSettings(context: EditContext)}
@@ -351,9 +368,9 @@
 										scope="Footer"
 										path={[
 											'navColumns',
-											columnIndex,
+										link.columnIndex,
 											'links',
-											allNavColumns[columnIndex].links.indexOf(link),
+										link.linkIndex,
 											'label'
 										]}
 										fallback={link.label}

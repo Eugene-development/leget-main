@@ -4,10 +4,12 @@
 	let {
 		target,
 		label,
+		showLabel = true,
 		children
 	}: {
 		target: HTMLElement;
 		label: string;
+		showLabel?: boolean;
 		children: Snippet;
 	} = $props();
 	let open = $state(false);
@@ -207,7 +209,7 @@
 		aria-label={`Инструменты редактирования: ${label}`}
 		class="field-toolbar fixed z-[180] flex max-w-[calc(100vw-2rem)] items-center gap-3 rounded-xl border border-on-dark/10 bg-ink-950/75 px-3 py-2 font-sans text-on-dark shadow-2xl backdrop-blur-xl"
 	>
-		<span class="max-w-48 truncate text-sm">{label}</span>
+		{#if showLabel}<span class="max-w-48 truncate text-sm">{label}</span>{/if}
 		{@render children()}
 	</div>
 {/if}

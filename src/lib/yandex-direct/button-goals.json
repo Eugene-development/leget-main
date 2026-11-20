@@ -800,54 +800,6 @@
 		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
 	},
 	{
-		"id": "sms_login_toggle",
-		"action": "open",
-		"label": "Войти по SMS",
-		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
-		"source": "SmsLogin.svelte",
-		"route": null,
-		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
-			{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" },
-			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
-			{ "template": "Promo-3", "page": "(layout)", "article": "3.Ф.1.1" },
-			{ "template": "Promo-3", "page": "(layout)", "article": "3.М.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
-			{ "template": "Promo-1", "page": "/university/auth", "article": "" }
-		]
-	},
-	{
-		"id": "sms_login_submit",
-		"action": "submit_click",
-		"label": "Получить код / подтвердить вход по SMS",
-		"templates": ["Promo-1", "Promo-2", "Promo-3", "Test"],
-		"source": "SmsLogin.svelte",
-		"route": null,
-		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
-			{ "template": "Promo-2", "page": "(layout)", "article": "2.Ф.1.1" },
-			{ "template": "Promo-2", "page": "(layout)", "article": "2.М.1.1" },
-			{ "template": "Promo-3", "page": "(layout)", "article": "3.Ф.1.1" },
-			{ "template": "Promo-3", "page": "(layout)", "article": "3.М.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.3" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.4" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
-			{ "template": "Promo-1", "page": "/university/auth", "article": "" }
-		]
-	},
-	{
 		"id": "lead_catcher_close",
 		"action": "close",
 		"label": "Закрыть форму",

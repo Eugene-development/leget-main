@@ -5,6 +5,4 @@
 	let { data, isEditable = false }: PageComponentProps = $props();
 </script>
 
-<div class="border-b border-border-light bg-surface-warm">
-	<TopBarContent {data} {isEditable} dark={false} largeText={true} largeContacts={true} />
-</div>
+<TopBarContent {data} {isEditable} largeText={true} largeContacts={true} />

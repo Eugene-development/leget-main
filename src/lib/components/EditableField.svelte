@@ -41,6 +41,8 @@
 		onSave: (value: string) => Promise<void>;
 		/** Показывается ли часть компонента обычному посетителю. */
 		visible?: boolean;
+		/** Общий ключ видимости для альтернативных текстов одного поля. */
+		visibilityKey?: string;
 		/** Подпись для переключателя видимости в винительном падеже. */
 		visibilityLabel?: string;
 		/** Сохранение состояния видимости выполняется владельцем компонента. */
@@ -49,6 +51,8 @@
 		visibilityPending?: boolean;
 		/** CSS-класс для контейнера */
 		class?: string;
+		/** Действия редактирования вместо стандартной кнопки с карандашом. */
+		editActions?: Snippet;
 		/**
 		 * Snippet для отображения контента.
 		 * Получает текущее отображаемое значение (draft или value).
@@ -68,10 +72,12 @@
 		inline = false,
 		onSave,
 		visible: explicitVisible,
+		visibilityKey: explicitVisibilityKey,
 		visibilityLabel = label,
 		onToggleVisibility: explicitOnToggleVisibility = null,
 		visibilityPending: explicitVisibilityPending,
 		class: className = '',
+		editActions,
 		children
 	}: Props = $props();
 
@@ -80,7 +86,8 @@
 	// собственная структурная логика (например, логотипы партнёров в HeroMain v1).
 	const visibilityContext = getContext<EditableVisibility | null>(EDITABLE_VISIBILITY_CONTEXT);
 	const visibilityKey = $derived(
-		fieldKey.includes('.') ? fieldKey.slice(fieldKey.indexOf('.') + 1) : fieldKey
+		explicitVisibilityKey ??
+			(fieldKey.includes('.') ? fieldKey.slice(fieldKey.indexOf('.') + 1) : fieldKey)
 	);
 	const visible = $derived(explicitVisible ?? visibilityContext?.isVisible(visibilityKey) ?? true);
 	const onToggleVisibility = $derived(
@@ -121,7 +128,7 @@
 	}
 </script>
 
-{#snippet fieldActions()}
+{#snippet defaultEditAction()}
 	<button
 		type="button"
 		onclick={openModal}
@@ -157,6 +164,10 @@
 			{/if}
 		</svg>
 	</button>
+{/snippet}
+
+{#snippet fieldActions()}
+	{@render (editActions ?? defaultEditAction)()}
 
 	{#if onToggleVisibility}
 		<FieldVisibilityToggle
@@ -180,7 +191,7 @@
 		role="group"
 	>
 		{#if isEditable && !anyActive && wrapperEl}
-			<FieldToolbar target={wrapperEl} {label}>
+			<FieldToolbar target={wrapperEl} {label} showLabel={!editActions}>
 				{@render fieldActions()}
 			</FieldToolbar>
 		{/if}

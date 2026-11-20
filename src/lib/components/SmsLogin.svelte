@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
+	import smsLogin from '$lib/utils/sms-login.json';
 	let {
 		endpoint = '/sms',
 		context = 'client',
@@ -84,89 +85,91 @@
 	}
 </script>
 
-<div class="sms-login">
-	<button
-		type="button"
-		onclick={() => {
-			opened = !opened;
-			reset();
-		}}
-		disabled={busy}
-		data-metrika-goal="sms_login_toggle"
-		data-goal-action="open"
-		aria-expanded={opened}
-	>
-		{opened ? 'Скрыть вход по SMS' : 'Войти по SMS'}
-	</button>
-	{#if opened}
-		<form class="ym-hide-content" onsubmit={submit}>
-			<p>Введите телефон, сохранённый в вашем аккаунте. Вход по паролю остаётся доступен.</p>
-			<label for={`${uid}-phone`}>Телефон с кодом страны</label>
-			<input
-				id={`${uid}-phone`}
-				type="tel"
-				autocomplete="tel"
-				bind:value={phone}
-				required
-				maxlength="30"
-				readonly={!!challenge}
-				placeholder="+7 999 123-45-67"
-			/>
-			{#if challenge}
-				<p>Код действует 5 минут.</p>
-				{#if testCode}<p role="status">
-						Тестовый режим: SMS не отправлено. Код: <strong>{testCode}</strong>
-					</p>{/if}
-				<label for={`${uid}-code`}>Код из SMS</label>
+{#if smsLogin.enabled}
+	<div class="sms-login">
+		<button
+			type="button"
+			onclick={() => {
+				opened = !opened;
+				reset();
+			}}
+			disabled={busy}
+			data-metrika-goal="sms_login_toggle"
+			data-goal-action="open"
+			aria-expanded={opened}
+		>
+			{opened ? 'Скрыть вход по SMS' : 'Войти по SMS'}
+		</button>
+		{#if opened}
+			<form class="ym-hide-content" onsubmit={submit}>
+				<p>Введите телефон, сохранённый в вашем аккаунте. Вход по паролю остаётся доступен.</p>
+				<label for={`${uid}-phone`}>Телефон с кодом страны</label>
 				<input
-					id={`${uid}-code`}
-					type="text"
-					inputmode="numeric"
-					autocomplete="one-time-code"
-					bind:value={code}
+					id={`${uid}-phone`}
+					type="tel"
+					autocomplete="tel"
+					bind:value={phone}
 					required
-					pattern="[0-9]{6}"
-					minlength="6"
-					maxlength="6"
+					maxlength="30"
+					readonly={!!challenge}
+					placeholder="+7 999 123-45-67"
 				/>
-			{:else if SITE_KEY}
-				<SmartCaptcha
-					bind:this={captcha}
-					onverify={(token: string) => (captchaToken = token)}
-					onerror={() => (captchaToken = null)}
-				/>
-			{/if}
-			{#if problem}<p role="alert">{problem}</p>{/if}
-			<button
-				type="submit"
-				disabled={busy || (!challenge && (remaining > 0 || (!!SITE_KEY && !captchaToken)))}
-				data-goal-label="Получить код / подтвердить вход по SMS"
-				data-metrika-goal="sms_login_submit"
-				data-goal-action="submit_click"
-			>
-				{busy
-					? 'Подождите…'
-					: challenge
-						? 'Подтвердить и войти'
-						: remaining
-							? `Новый код через ${remaining} с`
-							: 'Получить код'}
-			</button>
-			{#if challenge}
+				{#if challenge}
+					<p>Код действует 5 минут.</p>
+					{#if testCode}<p role="status">
+							Тестовый режим: SMS не отправлено. Код: <strong>{testCode}</strong>
+						</p>{/if}
+					<label for={`${uid}-code`}>Код из SMS</label>
+					<input
+						id={`${uid}-code`}
+						type="text"
+						inputmode="numeric"
+						autocomplete="one-time-code"
+						bind:value={code}
+						required
+						pattern="[0-9]{6}"
+						minlength="6"
+						maxlength="6"
+					/>
+				{:else if SITE_KEY}
+					<SmartCaptcha
+						bind:this={captcha}
+						onverify={(token: string) => (captchaToken = token)}
+						onerror={() => (captchaToken = null)}
+					/>
+				{/if}
+				{#if problem}<p role="alert">{problem}</p>{/if}
 				<button
-					type="button"
-					onclick={reset}
-					disabled={busy}
-					data-goal-ignore="Изменение номера или подготовка повторного запроса SMS"
+					type="submit"
+					disabled={busy || (!challenge && (remaining > 0 || (!!SITE_KEY && !captchaToken)))}
+					data-goal-label="Получить код / подтвердить вход по SMS"
+					data-metrika-goal="sms_login_submit"
+					data-goal-action="submit_click"
 				>
-					{remaining
-						? `Изменить номер · повтор через ${remaining} с`
-						: 'Изменить номер / запросить новый код'}
+					{busy
+						? 'Подождите…'
+						: challenge
+							? 'Подтвердить и войти'
+							: remaining
+								? `Новый код через ${remaining} с`
+								: 'Получить код'}
 				</button>
-			{/if}
-		</form>
-	{/if}
-</div>
+				{#if challenge}
+					<button
+						type="button"
+						onclick={reset}
+						disabled={busy}
+						data-goal-ignore="Изменение номера или подготовка повторного запроса SMS"
+					>
+						{remaining
+							? `Изменить номер · повтор через ${remaining} с`
+							: 'Изменить номер / запросить новый код'}
+					</button>
+				{/if}
+			</form>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.sms-login {

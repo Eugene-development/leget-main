@@ -2164,7 +2164,8 @@
                     "ctaPrimary": "Выездной дизайнер",
                     "ctaPrimaryLink": "/contact",
                     "ctaSecondary": "Запись в салон",
-                    "ctaSecondaryLink": "/actions"
+                    "ctaSecondaryLink": "/actions",
+                    "mobileImage": "https://storage.yandexcloud.net/leget-main/templates/promo-2/mobile-hero-oak-kitchen.webp"
                 },
                 "Styles": {
                     "label": "Коллекции",
@@ -2271,7 +2272,7 @@
                     "label": "Материалы",
                     "title": "Фасад это лицо вашей мебели",
                     "description": "Фасады задают характер вашего домашнего интерьера. От натурального массива до технологичного акрила: мы предлагаем материалы, которые сочетают в себе безупречную эстетику, функциональность и долговечность.",
-                    "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/facades-hero-20261105.webp"
+                    "image": "https://storage.yandexcloud.net/leget-main/templates/promo-2/actions-furniture-fronts.webp"
                 },
                 "FacadesCatalog": {
                     "facades": [

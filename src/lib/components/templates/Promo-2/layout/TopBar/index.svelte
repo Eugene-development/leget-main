@@ -1,6 +1,8 @@
 <script lang="ts">
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import { blockTheme, type BlockTheme } from '$lib/utils/block-theme';
 	import { getLayoutComponentArticle, saveLayoutData } from '$lib/utils/page-edit';
 	import type { PageComponentProps } from '$lib/components/templates/types';
 	import {
@@ -31,6 +33,12 @@
 	);
 	let open = $state(false);
 	let saving = $state(false);
+	let pendingTheme = $state<BlockTheme>();
+	let themeError = $state(false);
+	const viewData = $derived(pendingTheme ? { ...data, topBarTheme: pendingTheme } : data);
+	const isLight = $derived(
+		blockTheme(viewData, version === 'v2' ? 'dark' : 'light', 'topBarTheme') === 'light'
+	);
 	let error = $state('');
 	let draftVersion = $state<'v1' | 'v2'>('v1');
 	let draftPhone = $state('');
@@ -43,11 +51,27 @@
 		draftEmail = email;
 		links = topLinks.map((link) => ({ ...link }));
 		error = '';
+		themeError = false;
 		open = true;
 	}
 
+	async function toggleTheme() {
+		if (!editContext || saving || pendingTheme) return;
+		const nextTheme = isLight ? 'dark' : 'light';
+		themeError = false;
+		pendingTheme = nextTheme;
+		try {
+			await saveLayoutData(editContext, 'Header', { ...data, topBarTheme: nextTheme });
+			data = { ...data, topBarTheme: nextTheme };
+		} catch {
+			themeError = true;
+		} finally {
+			pendingTheme = undefined;
+		}
+	}
+
 	async function save() {
-		if (!editContext || saving) return;
+		if (!editContext || saving || pendingTheme) return;
 		error = '';
 		const nextLinks = links.map((link) => ({ label: link.label.trim(), href: link.href.trim() }));
 		if (nextLinks.some((link) => !link.label || !isTopBarHref(link.href))) {
@@ -82,7 +106,7 @@
 	class="relative {isEditable ? 'block' : 'hidden lg:block'}"
 	data-field-toolbar-scope
 >
-	<View {data} {isEditable} />
+	<View data={viewData} {isEditable} />
 	{#if isEditable && editContext}
 		<button
 			type="button"
@@ -124,12 +148,27 @@
 				Ссылки и контакты общие для всех страниц сайта и мобильного меню. Пустой телефон или email
 				скрывается.
 			</p>
-			<fieldset disabled={saving} class="flex min-w-0 flex-col gap-5 disabled:opacity-60">
+			<fieldset disabled={saving || !!pendingTheme} class="min-w-0">
+				<legend class="mb-2 text-sm text-on-dark">Тема</legend>
+				<div class="flex items-center gap-3">
+					<ThemeToggle {isLight} onToggle={toggleTheme} />
+					<span class="text-xs font-medium text-ink-300">{isLight ? 'Светлая' : 'Тёмная'}</span>
+				</div>
+				{#if themeError}
+					<p role="alert" class="mt-2 text-sm text-cat-6-300">
+						Не удалось сохранить тему. Повторите попытку.
+					</p>
+				{/if}
+			</fieldset>
+			<fieldset
+				disabled={saving || !!pendingTheme}
+				class="flex min-w-0 flex-col gap-5 disabled:opacity-60"
+			>
 				<label class="flex flex-col gap-2 text-sm text-on-dark"
 					>Вариант дизайна
 					<select bind:value={draftVersion} class="top-bar-input">
-						<option value="v1">Вариант 1 — светлый</option>
-						<option value="v2">Вариант 2 — тёмный, как футер</option>
+						<option value="v1">Вариант 1</option>
+						<option value="v2">Вариант 2</option>
 					</select>
 				</label>
 				<label class="flex flex-col gap-2 text-sm text-on-dark"
@@ -179,7 +218,7 @@
 			<button
 				type="button"
 				onclick={save}
-				disabled={saving}
+				disabled={saving || !!pendingTheme}
 				data-goal-ignore="Сохранение верхней панели владельцем"
 				class="cursor-pointer rounded-xl bg-link-600 px-4 py-3 text-sm font-medium text-on-dark hover:bg-link-500 disabled:cursor-wait disabled:opacity-60"
 				>{saving ? 'Сохранение…' : 'Сохранить'}</button

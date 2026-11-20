@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getAuthToken } from '$lib/utils/auth-session';
+	import { uploadSiteFile } from '$lib/utils/site-file-upload';
 	import { onMount, untrack } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
@@ -12,7 +12,6 @@
 		type BucketFile,
 		type EditContext
 	} from '$lib/utils/page-edit';
-	import { getGraphQLUrl } from '$lib/utils/config';
 
 	let {
 		editContext,
@@ -295,56 +294,8 @@
 		uploadProgress = 0;
 
 		try {
-			// 1. Получаем pre-signed URL
-			const token = getAuthToken();
-			if (!token) throw new Error('Сессия истекла. Войдите снова и повторите загрузку.');
-			const apiUrl = getGraphQLUrl();
-
-			const gqlRes = await fetch(apiUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-					Authorization: `Bearer ${token}`
-				},
-				body: JSON.stringify({
-					query: `
-						mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String, $licenseId: ID) {
-							generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder, licenseId: $licenseId) {
-								uploadUrl
-								objectUrl
-							}
-						}
-					`,
-					variables: {
-						filename: file.name,
-						mimeType: file.type,
-						folder,
-						licenseId: editContext.licenseId
-					}
-				})
-			});
-
-			if (!gqlRes.ok) throw new Error(`Не удалось подготовить загрузку (HTTP ${gqlRes.status})`);
-			const gqlData = await gqlRes.json();
-			if (gqlData.errors?.length) throw new Error(gqlData.errors[0]?.message);
-
-			const { uploadUrl, objectUrl } = gqlData.data.generateUploadUrl;
-
-			// 2. Загружаем через XHR для отображения прогресса
-			await new Promise<void>((resolve, reject) => {
-				const xhr = new XMLHttpRequest();
-				xhr.open('PUT', uploadUrl);
-				xhr.setRequestHeader('Content-Type', file.type);
-				xhr.upload.onprogress = (ev) => {
-					if (ev.lengthComputable) {
-						uploadProgress = Math.round((ev.loaded / ev.total) * 100);
-					}
-				};
-				xhr.onload = () =>
-					xhr.status < 300 ? resolve() : reject(new Error(`Upload failed: ${xhr.status}`));
-				xhr.onerror = () => reject(new Error('Upload error'));
-				xhr.send(file);
+			const objectUrl = await uploadSiteFile(file, editContext.licenseId, folder, (progress) => {
+				uploadProgress = progress;
 			});
 
 			// 3. Добавляем новое изображение в начало списка и выбираем его

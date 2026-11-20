@@ -8,7 +8,9 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
+	import { editStore } from '$lib/stores/edit.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { uploadSiteFile } from '$lib/utils/site-file-upload';
 	import { richTextToPlainText } from '$lib/utils/rich-text';
 
 	let {
@@ -24,6 +26,14 @@
 	} = $props();
 	const label = $derived(String(data?.label ?? ''));
 	const hasLabel = $derived(richTextToPlainText(label).trim().length > 0);
+	const desktopTitle = $derived(editableText(data?.title));
+	const mobileTitle = $derived(editableText(data?.mobileTitle));
+	const hasMobileTitle = $derived(richTextToPlainText(mobileTitle).trim().length > 0);
+	const phoneTitle = $derived(hasMobileTitle ? mobileTitle : desktopTitle);
+	const desktopTitleKey = 'HomeHero.title';
+	const mobileTitleKey = 'HomeHero.mobileTitle';
+	const desktopTitleLabel = 'Заголовок для компьютера';
+	const mobileTitleLabel = 'Заголовок для телефона';
 
 	// svelte-ignore state_referenced_locally — дальнейшие изменения синхронизирует VersionSwitcher.
 	let selectedVersion = $state<'v1' | 'disabled'>(
@@ -74,42 +84,131 @@
 	}
 
 	let heroVisible = $state(false);
-	let activeVideo = $state(0);
 	let videoEls = $state<HTMLVideoElement[]>([]);
-	let switching = [false, false];
 	let isDesktop = $state(false);
+	const editingMobileTitle = $derived(isEditable && !isDesktop);
 
-	const heroVideos = [
-		'https://storage.yandexcloud.net/zovtop/video/videomainkjfhwirj.mp4',
-		'https://storage.yandexcloud.net/zovtop/video/videomain-2kknh.mp4'
+	function saveDesktopTitle(value: string) {
+		return saveField('title', value);
+	}
+
+	function saveMobileTitle(value: string) {
+		return saveField('mobileTitle', value);
+	}
+
+	function openTitleEditor(field: 'title' | 'mobileTitle') {
+		const forPhone = field === 'mobileTitle';
+		editStore.open({
+			key: forPhone ? mobileTitleKey : desktopTitleKey,
+			kind: 'text',
+			label: forPhone ? mobileTitleLabel : desktopTitleLabel,
+			value: forPhone ? phoneTitle : desktopTitle,
+			multiline: false,
+			richText: true,
+			onSave: forPhone ? saveMobileTitle : saveDesktopTitle
+		});
+	}
+
+	const videoSlots = [
+		{
+			field: 'firstBackgroundVideo',
+			fallback: 'https://storage.yandexcloud.net/zovtop/video/videomainkjfhwirj.mp4'
+		},
+		{
+			field: 'secondBackgroundVideo',
+			fallback: 'https://storage.yandexcloud.net/zovtop/video/videomain-2kknh.mp4'
+		}
 	];
+
+	const heroVideos = $derived(
+		videoSlots.map(({ field, fallback }) => {
+			const value = data?.[field];
+			return typeof value === 'string' && value.trim() ? value.trim() : fallback;
+		})
+	);
+	const videoSourceKey = $derived(JSON.stringify(heroVideos));
+	let activeVideo = $derived.by(() => {
+		videoSourceKey;
+		return 0;
+	});
+	let busyVideo = $state<string | null>(null);
+	let videoStatus = $state('');
+	let videoError = $state('');
+	let pendingVideo = $state<{ field: string; url: string } | null>(null);
+
+	async function replaceVideo(field: string, input?: HTMLInputElement) {
+		if (!editContext || busyVideo) return;
+		const file = input?.files?.[0];
+		if (input) {
+			input.value = '';
+			if (!file) return;
+		}
+		videoError = '';
+		videoStatus = '';
+		if (file && (!/\.mp4$/i.test(file.name) || file.size === 0)) {
+			videoError = 'Выберите непустой файл MP4.';
+			return;
+		}
+
+		busyVideo = field;
+		try {
+			if (file) {
+				pendingVideo = null;
+				videoStatus = 'Загрузка видео…';
+				const mp4 = new File([file], file.name, { type: 'video/mp4' });
+				const url = await uploadSiteFile(mp4, editContext.licenseId, 'video', (progress) => {
+					videoStatus = `Загрузка видео… ${progress}%`;
+				});
+				pendingVideo = { field, url };
+			}
+			if (pendingVideo?.field !== field) return;
+			videoStatus = 'Сохранение видео…';
+			await saveField(field, pendingVideo.url);
+			pendingVideo = null;
+			videoStatus = 'Видео заменено.';
+		} catch (error) {
+			videoStatus = '';
+			videoError =
+				pendingVideo?.field === field
+					? 'Видео загружено. Повторите сохранение, чтобы применить его.'
+					: error instanceof Error
+						? error.message
+						: 'Не удалось загрузить видео. Повторите попытку.';
+		} finally {
+			busyVideo = null;
+		}
+	}
 
 	function onVideoTimeUpdate(i: number) {
 		const el = videoEls[i];
-		if (!el || switching[i]) return;
+		if (!el || i !== activeVideo) return;
 		if (el.duration && el.currentTime >= el.duration - 0.5) {
-			switching[i] = true;
-			el.pause();
 			const next = (i + 1) % heroVideos.length;
 			const nextEl = videoEls[next];
-			if (nextEl) {
-				nextEl.currentTime = 0;
-				nextEl.play();
-			}
+			if (!nextEl || nextEl.error) return;
+			el.pause();
+			nextEl.currentTime = 0;
 			activeVideo = next;
-			setTimeout(() => {
-				switching[i] = false;
-			}, 2000);
+			void nextEl.play().catch(() => {
+				if (videoEls[next] === nextEl) activeVideo = i;
+			});
 		}
 	}
 
 	onMount(() => {
 		heroVisible = true;
-		isDesktop = window.matchMedia('(min-width: 768px)').matches;
+		const desktop = window.matchMedia('(min-width: 768px)');
+		const syncDesktop = () => {
+			activeVideo = 0;
+			isDesktop = desktop.matches;
+		};
+		syncDesktop();
+		desktop.addEventListener('change', syncDesktop);
+		return () => desktop.removeEventListener('change', syncDesktop);
 	});
 </script>
 
-{#snippet logoSettings()}
+{#snippet heroSettings()}
 	<section class="flex flex-col gap-4 text-on-dark">
 		<h4 class="text-sm">Логотип перед заголовком</h4>
 		<p class="text-sm leading-relaxed text-ink-300">
@@ -150,6 +249,49 @@
 			{savingLogoSize ? 'Сохранение…' : 'Сохранить размер'}
 		</button>
 	</section>
+	<section class="flex flex-col gap-3 text-on-dark" aria-label="Фон первого экрана">
+		<h4 class="text-sm">Фон первого экрана</h4>
+		<p class="text-sm leading-relaxed text-ink-300">
+			На десктопе два видео MP4 играют по очереди. Фон для телефона можно загрузить в разделе
+			«Изображения» ниже.
+		</p>
+		{#each videoSlots as { field }, index (field)}
+			<label class="flex flex-col gap-2 text-sm">
+				{index === 0 ? 'Первое видео' : 'Второе видео'}
+				<input
+					type="file"
+					accept=".mp4,video/mp4"
+					disabled={busyVideo !== null}
+					onchange={(event) => replaceVideo(field, event.currentTarget)}
+					data-goal-ignore="Загрузка фонового видео владельцем сайта"
+					class="w-full min-w-0 cursor-pointer rounded-xl border border-on-dark/20 p-2 text-sm file:mr-2 file:min-h-9 file:cursor-pointer file:rounded-lg file:border-0 file:bg-on-dark/10 file:px-2 file:text-on-dark focus-visible:outline-2 focus-visible:outline-link-400 disabled:cursor-wait disabled:opacity-50"
+				/>
+			</label>
+		{/each}
+		{#if videoStatus}<p role="status" class="text-sm text-ink-300">{videoStatus}</p>{/if}
+		{#if videoError}<p role="alert" class="text-sm">{videoError}</p>{/if}
+		{#if pendingVideo && !busyVideo}
+			<button
+				type="button"
+				onclick={() => pendingVideo && replaceVideo(pendingVideo.field)}
+				data-goal-ignore="Повтор сохранения фонового видео владельцем сайта"
+				class="min-h-11 cursor-pointer rounded-xl bg-link-600 px-4 py-2 text-sm text-on-dark hover:bg-link-500 focus-visible:outline-2 focus-visible:outline-link-400"
+			>
+				Повторить сохранение
+			</button>
+		{/if}
+	</section>
+{/snippet}
+
+{#snippet mobileTitleSettingsAction()}
+	<button
+		type="button"
+		onclick={() => openTitleEditor('mobileTitle')}
+		data-goal-ignore="Редактирование мобильного заголовка владельцем сайта"
+		class="hidden min-h-11 cursor-pointer items-center rounded-xl border border-on-dark/20 px-3 text-sm text-on-dark hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-link-400 md:inline-flex"
+	>
+		{mobileTitleLabel}
+	</button>
 {/snippet}
 
 {#if selectedVersion !== 'disabled' || isEditable}
@@ -168,7 +310,8 @@
 			showVersionMenu={false}
 			bind:selectedVersion
 			title="Первый экран"
-			settings={logoSettings}
+			settings={heroSettings}
+			controlActions={mobileTitleSettingsAction}
 		/>
 		<!-- Background: static image on mobile, crossfade videos on desktop -->
 		<div class="absolute inset-0">
@@ -176,41 +319,48 @@
 			<ImageFallback
 				imagePath={['mobileImage']}
 				src={String(data?.mobileImage ?? '')}
-				alt={editableText(data?.title, 'Hero')}
+				alt="Изображение для телефона"
 				class="h-full w-full object-cover md:hidden"
 			/>
 			<!-- Desktop: crossfade videos -->
-			{#each heroVideos as src, i}
-				<video
-					src={isDesktop ? src : undefined}
-					autoplay={isDesktop && i === 0}
-					preload={isDesktop ? 'metadata' : 'none'}
-					muted
-					playsinline
-					bind:this={videoEls[i]}
-					ontimeupdate={() => onVideoTimeUpdate(i)}
-					class="absolute inset-0 hidden h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out md:block"
-					class:opacity-100={activeVideo === i}
-					class:opacity-0={activeVideo !== i}
-				></video>
-			{/each}
+			{#if isDesktop}
+				{#key videoSourceKey}
+					{#each heroVideos as src, i (i)}
+						<video
+							{src}
+							autoplay={i === 0}
+							preload="metadata"
+							muted
+							playsinline
+							bind:this={videoEls[i]}
+							ontimeupdate={() => onVideoTimeUpdate(i)}
+							class={[
+								'absolute inset-0 hidden h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out md:block',
+								activeVideo === i ? 'opacity-100' : 'opacity-0'
+							]}
+						></video>
+					{/each}
+				{/key}
+			{/if}
 			<div class="absolute inset-0 bg-linear-to-r from-white/85 via-white/50 to-transparent"></div>
 			<div class="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent"></div>
 		</div>
 
 		<!-- Content -->
-		<div class="relative z-10 flex min-h-[85vh] items-start pt-32 md:items-center md:pt-0">
+		<div
+			class="relative z-10 flex min-h-[85vh] items-start pt-[clamp(1.25rem,calc(12svh-3rem),3.5rem)] pb-6 md:items-center md:py-0"
+		>
 			<div class="p2-container mx-auto w-full">
 				<div class="max-w-2xl">
 					<!-- Label -->
 					{#if isEditable || hasLabel}
 						<div
-							class="mb-6 opacity-0"
+							class="mb-2 opacity-0 md:mb-6"
 							class:animate-fade-up={heroVisible}
 							style="animation-delay: 0.3s"
 						>
 							<div
-								class="inline-flex items-center justify-center gap-2 border border-secondary/30 bg-white/60 px-4 py-2 text-[11px] leading-normal tracking-[0.25em] text-secondary uppercase backdrop-blur-sm"
+								class="inline-flex items-center justify-center gap-2 border border-secondary/30 bg-white/60 px-3 py-1.5 text-[11px] leading-normal tracking-[0.14em] text-secondary uppercase backdrop-blur-sm md:px-4 md:py-2 md:tracking-[0.25em]"
 							>
 								<EditableField
 									fieldKey="HomeHero.label"
@@ -229,16 +379,38 @@
 
 					<!-- Heading -->
 					<EditableField
-						fieldKey="HomeHero.title"
+						fieldKey={editingMobileTitle ? mobileTitleKey : desktopTitleKey}
 						label="Заголовок"
-						value={String(data?.title ?? '')}
+						value={editingMobileTitle ? phoneTitle : desktopTitle}
 						{isEditable}
-						onSave={(v) => saveField('title', v)}
+						onSave={editingMobileTitle ? saveMobileTitle : saveDesktopTitle}
+						visibilityKey="title"
+						visibilityLabel="заголовок"
 						class="block"
 					>
+						{#snippet editActions()}
+							<div class="grid min-w-0 gap-1">
+								<button
+									type="button"
+									onclick={() => openTitleEditor('mobileTitle')}
+									data-goal-ignore="Редактирование мобильного заголовка владельцем сайта"
+									class="cursor-pointer rounded-lg px-2 py-3.5 text-left text-sm leading-snug hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-link-400"
+								>
+									{mobileTitleLabel}
+								</button>
+								<button
+									type="button"
+									onclick={() => openTitleEditor('title')}
+									data-goal-ignore="Редактирование заголовка для компьютера владельцем сайта"
+									class="cursor-pointer rounded-lg px-2 py-3.5 text-left text-sm leading-snug hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-link-400"
+								>
+									{desktopTitleLabel}
+								</button>
+							</div>
+						{/snippet}
 						{#snippet children(displayValue)}
 							<h1
-								class="text-page-title text-primary opacity-0"
+								class="text-page-title text-primary opacity-0 max-md:[@media(max-height:700px)]:text-[length:calc(var(--ds-font-page-title-size)*0.74)]"
 								style="font-family: var(--font-heading); animation-delay: 0.5s"
 								class:animate-fade-up={heroVisible}
 							>
@@ -255,14 +427,19 @@
 										/>
 									</span>
 								{/if}
-								<RichText value={displayValue} />
+								{#if !isEditable && hasMobileTitle}
+									<span class="md:hidden"><RichText value={mobileTitle} /></span>
+									<span class="hidden md:inline"><RichText value={displayValue} /></span>
+								{:else}
+									<RichText value={displayValue} />
+								{/if}
 							</h1>
 						{/snippet}
 					</EditableField>
 
 					<!-- Description -->
 					<div
-						class="mt-8 max-w-2xl bg-white/10 p-3 opacity-0 backdrop-blur-sm md:p-4"
+						class="mt-3 max-w-2xl bg-white/10 py-2 opacity-0 backdrop-blur-sm md:mt-8 md:p-4"
 						class:animate-fade-up={heroVisible}
 						style="animation-delay: 0.7s"
 					>
@@ -275,7 +452,9 @@
 							onSave={(v) => saveField('description', v)}
 						>
 							{#snippet children(displayValue)}
-								<p class="text-prose font-light text-primary">
+								<p
+									class="text-prose font-light text-primary max-md:[@media(max-height:700px)]:text-base max-md:[@media(max-height:700px)]:leading-snug"
+								>
 									<RichText value={displayValue} />
 								</p>
 							{/snippet}
@@ -284,7 +463,7 @@
 
 					<!-- CTA Buttons -->
 					<div
-						class="mt-8 flex flex-wrap items-center gap-4 opacity-0"
+						class="mt-3 flex flex-wrap items-center gap-2 opacity-0 md:mt-8 md:gap-4"
 						class:animate-fade-up={heroVisible}
 						style="animation-delay: 0.9s"
 					>
@@ -351,7 +530,7 @@
 
 		<!-- Scroll Indicator -->
 		<div
-			class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0"
+			class="absolute bottom-10 left-1/2 hidden -translate-x-1/2 opacity-0 md:block"
 			class:animate-fade-in={heroVisible}
 			style="animation-delay: 1.3s"
 		>

@@ -25,6 +25,9 @@
 		data = updated;
 	}
 
+	const defaultImage =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-2/actions-furniture-fronts.webp';
+	const image = $derived(String(data?.image ?? defaultImage));
 	let visible = $state(false);
 
 	onMount(() => {
@@ -36,14 +39,11 @@
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['image']}
-			src={String(
-				data?.image ??
-					'https://storage.yandexcloud.net/leget-main/templates/promo-2/facades-hero-20261105.webp'
-			)}
+			src={image}
 			alt="Мебельные фасады"
-			class="h-full w-full object-cover transition-transform duration-[2s] {visible
-				? 'scale-105'
-				: ''}"
+			class="h-full w-full object-cover transition-transform duration-[2s] {image === defaultImage
+				? 'max-md:object-[80%_center]'
+				: ''} {visible ? 'scale-105' : ''}"
 		/>
 		<div class="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/70 to-primary/30"></div>
 	</div>

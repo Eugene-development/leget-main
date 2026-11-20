@@ -73,16 +73,10 @@
 
 	function toggleMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
-		if (typeof document !== 'undefined') {
-			document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
-		}
 	}
 
 	function closeMenu() {
 		mobileMenuOpen = false;
-		if (typeof document !== 'undefined') {
-			document.body.style.overflow = '';
-		}
 	}
 
 	function handleAuthClick() {
@@ -97,7 +91,9 @@
 <svelte:window onscroll={handleScroll} />
 
 <div
-	class="promo2-header sticky top-0 z-50 flex w-full flex-col transition-transform duration-500"
+	class="promo2-header sticky top-0 z-50 flex w-full flex-col transition-transform duration-500 {mobileMenuOpen
+		? 'mobile-menu-open'
+		: ''}"
 	style="--top-bar-offset: {showTopBar || isEditable ? 0 : -topBarHeight}px;"
 >
 	<TopBar bind:data bind:height={topBarHeight} {editContext} {isEditable} />
@@ -221,6 +217,7 @@
 				bind:this={menuButton}
 				onclick={toggleMenu}
 				aria-label="Меню"
+				aria-expanded={mobileMenuOpen}
 			>
 				<span
 					class="h-px w-6 bg-primary transition-all duration-300 {mobileMenuOpen
@@ -401,6 +398,13 @@
 {/if}
 
 <style>
+	@media (width < 64rem) {
+		/* Блокировка body создаёт отдельный scroll-контейнер и сбивает sticky. */
+		:global(html):has(.promo2-header.mobile-menu-open) {
+			overflow: hidden;
+		}
+	}
+
 	@media (min-width: 1024px) {
 		.promo2-header {
 			transform: translateY(var(--top-bar-offset));
