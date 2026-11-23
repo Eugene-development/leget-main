@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import RememberMe from '$lib/components/RememberMe.svelte';
 	let remember = $state(false);
 	let smsBusy = $state(false);
@@ -82,7 +83,7 @@
 			// Токен одноразовый — сбрасываем капчу для повторной попытки
 			captchaRef?.reset();
 			captchaToken = null;
-			submitError = err instanceof Error ? err.message : 'Не удалось войти. Проверьте данные.';
+			submitError = notifyError(err, 'Не удалось войти. Проверьте данные.');
 		} finally {
 			isSubmitting = false;
 		}

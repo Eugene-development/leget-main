@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	import { imagePathKey } from '$lib/utils/component-images';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
@@ -109,7 +110,7 @@
 			await onSaveData(next);
 		} catch (cause) {
 			data = previous;
-			error = cause instanceof Error ? cause.message : 'Не удалось сохранить изображение';
+			error = notifyError(cause, 'Не удалось сохранить изображение');
 			throw cause;
 		}
 	}

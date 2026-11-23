@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onMount } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import { page } from '$app/state';
@@ -50,7 +51,7 @@
 					draftSession.set({ licenseId: context.licenseId, draft: value.draft });
 			})
 			.catch((error) => {
-				if (!stopped) failure = error.message;
+				if (!stopped) failure = notifyError(error, 'Не удалось открыть черновик.');
 			});
 		return () => {
 			stopped = true;
@@ -70,7 +71,7 @@
 			await waitForDraftSaves();
 			await action();
 		} catch (error) {
-			failure = error instanceof Error ? error.message : 'Не удалось выполнить действие.';
+			failure = notifyError(error, 'Не удалось выполнить действие.');
 		} finally {
 			busy = false;
 		}

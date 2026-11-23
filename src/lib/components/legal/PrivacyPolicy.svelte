@@ -62,7 +62,7 @@
 	<div class="policy-container">
 		<header class="policy-header">
 			<a class="home-link" href="/">Главная</a>
-			<h1 id="privacy-title" class="text-4xl sm:text-5xl">Политика конфиденциальности</h1>
+			<h1 id="privacy-title" class="text-4xl sm:text-5xl">Политика конфиденциаль&shy;ности</h1>
 			<p class="policy-intro">
 				Как мы обрабатываем персональные данные и как вы можете управлять ими.
 			</p>
@@ -340,13 +340,13 @@
 		line-height: 1.75;
 	}
 
-	:global([data-site-template='2']) .policy-header h1 {
+	:global(:is([data-site-template='1'], [data-site-template='2'])) .policy-header h1 {
 		font-size: var(--ds-font-page-title-size);
 	}
-	:global([data-site-template='2']) .policy-body h2 {
+	:global(:is([data-site-template='1'], [data-site-template='2'])) .policy-body h2 {
 		font-size: var(--ds-font-subsection-title-size);
 	}
-	:global([data-site-template='2']) :is(.policy-body, .policy-intro) {
+	:global(:is([data-site-template='1'], [data-site-template='2'])) :is(.policy-body, .policy-intro) {
 		font-size: var(--ds-font-prose-size);
 		line-height: var(--ds-font-prose-leading);
 	}

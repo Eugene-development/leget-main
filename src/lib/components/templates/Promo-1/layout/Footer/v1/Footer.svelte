@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.Ф.1.1 — см. docs/architecture/component-articles-map.md
 	//
@@ -29,6 +30,8 @@
 	import { serviceItems } from '../../serviceItems';
 	import { createContactVisibility } from '../contacts.svelte';
 	import ContactToggle from '../ContactToggle.svelte';
+	import MessengerContacts from '../MessengerContacts.svelte';
+	import { useCurrentYear } from '../year.svelte';
 	import type { Snippet } from 'svelte';
 	import '../../../theme.css';
 
@@ -45,14 +48,6 @@
 		sitePhone?: string | null;
 		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
-
-	// Отключаемые строки контактов — логика общая для v1/v2/v3,
-	// см. `../contacts.svelte.ts`.
-	const contacts = createContactVisibility({
-		getData: () => data,
-		setData: (next) => (data = next),
-		getEditContext: () => editContext
-	});
 
 	// Тема блока. Дефолт 'dark' — см. isLightBlock() в block-theme.ts.
 	const isLight = $derived(isLightBlock(data, 'dark'));
@@ -75,8 +70,21 @@
 	const authButtonClass =
 		'p1-border p1-muted p1-accent-hover p1-accent-border-hover h-9 rounded-xl border px-3 text-xs font-semibold transition-colors';
 
+	const currentYear = useCurrentYear();
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
+	const contactEmail = $derived(editableText(data?.email, 'info@site.ru'));
+	const address = $derived(editableText(data?.address, 'г. Москва, ул. Ленина, д. 10'));
+	const hours = $derived(editableText(data?.hours, 'Пн–Вс: 9:00 — 21:00'));
+
+	// Отключаемые строки контактов — логика общая для v1/v2/v3,
+	// см. `../contacts.svelte.ts`.
+	const contacts = createContactVisibility({
+		getData: () => data,
+		getValues: () => ({ phone, email: contactEmail, address, hours }),
+		setData: (next) => (data = next),
+		getEditContext: () => editContext
+	});
 
 	// Список отключённых в хэдере рубрик каталога. Прокидывается сюда из headerData
 	// через ComponentResolver. Список рубрик — общий с Header (см. ./catalogItems),
@@ -119,7 +127,8 @@
 	const otherItems = [
 		{ href: '/contacts', label: 'Контакты' },
 		{ href: '/partnership', label: 'Партнёрство' },
-		{ href: '/university', label: 'Университет' }
+		{ href: '/university', label: 'Университет' },
+		{ href: '/b2b', label: 'B2B' }
 	];
 
 	async function handleSubmit(event: SubmitEvent) {
@@ -138,7 +147,7 @@
 			formState = 'done';
 			email = '';
 		} catch (error) {
-			sendError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+			sendError = notifyError(error, 'Не удалось отправить заявку.');
 		} finally {
 			sending = false;
 		}
@@ -158,10 +167,10 @@
 			<!-- ── Опись контактов ────────────────────────────────────────── -->
 			<div class="lg:col-span-5">
 				{#if contacts.hasVisible || isEditable}
-					<h3 class="p1-title-sub p1-title text-sm">Контакты</h3>
+					<h3 class="p1-title-sub p1-title text-base">Контакты</h3>
 
 					<dl class="p1-border mt-5 border-t text-sm">
-						{#if contacts.isVisible('phone') || isEditable}
+						{#if contacts.isShown('phone') || isEditable}
 							<div
 								class="p1-border grid grid-cols-[6.5rem_1fr] items-baseline gap-4 border-b py-3.5 {contacts.isVisible(
 									'phone'
@@ -183,7 +192,7 @@
 							</div>
 						{/if}
 
-						{#if contacts.isVisible('email') || isEditable}
+						{#if contacts.isShown('email') || isEditable}
 							<div
 								class="p1-border grid grid-cols-[6.5rem_1fr] items-baseline gap-4 border-b py-3.5 {contacts.isVisible(
 									'email'
@@ -200,7 +209,7 @@
 										visibilityLabel={contacts.label('email') + ' в футере'}
 										onToggleVisibility={(event) => contacts.toggle('email', event)}
 										label="Email"
-										value={editableText(data?.email, 'info@site.ru')}
+										value={contactEmail}
 										onSave={(val) => saveField('email', val)}
 										{isEditable}
 									>
@@ -217,7 +226,7 @@
 							</div>
 						{/if}
 
-						{#if contacts.isVisible('address') || isEditable}
+						{#if contacts.isShown('address') || isEditable}
 							<div
 								class="p1-border grid grid-cols-[6.5rem_1fr] items-baseline gap-4 border-b py-3.5 {contacts.isVisible(
 									'address'
@@ -233,7 +242,7 @@
 										visibilityLabel={contacts.label('address') + ' в футере'}
 										onToggleVisibility={(event) => contacts.toggle('address', event)}
 										label="Адрес"
-										value={editableText(data?.address, 'г. Москва, ул. Ленина, д. 10')}
+										value={address}
 										onSave={(val) => saveField('address', val)}
 										{isEditable}
 										multiline
@@ -246,7 +255,7 @@
 							</div>
 						{/if}
 
-						{#if contacts.isVisible('hours') || isEditable}
+						{#if contacts.isShown('hours') || isEditable}
 							<div
 								class="p1-border grid grid-cols-[6.5rem_1fr] items-baseline gap-4 border-b py-3.5 {contacts.isVisible(
 									'hours'
@@ -262,7 +271,7 @@
 										visibilityLabel={contacts.label('hours') + ' в футере'}
 										onToggleVisibility={(event) => contacts.toggle('hours', event)}
 										label="Режим работы"
-										value={editableText(data?.hours, 'Пн–Вс: 9:00 — 21:00')}
+										value={hours}
 										onSave={(val) => saveField('hours', val)}
 										{isEditable}
 									>
@@ -276,71 +285,13 @@
 					</dl>
 				{/if}
 
-				<!-- Мессенджеры. Знак чужого сервиса цвета не получает: правило
-				     бренда разрешает его только на самом знаке, а тут знак
-				     монохромный и живёт на роли акцента.
-				     Условие на всю группу, а не только на плитки внутри: пустой
-				     flex-контейнер сам по себе невидим, но `mt-6` над ним живой,
-				     и у сайта без мессенджеров под описью оставалась дыра. -->
-				{#if data?.telegram || data?.whatsapp || isEditable}
-					<div class="mt-6 flex gap-3">
-						<EditableField
-							richText={false}
-							fieldKey="Footer.telegram"
-							label="Telegram (ссылка)"
-							value={String(data?.telegram ?? '')}
-							onSave={(val) => saveField('telegram', val)}
-							{isEditable}
-						>
-							{#snippet children(displayValue)}
-								{#if displayValue || isEditable}
-									<a
-										href={displayValue || '#'}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="p1-border p1-muted p1-accent-hover p1-accent-border-hover flex h-10 w-10 items-center justify-center rounded-xl border transition-colors"
-										title="Telegram"
-										aria-label="Telegram"
-									>
-										<svg class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="currentColor">
-											<path
-												d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.5.15.13.1.17.24.18.33.01.06.02.19.01.29z"
-											/>
-										</svg>
-									</a>
-								{/if}
-							{/snippet}
-						</EditableField>
-
-						<EditableField
-							richText={false}
-							fieldKey="Footer.whatsapp"
-							label="WhatsApp (ссылка)"
-							value={String(data?.whatsapp ?? '')}
-							onSave={(val) => saveField('whatsapp', val)}
-							{isEditable}
-						>
-							{#snippet children(displayValue)}
-								{#if displayValue || isEditable}
-									<a
-										href={displayValue || '#'}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="p1-border p1-muted p1-accent-hover p1-accent-border-hover flex h-10 w-10 items-center justify-center rounded-xl border transition-colors"
-										title="WhatsApp"
-										aria-label="WhatsApp"
-									>
-										<svg class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="currentColor">
-											<path
-												d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.758.459 3.473 1.332 4.984L2 22l5.201-1.365a9.927 9.927 0 004.811 1.253h.005c5.505 0 9.988-4.482 9.988-9.988C22 6.482 17.518 2 12.012 2zm6.275 13.99c-.258.724-1.25 1.328-1.725 1.402-.455.07-1.018.106-2.905-.678-2.42-.999-3.992-3.463-4.113-3.624-.121-.161-.99-1.317-.99-2.51 0-1.192.624-1.778.845-2.02.221-.241.483-.301.644-.301.161 0 .322.002.462.008.148.006.347-.056.544.422.201.489.684 1.667.745 1.788.06.121.101.262.02.423-.08.161-.121.262-.241.402-.121.141-.254.314-.362.422-.121.121-.248.254-.108.496.141.242.624 1.026 1.339 1.663.921.821 1.699 1.074 1.94 1.195.242.121.382.101.524-.06.141-.161.604-.704.765-.946.161-.242.322-.201.544-.121.221.08 1.402.663 1.644.784.242.121.402.181.463.282.06.1.06.583-.198 1.308z"
-											/>
-										</svg>
-									</a>
-								{/if}
-							{/snippet}
-						</EditableField>
-					</div>
-				{/if}
+				<MessengerContacts
+					{data}
+					{saveField}
+					{isEditable}
+					groupClass="mt-6 flex gap-3"
+					linkClass="p1-border p1-muted p1-accent-hover p1-accent-border-hover flex h-10 w-10 items-center justify-center rounded-xl border transition-colors"
+				/>
 			</div>
 
 			<!-- ── Подписка ───────────────────────────────────────────────── -->
@@ -454,7 +405,7 @@
 			aria-label="Разделы сайта"
 		>
 			<div>
-				<h3 class="p1-title-sub p1-title text-sm">Информация</h3>
+				<h3 class="p1-title-sub p1-title text-base">Информация</h3>
 				<ul role="list" class="mt-4 space-y-3">
 					{#each infoItems as item}
 						<li>
@@ -467,7 +418,7 @@
 			</div>
 
 			<div>
-				<h3 class="p1-title-sub p1-title text-sm">Компания</h3>
+				<h3 class="p1-title-sub p1-title text-base">Компания</h3>
 				<ul role="list" class="mt-4 space-y-3">
 					{#each otherItems as item}
 						<li>
@@ -511,7 +462,7 @@
 
 			{#if visibleServiceItems.length > 0}
 				<div>
-					<h3 class="p1-title-sub p1-title text-sm">Услуги</h3>
+					<h3 class="p1-title-sub p1-title text-base">Услуги</h3>
 					<ul role="list" class="mt-4 space-y-3">
 						{#each visibleServiceItems as service}
 							<li>
@@ -526,7 +477,7 @@
 
 			{#if visibleCatalogItems.length > 0}
 				<div class="p1-border col-span-2 rounded-xl border p-5">
-					<h3 class="p1-title-sub p1-title text-sm">Каталог</h3>
+					<h3 class="p1-title-sub p1-title text-base">Каталог</h3>
 					<div class="mt-4 grid grid-cols-2 gap-x-8">
 						{#each catalogColumns as items}
 							<ul role="list" class="space-y-3">
@@ -560,7 +511,7 @@
 			class="p1-border mt-12 flex flex-col items-center gap-4 border-t pt-8 md:flex-row md:flex-wrap md:justify-between"
 		>
 			<p class="p1-muted text-center text-sm/6 md:text-left">
-				&copy; {new Date().getFullYear()} Компания "<EditableField
+				&copy; {currentYear()} Компания "<EditableField
 					fieldKey="Footer.siteName"
 					label="Название в копирайте"
 					value={data?.siteName === undefined || data.siteName === 'Новострой'

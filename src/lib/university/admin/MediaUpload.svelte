@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
+	import { storageUploadError, UserError } from '$lib/utils/user-error.js';
 	import { onDestroy, getContext } from 'svelte';
 	import { api } from './types';
 	let {
@@ -39,7 +41,7 @@
 				const video = document.createElement('video');
 				const timer = setTimeout(() => {
 					video.src = '';
-					reject(new Error('Не удалось прочитать видео. Нужен готовый для браузера MP4.'));
+					reject(new UserError('Не удалось прочитать видео. Выберите MP4, который воспроизводится в браузере.'));
 				}, 15000);
 				video.onloadedmetadata = () => {
 					clearTimeout(timer);
@@ -47,11 +49,11 @@
 					video.src = '';
 					Number.isFinite(d) && d > 0
 						? resolve(Math.ceil(d))
-						: reject(new Error('Не удалось прочитать длительность видео.'));
+						: reject(new UserError('Не удалось прочитать длительность видео. Сохраните видео заново и повторите загрузку.'));
 				};
 				video.onerror = () => {
 					clearTimeout(timer);
-					reject(new Error('Видео не поддерживается браузером.'));
+					reject(new UserError('Видео не поддерживается браузером. Сохраните его в совместимом формате MP4.'));
 				};
 				video.preload = 'metadata';
 				video.src = url;
@@ -72,10 +74,10 @@
 			request.onload = () =>
 				request.status >= 200 && request.status < 300
 					? resolve()
-					: reject(new Error('Не удалось загрузить часть файла.'));
-			request.onerror = request.ontimeout = () =>
-				reject(new Error('Соединение прервалось. Можно повторить загрузку.'));
-			request.onabort = () => reject(new Error('Загрузка отменена.'));
+					: reject(storageUploadError(request.status));
+			request.onerror = () => reject(storageUploadError('network'));
+			request.ontimeout = () => reject(storageUploadError('timeout'));
+			request.onabort = () => reject(new DOMException('Upload aborted', 'AbortError'));
 			request.send(body);
 		});
 	}
@@ -122,7 +124,7 @@
 			session = null;
 			completed.clear();
 		} catch (e) {
-			problem = e instanceof Error ? e.message : 'Не удалось загрузить файл.';
+			if (!cancelled) problem = notifyError(e, 'Не удалось загрузить файл.');
 		} finally {
 			busy = false;
 			xhr = null;
@@ -140,7 +142,7 @@
 				file = null;
 				percent = 0;
 			} catch (e) {
-				problem = e instanceof Error ? e.message : 'Не удалось отменить загрузку.';
+				problem = notifyError(e, 'Не удалось отменить загрузку.');
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { tick } from 'svelte';
 	import { projectRequest } from './project-request';
 
@@ -50,7 +51,7 @@
 				throw new Error('Сервер не подтвердил удаление проекта.');
 		} catch (cause) {
 			error =
-				cause instanceof Error ? cause.message : 'Не удалось удалить проект. Повторите попытку.';
+				notifyError(cause, 'Не удалось удалить проект. Повторите попытку.');
 			deleting = false;
 			await tick();
 			errorElement?.focus();

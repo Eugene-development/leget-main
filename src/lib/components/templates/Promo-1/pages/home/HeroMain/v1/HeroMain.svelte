@@ -412,7 +412,7 @@
 									onSave={(value) => saveField(paragraph.key, value)}
 								>
 									{#snippet children(displayValue)}
-										<p class="notice-comment text-sm"><RichText value={displayValue} /></p>
+										<p class="notice-comment p1-note"><RichText value={displayValue} /></p>
 									{/snippet}
 								</EditableField>
 							{/each}
@@ -522,7 +522,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h1 class="hero-title text-4xl text-ink-900 md:text-5xl">
+						<h1 class="hero-title text-page-title text-balance text-ink-900">
 							<RichText value={displayValue} />
 						</h1>
 					{/snippet}
@@ -543,7 +543,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="hero-description text-sm text-ink-900 md:text-base">
+						<p class="hero-description text-prose text-ink-900">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -582,11 +582,11 @@
 					<!-- Вторичное действие — текстовая кнопка рядом с основным CTA. -->
 					<EditableField
 						fieldKey="HeroMain.promoButtonText"
-						label="Текст кнопки промокода"
-						value={editableText(data?.promoButtonText, 'Получить промокод')}
+						label="Текст кнопки бесплатной консультации"
+						value={editableText(data?.promoButtonText, 'Бесплатная консультация')}
 						{isEditable}
 						visible={visibility.isVisible('promoButton')}
-						visibilityLabel="кнопку промокода"
+						visibilityLabel="кнопку бесплатной консультации"
 						visibilityPending={visibility.isPending('promoButton')}
 						onToggleVisibility={(event) => visibility.toggle('promoButton', event)}
 						onSave={(v) => saveField('promoButtonText', v)}
@@ -595,10 +595,10 @@
 						{#snippet children(displayValue)}
 							<button
 								data-metrika-goal="pages_home_heromain_v1_heromain_open_2"
-								data-goal-label="Получить промокод"
+								data-goal-label="Бесплатная консультация"
 								data-goal-action="open"
 								type="button"
-								onclick={() => serviceOrderStore.open('promo')}
+								onclick={() => serviceOrderStore.open('consultation')}
 								class="cursor-pointer rounded-xl px-1 py-3 text-center text-sm font-semibold text-ink-900 underline decoration-ink-900/25 underline-offset-8 transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:text-ink-900 hover:decoration-ink-900/60 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
 								<RichText value={displayValue} />
@@ -627,7 +627,7 @@
 							{#snippet children(displayValue)}
 								{#if displayValue.trim()}
 									<p
-										class="hero-brands-label mb-3 min-h-4 text-xs font-semibold tracking-widest text-ink-700 uppercase {isEditable
+										class="hero-brands-label mb-3 min-h-4 p1-label text-ink-700 {isEditable
 											? 'block'
 											: 'hidden md:block'}"
 									>
@@ -896,7 +896,6 @@
 	}
 
 	.hero-description {
-		line-height: 1.6;
 		text-wrap: pretty;
 		overflow-wrap: anywhere;
 	}

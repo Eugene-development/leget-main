@@ -146,7 +146,7 @@
 						class="mt-4 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="text-sm/6 text-ink-500"><RichText value={displayValue} /></p>
+							<p class="text-prose text-ink-500"><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 				</div>
@@ -162,7 +162,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<h2 class="text-2xl text-pretty text-ink-900 sm:text-3xl">
+							<h2 class="text-section-title text-balance text-ink-900">
 								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
@@ -181,7 +181,7 @@
 						class="mt-3 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="max-w-xl text-sm/6 text-ink-600"><RichText value={displayValue} /></p>
+							<p class="max-w-xl text-prose text-ink-600"><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	import RichText from '$lib/components/RichText.svelte';
 	import UniversityMark from '../pages/university/UniversityMark.svelte';
@@ -17,7 +18,7 @@
 	import { saveLayoutData, type EditContext } from '$lib/utils/page-edit';
 	import { catalogItems } from './catalogItems';
 	import { serviceItems } from './serviceItems';
-	import { resolveBannerLinks, resolveContactsLink } from './bannerLinks';
+	import { b2bLink, resolveBannerLinks, resolveContactsLink } from './bannerLinks';
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import Menu from './Menu/index.svelte';
@@ -114,7 +115,7 @@
 				: [...disabledRubrics, href];
 			data = { ...data, disabledRubrics };
 			console.error('Failed to toggle rubric:', err);
-			alert('Не удалось сохранить настройки каталога: ' + (err.message || 'ошибка'));
+			notifyError(err, 'Не удалось сохранить настройки каталога.');
 		}
 	}
 
@@ -141,7 +142,7 @@
 				: [...disabledServices, href];
 			data = { ...data, disabledServices };
 			console.error('Failed to toggle service:', err);
-			alert('Не удалось сохранить настройки услуг: ' + (err.message || 'ошибка'));
+			notifyError(err, 'Не удалось сохранить настройки услуг.');
 		}
 	}
 
@@ -212,7 +213,10 @@
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
 	const email = $derived(editableText(data?.email, 'info@leget.ru'));
 	const contactsLink = $derived(resolveContactsLink(data));
-	const informationLinks = $derived(resolveBannerLinks(data));
+	const informationLinks = $derived(resolveBannerLinks(data).filter((link) => link.href !== b2bLink.href));
+	const desktopLinks = $derived(
+		data.bannerVersion === 'disabled' ? resolveBannerLinks({ links }) : links
+	);
 
 	// Мобильная строка: её нижняя кромка — верх листа меню.
 	let mobileBarEl: HTMLElement | undefined = $state();
@@ -356,7 +360,7 @@
 		bind:data
 		{editContext}
 		{isEditable}
-		{links}
+		links={desktopLinks}
 		{visibleCatalogItems}
 		{visibleServiceItems}
 		{disabledRubrics}
@@ -681,7 +685,7 @@
 	<div
 		bind:this={mobileBarEl}
 		data-p1-theme="light"
-		class="p1-surface-alt p1-line relative z-10 flex h-14 items-center gap-3 border-b px-4 lg:hidden"
+		class="p1-surface-alt p1-line relative z-10 flex h-14 items-center gap-1 border-b px-2 min-[360px]:gap-3 min-[360px]:px-4 lg:hidden"
 	>
 		<a
 			href="/"
@@ -710,7 +714,7 @@
 			{/if}
 		</a>
 
-		<div class="ml-auto flex shrink-0 items-center gap-1">
+		<div class="ml-auto flex shrink-0 items-center min-[360px]:gap-1">
 			<!-- Телефон: цель 44, номер остаётся в дереве доступности. -->
 			<a
 				href={phoneHref}
@@ -747,6 +751,13 @@
 			>
 				<UniversityMark class="size-7" />
 			</a>
+
+			<a
+				href={b2bLink.href}
+				onclick={() => uiStore.closeMenu()}
+				data-goal-ignore="Закрытие мобильного меню перед переходом в каталог B2B"
+				class="mobile-action p1-title p1-accent-hover flex size-11 shrink-0 items-center justify-center rounded-lg text-xs font-semibold ring-1 ring-[var(--p1-line)] ring-inset focus-visible:ring-2 focus-visible:ring-[var(--p1-accent)] focus-visible:outline-none"
+			>{b2bLink.label}</a>
 
 			<a
 				href={favoritesHref}

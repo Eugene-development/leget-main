@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { untrack } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import {
@@ -63,7 +64,7 @@
 			await onSave({ title, category: categoryInput, expiresAt });
 			onClose(true);
 		} catch (cause) {
-			saveError = cause instanceof Error ? cause.message : 'Не удалось сохранить изменения.';
+			saveError = notifyError(cause, 'Не удалось сохранить изменения.');
 		} finally {
 			saving = false;
 		}

@@ -50,7 +50,7 @@
 	<div class="faq-symbol" aria-hidden="true">?</div>
 	<div class="faq-container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 		<header class="faq-header">
-			<h2 id="{uid}-title" class="faq-title text-4xl text-balance sm:text-6xl">
+			<h2 id="{uid}-title" class="faq-title text-section-title text-balance">
 				<EditableField
 					fieldKey="HomeFAQ.title"
 					label="Заголовок"
@@ -69,7 +69,7 @@
 				{@const expanded = isEditable || opened === i}
 				<div class="faq-item" class:expanded>
 					<div class="faq-item-surface">
-						<h3 class="faq-question-heading" id="{uid}-question-{i}">
+						<h3 class="p1-title-sub faq-question-heading text-card-title" id="{uid}-question-{i}">
 							{#if isEditable}
 								<div class="faq-question">
 									<span class="faq-number ds-numeric" aria-hidden="true">{i + 1}</span>
@@ -194,8 +194,6 @@
 	.faq-title {
 		margin: 0;
 		color: var(--faq-ink);
-		font-family: var(--ds-font-catalog-display);
-		font-weight: var(--ds-font-heading-weight);
 		line-height: var(--ds-font-catalog-display-leading);
 		letter-spacing: var(--ds-font-catalog-display-tracking);
 	}
@@ -222,8 +220,6 @@
 	.faq-question-heading {
 		margin: 0;
 		color: var(--faq-ink);
-		font-family: var(--ds-font-catalog-display);
-		font-weight: var(--ds-font-heading-weight);
 		line-height: var(--ds-font-heading-sub-leading);
 		letter-spacing: var(--ds-font-heading-sub-tracking);
 	}
@@ -239,7 +235,6 @@
 		background: transparent;
 		color: inherit;
 		font: inherit;
-		font-size: var(--text-lg);
 		text-align: left;
 	}
 	button.faq-question {
@@ -326,9 +321,9 @@
 		overflow: hidden;
 	}
 	.faq-answer-content {
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		padding: 0 5.5rem 2rem 4.25rem;
-		font-size: var(--text-base);
-		line-height: 1.5;
 		overflow-wrap: anywhere;
 	}
 	.faq-answer-content > div {
@@ -368,7 +363,6 @@
 			gap: 0.75rem;
 			min-height: 5rem;
 			padding: 1.125rem 1rem;
-			font-size: var(--text-base);
 		}
 		.faq-answer-content {
 			padding: 0 1.25rem 1.5rem;

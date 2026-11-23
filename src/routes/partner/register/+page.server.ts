@@ -1,33 +1,23 @@
-import { authApi, readApiJson } from '$lib/server/admin-api';
-import { CLIENT_COOKIE, readSessionProfile } from '$lib/server/client-session';
+import { CLIENT_COOKIE } from '$lib/server/client-session';
+import { loadPartnerRegistration } from '$lib/server/partner-registration';
+import { loadRenderPage } from '$lib/server/render-page';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ cookies }) => {
-	const token = cookies.get(CLIENT_COOKIE);
-	if (!token) return { profile: null, application: null, apiError: null };
-	try {
-		const profile = await readSessionProfile(token);
-		if (!profile) return { profile: null, application: null, apiError: null };
-		const response = await authApi('/partner/application', {
-			headers: { Authorization: `Bearer ${token}` }
-		});
-		if (!response.ok)
-			return {
-				profile,
-				application: null,
-				apiError: 'Не удалось загрузить статус заявки. Обновите страницу.'
-			};
-		const result = await readApiJson(response);
-		return {
-			profile,
-			application: result.application as Record<string, string> | null,
-			apiError: null
-		};
-	} catch {
-		return {
-			profile: null,
-			application: null,
-			apiError: 'Сервис временно недоступен. Обновите страницу.'
-		};
-	}
+export const load: PageServerLoad = async (event) => {
+	// Регистрация использует опубликованную шапку и подвал текущего сайта.
+	const [rendered, registration] = await Promise.all([
+		loadRenderPage({ ...event, url: new URL('/', event.url) }, '/').catch(() => null),
+		loadPartnerRegistration(event.cookies.get(CLIENT_COOKIE))
+	]);
+	if (!rendered?.backendUnavailable) event.setHeaders({ 'cache-control': 'private, no-store' });
+
+	const site = rendered?.pageData.site ?? null;
+	const components = rendered?.pageData.page.componentsData as
+		| { type: string; data: Record<string, unknown> }[]
+		| undefined;
+	return {
+		...registration,
+		site,
+		footer: components?.find(({ type }) => type === 'Footer') ?? null
+	};
 };

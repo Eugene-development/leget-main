@@ -42,7 +42,7 @@
 			<h2
 				class={featured
 					? 'featured-title text-balance'
-					: 'mx-auto max-w-2xl text-2xl text-balance sm:text-3xl'}
+					: 'mx-auto max-w-2xl text-section-title text-balance'}
 			>
 				<EditableField
 					fieldKey="MebelCTA.title"
@@ -60,8 +60,8 @@
 
 			<p
 				class={featured
-					? 'mt-4 max-w-[38ch] text-pretty text-on-accent-muted'
-					: 'mx-auto mt-4 max-w-xl text-pretty text-on-accent-muted'}
+					? 'mt-4 max-w-[65ch] text-prose text-pretty text-on-accent-muted'
+					: 'mx-auto mt-4 max-w-xl text-prose text-pretty text-on-accent-muted'}
 			>
 				<EditableField
 					fieldKey="MebelCTA.description"
@@ -172,8 +172,7 @@
 	}
 
 	.featured-title {
-		font-size: clamp(var(--text-4xl), 6.5cqi, var(--text-7xl));
-		line-height: 1.02;
+		font-size: var(--ds-font-section-title-size);
 		overflow-wrap: anywhere;
 	}
 

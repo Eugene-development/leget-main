@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { invalidateAll } from '$app/navigation';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import {
@@ -124,7 +125,7 @@
 			await invalidateAll();
 			open = false;
 		} catch (error) {
-			saveError = error instanceof Error ? error.message : 'Не удалось сохранить настройки.';
+			saveError = notifyError(error, 'Не удалось сохранить настройки.');
 		} finally {
 			isSaving = false;
 		}

@@ -57,7 +57,7 @@
 				<span class="text-on-dark">Мебель</span>
 			</nav>
 
-			<h1 class="text-3xl text-on-dark sm:text-4xl lg:text-5xl">
+			<h1 class="text-page-title text-balance text-on-dark">
 				<EditableField
 					fieldKey="MebelHero.title"
 					label="Заголовок"
@@ -72,7 +72,7 @@
 				</EditableField>
 			</h1>
 
-			<p class="mt-4 max-w-xl text-lg text-ink-300">
+			<p class="mt-4 max-w-xl text-prose text-ink-300">
 				<EditableField
 					fieldKey="MebelHero.description"
 					label="Описание"

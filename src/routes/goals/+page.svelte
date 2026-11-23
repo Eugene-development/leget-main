@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onMount, untrack } from 'svelte';
 	import type { GoalRemoteState } from '$lib/server/metrika-api';
 	let {
@@ -61,7 +62,7 @@
 			await readRemoteState();
 		} catch (error) {
 			integrationError =
-				error instanceof Error ? error.message : 'Не удалось проверить подключение.';
+				notifyError(error, 'Не удалось проверить подключение.');
 		} finally {
 			busy = '';
 		}
@@ -79,7 +80,7 @@
 			integrationMessage = 'Счётчик сохранён в настройках сайта.';
 			await readRemoteState();
 		} catch (error) {
-			integrationError = error instanceof Error ? error.message : 'Не удалось подключить счётчик.';
+			integrationError = notifyError(error, 'Не удалось подключить счётчик.');
 		} finally {
 			busy = '';
 		}
@@ -110,9 +111,7 @@
 			statesLoaded = false;
 			integrationMessage = `Подтверждено целей: ${completed} из ${goals.length}.`;
 			integrationError =
-				error instanceof Error
-					? error.message
-					: 'Не удалось создать цель. Обновите статусы перед повтором.';
+				notifyError(error, 'Не удалось создать цель. Обновите статусы перед повтором.');
 		} finally {
 			busy = '';
 		}

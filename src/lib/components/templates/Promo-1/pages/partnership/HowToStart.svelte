@@ -69,7 +69,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl"><RichText value={displayValue} /></h2>
+					<h2 class="p1-title text-section-title text-balance"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 			<EditableField
@@ -81,7 +81,7 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto mt-4 max-w-2xl"><RichText value={displayValue} /></p>
+					<p class="p1-body mx-auto mt-4 max-w-2xl text-prose"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -97,7 +97,7 @@
 					>
 						{step.number}
 					</div>
-					<h3 class="p1-title p1-title-sub mt-6 text-lg">
+					<h3 class="p1-title p1-title-sub mt-6 text-card-title">
 						<EditableField
 							fieldKey="HowToStart.{i}.title"
 							label="Заголовок"
@@ -109,7 +109,7 @@
 							{#snippet children(val)}<RichText value={val} />{/snippet}
 						</EditableField>
 					</h3>
-					<p class="p1-muted mt-2 text-sm">
+					<p class="p1-muted mt-2 text-prose">
 						<EditableField
 							fieldKey="HowToStart.{i}.text"
 							label="Описание"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import {
 		saveComponentData,
 		deleteComponentData,
@@ -13,7 +14,7 @@
 	import { createThemeToggle, isLightBlock, type BlockTheme } from '$lib/utils/block-theme';
 	import { legacyVersionsFor } from '$lib/components/lifecycle';
 	import { invalidateAll } from '$app/navigation';
-	import { fly, fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { getContext, type Snippet } from 'svelte';
 
 	let {
@@ -130,7 +131,8 @@
 	});
 
 	let isResetting = $state(false);
-	let showConfirmModal = $state(false);
+	let resetDialog = $state<HTMLDialogElement>();
+	const resetDialogId = $props.id();
 
 	// Артикул компонента из глобального каталога (template.page.component.version).
 	const getComponentArticle = getContext<ComponentArticleLookup | undefined>(
@@ -163,8 +165,12 @@
 	});
 
 	function handleReset() {
-		if (!editContext || !actualResetId) return;
-		showConfirmModal = true;
+		if (!editContext || !actualResetId || isResetting) return;
+		resetDialog?.showModal();
+	}
+
+	function cancelReset() {
+		if (!isResetting) resetDialog?.close();
 	}
 
 	/** Кнопка отключения блока в панели настроек: 'disabled' ⇄ последний вариант. */
@@ -182,12 +188,12 @@
 		isResetting = true;
 		try {
 			await deleteComponentData(editContext, actualResetId);
-			showConfirmModal = false;
+			resetDialog?.close();
 			drawerOpen = false;
 			await invalidateAll();
 		} catch (err) {
 			console.error(`Ошибка при сбросе контента блока:`, err);
-			alert(err instanceof Error ? err.message : 'Не удалось сбросить контент');
+			notifyError(err, 'Не удалось сбросить контент');
 		} finally {
 			isResetting = false;
 		}
@@ -323,25 +329,19 @@
 			/>
 		</ComponentControlsPopover>
 	</div>
-{/if}
-
-{#if showConfirmModal}
-	<div
-		class="fixed inset-0 z-[1000] flex items-center justify-center bg-scrim/60 p-4 backdrop-blur-md"
-		transition:fade={{ duration: 200 }}
+	<dialog
+		bind:this={resetDialog}
+		aria-labelledby={`${resetDialogId}-title`}
+		aria-describedby={`${resetDialogId}-description`}
+		class="fixed inset-0 m-0 h-full max-h-none w-full max-w-none overflow-y-auto bg-transparent p-4 backdrop:bg-scrim/60 backdrop:backdrop-blur-md open:flex"
+		oncancel={(event) => {
+			event.preventDefault();
+			cancelReset();
+		}}
 	>
-		<!-- Backdrop click to close -->
-		<button
-			type="button"
-			class="absolute inset-0 h-full w-full cursor-default border-none bg-transparent outline-none"
-			onclick={() => (showConfirmModal = false)}
-			aria-label="Закрыть"
-		></button>
-
 		<!-- Modal Card -->
 		<div
-			class="font-sans-premium relative z-10 flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-on-dark/10 bg-ink-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
-			transition:fly={{ y: 20, duration: 300 }}
+			class="font-sans-premium relative z-10 m-auto flex w-full max-w-md flex-col items-center gap-5 rounded-3xl border border-on-dark/10 bg-ink-900/95 p-6 text-center shadow-2xl backdrop-blur-2xl"
 		>
 			<!-- Значок предупреждения. Розовый хью категориальной шкалы (cat-6), а не
 			     brand: brand — акцент тенанта, и у «Графита» он синий, то есть
@@ -361,8 +361,13 @@
 
 			<!-- Typography -->
 			<div class="flex flex-col gap-2">
-				<h3 class="text-lg text-on-dark uppercase">Сбросить изменения?</h3>
-				<p class="text-xs leading-relaxed font-medium text-ink-400">
+				<h3 id={`${resetDialogId}-title`} class="text-lg text-on-dark uppercase">
+					Сбросить изменения?
+				</h3>
+				<p
+					id={`${resetDialogId}-description`}
+					class="text-xs leading-relaxed font-medium text-ink-400"
+				>
 					Вы уверены, что хотите сбросить контент блока
 					<span class="font-bold text-ink-200">"{componentType}"</span>
 					к начальному состоянию? Все изменения будут безвозвратно удалены.
@@ -373,14 +378,15 @@
 			<div class="mt-2 flex w-full items-center gap-3">
 				<button
 					type="button"
-					class="flex-1 cursor-pointer rounded-xl border border-on-dark/10 bg-on-dark/5 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-on-dark/10 active:scale-98"
-					onclick={() => (showConfirmModal = false)}
+					class="flex-1 cursor-pointer rounded-xl border border-on-dark/10 bg-on-dark/5 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400 active:scale-98"
+					onclick={cancelReset}
+					disabled={isResetting}
 				>
 					Отмена
 				</button>
 				<button
 					type="button"
-					class="flex-1 cursor-pointer rounded-xl bg-cat-6-600 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-cat-6-500 hover:shadow-lg hover:shadow-cat-6-600/25 active:scale-98"
+					class="flex-1 cursor-pointer rounded-xl bg-cat-6-600 px-4 py-3 text-xs font-bold tracking-wider text-on-dark uppercase transition-all duration-300 hover:bg-cat-6-500 hover:shadow-lg hover:shadow-cat-6-600/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-400 active:scale-98"
 					onclick={confirmReset}
 					disabled={isResetting}
 				>
@@ -388,7 +394,14 @@
 				</button>
 			</div>
 		</div>
-	</div>
+		<button
+			type="button"
+			tabindex="-1"
+			class="absolute inset-0 h-full w-full cursor-default border-none bg-transparent outline-none"
+			onclick={cancelReset}
+			aria-label="Закрыть"
+		></button>
+	</dialog>
 {/if}
 
 <style>

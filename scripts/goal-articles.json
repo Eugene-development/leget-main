@@ -90,6 +90,12 @@
 		"source": "templates/Promo-1/pages/home/Incentives/v3/Incentives.svelte"
 	},
 	{
+		"article": "1.1.6.4",
+		"template": "Promo-1",
+		"page": "/",
+		"source": "templates/Promo-1/pages/home/Incentives/v4/Incentives.svelte"
+	},
+	{
 		"article": "1.1.7.1",
 		"template": "Promo-1",
 		"page": "/",

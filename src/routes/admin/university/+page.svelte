@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { setContext, untrack } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import ContentEditor from '$lib/university/admin/ContentEditor.svelte';
@@ -65,7 +66,7 @@
 			update(result.item, requestKind);
 			notice = 'Изменения сохранены.';
 		} catch (e) {
-			problem = e instanceof Error ? e.message : 'Не удалось сохранить.';
+			problem = notifyError(e, 'Не удалось сохранить.');
 		} finally {
 			busy = false;
 		}
@@ -91,7 +92,7 @@
 						? 'Материал перенесён в архив.'
 						: 'Создан черновик новой редакции. Прогресс исходного курса сохранён.';
 		} catch (e) {
-			problem = e instanceof Error ? e.message : 'Действие не выполнено.';
+			problem = notifyError(e, 'Действие не выполнено.');
 		} finally {
 			busy = false;
 		}

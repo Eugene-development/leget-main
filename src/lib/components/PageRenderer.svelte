@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
+	import ContentBoundary from '$lib/components/ContentBoundary.svelte';
 	import { provideImageEditing } from '$lib/utils/image-editing.svelte';
 	import { auth } from '$lib/stores/auth';
 	import { browser } from '$app/environment';
@@ -13,7 +15,7 @@
 		type EditContext,
 		type PageSeoData
 	} from '$lib/utils/page-edit';
-	import { setContext, tick } from 'svelte';
+	import { setContext, tick, type Snippet } from 'svelte';
 	import {
 		PAGE_COMPONENT_DATA_CONTEXT,
 		type PageComponentDataLookup
@@ -73,7 +75,8 @@
 		footerData = null,
 		seo = null,
 		editContext = null,
-		ownerId = null
+		ownerId = null,
+		children
 	}: {
 		layout: TemplateLayout;
 		componentMap: ComponentMap;
@@ -88,6 +91,8 @@
 		editContext: EditContext | null;
 		/** id владельца лицензии этого сайта — из renderPage. */
 		ownerId?: string | null;
+		/** Тело самостоятельного маршрута со своей серверной загрузкой. */
+		children?: Snippet;
 	} = $props();
 
 	// Метаданные из renderPage доступны синхронно и не попадают в bind:data.
@@ -401,6 +406,11 @@
 	const Banner = $derived(layout.Banner ?? null);
 	const Header = $derived(layout.Header ?? null);
 	const Footer = $derived(layout.Footer ?? null);
+	const designSystem = $derived(readDesignSystem(headerDataState));
+	// При клиентской навигации серверный тег <html> не перерисовывается.
+	$effect(() => {
+		document.documentElement.dataset.ds = designSystem;
+	});
 
 	// Footer (Promo-1) — теперь page-компонент на глобальной странице '__global__':
 	// ищем его среди компонентов. Если есть — рендерим из него (с настоящим id/`_componentId`),
@@ -475,9 +485,7 @@
 				orderError = {
 					type,
 					message:
-						error instanceof Error
-							? error.message
-							: 'Не удалось сохранить порядок блоков. Повторите попытку.'
+						notifyError(error, 'Не удалось сохранить порядок блоков. Повторите попытку.')
 				};
 				await tick();
 				blockElements.get(type)?.scrollIntoView({ block: 'nearest' });
@@ -522,6 +530,7 @@
 		     пропсом, а НЕ подмешиванием в element.data: saveComponentData пишет blob
 		     целиком, и подмешанный номер осел бы копией в данных блока при первой же
 		     правке любого поля — после смены номера в баннере копии разошлись бы. -->
+			<ContentBoundary message="Не удалось показать блок страницы.">
 			<EditableComponent
 				component={Component}
 				componentType={element.type}
@@ -539,18 +548,16 @@
 						? ''
 						: null}
 			/>
+			</ContentBoundary>
 		</div>
 	{/if}
 {/snippet}
 
-<SiteAppearance
-	value={headerDataState.siteAppearance}
-	designSystem={readDesignSystem(headerDataState)}
-/>
+<SiteAppearance value={headerDataState.siteAppearance} {designSystem} />
 
 <div
 	class="contents"
-	data-site-template={editContext?.templateId ?? undefined}
+	data-site-template={templateId ?? editContext?.templateId ?? undefined}
 	data-ds-contrast-root
 	data-site-appearance={hasSiteAppearance(headerDataState.siteAppearance) ? '' : undefined}
 >
@@ -615,6 +622,7 @@
 			intro={!hasCatalogHero}
 			smoothNavigation={Number(templateId ?? editContext?.templateId) === 2}
 		>
+			{@render children?.()}
 			{#each bodyComponents as element (element.type)}
 				{@render pageBlock(element)}
 			{/each}

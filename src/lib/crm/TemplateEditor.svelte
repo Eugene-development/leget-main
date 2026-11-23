@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onMount, untrack } from 'svelte';
 	import { Editor, Node, mergeAttributes, type JSONContent } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
@@ -165,7 +166,7 @@
 			}
 			await onSaved();
 		} catch (e) {
-			message = e instanceof Error ? e.message : 'Ошибка сохранения';
+			message = notifyError(e, 'Ошибка сохранения');
 		} finally {
 			busy = false;
 			if (editor && !editor.isDestroyed) editor.setEditable(true);

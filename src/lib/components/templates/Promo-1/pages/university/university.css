@@ -60,16 +60,16 @@
 	padding: 44px 0 90px;
 }
 .uni h1.uni-headline {
-	font-size: clamp(54px, 6.8vw, 98px);
+	font-size: var(--ds-font-page-title-size);
 	max-width: 12ch;
 	text-wrap: balance;
 	margin: 0;
 }
 .uni-intro-copy {
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 	max-width: 440px;
 	margin-top: 28px;
-	font-size: 16px;
-	line-height: 1.65;
 }
 .uni-text-link {
 	display: inline-flex;
@@ -105,6 +105,7 @@
 	border-bottom-width: 1px;
 }
 .uni-discipline-button {
+	font-size: var(--ds-font-card-title-size);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -115,8 +116,6 @@
 	color: var(--p1-title);
 	text-align: left;
 	font-family: var(--ds-font-heading-sub);
-	font-size: clamp(19px, 1.8vw, 24px);
-	font-weight: var(--ds-font-heading-sub-weight);
 	cursor: pointer;
 	transition:
 		color var(--ds-motion-duration-ui) var(--ds-motion-ease-ui),
@@ -152,11 +151,11 @@
 	overflow: hidden;
 }
 .uni-discipline-inner {
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 	display: grid;
 	gap: 9px;
 	padding: 0 8px 20px;
-	font-size: 14px;
-	line-height: 1.65;
 	max-width: 54ch;
 }
 .uni-question {
@@ -201,13 +200,13 @@
 	margin-bottom: 44px;
 }
 .uni h2.uni-section-title {
-	font-size: clamp(40px, 4.5vw, 64px);
+	font-size: var(--ds-font-section-title-size);
 	max-width: 650px;
 	text-wrap: balance;
 }
 .uni-section-heading > p {
-	font-size: 15px;
-	line-height: 1.75;
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 	max-width: 44ch;
 }
 .uni-note {
@@ -225,12 +224,12 @@
 	padding-top: 7px;
 }
 .uni h3.uni-note-title {
-	font-size: 25px;
+	font-size: var(--ds-font-card-title-size);
 	margin: 0 0 8px;
 }
 .uni-note-body > p {
-	font-size: 15px;
-	line-height: 1.7;
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 }
 .uni-reading summary {
 	display: flex;
@@ -254,9 +253,9 @@
 	transform: rotate(45deg);
 }
 .uni-reading-text {
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 	max-width: 70ch;
-	font-size: 16px;
-	line-height: 1.85;
 	padding-top: 20px;
 }
 .uni-approach {
@@ -281,15 +280,15 @@
 	margin-bottom: 26px;
 }
 .uni-lead {
-	font-size: 19px;
-	line-height: 1.8;
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 	margin-bottom: 30px;
 }
 .uni-principle {
+	line-height: var(--ds-font-prose-leading);
+	font-size: var(--ds-font-prose-size);
 	border-top-width: 1px;
 	padding: 20px 0;
-	font-size: 14px;
-	line-height: 1.8;
 }
 .uni-principle-title {
 	font-size: 16px;
@@ -356,7 +355,6 @@
 		justify-self: start;
 		max-width: 48ch;
 		margin-top: 22px;
-		font-size: 15px;
 	}
 	.uni-studio {
 		display: flex;
@@ -397,12 +395,7 @@
 	.uni-note-category {
 		padding: 0;
 	}
-	.uni h3.uni-note-title {
-		font-size: 23px;
-	}
-	.uni-lead {
-		font-size: 17px;
-	}
+
 	.uni-mark-large {
 		width: 55px;
 		height: 55px;
@@ -472,7 +465,6 @@
 }
 @media (max-width: 700px) {
 	.uni h1.uni-headline {
-		font-size: clamp(48px, 10.8vw, 72px);
 		max-width: 12ch;
 	}
 	.uni-intro {
@@ -527,9 +519,6 @@
 @media (min-width: 701px) and (max-height: 850px) {
 	.uni-hero .uni-intro {
 		padding-block: 20px 32px;
-	}
-	.uni-hero h1.uni-headline {
-		font-size: clamp(48px, min(6.8vw, 9svh), 98px);
 	}
 	.uni-hero .uni-intro > .uni-learning-object {
 		transform: translateY(-50%) scale(1.26);

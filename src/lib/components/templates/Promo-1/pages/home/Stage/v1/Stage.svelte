@@ -25,32 +25,32 @@
 					{
 						title: 'Консультация',
 						description:
-							'Наш менеджер даст консультацию по материалам и возможным решениям в проектировании мебели'
+							'Обсудим, какая мебель вам нужна, как вы будете ею пользоваться и какой бюджет планируете. Покажем варианты материалов и фурнитуры, объясним, чем они отличаются, и поможем подобрать отделку для вашего интерьера.'
 					},
 					{
 						title: 'Замер',
 						description:
-							'Организуем проектный замер помещения с обозначением углов, коммуникаций и розеток'
+							'Замерщик проверит размеры помещения, углы и перепады стен. На плане отметим розетки, трубы, ниши и выступы. Эти данные помогут точно спроектировать мебель и оставить доступ к коммуникациям после установки.'
 					},
 					{
 						title: 'Проект',
 						description:
-							'Дизайнер составит проект мебели с учётом всех ваших пожеланий и размеров помещения'
+							'Дизайнер подготовит проект с учётом замеров и ваших пожеланий. На эскизах покажем расположение мебели, наполнение шкафов и то, как будут открываться дверцы. Обсудим детали, внесём правки и согласуем итоговый вариант.'
 					},
 					{
 						title: 'Договор',
 						description:
-							'Поможем комфортно заключить договор с указанием всех условий выполнения вашего проекта'
+							'После согласования проекта подготовим договор. Зафиксируем состав заказа и стоимость, укажем сроки изготовления, условия оплаты, доставки и сборки. Перед подписанием вместе сверим спецификацию и ответим на ваши вопросы.'
 					},
 					{
 						title: 'Изготовление',
 						description:
-							'Фабрика изготовит заказ на высокотехнологичном оборудовании под контролем технологов'
+							'На фабрике изготовим корпуса и фасады по согласованным размерам, подготовим детали и фурнитуру к сборке. Перед упаковкой сверим комплектность с проектом и проверим качество отделки, чтобы всё было готово к монтажу.'
 					},
 					{
 						title: 'Сборка',
 						description:
-							'Профессиональные сборщики компании качественно выполнят монтаж и установку мебели'
+							'Установим мебель по проекту, выровняем и закрепим корпуса. Отрегулируем фасады и проверим, как открываются дверцы и выдвигаются ящики. Вместе осмотрим результат и расскажем, как ухаживать за мебелью.'
 					}
 				]
 	);
@@ -139,24 +139,9 @@
 	/>
 	<div class="absolute inset-0 -z-10 bg-scrim/65"></div>
 
-	<div class="p1-stage-inner mx-auto max-w-7xl px-6 lg:px-8">
+	<div class="p1-stage-inner mx-auto w-full max-w-7xl px-6 lg:px-8">
 		<!-- Шапка стоит прямо на кадре: своей коробки у неё нет, плёнку держит скрим секции. -->
 		<div class="p1-stage-head max-w-3xl text-shadow-media">
-			<span
-				class="ds-label inline-flex items-center rounded-full border border-link-400/40 bg-link-500/15 px-4 py-1 text-link-200"
-			>
-				<EditableField
-					fieldKey="Stage.badge"
-					label="Метка"
-					value={editableText(data?.badge, 'Это важно')}
-					{isEditable}
-					onSave={(v) => saveField('badge', v)}
-					class="inline"
-				>
-					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
-				</EditableField>
-			</span>
-
 			<EditableField
 				fieldKey="Stage.title"
 				label="Заголовок"
@@ -166,7 +151,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="mt-4 text-4xl text-balance text-on-dark sm:text-5xl">
+					<h2 class="text-section-title text-balance text-on-dark">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -185,7 +170,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mt-4 max-w-2xl text-lg leading-relaxed text-pretty text-ink-200">
+					<p class="mt-4 max-w-2xl text-prose text-pretty text-ink-200">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -209,7 +194,7 @@
 		>
 			{#each steps as step, i}
 				<li
-					class="p1-stage-step group flex flex-col rounded-3xl bg-scrim/35 p-5 ring-1 ring-on-dark/15 backdrop-blur-md transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui hover:ring-on-dark/30"
+					class="p1-card-copy p1-stage-step group flex flex-col rounded-3xl bg-scrim/35 p-5 ring-1 ring-on-dark/15 backdrop-blur-md transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui hover:ring-on-dark/30"
 				>
 					<!--
 						Полоса шага: номер — линия — знак. Три полосы одного ряда
@@ -238,7 +223,7 @@
 					</div>
 
 					<div class="mt-auto">
-						<h3 class="ds-title-sub text-xl text-on-dark">
+						<h3 class="ds-title-sub text-card-title text-on-dark">
 							<EditableField
 								fieldKey={`Stage.steps.${i}.title`}
 								label="Заголовок"
@@ -251,7 +236,7 @@
 								{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="mt-2 text-sm leading-relaxed text-ink-200">
+						<p class="mt-2 text-prose text-ink-200">
 							<EditableField
 								fieldKey={`Stage.steps.${i}.description`}
 								label="Описание"

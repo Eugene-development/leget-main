@@ -1,5 +1,11 @@
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { BASE_SLUG } from '$lib/design-systems/registry';
+import { requestError, userErrorMessage } from '$lib/utils/user-error.js';
+
+export const handleError: HandleServerError = ({ error, status, event }) => {
+	console.error('Необработанная ошибка страницы', event.route.id, error);
+	return { message: userErrorMessage(requestError(status), 'Не удалось загрузить страницу.') };
+};
 
 /**
  * Открывающий тег `<html>` в app.html с дефолтным слагом — то, что подменяем.

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import ContentText from '../ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.Ф.1.1 — см. docs/architecture/component-articles-map.md
@@ -56,7 +57,8 @@
 		try {
 			await saveSettings(context, next);
 			data = next;
-		} catch {
+		} catch (cause) {
+			notifyError(cause, 'Не удалось сохранить тему футера.');
 			themeError = true;
 		}
 	}
@@ -79,8 +81,8 @@
 			await saveSettings(context, { ...data, footerLogoWidth: width });
 			data = { ...data, footerLogoWidth: width };
 			widthDraft = width;
-		} catch {
-			logoSizeError = 'Не удалось сохранить размер. Повторите попытку.';
+		} catch (cause) {
+			logoSizeError = notifyError(cause, 'Не удалось сохранить размер логотипа.');
 		}
 	}
 

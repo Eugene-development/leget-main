@@ -9,11 +9,7 @@ import GlassRequest from './pages/steklo-i-zerkala/GlassRequest.svelte';
 type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
 
 // Layout components
-import PromoStrip from './layout/PromoStrip/index.svelte';
-import Banner from './layout/Banner/index.svelte';
-import Header from './layout/Header.svelte';
-import Footer from './layout/Footer/index.svelte';
-export { PromoStrip, Banner, Header, Footer };
+export { PromoStrip, Banner, Header, Footer } from './layout';
 
 // 404 page components
 import NotFound from './pages/404/NotFound.svelte';
@@ -219,8 +215,13 @@ import PliitkaCategories from './pages/plitka/PliitkaCategories.svelte';
 import PliitkaComplex from './pages/plitka/PliitkaComplex.svelte';
 import PliitkaCTA from './pages/plitka/PliitkaCTA.svelte';
 
+import B2BDirectory from './pages/b2b/B2BDirectory.svelte';
+import B2BCompany from './pages/b2b/B2BCompany.svelte';
+
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/b2b': { B2BDirectory },
+	'/b2b/{company}': { B2BCompany },
 	'/privacy': { PrivacyPolicy },
 	'/steklo-i-zerkala': { GlassRequest },
 	'/university': { UniversityHero, UniversityProgram, UniversityJournal, UniversityApproach },

@@ -144,10 +144,8 @@
 	}
 
 	.yd-social__title {
-		font-size: 2rem;
-		font-weight: 800;
+		font-size: var(--ds-font-section-title-size);
 		color: #0f172a;
-		letter-spacing: -0.02em;
 	}
 
 	.yd-social__rating-bar {
@@ -200,9 +198,9 @@
 	}
 
 	.yd-social__card-text {
-		font-size: 0.95rem;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		color: #475569;
-		line-height: 1.7;
 		margin-bottom: 1.25rem;
 		font-style: italic;
 	}
@@ -235,10 +233,6 @@
 	@media (min-width: 768px) {
 		.yd-social {
 			padding: 6rem 2rem;
-		}
-
-		.yd-social__title {
-			font-size: 2.5rem;
 		}
 
 		.yd-social__grid {

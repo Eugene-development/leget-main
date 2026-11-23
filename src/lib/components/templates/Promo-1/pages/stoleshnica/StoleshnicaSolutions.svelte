@@ -35,13 +35,13 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">
 		{editableText(data.title, 'Популярные решения')}
 	</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2">
 		{#each items as item}
-			<a href={item.href || '#'} class="group relative overflow-hidden rounded-2xl bg-ink-100">
+			<a href={item.href || '#'} class="p1-card-copy group relative overflow-hidden rounded-2xl bg-ink-100">
 				<ImageFallback
 					imagePath={['items', items.indexOf(item), 'image']}
 					imageDefaults={{ items }}
@@ -54,8 +54,8 @@
 					class="absolute inset-0 bg-linear-to-t from-ink-900/80 via-ink-900/20 to-transparent"
 				></div>
 				<div class="absolute right-0 bottom-0 left-0 p-6">
-					<h3 class="p1-title-sub text-xl text-on-dark">{item.title}</h3>
-					<p class="mt-1 text-sm text-ink-300">{item.desc ?? ''}</p>
+					<h3 class="p1-title-sub text-card-title text-on-dark">{item.title}</h3>
+					<p class="mt-1 text-prose text-ink-300">{item.desc ?? ''}</p>
 				</div>
 			</a>
 		{/each}

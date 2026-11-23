@@ -71,7 +71,7 @@
 					>
 						{dir.badge}
 					</span>
-					<h3 class="p1-title-sub mt-3 text-3xl text-on-dark">{dir.title}</h3>
+					<h3 class="p1-title-sub mt-3 text-card-title text-on-dark">{dir.title}</h3>
 					<a
 						href={dir.buttonHref}
 						class="mt-6 inline-flex items-center gap-2 rounded-xl bg-surface-raised px-6 py-3 text-sm font-semibold text-ink-900 shadow-lg transition-all duration-300 hover:bg-link-50 hover:shadow-xl"

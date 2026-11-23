@@ -166,7 +166,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl sm:text-4xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -180,7 +180,7 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto mt-4 max-w-2xl"><RichText value={displayValue} /></p>
+					<p class="p1-body mx-auto mt-4 max-w-2xl text-prose"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 		</div>
@@ -189,7 +189,7 @@
 			{#each items as item, i}
 				{@const c = colorMap[item.color] ?? colorMap.sky}
 				<div
-					class="pb-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
+					class="p1-card-copy pb-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--pb-delay: {i * 70}ms"
 				>
 					<!-- Акцентная линия сверху и цветная подсветка угла на hover -->
@@ -229,7 +229,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title p1-title-sub mt-6 text-lg">
+						<h3 class="p1-title p1-title-sub mt-6 text-card-title">
 							<EditableField
 								fieldKey="Benefits.{i}.title"
 								label="Заголовок"
@@ -241,7 +241,7 @@
 								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="p1-body mt-3 text-sm/6">
+						<p class="p1-body mt-3 text-prose">
 							<EditableField
 								fieldKey="Benefits.{i}.text"
 								label="Описание"

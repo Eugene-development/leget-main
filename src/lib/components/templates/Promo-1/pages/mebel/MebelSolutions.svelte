@@ -52,7 +52,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">
 		<EditableField
 			fieldKey="MebelSolutions.title"
 			label="Заголовок"
@@ -69,7 +69,7 @@
 
 	<div class="grid gap-6 sm:grid-cols-2">
 		{#each items as item, i}
-			<div class="group relative overflow-hidden rounded-2xl bg-ink-100">
+			<div class="p1-card-copy group relative overflow-hidden rounded-2xl bg-ink-100">
 				<ImageFallback
 					imagePath={['items', i, 'image']}
 					imageDefaults={{ items }}
@@ -82,7 +82,7 @@
 					class="absolute inset-0 bg-linear-to-t from-ink-900/80 via-ink-900/20 to-transparent"
 				></div>
 				<div class="absolute right-0 bottom-0 left-0 p-6">
-					<h3 class="p1-title-sub text-xl text-on-dark">
+					<h3 class="p1-title-sub text-card-title text-on-dark">
 						<EditableField
 							fieldKey="MebelSolutions.items.{i}.title"
 							label="Заголовок решения"
@@ -96,7 +96,7 @@
 							{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-1 text-sm text-ink-300">
+					<p class="mt-1 text-prose text-ink-300">
 						<EditableField
 							fieldKey="MebelSolutions.items.{i}.desc"
 							label="Описание решения"

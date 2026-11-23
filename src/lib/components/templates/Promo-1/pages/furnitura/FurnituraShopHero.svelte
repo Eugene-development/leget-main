@@ -20,10 +20,10 @@
 		</nav>
 		<div class="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:justify-between">
 			<div>
-				<p class="mb-3 text-sm font-medium tracking-wider text-ink-300 uppercase">
+				<p class="mb-3 p1-label text-ink-300">
 					Магазин фурнитуры
 				</p>
-				<h1 class="text-3xl text-on-dark sm:text-4xl lg:text-5xl">{title}</h1>
+				<h1 class="text-page-title text-balance text-on-dark">{title}</h1>
 			</div>
 			{#if logo}
 				<div

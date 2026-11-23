@@ -61,12 +61,12 @@
 {#if hasVisibleCards}
 	<section class="p1-surface relative py-section-sm" data-p1-theme={isLight ? 'light' : 'dark'}>
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
-			<h2 class="p1-title p1-title-section mb-8 text-2xl sm:text-3xl">Акции Новостроя</h2>
+			<h2 class="p1-title p1-title-section mb-8 text-section-title text-balance">Акции Новостроя</h2>
 			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{#each localCards as card, i}
 					{#if isEditable || promotionIsActive(card, now())}
 						<div
-							class="p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-brand-500 {isEditable &&
+							class="p1-card-copy p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-brand-500 {isEditable &&
 							card.enabled === false
 								? 'opacity-60 brightness-95 contrast-75 grayscale'
 								: ''}"
@@ -118,7 +118,7 @@
 									class="mt-6 block"
 								>
 									{#snippet children(displayValue)}
-										<h3 class="p1-title p1-title-sub mt-6 text-xl">
+										<h3 class="p1-title p1-title-sub mt-6 text-card-title">
 											<RichText value={displayValue} />
 										</h3>
 									{/snippet}
@@ -136,7 +136,7 @@
 									class="mt-3 block"
 								>
 									{#snippet children(displayValue)}
-										<p class="p1-body mt-3 text-base/7"><RichText value={displayValue} /></p>
+										<p class="p1-body mt-3 text-prose"><RichText value={displayValue} /></p>
 									{/snippet}
 								</EditableField>
 

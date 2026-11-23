@@ -151,11 +151,9 @@
 	}
 
 	.yd-adv__title {
-		font-size: 2rem;
-		font-weight: 800;
+		font-size: var(--ds-font-section-title-size);
 		color: #0f172a;
 		margin-bottom: 2.5rem;
-		letter-spacing: -0.02em;
 	}
 
 	.yd-adv__stats {
@@ -175,7 +173,7 @@
 	}
 
 	.yd-adv__stat-number {
-		font-size: 2.25rem;
+		font-size: var(--ds-font-stat-size);
 		font-weight: 800;
 		color: #0f172a;
 		line-height: 1;
@@ -187,7 +185,7 @@
 	}
 
 	.yd-adv__stat-label {
-		font-size: 0.85rem;
+		font-size: var(--ds-font-note-size);
 		color: #64748b;
 		font-weight: 500;
 	}
@@ -204,7 +202,7 @@
 	}
 
 	.yd-adv__features-title {
-		font-size: 1.25rem;
+		font-size: var(--ds-font-subsection-title-size);
 		font-weight: 700;
 		color: #f8fafc;
 		margin-bottom: 1.5rem;
@@ -220,10 +218,11 @@
 	}
 
 	.yd-adv__features-item {
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		font-size: 0.95rem;
 		color: #cbd5e1;
 		font-weight: 500;
 	}
@@ -248,10 +247,6 @@
 		.yd-adv__container {
 			flex-direction: row;
 			align-items: stretch;
-		}
-
-		.yd-adv__title {
-			font-size: 2.5rem;
 		}
 
 		.yd-adv__stats {

@@ -72,9 +72,11 @@ export function goalLocations(root, write = false) {
 					: row.source === canonical) &&
 				(!menuVersion || row.article.endsWith('.' + menuVersion))
 		);
-		return direct.length
-			? direct
-			: (parents.get(path) ?? []).flatMap((parent) => owners(parent, seen));
+		if (direct.length) return direct;
+		if (path === 'templates/Promo-1/pages/b2b/B2BDirectory.svelte') {
+			return [{ template: 'Promo-1', page: '/b2b', article: '' }];
+		}
+		return (parents.get(path) ?? []).flatMap((parent) => owners(parent, seen));
 	}
 	return (button) => {
 		let locations;

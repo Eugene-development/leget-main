@@ -15,7 +15,7 @@
 </script>
 
 <div class="mebel-container mt-16 mb-16">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">Другие проекты категории</h2>
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">Другие проекты категории</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 		{#each projects as project}
@@ -51,16 +51,16 @@
 					{/if}
 
 					<!-- Метки -->
-					<div class="absolute top-3 left-3 flex gap-1.5">
+					<div class="absolute inset-x-3 top-3 flex flex-wrap gap-1.5">
 						{#if project.is_new}
 							<span
-								class="rounded-full bg-cat-2-500 px-2.5 py-1 text-[10px] font-bold text-on-accent shadow-md"
+								class="p1-note rounded-full bg-cat-2-500 px-2.5 py-1 font-bold text-on-accent shadow-md"
 								>Новинка</span
 							>
 						{/if}
 						{#if project.old_price && project.price && project.old_price > project.price}
 							<span
-								class="rounded-full bg-brand-500 px-2.5 py-1 text-[10px] font-bold text-on-accent shadow-md"
+								class="p1-note rounded-full bg-brand-500 px-2.5 py-1 font-bold text-on-accent shadow-md"
 							>
 								-{Math.round((1 - project.price / project.old_price) * 100)}%
 							</span>
@@ -68,9 +68,9 @@
 					</div>
 				</div>
 
-				<div class="flex items-start justify-between gap-4 p-5">
+				<div class="p1-card-copy flex items-start justify-between gap-4 p-5">
 					<h3
-						class="p1-title-sub line-clamp-2 text-ink-900 transition-colors group-hover:text-link-600"
+						class="p1-title-sub min-w-0 text-ink-900 transition-colors group-hover:text-link-600 text-card-title"
 					>
 						{project.value}
 					</h3>

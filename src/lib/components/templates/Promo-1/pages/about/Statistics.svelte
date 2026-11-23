@@ -123,7 +123,7 @@
 					></div>
 
 					<div class="relative">
-						<div class="p1-title text-5xl font-semibold tracking-[-0.04em] tabular-nums">
+						<div class="p1-title text-stat font-semibold wrap-anywhere tabular-nums">
 							<EditableField
 								fieldKey="Statistics.{i}.value"
 								label="Значение"
@@ -136,7 +136,7 @@
 							</EditableField>
 						</div>
 						<div
-							class="p1-muted mt-3 text-[11px] font-semibold tracking-[0.16em] uppercase sm:text-xs"
+							class="p1-label p1-muted mt-3 wrap-anywhere"
 						>
 							<EditableField
 								fieldKey="Statistics.{i}.label"

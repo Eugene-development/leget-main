@@ -1,4 +1,5 @@
 import { getAuthToken } from '$lib/utils/auth-session';
+import { graphQLError, requestError } from './user-error.js';
 /**
  * Утилита для inline-редактирования компонентов страницы.
  *
@@ -89,7 +90,7 @@ export async function savePageSeo(
 	const token = getAuthToken();
 
 	if (!token) {
-		throw new Error('Не авторизован');
+		throw requestError(401);
 	}
 
 	const response = await fetch(getGraphQLUrl(), {
@@ -111,14 +112,9 @@ export async function savePageSeo(
 		})
 	});
 
-	if (!response.ok) {
-		throw new Error('Не удалось сохранить настройки страницы. Повторите попытку.');
-	}
-
-	const result = await response.json();
-	if (result.errors?.length) {
-		throw new Error(result.errors[0]?.message ?? 'Не удалось сохранить настройки страницы.');
-	}
+	const result = await response.json().catch(() => null);
+	if (!response.ok || result?.errors?.length) throw graphQLError(response.status, result?.errors);
+	if (!result?.data) throw requestError(502);
 }
 
 export interface ComponentVariantArticle {
@@ -192,7 +188,7 @@ export async function saveComponentData(
 	const token = getAuthToken();
 
 	if (!token) {
-		throw new Error('Не авторизован');
+		throw requestError(401);
 	}
 
 	const apiUrl = getGraphQLUrl();
@@ -215,16 +211,9 @@ export async function saveComponentData(
 		})
 	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-	}
-
-	const result = await response.json();
-
-	if (result.errors?.length) {
-		const msg = result.errors[0]?.message ?? 'GraphQL error';
-		throw new Error(msg);
-	}
+	const result = await response.json().catch(() => null);
+	if (!response.ok || result?.errors?.length) throw graphQLError(response.status, result?.errors);
+	if (!result?.data) throw requestError(502);
 
 	// Сервер генерирует ULID `id` при первой записи компонента. Раньше он попадал
 	// в клиентское состояние только через invalidateAll() (полный refetch после
@@ -268,7 +257,7 @@ export async function deleteComponentData(
 	const token = getAuthToken();
 
 	if (!token) {
-		throw new Error('Не авторизован');
+		throw requestError(401);
 	}
 
 	const apiUrl = getGraphQLUrl();
@@ -289,16 +278,9 @@ export async function deleteComponentData(
 		})
 	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-	}
-
-	const result = await response.json();
-
-	if (result.errors?.length) {
-		const msg = result.errors[0]?.message ?? 'GraphQL error';
-		throw new Error(msg);
-	}
+	const result = await response.json().catch(() => null);
+	if (!response.ok || result?.errors?.length) throw graphQLError(response.status, result?.errors);
+	if (!result?.data) throw requestError(502);
 }
 
 /**
@@ -316,7 +298,7 @@ export async function saveLayoutData(
 	const token = getAuthToken();
 
 	if (!token) {
-		throw new Error('Не авторизован');
+		throw requestError(401);
 	}
 
 	const apiUrl = getGraphQLUrl();
@@ -338,16 +320,9 @@ export async function saveLayoutData(
 		})
 	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-	}
-
-	const result = await response.json();
-
-	if (result.errors?.length) {
-		const msg = result.errors[0]?.message ?? 'GraphQL error';
-		throw new Error(msg);
-	}
+	const result = await response.json().catch(() => null);
+	if (!response.ok || result?.errors?.length) throw graphQLError(response.status, result?.errors);
+	if (!result?.data) throw requestError(502);
 }
 
 const LIST_BUCKET_FILES_QUERY = `
@@ -392,7 +367,7 @@ export async function listBucketFiles(
 	const token = getAuthToken();
 
 	if (!token) {
-		throw new Error('Не авторизован');
+		throw requestError(401);
 	}
 
 	const apiUrl = getGraphQLUrl();
@@ -410,16 +385,9 @@ export async function listBucketFiles(
 		})
 	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-	}
-
-	const result = await response.json();
-
-	if (result.errors?.length) {
-		const msg = result.errors[0]?.message ?? 'GraphQL error';
-		throw new Error(msg);
-	}
+	const result = await response.json().catch(() => null);
+	if (!response.ok || result?.errors?.length) throw graphQLError(response.status, result?.errors);
+	if (!result?.data) throw requestError(502);
 
 	return (result.data?.listBucketFiles ?? []) as BucketFile[];
 }
@@ -435,7 +403,7 @@ export async function toggleCategory(
 	const token = getAuthToken();
 
 	if (!token) {
-		throw new Error('Не авторизован');
+		throw requestError(401);
 	}
 
 	const apiUrl = getGraphQLUrl();
@@ -453,14 +421,7 @@ export async function toggleCategory(
 		})
 	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-	}
-
-	const result = await response.json();
-
-	if (result.errors?.length) {
-		const msg = result.errors[0]?.message ?? 'GraphQL error';
-		throw new Error(msg);
-	}
+	const result = await response.json().catch(() => null);
+	if (!response.ok || result?.errors?.length) throw graphQLError(response.status, result?.errors);
+	if (!result?.data) throw requestError(502);
 }

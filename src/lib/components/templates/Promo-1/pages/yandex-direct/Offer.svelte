@@ -211,17 +211,15 @@
 	}
 
 	.yd-offer__title {
-		font-size: 1.75rem;
-		font-weight: 800;
+		font-size: var(--ds-font-section-title-size);
 		color: #f8fafc;
-		line-height: 1.2;
 		margin-bottom: 1rem;
 	}
 
 	.yd-offer__subtitle {
-		font-size: 1rem;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		color: #94a3b8;
-		line-height: 1.7;
 		margin-bottom: 2rem;
 	}
 
@@ -233,10 +231,11 @@
 	}
 
 	.yd-offer__includes-item {
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		font-size: 0.9rem;
 		color: #e2e8f0;
 		font-weight: 500;
 	}
@@ -276,8 +275,8 @@
 	}
 
 	.yd-offer__note {
+		font-size: var(--ds-font-note-size);
 		margin-top: 1rem;
-		font-size: 0.8rem;
 		color: #64748b;
 	}
 
@@ -288,10 +287,6 @@
 
 		.yd-offer__card {
 			padding: 4rem 3.5rem;
-		}
-
-		.yd-offer__title {
-			font-size: 2.25rem;
 		}
 
 		.yd-offer__includes {

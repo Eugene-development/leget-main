@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { withPromoMotion } from '$lib/motion/transition';
 
 	import { onMount } from 'svelte';
@@ -75,7 +76,7 @@
 					: !['appliance-type', 'plumbing-type', 'lighting-type'].includes(group.slug)
 			);
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Не удалось загрузить теги.';
+			error = notifyError(cause, 'Не удалось загрузить теги.');
 		} finally {
 			loading = false;
 		}

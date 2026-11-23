@@ -1,3 +1,4 @@
+import { notifyError } from '$lib/utils/notify-error';
 /**
  * Видимость редактируемых частей компонента.
  *
@@ -90,7 +91,7 @@ export function createEditableVisibility(options: {
 					`Не удалось сохранить видимость поля ${options.getComponentType()}.${key}:`,
 					error
 				);
-				alert(error instanceof Error ? error.message : 'Не удалось сохранить видимость блока');
+				notifyError(error, 'Не удалось сохранить видимость блока');
 			} finally {
 				pending = pending.filter((item) => item !== key);
 			}

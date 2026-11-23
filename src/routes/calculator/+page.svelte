@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { untrack } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { growthRequest } from '$lib/growth/selections/api';
@@ -51,7 +52,7 @@
 			result = await growthRequest<EstimateResult>('estimate', { inputs: snapshot });
 			calculatedFor = fingerprint;
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось рассчитать стоимость.';
+			error = notifyError(e, 'Не удалось рассчитать стоимость.');
 		} finally {
 			calculating = false;
 		}
@@ -76,7 +77,7 @@
 			);
 			accepted = true;
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось отправить заявку.';
+			error = notifyError(e, 'Не удалось отправить заявку.');
 			if (e instanceof Error && 'code' in e && e.code === 'estimate_stale') {
 				result = null;
 				calculatedFor = '';

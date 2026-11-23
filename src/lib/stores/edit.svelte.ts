@@ -1,3 +1,4 @@
+import { notifyError } from '$lib/utils/notify-error';
 /**
  * Глобальный store для inline-редактирования полей страницы.
  *
@@ -19,6 +20,7 @@ export interface EditField {
 	/** Многострочное поле */
 	multiline: boolean;
 	richText?: boolean;
+	defaultFontSize?: string;
 	legacyHtml?: boolean;
 	/** Callback сохранения */
 	onSave: (value: string) => Promise<void>;
@@ -75,7 +77,7 @@ function createEditStore() {
 				await activeField.onSave(activeField.draft);
 				activeField = null;
 			} catch (err) {
-				saveError = err instanceof Error ? err.message : 'Ошибка сохранения';
+				saveError = notifyError(err, 'Ошибка сохранения');
 			} finally {
 				isSaving = false;
 			}

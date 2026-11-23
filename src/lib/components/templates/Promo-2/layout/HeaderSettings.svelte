@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	import { requestCopyFields, requestText } from '../forms/copy';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
@@ -70,8 +71,8 @@
 			await saveLayoutData(editContext, 'Header', { ...data, ...fields });
 			data = { ...data, ...fields };
 			open = false;
-		} catch {
-			error = 'Не удалось сохранить логотип. Повторите попытку.';
+		} catch (cause) {
+			error = notifyError(cause, 'Не удалось сохранить логотип. Повторите попытку.');
 		} finally {
 			saving = false;
 		}

@@ -47,7 +47,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-1", "page": "/b2b", "article": "" }
 		]
 	},
 	{
@@ -66,7 +67,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-1", "page": "/b2b", "article": "" }
 		]
 	},
 	{
@@ -85,7 +87,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-1", "page": "/b2b", "article": "" }
 		]
 	},
 	{
@@ -104,7 +107,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-1", "page": "/b2b", "article": "" }
 		]
 	},
 	{
@@ -123,7 +127,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-1", "page": "/b2b", "article": "" }
 		]
 	},
 	{
@@ -142,7 +147,8 @@
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.М.1.5" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.1" },
 			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.2" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" }
+			{ "template": "Promo-1", "page": "(layout)", "article": "1.Ф.1.3" },
+			{ "template": "Promo-1", "page": "/b2b", "article": "" }
 		]
 	},
 	{
@@ -244,6 +250,7 @@
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.4" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" },
+			{ "template": "Promo-1", "page": "/", "article": "1.1.6.4" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.2" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
@@ -397,7 +404,7 @@
 		"baseId": "serviceorderisland_close_1",
 		"variant": "promo",
 		"serviceType": "promo",
-		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+		"locations": []
 	},
 	{
 		"id": "serviceorderisland_close_2_consultation",
@@ -444,6 +451,7 @@
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.4" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" },
+			{ "template": "Promo-1", "page": "/", "article": "1.1.6.4" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.2" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
@@ -597,7 +605,7 @@
 		"baseId": "serviceorderisland_close_2",
 		"variant": "promo",
 		"serviceType": "promo",
-		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+		"locations": []
 	},
 	{
 		"id": "serviceorderisland_submit_click_1_consultation",
@@ -644,6 +652,7 @@
 			{ "template": "Promo-1", "page": "/", "article": "1.1.1.4" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" },
+			{ "template": "Promo-1", "page": "/", "article": "1.1.6.4" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.1" },
 			{ "template": "Promo-1", "page": "/", "article": "1.1.3.2" },
 			{ "template": "Promo-1", "page": "/mebel", "article": "1.16.6.1" },
@@ -797,7 +806,7 @@
 		"baseId": "serviceorderisland_submit_click_1",
 		"variant": "promo",
 		"serviceType": "promo",
-		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" }]
+		"locations": []
 	},
 	{
 		"id": "lead_catcher_close",
@@ -1163,6 +1172,56 @@
 		"locations": [{ "template": "Promo-1", "page": "/about", "article": "1.2.6.1" }]
 	},
 	{
+		"id": "b2b_partner_registration_open",
+		"action": "open",
+		"label": "Регистрация партнёра",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/b2b/PartnerRegistrationDialog.svelte",
+		"route": "/b2b",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/b2b", "article": "" }]
+	},
+	{
+		"id": "b2b_partner_registration_close",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/b2b/PartnerRegistrationDialog.svelte",
+		"route": "/b2b",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/b2b", "article": "" }]
+	},
+	{
+		"id": "b2b_partner_account_register_open",
+		"action": "open",
+		"label": "Создать аккаунт",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/b2b/PartnerRegistrationDialog.svelte",
+		"route": "/b2b",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/b2b", "article": "" }]
+	},
+	{
+		"id": "b2b_partner_account_login_open",
+		"action": "open",
+		"label": "Войти",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/b2b/PartnerRegistrationDialog.svelte",
+		"route": "/b2b",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/b2b", "article": "" }]
+	},
+	{
+		"id": "b2b_partner_registration_submit",
+		"action": "submit_click",
+		"label": "Отправить заявку",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/b2b/PartnerRegistrationDialog.svelte",
+		"route": "/b2b",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/b2b", "article": "" }]
+	},
+	{
 		"id": "pages_bytovaya_tehnika_byttehnikabrandhero_open_1",
 		"action": "open",
 		"label": "Подобрать технику — страница бренда",
@@ -1326,7 +1385,7 @@
 	{
 		"id": "pages_home_heromain_v1_heromain_open_2",
 		"action": "open",
-		"label": "Получить промокод",
+		"label": "Бесплатная консультация",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroMain.svelte",
 		"route": "/",
@@ -1382,6 +1441,16 @@
 		"route": "/",
 		"mock": false,
 		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.6.3" }]
+	},
+	{
+		"id": "pages_home_incentives_v4_incentives_open_1",
+		"action": "open",
+		"label": "Консультация (текст кнопки настраивается)",
+		"templates": ["Promo-1"],
+		"source": "templates/Promo-1/pages/home/Incentives/v4/Incentives.svelte",
+		"route": "/",
+		"mock": false,
+		"locations": [{ "template": "Promo-1", "page": "/", "article": "1.1.6.4" }]
 	},
 	{
 		"id": "pages_home_promooffer_v1_promooffer_open_1",
@@ -3259,7 +3328,7 @@
 	{
 		"id": "partner_application_submit",
 		"action": "submit_click",
-		"label": "+page",
+		"label": "Отправить заявку на подключение / Обновить заявку",
 		"templates": ["Promo-1"],
 		"source": "../../routes/partner/register/+page.svelte",
 		"route": "/partner/register",

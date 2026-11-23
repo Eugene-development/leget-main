@@ -82,6 +82,33 @@
 	const DEFAULT_TITLE = 'Предложения партнёров';
 	const DEFAULT_DESCRIPTION =
 		'Специальные предложения от партнёров для компании «Новострой» — собрали их для вас ниже.';
+	const BANNER_DIRECTORY =
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/partner-offers/';
+	const LANDSCAPE_BANNER_DIRECTORY = `${BANNER_DIRECTORY}landscape/`;
+	const DEFAULT_OFFERS: Offer[] = [
+		['appliance-connection-gift', 'Подключение бытовой техники в подарок'],
+		['company-paid-assembly', 'Сборка за счёт компании'],
+		['refrigerator-gift', 'Холодильник в подарок']
+	].map(([filename, offer]) => ({
+		image: `${LANDSCAPE_BANNER_DIRECTORY}${filename}.webp`,
+		alt: offer,
+		partner: 'Новострой',
+		offer,
+		terms: '',
+		validFrom: '',
+		validUntil: '',
+		buttonText: 'Получить предложение',
+		buttonHref: '/actions'
+	}));
+	// Ранее сохранённые ссылки на эти же три баннера тоже показывают новые кадры.
+	const replacedBannerImages = new Map(
+		DEFAULT_OFFERS.map(({ image }) => [
+			image.replace(LANDSCAPE_BANNER_DIRECTORY, BANNER_DIRECTORY),
+			image
+		])
+	);
+	const isLandscapeBanner = (image: string) =>
+		image?.startsWith(LANDSCAPE_BANNER_DIRECTORY) || replacedBannerImages.has(image);
 
 	const title = $derived(editableText(data?.title, DEFAULT_TITLE));
 	const description = $derived(editableText(data?.description, DEFAULT_DESCRIPTION));
@@ -89,34 +116,12 @@
 	const allOffers = $derived(
 		Array.isArray(data?.offers) && data.offers.length > 0
 			? (data.offers as Offer[])
-			: [
-					{
-						image: 'https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg',
-						alt: 'Скидка 15% на фурнитуру Blum',
-						partner: 'Blum',
-						offer: 'Скидка 15% на фурнитуру',
-						terms: 'При заказе кухни от 150 000 ₽',
-						validFrom: '01.09.2026',
-						validUntil: '31.12.2026',
-						buttonText: 'Получить предложение',
-						buttonHref: '/contact'
-					},
-					{
-						image: 'https://storage.yandexcloud.net/novostroy/bg/prih.jpg',
-						alt: 'Столешница в подарок от Egger',
-						partner: 'Egger',
-						offer: 'Столешница в подарок',
-						terms: 'К любому кухонному гарнитуру от 200 000 ₽',
-						validFrom: '',
-						validUntil: '30.11.2026',
-						buttonText: 'Получить предложение',
-						buttonHref: '/contact'
-					}
-				]
+			: DEFAULT_OFFERS
 	);
 
 	const now = usePromotionClock(() => allOffers.map((offer) => promotionDeadline(offer)));
 	const offers = $derived(isEditable ? allOffers : allOffers.filter((offer) => promotionIsActive(offer, now())));
+	const hasLandscapeBanner = $derived(offers.some((offer) => isLandscapeBanner(offer.image)));
 
 	function period(item: Offer) {
 		const from = (item.validFrom ?? '').trim();
@@ -309,6 +314,7 @@
 </script>
 
 {#snippet card(item: Offer, index: number, clone: boolean)}
+	{@const isLandscape = isLandscapeBanner(item.image)}
 	<!-- Кадр. Рамка карточки — единственное место в блоке, где тема ещё уместна:
 	     эта линия отделяет плитку от подложки секции, а не лежит на кадре.
 
@@ -318,27 +324,34 @@
 	     страницей здесь нечем и незачем — кадр и так отделён от поверхности рамкой
 	     и радиусом, а «парящая» тень системы рассчитана на панель с текстом, а не
 	     на фотографию во всю плитку. -->
-	<div class="group p1-border relative flex h-full min-h-60 overflow-hidden rounded-3xl border">
-		<!-- Фоновая картинка с зумом. Длительность — роль «медленной перестройки»
-		     системы (Базовая 500ms, Графит 300ms). Кривая приходит из
-		     `--default-transition-timing-function`, поэтому своей `ease-*` тут нет. -->
+	<div
+		class="group p1-border relative flex overflow-hidden rounded-3xl border {hasLandscapeBanner
+			? 'aspect-[3/2]'
+			: 'h-full min-h-60'}"
+	>
+		<!-- У шаблонных баннеров надпись — часть кадра, поэтому показываем весь кадр. -->
 		<ImageFallback
 			imagePath={['offers', index, 'image']}
 			imageDefaults={{ offers }}
 			src={item.image}
+			srcAliases={replacedBannerImages}
 			alt={clone ? '' : item.alt}
-			class="absolute inset-0 h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] group-hover:scale-105"
+			class="absolute inset-0 h-full w-full {isLandscape
+				? 'object-contain'
+				: 'object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] group-hover:scale-105'}"
 		/>
 		<!-- Скрима во всю карточку нет, и это решение, а не пропуск: градиент поверх
 		     фотографии, под которым ничего не читают, — просто испорченная фотография.
 		     Роль `--ds-scrim` вернулась ровно там, где она и нужна, — плашкой под
 		     текстом срока, а не покрывалом на весь кадр. -->
 
-		<!-- Декоративная контурная рамка сзади. `border-on-dark/15`, а не
-		     `p1-border`: она лежит на кадре, и в светлой теме тёмная линия
-		     системы на фотографии не видна вовсе. -->
+		<!-- Декоративная рамка поверх кадра. На узких баннерах отступ меньше,
+		     чтобы линия проходила за пределами надписи. -->
 		<div
-			class="pointer-events-none absolute inset-4 rounded-2xl border border-on-dark/15 transition-colors duration-[var(--ds-motion-duration-ui-slow)] group-hover:border-on-dark/40"
+			aria-hidden="true"
+			class="pointer-events-none absolute rounded-2xl border border-on-dark/15 transition-colors duration-[var(--ds-motion-duration-ui-slow)] group-hover:border-on-dark/40 {isLandscape
+				? 'inset-2 xl:inset-4'
+				: 'inset-4'}"
 		></div>
 
 		<!-- Срок акции. Цвет берём напрямую из `--ds-on-dark`, чтобы адаптация
@@ -441,12 +454,14 @@
 	</div>
 {/snippet}
 
-<!-- Спецпредложения партнёров (PartnerOffers) — экранный блок: шапка, кадры, действие.
-     Высота учитывает стабильную строку меню: появление верхних полос не сжимает кадры. -->
+<!-- Высоту блока с шаблонными баннерами определяют их пропорции.
+     Для остальных карточек высота экрана учитывает стабильную строку меню. -->
 {#if isEditable || offers.length}
 <section
 	bind:this={section}
-	class="p1-surface flex min-h-[calc(100svh-var(--header-h))] flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs"
+	class="p1-surface flex flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs {hasLandscapeBanner
+		? ''
+		: 'min-h-[calc(100svh-var(--header-h))]'}"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
 	<!-- Шапка. `shrink-0`, иначе на низком экране флекс сжал бы её раньше кадров. -->
@@ -460,7 +475,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="p1-title text-3xl sm:text-5xl"><RichText value={displayValue} /></h2>
+				<h2 class="p1-title text-section-title text-balance"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 
@@ -474,7 +489,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<p class="p1-body mt-5 text-base leading-7"><RichText value={displayValue} /></p>
+				<p class="p1-body mt-5 text-prose"><RichText value={displayValue} /></p>
 			{/snippet}
 		</EditableField>
 	</div>

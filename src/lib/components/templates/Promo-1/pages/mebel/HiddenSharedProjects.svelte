@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onMount, tick } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { projectRequest } from './project-request';
@@ -38,7 +39,7 @@
 			if (alive) projects = result.hiddenSharedProjects;
 		} catch (cause) {
 			if (alive)
-				error = cause instanceof Error ? cause.message : 'Не удалось загрузить скрытые проекты.';
+				error = notifyError(cause, 'Не удалось загрузить скрытые проекты.');
 		} finally {
 			if (alive) loading = false;
 		}
@@ -54,7 +55,7 @@
 		} catch (cause) {
 			if (alive) {
 				error =
-					cause instanceof Error ? cause.message : 'Не удалось показать проект. Повторите попытку.';
+					notifyError(cause, 'Не удалось показать проект. Повторите попытку.');
 				pendingId = '';
 			}
 			return;

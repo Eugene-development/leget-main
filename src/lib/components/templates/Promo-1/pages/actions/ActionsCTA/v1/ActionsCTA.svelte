@@ -44,7 +44,7 @@
 		>
 			{#snippet children(displayValue)}
 				<h2
-					class="p1-title ds-title-display text-4xl text-pretty wrap-anywhere sm:text-5xl lg:text-6xl"
+					class="p1-title ds-title-display text-section-title text-balance wrap-anywhere"
 				>
 					<RichText value={displayValue} />
 				</h2>
@@ -64,7 +64,7 @@
 			class="mt-4 block max-w-lg sm:mt-5"
 		>
 			{#snippet children(displayValue)}
-				<p class="p1-body text-base/7 text-pretty wrap-anywhere sm:text-lg/8">
+				<p class="p1-body text-prose text-pretty wrap-anywhere">
 					<RichText value={displayValue} />
 				</p>
 			{/snippet}

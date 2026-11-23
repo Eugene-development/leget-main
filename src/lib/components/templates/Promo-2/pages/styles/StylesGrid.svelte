@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.4.2.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -143,8 +144,8 @@
 			const id = await saveComponentData(editContext, 'StylesGrid', updated);
 			if (!id) throw new Error('Сервер не подтвердил сохранение. Повторите попытку.');
 			data = updated;
-		} catch {
-			saveError = { card, message: 'Не удалось сохранить метки. Повторите попытку.' };
+		} catch (cause) {
+			saveError = { card, message: notifyError(cause, 'Не удалось сохранить метки.') };
 		} finally {
 			savingCard = null;
 		}

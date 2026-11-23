@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.27.3.1 — см. docs/architecture/component-articles-map.md
 	import { getContext, onMount } from 'svelte';
@@ -115,8 +116,8 @@
 			name = '';
 			phone = '';
 			about = '';
-		} catch {
-			errorMessage = 'Не удалось отправить отклик. Попробуйте ещё раз или позвоните нам.';
+		} catch (cause) {
+			errorMessage = notifyError(cause, 'Не удалось отправить отклик. Попробуйте ещё раз или позвоните нам.');
 		} finally {
 			sending = false;
 		}
@@ -172,7 +173,7 @@
 				class="vc-item vc-d1 mt-5 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-4xl text-pretty sm:text-5xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -191,7 +192,7 @@
 				class="vc-item vc-d3 mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto max-w-lg text-base/7 text-pretty">
+					<p class="p1-body mx-auto max-w-lg text-prose text-pretty">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}

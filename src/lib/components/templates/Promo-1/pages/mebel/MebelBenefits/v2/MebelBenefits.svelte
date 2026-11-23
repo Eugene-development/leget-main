@@ -81,7 +81,7 @@
 	<div class="p1-catalog-container">
 		<div class="p1-surface p1-catalog-panel px-6 py-12 sm:px-10 sm:py-16">
 			<div class="max-w-2xl">
-				<h2 class="p1-title text-4xl sm:text-5xl">
+				<h2 class="p1-title text-section-title text-balance">
 					<EditableField
 						fieldKey="MebelBenefits.title"
 						label="Заголовок блока"

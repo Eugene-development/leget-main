@@ -47,7 +47,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="p1-title text-3xl text-pretty sm:text-4xl"><RichText value={displayValue} /></h2>
+				<h2 class="p1-title text-section-title text-balance"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 		{#if String(data?.text1 ?? '').trim() || isEditable}
@@ -61,7 +61,7 @@
 				class="mt-8 block sm:mt-10"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-statement max-w-[34ch]">
+					<p class="p1-body max-w-[65ch] text-prose">
 						<RichText value={displayValue || (isEditable ? 'Добавьте первый абзац' : '')} />
 					</p>
 				{/snippet}

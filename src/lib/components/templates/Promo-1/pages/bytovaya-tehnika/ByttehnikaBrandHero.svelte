@@ -63,7 +63,7 @@
 					<span class="p1-title" aria-current="page">{title}</span>
 				</nav>
 
-				<h1 class="p1-title max-w-2xl text-3xl text-balance sm:text-4xl lg:text-5xl">
+				<h1 class="p1-title max-w-2xl text-page-title text-balance">
 					<EditableField
 						fieldKey="ByttehnikaBrandHero.title"
 						label="Заголовок"
@@ -77,7 +77,7 @@
 				</h1>
 
 				{#if data.description}
-					<p class="p1-body mt-5 max-w-xl text-lg">
+					<p class="p1-body mt-5 max-w-xl text-prose">
 						<EditableField
 							fieldKey="ByttehnikaBrandHero.description"
 							label="Описание"

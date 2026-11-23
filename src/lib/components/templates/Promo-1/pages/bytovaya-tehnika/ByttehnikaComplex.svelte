@@ -46,7 +46,7 @@
 		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
 		in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
 	>
-		<h2 class="ds-title-sub text-2xl text-ink-900">
+		<h2 class="text-section-title text-balance text-ink-900">
 			<EditableField
 				fieldKey="ByttehnikaComplex.title"
 				label="Заголовок"
@@ -58,7 +58,7 @@
 				{#snippet children(val)}<RichText value={val} />{/snippet}
 			</EditableField>
 		</h2>
-		<p class="mt-3 leading-relaxed text-ink-600">
+		<p class="mt-3 text-ink-600 text-prose">
 			<EditableField
 				fieldKey="ByttehnikaComplex.description"
 				label="Описание"
@@ -78,7 +78,7 @@
 		<ul class="mt-5 space-y-2">
 			{#each perks as perk, i}
 				<li
-					class="flex items-center gap-2 text-sm text-ink-600"
+					class="flex items-center gap-2 text-prose text-ink-600"
 					in:p1_fly={{ x: -10, duration: 400, delay: i * 80, easing: cubicOut }}
 				>
 					<svg

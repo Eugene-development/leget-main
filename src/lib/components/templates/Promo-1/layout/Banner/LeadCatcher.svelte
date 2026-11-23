@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { tick } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
@@ -137,9 +138,7 @@
 		} catch (cause) {
 			if (current === generation)
 				error =
-					cause instanceof Error
-						? cause.message
-						: 'Не удалось отправить заявку. Попробуйте ещё раз.';
+					notifyError(cause, 'Не удалось отправить заявку. Попробуйте ещё раз.');
 		} finally {
 			if (current === generation) busy = false;
 		}

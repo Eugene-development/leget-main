@@ -8,6 +8,7 @@
 
 	let {
 		src,
+		srcAliases,
 		imagePath,
 		imageDefaults = {},
 		imageRole,
@@ -19,6 +20,7 @@
 		...imgAttributes
 	}: HTMLImgAttributes & {
 		src?: string | null;
+		srcAliases?: ReadonlyMap<string, string>;
 		imagePath?: ImagePathPart[];
 		imageDefaults?: Record<string, unknown>;
 		imageRole?: 'preview';
@@ -35,7 +37,8 @@
 	const registrationId = Symbol('image');
 	let target = $state<HTMLElement>();
 	const fieldKey = $derived(imagePath && editor ? editor.key(imagePath) : '');
-	const savedSrc = $derived(imagePath && editor ? editor.read(imagePath, src ?? '') : src);
+	const storedSrc = $derived(imagePath && editor ? editor.read(imagePath, src ?? '') : src);
+	const savedSrc = $derived(storedSrc ? (srcAliases?.get(storedSrc) ?? storedSrc) : storedSrc);
 	const active = $derived(
 		imagePath && editStore.activeField?.key === fieldKey && editStore.activeField.kind === 'image'
 	);

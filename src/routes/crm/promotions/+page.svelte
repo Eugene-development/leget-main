@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { invalidateAll } from '$app/navigation';
 	import { tick } from 'svelte';
 	import { crmRequest, dateTime, dateTimeInput } from '$lib/crm/api';
@@ -73,7 +74,7 @@
 			}
 		} catch (error) {
 			if (site === data.site)
-				failure = error instanceof Error ? error.message : 'Не удалось сохранить акцию.';
+				failure = notifyError(error, 'Не удалось сохранить акцию.');
 		} finally {
 			saving = false;
 		}
@@ -104,7 +105,7 @@
 				history = {
 					id: item.id,
 					site,
-					error: error instanceof Error ? error.message : 'Не удалось загрузить историю.'
+					error: notifyError(error, 'Не удалось загрузить историю.')
 				};
 		}
 	}

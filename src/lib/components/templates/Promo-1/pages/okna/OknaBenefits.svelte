@@ -63,7 +63,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">
 		<EditableField
 			fieldKey="OknaBenefits.title"
 			label="Заголовок блока"
@@ -76,10 +76,10 @@
 		</EditableField>
 	</h2>
 
-	<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+	<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
 		{#each items as item, i}
 			<div
-				class="group rounded-2xl border border-ink-50 bg-surface-raised p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink-200/50"
+				class="p1-card-copy group rounded-2xl border border-ink-50 bg-surface-raised p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink-200/50"
 				in:p1_fly={{ y: 20, duration: 600, delay: i * 100, easing: cubicOut }}
 			>
 				<div
@@ -118,7 +118,7 @@
 					{/if}
 				</div>
 				<h3
-					class="p1-title-sub mt-4 text-lg text-ink-900 transition-colors group-hover:text-link-600"
+					class="p1-title-sub mt-4 text-card-title text-ink-900 transition-colors group-hover:text-link-600"
 				>
 					<EditableField
 						fieldKey="OknaBenefits.item.{i}.title"
@@ -131,7 +131,7 @@
 						{#snippet children(value)}<RichText {value} />{/snippet}
 					</EditableField>
 				</h3>
-				<p class="mt-2 text-sm leading-relaxed text-ink-600">
+				<p class="mt-2 text-prose text-ink-600">
 					<EditableField
 						fieldKey="OknaBenefits.item.{i}.desc"
 						label="Описание карточки"

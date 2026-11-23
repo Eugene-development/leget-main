@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { untrack, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
@@ -166,7 +167,7 @@
 		};
 	}
 	function msg(e: unknown) {
-		return e instanceof Error ? e.message : 'Не удалось выполнить действие.';
+		return notifyError(e, 'Не удалось выполнить действие.');
 	}
 
 	// Read the complete route synchronously. Never read a new route after an await

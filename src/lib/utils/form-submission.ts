@@ -1,3 +1,5 @@
+import { UserError } from './user-error.js';
+
 /** One instance per form. A retry keeps its key; a changed payload gets a new key. */
 export type FormResult = {
 	success: true;
@@ -130,7 +132,7 @@ export function createFormSender(formId: string) {
 				if (!response.ok || !result?.success || !result?.id) {
 					const staleEstimate =
 						response.status === 422 && Array.isArray(result?.errors?.estimate_version);
-					const error = new Error(
+					const error = new UserError(
 						staleEstimate
 							? 'Правила расчёта изменились. Рассчитайте стоимость ещё раз.'
 							: response.status === 429

@@ -426,7 +426,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-7xl {isLight
+							class="mb-3.5 bg-gradient-to-r bg-clip-text text-page-title text-balance text-transparent {isLight
 								? 'via-slate-850 from-ink-900 to-ink-700'
 								: 'hero-title from-surface-raised via-ink-100 to-ink-400'}"
 						>
@@ -447,7 +447,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="hero-desc mb-5 max-w-2xl text-base leading-relaxed font-normal transition-colors duration-500 md:text-lg {isLight
+							class="hero-desc mb-5 max-w-2xl text-prose transition-colors duration-500 {isLight
 								? 'text-ink-600'
 								: 'hero-description text-ink-300'}"
 						>
@@ -830,7 +830,7 @@
 
 					<!-- Описание выбранного стиля -->
 					<p
-						class="text-base leading-relaxed transition-colors duration-500 sm:text-lg {isLight
+						class="text-prose transition-colors duration-500 {isLight
 							? 'text-ink-700'
 							: 'text-ink-200'} min-h-[38px] border-l-3 border-link-500/50 pl-3.5 font-semibold"
 					>
@@ -898,7 +898,7 @@
 									: 'border-on-dark/10 bg-ink-950/90 text-on-dark'}"
 							>
 								<h4
-									class="p1-title-sub mb-1.5 flex items-center gap-1.5 text-xs uppercase sm:text-sm {isLight
+									class="p1-title-sub mb-1.5 flex items-center gap-1.5 text-card-title uppercase {isLight
 										? 'text-indigo-650'
 										: 'text-link-300'}"
 								>

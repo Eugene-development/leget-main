@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 3.5.4.1 — см. docs/architecture/component-articles-map.md
 	import { createFormSender } from '$lib/utils/form-submission';
@@ -48,7 +49,7 @@
 			);
 			submitted = true;
 		} catch (error) {
-			formError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+			formError = notifyError(error, 'Не удалось отправить заявку.');
 		} finally {
 			loading = false;
 		}

@@ -51,6 +51,8 @@
 	}
 	function keydown(event: KeyboardEvent) {
 		if (event.key !== 'Escape' || !open) return;
+		// A native modal can still own Escape when focus has moved to the browser chrome.
+		if (document.querySelector('dialog:modal')) return;
 		// Leave Escape to a modal drawer when one is open.
 		if (event.target instanceof Element && event.target.closest('[role="dialog"]')) return;
 		close();

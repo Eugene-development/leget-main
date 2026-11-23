@@ -30,7 +30,7 @@
 	>
 		<div class="cta-copy">
 			<h2 class="cta-title text-balance">{@render title()}</h2>
-			<p class="mt-4 max-w-[38ch] text-pretty text-on-accent-muted">
+			<p class="mt-4 max-w-[65ch] text-prose text-pretty text-on-accent-muted">
 				{@render description()}
 			</p>
 			<div class="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
@@ -76,8 +76,7 @@
 	}
 
 	.cta-title {
-		font-size: clamp(var(--text-3xl), 5.2cqi, var(--text-6xl));
-		line-height: 1.02;
+		font-size: var(--ds-font-section-title-size);
 		overflow-wrap: anywhere;
 	}
 

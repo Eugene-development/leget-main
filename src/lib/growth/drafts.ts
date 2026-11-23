@@ -1,3 +1,4 @@
+import { requestError, UserError } from '$lib/utils/user-error.js';
 import { get, writable } from 'svelte/store';
 import { getAuthToken } from '$lib/utils/auth-session';
 import { getGraphQLUrl } from '$lib/utils/config';
@@ -41,14 +42,14 @@ export function usesDraft(context: EditContext): boolean {
 	if (!isDraftUrl()) return false;
 	const session = get(draftSession);
 	if (!session || session.licenseId !== context.licenseId) {
-		throw new Error('Черновик ещё загружается. Повторите сохранение через несколько секунд.');
+		throw new UserError('Черновик ещё загружается. Повторите сохранение через несколько секунд.');
 	}
 	if (
 		context.slug != null &&
 		context.slug !== '__global__' &&
 		context.slug !== session.draft.slug
 	) {
-		throw new Error('Черновик относится к другой странице.');
+		throw new UserError('Черновик относится к другой странице. Откройте её и повторите сохранение.');
 	}
 	return true;
 }
@@ -59,7 +60,7 @@ export async function publicationRequest<T>(
 	data?: Record<string, unknown>
 ): Promise<T> {
 	const token = getAuthToken();
-	if (!token) throw new Error('Войдите в аккаунт владельца сайта.');
+	if (!token) throw requestError(401);
 	const base = getGraphQLUrl().replace(/\/graphql\/?$/, '');
 	const response = await fetch(
 		`${base}/growth/sites/${encodeURIComponent(context.licenseId)}/publication${path}`,
@@ -75,13 +76,10 @@ export async function publicationRequest<T>(
 		}
 	);
 	const result = await response.json().catch(() => ({}));
-	if (!response.ok) {
-		throw new Error(
-			response.status === 409
-				? 'Страница или черновик изменились в другой вкладке. Обновите страницу перед продолжением.'
-				: result.message || 'Не удалось выполнить действие. Повторите попытку.'
-		);
+	if (response.status === 409) {
+		throw new UserError('Страница или черновик изменились в другой вкладке. Обновите страницу перед продолжением.');
 	}
+	if (!response.ok) throw requestError(response.status, result?.code);
 	return result as T;
 }
 

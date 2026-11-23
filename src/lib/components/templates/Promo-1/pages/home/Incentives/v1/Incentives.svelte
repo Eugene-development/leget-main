@@ -182,7 +182,7 @@
 						<!-- Кегль сведён с остальными версиями блока (`5xl`/`6xl`): на 3xl
 						     заголовок был на ступень тише коллажа справа и проигрывал ему
 						     первый взгляд, хотя предмет блока называет именно он. -->
-						<h2 class="p1-title text-4xl sm:text-5xl lg:text-6xl">
+						<h2 class="p1-title text-section-title text-balance">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}

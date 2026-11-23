@@ -83,7 +83,7 @@
 						class="mt-4 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-body max-w-md text-base/7 break-words">
+							<p class="p1-body max-w-md text-prose break-words">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}

@@ -40,8 +40,7 @@
 				'Широкий выбор дизайнов для вашей кухни. Качественные столешницы от ведущих производителей. Большой выбор материалов и цветов',
 			span: 'lg:col-span-3',
 			frame: 'aspect-video',
-			pad: 'p-8',
-			heading: 'text-xl'
+			pad: 'p-8'
 		},
 		{
 			n: 2,
@@ -50,8 +49,7 @@
 				'Современные механизмы Hettich и BLUM, обеспечивающие плавность, надежность и бесшумность. Широкий ассортимент для комфортного хранения',
 			span: 'lg:col-span-3',
 			frame: 'aspect-video',
-			pad: 'p-8',
-			heading: 'text-xl'
+			pad: 'p-8'
 		},
 		{
 			n: 3,
@@ -60,8 +58,7 @@
 				'Встраиваемая и отдельностоящая техника от проверенных производителей с гарантией',
 			span: 'lg:col-span-2',
 			frame: 'aspect-square',
-			pad: 'p-6',
-			heading: 'text-lg'
+			pad: 'p-6'
 		},
 		{
 			n: 4,
@@ -69,8 +66,7 @@
 			description: 'Качественная сантехника от ведущих мировых производителей с гарантией до 5 лет',
 			span: 'lg:col-span-2',
 			frame: 'aspect-square',
-			pad: 'p-6',
-			heading: 'text-lg'
+			pad: 'p-6'
 		},
 		{
 			n: 5,
@@ -81,8 +77,7 @@
 			// вырастает в экран высотой.
 			span: 'sm:col-span-2 lg:col-span-2',
 			frame: 'aspect-square sm:aspect-video lg:aspect-square',
-			pad: 'p-6',
-			heading: 'text-lg'
+			pad: 'p-6'
 		}
 	];
 
@@ -142,7 +137,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-4 text-3xl sm:text-5xl">
+					<h2 class="p1-title mt-4 text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -174,8 +169,8 @@
 							{/snippet}
 						</EditableField>
 					</div>
-					<div class={card.pad}>
-						<h3 class="p1-title p1-title-sub {card.heading}">
+					<div class={["p1-card-copy", card.pad]}>
+						<h3 class="p1-title p1-title-sub text-card-title">
 							<EditableField
 								fieldKey={`Equipment.item${card.n}Title`}
 								label="Заголовок"
@@ -188,7 +183,7 @@
 								{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="equip-text p1-muted mt-3 text-sm leading-relaxed transition-colors">
+						<p class="equip-text p1-muted mt-3 text-prose transition-colors">
 							<EditableField
 								fieldKey={`Equipment.item${card.n}Description`}
 								label="Описание"

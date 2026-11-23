@@ -66,7 +66,7 @@
 					{#if project.categoryValue}
 						<span class="p1-label p1-body">{project.categoryValue}</span>
 					{/if}
-					<h3 class="p1-title p1-title-sub mt-1.5 text-lg">
+					<h3 class="p1-title p1-title-sub mt-1.5 text-card-title">
 						{projectTitle(project.value)}
 					</h3>
 					{#if project.objectAddress}

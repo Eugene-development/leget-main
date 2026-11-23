@@ -16,6 +16,8 @@
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { createContactVisibility } from '../contacts.svelte';
 	import ContactToggle from '../ContactToggle.svelte';
+	import MessengerContacts from '../MessengerContacts.svelte';
+	import { useCurrentYear } from '../year.svelte';
 	import '../../../theme.css';
 
 	let {
@@ -31,14 +33,6 @@
 		sitePhone?: string | null;
 		pageSettings?: Snippet<[triggerClass: string]>;
 	} = $props();
-
-	// Отключаемые строки контактов — логика общая для v1/v2/v3,
-	// см. `../contacts.svelte.ts`.
-	const contacts = createContactVisibility({
-		getData: () => data,
-		setData: (next) => (data = next),
-		getEditContext: () => editContext
-	});
 
 	let showLoginModal = $state(false);
 	const footerAccount = createFooterAccount();
@@ -58,13 +52,21 @@
 	const siteName = $derived(
 		data?.siteName === 'Новострой' ? 'Логотип' : editableText(data?.siteName, 'Логотип')
 	);
+	const currentYear = useCurrentYear();
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
 	const email = $derived(editableText(data?.email, 'info@site.ru'));
 	const address = $derived(editableText(data?.address, 'г. Москва, ул. Ленина, д. 10'));
 	const hours = $derived(editableText(data?.hours, 'Пн–Вс: 9:00 — 21:00'));
-	const telegram = $derived(String(data?.telegram ?? ''));
-	const whatsapp = $derived(String(data?.whatsapp ?? ''));
+
+	// Отключаемые строки контактов — логика общая для v1/v2/v3,
+	// см. `../contacts.svelte.ts`.
+	const contacts = createContactVisibility({
+		getData: () => data,
+		getValues: () => ({ phone, email, address, hours }),
+		setData: (next) => (data = next),
+		getEditContext: () => editContext
+	});
 
 	// Списки рубрик/услуг общие с хэдером (см. ../../catalogItems, ../../serviceItems).
 	const disabledRubrics = $derived(
@@ -203,62 +205,13 @@
 					</span>
 				</a>
 
-				<!-- Соцсети: glass-капсулы -->
-				<div class="mt-8 flex items-center gap-3">
-					<EditableField
-						richText={false}
-						fieldKey="Footer.telegram"
-						label="Telegram (ссылка)"
-						value={telegram}
-						onSave={(val) => saveField('telegram', val)}
-						{isEditable}
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue || isEditable}
-								<a
-									href={displayValue || '#'}
-									target="_blank"
-									rel="noopener noreferrer"
-									title="Telegram"
-									class="flex h-11 w-11 items-center justify-center rounded-2xl border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-cat-6-400/40 hover:bg-cat-6-500/10 hover:text-on-accent active:scale-[0.95]"
-								>
-									<svg class="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
-										<path
-											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.5.15.13.1.17.24.18.33.01.06.02.19.01.29z"
-										/>
-									</svg>
-								</a>
-							{/if}
-						{/snippet}
-					</EditableField>
-
-					<EditableField
-						richText={false}
-						fieldKey="Footer.whatsapp"
-						label="WhatsApp (ссылка)"
-						value={whatsapp}
-						onSave={(val) => saveField('whatsapp', val)}
-						{isEditable}
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue || isEditable}
-								<a
-									href={displayValue || '#'}
-									target="_blank"
-									rel="noopener noreferrer"
-									title="WhatsApp"
-									class="flex h-11 w-11 items-center justify-center rounded-2xl border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-cat-6-400/40 hover:bg-cat-6-500/10 hover:text-on-accent active:scale-[0.95]"
-								>
-									<svg class="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
-										<path
-											d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.758.459 3.473 1.332 4.984L2 22l5.201-1.365a9.927 9.927 0 004.811 1.253h.005c5.505 0 9.988-4.482 9.988-9.988C22 6.482 17.518 2 12.012 2zm6.275 13.99c-.258.724-1.25 1.328-1.725 1.402-.455.07-1.018.106-2.905-.678-2.42-.999-3.992-3.463-4.113-3.624-.121-.161-.99-1.317-.99-2.51 0-1.192.624-1.778.845-2.02.221-.241.483-.301.644-.301.161 0 .322.002.462.008.148.006.347-.056.544.422.201.489.684 1.667.745 1.788.06.121.101.262.02.423-.08.161-.121.262-.241.402-.121.141-.254.314-.362.422-.121.121-.248.254-.108.496.141.242.624 1.026 1.339 1.663.921.821 1.699 1.074 1.94 1.195.242.121.382.101.524-.06.141-.161.604-.704.765-.946.161-.242.322-.201.544-.121.221.08 1.402.663 1.644.784.242.121.402.181.463.282.06.1.06.583-.198 1.308z"
-										/>
-									</svg>
-								</a>
-							{/if}
-						{/snippet}
-					</EditableField>
-				</div>
+				<MessengerContacts
+					{data}
+					{saveField}
+					{isEditable}
+					groupClass="mt-8 flex items-center gap-3"
+					linkClass="flex h-11 w-11 items-center justify-center rounded-2xl border border-on-dark/10 bg-surface-raised/[0.03] text-on-dark/70 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-cat-6-400/40 hover:bg-cat-6-500/10 hover:text-on-accent active:scale-[0.95]"
+				/>
 			</div>
 
 			<!-- ПРАВО: контактная капсула (double-bezel) + колонки навигации -->
@@ -272,7 +225,7 @@
 						>
 							<div class="grid gap-5 sm:grid-cols-2">
 								<!-- Телефон -->
-								{#if contacts.isVisible('phone') || isEditable}
+								{#if contacts.isShown('phone') || isEditable}
 									<div
 										class="flex items-center gap-4 {contacts.isVisible('phone')
 											? ''
@@ -317,7 +270,7 @@
 								{/if}
 
 								<!-- Email -->
-								{#if contacts.isVisible('email') || isEditable}
+								{#if contacts.isShown('email') || isEditable}
 									<div
 										class="flex items-center gap-4 {contacts.isVisible('email')
 											? ''
@@ -370,7 +323,7 @@
 								{/if}
 
 								<!-- Адрес -->
-								{#if contacts.isVisible('address') || isEditable}
+								{#if contacts.isShown('address') || isEditable}
 									<div
 										class="flex items-start gap-4 {contacts.isVisible('address')
 											? ''
@@ -426,7 +379,7 @@
 								{/if}
 
 								<!-- Режим работы -->
-								{#if contacts.isVisible('hours') || isEditable}
+								{#if contacts.isShown('hours') || isEditable}
 									<div
 										class="flex items-start gap-4 {contacts.isVisible('hours') ? '' : 'opacity-45'}"
 									>
@@ -480,7 +433,7 @@
 				<!-- Колонки навигации -->
 				<div class="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
 					<div>
-						<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Информация</h3>
+						<h3 class="p1-title-sub text-base text-on-dark/40 uppercase">Информация</h3>
 						<ul class="mt-5 space-y-3.5">
 							<li>
 								<a
@@ -564,7 +517,7 @@
 
 					<div>
 						{#if visibleServiceItems.length > 0}
-							<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Услуги</h3>
+							<h3 class="p1-title-sub text-base text-on-dark/40 uppercase">Услуги</h3>
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleServiceItems as service}
 									<li>
@@ -585,7 +538,7 @@
 
 					<div>
 						{#if visibleCatalogItems.length > 0}
-							<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Каталог</h3>
+							<h3 class="p1-title-sub text-base text-on-dark/40 uppercase">Каталог</h3>
 							<ul class="mt-5 space-y-3.5">
 								{#each visibleCatalogItems as item}
 									<li>
@@ -615,7 +568,7 @@
 					</div>
 
 					<div>
-						<h3 class="p1-title-sub text-[10px] text-on-dark/40 uppercase">Прочее</h3>
+						<h3 class="p1-title-sub text-base text-on-dark/40 uppercase">Прочее</h3>
 						<ul class="mt-5 space-y-3.5">
 							<li>
 								<a
@@ -638,6 +591,9 @@
 										class="absolute -bottom-0.5 left-0 h-px w-0 bg-gradient-to-r from-cat-6-400 to-cat-7-500 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:w-full"
 									></span>
 								</a>
+							</li>
+							<li>
+								<a href="/b2b" class="inline-block text-sm text-on-dark/60 transition-colors hover:text-on-dark">B2B</a>
 							</li>
 							{#if client}
 								<li>
@@ -692,7 +648,7 @@
 			class="mt-20 flex flex-col gap-5 border-t border-on-dark/10 pt-8 md:flex-row md:flex-wrap md:items-center md:justify-between"
 		>
 			<p class="text-sm text-on-dark/45">
-				&copy; {new Date().getFullYear()}
+				&copy; {currentYear()}
 				{siteName}. Все права защищены.
 			</p>
 			<a

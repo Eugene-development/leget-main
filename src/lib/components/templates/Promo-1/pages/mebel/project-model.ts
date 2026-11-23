@@ -1,3 +1,4 @@
+import { UserError } from '$lib/utils/user-error.js';
 import { projectRequest } from './project-request';
 
 export const MAX_MODEL_BYTES = 25 * 1024 * 1024;
@@ -41,7 +42,7 @@ export function readProjectModel(meta?: Record<string, unknown> | null): Project
 
 export async function validateModelFile(file: File): Promise<void> {
 	if (!/\.glb$/i.test(file.name) || file.size < 20 || file.size > MAX_MODEL_BYTES)
-		throw new Error('Выберите GLB до 25 МБ. Сжатие выполняется автоматически.');
+		throw new UserError('Выберите GLB до 25 МБ. Сжатие выполняется автоматически.');
 	const header = new DataView(await file.slice(0, 20).arrayBuffer());
 	if (
 		header.getUint32(0, true) !== 0x46546c67 ||
@@ -49,7 +50,7 @@ export async function validateModelFile(file: File): Promise<void> {
 		header.getUint32(8, true) !== file.size ||
 		header.getUint32(16, true) !== 0x4e4f534a
 	)
-		throw new Error('Файл повреждён или не является моделью GLB 2.0.');
+		throw new UserError('Файл повреждён или не является моделью GLB 2.0.');
 }
 
 /** Cache successful PUTs so a failed project save does not upload the file twice. */

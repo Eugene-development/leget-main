@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { putStorageFile } from '$lib/utils/site-file-upload';
+	import { notifyError } from '$lib/utils/notify-error';
 	import { untrack, onDestroy, tick } from 'svelte';
 	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
 	import MebelTagPicker from './MebelTagPicker.svelte';
@@ -189,19 +191,7 @@
 		const info = result.generateUploadUrl;
 		if (!info?.uploadUrl || !info.objectUrl)
 			throw new Error('Не удалось получить адрес загрузки фотографии.');
-		let response: Response;
-		try {
-			response = await fetch(info.uploadUrl, {
-				method: 'PUT',
-				headers: { 'Content-Type': file.type },
-				body: file
-			});
-		} catch {
-			throw new Error(
-				'Не удалось загрузить фотографию. Проверьте подключение и повторите сохранение.'
-			);
-		}
-		if (!response.ok) throw new Error('Не удалось загрузить фотографию. Повторите сохранение.');
+		await putStorageFile(file, info.uploadUrl);
 		uploaded.set(file, info.objectUrl);
 		return info.objectUrl;
 	}
@@ -251,7 +241,7 @@
 			if (!data.upsertMebelProject?.id) throw new Error('Сервер не подтвердил сохранение проекта.');
 		} catch (cause) {
 			submitError =
-				cause instanceof Error ? cause.message : 'Не удалось сохранить проект. Повторите попытку.';
+				notifyError(cause, 'Не удалось сохранить проект. Повторите попытку.');
 			if (cause instanceof ProjectRequestError) {
 				errors = cause.fields;
 				if (errors.image_urls) uploaded.clear();

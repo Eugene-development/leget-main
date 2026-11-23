@@ -31,7 +31,7 @@
 		></div>
 	</div>
 	<div class="relative z-10 mx-auto max-w-4xl px-6 text-center lg:px-8">
-		<h2 class="text-4xl text-on-dark sm:text-7xl">
+		<h2 class="text-section-title text-balance text-on-dark">
 			<EditableField
 				fieldKey="DesignProjectCTA.title_part1"
 				label="Заголовок часть 1"

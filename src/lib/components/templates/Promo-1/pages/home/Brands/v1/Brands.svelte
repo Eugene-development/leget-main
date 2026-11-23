@@ -221,7 +221,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title mt-3 text-3xl sm:text-4xl">
+						<h2 class="p1-title mt-3 text-section-title text-balance">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}

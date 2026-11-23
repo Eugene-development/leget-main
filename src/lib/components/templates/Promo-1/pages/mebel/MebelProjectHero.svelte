@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { withPromoMotion } from '$lib/motion/transition';
 	import { fly } from 'svelte/transition';
 	// Артикул: 1.18.2.1 — см. docs/architecture/component-articles-map.md
@@ -85,7 +86,7 @@
 		} catch (cause) {
 			if (stillCurrent())
 				refreshError =
-					cause instanceof Error ? cause.message : 'Не удалось скрыть проект. Повторите попытку.';
+					notifyError(cause, 'Не удалось скрыть проект. Повторите попытку.');
 			hiding = false;
 			return;
 		}
@@ -286,7 +287,7 @@
 			<!-- Информация -->
 			<div class="mt-8 min-w-0 lg:col-start-2 lg:row-start-2 lg:mt-0">
 				<div class="flex flex-wrap items-center justify-between gap-4">
-					<h1 class="min-w-0 text-3xl text-ink-900 sm:text-4xl">
+					<h1 class="min-w-0 text-page-title text-balance text-ink-900">
 						{project.value}
 					</h1>
 					<div class="flex flex-wrap items-center gap-2">
@@ -477,7 +478,7 @@
 
 				{#if project.tags?.length}
 					<section class="mt-6 border-t border-ink-200 pt-4" aria-label="Теги проекта">
-						<h2 class="p1-title-sub mb-2 text-sm text-ink-800">Теги:</h2>
+						<h2 class="mb-2 text-section-title text-balance text-ink-800">Теги:</h2>
 						<ul class="flex flex-wrap gap-x-4 gap-y-1" aria-label="Бренды и материалы проекта">
 							{#each project.tags as tag (tag.id)}
 								{#if tag.name}

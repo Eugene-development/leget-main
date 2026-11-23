@@ -46,7 +46,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">
 		<EditableField
 			fieldKey="MebelProcess.title"
 			label="Заголовок"
@@ -61,15 +61,15 @@
 		</EditableField>
 	</h2>
 
-	<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+	<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
 		{#each steps as step, i}
-			<div class="relative rounded-xl border border-ink-50 bg-surface-raised p-5 shadow-sm">
+			<div class="p1-card-copy relative rounded-xl border border-ink-50 bg-surface-raised p-5 shadow-sm">
 				<span
 					class="absolute -top-3 left-5 flex h-7 w-7 items-center justify-center rounded-full bg-link-500 text-sm font-bold text-on-accent"
 				>
 					{i + 1}
 				</span>
-				<h3 class="p1-title-sub mt-2 text-ink-900">
+				<h3 class="p1-title-sub mt-2 text-ink-900 text-card-title">
 					<EditableField
 						fieldKey="MebelProcess.steps.{i}.title"
 						label="Заголовок этапа"
@@ -83,7 +83,7 @@
 						{/snippet}
 					</EditableField>
 				</h3>
-				<p class="mt-1 text-sm text-ink-600">
+				<p class="mt-1 text-prose text-ink-600">
 					<EditableField
 						fieldKey="MebelProcess.steps.{i}.desc"
 						label="Описание этапа"

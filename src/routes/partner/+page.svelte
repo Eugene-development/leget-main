@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import CompanyCardEditor from './CompanyCardEditor.svelte';
+	import cabinetBackground from './partner-cabinet-background.jpg';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	const profile = $derived(data.profile);
 
@@ -30,7 +32,12 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<main class="min-h-screen bg-surface-warm px-4 py-12 sm:px-6 lg:px-8">
+<main class="partner-cabinet relative isolate min-h-screen px-4 py-12 sm:px-6 lg:px-8">
+	<div
+		aria-hidden="true"
+		class="cabinet-background pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+		style:--cabinet-art={`url("${cabinetBackground}")`}
+	></div>
 	<div class="mx-auto max-w-3xl">
 		{#if data.serviceUnavailable}
 			<section class="rounded-3xl border border-border-light bg-surface-raised p-8 shadow-card">
@@ -54,7 +61,7 @@
 						{initials}
 					</span>
 					<div>
-						<p class="text-xs tracking-[0.18em] text-ink-400 uppercase">Кабинет партнёра</p>
+						<p class="text-xs tracking-[0.18em] text-ink-600 uppercase">Кабинет партнёра</p>
 						<h1 class="mt-1 text-3xl text-ink-950">{profile.name}</h1>
 					</div>
 				</div>
@@ -62,12 +69,12 @@
 				<div class="flex flex-wrap items-center gap-3">
 					<a
 						href="/university/auth"
-						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700"
+						class="rounded-xl border border-border-medium bg-surface-raised px-5 py-3 text-sm text-ink-700 transition hover:bg-surface-muted"
 						>Обучение</a
 					>
 					<a
 						href="/"
-						class="rounded-xl border border-border-medium px-5 py-3 text-sm text-ink-700 transition hover:bg-surface-muted"
+						class="rounded-xl border border-border-medium bg-surface-raised px-5 py-3 text-sm text-ink-700 transition hover:bg-surface-muted"
 					>
 						На сайт
 					</a>
@@ -135,13 +142,24 @@
 				</dl>
 			</section>
 
+			{#if data.companyCard}
+				<CompanyCardEditor card={data.companyCard} result={form} />
+			{:else if data.cardError}
+				<p
+					class="mt-6 rounded-2xl border border-border-light bg-surface-raised p-5 text-sm text-ink-600"
+					role="alert"
+				>
+					Не удалось загрузить карточку компании. Обновите страницу, чтобы повторить попытку.
+				</p>
+			{/if}
+
 			<!--
 				Пустое состояние без выдуманных цифр: партнёрских данных в схеме
 				ещё нет (ни рефералов, ни начислений), и показать «0 ₽» значило бы
 				соврать про существующий, но нулевой счёт.
 			-->
 			<section
-				class="mt-6 rounded-3xl border border-dashed border-border-medium bg-surface-muted p-7"
+				class="mt-6 rounded-3xl border border-dashed border-border-medium bg-surface-raised p-7"
 			>
 				<h2 class="text-xl text-ink-950">Партнёрская программа</h2>
 				<p class="mt-2 text-sm leading-relaxed text-ink-600">
@@ -158,7 +176,7 @@
 
 			{#if !profile.email_verified}
 				<p
-					class="mt-6 rounded-2xl border border-border-light bg-surface-muted p-5 text-sm text-ink-600"
+					class="mt-6 rounded-2xl border border-border-light bg-surface-raised p-5 text-sm text-ink-600"
 				>
 					Мы отправили письмо со ссылкой подтверждения на {profile.email}. Проверьте почту, включая
 					папку «Спам».
@@ -167,3 +185,44 @@
 		{/if}
 	</div>
 </main>
+
+<style>
+	.partner-cabinet {
+		background-color: #e1e8ef;
+	}
+
+	.cabinet-background {
+		--tile-height: max(clamp(38rem, 85svh, 60rem), 66.667vw);
+		--tile-width: calc(var(--tile-height) * 1.5);
+		--art-x: 24%;
+
+		background-position: var(--art-x) top;
+	}
+
+	.cabinet-background,
+	.cabinet-background::after {
+		background-image: var(--cabinet-art);
+		background-size: var(--tile-width) var(--tile-height);
+		background-repeat: repeat-y;
+	}
+
+	.cabinet-background::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		/* Anchor the flipped layer to the bottom so its tiles start at the top after mirroring. */
+		background-position: var(--art-x) bottom;
+		transform: scaleY(-1);
+		mask-image: repeating-linear-gradient(
+			to top,
+			transparent 0 var(--tile-height),
+			black var(--tile-height) calc(var(--tile-height) * 2)
+		);
+	}
+
+	@media (min-width: 48rem) {
+		.cabinet-background {
+			--art-x: 50%;
+		}
+	}
+</style>

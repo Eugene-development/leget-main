@@ -141,7 +141,7 @@
 				class="ab-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl text-pretty sm:text-4xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -156,7 +156,7 @@
 				class="ab-item ab-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto max-w-2xl text-sm/6 sm:text-base/7">
+					<p class="p1-body mx-auto max-w-2xl text-prose">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -167,7 +167,7 @@
 			{#each items as item, i}
 				{@const c = colorMap[item.color] ?? colorMap.red}
 				<div
-					class="ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
+					class="p1-card-copy ab-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--ab-delay: {i * 70}ms"
 				>
 					<div
@@ -175,7 +175,7 @@
 						aria-hidden="true"
 					></div>
 					<span
-						class="pointer-events-none absolute top-5 right-6 text-4xl font-semibold tabular-nums {c.index}"
+						class="pointer-events-none absolute top-5 right-6 text-stat font-semibold tabular-nums {c.index}"
 						aria-hidden="true"
 					>
 						{String(i + 1).padStart(2, '0')}
@@ -201,7 +201,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title p1-title-sub mt-6 text-lg">
+						<h3 class="p1-title p1-title-sub mt-6 text-card-title wrap-anywhere">
 							<EditableField
 								fieldKey="Values.{i}.title"
 								label="Заголовок"
@@ -213,7 +213,7 @@
 								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="p1-body mt-3 text-sm/6">
+						<p class="p1-body mt-3 text-prose wrap-anywhere">
 							<EditableField
 								fieldKey="Values.{i}.text"
 								label="Описание"

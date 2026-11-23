@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import type { Row } from './api';
 	let { onSave }: { onSave: (value: Row) => Promise<unknown> } = $props();
 	let mode = $state('new');
@@ -15,7 +16,7 @@
 		try {
 			await onSave(value);
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось назначить менеджера.';
+			error = notifyError(e, 'Не удалось назначить менеджера.');
 			needsConfirmation =
 				(e as { code?: string })?.code === 'role_replacement_confirmation_required';
 		} finally {

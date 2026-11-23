@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { flushSync } from 'svelte';
+	import { toast } from '$lib/stores/toast.svelte';
 	import { headerButtonStyle } from '$lib/site-settings/header-button';
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData, SubmitFunction } from './$types';
@@ -99,6 +100,10 @@
 	$effect(() => {
 		const section = errorSection(feedback?.errors);
 		if (section) activeSection = section;
+	});
+
+	$effect(() => {
+		if (feedback?.success === false && feedback.message) toast.error(feedback.message);
 	});
 
 	$effect(() => {

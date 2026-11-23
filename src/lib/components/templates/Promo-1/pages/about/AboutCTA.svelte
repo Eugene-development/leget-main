@@ -93,7 +93,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-brand-600 uppercase sm:text-xs"
+							class="inline-flex items-center gap-3 p1-label text-brand-600"
 						>
 							<span class="h-px w-8 bg-brand-500/60" aria-hidden="true"></span>
 							<RichText value={displayValue} />
@@ -111,7 +111,7 @@
 					class="ab-item ab-d2 mt-5 block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
+						<h2 class="p1-title text-section-title text-balance">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
@@ -127,7 +127,7 @@
 					class="ab-item ab-d3 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="p1-body mx-auto max-w-xl text-sm/6 sm:text-base/7">
+						<p class="p1-body mx-auto max-w-xl text-prose">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -140,7 +140,7 @@
 						data-goal-action="open"
 						type="button"
 						onclick={() => serviceOrderStore.open('consultation')}
-						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
+						class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-500 px-7 py-3.5 text-control font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 transition duration-300 hover:bg-brand-400 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
 					>
 						<EditableField
 							fieldKey="AboutCTA.buttonText"
@@ -173,7 +173,7 @@
 							{#if displayValue}
 								<a
 									href={phoneHref}
-									class="group p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border border-ink-900/15 px-7 py-3.5 text-sm font-semibold transition duration-300 hover:border-ink-900/30 hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink-400 motion-safe:hover:-translate-y-0.5"
+									class="group p1-card p1-title inline-flex items-center justify-center gap-2.5 rounded-full border border-ink-900/15 px-7 py-3.5 text-control font-semibold transition duration-300 hover:border-ink-900/30 hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink-400 motion-safe:hover:-translate-y-0.5"
 								>
 									<svg
 										class="size-4.5 text-brand-500 transition-transform duration-300 group-hover:-rotate-12"

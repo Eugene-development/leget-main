@@ -53,7 +53,7 @@
 				<span class="p1-title" aria-current="page">Освещение</span>
 			</nav>
 
-			<h1 class="p1-title max-w-3xl text-3xl text-balance sm:text-4xl lg:text-5xl">
+			<h1 class="p1-title max-w-3xl text-page-title text-balance">
 				<EditableField
 					fieldKey="OsveshchenieHero.title"
 					label="Заголовок"
@@ -66,7 +66,7 @@
 				</EditableField>
 			</h1>
 
-			<p class="p1-body mt-5 max-w-2xl text-lg leading-relaxed">
+			<p class="p1-body mt-5 max-w-2xl text-prose">
 				<EditableField
 					fieldKey="OsveshchenieHero.description"
 					label="Описание"

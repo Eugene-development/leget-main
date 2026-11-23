@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import RememberMe from '$lib/components/RememberMe.svelte';
 	let remember = $state(false);
 	let smsBusy = $state(false);
@@ -76,7 +77,7 @@
 				await invalidateAll();
 			}
 		} catch (e) {
-			problem = e instanceof Error ? e.message : 'Не удалось связаться с университетом.';
+			problem = notifyError(e, 'Не удалось связаться с университетом.');
 			resetCaptcha();
 		} finally {
 			busy = false;
@@ -96,7 +97,7 @@
 			if (!response.ok) throw new Error(result.message || 'Не удалось подключить обучение.');
 			await goto('/university/student', { invalidateAll: true });
 		} catch (e) {
-			problem = e instanceof Error ? e.message : 'Не удалось подключить обучение.';
+			problem = notifyError(e, 'Не удалось подключить обучение.');
 		} finally {
 			busy = false;
 		}
@@ -111,7 +112,7 @@
 			switchMode(false);
 			await invalidateAll();
 		} catch (e) {
-			problem = e instanceof Error ? e.message : 'Не удалось сменить аккаунт.';
+			problem = notifyError(e, 'Не удалось сменить аккаунт.');
 		} finally {
 			busy = false;
 		}

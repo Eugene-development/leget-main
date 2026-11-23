@@ -9,6 +9,7 @@ import TopBar from './layout/TopBar/index.svelte';
 import Footer from './layout/Footer.svelte';
 export { Header, TopBar, Footer };
 
+import NotFound from './pages/404/NotFound.svelte';
 import FavoritesHero from './pages/favorites/FavoritesHero.svelte';
 import FavoritesGallery from './pages/favorites/FavoritesGallery.svelte';
 
@@ -113,6 +114,7 @@ import YandexDirectCTA from './pages/yandex-direct/CTA.svelte';
 
 // Page-specific overrides keyed by page slug
 export const pageOverrides: Record<string, ComponentMap> = {
+	'/404': { NotFound },
 	'/equipment': {
 		EquipmentHero,
 		EquipmentAppliances,

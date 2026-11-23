@@ -91,7 +91,7 @@
 						d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
 					/>
 				</svg>
-				<h3 class="p1-title-sub mt-4 text-lg text-ink-900">Проектов не найдено</h3>
+				<h3 class="p1-title-sub mt-4 text-card-title text-ink-900">Проектов не найдено</h3>
 				<p class="mt-2 text-ink-600">В данной категории пока нет проектов</p>
 				<button
 					data-metrika-goal="pages_mebel_mebelprojectsgrid_open_1"
@@ -105,7 +105,7 @@
 			</div>
 		{:else}
 			<div class="mb-7 flex items-center justify-between gap-4">
-				<h2 class="ds-title-sub text-2xl text-ink-900">Проекты категории</h2>
+				<h2 class="text-section-title text-balance text-ink-900">Проекты категории</h2>
 				<div class="hidden sm:block">
 					<FeedViewToggle {view} onpick={pickView} />
 				</div>
@@ -152,10 +152,10 @@
 									></div>
 								</div>
 
-								<div class="px-5 pt-5 pb-3">
+								<div class="p1-card-copy px-5 pt-5 pb-3">
 									<div class="flex items-start justify-between gap-4">
 										<h3
-											class="p1-title-sub line-clamp-2 text-base text-ink-900 transition-colors group-hover:text-link-600"
+											class="p1-title-sub min-w-0 text-card-title text-ink-900 transition-colors group-hover:text-link-600"
 										>
 											{projectTitle(project.value)}
 										</h3>
@@ -174,7 +174,7 @@
 										</svg>
 									</div>
 									{#if project.short_description}
-										<p class="mt-2 line-clamp-1 text-xs text-ink-500">
+										<p class="mt-2 text-prose text-ink-500">
 											{project.short_description}
 										</p>
 									{/if}

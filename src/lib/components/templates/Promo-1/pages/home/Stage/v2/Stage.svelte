@@ -132,7 +132,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title mt-4 text-3xl md:text-4xl">
+						<h2 class="p1-title mt-4 text-section-title text-balance">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
@@ -151,7 +151,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<p class="p1-body mt-6 text-sm leading-relaxed md:text-base">
+						<p class="p1-body mt-6 text-prose">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -171,10 +171,10 @@
 							class="p1-stage-marker absolute top-6 -left-[35px] h-4 w-4 rounded-full border-4 border-ink-700 bg-ink-950 shadow-[0_0_10px] shadow-link-400/20 transition-all duration-300 group-hover:scale-125 group-hover:border-link-400"
 						></div>
 
-						<div class="p1-stage-row flex items-start gap-5">
+						<div class="p1-stage-row flex items-start gap-3 sm:gap-5">
 							<!-- Анимированная иконка шага -->
 							<div
-								class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-link-500 to-cat-4-600 text-on-accent shadow-lg transition-transform duration-300 group-hover:scale-105"
+								class="flex size-8 shrink-0 items-center justify-center rounded-xl sm:size-12 sm:rounded-2xl bg-gradient-to-br from-link-500 to-cat-4-600 text-on-accent shadow-lg transition-transform duration-300 group-hover:scale-105"
 							>
 								<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path
@@ -186,12 +186,12 @@
 								</svg>
 							</div>
 
-							<div>
-								<div class="flex items-center gap-3">
+							<div class="p1-card-copy min-w-0 flex-1">
+								<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
 									<span class="p1-label text-link-400">Шаг {i + 1}</span>
 									<span class="h-1.5 w-1.5 rounded-full bg-ink-600"></span>
 									<h3
-										class="p1-title p1-title-sub text-lg transition-colors duration-300 group-hover:text-link-300"
+										class="p1-title p1-title-sub text-card-title transition-colors duration-300 group-hover:text-link-300"
 									>
 										<EditableField
 											fieldKey={`Stage.steps.${i}.title`}
@@ -207,7 +207,7 @@
 									</h3>
 								</div>
 								<p
-									class="p1-muted group-hover:p1-body mt-2 text-xs leading-relaxed transition-colors duration-300 md:text-sm"
+									class="p1-muted group-hover:p1-body mt-2 text-prose transition-colors duration-300"
 								>
 									<EditableField
 										fieldKey={`Stage.steps.${i}.description`}

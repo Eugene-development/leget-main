@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { untrack } from 'svelte';
 	import GrowthFrame from '$lib/growth/GrowthFrame.svelte';
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
@@ -57,7 +58,7 @@
 			documentIds = next.plan.document_ids;
 		} catch (e) {
 			if (turn === generation && !(e instanceof DOMException && e.name === 'AbortError'))
-				error = e instanceof Error ? e.message : 'Не удалось загрузить заказ.';
+				error = notifyError(e, 'Не удалось загрузить заказ.');
 		} finally {
 			if (turn === generation) loading = false;
 		}
@@ -105,7 +106,7 @@
 			}
 		} catch (e) {
 			if (turn === generation)
-				error = e instanceof Error ? e.message : 'Не удалось выполнить действие.';
+				error = notifyError(e, 'Не удалось выполнить действие.');
 		} finally {
 			busy = false;
 		}

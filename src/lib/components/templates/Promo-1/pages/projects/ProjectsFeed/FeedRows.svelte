@@ -71,10 +71,10 @@
 						href={projectHref(project)}
 						class="self-start focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-link-500"
 					>
-						<h3 class="p1-title p1-title-sub mt-2 text-xl">{projectTitle(project.value)}</h3>
+						<h3 class="p1-title p1-title-sub mt-2 text-card-title">{projectTitle(project.value)}</h3>
 					</a>
 					{#if actionsBelowTitle && project.shortDescription}
-						<p class="p1-body mt-2 text-sm leading-snug">{project.shortDescription}</p>
+						<p class="p1-body mt-2 text-prose">{project.shortDescription}</p>
 					{/if}
 					{#if actionsBelowTitle}
 						<ProjectImageActions

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { untrack } from 'svelte';
 	import GrowthFrame from '$lib/growth/GrowthFrame.svelte';
 	import { crmRequest, type Row } from '$lib/crm/api';
@@ -27,7 +28,7 @@
 			if (site === data.site) checklist = next;
 		} catch (e) {
 			if (site === data.site)
-				failure = e instanceof Error ? e.message : 'Не удалось сохранить проверку.';
+				failure = notifyError(e, 'Не удалось сохранить проверку.');
 		} finally {
 			if (site === data.site) busy = '';
 		}

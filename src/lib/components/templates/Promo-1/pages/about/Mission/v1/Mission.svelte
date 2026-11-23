@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.2.3.1 — см. docs/architecture/component-articles-map.md
-	import { tick } from 'svelte';
+	import EditableField from '$lib/components/EditableField.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichText from '$lib/components/RichText.svelte';
-	import EditableField from '$lib/components/EditableField.svelte';
-	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
-	import { revealOnScroll } from '../../theme';
-	import '../../theme.css';
 	import { isLightBlock } from '$lib/utils/block-theme';
+	import { editableText } from '$lib/utils/editable-text';
+	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 	import '../../../../theme.css';
 
 	let {
@@ -21,178 +18,149 @@
 		isEditable?: boolean;
 	} = $props();
 
-	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
+	const headingId = $props.id();
 	const isLight = $derived(isLightBlock(data, 'light'));
+	const title = $derived(editableText(data?.title, 'Наша миссия'));
+	const lead = $derived(editableText(data?.text1));
+	const details = $derived(
+		[
+			{ key: 'text2', label: 'Абзац 2', value: editableText(data?.text2) },
+			{ key: 'text3', label: 'Абзац 3', value: editableText(data?.text3) }
+		].filter((paragraph) => paragraph.value.trim() || isEditable)
+	);
+	const imageUrl = $derived(editableText(data?.imageUrl).trim());
+	const showImage = $derived(Boolean(imageUrl) || isEditable);
+
 	async function saveField(field: string, value: string) {
 		if (!editContext) return;
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'Mission', updated);
 		data = updated;
 	}
-
-	/** Пустые абзацы не видны посетителю, но остаются доступными в редакторе. */
-	const paragraphs = $derived([
-		{ key: 'text1', label: 'Абзац 1', value: String(data?.text1 ?? '') },
-		{ key: 'text2', label: 'Абзац 2', value: String(data?.text2 ?? '') },
-		{ key: 'text3', label: 'Абзац 3', value: String(data?.text3 ?? '') }
-	]);
-
-	const imageUrl = $derived(String(data?.imageUrl ?? '').trim());
-	let layoutEl = $state<HTMLDivElement | null>(null);
-	let imageEl = $state<HTMLDivElement | null>(null);
-	let imageOffset = $state(0);
-
-	// Привязка к реальному центру text2, а не к центру всей колонки с заголовком.
-	// Перемеряем отдельные абзацы: их высоты могут измениться взаимно, сохранив
-	// общую высоту колонки (например, во время редактирования).
-	$effect(() => {
-		paragraphs;
-		if (!layoutEl || !imageEl) return;
-		const layout = layoutEl;
-		const image = imageEl;
-		let disposed = false;
-		const measure = () => {
-			const middle = layout.querySelector<HTMLElement>('.mission-middle');
-			const column = layout.querySelector<HTMLElement>('.mission-text');
-			const anchor = middle ?? column;
-			if (!anchor) return;
-			imageOffset =
-				anchor.getBoundingClientRect().top -
-				layout.getBoundingClientRect().top +
-				anchor.offsetHeight / 2 -
-				image.offsetHeight / 2;
-		};
-		const observer = new ResizeObserver(measure);
-		tick().then(() => {
-			if (disposed) return;
-			observer.observe(image);
-			layout
-				.querySelectorAll('.mission-text, .mission-paragraph')
-				.forEach((el) => observer.observe(el));
-			measure();
-		});
-		return () => {
-			disposed = true;
-			observer.disconnect();
-		};
-	});
 </script>
 
-<section
-	class="p1-surface relative isolate overflow-hidden py-section-sm"
-	data-p1-theme={isLight ? 'light' : 'dark'}
->
-	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="ab-rules"></div>
-	</div>
+{#snippet paragraph(key: string, label: string, value: string)}
+	<EditableField
+		fieldKey="Mission.{key}"
+		{label}
+		{value}
+		{isEditable}
+		multiline
+		onSave={(v) => saveField(key, v)}
+		class="block min-w-0"
+	>
+		{#snippet children(displayValue)}
+			{#if displayValue.trim()}
+				<div class="p1-body max-w-[65ch] text-prose wrap-anywhere"><RichText value={displayValue} /></div>
+			{:else if isEditable}
+				<p class="p1-border p1-body rounded-lg border border-dashed px-4 py-3 text-sm/6">
+					Добавьте {label.toLowerCase()}
+				</p>
+			{/if}
+		{/snippet}
+	</EditableField>
+{/snippet}
 
-	<div use:revealOnScroll class="ab-reveal relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div
-			bind:this={layoutEl}
-			class={imageUrl || isEditable ? 'lg:grid lg:grid-cols-2 lg:items-start lg:gap-16' : ''}
-		>
-			<div class="mission-text {imageUrl || isEditable ? '' : 'mx-auto max-w-4xl'}">
-				<EditableField
-					fieldKey="Mission.title"
-					label="Заголовок"
-					value={editableText(data?.title, 'Наша миссия')}
-					{isEditable}
-					onSave={(v) => saveField('title', v)}
-					class="ab-item block"
-				>
-					{#snippet children(displayValue)}
-						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
-							<RichText value={displayValue} />
-						</h2>
-					{/snippet}
-				</EditableField>
-
-				<!--
-					Абзацы идут одним списком: раньше каждый был отдельным блоком со своим
-					mt-*, и при пустом первом абзаце отступы съезжали. Теперь отступ задаёт
-					сам список: пустое поле скрыто от посетителя, но в редакторе показывает подсказку.
-				-->
-				<div class="mt-8 grid gap-4 sm:gap-5">
-					{#each paragraphs as paragraph (paragraph.key)}
-						{#if paragraph.value.trim() || isEditable}
-							<EditableField
-								fieldKey="Mission.{paragraph.key}"
-								label={paragraph.label}
-								value={paragraph.value}
-								{isEditable}
-								multiline
-								onSave={(v) => saveField(paragraph.key, v)}
-								class="mission-paragraph {paragraph.key === 'text2'
-									? 'mission-middle'
-									: ''} block rounded-md border-l border-ink-800 px-5 py-6 sm:px-8"
-							>
-								{#snippet children(displayValue)}
-									{#if displayValue.trim()}
-										<p class="p1-body text-prose"><RichText value={displayValue} /></p>
-									{:else if isEditable}
-										<p
-											class="p1-muted max-w-xl rounded-xl border border-dashed border-ink-400/50 px-4 py-3 text-sm/6"
-										>
-											Добавьте {paragraph.label.toLowerCase()}
-										</p>
-									{/if}
-								{/snippet}
-							</EditableField>
-						{/if}
-					{/each}
+{#if title.trim() || lead.trim() || details.length || showImage}
+	<section
+		class="p1-surface py-section-2xs sm:py-section-xs lg:py-section-sm"
+		data-p1-theme={isLight ? 'light' : 'dark'}
+		aria-labelledby={title.trim() ? headingId : undefined}
+	>
+		<div class="mission-layout mx-auto max-w-7xl px-5 sm:px-8" class:with-image={showImage}>
+			{#if title.trim() || lead.trim() || isEditable}
+				<div class="mission-intro grid min-w-0 gap-5">
+					{#if title.trim() || isEditable}
+						<EditableField
+							fieldKey="Mission.title"
+							label="Заголовок"
+							value={title}
+							{isEditable}
+							onSave={(v) => saveField('title', v)}
+							class="block min-w-0"
+						>
+							{#snippet children(displayValue)}
+								{#if displayValue.trim()}
+									<h2
+										id={headingId}
+										class="p1-title text-section-title text-balance wrap-anywhere"
+									>
+										<RichText value={displayValue} />
+									</h2>
+								{:else if isEditable}
+									<p class="p1-border p1-body rounded-lg border border-dashed px-4 py-3 text-sm/6">
+										Добавьте заголовок
+									</p>
+								{/if}
+							{/snippet}
+						</EditableField>
+					{/if}
+					{#if lead.trim() || isEditable}
+						{@render paragraph('text1', 'Абзац 1', lead)}
+					{/if}
 				</div>
-			</div>
-
-			<!-- Изображение без дополнительной подложки. -->
-			{#if imageUrl || isEditable}
-				<div
-					bind:this={imageEl}
-					class="mission-image ab-card ab-d2 mt-12"
-					style:--mission-image-offset={`${imageOffset}px`}
-				>
-					<EditableField
-						fieldKey="Mission.imageUrl"
-						kind="image"
-						label="URL изображения"
-						value={String(data?.imageUrl ?? '')}
-						{isEditable}
-						onSave={(v) => saveField('imageUrl', v)}
-						class="block"
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue}
-								<ImageFallback
-									loading="lazy"
-									src={displayValue}
-									alt=""
-									class="aspect-4/3 w-full rounded-4xl object-cover"
-								/>
-							{:else}
-								<div class="flex aspect-4/3 w-full items-center justify-center rounded-4xl">
-									<p class="p1-muted text-sm">Добавьте URL изображения</p>
-								</div>
-							{/if}
-						{/snippet}
-					</EditableField>
+			{/if}
+			{#if showImage}
+				<div class="mission-media p1-body min-w-0">
+					<ImageFallback
+						src={imageUrl}
+						imagePath={['imageUrl']}
+						alt=""
+						loading="lazy"
+						decoding="async"
+						class="block aspect-4/3 w-full rounded-3xl object-cover"
+					/>
+				</div>
+			{/if}
+			{#if details.length}
+				<div class="mission-details grid min-w-0 gap-4">
+					{#each details as detail (detail.key)}
+						{@render paragraph(detail.key, detail.label, detail.value)}
+					{/each}
 				</div>
 			{/if}
 		</div>
-	</div>
-</section>
+	</section>
+{/if}
 
 <style>
-	.mission-image {
-		width: 90%;
-		margin-inline: auto;
+	.mission-layout {
+		display: grid;
 	}
-	@media (min-width: 1024px) {
-		.mission-image {
-			margin-top: var(--mission-image-offset, 0px);
+
+	.mission-layout > * + * {
+		margin-block-start: var(--ds-space-prose-paragraph);
+	}
+
+	.mission-layout:not(.with-image),
+	.mission-layout:not(:has(.mission-intro, .mission-details)) {
+		max-inline-size: 48rem;
+	}
+
+	@media (min-width: 64rem) {
+		.mission-layout.with-image:has(.mission-intro, .mission-details) {
+			grid-template-areas: '. media' 'intro media' 'details media' '. media';
+			grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+			grid-template-rows: 1fr auto auto 1fr;
+			column-gap: clamp(2.5rem, 5vw, 5rem);
 		}
-	}
-	section :global(.mission-paragraph) {
-		/* Сохраняем системную светлоту ink-800, убираем цветность линии. */
-		border-left-color: var(--ds-copy, var(--p1-body));
-		background: linear-gradient(var(--p1-veil), var(--p1-veil)), var(--p1-surface-alt);
+
+		.with-image .mission-intro {
+			grid-area: intro;
+		}
+
+		.with-image:has(.mission-intro, .mission-details) .mission-media {
+			grid-area: media;
+			align-self: center;
+			margin-block-start: 0;
+		}
+
+		.with-image .mission-details {
+			grid-area: details;
+		}
+
+		.with-image:not(:has(.mission-intro)) .mission-details {
+			margin-block-start: 0;
+		}
 	}
 </style>

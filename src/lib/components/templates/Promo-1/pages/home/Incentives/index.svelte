@@ -4,6 +4,7 @@
 	import IncentivesV1 from './v1/Incentives.svelte';
 	import IncentivesV2 from './v2/Incentives.svelte';
 	import IncentivesV3 from './v3/Incentives.svelte';
+	import IncentivesV4 from './v4/Incentives.svelte';
 	import VersionSwitcher from '$lib/components/VersionSwitcher.svelte';
 
 	let {
@@ -20,8 +21,9 @@
 	// эффекты не выполняются, и SSR отдавал бы v1 независимо от данных —
 	// на живых сайтах это давало подмену версии после гидратации, а каталог
 	// /_ds (пререндер) вообще не смог бы показать ничего, кроме v1.
-	let selectedVersion = $state<'v1' | 'v2' | 'v3' | 'disabled'>(
-		(data?.incentivesVersion as 'v1' | 'v2' | 'v3' | 'disabled') ?? 'v1'
+	type IncentivesVersion = 'v1' | 'v2' | 'v3' | 'v4' | 'disabled';
+	let selectedVersion = $state<IncentivesVersion>(
+		(data?.incentivesVersion as IncentivesVersion) ?? 'v1'
 	);
 	const p1_fly = withPromoMotion(fly);
 </script>
@@ -39,8 +41,8 @@
 			{isEditable}
 			componentType="Incentives"
 			versionKey="incentivesVersion"
-			versions={['v1', 'v2', 'v3']}
-			themeVersions={['v1', 'v2', 'v3']}
+			versions={['v1', 'v2', 'v3', 'v4']}
+			themeVersions={['v1', 'v2', 'v3', 'v4']}
 			themeDefault="light"
 			title="Выгоды"
 			bind:selectedVersion
@@ -68,7 +70,15 @@
 		{/if}
 
 		<!-- Динамический рендеринг выбранного компонента с эффектом слайдера -->
-		{#if selectedVersion === 'v3'}
+		{#if selectedVersion === 'v4'}
+			<div
+				class="w-full"
+				in:p1_fly={{ x: 1200, duration: 600 }}
+				out:p1_fly={{ x: 1200, duration: 600 }}
+			>
+				<IncentivesV4 bind:data {editContext} {isEditable} />
+			</div>
+		{:else if selectedVersion === 'v3'}
 			<div
 				class="w-full"
 				in:p1_fly={{ x: 1200, duration: 600 }}

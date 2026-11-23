@@ -1,3 +1,5 @@
+import { requestError, UserError } from '$lib/utils/user-error.js';
+
 export type Row = Record<string, any>;
 export type Field = {
 	key: string;
@@ -41,18 +43,10 @@ export async function crmRequest(
 		});
 	} catch (error) {
 		if (options.signal?.aborted) throw error;
-		throw new Error('Связь прервалась. Повторите действие — повтор не создаст дубль.');
+		throw new UserError('Связь прервалась. Повторите действие — повтор не создаст дубль.');
 	}
 	const result = await response.json().catch(() => ({}));
-	if (!response.ok)
-		throw Object.assign(
-			new Error(
-				result.errors
-					? Object.values(result.errors).flat().join(' ')
-					: result.message || `Не удалось выполнить действие (${response.status}).`
-			),
-			{ code: result.code }
-		);
+	if (!response.ok) throw requestError(response.status, result?.code);
 	if (body) attempts.delete(signature);
 	return result;
 }

@@ -92,7 +92,7 @@
 				{/snippet}
 			</EditableField>
 
-			<h1 class="p1-title mt-5 text-4xl sm:text-6xl">
+			<h1 class="p1-title mt-5 text-page-title text-balance">
 				<EditableField
 					fieldKey="ConsultationHero.title_part1"
 					label="Заголовок часть 1"
@@ -129,7 +129,7 @@
 				class="mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body max-w-xl text-lg leading-relaxed"><RichText value={displayValue} /></p>
+					<p class="p1-body max-w-xl text-prose"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 

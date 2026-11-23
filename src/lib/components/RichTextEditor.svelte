@@ -12,6 +12,8 @@
 		value,
 		label,
 		legacyHtml = false,
+		defaultFontSize,
+		fillHeight = false,
 		disabled = false,
 		autofocus = true,
 		invalid = false,
@@ -21,6 +23,8 @@
 		value: string;
 		label: string;
 		legacyHtml?: boolean;
+		defaultFontSize?: string;
+		fillHeight?: boolean;
 		disabled?: boolean;
 		autofocus?: boolean;
 		invalid?: boolean;
@@ -217,11 +221,12 @@
 
 <div
 	class="overflow-hidden rounded-xl border border-ink-200 bg-surface-raised focus-within:border-link-500 focus-within:ring-2 focus-within:ring-link-100"
+	class:fill-height={fillHeight}
 >
 	<div
 		role="group"
 		aria-label="Форматирование текста"
-		class="flex flex-wrap gap-1 border-b border-ink-200 bg-ink-50 p-2"
+		class="flex shrink-0 flex-wrap gap-x-0.5 gap-y-1 border-b border-ink-200 bg-ink-50 p-2"
 	>
 		<select
 			aria-label="Размер шрифта"
@@ -229,9 +234,13 @@
 			value={selectedSize}
 			disabled={!editor || disabled}
 			onchange={(event) => setFontSize(event.currentTarget.value)}
-			class="h-10 max-w-full rounded-lg border border-ink-200 bg-surface-raised px-2 text-sm text-ink-700 focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35"
+			class="h-10 max-w-full rounded-lg border border-ink-200 bg-surface-raised pr-9 pl-2 text-sm text-ink-700 focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35"
 		>
-			<option value="">По умолчанию</option>
+			<option value="">
+				{defaultFontSize
+					? `По умолчанию (${defaultFontSize.replace('px', ' px')})`
+					: 'По умолчанию'}
+			</option>
 			{#if selectedSize === 'mixed'}<option value="mixed" disabled>Разные размеры</option>{/if}
 			{#if selectedSize && selectedSize !== 'mixed' && !FONT_SIZES.some((size) => `${size}px` === selectedSize)}
 				<option value={selectedSize}>{selectedSize.replace('px', '')} px</option>
@@ -249,7 +258,7 @@
 				disabled={tool.unavailable}
 				onmousedown={(event) => event.preventDefault()}
 				onclick={() => apply(tool.type)}
-				class="flex size-10 shrink-0 items-center justify-center rounded-lg border transition-colors focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35 {tool.active
+				class="flex h-10 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors focus-visible:ring-2 focus-visible:ring-link-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35 {tool.active
 					? 'border-link-300 bg-link-100 text-link-800'
 					: 'border-transparent text-ink-700 hover:border-ink-200 hover:bg-ink-100'}"
 			>
@@ -269,7 +278,7 @@
 	</div>
 	{#if loadError}<p class="p-4 text-sm text-cat-6-600" role="alert">{loadError}</p>
 	{:else if !editor}<p class="p-4 text-sm text-ink-500" role="status">Загрузка редактора…</p>{/if}
-	<div bind:this={element} class="text-base text-ink-900"></div>
+	<div bind:this={element} class="editor-content text-base text-ink-900"></div>
 </div>
 <p class="mt-2 text-xs text-ink-500">
 	Выделите текст и выберите формат. Enter — абзац, Shift+Enter — новая строка.
@@ -314,5 +323,21 @@
 			min-height: var(--rich-text-min-height, 160px);
 			max-height: 36dvh;
 		}
+	}
+	.fill-height {
+		display: flex;
+		flex: 1 0 0;
+		flex-direction: column;
+	}
+	.fill-height .editor-content {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		min-height: 4.5rem;
+	}
+	.fill-height :global(.rich-text-input) {
+		flex: 1;
+		min-height: 0;
+		max-height: none;
 	}
 </style>

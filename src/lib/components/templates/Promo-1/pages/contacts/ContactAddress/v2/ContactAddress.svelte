@@ -132,7 +132,7 @@
 					class="ct-item ct-d2 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="{ct.body.onLight} max-w-xl text-lg"><RichText value={displayValue} /></p>
+						<p class="{ct.body.onLight} max-w-xl"><RichText value={displayValue} /></p>
 					{/snippet}
 				</EditableField>
 				<div class="ct-item ct-d3 p1-line mt-10 border-t pt-6">

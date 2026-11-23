@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	import { withPromoMotion } from '$lib/motion/transition';
 
@@ -165,7 +166,7 @@
 			}
 		} catch (err: any) {
 			console.error('Failed to toggle sidebar item:', err);
-			alert(`Не удалось изменить состояние (${itemNoun}): ` + (err.message || 'ошибка'));
+			notifyError(err, `Не удалось изменить состояние (${itemNoun}).`);
 		} finally {
 			togglingIds.delete(id);
 			togglingIds = new Set(togglingIds);

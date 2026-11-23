@@ -87,7 +87,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="text-base/7 font-semibold text-cat-3-600"><RichText value={displayValue} /></p>
+					<p class="text-prose font-semibold text-cat-3-600"><RichText value={displayValue} /></p>
 				{/snippet}
 			</EditableField>
 
@@ -100,7 +100,7 @@
 				class="mt-2 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
+					<h2 class="text-section-title text-balance text-ink-900">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -110,7 +110,7 @@
 		<div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each features as item, i}
 				<div
-					class="group relative overflow-hidden rounded-3xl border border-ink-100 bg-ink-50/50 p-8 transition-all duration-300 hover:-translate-y-2 hover:bg-surface-raised hover:shadow-2xl"
+					class="p1-card-copy group relative overflow-hidden rounded-3xl border border-ink-100 bg-ink-50/50 p-8 transition-all duration-300 hover:-translate-y-2 hover:bg-surface-raised hover:shadow-2xl"
 				>
 					<div
 						class="absolute top-6 right-6 text-7xl font-black text-ink-100 transition-colors duration-300 group-hover:text-cat-3-50"
@@ -140,7 +140,7 @@
 							class="mt-8 block"
 						>
 							{#snippet children(displayValue)}
-								<h3 class="p1-title-sub text-xl text-ink-900"><RichText value={displayValue} /></h3>
+								<h3 class="p1-title-sub text-card-title text-ink-900"><RichText value={displayValue} /></h3>
 							{/snippet}
 						</EditableField>
 
@@ -154,7 +154,7 @@
 							class="mt-4 block"
 						>
 							{#snippet children(displayValue)}
-								<p class="text-base/7 text-ink-600"><RichText value={displayValue} /></p>
+								<p class="text-prose text-ink-600"><RichText value={displayValue} /></p>
 							{/snippet}
 						</EditableField>
 					</div>

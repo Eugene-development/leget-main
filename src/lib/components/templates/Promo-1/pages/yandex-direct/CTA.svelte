@@ -181,17 +181,15 @@
 	}
 
 	.yd-cta__title {
-		font-size: 2rem;
-		font-weight: 800;
+		font-size: var(--ds-font-section-title-size);
 		color: white;
 		margin-bottom: 1rem;
-		letter-spacing: -0.02em;
 	}
 
 	.yd-cta__subtitle {
-		font-size: 1.1rem;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		color: rgba(255, 255, 255, 0.85);
-		line-height: 1.7;
 		margin-bottom: 2.5rem;
 		max-width: 32rem;
 		margin-left: auto;
@@ -267,10 +265,6 @@
 	@media (min-width: 768px) {
 		.yd-cta {
 			padding: 6rem 2rem;
-		}
-
-		.yd-cta__title {
-			font-size: 2.75rem;
 		}
 
 		.yd-cta__actions {

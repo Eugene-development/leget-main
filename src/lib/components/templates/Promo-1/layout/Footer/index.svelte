@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import ComponentControlsPopover from '$lib/components/ComponentControlsPopover.svelte';
 	import FooterV1 from './v1/Footer.svelte';
 	import FooterV2 from './v2/Footer.svelte';
@@ -120,6 +121,7 @@
 		'hours',
 		'telegram',
 		'whatsapp',
+		'max',
 		'siteName',
 		// Видимость строк контактов (v3): сброс возвращает все четыре строки.
 		'hiddenContacts'
@@ -156,7 +158,7 @@
 			settingsOpen = false;
 		} catch (err) {
 			console.error('Ошибка при сбросе контента футера:', err);
-			alert(err instanceof Error ? err.message : 'Не удалось сбросить контент');
+			notifyError(err, 'Не удалось сбросить контент');
 		} finally {
 			isResetting = false;
 		}

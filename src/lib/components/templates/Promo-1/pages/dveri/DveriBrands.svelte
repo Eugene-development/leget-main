@@ -29,7 +29,7 @@
 
 {#if brands.length > 0}
 	<div class="mebel-container mt-12 mb-12">
-		<h2 class="ds-title-sub mb-6 text-2xl text-ink-900">
+		<h2 class="mb-6 text-section-title text-balance text-ink-900">
 			{editableText(data.title, 'Работаем с лучшими брендами')}
 		</h2>
 

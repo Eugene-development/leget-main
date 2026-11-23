@@ -142,10 +142,8 @@
 	}
 
 	.yd-steps__title {
-		font-size: 2rem;
-		font-weight: 800;
+		font-size: var(--ds-font-section-title-size);
 		color: #0f172a;
-		letter-spacing: -0.02em;
 	}
 
 	.yd-steps__grid {
@@ -184,16 +182,15 @@
 	}
 
 	.yd-steps__card-title {
-		font-size: 1.15rem;
-		font-weight: 700;
+		font-size: var(--ds-font-card-title-size);
 		color: #0f172a;
 		margin-bottom: 0.75rem;
 	}
 
 	.yd-steps__card-text {
-		font-size: 0.925rem;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		color: #64748b;
-		line-height: 1.7;
 	}
 
 	.yd-steps__connector {
@@ -203,10 +200,6 @@
 	@media (min-width: 768px) {
 		.yd-steps {
 			padding: 6rem 2rem;
-		}
-
-		.yd-steps__title {
-			font-size: 2.5rem;
 		}
 
 		.yd-steps__grid {

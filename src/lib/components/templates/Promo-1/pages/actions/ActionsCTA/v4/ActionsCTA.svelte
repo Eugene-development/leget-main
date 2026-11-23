@@ -47,7 +47,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h2
-							class="p1-title p1-title-display max-w-[11ch] text-5xl text-balance sm:text-6xl lg:text-7xl"
+							class="p1-title p1-title-display max-w-[11ch] text-section-title text-balance"
 						>
 							<RichText value={displayValue} />
 						</h2>
@@ -69,7 +69,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-body max-w-lg text-lg/8"><RichText value={displayValue} /></p>
+							<p class="p1-body max-w-lg text-prose"><RichText value={displayValue} /></p>
 						{/snippet}
 					</EditableField>
 					<div

@@ -97,7 +97,7 @@
 	</div>
 	<div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 		<header class="mb-12 text-center sm:mb-16">
-			<h2 id="{uid}-title" class="p1-title text-4xl text-balance sm:text-6xl">
+			<h2 id="{uid}-title" class="p1-title text-section-title text-balance">
 				<EditableField
 					fieldKey="HomeFAQ.title"
 					label="Заголовок"
@@ -115,7 +115,7 @@
 			{#each items as item, i}
 				{@const expanded = isEditable || opened.includes(i)}
 				<div class="faq-item" class:expanded>
-					<h3 class="p1-title-sub faq-question-heading" id="{uid}-question-{i}">
+					<h3 class="p1-title-sub faq-question-heading text-card-title" id="{uid}-question-{i}">
 						{#if isEditable}
 							<div class="faq-question">
 								<span class="faq-number" aria-hidden="true">{i + 1}.</span>
@@ -167,7 +167,7 @@
 					>
 						<div class="faq-answer-clip">
 							<div class="faq-answer-card">
-								<p class="p1-body text-base whitespace-pre-line sm:text-lg">
+								<p class="p1-body text-prose whitespace-pre-line">
 									<EditableField
 										fieldKey="HomeFAQ.items.{i}.answer"
 										label="Ответ {i + 1}"
@@ -239,7 +239,6 @@
 		color: var(--ds-contrast-link-700-copy, var(--ds-on-dark));
 		box-shadow: 0 12px 28px -14px color-mix(in srgb, var(--ds-link-900) 45%, transparent);
 		font: inherit;
-		font-size: var(--text-lg);
 		text-align: left;
 		overflow-wrap: anywhere;
 		transition:
@@ -299,13 +298,10 @@
 		);
 	}
 	.faq-answer-card p {
-		line-height: 1.75;
 		overflow-wrap: anywhere;
 	}
 	@media (min-width: 640px) {
-		.faq-question {
-			font-size: var(--text-2xl);
-		}
+
 		.faq-answer {
 			margin-top: -1.5rem;
 		}

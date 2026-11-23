@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.7.1.1 — см. docs/architecture/component-articles-map.md
@@ -50,7 +51,7 @@
 			);
 			submitted = true;
 		} catch (error) {
-			formError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+			formError = notifyError(error, 'Не удалось отправить заявку.');
 		} finally {
 			loading = false;
 		}

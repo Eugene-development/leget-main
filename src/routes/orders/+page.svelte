@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import '$lib/growth/growth.css';
 	import { createFormSender } from '$lib/utils/form-submission';
 	import { money, date } from '$lib/crm/api';
@@ -29,7 +30,7 @@
 			notice = `Вопрос принят. ${result.mail_status === 'sent' ? 'Уведомление отправлено менеджеру.' : 'Уведомление ожидает доставки.'}`;
 			question = '';
 		} catch (e) {
-			failure = e instanceof Error ? e.message : 'Не удалось отправить вопрос. Повторите попытку.';
+			failure = notifyError(e, 'Не удалось отправить вопрос. Повторите попытку.');
 		} finally {
 			busy = false;
 		}

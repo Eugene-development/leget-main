@@ -143,7 +143,7 @@
 					     странице оно и есть заголовок первого экрана. Ниже, в
 					     ленте, те же названия идут ролью `p1-title-sub` — там они
 					     пункты списка, а не заголовок. -->
-						<p class="p1-title p1-title-display mt-3.5 text-3xl sm:text-4xl">
+						<p class="p1-title p1-title-display mt-3.5 text-section-title">
 							{projectTitle(latest.value)}
 						</p>
 

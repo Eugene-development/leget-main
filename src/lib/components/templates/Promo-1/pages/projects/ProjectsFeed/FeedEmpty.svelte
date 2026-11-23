@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="p1-card p1-border mt-7 flex flex-col items-center gap-3 rounded-2xl border p-11 text-center"
+	class="p1-card-copy p1-card p1-border mt-7 flex flex-col items-center gap-3 rounded-2xl border p-11 text-center"
 >
 	<svg
 		class="p1-muted size-11 opacity-50"
@@ -29,8 +29,8 @@
 			d="M3.75 9.75h16.5M9.75 20.25V9.75"
 		/>
 	</svg>
-	<h3 class="p1-title p1-title-sub mt-1 text-lg">Проектов пока нет</h3>
-	<p class="p1-body max-w-md text-sm leading-relaxed">
+	<h3 class="p1-title p1-title-sub mt-1 text-card-title">Проектов пока нет</h3>
+	<p class="p1-body max-w-md text-prose">
 		Проекты появятся здесь, как только вы добавите их в каталог — в рубрику «Мебель», в нужную
 		категорию.
 	</p>

@@ -36,20 +36,6 @@
 >
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="mx-auto mb-16 max-w-2xl text-center lg:max-w-none lg:text-left">
-			<span
-				class="p1-card p1-body inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wider uppercase"
-			>
-				<EditableField
-					fieldKey="Equipment.badge"
-					label="Метка"
-					value={editableText(data?.badge, 'Дополнительно')}
-					{isEditable}
-					onSave={(v) => saveField('badge', v)}
-					class="inline"
-				>
-					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
-				</EditableField>
-			</span>
 			<EditableField
 				fieldKey="Equipment.title"
 				label="Заголовок"
@@ -59,7 +45,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-4 text-3xl sm:text-5xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -79,8 +65,8 @@
 						alt="Столешницы"
 					/>
 				</div>
-				<div class="p-8">
-					<h3 class="p1-title p1-title-sub text-xl transition-colors group-hover:text-link-600">
+				<div class="p1-card-copy p-8">
+					<h3 class="p1-title p1-title-sub text-card-title transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item1Title"
 							label="Заголовок"
@@ -93,7 +79,7 @@
 							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</h3>
-					<p class="p1-body mt-3 text-base leading-relaxed">
+					<p class="p1-body mt-3 text-prose">
 						<EditableField
 							fieldKey="Equipment.item1Description"
 							label="Описание"
@@ -125,8 +111,8 @@
 						alt="Системы выдвижения"
 					/>
 				</div>
-				<div class="p-8">
-					<h3 class="p1-title p1-title-sub text-xl transition-colors group-hover:text-link-600">
+				<div class="p1-card-copy p-8">
+					<h3 class="p1-title p1-title-sub text-card-title transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item2Title"
 							label="Заголовок"
@@ -139,7 +125,7 @@
 							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</h3>
-					<p class="p1-body mt-3 text-base leading-relaxed">
+					<p class="p1-body mt-3 text-prose">
 						<EditableField
 							fieldKey="Equipment.item2Description"
 							label="Описание"
@@ -172,7 +158,7 @@
 					/>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-600">
+					<h3 class="p1-title p1-title-sub text-card-title transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item3Title"
 							label="Заголовок"
@@ -185,7 +171,7 @@
 							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</h3>
-					<p class="p1-body mt-2 text-sm leading-relaxed">
+					<p class="p1-body mt-2 text-prose">
 						<EditableField
 							fieldKey="Equipment.item3Description"
 							label="Описание"
@@ -218,7 +204,7 @@
 					/>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-600">
+					<h3 class="p1-title p1-title-sub text-card-title transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item4Title"
 							label="Заголовок"
@@ -231,7 +217,7 @@
 							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</h3>
-					<p class="p1-body mt-2 text-sm leading-relaxed">
+					<p class="p1-body mt-2 text-prose">
 						<EditableField
 							fieldKey="Equipment.item4Description"
 							label="Описание"
@@ -264,7 +250,7 @@
 					/>
 				</div>
 				<div class="p-6">
-					<h3 class="p1-title p1-title-sub text-lg transition-colors group-hover:text-link-600">
+					<h3 class="p1-title p1-title-sub text-card-title transition-colors group-hover:text-link-600">
 						<EditableField
 							fieldKey="Equipment.item5Title"
 							label="Заголовок"
@@ -277,7 +263,7 @@
 							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
 						</EditableField>
 					</h3>
-					<p class="p1-body mt-2 text-sm leading-relaxed">
+					<p class="p1-body mt-2 text-prose">
 						<EditableField
 							fieldKey="Equipment.item5Description"
 							label="Описание"

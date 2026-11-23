@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import { growthRequest } from '$lib/growth/selections/api';
@@ -39,7 +40,7 @@
 			commentRetry = null;
 			await invalidateAll();
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось добавить комментарий.';
+			error = notifyError(e, 'Не удалось добавить комментарий.');
 		} finally {
 			commenting = false;
 		}
@@ -63,7 +64,7 @@
 			);
 			accepted = true;
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось отправить заявку.';
+			error = notifyError(e, 'Не удалось отправить заявку.');
 		} finally {
 			sending = false;
 		}
@@ -85,7 +86,7 @@
 			await growthRequest(`selections/${selection.token}/revoke`, {});
 			revoked = true;
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось закрыть ссылку.';
+			error = notifyError(e, 'Не удалось закрыть ссылку.');
 		} finally {
 			revoking = false;
 		}

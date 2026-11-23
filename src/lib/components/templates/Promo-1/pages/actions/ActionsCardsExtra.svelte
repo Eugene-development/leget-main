@@ -156,7 +156,7 @@
 						class="w-full min-w-0 flex-1 lg:w-auto"
 					>
 						{#snippet children(displayValue)}
-							<h2 class="p1-title p1-title-section text-2xl break-words sm:text-3xl">
+							<h2 class="p1-title p1-title-section text-section-title text-balance break-words">
 								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
@@ -209,7 +209,7 @@
 					{#each company.cards as card, i (card.id)}
 						{#if isEditable || promotionIsActive(card, now())}
 							<div
-								class="p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-cat-1-500 hover:shadow-2xl {isEditable &&
+								class="p1-card-copy p1-card group relative overflow-hidden rounded-2xl border p-8 transition duration-300 hover:-translate-y-2 hover:border-cat-1-500 hover:shadow-2xl {isEditable &&
 								card.enabled === false
 									? 'opacity-60 brightness-95 contrast-75 grayscale'
 									: ''}"
@@ -270,7 +270,7 @@
 										class="mt-6 block"
 									>
 										{#snippet children(displayValue)}
-											<h3 class="p1-title p1-title-sub mt-6 text-xl">
+											<h3 class="p1-title p1-title-sub mt-6 text-card-title">
 												<RichText value={displayValue} />
 											</h3>
 										{/snippet}
@@ -288,7 +288,7 @@
 										class="mt-3 block"
 									>
 										{#snippet children(displayValue)}
-											<p class="p1-body mt-3 text-base/7"><RichText value={displayValue} /></p>
+											<p class="p1-body mt-3 text-prose"><RichText value={displayValue} /></p>
 										{/snippet}
 									</EditableField>
 

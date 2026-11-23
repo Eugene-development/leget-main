@@ -75,7 +75,7 @@
 				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
+					<h2 class="text-section-title text-balance text-ink-900">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -89,7 +89,7 @@
 				class="it-item it-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-sm/6 text-ink-600 sm:text-base/7">
+					<p class="mx-auto max-w-2xl text-prose text-ink-600">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -99,7 +99,7 @@
 		<div use:revealOnScroll class="it-reveal mt-14 grid gap-6 sm:grid-cols-3">
 			{#each items as item, i}
 				<div
-					class="it-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-8 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:border-ink-900/20 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1"
+					class="p1-card-copy it-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-8 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:border-ink-900/20 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1"
 					style="--it-delay: {i * 80}ms"
 				>
 					<!-- Подложка-градиент от прежней версии, теперь только у нижней части карточки -->
@@ -135,7 +135,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title-sub mt-6 text-xl text-ink-900">
+						<h3 class="p1-title-sub mt-6 text-card-title text-ink-900">
 							<EditableField
 								fieldKey="InstallmentRequirements.{i}.title"
 								label="Заголовок требования"
@@ -147,7 +147,7 @@
 								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="mx-auto mt-3 max-w-xs text-sm/6 text-ink-600">
+						<p class="mx-auto mt-3 max-w-xs text-prose text-ink-600">
 							<EditableField
 								fieldKey="InstallmentRequirements.{i}.text"
 								label="Описание требования"

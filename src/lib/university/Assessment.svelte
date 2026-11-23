@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { requestError } from '$lib/utils/user-error.js';
+	import { notifyError } from '$lib/utils/notify-error';
 	import { invalidateAll } from '$app/navigation';
 	import type { Course, Question, AssessmentResult } from './types';
 	let {
@@ -32,14 +34,12 @@
 			});
 			const data = await response.json();
 			if (!response.ok)
-				throw new Error(data.message || 'Не удалось проверить ответы. Повторите отправку.');
+				throw requestError(response.status);
 			result = data;
 			await invalidateAll();
 		} catch (e) {
 			problem =
-				e instanceof Error
-					? e.message
-					: 'Связь прервалась. Повторите отправку — результат не задвоится.';
+				notifyError(e, 'Связь прервалась. Повторите отправку — результат не задвоится.');
 		} finally {
 			busy = false;
 		}

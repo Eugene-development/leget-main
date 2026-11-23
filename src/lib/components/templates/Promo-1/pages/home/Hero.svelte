@@ -35,7 +35,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="text-5xl sm:text-6xl lg:text-7xl">
+				<h1 class="text-page-title text-balance">
 					<RichText value={displayValue} />
 				</h1>
 			{/snippet}
@@ -51,7 +51,7 @@
 			class="mt-6 block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mt-6 text-xl text-ink-300 sm:text-2xl"><RichText value={displayValue} /></p>
+				<p class="mt-6 text-prose text-ink-300"><RichText value={displayValue} /></p>
 			{/snippet}
 		</EditableField>
 	</div>

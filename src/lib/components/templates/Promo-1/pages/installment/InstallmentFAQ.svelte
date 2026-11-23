@@ -73,7 +73,7 @@
 				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl">
+					<h2 class="text-section-title text-balance text-ink-900">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -102,8 +102,8 @@
 						>
 							{String(i + 1).padStart(2, '0')}
 						</span>
-						<div class="min-w-0">
-							<h3 class="p1-title-sub text-base text-ink-900 sm:text-lg">
+						<div class="p1-card-copy min-w-0">
+							<h3 class="p1-title-sub text-card-title text-ink-900">
 								<EditableField
 									fieldKey="InstallmentFAQ.{i}.question"
 									label="Вопрос"
@@ -115,7 +115,7 @@
 									{#snippet children(val)}<RichText value={val} />{/snippet}
 								</EditableField>
 							</h3>
-							<p class="mt-2 text-sm/6 text-ink-600">
+							<p class="mt-2 text-prose text-ink-600">
 								<EditableField
 									fieldKey="InstallmentFAQ.{i}.answer"
 									label="Ответ"

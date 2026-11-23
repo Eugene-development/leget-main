@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import ComponentResolver from '$lib/components/ComponentResolver.svelte';
+	import { notifyError } from '$lib/utils/notify-error';
+	import { requestError, userErrorMessage } from '$lib/utils/user-error.js';
 
 	type PageComponent = { type: string; data: Record<string, unknown> };
 
@@ -16,6 +18,10 @@
 	const licenseId = $derived(
 		notFoundPage ? (notFoundPage.licenseId ?? (notFoundPage as any).license_id ?? null) : null
 	);
+	const failure = $derived(userErrorMessage(requestError($page.status), 'Не удалось загрузить страницу.'));
+	$effect(() => {
+		if ($page.status >= 500) notifyError(requestError($page.status), 'Не удалось загрузить страницу.');
+	});
 </script>
 
 <!-- svelte:head живёт только на верхнем уровне компонента, внутрь {#if} его не внести. -->
@@ -54,11 +60,11 @@
 			{#if $page.status === 404}
 				<p class="text-6xl font-bold text-gray-300">404</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Сайт не найден</h1>
-				<p class="mt-2 text-gray-500">Site not found</p>
+				<p class="mt-2 text-gray-500">Проверьте адрес или перейдите на главную.</p>
 			{:else if $page.status === 403}
 				<p class="text-6xl font-bold text-gray-300">403</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Сайт приостановлен</h1>
-				<p class="mt-2 text-gray-500">Site suspended</p>
+				<p class="mt-2 text-gray-500">За подробностями обратитесь к владельцу сайта.</p>
 			{:else if $page.status === 503}
 				<p class="text-6xl font-bold text-gray-300">503</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Сайт временно недоступен</h1>
@@ -66,11 +72,11 @@
 			{:else if $page.status === 502}
 				<p class="text-6xl font-bold text-gray-300">502</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Ошибка сервера</h1>
-				<p class="mt-2 text-gray-500">Server error</p>
+				<p class="mt-2 text-gray-500">{failure}</p>
 			{:else}
 				<p class="text-6xl font-bold text-gray-300">{$page.status}</p>
 				<h1 class="mt-4 text-2xl text-gray-800">Произошла ошибка</h1>
-				<p class="mt-2 text-gray-500">{$page.error?.message ?? 'Something went wrong'}</p>
+				<p class="mt-2 text-gray-500">{failure}</p>
 			{/if}
 		</div>
 	</div>

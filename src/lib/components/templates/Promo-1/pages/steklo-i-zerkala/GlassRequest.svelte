@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.34.1.1 — см. docs/architecture/component-articles-map.md
 	import { tick } from 'svelte';
@@ -78,7 +79,7 @@
 			success?.focus();
 		} catch (cause) {
 			error =
-				cause instanceof Error ? cause.message : 'Не удалось отправить заявку. Попробуйте ещё раз.';
+				notifyError(cause, 'Не удалось отправить заявку. Попробуйте ещё раз.');
 		} finally {
 			loading = false;
 		}
@@ -108,7 +109,7 @@
 				onSave={(v) => saveField('title', v)}
 				class="block"
 			>
-				{#snippet children(value)}<h1 id="glass-title" class="p1-title p1-catalog-display">
+				{#snippet children(value)}<h1 id="glass-title" class="p1-title text-page-title text-balance">
 						<RichText {value} />
 					</h1>{/snippet}
 			</EditableField>
@@ -123,7 +124,7 @@
 				onSave={(v) => saveField('description', v)}
 				class="mt-8 block max-w-sm"
 			>
-				{#snippet children(value)}<p class="p1-body text-base"><RichText {value} /></p>{/snippet}
+				{#snippet children(value)}<p class="p1-body text-prose"><RichText {value} /></p>{/snippet}
 			</EditableField>
 			<div class="glass-study" aria-hidden="true"><div class="glass-sheet"></div></div>
 		</div>
@@ -137,7 +138,7 @@
 							stroke-width="1.5"
 						/></svg
 					>
-					<h2 class="p1-title-sub text-3xl">Заявка принята</h2>
+					<h2 class="p1-title-sub text-subsection-title">Заявка принята</h2>
 					<p class="p1-body mt-5 max-w-sm">
 						Спасибо! Свяжемся с вами по указанному телефону и обсудим детали проекта.
 					</p>
@@ -161,7 +162,7 @@
 					>
 						{#snippet children(value)}<h2
 								id="glass-form-title"
-								class="p1-title p1-title-sub text-3xl"
+								class="p1-title p1-title-sub text-subsection-title"
 							>
 								<RichText {value} />
 							</h2>{/snippet}

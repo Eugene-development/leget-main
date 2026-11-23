@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { tick } from 'svelte';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import { createFormSender } from '$lib/utils/form-submission';
@@ -62,8 +63,8 @@
 
 			sent = true;
 			name = company = phone = email = city = comment = '';
-		} catch {
-			error = 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.';
+		} catch (cause) {
+			error = notifyError(cause, 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.');
 		} finally {
 			sending = false;
 		}

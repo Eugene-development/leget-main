@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { requestText } from './copy';
 	import { onMount } from 'svelte';
 	import { createFormSender } from '$lib/utils/form-submission';
@@ -77,7 +78,7 @@
 			submitted = true;
 		} catch (cause) {
 			error =
-				cause instanceof Error ? cause.message : 'Не удалось отправить заявку. Попробуйте ещё раз.';
+				notifyError(cause, 'Не удалось отправить заявку. Попробуйте ещё раз.');
 		} finally {
 			loading = false;
 		}

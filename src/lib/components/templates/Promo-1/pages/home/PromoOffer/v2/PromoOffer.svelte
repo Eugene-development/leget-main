@@ -42,35 +42,13 @@
 	class="p1-surface p1-title relative overflow-hidden py-section-sm font-sans select-none sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<!-- Вспомогательные светящиеся бэкдропы -->
-	<div class="absolute top-1/4 right-0 h-96 w-96 rounded-full bg-cat-8-500/10 blur-3xl"></div>
-	<div class="absolute bottom-10 left-10 h-96 w-96 rounded-full bg-cat-3-600/10 blur-3xl"></div>
+	<div class="promo-abstract-background" aria-hidden="true"></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
 			<!-- Левая колонка: Текст и Оффер -->
 			<div class="flex flex-col items-start text-left lg:col-span-6">
-				<div class="mb-6">
-					<span
-						class="inline-flex items-center gap-2 border border-cat-8-500/30 bg-cat-8-500/10 {isLight
-							? 'text-cat-8-600'
-							: 'text-cat-8-400'} rounded-full px-4 py-1.5 text-xs font-bold tracking-wider uppercase shadow-[0_0_15px] shadow-cat-8-500/10 backdrop-blur-md md:text-sm"
-					>
-						<span class="h-1.5 w-1.5 animate-ping rounded-full bg-cat-8-400"></span>
-						<EditableField
-							fieldKey="PromoOffer.badge"
-							label="Метка"
-							value={editableText(data?.badge, 'Эксклюзивное предложение')}
-							{isEditable}
-							onSave={(v) => saveField('badge', v)}
-							class="inline"
-						>
-							{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
-						</EditableField>
-					</span>
-				</div>
-
-				<h2 class="mb-6 text-3xl md:text-5xl lg:text-6xl">
+				<h2 class="mb-6 text-section-title text-balance">
 					<EditableField
 						fieldKey="PromoOffer.title"
 						label="Заголовок"
@@ -99,7 +77,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-body text-base leading-relaxed font-medium md:text-lg">
+							<p class="p1-body text-prose font-medium">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -114,7 +92,7 @@
 						class="block"
 					>
 						{#snippet children(displayValue)}
-							<p class="p1-muted text-sm leading-relaxed md:text-base">
+							<p class="p1-muted text-prose">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}
@@ -247,6 +225,33 @@
 </section>
 
 <style>
+	.promo-abstract-background {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		--arc-color: color-mix(in oklab, var(--ds-cat-8-500) 25%, transparent);
+		--wash-color: color-mix(in oklab, var(--ds-cat-1-500) 15%, transparent);
+		background:
+			radial-gradient(
+				ellipse 100% 62% at 100% 91%,
+				transparent 44%,
+				var(--arc-color) 44.3%,
+				transparent 44.7% 52%,
+				var(--arc-color) 52.3%,
+				transparent 52.7% 63%,
+				var(--arc-color) 63.3%,
+				transparent 63.7%
+			),
+			radial-gradient(ellipse 85% 48% at 100% 91%, var(--wash-color), transparent);
+		mask-image: linear-gradient(to bottom, transparent 30%, black 65%);
+	}
+
+	@media (min-width: 64rem) {
+		.promo-abstract-background {
+			mask-image: linear-gradient(to right, transparent 32%, black 78%);
+		}
+	}
+
 	@keyframes promo-float {
 		0%,
 		100% {

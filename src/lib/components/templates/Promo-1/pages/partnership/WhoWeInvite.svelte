@@ -19,14 +19,34 @@
 
 	// Тема блока: нейтральная палитра — из классов p1-*, акценты не зависят от темы.
 	const isLight = $derived(isLightBlock(data, 'light'));
+	const defaultPlatformUrl = 'https://rubonus.pro/';
+	const defaultPlatformLabel = 'RUBONUS.PRO';
+	const platformLinkLabelId = $props.id();
+	const hasLegacyPlatformLabel = $derived(data?.platformButtonText === 'Перейти на платформу');
+	const savedPlatformUrl = $derived(editableText(data?.platformUrl, defaultPlatformUrl).trim());
+	// Старые настройки могли сохранить пустой URL вместе с шаблонной подписью.
+	const platformUrl = $derived(
+		savedPlatformUrl || (hasLegacyPlatformLabel ? defaultPlatformUrl : '')
+	);
+	const platformText = $derived(
+		editableText(
+			data?.platformText,
+			'Профессиональная платформа для автоматизации партнёрских продаж: регистрируйте новые заказы, отслеживайте статус реализации проектов в реальном времени и управляйте начислениями бонусов через единую прозрачную систему.'
+		)
+	);
 	const platformButtonText = $derived(
-		data?.platformButtonText === 'Перейти на платформу'
-			? 'RUBONUS.PRO'
-			: editableText(data?.platformButtonText, 'RUBONUS.PRO')
+		hasLegacyPlatformLabel
+			? defaultPlatformLabel
+			: editableText(data?.platformButtonText, defaultPlatformLabel)
 	);
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
-		const updated = { ...data, [field]: value };
+		const editingPlatformLink = field === 'platformUrl' || field === 'platformButtonText';
+		const updated = {
+			...data,
+			...(hasLegacyPlatformLabel && editingPlatformLink ? { platformUrl, platformButtonText } : {}),
+			[field]: value
+		};
 		await saveComponentData(editContext, 'WhoWeInvite', updated);
 		data = updated;
 	}
@@ -157,7 +177,7 @@
 				class="wi-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -174,7 +194,7 @@
 				class="wi-item wi-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto max-w-2xl text-sm/6 sm:text-base/7">
+					<p class="p1-body mx-auto max-w-2xl text-prose">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -185,7 +205,7 @@
 			{#each cards as card, i}
 				{@const c = colorMap[card.color] ?? colorMap.sky}
 				<div
-					class="wi-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
+					class="p1-card-copy wi-card group p1-border p1-card relative overflow-hidden rounded-3xl border p-8 shadow-[0_30px_80px_-50px] shadow-ink-900/35 transition duration-300 hover:shadow-[0_36px_90px_-44px] hover:shadow-ink-900/45 motion-safe:hover:-translate-y-1 {c.border}"
 					style="--wi-delay: {i * 70}ms"
 				>
 					<!-- Цветное пятно в углу — прежний акцент карточки, теперь под каймой -->
@@ -224,7 +244,7 @@
 							</svg>
 						</div>
 
-						<h3 class="p1-title p1-title-sub mt-6 flex items-center gap-2.5 text-lg">
+						<h3 class="p1-title p1-title-sub mt-6 flex items-center gap-2.5 text-card-title">
 							<span class="size-1.5 shrink-0 rounded-full {c.dot}" aria-hidden="true"></span>
 							<EditableField
 								fieldKey="WhoWeInvite.{i}.title"
@@ -237,7 +257,7 @@
 								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="p1-body mt-3 text-sm/6">
+						<p class="p1-body mt-3 text-prose">
 							<EditableField
 								fieldKey="WhoWeInvite.{i}.text"
 								label="Описание"
@@ -254,89 +274,83 @@
 			{/each}
 		</div>
 
-		<!-- Платформа: отдельная панель, чтобы блок не читался как продолжение карточек -->
-		<div use:revealOnScroll class="wi-reveal mt-12">
-			<div
-				class="wi-item p1-border p1-card relative overflow-hidden rounded-3xl border px-6 py-10 text-center shadow-[0_30px_80px_-50px] shadow-ink-900/35 sm:px-12 sm:py-12"
-			>
-				<div
-					class="pointer-events-none absolute inset-x-12 top-0 h-px bg-linear-to-r from-transparent via-brand-500/70 to-transparent"
-					aria-hidden="true"
-				></div>
-				<div
-					class="pointer-events-none absolute -top-20 left-1/2 size-64 -translate-x-1/2 rounded-full bg-brand-500/5 blur-3xl"
-					aria-hidden="true"
-				></div>
-
-				<div class="relative">
-					<EditableField
-						fieldKey="WhoWeInvite.platformText"
-						label="Текст о платформе"
-						value={editableText(
-							data?.platformText,
-							'Профессиональная платформа для автоматизации партнёрских продаж: регистрируйте новые заказы, отслеживайте статус реализации проектов в реальном времени и управляйте начислениями бонусов через единую прозрачную систему.'
-						)}
-						{isEditable}
-						multiline
-						onSave={(v) => saveField('platformText', v)}
-						class="block"
-					>
-						{#snippet children(displayValue)}
-							<p class="p1-body mx-auto max-w-2xl text-sm/6 sm:text-base/7">
-								<RichText value={displayValue} />
-							</p>
-						{/snippet}
-					</EditableField>
-
-					<EditableField
-						richText={false}
-						fieldKey="WhoWeInvite.platformUrl"
-						label="Ссылка на платформу"
-						value={editableText(data?.platformUrl, 'https://rubonus.pro/')}
-						{isEditable}
-						onSave={(v) => saveField('platformUrl', v)}
-						class="mt-8 inline-block"
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue}
-								<a
-									href={displayValue}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-brand-500 to-brand-600 px-7 py-3.5 text-sm font-semibold text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 transition duration-300 hover:from-brand-400 hover:to-brand-500 hover:shadow-[0_22px_55px_-16px] hover:shadow-brand-500 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 motion-safe:hover:-translate-y-0.5"
+		<div
+			class="p1-border mt-10 hidden items-center gap-y-3 border-y py-5 has-[>*]:grid sm:mt-12 sm:py-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+		>
+			{#if isEditable || platformUrl}
+				<EditableField
+					richText={false}
+					fieldKey="WhoWeInvite.platformUrl"
+					label="Ссылка на платформу"
+					value={platformUrl}
+					{isEditable}
+					onSave={(v) => saveField('platformUrl', v)}
+					class="p1-border min-w-0 md:border-r md:pr-8 md:only:col-span-2 md:only:border-r-0 md:only:pr-0 lg:pr-12"
+				>
+					{#snippet children(url)}
+						{@const href = url.trim()}
+						{#if href}
+							<a
+								{href}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-labelledby={platformLinkLabelId}
+								aria-label="Открыть партнёрскую платформу"
+								class="p1-title group flex min-h-12 items-center justify-between gap-4 py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+							>
+								<EditableField
+									fieldKey="WhoWeInvite.platformButtonText"
+									label="Текст ссылки на платформу"
+									value={platformButtonText}
+									{isEditable}
+									inline
+									onSave={(v) => saveField('platformButtonText', v)}
+									class="min-w-0"
 								>
-									<EditableField
-										fieldKey="WhoWeInvite.platformButtonText"
-										label="Текст кнопки платформы"
-										value={platformButtonText}
-										{isEditable}
-										onSave={(v) => saveField('platformButtonText', v)}
-										class="inline"
-									>
-										{#snippet children(btnText)}
-											<RichText value={btnText} />
-										{/snippet}
-									</EditableField>
-									<svg
-										class="size-4.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="2"
-										aria-hidden="true"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-										/>
-									</svg>
-								</a>
-							{/if}
-						{/snippet}
-					</EditableField>
-				</div>
-			</div>
+									{#snippet children(linkText)}
+										{#if linkText.trim()}
+											<span
+												id={platformLinkLabelId}
+												class="p1-title-sub text-card-title wrap-anywhere underline decoration-1 underline-offset-6 group-hover:decoration-2 group-focus-visible:decoration-2"
+												><RichText value={linkText} /></span
+											>
+										{/if}
+									{/snippet}
+								</EditableField>
+								<svg
+									class="p1-accent size-6 shrink-0 motion-safe:transition-transform motion-safe:duration-[var(--ds-motion-duration-ui)] motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									style="stroke-width: var(--ds-icon-stroke-bold)"
+									aria-hidden="true"
+								>
+									<path d="M5 19 19 5M9 5h10v10" />
+								</svg>
+							</a>
+						{/if}
+					{/snippet}
+				</EditableField>
+			{/if}
+			{#if isEditable || platformText.trim()}
+				<EditableField
+					fieldKey="WhoWeInvite.platformText"
+					label="Текст о платформе"
+					value={platformText}
+					{isEditable}
+					multiline
+					onSave={(v) => saveField('platformText', v)}
+					class="min-w-0 md:pl-8 md:only:col-span-2 md:only:pl-0 lg:pl-12"
+				>
+					{#snippet children(description)}
+						<p class="p1-body max-w-[58ch] text-prose wrap-anywhere">
+							<RichText value={description} />
+						</p>
+					{/snippet}
+				</EditableField>
+			{/if}
 		</div>
 	</div>
 </section>

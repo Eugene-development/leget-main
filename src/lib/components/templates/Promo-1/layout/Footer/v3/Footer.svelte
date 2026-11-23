@@ -17,6 +17,8 @@
 	import { resolveSitePhone, sitePhoneHref } from '$lib/utils/site-phone';
 	import { createContactVisibility } from '../contacts.svelte';
 	import ContactToggle from '../ContactToggle.svelte';
+	import MessengerContacts from '../MessengerContacts.svelte';
+	import { useCurrentYear } from '../year.svelte';
 	import '../../../theme.css';
 
 	let {
@@ -59,13 +61,12 @@
 	const siteName = $derived(
 		data?.siteName === 'Новострой' ? 'Логотип' : editableText(data?.siteName, 'Логотип')
 	);
+	const currentYear = useCurrentYear();
 	const phone = $derived(resolveSitePhone(sitePhone));
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
 	const email = $derived(editableText(data?.email, 'info@site.ru'));
 	const address = $derived(editableText(data?.address, 'г. Москва, ул. Ленина, д. 10'));
 	const hours = $derived(editableText(data?.hours, 'Пн–Вс: 9:00 — 21:00'));
-	const telegram = $derived(String(data?.telegram ?? ''));
-	const whatsapp = $derived(String(data?.whatsapp ?? ''));
 
 	/**
 	 * Отключаемые строки контактов — логика общая для v1/v2/v3,
@@ -73,6 +74,7 @@
 	 */
 	const contacts = createContactVisibility({
 		getData: () => data,
+		getValues: () => ({ phone, email, address, hours }),
 		setData: (next) => (data = next),
 		getEditContext: () => editContext
 	});
@@ -210,7 +212,7 @@
 					<!-- Последняя ВИДИМАЯ строка не должна нести нижнюю границу — иначе
 					     скрытие «Графика» оставляло бы висящую линию. -->
 					<div class="p1-border border-t [&>div:last-child]:border-b-0">
-						{#if contacts.isVisible('phone') || isEditable}
+						{#if contacts.isShown('phone') || isEditable}
 							<div
 								class="p1-border border-b {contactRowClass} {contacts.isVisible('phone')
 									? ''
@@ -232,7 +234,7 @@
 							</div>
 						{/if}
 
-						{#if contacts.isVisible('email') || isEditable}
+						{#if contacts.isShown('email') || isEditable}
 							<div
 								class="p1-border border-b {contactRowClass} {contacts.isVisible('email')
 									? ''
@@ -264,7 +266,7 @@
 							</div>
 						{/if}
 
-						{#if contacts.isVisible('address') || isEditable}
+						{#if contacts.isShown('address') || isEditable}
 							<div
 								class="p1-border border-b {contactRowClass} {contacts.isVisible('address')
 									? ''
@@ -293,7 +295,7 @@
 							</div>
 						{/if}
 
-						{#if contacts.isVisible('hours') || isEditable}
+						{#if contacts.isShown('hours') || isEditable}
 							<div
 								class="p1-border border-b {contactRowClass} {contacts.isVisible('hours')
 									? ''
@@ -335,74 +337,19 @@
 					Быстрый маршрут по проектам, услугам и информации о компании.
 				</p>
 
-				<div class="mt-7 flex flex-wrap gap-2">
-					<EditableField
-						richText={false}
-						fieldKey="Footer.telegram"
-						label="Telegram (ссылка)"
-						value={telegram}
-						onSave={(value) => saveField('telegram', value)}
-						{isEditable}
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue || isEditable}
-								<a
-									href={displayValue || '#'}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="group p1-border p1-accent-border-hover p1-accent-hover flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-								>
-									Telegram
-									<svg
-										class="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-										viewBox="0 0 16 16"
-										fill="none"
-										stroke="currentColor"
-										aria-hidden="true"
-									>
-										<path d="M4 12 12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
-									</svg>
-								</a>
-							{/if}
-						{/snippet}
-					</EditableField>
-
-					<EditableField
-						richText={false}
-						fieldKey="Footer.whatsapp"
-						label="WhatsApp (ссылка)"
-						value={whatsapp}
-						onSave={(value) => saveField('whatsapp', value)}
-						{isEditable}
-					>
-						{#snippet children(displayValue)}
-							{#if displayValue || isEditable}
-								<a
-									href={displayValue || '#'}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="group p1-border p1-accent-border-hover p1-accent-hover flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
-								>
-									WhatsApp
-									<svg
-										class="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-										viewBox="0 0 16 16"
-										fill="none"
-										stroke="currentColor"
-										aria-hidden="true"
-									>
-										<path d="M4 12 12 4M6 4h6v6" stroke-linecap="round" stroke-linejoin="round" />
-									</svg>
-								</a>
-							{/if}
-						{/snippet}
-					</EditableField>
-				</div>
+				<MessengerContacts
+					{data}
+					{saveField}
+					{isEditable}
+					groupClass="mt-7 flex flex-wrap gap-2"
+					linkClass="group p1-border p1-accent-border-hover p1-accent-hover flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+					showNames
+				/>
 			</div>
 
 			<div class="grid grid-cols-2 gap-x-6 gap-y-10 md:col-span-9 md:grid-cols-4 md:pl-8">
 				<div>
-					<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Компания</h3>
+					<h3 class="p1-title-sub p1-accent text-base uppercase">Компания</h3>
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
 							<a
@@ -444,7 +391,7 @@
 
 				<div>
 					{#if visibleServiceItems.length > 0}
-						<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Услуги</h3>
+						<h3 class="p1-title-sub p1-accent text-base uppercase">Услуги</h3>
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleServiceItems as service}
 								<li>
@@ -461,7 +408,7 @@
 
 				<div>
 					{#if visibleCatalogItems.length > 0}
-						<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Каталог</h3>
+						<h3 class="p1-title-sub p1-accent text-base uppercase">Каталог</h3>
 						<ul class="mt-5 space-y-3 text-sm font-medium">
 							{#each visibleCatalogItems as item}
 								<li>
@@ -487,7 +434,7 @@
 				</div>
 
 				<div>
-					<h3 class="p1-title-sub p1-accent text-[10px] uppercase">Ещё</h3>
+					<h3 class="p1-title-sub p1-accent text-base uppercase">Ещё</h3>
 					<ul class="mt-5 space-y-3 text-sm font-medium">
 						<li>
 							<a
@@ -495,6 +442,9 @@
 								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
 								>Партнёрство</a
 							>
+						</li>
+						<li>
+							<a href="/b2b" class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none">B2B</a>
 						</li>
 						{#if client}
 							<li>
@@ -538,7 +488,7 @@
 			use:reveal
 			data-reveal-delay="180"
 		>
-			<p>&copy; {new Date().getFullYear()} {siteName}. Все права защищены.</p>
+			<p>&copy; {currentYear()} {siteName}. Все права защищены.</p>
 			<a
 				href="/privacy"
 				class="p1-body p1-accent-hover text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"

@@ -229,18 +229,15 @@
 	}
 
 	.yd-hero__title {
-		font-size: 2.5rem;
-		font-weight: 800;
+		font-size: var(--ds-font-page-title-size);
 		color: #f8fafc;
-		line-height: 1.1;
-		letter-spacing: -0.03em;
 		margin-bottom: 1.5rem;
 	}
 
 	.yd-hero__subtitle {
-		font-size: 1.15rem;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		color: #94a3b8;
-		line-height: 1.7;
 		max-width: 38rem;
 		margin-bottom: 2.5rem;
 	}
@@ -302,10 +299,10 @@
 	}
 
 	.yd-hero__mini-feature {
+		font-size: var(--ds-font-note-size);
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		font-size: 0.85rem;
 		color: #94a3b8;
 		font-weight: 500;
 	}
@@ -315,13 +312,6 @@
 	}
 
 	@media (min-width: 768px) {
-		.yd-hero__title {
-			font-size: 3.5rem;
-		}
-
-		.yd-hero__subtitle {
-			font-size: 1.25rem;
-		}
 
 		.yd-hero__actions {
 			flex-direction: row;
@@ -330,9 +320,4 @@
 		}
 	}
 
-	@media (min-width: 1024px) {
-		.yd-hero__title {
-			font-size: 4rem;
-		}
-	}
 </style>

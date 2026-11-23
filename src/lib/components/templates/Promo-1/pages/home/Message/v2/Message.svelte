@@ -27,6 +27,7 @@
 		MESSAGE_DEFAULT_TITLE,
 		MESSAGE_PROJECT_LINK_LABEL,
 		isExternalProjectLink,
+		messageProjectImageAliases,
 		resolveMessageProjects,
 		type MessageProject
 	} from '../data';
@@ -156,13 +157,13 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-4xl sm:text-5xl lg:text-6xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
 			</EditableField>
 
-			<div class="p1-body mt-6 text-base leading-relaxed sm:text-lg">
+			<div class="p1-body mt-6 text-prose">
 				<EditableField
 					fieldKey="Message.text"
 					label="Текст"
@@ -205,6 +206,7 @@
 									imagePath={['cards', i, 'image']}
 									imageDefaults={{ cards: projects }}
 									src={card.image}
+									srcAliases={messageProjectImageAliases(card)}
 									alt={card.alt}
 									class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover/image:scale-105"
 								/>
@@ -214,6 +216,7 @@
 								imagePath={['cards', i, 'image']}
 								imageDefaults={{ cards: projects }}
 								src={card.image}
+								srcAliases={messageProjectImageAliases(card)}
 								alt={card.alt}
 								class="h-full w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
 							/>
@@ -224,7 +227,7 @@
 						<div class="p1-scrim pointer-events-none absolute inset-0"></div>
 
 						<h3
-							class="p1-title-sub pointer-events-none absolute inset-x-0 bottom-0 p-6 text-xl text-on-dark text-shadow-media sm:text-2xl"
+							class="p1-title-sub pointer-events-none absolute inset-x-0 bottom-0 p-6 text-card-title text-on-dark text-shadow-media"
 						>
 							<EditableField
 								fieldKey={`Message.cards.${i}.title`}
@@ -242,7 +245,7 @@
 
 					<!-- Паспорт работы -->
 					<div class="record-body">
-						<p class="p1-body text-sm leading-relaxed sm:text-base">
+						<p class="p1-body text-prose">
 							<EditableField
 								fieldKey={`Message.cards.${i}.description`}
 								label="Описание проекта"

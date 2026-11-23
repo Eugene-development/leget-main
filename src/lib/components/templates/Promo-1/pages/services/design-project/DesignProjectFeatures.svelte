@@ -69,7 +69,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<p class="text-base/7 font-bold tracking-widest text-cat-2-600 uppercase">
+					<p class="p1-label text-cat-2-600">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -84,7 +84,7 @@
 				class="mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-4xl text-pretty text-ink-900 sm:text-5xl">
+					<h2 class="text-section-title text-balance text-ink-900">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -94,7 +94,7 @@
 		<div class="mt-20 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
 			{#each features as item, i}
 				<div
-					class="group relative rounded-[2.5rem] border border-ink-100 bg-ink-50/50 p-10 transition-all duration-500 hover:-translate-y-2 hover:bg-surface-raised hover:shadow-2xl hover:shadow-cat-2-500/10"
+					class="p1-card-copy group relative rounded-[2.5rem] border border-ink-100 bg-ink-50/50 p-10 transition-all duration-500 hover:-translate-y-2 hover:bg-surface-raised hover:shadow-2xl hover:shadow-cat-2-500/10"
 				>
 					<div
 						class="absolute top-8 right-8 text-6xl font-black text-ink-100 group-hover:text-cat-2-50"
@@ -124,7 +124,7 @@
 							class="mt-10 block"
 						>
 							{#snippet children(displayValue)}
-								<h3 class="p1-title-sub text-2xl text-ink-900">
+								<h3 class="p1-title-sub text-card-title text-ink-900">
 									<RichText value={displayValue} />
 								</h3>
 							{/snippet}
@@ -140,7 +140,7 @@
 							class="mt-4 block"
 						>
 							{#snippet children(displayValue)}
-								<p class="text-base/7 font-medium text-ink-600">
+								<p class="text-prose font-medium text-ink-600">
 									<RichText value={displayValue} />
 								</p>
 							{/snippet}

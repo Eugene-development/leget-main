@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { requestError, UserError } from '$lib/utils/user-error.js';
+	import { notifyError } from '$lib/utils/notify-error';
 	import RememberMe from '$lib/components/RememberMe.svelte';
 	let remember = $state(false);
 	let smsBusy = $state(false);
@@ -12,7 +14,7 @@
 	 * /cabinet/register, а те держат JWT в httpOnly-cookie. Поэтому вход
 	 * клиента не может включить редактор чужого сайта.
 	 */
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { page } from '$app/state';
 	import { cabinetHref } from '$lib/utils/cabinet-href';
 	import { goto, invalidateAll } from '$app/navigation';
@@ -27,6 +29,9 @@
 	// кнопки баннера, и ссылка «Войти / Зарегистрироваться» внутри неё —
 	// с двумя источниками правды они бы разъезжались.
 	const currentMode = $derived(clientAuthModal.mode ?? 'login');
+	const forPartnership = $derived(
+		page.url.pathname === '/partner/register' || clientAuthModal.continuation !== null
+	);
 
 	let name = $state('');
 	let email = $state('');
@@ -44,6 +49,7 @@
 
 	let captchaToken = $state<string | null>(null);
 	let captchaRef = $state<{ reset: () => void } | undefined>();
+	let authDialog: HTMLDivElement;
 
 	const isRegister = $derived(currentMode === 'register');
 	const title = $derived(
@@ -85,7 +91,7 @@
 		reuseRegistration = false;
 		password = '';
 		passwordConfirmation = '';
-		clientAuthModal.open(isRegister ? 'login' : 'register');
+		clientAuthModal.open(isRegister ? 'login' : 'register', clientAuthModal.continuation);
 		fieldErrors = {};
 		submitError = '';
 	}
@@ -97,12 +103,27 @@
 		passwordConfirmation = '';
 		fieldErrors = {};
 		submitError = '';
-		clientAuthModal.open('login');
+		clientAuthModal.open('login', clientAuthModal.continuation);
 	}
 	async function finish(role: string) {
+		const continuation = clientAuthModal.continuation;
 		onClose();
+		if (continuation) {
+			try {
+				await invalidateAll();
+			} finally {
+				continuation.onAuthenticated();
+			}
+			return;
+		}
 		await invalidateAll();
 		await goto(page.url.pathname === '/partner/register' ? '/partner/register' : cabinetHref(role));
+	}
+
+	function dismiss() {
+		const continuation = clientAuthModal.continuation;
+		onClose();
+		continuation?.onDismiss();
 	}
 	async function activateClient() {
 		isSubmitting = true;
@@ -110,10 +131,10 @@
 		try {
 			const response = await fetch('/cabinet/activate', { method: 'POST' });
 			const result = await response.json();
-			if (!response.ok) throw new Error(result.message || 'Не удалось подключить кабинет.');
+			if (!response.ok) throw requestError(response.status, result.code);
 			await finish(result.user.role);
 		} catch (e) {
-			submitError = e instanceof Error ? e.message : 'Сервис недоступен.';
+			submitError = notifyError(e, 'Не удалось подключить кабинет.');
 		} finally {
 			isSubmitting = false;
 		}
@@ -177,8 +198,10 @@
 				captchaRef?.reset();
 				captchaToken = null;
 				applyServerErrors(result.errors);
-				submitError =
-					typeof result.message === 'string' ? result.message : 'Не удалось выполнить вход.';
+				const failure = response.status === 401
+					? new UserError('Email или пароль не подошли. Проверьте данные и попробуйте снова.')
+					: requestError(response.status, result.code);
+				submitError = notifyError(failure, isRegister ? 'Не удалось зарегистрироваться.' : 'Не удалось войти.');
 				return;
 			}
 
@@ -187,32 +210,35 @@
 			if (
 				reuseRegistration &&
 				result.user?.role === 'student' &&
-				page.url.pathname !== '/partner/register'
+				!forPartnership
 			) {
 				activationAccount = result.user;
 				await invalidateAll();
 				return;
 			}
 			await finish(result.user?.role || 'client');
-		} catch {
+		} catch (cause) {
 			captchaRef?.reset();
 			captchaToken = null;
-			submitError = 'Сеть недоступна. Попробуйте ещё раз.';
+			submitError = notifyError(cause, isRegister ? 'Не удалось зарегистрироваться.' : 'Не удалось войти.');
 		} finally {
 			isSubmitting = false;
 		}
 	}
 
 	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) onClose();
+		if (event.target === event.currentTarget) dismiss();
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') onClose();
+		if (event.key === 'Escape') dismiss();
 	}
 
 	onMount(() => {
-		if (isRegister && page.data.client && page.url.pathname !== '/partner/register') {
+		if (clientAuthModal.continuation) {
+			void tick().then(() => authDialog?.querySelector<HTMLInputElement>('input')?.focus());
+		}
+		if (isRegister && page.data.client && !forPartnership) {
 			void fetch('/cabinet/activate')
 				.then((r) => (r.ok ? r.json() : null))
 				.then((result) => {
@@ -236,6 +262,7 @@
 	onclick={handleBackdropClick}
 >
 	<div
+		bind:this={authDialog}
 		class="my-8 w-full max-w-xl rounded-2xl bg-surface-raised p-8 shadow-2xl"
 		role="dialog"
 		aria-modal="true"
@@ -254,7 +281,7 @@
 				data-metrika-goal="clientauthmodal_close_1"
 				data-goal-action="close"
 				type="button"
-				onclick={onClose}
+				onclick={dismiss}
 				class="rounded-lg p-1 text-ink-400 transition hover:text-ink-700"
 				aria-label="Закрыть"
 			>
@@ -482,7 +509,7 @@
 						if (
 							reuseRegistration &&
 							result.user?.role === 'student' &&
-							page.url.pathname !== '/partner/register'
+							!forPartnership
 						) {
 							activationAccount = result.user;
 							await invalidateAll();

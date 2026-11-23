@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { siteSearch } from '$lib/stores/site-search.svelte';
@@ -131,7 +132,7 @@
 			completed = true;
 		} catch (cause) {
 			if (current !== sequence || currentController.signal.aborted) return;
-			error = cause instanceof Error ? cause.message : 'Не удалось загрузить результаты.';
+			error = notifyError(cause, 'Не удалось загрузить результаты.');
 		} finally {
 			if (current === sequence) loading = false;
 		}

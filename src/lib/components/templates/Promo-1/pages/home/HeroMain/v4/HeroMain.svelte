@@ -178,7 +178,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="hero-title mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl {isLight
+							class="hero-title mb-6 text-page-title text-balance {isLight
 								? 'text-scrim'
 								: 'text-on-dark'}"
 						>
@@ -199,7 +199,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="hero-desc mb-8 text-sm leading-relaxed font-light md:text-base {isLight
+							class="hero-desc mb-8 text-prose {isLight
 								? 'text-ink-600'
 								: 'text-ink-300'}"
 						>

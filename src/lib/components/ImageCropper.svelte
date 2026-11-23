@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { toast } from '$lib/stores/toast.svelte';
+	import { UserError } from '$lib/utils/user-error.js';
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import type Cropper from 'cropperjs';
@@ -81,7 +84,7 @@
 			initializeCropper();
 		} catch (err) {
 			console.error('Cropper load failed:', err);
-			initializationError = 'Не удалось загрузить редактор. Обновите страницу и попробуйте снова.';
+			initializationError = notifyError(err, 'Не удалось загрузить редактор. Обновите страницу и попробуйте снова.');
 		}
 	}
 
@@ -94,6 +97,7 @@
 		imageDecoded = false;
 		initializationError =
 			'Браузер не смог открыть это изображение. Сохраните его в PNG, JPEG или WebP и повторите.';
+		toast.error(initializationError);
 	}
 
 	function initializeCropper() {
@@ -217,7 +221,7 @@
 
 			if (!canvas) throw new Error('Не удалось сформировать область изображения');
 			if (canvas.width < 1 || canvas.height < 1) {
-				throw new Error('Выбранная область изображения пуста');
+				throw new UserError('Выбранная область изображения пуста. Выберите область для кадрирования.');
 			}
 
 			const blob = await encodeCanvas(canvas);
@@ -234,9 +238,7 @@
 		} catch (err) {
 			console.error('Crop failed:', err);
 			processingError =
-				err instanceof Error
-					? err.message
-					: 'Не удалось обработать изображение. Попробуйте другой файл.';
+				notifyError(err, 'Не удалось обработать изображение. Попробуйте другой файл.');
 		} finally {
 			isProcessing = false;
 		}
@@ -307,7 +309,7 @@
 		}
 
 		if (blob.size > maxOutputBytes) {
-			throw new Error(
+			throw new UserError(
 				'Не удалось сжать изображение до допустимого размера. Выберите меньшую область.'
 			);
 		}
@@ -336,10 +338,10 @@
 >
 	<!-- Modal Content -->
 	<div
-		class="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-surface-raised shadow-2xl"
+		class="flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-x-hidden overflow-y-auto rounded-2xl bg-surface-raised shadow-2xl sm:max-h-[90dvh]"
 	>
 		<!-- Header -->
-		<div class="flex items-center justify-between border-b bg-ink-50 px-6 py-4">
+		<div class="flex shrink-0 items-center justify-between border-b bg-ink-50 px-4 py-4 sm:px-6">
 			<h3 id="cropper-title" class="text-lg text-ink-900">Обрезка изображения</h3>
 
 			<button
@@ -360,7 +362,7 @@
 		</div>
 
 		<!-- Cropper Area -->
-		<div class="relative max-h-[60vh] min-h-[400px] flex-1 bg-ink-900">
+		<div class="relative max-h-[60dvh] min-h-44 flex-1 bg-ink-900 sm:min-h-[400px]">
 			{#if imageUrl}
 				<img
 					src={imageUrl}
@@ -389,12 +391,12 @@
 		</div>
 
 		<!-- Tools -->
-		<div class="border-t border-b bg-ink-50 px-6 py-3">
-			<div class="flex flex-wrap items-center gap-4">
+		<div class="shrink-0 border-t border-b bg-ink-50 px-4 py-3 sm:px-6">
+			<div class="flex flex-wrap items-center gap-3 sm:gap-4">
 				<!-- Aspect Ratio -->
-				<div class="flex items-center gap-2">
+				<div class="flex flex-wrap items-center gap-2">
 					<span class="text-xs font-medium text-ink-500">Соотношение:</span>
-					<div class="flex gap-1">
+					<div class="flex flex-wrap gap-1">
 						{#each aspectRatios as ratio (ratio.label)}
 							<button
 								type="button"
@@ -412,7 +414,7 @@
 				</div>
 
 				<!-- Divider -->
-				<div class="h-6 w-px bg-ink-300"></div>
+				<div class="hidden h-6 w-px bg-ink-300 sm:block"></div>
 
 				<!-- Rotate & Flip -->
 				<div class="flex items-center gap-1">
@@ -479,7 +481,7 @@
 				</div>
 
 				<!-- Divider -->
-				<div class="h-6 w-px bg-ink-300"></div>
+				<div class="hidden h-6 w-px bg-ink-300 sm:block"></div>
 
 				<!-- Reset -->
 				<button
@@ -493,7 +495,7 @@
 		</div>
 
 		<!-- Actions -->
-		<div class="flex flex-col justify-between gap-3 px-6 py-4 sm:flex-row sm:items-center">
+		<div class="flex shrink-0 flex-col justify-between gap-3 px-4 py-4 sm:flex-row sm:items-center sm:px-6">
 			{#if processingError || initializationError}
 				<p class="max-w-lg text-sm text-cat-6-600" role="alert">
 					{processingError || initializationError}

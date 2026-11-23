@@ -238,6 +238,9 @@
 	--ds-font-section-title-size: clamp(2.5rem, 1.85rem + 2.05vw, 3.5rem);
 	--ds-font-subsection-title-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
 	--ds-font-card-title-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.625rem);
+	--ds-font-compact-card-title-size: 1.125rem;
+	--ds-font-compact-card-copy-size: 1rem;
+	--ds-font-compact-card-copy-leading: 1.5;
 	--ds-font-prose-size: 1.125rem;
 	--ds-font-prose-leading: 1.7777778;
 	--ds-space-prose-paragraph: 1.5rem;

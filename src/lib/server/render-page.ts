@@ -105,6 +105,7 @@ export interface RenderPageResponse {
  */
 export async function loadRenderPage(event: RequestEvent, slug: string) {
 	const hostname = new URL(event.request.url).hostname;
+	const saveSnapshot = slug !== '/b2b' && !slug.startsWith('/b2b/');
 	const draftToken = event.url.searchParams.get('draft');
 	if (draftToken !== null && !/^[a-f0-9]{64}$/.test(draftToken))
 		error(404, 'Предпросмотр не найден.');
@@ -126,7 +127,7 @@ export async function loadRenderPage(event: RequestEvent, slug: string) {
 		const data = await client.request<RenderPageResponse>(RENDER_PAGE_QUERY, { slug });
 
 		event.locals.designSystem = readDesignSystem(data.renderPage.site.header?.data);
-		if (!draftToken) await savePublicPage(hostname, slug, data.renderPage);
+		if (!draftToken && saveSnapshot) await savePublicPage(hostname, slug, data.renderPage);
 
 		return {
 			pageData: {
@@ -180,7 +181,7 @@ export async function loadRenderPage(event: RequestEvent, slug: string) {
 			if (!unavailable) error(502, 'Bad gateway');
 		}
 
-		if (!draftToken) {
+		if (!draftToken && saveSnapshot) {
 			const offline = await loadOfflinePage(hostname, slug);
 			if (offline) {
 				event.locals.designSystem = readDesignSystem(offline.site.header?.data);

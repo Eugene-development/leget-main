@@ -113,9 +113,10 @@ export function decodeClientDisplay(token: string | undefined): ClientDisplay | 
  * `null` — токена нет или он недействителен. Роль в ответе приходит из БД,
  * а не из claim'а, поэтому именно по ней страница решает, свой ли это кабинет.
  */
-export async function readSessionProfile(token: string): Promise<ClientProfile | null> {
+export async function readSessionProfile(token: string, signal?: AbortSignal): Promise<ClientProfile | null> {
 	const response = await authApi('/session/me', {
-		headers: { Authorization: `Bearer ${token}` }
+		headers: { Authorization: `Bearer ${token}` },
+		signal
 	});
 
 	if (response.status === 401 || response.status === 403) return null;

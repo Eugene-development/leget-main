@@ -1,7 +1,8 @@
+import { UserError } from '$lib/utils/user-error.js';
 import { getAuthToken } from '$lib/utils/auth-session';
 import { getGraphQLUrl } from '$lib/utils/config';
 
-export class ProjectRequestError extends Error {
+export class ProjectRequestError extends UserError {
 	constructor(
 		message: string,
 		public fields: Record<string, string> = {}

@@ -60,7 +60,7 @@
 		class="p1-surface-alt rounded-2xl px-6 py-10 sm:px-10 sm:py-12"
 		data-p1-theme={isLight ? 'light' : 'dark'}
 	>
-		<h2 class="p1-title ds-title-sub text-2xl sm:text-3xl">
+		<h2 class="p1-title text-section-title text-balance">
 			<EditableField
 				fieldKey="MebelProcess.title"
 				label="Заголовок"
@@ -83,11 +83,11 @@
 		<ol class="route mt-10 grid gap-0" style="--steps: {steps.length}">
 			{#each steps as step, i}
 				<li
-					class="relative flex animate-fade-up-in gap-5 lg:block"
+					class="relative flex animate-fade-up-in gap-5 xl:block"
 					style="animation-delay: var(--ds-motion-stagger-{Math.min(i + 1, 5)})"
 				>
 					<!-- Вертикальный рельс: узкие экраны -->
-					<div class="flex w-3 shrink-0 flex-col items-center lg:hidden" aria-hidden="true">
+					<div class="flex w-3 shrink-0 flex-col items-center xl:hidden" aria-hidden="true">
 						<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-link-500"></span>
 						{#if i < steps.length - 1}
 							<span class="p1-rail mt-2 w-px flex-1"></span>
@@ -96,22 +96,22 @@
 
 					<!-- Отступ несёт промежуток между этапами, а не сам этап: на последнем
 					     он превратился бы в пустое дно панели. -->
-					<div class={i < steps.length - 1 ? 'pb-8 lg:pb-0' : ''}>
-						<span class="p1-numeric p1-muted block text-xs lg:pr-8">
+					<div class={['min-w-0 flex-1', i < steps.length - 1 && 'pb-8 xl:pb-0']}>
+						<span class="p1-numeric p1-muted block text-xs xl:pr-6">
 							{String(i + 1).padStart(2, '0')}
 						</span>
 
 						<!-- Горизонтальный рельс: широкие экраны. Вне правого отступа,
 						     иначе линия рвалась бы на границе колонок. -->
-						<div class="my-4 hidden items-center lg:flex" aria-hidden="true">
+						<div class="my-4 hidden items-center xl:flex" aria-hidden="true">
 							<span class="h-3 w-3 shrink-0 rounded-full bg-link-500"></span>
 							{#if i < steps.length - 1}
 								<span class="p1-rail ml-2 h-px flex-1"></span>
 							{/if}
 						</div>
 
-						<div class="mt-2 lg:mt-0 lg:pr-8">
-							<h3 class="p1-title-sub p1-title text-lg">
+						<div class="p1-card-copy mt-2 xl:mt-0 xl:pr-6">
+							<h3 class="p1-title-sub p1-title text-card-title">
 								<EditableField
 									fieldKey="MebelProcess.steps.{i}.title"
 									label="Заголовок этапа"
@@ -125,7 +125,7 @@
 									{/snippet}
 								</EditableField>
 							</h3>
-							<p class="p1-body mt-1.5 text-sm">
+							<p class="p1-body mt-1.5 text-prose">
 								<EditableField
 									fieldKey="MebelProcess.steps.{i}.desc"
 									label="Описание этапа"
@@ -149,7 +149,7 @@
 
 <style>
 	/* Число колонок равно числу этапов: задаётся из данных, не константой. */
-	@media (min-width: 1024px) {
+	@media (min-width: 80rem) {
 		.route {
 			grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
 		}

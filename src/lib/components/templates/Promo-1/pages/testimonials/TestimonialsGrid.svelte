@@ -316,7 +316,7 @@
 			aria-hidden="true"
 		></div>
 
-		<blockquote class="relative text-sm/6 text-ink-700">
+		<blockquote class="relative text-prose text-ink-700">
 			<EditableField
 				fieldKey="TestimonialsGrid.reviews.{globalIdx}.text"
 				label="Текст отзыва"
@@ -396,7 +396,7 @@
 						</svg>
 					</div>
 					<div
-						class="mt-6 text-lg font-medium tracking-[-0.01em] text-pretty text-ink-900 sm:text-xl/8"
+						class="mt-6 text-prose text-pretty text-ink-900"
 					>
 						<EditableField
 							fieldKey="TestimonialsGrid.featured.text"

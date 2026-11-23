@@ -43,7 +43,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-16">
-	<h2 class="ds-title-sub mb-6 text-2xl text-ink-900">{editableText(data.title, 'Магазины и поставщики')}</h2>
+	<h2 class="mb-6 text-section-title text-balance text-ink-900">{editableText(data.title, 'Магазины и поставщики')}</h2>
 
 	{#if shops.length === 0}
 		<div
@@ -63,7 +63,7 @@
 					d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
 				/>
 			</svg>
-			<h3 class="p1-title-sub mt-4 text-lg text-ink-900">Магазины пока не добавлены</h3>
+			<h3 class="p1-title-sub mt-4 text-card-title text-ink-900">Магазины пока не добавлены</h3>
 			<p class="mt-2 text-ink-500">Скоро здесь появятся магазины мебельной фурнитуры</p>
 		</div>
 	{:else}
@@ -96,10 +96,10 @@
 								</span>
 							{/if}
 						</div>
-						<div class="min-w-0 flex-1">
-							<h3 class="p1-title-sub text-lg text-ink-900">{shop.title ?? shop.value}</h3>
+						<div class="p1-card-copy min-w-0 flex-1">
+							<h3 class="p1-title-sub text-card-title text-ink-900">{shop.title ?? shop.value}</h3>
 							{#if shop.desc ?? shop.description}
-								<p class="mt-1 line-clamp-2 text-sm text-ink-500">
+								<p class="mt-1 text-prose text-ink-500">
 									{shop.desc ?? shop.description}
 								</p>
 							{/if}
@@ -109,7 +109,7 @@
 					<!-- Категории -->
 					{#if shop.categories && shop.categories.length > 0}
 						<div class="mt-4">
-							<p class="text-xs font-medium tracking-wider text-ink-400 uppercase">Категории</p>
+							<p class="p1-label text-ink-400">Категории</p>
 							<div class="mt-2 flex flex-wrap gap-2">
 								{#each shop.categories.filter((c: any) => c.is_active !== false) as category}
 									<span
@@ -125,7 +125,7 @@
 					<!-- Бренды -->
 					{#if shop.brands && shop.brands.length > 0}
 						<div class="mt-4">
-							<p class="text-xs font-medium tracking-wider text-ink-400 uppercase">Бренды</p>
+							<p class="p1-label text-ink-400">Бренды</p>
 							<div class="mt-2 flex flex-wrap gap-2">
 								{#each shop.brands.filter((b: any) => b.is_active !== false) as brand}
 									{#if brand.logo || imageEditing?.editable}

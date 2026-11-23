@@ -114,7 +114,7 @@
 			class="hr-item hr-d1 mt-8 block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="text-4xl text-pretty sm:text-5xl lg:text-6xl {pal.title ?? 'text-on-dark'}">
+				<h1 class="text-page-title text-balance {pal.title ?? 'text-on-dark'}">
 					<RichText value={displayValue} />
 				</h1>
 			{/snippet}
@@ -132,7 +132,7 @@
 		>
 			{#snippet children(displayValue)}
 				{#if displayValue}
-					<p class="mx-auto max-w-2xl text-base/7 text-pretty sm:text-lg/8 {pal.text}">
+					<p class="mx-auto max-w-2xl text-prose text-pretty {pal.text}">
 						<RichText value={displayValue} />
 					</p>
 				{/if}

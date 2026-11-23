@@ -40,7 +40,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl text-on-dark sm:text-5xl lg:text-6xl">
+				<h2 class="text-section-title text-balance text-on-dark">
 					<RichText value={displayValue} />
 				</h2>
 			{/snippet}
@@ -59,7 +59,7 @@
 			class="mt-8 block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto max-w-2xl text-lg leading-relaxed text-ink-400 sm:text-xl">
+				<p class="mx-auto max-w-2xl text-prose text-ink-400">
 					<RichText value={displayValue} />
 				</p>
 			{/snippet}

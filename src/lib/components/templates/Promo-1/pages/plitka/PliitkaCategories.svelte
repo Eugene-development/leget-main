@@ -42,18 +42,18 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">{editableText(data.title, 'Популярные категории')}</h2>
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">{editableText(data.title, 'Популярные категории')}</h2>
 
 	<div class="grid gap-6 sm:grid-cols-2">
 		{#each items as item, i}
 			<div
-				class="group relative overflow-hidden rounded-2xl bg-linear-to-br {categoryGradient(
+				class="p1-card-copy group relative overflow-hidden rounded-2xl bg-linear-to-br {categoryGradient(
 					item.gradient
 				)} p-8 transition-all duration-300 hover:shadow-lg"
 				in:p1_fly={{ y: 20, duration: 500, delay: i * 100, easing: cubicOut }}
 			>
-				<h3 class="p1-title-sub text-xl text-ink-900">{item.title}</h3>
-				<p class="mt-2 text-sm text-ink-600">{item.desc ?? ''}</p>
+				<h3 class="p1-title-sub text-card-title text-ink-900">{item.title}</h3>
+				<p class="mt-2 text-prose text-ink-600">{item.desc ?? ''}</p>
 				<div class="mt-4">
 					<span class="inline-flex items-center gap-1 text-sm font-medium text-link-600">
 						Смотреть

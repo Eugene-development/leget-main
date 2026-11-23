@@ -129,7 +129,7 @@
 				class="gt-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
+					<h2 class="text-section-title text-balance text-ink-900">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -146,7 +146,7 @@
 				class="gt-item gt-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-sm/6 text-ink-600 sm:text-base/7">
+					<p class="mx-auto max-w-2xl text-prose text-ink-600">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -156,7 +156,7 @@
 		<div use:revealOnScroll class="gt-reveal mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 			{#each items as item, i}
 				<div
-					class="gt-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_28px_70px_-50px] shadow-ink-900/40 transition duration-300 hover:border-ink-900/20 hover:shadow-[0_34px_80px_-44px] hover:shadow-ink-900/50 motion-safe:hover:-translate-y-1"
+					class="p1-card-copy gt-card group relative overflow-hidden rounded-3xl border border-ink-900/10 bg-surface-raised p-6 shadow-[0_28px_70px_-50px] shadow-ink-900/40 transition duration-300 hover:border-ink-900/20 hover:shadow-[0_34px_80px_-44px] hover:shadow-ink-900/50 motion-safe:hover:-translate-y-1"
 					style="--gt-delay: {i * 60}ms"
 				>
 					<!-- Цветное пятно и плитка иконки берут градиенты из данных (item.dot / item.color) -->
@@ -212,7 +212,7 @@
 							</span>
 						</div>
 
-						<h3 class="p1-title-sub mt-4 border-t border-ink-900/10 pt-4 text-base text-ink-900">
+						<h3 class="p1-title-sub mt-4 border-t border-ink-900/10 pt-4 text-card-title text-ink-900">
 							<EditableField
 								fieldKey="GuaranteeTerms.{i}.title"
 								label="Категория"
@@ -224,7 +224,7 @@
 								{#snippet children(val)}<RichText value={val} />{/snippet}
 							</EditableField>
 						</h3>
-						<p class="mt-2 text-sm/6 text-ink-500">
+						<p class="mt-2 text-prose text-ink-500">
 							<EditableField
 								fieldKey="GuaranteeTerms.{i}.text"
 								label="Описание"

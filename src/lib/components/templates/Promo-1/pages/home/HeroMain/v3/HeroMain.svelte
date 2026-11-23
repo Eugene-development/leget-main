@@ -250,7 +250,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="mb-3.5 bg-gradient-to-r bg-clip-text text-3xl text-transparent sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl {isLight
+							class="mb-3.5 bg-gradient-to-r bg-clip-text text-page-title text-balance text-transparent {isLight
 								? 'from-ink-900 via-ink-800 to-ink-700'
 								: 'from-surface-raised via-ink-100 to-ink-400'}"
 						>
@@ -271,7 +271,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="mb-6 text-sm leading-relaxed font-normal transition-colors duration-500 md:text-base {isLight
+							class="mb-6 text-prose transition-colors duration-500 {isLight
 								? 'text-ink-600'
 								: 'text-ink-300'}"
 						>
@@ -431,7 +431,7 @@
 										{skill.title}
 									</h3>
 									<p
-										class="mt-0.5 truncate text-[11px] leading-normal font-semibold {activeSkillIndex ===
+										class="p1-note mt-0.5 font-semibold wrap-anywhere {activeSkillIndex ===
 										idx
 											? isLight
 												? 'text-ink-500'

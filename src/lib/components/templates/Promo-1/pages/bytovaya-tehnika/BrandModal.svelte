@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { uploadSiteFile } from '$lib/utils/site-file-upload';
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onDestroy, tick, untrack } from 'svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import RichTextEditor from '$lib/components/RichTextEditor.svelte';
@@ -78,20 +80,7 @@
 	async function uploadLogo() {
 		if (!file) return logo;
 		if (uploaded) return uploaded;
-		const result = await projectRequest<{
-			generateUploadUrl: { uploadUrl: string; objectUrl: string };
-		}>(
-			`mutation($filename: String!, $mimeType: String!, $licenseId: ID!) { generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: "brand-logos", licenseId: $licenseId) { uploadUrl objectUrl } }`,
-			{ filename: file.name, mimeType: file.type, licenseId },
-			'Не удалось подготовить загрузку логотипа.'
-		);
-		const response = await fetch(result.generateUploadUrl.uploadUrl, {
-			method: 'PUT',
-			headers: { 'Content-Type': file.type },
-			body: file
-		});
-		if (!response.ok) throw new Error('Не удалось загрузить логотип. Повторите попытку.');
-		uploaded = result.generateUploadUrl.objectUrl;
+		uploaded = await uploadSiteFile(file, licenseId, 'brand-logos');
 		return uploaded;
 	}
 	async function save(event: SubmitEvent) {
@@ -133,7 +122,7 @@
 			await onSaved(false, result.upsertApplianceBrand.slug);
 		} catch (cause) {
 			if (cause instanceof ProjectRequestError) fields = cause.fields;
-			error = cause instanceof Error ? cause.message : 'Не удалось сохранить бренд.';
+			error = notifyError(cause, 'Не удалось сохранить бренд.');
 			await tick();
 			errorElement?.focus();
 		} finally {
@@ -154,7 +143,7 @@
 			);
 			await onSaved(true, brand.slug);
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Не удалось удалить бренд.';
+			error = notifyError(cause, 'Не удалось удалить бренд.');
 		} finally {
 			busy = false;
 			status = '';

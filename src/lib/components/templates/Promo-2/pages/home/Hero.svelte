@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
@@ -170,10 +171,8 @@
 			videoStatus = '';
 			videoError =
 				pendingVideo?.field === field
-					? 'Видео загружено. Повторите сохранение, чтобы применить его.'
-					: error instanceof Error
-						? error.message
-						: 'Не удалось загрузить видео. Повторите попытку.';
+					? notifyError(error, 'Видео загружено. Повторите сохранение, чтобы применить его.')
+					: notifyError(error, 'Не удалось загрузить видео. Повторите попытку.');
 		} finally {
 			busyVideo = null;
 		}

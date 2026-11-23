@@ -1,46 +1,7 @@
-/* Композиция двух бумажных версий. Материал и пластика — через p1-paper и --ds-*. */
+/* Композиция каскада Text/v3. Материал и пластика — через --ds-*. */
 .paper-section {
 	padding: var(--ds-spacing-section-sm) 1.5rem;
 	overflow: clip;
-}
-.paper-stage {
-	position: relative;
-	max-width: 64rem;
-	margin-inline: auto;
-	padding-top: 9rem;
-}
-.paper-opening {
-	position: absolute;
-	top: 0;
-	right: 10%;
-	width: 19rem;
-	height: 14rem;
-}
-.paper-leaf {
-	position: relative;
-	padding: 6rem 6rem 10rem;
-	isolation: isolate;
-}
-.paper-leaf::before {
-	content: '';
-	position: absolute;
-	inset: -5rem 0 auto;
-	height: 6rem;
-	background: inherit;
-	clip-path: polygon(0 0, 100% 100%, 0 100%);
-	filter: none;
-}
-.paper-copy {
-	position: relative;
-	max-width: 65ch;
-	margin-inline: auto;
-}
-.paper-closing {
-	position: absolute;
-	bottom: -2rem;
-	right: 6%;
-	width: 12rem;
-	height: 9rem;
 }
 .paper-stack {
 	position: relative;
@@ -98,26 +59,6 @@
 	.paper-section {
 		padding: var(--ds-spacing-section-xs) 1.25rem;
 	}
-	.paper-stage {
-		padding-top: 6rem;
-	}
-	.paper-opening {
-		width: 11rem;
-		height: 8rem;
-		right: 5%;
-	}
-	.paper-leaf {
-		padding: 2.5rem 1.5rem 5rem;
-	}
-	.paper-leaf::before {
-		inset-block-start: -2.5rem;
-		height: 3rem;
-	}
-	.paper-closing {
-		width: 6rem;
-		height: 4.5rem;
-		bottom: -1rem;
-	}
 	.paper-stack {
 		padding-top: 4rem;
 	}
@@ -159,7 +100,6 @@
 }
 @media (prefers-reduced-motion: no-preference) {
 	@supports (animation-timeline: view()) {
-		.paper-leaf,
 		.paper-cascade .ds-prose-content > * {
 			transform-origin: center top;
 			animation: paper-unfold linear both;

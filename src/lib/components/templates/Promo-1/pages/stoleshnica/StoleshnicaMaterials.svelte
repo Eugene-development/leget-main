@@ -86,7 +86,7 @@
 </script>
 
 <div class="mebel-container mt-12 mb-12">
-	<h2 class="ds-title-sub mb-8 text-2xl text-ink-900">
+	<h2 class="mb-8 text-section-title text-balance text-ink-900">
 		{editableText(data.title, 'Сравнение материалов')}
 	</h2>
 

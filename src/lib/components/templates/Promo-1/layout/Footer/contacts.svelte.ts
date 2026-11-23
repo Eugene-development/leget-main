@@ -1,3 +1,4 @@
+import { notifyError } from '$lib/utils/notify-error';
 /**
  * Видимость строк контактов в футере — единый источник правды для v1/v2/v3.
  *
@@ -13,6 +14,7 @@
  * бы настройку.
  */
 import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+import { richTextToPlainText } from '$lib/utils/rich-text';
 
 export const CONTACT_KEYS = ['phone', 'email', 'address', 'hours'] as const;
 export type ContactKey = (typeof CONTACT_KEYS)[number];
@@ -35,8 +37,10 @@ function readHidden(data: Record<string, unknown> | undefined): string[] {
 
 export interface ContactVisibility {
 	readonly hidden: string[];
-	/** Показывается ли строка обычному посетителю. */
+	/** Включена ли строка в настройках видимости. */
 	isVisible(key: ContactKey): boolean;
+	/** Есть ли значение и включена ли строка. */
+	isShown(key: ContactKey): boolean;
 	/** Есть ли хоть одна видимая строка — блок контактов целиком может быть пуст. */
 	readonly hasVisible: boolean;
 	label(key: ContactKey): string;
@@ -49,6 +53,7 @@ export interface ContactVisibility {
  */
 export function createContactVisibility(opts: {
 	getData: () => Record<string, unknown>;
+	getValues: () => Record<ContactKey, string>;
 	setData: (next: Record<string, unknown>) => void;
 	getEditContext: () => EditContext | null;
 }): ContactVisibility {
@@ -65,13 +70,22 @@ export function createContactVisibility(opts: {
 		}
 	});
 
+	const isVisible = (key: ContactKey) => !hidden.includes(key);
+	const isShown = (key: ContactKey) => {
+		if (!isVisible(key)) return false;
+		const value = opts.getValues()[key];
+		const text = key === 'address' || key === 'hours' ? richTextToPlainText(value) : value;
+		return Boolean(text.trim());
+	};
+
 	return {
 		get hidden() {
 			return hidden;
 		},
-		isVisible: (key) => !hidden.includes(key),
+		isVisible,
+		isShown,
 		get hasVisible() {
-			return CONTACT_KEYS.some((key) => !hidden.includes(key));
+			return CONTACT_KEYS.some(isShown);
 		},
 		label: (key) => CONTACT_LABEL[key],
 		async toggle(key, e) {
@@ -97,7 +111,7 @@ export function createContactVisibility(opts: {
 				hidden = wasVisible ? hidden.filter((k) => k !== key) : [...hidden, key];
 				opts.setData({ ...opts.getData(), [HIDDEN_CONTACTS_KEY]: hidden });
 				console.error('Не удалось сохранить видимость контакта:', err);
-				alert(err instanceof Error ? err.message : 'Не удалось сохранить настройку');
+				notifyError(err, 'Не удалось сохранить настройку');
 			}
 		}
 	};

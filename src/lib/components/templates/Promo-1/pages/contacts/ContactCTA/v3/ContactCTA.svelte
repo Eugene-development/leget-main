@@ -115,7 +115,7 @@
 					class="block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-4xl text-balance break-words sm:text-5xl">
+						<h2 class="p1-title text-section-title text-balance break-words">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
@@ -133,7 +133,7 @@
 					class="mt-5 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="p1-muted max-w-md text-base/7 break-words">
+						<p class="p1-muted max-w-md text-prose break-words">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}

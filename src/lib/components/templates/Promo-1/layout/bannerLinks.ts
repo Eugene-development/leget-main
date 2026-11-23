@@ -17,6 +17,8 @@
  */
 export type BannerLink = { href: string; label: string };
 
+export const b2bLink = { href: '/b2b', label: 'B2B' };
+
 export const bannerDefaultLinks: readonly BannerLink[] = [
 	{ href: '/about', label: 'О проекте' },
 	{ href: '/partnership', label: 'Партнёрство' },
@@ -30,11 +32,12 @@ export const bannerDefaultLinks: readonly BannerLink[] = [
 /** Список баннера из данных шапки; пустой или отсутствующий — значит дефолт. */
 export function resolveBannerLinks(data: Record<string, unknown> | undefined): BannerLink[] {
 	const links = data?.links;
-	const resolved =
-		Array.isArray(links) && links.length > 0 ? (links as BannerLink[]) : [...bannerDefaultLinks];
-	return resolved.some((link) => link.href === '/university')
-		? resolved
-		: [...resolved, { href: '/university', label: 'Универ' }];
+	const resolved = (
+		Array.isArray(links) && links.length > 0 ? (links as BannerLink[]) : bannerDefaultLinks
+	).filter((link) => link.href !== b2bLink.href);
+	const university = resolved.findIndex((link) => link.href === '/university');
+	if (university === -1) return [...resolved, { href: '/university', label: 'Универ' }, b2bLink];
+	return [...resolved.slice(0, university + 1), b2bLink, ...resolved.slice(university + 1)];
 }
 
 /**

@@ -8,7 +8,11 @@ const source = readFileSync(
 	"import { getAuthApiUrl } from '$lib/utils/config';",
 	"const getAuthApiUrl = () => 'https://auth.example/api';"
 );
-const { outputText } = ts.transpileModule(source, {
+const resolvableSource = source.replace(
+	"'./user-error.js'",
+	JSON.stringify(new URL('../src/lib/utils/user-error.js', import.meta.url).href)
+);
+const { outputText } = ts.transpileModule(resolvableSource, {
 	compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 }
 });
 const { createFormSender } = await import(

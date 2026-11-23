@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.27.2.1 — см. docs/architecture/component-articles-map.md
 	import { editStore } from '$lib/stores/edit.svelte';
@@ -159,7 +160,7 @@
 			actionStatus = message;
 		} catch (error) {
 			actionError =
-				error instanceof Error ? error.message : 'Не удалось сохранить. Повторите попытку.';
+				notifyError(error, 'Не удалось сохранить. Повторите попытку.');
 		}
 	}
 
@@ -382,7 +383,7 @@
 				class="vc-item vc-d1 mt-5 block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title text-3xl text-pretty sm:text-4xl">
+					<h2 class="p1-title text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -401,7 +402,7 @@
 				class="vc-item vc-d3 mt-6 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="p1-body mx-auto max-w-xl text-base/7 text-pretty">
+					<p class="p1-body mx-auto max-w-xl text-prose text-pretty">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -502,7 +503,7 @@
 								<div class="px-6 pb-7 sm:px-7 sm:pb-8">
 									<div class="p1-line mb-6 border-t"></div>
 
-									<p class="p1-body max-w-3xl text-base/7">
+									<p class="p1-body max-w-3xl text-prose">
 										<EditableField
 											fieldKey="VacancyList.{i}.description"
 											label="Описание позиции"

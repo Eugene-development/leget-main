@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -48,7 +49,7 @@
 			await saveComponentData(editContext, 'HeroMain', next);
 		} catch (cause) {
 			data = previous;
-			error = cause instanceof Error ? cause.message : 'Не удалось сохранить настройки блока';
+			error = notifyError(cause, 'Не удалось сохранить настройки блока');
 			throw cause;
 		} finally {
 			isSaving = false;

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { tick } from 'svelte';
 	import {
 		createTag,
@@ -78,7 +79,7 @@
 			success = `Тег «${tag.name}» удалён из справочника и ${target}.`;
 			onChanged();
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Не удалось удалить тег.';
+			error = notifyError(cause, 'Не удалось удалить тег.');
 		} finally {
 			saving = false;
 		}
@@ -95,7 +96,7 @@
 			);
 			groupId = groups[0]?.id ?? '';
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Не удалось загрузить группы тегов.';
+			error = notifyError(cause, 'Не удалось загрузить группы тегов.');
 		} finally {
 			loading = false;
 		}
@@ -139,7 +140,7 @@
 			success = `Тег «${tag.name}» сохранён в справочнике.`;
 			name = '';
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Не удалось добавить тег.';
+			error = notifyError(cause, 'Не удалось добавить тег.');
 		} finally {
 			saving = false;
 			await tick();

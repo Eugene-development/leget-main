@@ -10,6 +10,7 @@
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import SiteSearchModal from '$lib/components/SiteSearchModal.svelte';
 	import Toast from '$lib/components/Toast.svelte';
+	import ContentBoundary from '$lib/components/ContentBoundary.svelte';
 	import { siteSearch } from '$lib/stores/site-search.svelte';
 	import NavigationBody from '$lib/components/NavigationBody.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
@@ -121,7 +122,9 @@
 	</aside>
 {/if}
 <NavigationBody root delegated={navigationBodies > 0} workspace={loadingWorkspace}>
-	{@render children()}
+	<ContentBoundary message="Не удалось показать страницу." resetOnNavigation>
+		{@render children()}
+	</ContentBoundary>
 </NavigationBody>
 
 <Toast />

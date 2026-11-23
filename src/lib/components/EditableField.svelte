@@ -115,13 +115,18 @@
 	);
 
 	function openModal() {
+		const useRichText = kind === 'text' && richText;
+		const textElement =
+			wrapperEl?.querySelector('.rich-text') ?? wrapperEl?.firstElementChild ?? wrapperEl;
 		editStore.open({
 			key: fieldKey,
 			kind,
 			label,
 			value: savedValue,
 			multiline,
-			richText: kind === 'text' && richText,
+			richText: useRichText,
+			defaultFontSize:
+				useRichText && textElement ? getComputedStyle(textElement).fontSize : undefined,
 			legacyHtml,
 			onSave
 		});

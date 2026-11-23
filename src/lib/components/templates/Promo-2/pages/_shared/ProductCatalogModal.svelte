@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onDestroy, onMount, tick } from 'svelte';
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import ImageCropper from '$lib/components/ImageCropper.svelte';
@@ -113,9 +114,7 @@
 		}
 	}
 	function message(cause: unknown) {
-		return cause instanceof Error
-			? cause.message
-			: 'Не удалось выполнить действие. Повторите попытку.';
+		return notifyError(cause, 'Не удалось выполнить действие. Повторите попытку.');
 	}
 	function canLeave() {
 		return (

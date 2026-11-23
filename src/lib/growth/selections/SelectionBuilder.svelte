@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { growthRequest, type SelectionItem } from './api';
 	import './surfaces.css';
 	let { projectIds }: { projectIds: string[] } = $props();
@@ -20,7 +21,7 @@
 				await growthRequest<{ items: SelectionItem[] }>('selection-catalog')
 			).items.filter((item) => item.kind === 'material');
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось загрузить материалы.';
+			error = notifyError(e, 'Не удалось загрузить материалы.');
 		} finally {
 			busy = false;
 		}
@@ -40,7 +41,7 @@
 		try {
 			result = await growthRequest('selections', { title, items, creation_key: creation!.key });
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось сохранить подборку.';
+			error = notifyError(e, 'Не удалось сохранить подборку.');
 		} finally {
 			busy = false;
 		}

@@ -33,7 +33,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl sm:text-4xl"><RichText value={displayValue} /></h2>
+				<h2 class="text-section-title text-balance"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 

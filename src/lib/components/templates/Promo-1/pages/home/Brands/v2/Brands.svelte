@@ -148,7 +148,7 @@
 				class="block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="p1-title mt-4 text-3xl sm:text-4xl">
+					<h2 class="p1-title mt-4 text-section-title text-balance">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -175,19 +175,19 @@
 						</div>
 						<div>
 							<h3
-								class="p1-title p1-title-sub transition-colors duration-300 group-hover:text-link-300"
+								class="p1-title p1-title-sub transition-colors duration-300 group-hover:text-link-300 text-card-title"
 							>
 								{brand.name}
 							</h3>
 							<p
-								class="p1-muted group-hover:p1-muted text-xs font-semibold tracking-wider uppercase transition-colors duration-300"
+								class="p1-muted group-hover:p1-muted p1-label transition-colors duration-300"
 							>
 								{brand.country}
 							</p>
 						</div>
 					</div>
 					<p
-						class="p1-muted group-hover:p1-body mt-4 text-sm leading-relaxed transition-colors duration-300"
+						class="p1-muted group-hover:p1-body mt-4 text-prose transition-colors duration-300"
 					>
 						{brand.description}
 					</p>
@@ -197,7 +197,7 @@
 
 		<!-- Партнёры-производители -->
 		<div class="p1-border mt-16 border-t pt-12">
-			<p class="p1-muted text-center text-xs font-bold tracking-widest uppercase">
+			<p class="p1-muted text-center p1-label">
 				<EditableField
 					fieldKey="Brands.partnersLabel"
 					label="Подпись партнёров"
@@ -234,7 +234,7 @@
 			{#if data?.partnersNote}
 				<div class="mt-12 text-center">
 					<p
-						class="p1-border p1-card p1-body inline-flex items-center gap-2 rounded-full border px-6 py-2 text-xs font-semibold tracking-wider uppercase backdrop-blur-md"
+						class="p1-border p1-card p1-body inline-flex items-center gap-2 rounded-full border px-6 py-2 p1-label backdrop-blur-md"
 					>
 						{String(data.partnersNote)}
 					</p>

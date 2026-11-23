@@ -47,7 +47,7 @@
 				</EditableField>
 			</h2>
 
-			<p class="mt-4 max-w-[38ch] text-pretty text-on-accent-muted">
+			<p class="mt-4 max-w-[65ch] text-prose text-pretty text-on-accent-muted text-prose">
 				<EditableField
 					fieldKey="StoleshnicaCTA.description"
 					label="Описание CTA"
@@ -136,8 +136,7 @@
 	}
 
 	.cta-title {
-		font-size: clamp(var(--text-3xl), 5.2cqi, var(--text-6xl));
-		line-height: 1.02;
+		font-size: var(--ds-font-section-title-size);
 		overflow-wrap: anywhere;
 	}
 

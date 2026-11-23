@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { fade, fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
@@ -96,7 +97,7 @@
 		} catch (err) {
 			if (session !== serviceOrderStore.session) return;
 			console.error('Service request submission error:', err);
-			generalError = err instanceof Error ? err.message : 'Произошла непредвиденная ошибка';
+			generalError = notifyError(err, 'Произошла непредвиденная ошибка');
 		} finally {
 			if (session === serviceOrderStore.session) isSubmitting = false;
 		}

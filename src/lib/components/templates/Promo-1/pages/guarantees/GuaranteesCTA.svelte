@@ -94,7 +94,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p
-								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] text-cat-2-300 uppercase sm:text-xs"
+								class="inline-flex items-center gap-3 p1-label text-cat-2-300"
 							>
 								<span class="h-px w-8 bg-cat-2-400/80" aria-hidden="true"></span>
 								<RichText value={displayValue} />
@@ -112,7 +112,7 @@
 						class="gt-item gt-d2 mt-5 block"
 					>
 						{#snippet children(displayValue)}
-							<h2 class="text-3xl text-pretty text-on-dark sm:text-4xl lg:text-5xl">
+							<h2 class="text-section-title text-balance text-on-dark">
 								<RichText value={displayValue} />
 							</h2>
 						{/snippet}
@@ -131,7 +131,7 @@
 						class="gt-item gt-d3 mt-6 block"
 					>
 						{#snippet children(displayValue)}
-							<p class="mx-auto max-w-xl text-sm/6 text-ink-300 sm:text-base/7">
+							<p class="mx-auto max-w-xl text-prose text-ink-300">
 								<RichText value={displayValue} />
 							</p>
 						{/snippet}

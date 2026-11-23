@@ -63,7 +63,7 @@
 <section class="p1-surface-alt min-h-[55vh]" data-p1-theme="light">
 	<div class="mx-auto max-w-7xl px-6 pt-10 pb-section-sm sm:pt-14 sm:pb-section lg:px-8">
 		<div class="flex items-center justify-between gap-3 sm:gap-6">
-			<h1 class="p1-title p1-title-display min-w-0 text-2xl whitespace-nowrap sm:text-5xl">
+			<h1 class="p1-title p1-title-display min-w-0 text-page-title text-balance wrap-anywhere">
 				<EditableField
 					fieldKey="FavoritesPage.title"
 					label="Название страницы"
@@ -113,15 +113,15 @@
 										class="aspect-video w-full object-cover transition-transform duration-[var(--ds-motion-duration-ui-slow)] ease-ui group-hover:scale-105"
 									/>
 								</div>
-								<div class="px-5 pt-5 pb-3">
+								<div class="p1-card-copy px-5 pt-5 pb-3">
 									{#if project.categoryValue}
 										<span class="p1-label p1-accent">{project.categoryValue}</span>
 									{/if}
-									<h2 class="p1-title p1-title-sub mt-2 text-lg">
+									<h2 class="p1-title p1-title-sub mt-2 text-card-title">
 										{projectTitle(project.value)}
 									</h2>
 									{#if project.shortDescription}
-										<p class="p1-body mt-2 line-clamp-2 text-sm">{project.shortDescription}</p>
+										<p class="p1-body mt-2 text-prose wrap-anywhere">{project.shortDescription}</p>
 									{/if}
 								</div>
 							</a>
@@ -156,7 +156,7 @@
 						d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"
 					/>
 				</svg>
-				<h2 class="p1-title p1-title-sub mt-1 text-xl">
+				<h2 class="p1-title p1-title-sub mt-1 text-card-title">
 					<EditableField
 						fieldKey="FavoritesPage.emptyTitle"
 						label="Заголовок пустого избранного"
@@ -169,7 +169,7 @@
 						{#snippet children(displayValue)}{displayValue}{/snippet}
 					</EditableField>
 				</h2>
-				<p class="p1-body max-w-md text-sm leading-relaxed">
+				<p class="p1-body max-w-md text-prose">
 					<EditableField
 						fieldKey="FavoritesPage.emptyMessage"
 						label="Подсказка пустого избранного"

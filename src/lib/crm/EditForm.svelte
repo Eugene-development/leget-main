@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { onDestroy } from 'svelte';
 	import type { Field, Row } from './api';
 	let {
@@ -69,7 +70,7 @@
 			await onSave(values(event.currentTarget as HTMLFormElement));
 			message = 'Сохранено';
 		} catch (e) {
-			message = e instanceof Error ? e.message : 'Не удалось сохранить.';
+			message = notifyError(e, 'Не удалось сохранить.');
 		} finally {
 			busy = false;
 		}

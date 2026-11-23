@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	import { withPromoMotion } from '$lib/motion/transition';
 
@@ -279,8 +280,8 @@
 			resetForm();
 			await tick();
 			successCloseButton?.focus();
-		} catch {
-			formError = 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.';
+		} catch (cause) {
+			formError = notifyError(cause, 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.');
 		} finally {
 			isSubmitting = false;
 		}
@@ -328,7 +329,7 @@
 				class="it-item block"
 			>
 				{#snippet children(displayValue)}
-					<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
+					<h2 class="text-section-title text-balance text-ink-900">
 						<RichText value={displayValue} />
 					</h2>
 				{/snippet}
@@ -342,7 +343,7 @@
 				class="it-item it-d1 mt-4 block"
 			>
 				{#snippet children(displayValue)}
-					<p class="mx-auto max-w-2xl text-sm/6 text-ink-600 sm:text-base/7">
+					<p class="mx-auto max-w-2xl text-prose text-ink-600">
 						<RichText value={displayValue} />
 					</p>
 				{/snippet}
@@ -507,7 +508,7 @@
 							onclick={(event) => openApplication(i, event)}
 							class="group/btn mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 {plan.featured
 								? 'bg-surface-raised text-brand-600 shadow-[0_18px_40px_-18px] shadow-scrim/50 hover:bg-brand-50 focus-visible:outline-on-dark'
-								: 'bg-brand-500 text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 hover:bg-brand-400 focus-visible:outline-brand-400'}"
+								: 'bg-brand-500 text-on-accent shadow-[0_18px_45px_-18px] shadow-brand-500/90 not-hover:not-active:not-focus-visible:text-on-accent! hover:bg-brand-400 focus-visible:outline-brand-400'}"
 						>
 							Оформить
 							<span
@@ -548,7 +549,7 @@
 						{plans[selectedPlanIndex].months}
 						{plans[selectedPlanIndex].unit}
 					</p>
-					<h2 id="installment-modal-title" class="mt-1 text-2xl text-ink-900 sm:text-3xl">
+					<h2 id="installment-modal-title" class="mt-1 text-subsection-title text-ink-900">
 						Заявка на рассрочку
 					</h2>
 				</div>
@@ -590,7 +591,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 						</svg>
 					</div>
-					<h3 class="p1-title-sub mt-5 text-xl text-ink-900">Заявка принята</h3>
+					<h3 class="p1-title-sub mt-5 text-card-title text-ink-900">Заявка принята</h3>
 					<p class="mx-auto mt-2 max-w-md text-sm/6 text-ink-600">
 						Мы проверим данные и свяжемся с вами по указанному телефону.
 					</p>

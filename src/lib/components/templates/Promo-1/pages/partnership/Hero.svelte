@@ -130,7 +130,7 @@
 				>
 					{#snippet children(displayValue)}
 						<h1
-							class="text-4xl text-pretty sm:text-5xl lg:text-6xl {isLight
+							class="text-page-title text-balance {isLight
 								? 'text-ink-900'
 								: 'text-on-dark'}"
 						>
@@ -153,7 +153,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="max-w-xl text-sm/6 sm:text-base/7 {isLight
+							class="max-w-xl text-prose {isLight
 								? 'text-ink-600'
 								: 'text-cat-5-50/90'}"
 						>
@@ -253,7 +253,7 @@
 							>
 								{#snippet children(displayValue)}
 									<blockquote
-										class="text-lg leading-relaxed font-medium tracking-[-0.01em] text-pretty sm:text-xl {isLight
+										class="text-prose text-pretty {isLight
 											? 'text-ink-900'
 											: 'text-on-dark'}"
 									>

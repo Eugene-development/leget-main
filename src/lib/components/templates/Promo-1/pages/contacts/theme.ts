@@ -38,26 +38,26 @@ export const ct = {
 	/** Надпись над заголовком. Один трекинг и один регистр на всей странице. */
 	eyebrow: {
 		onInk:
-			'p1-accent inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase sm:text-xs',
+			'p1-accent inline-flex items-center gap-3 p1-label',
 		onLight:
-			'p1-accent inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase sm:text-xs',
+			'p1-accent inline-flex items-center gap-3 p1-label',
 		dashOnInk: 'p1-accent-bg h-px w-8 opacity-80',
 		dashOnLight: 'p1-accent-bg h-px w-8 opacity-60'
 	},
 
 	/** Заголовки. Одна шкала для всех версий; начертание — за дизайн-системой. */
 	title: {
-		h1OnInk: 'text-4xl p1-title text-pretty sm:text-5xl lg:text-6xl',
-		h2OnInk: 'text-3xl p1-title text-pretty sm:text-4xl lg:text-5xl',
-		h2OnLight: 'text-3xl p1-title text-pretty sm:text-4xl lg:text-5xl',
-		h3OnLight: 'p1-title p1-title-sub text-xl'
+		h1OnInk: 'p1-title text-page-title text-balance',
+		h2OnInk: 'p1-title text-section-title text-balance',
+		h2OnLight: 'p1-title text-section-title text-balance',
+		h3OnLight: 'p1-title p1-title-sub text-card-title'
 	},
 
 	/** Основной текст. */
 	body: {
-		onInk: 'p1-body text-sm/6 sm:text-base/7',
-		onInkMuted: 'p1-muted text-sm/6 sm:text-base/7',
-		onLight: 'p1-body text-sm/6 sm:text-base/7',
+		onInk: 'p1-body text-prose',
+		onInkMuted: 'p1-muted text-prose',
+		onLight: 'p1-body text-prose',
 		labelOnLight: 'p1-title font-semibold'
 	},
 

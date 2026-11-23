@@ -1,3 +1,5 @@
+import { uploadSiteFile } from '$lib/utils/site-file-upload';
+import { UserError } from '$lib/utils/user-error.js';
 import { projectRequest } from '$lib/components/templates/Promo-1/pages/mebel/project-request';
 
 export type ProductKind = 'kitchen' | 'wardrobe';
@@ -54,22 +56,7 @@ export async function deleteCatalogProduct(licenseId: string, kind: ProductKind,
 
 export async function uploadCatalogPhoto(licenseId: string, file: File) {
 	if (file.type !== 'image/webp' || file.size === 0 || file.size > CATALOG_PHOTO_MAX_BYTES) {
-		throw new Error('Перед загрузкой подготовьте фотографию в WebP размером до 2 МБ.');
+		throw new UserError('Перед загрузкой подготовьте фотографию в WebP размером до 2 МБ.');
 	}
-	const result = await projectRequest<{
-		generateUploadUrl: { uploadUrl: string; objectUrl: string };
-	}>(
-		`mutation CatalogPhoto($licenseId: ID!, $filename: String!, $mimeType: String!) { generateUploadUrl(licenseId: $licenseId, filename: $filename, mimeType: $mimeType, folder: "mebel") { uploadUrl objectUrl } }`,
-		{ licenseId, filename: file.name, mimeType: file.type },
-		'Не удалось получить адрес загрузки фотографии.'
-	);
-	const info = result.generateUploadUrl;
-	if (!info?.uploadUrl || !info.objectUrl) throw new Error('Сервер не вернул адрес фотографии.');
-	const response = await fetch(info.uploadUrl, {
-		method: 'PUT',
-		headers: { 'Content-Type': file.type },
-		body: file
-	});
-	if (!response.ok) throw new Error('Не удалось загрузить фотографию. Повторите сохранение.');
-	return info.objectUrl;
+	return uploadSiteFile(file, licenseId, 'mebel');
 }

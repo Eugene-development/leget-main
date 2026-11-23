@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
+	import { toast } from '$lib/stores/toast.svelte';
 	import { uploadSiteFile } from '$lib/utils/site-file-upload';
 	import { onMount, untrack } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -98,7 +100,6 @@
 	// Upload state
 	let isUploading = $state(false);
 	let uploadProgress = $state(0);
-	let uploadError = $state('');
 	let fileInput = $state<HTMLInputElement>();
 
 	// Cropper state — файл ожидает кадрирования перед загрузкой
@@ -161,7 +162,7 @@
 			const activeIdx = allImages.findIndex((f) => f.url === currentImage);
 			selectedIndex = activeIdx >= 0 ? activeIdx : 0;
 		} catch (err) {
-			loadError = err instanceof Error ? err.message : 'Ошибка загрузки';
+			loadError = notifyError(err, 'Не удалось загрузить библиотеку изображений.');
 		} finally {
 			isLoading = false;
 		}
@@ -219,7 +220,7 @@
 		try {
 			await onApprove(url);
 		} catch (err) {
-			saveError = err instanceof Error ? err.message : 'Ошибка сохранения';
+			saveError = notifyError(err, 'Не удалось сохранить изображение.');
 		} finally {
 			isSaving = false;
 		}
@@ -232,7 +233,7 @@
 		try {
 			await onRemove();
 		} catch (err) {
-			saveError = err instanceof Error ? err.message : 'Ошибка удаления изображения';
+			saveError = notifyError(err, 'Не удалось удалить изображение.');
 		} finally {
 			isSaving = false;
 		}
@@ -245,27 +246,26 @@
 		if (isSaving || isUploading) return;
 		const file = (e.target as HTMLInputElement).files?.[0];
 		if (!file) return;
-		uploadError = '';
 
 		if (!allowedUploadTypes.includes(file.type)) {
-			uploadError = 'Неподдерживаемый формат изображения';
+			toast.error('Формат изображения не поддерживается. Выберите JPEG, PNG, WebP, SVG, GIF или AVIF.');
 			if (fileInput) fileInput.value = '';
 			return;
 		}
 		if (file.size === 0) {
-			uploadError = 'Выбран пустой файл';
+			toast.error('Выбран пустой файл. Выберите другое изображение.');
 			if (fileInput) fileInput.value = '';
 			return;
 		}
 		const extension = file.name.toLowerCase().match(/\.([^.]+)$/)?.[1] ?? '';
 		if (!allowedExtensionsByType[file.type]?.includes(extension)) {
-			uploadError = 'Расширение файла не соответствует формату изображения';
+			toast.error('Расширение файла не совпадает с форматом изображения. Сохраните файл в нужном формате и выберите его снова.');
 			if (fileInput) fileInput.value = '';
 			return;
 		}
 
 		if (file.size > maxUploadBytes) {
-			uploadError = `Файл больше ${formatSize(maxUploadBytes)}`;
+			toast.error(`Файл больше ${formatSize(maxUploadBytes)}. Уменьшите изображение или выберите другой файл.`);
 			if (fileInput) fileInput.value = '';
 			return;
 		}
@@ -282,14 +282,13 @@
 	async function handleCropDone(croppedFile: File) {
 		cropFile = null;
 		if (cropMaxOutputBytes && croppedFile.size > cropMaxOutputBytes) {
-			uploadError = `После обработки файл больше ${formatSize(cropMaxOutputBytes)}. Выберите меньшую область.`;
+			toast.error(`После обработки файл больше ${formatSize(cropMaxOutputBytes)}. Выберите меньшую область.`);
 			return;
 		}
 		await uploadFile(croppedFile);
 	}
 
 	async function uploadFile(file: File) {
-		uploadError = '';
 		isUploading = true;
 		uploadProgress = 0;
 
@@ -309,7 +308,7 @@
 			selectedIndex = 0;
 			source = 'library';
 		} catch (err) {
-			uploadError = err instanceof Error ? err.message : 'Ошибка загрузки файла';
+			notifyError(err, 'Не удалось загрузить изображение.');
 		} finally {
 			isUploading = false;
 			uploadProgress = 0;
@@ -469,11 +468,6 @@
 						: 'Вставьте прямую ссылку на картинку и нажмите «Утвердить».'}
 				</p>
 			</form>
-		{/if}
-
-		<!-- Upload error -->
-		{#if uploadError}
-			<div class="error-bar">{uploadError}</div>
 		{/if}
 
 		<!-- Upload progress bar -->
@@ -861,16 +855,6 @@
 	.btn-close svg {
 		width: 1.125rem;
 		height: 1.125rem;
-	}
-
-	/* ── Error / progress bars ── */
-	.error-bar {
-		padding: 0.5rem 1.25rem;
-		background: color-mix(in oklab, var(--color-cat-6-500) 15%, transparent);
-		border-bottom: 1px solid color-mix(in oklab, var(--color-cat-6-500) 30%, transparent);
-		font-size: var(--text-sm);
-		color: var(--color-cat-6-300);
-		flex-shrink: 0;
 	}
 
 	.progress-bar-track {

@@ -490,6 +490,9 @@
 	--text-section-title: var(--ds-font-section-title-size);
 	--text-subsection-title: var(--ds-font-subsection-title-size);
 	--text-card-title: var(--ds-font-card-title-size);
+	--text-compact-card-title: var(--ds-font-compact-card-title-size);
+	--text-compact-card-copy: var(--ds-font-compact-card-copy-size);
+	--text-compact-card-copy--line-height: var(--ds-font-compact-card-copy-leading);
 	--text-prose: var(--ds-font-prose-size);
 	--color-paper-light: var(--ds-light-paper-surface);
 	--color-paper-dark: var(--ds-dark-paper-surface);
@@ -1007,6 +1010,26 @@ h6 {
 	font-weight: var(--ds-font-heading-sub-weight);
 	letter-spacing: var(--ds-font-heading-sub-tracking);
 	line-height: var(--ds-font-heading-sub-leading);
+}
+
+/* Measure the card's text area, including when a desktop grid narrows its columns. */
+.p1-card-copy {
+	container: p1-card-copy / inline-size;
+}
+
+.p1-card-copy :is(.text-card-title, .text-prose) {
+	overflow-wrap: anywhere;
+}
+
+@container p1-card-copy (inline-size <= 13.75rem) {
+	.p1-card-copy .text-card-title {
+		font-size: var(--ds-font-compact-card-title-size);
+	}
+
+	.p1-card-copy .text-prose {
+		font-size: var(--ds-font-compact-card-copy-size);
+		line-height: var(--ds-font-compact-card-copy-leading);
+	}
 }
 
 /**

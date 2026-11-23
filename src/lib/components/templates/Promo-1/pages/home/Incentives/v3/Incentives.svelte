@@ -92,7 +92,7 @@
 					     и при одинаковой антикве заголовок переставал читаться главным.
 					     48 против 30 держит ту же полуторную ступень, что и на широком
 					     экране (60 против 30). -->
-					<h2 class="p1-title text-5xl lg:text-6xl"><RichText value={displayValue} /></h2>
+					<h2 class="p1-title text-section-title text-balance"><RichText value={displayValue} /></h2>
 				{/snippet}
 			</EditableField>
 
@@ -138,7 +138,7 @@
 								class="block sm:shrink-0"
 							>
 								{#snippet children(displayValue)}
-									<p class="p1-title p1-title-display text-3xl break-words">
+									<p class="p1-title p1-title-display text-subsection-title break-words">
 										<RichText value={displayValue} />
 									</p>
 								{/snippet}

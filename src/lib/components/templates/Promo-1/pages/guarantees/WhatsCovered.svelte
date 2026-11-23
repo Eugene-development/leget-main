@@ -9,7 +9,7 @@
 	import './theme.css';
 
 	const defaultImageUrl =
-		'https://storage.yandexcloud.net/leget-main/templates/promo-1/guarantees/whats-covered-craftsmanship-20260918.png';
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/guarantees/warranty-work-acceptance-20261122.webp';
 
 	let {
 		data = $bindable(),
@@ -72,7 +72,7 @@
 					class="gt-item block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="text-3xl text-pretty text-ink-900 sm:text-4xl lg:text-5xl">
+						<h2 class="text-section-title text-balance text-ink-900">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
@@ -91,7 +91,7 @@
 					class="gt-item gt-d2 mt-6 block"
 				>
 					{#snippet children(displayValue)}
-						<p class="max-w-xl text-sm/6 text-ink-600 sm:text-base/7">
+						<p class="max-w-xl text-prose text-ink-600">
 							<RichText value={displayValue} />
 						</p>
 					{/snippet}
@@ -117,7 +117,7 @@
 								</svg>
 							</span>
 							<div class="min-w-0">
-								<h3 class="p1-title-sub text-ink-900">
+								<h3 class="p1-title-sub text-ink-900 text-card-title">
 									<EditableField
 										fieldKey="WhatsCovered.{i}.title"
 										label="Заголовок пункта"
@@ -129,7 +129,7 @@
 										{#snippet children(val)}<RichText value={val} />{/snippet}
 									</EditableField>
 								</h3>
-								<p class="mt-1 text-sm/6 text-ink-500">
+								<p class="mt-1 text-prose text-ink-500">
 									<EditableField
 										fieldKey="WhatsCovered.{i}.text"
 										label="Описание пункта"
@@ -166,7 +166,7 @@
 								<ImageFallback
 									loading="lazy"
 									src={displayValue}
-									alt="Мастер регулирует металлическую петлю дубового кухонного фасада"
+									alt="Мастер передаёт клиенту подписанный акт выполненных гарантийных работ"
 									class="aspect-4/3 w-full rounded-[calc(var(--radius-4xl)-1px)] object-cover"
 								/>
 							{:else}

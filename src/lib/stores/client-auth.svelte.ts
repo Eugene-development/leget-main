@@ -7,15 +7,23 @@
  * окна — модалка оказывалась расплющенной в шапке. Поэтому кнопки только
  * просят открыть форму, а сама форма рендерится один раз в корневом layout.
  */
+type AuthContinuation = {
+	onAuthenticated: () => void;
+	onDismiss: () => void;
+};
+
 class ClientAuthModalStore {
 	mode = $state<'login' | 'register' | null>(null);
+	continuation = $state<AuthContinuation | null>(null);
 
-	open(mode: 'login' | 'register') {
+	open(mode: 'login' | 'register', continuation: AuthContinuation | null = null) {
+		this.continuation = continuation;
 		this.mode = mode;
 	}
 
 	close() {
 		this.mode = null;
+		this.continuation = null;
 	}
 }
 

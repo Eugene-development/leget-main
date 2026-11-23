@@ -35,7 +35,7 @@
 			<div class="quote-paper p1-paper pointer-events-none absolute inset-x-0 bottom-0"></div>
 
 			<div class="quote-content relative z-10">
-				<h2 class="text-4xl text-ink-900 sm:text-5xl lg:text-6xl">
+				<h2 class="text-section-title text-balance text-ink-900">
 					<EditableField
 						fieldKey="BrandAbout.title"
 						label="Заголовок"
@@ -59,7 +59,7 @@
 						class="block"
 					>
 						{#snippet children(value)}
-							<div class="ds-prose-content p1-body text-lg sm:text-xl">
+							<div class="ds-prose-content p1-body text-prose">
 								<RichText {value} />
 							</div>
 						{/snippet}

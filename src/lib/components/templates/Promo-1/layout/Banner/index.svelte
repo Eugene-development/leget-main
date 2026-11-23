@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import LeadCatcher from './LeadCatcher.svelte';
 	import { leadCatcherPolicy } from '$lib/utils/lead-catcher';
 	import BannerV1 from './v1/Banner.svelte';
@@ -176,7 +177,7 @@
 			data = cleared;
 		} catch (err) {
 			console.error('Ошибка при сбросе контента баннера:', err);
-			alert(err instanceof Error ? err.message : 'Не удалось сбросить контент');
+			notifyError(err, 'Не удалось сбросить контент');
 		} finally {
 			isResetting = false;
 		}

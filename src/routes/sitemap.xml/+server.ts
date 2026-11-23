@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ url, request }) => {
 		return new Response(sitemapXml(url.origin, result.siteMap), {
 			headers: {
 				'Content-Type': 'application/xml; charset=utf-8',
-				'Cache-Control': 'public, max-age=60'
+				'Cache-Control': result.siteMap.includes('/b2b') ? 'no-cache' : 'public, max-age=60'
 			}
 		});
 	} catch (cause) {

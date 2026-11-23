@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import ArticleBadge from '$lib/components/ArticleBadge.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
@@ -63,7 +64,8 @@
 		try {
 			await saveLayoutData(editContext, 'Header', { ...data, topBarTheme: nextTheme });
 			data = { ...data, topBarTheme: nextTheme };
-		} catch {
+		} catch (cause) {
+			notifyError(cause, 'Не удалось сохранить тему верхней панели.');
 			themeError = true;
 		} finally {
 			pendingTheme = undefined;
@@ -93,8 +95,8 @@
 			await saveLayoutData(editContext, 'Header', { ...data, ...fields });
 			data = { ...data, ...fields };
 			open = false;
-		} catch {
-			error = 'Не удалось сохранить верхнюю панель. Повторите попытку.';
+		} catch (cause) {
+			error = notifyError(cause, 'Не удалось сохранить верхнюю панель. Повторите попытку.');
 		} finally {
 			saving = false;
 		}

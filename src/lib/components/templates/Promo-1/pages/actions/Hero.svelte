@@ -86,7 +86,7 @@
 					>
 						{#snippet children(displayValue)}
 							<p
-								class="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.28em] uppercase transition-colors duration-300 sm:text-xs {isLight
+								class="inline-flex items-center gap-3 p1-label transition-colors duration-300 {isLight
 									? 'text-brand-600'
 									: 'text-brand-400'}"
 							>
@@ -111,7 +111,7 @@
 					>
 						{#snippet children(displayValue)}
 							<h1
-								class="text-4xl text-balance transition-colors duration-300 sm:text-6xl lg:text-7xl {isLight
+								class="text-page-title text-balance transition-colors duration-300 {isLight
 									? 'text-ink-900'
 									: 'text-on-dark'}"
 							>
@@ -146,7 +146,7 @@
 				>
 					{#snippet children(displayValue)}
 						<p
-							class="max-w-md text-base/7 transition-colors duration-300 sm:text-lg/8 {isLight
+							class="max-w-md text-prose transition-colors duration-300 {isLight
 								? 'text-ink-600'
 								: 'text-ink-400'}"
 						>
@@ -181,7 +181,7 @@
 							<ul class="flex shrink-0 items-center" aria-hidden={copy === 1 ? 'true' : undefined}>
 								{#each items as item, i (i)}
 									<li
-										class="flex items-center gap-4 py-3 pr-8 text-[11px] font-semibold tracking-[0.28em] whitespace-nowrap text-on-dark uppercase sm:text-xs"
+										class="flex items-center gap-4 py-3 pr-8 p1-label whitespace-nowrap text-on-dark"
 									>
 										<span class="size-1.5 rotate-45 border border-on-dark/70" aria-hidden="true"
 										></span>

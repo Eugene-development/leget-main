@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 1.3.1.1 — см. docs/architecture/component-articles-map.md
 	import { createFormSender } from '$lib/utils/form-submission';
@@ -49,7 +50,7 @@
 			);
 			submitted = true;
 		} catch (error) {
-			formError = error instanceof Error ? error.message : 'Не удалось отправить заявку.';
+			formError = notifyError(error, 'Не удалось отправить заявку.');
 		} finally {
 			loading = false;
 		}
@@ -67,7 +68,7 @@
 			class="block"
 		>
 			{#snippet children(displayValue)}
-				<h2 class="text-3xl text-ink-900"><RichText value={displayValue} /></h2>
+				<h2 class="text-section-title text-balance text-ink-900"><RichText value={displayValue} /></h2>
 			{/snippet}
 		</EditableField>
 

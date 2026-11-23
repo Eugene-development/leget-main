@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import SideDrawer from '$lib/components/SideDrawer.svelte';
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('promo1-warranty');
@@ -97,8 +98,8 @@
 			await sendForm(formData, 'service-request', event);
 
 			sent = true;
-		} catch {
-			error = 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.';
+		} catch (cause) {
+			error = notifyError(cause, 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.');
 		} finally {
 			sending = false;
 		}

@@ -134,7 +134,7 @@
 						     антиквенные, и если ступень между ними мала, иерархия держится
 						     на одном лишь размере и читается вяло. Ступени мобильного
 						     кегля нет по той же причине: 36 против 30 — это 1,2×. -->
-						<h2 class="p1-title text-5xl lg:text-6xl"><RichText value={displayValue} /></h2>
+						<h2 class="p1-title text-section-title text-balance"><RichText value={displayValue} /></h2>
 					{/snippet}
 				</EditableField>
 
@@ -210,7 +210,7 @@
 									     на заголовке, Inter 600 на именах и Inter 400 в абзаце, —
 									     причём самым тяжёлым оказывался не главный элемент. -->
 									<span
-										class="choice-name p1-title-display block text-3xl transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui"
+										class="choice-name p1-title-display block text-subsection-title transition-colors duration-[var(--ds-motion-duration-ui)] ease-ui"
 									>
 										<RichText value={displayValue} />
 									</span>

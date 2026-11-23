@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { notifyError } from '$lib/utils/notify-error';
 	import { validateModelFile, type ProjectModel } from './project-model';
 	let {
 		file = $bindable<File | null>(null),
@@ -31,7 +32,7 @@
 			file = selected;
 			removed = false;
 		} catch (cause) {
-			localError = cause instanceof Error ? cause.message : 'Не удалось прочитать файл.';
+			localError = notifyError(cause, 'Не удалось прочитать файл.');
 		} finally {
 			validating = false;
 		}

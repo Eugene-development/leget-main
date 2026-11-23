@@ -57,18 +57,38 @@ export const MESSAGE_DEFAULT_TEXT =
  */
 export const MESSAGE_PROJECT_LINK_LABEL = 'Смотреть проект';
 
+const CHILDRENS_PROJECT_TITLE = 'Детская с рабочим местом';
+const CHILDRENS_PROJECT_DESCRIPTION =
+	'Кровать, стол и стеллаж одним объёмом. Плиты с сертификатом класса E0.';
+const CHILDRENS_PROJECT_IMAGE =
+	'https://storage.yandexcloud.net/leget-main/templates/promo-1/message-1.1.2.1/childrens-study-bedroom.webp';
+const CHILDRENS_PROJECT_IMAGE_ALIASES: ReadonlyMap<string, string> = new Map([
+	[
+		'https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/quality-v2.webp',
+		CHILDRENS_PROJECT_IMAGE
+	]
+]);
+
+/** Старые снимки страницы и сохранённые стартовые карточки могут содержать прежний URL. */
+export function messageProjectImageAliases({
+	title,
+	description
+}: Pick<MessageProject, 'title' | 'description'>) {
+	if (title === CHILDRENS_PROJECT_TITLE && description === CHILDRENS_PROJECT_DESCRIPTION)
+		return CHILDRENS_PROJECT_IMAGE_ALIASES;
+}
+
 /**
  * Стартовые работы. Без чисел вида «более 1200 проектов»: стартовые данные
  * достаются каждому новому тенанту, и проверить такое утверждение он не может —
- * ложное социальное доказательство хуже отсутствующего. Изображения не заданы:
- * медиа тенанта живёт в бакете и заливается через редактор, до этого
- * `ImageFallback` показывает заглушку по теме блока.
+ * ложное социальное доказательство хуже отсутствующего. Изображения повторяют
+ * серверные дефолты и используются при отсутствии сохранённых карточек.
  */
 export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 	{
 		title: 'Кухня из массива дуба',
 		description: 'Гарнитур 4,2 м со встроенной техникой и столешницей из кварцевого агломерата.',
-		image: null,
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_kitchens.png',
 		alt: 'Кухня из массива дуба со встроенной техникой',
 		link: '',
 		specs: [
@@ -80,8 +100,8 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 	{
 		title: 'Гардеробная 9 м²',
 		description: 'Система хранения от пола до потолка: обувной модуль, подсветка полок.',
-		image: null,
-		alt: 'Гардеробная комната с подсветкой полок',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/message-1.1.2.1/walk-in-wardrobe-9m2.webp',
+		alt: 'Гардеробная комната с подсветкой полок и обувным модулем',
 		link: '',
 		specs: [
 			{ label: 'Площадь', value: '9 м²' },
@@ -92,7 +112,7 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 	{
 		title: 'Гостиная со стенкой под ТВ',
 		description: 'Прямая стенка 3,6 м: закрытые секции, ниша под технику, скрытая подсветка.',
-		image: null,
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png',
 		alt: 'Гостиная со встроенной стенкой под телевизор',
 		link: '',
 		specs: [
@@ -102,9 +122,9 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 		]
 	},
 	{
-		title: 'Детская с рабочим местом',
-		description: 'Кровать, стол и стеллаж одним объёмом. Плиты с сертификатом класса E0.',
-		image: null,
+		title: CHILDRENS_PROJECT_TITLE,
+		description: CHILDRENS_PROJECT_DESCRIPTION,
+		image: CHILDRENS_PROJECT_IMAGE,
 		alt: 'Детская мебель с рабочим местом у окна',
 		link: '',
 		specs: [
@@ -132,11 +152,15 @@ export function resolveMessageProjects(value: unknown): MessageProject[] {
 		const fallback = MESSAGE_DEFAULT_PROJECTS[index];
 		const card = (typeof item === 'object' && item !== null ? item : {}) as Partial<MessageProject>;
 		const title = asText(card.title, fallback?.title ?? '');
+		const description = asText(card.description, fallback?.description ?? '');
+		const image = typeof card.image === 'string' && card.image.trim() ? card.image : null;
 
 		return {
 			title,
-			description: asText(card.description, fallback?.description ?? ''),
-			image: typeof card.image === 'string' && card.image.trim() ? card.image : null,
+			description,
+			image: image
+				? (messageProjectImageAliases({ title, description })?.get(image) ?? image)
+				: null,
 			alt: asText(card.alt, fallback?.alt ?? title),
 			link: asText(card.link, '').trim(),
 			specs: resolveSpecs(card.specs)

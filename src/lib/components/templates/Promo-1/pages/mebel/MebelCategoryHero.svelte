@@ -82,7 +82,7 @@
 				<span class="text-on-dark">{data.title}</span>
 			</nav>
 
-			<h1 class="text-3xl text-on-dark sm:text-4xl lg:text-5xl">
+			<h1 class="text-page-title text-balance text-on-dark">
 				<EditableField
 					fieldKey="MebelCategoryHero.title"
 					label="Заголовок"

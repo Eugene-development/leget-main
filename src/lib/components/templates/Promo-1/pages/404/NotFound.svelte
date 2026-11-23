@@ -102,7 +102,7 @@
 			class="nf-item nf-d1 mt-4 block"
 		>
 			{#snippet children(displayValue)}
-				<h1 class="text-3xl text-pretty text-on-dark sm:text-4xl lg:text-5xl">
+				<h1 class="text-page-title text-balance text-on-dark">
 					<RichText value={displayValue} />
 				</h1>
 			{/snippet}
@@ -121,7 +121,7 @@
 			class="nf-item nf-d3 mt-6 block"
 		>
 			{#snippet children(displayValue)}
-				<p class="mx-auto max-w-xl text-sm/6 text-ink-300 sm:text-base/7">
+				<p class="mx-auto max-w-xl text-prose text-ink-300">
 					<RichText value={displayValue} />
 				</p>
 			{/snippet}

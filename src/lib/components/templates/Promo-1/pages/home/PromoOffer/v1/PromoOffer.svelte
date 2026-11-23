@@ -446,12 +446,9 @@
 	}
 
 	.promo-alt__title {
-		font-size: 1.875rem;
-		font-weight: 800;
+		font-size: var(--ds-font-section-title-size);
 		color: #f1f5f9;
-		line-height: 1.15;
 		margin-bottom: 1.25rem;
-		letter-spacing: -0.02em;
 	}
 
 	.promo-alt__title-accent {
@@ -469,15 +466,15 @@
 	}
 
 	.promo-alt__text-primary {
-		font-size: 1.05rem;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		font-weight: 500;
-		line-height: 1.7;
 		color: #cbd5e1;
 	}
 
 	.promo-alt__text-secondary {
-		font-size: 0.9rem;
-		line-height: 1.7;
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		color: #94a3b8;
 	}
 
@@ -489,10 +486,11 @@
 	}
 
 	.promo-alt__feature {
+		line-height: var(--ds-font-prose-leading);
+		font-size: var(--ds-font-prose-size);
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		font-size: 0.9rem;
 		color: #e2e8f0;
 		font-weight: 500;
 	}
@@ -579,19 +577,13 @@
 			width: 50%;
 		}
 		.promo-alt__title {
-			font-size: 2.5rem;
 			margin-bottom: 1.5rem;
 		}
 		.promo-alt__text {
 			gap: 1rem;
 			margin-bottom: 2rem;
 		}
-		.promo-alt__text-primary {
-			font-size: 1.15rem;
-		}
-		.promo-alt__text-secondary {
-			font-size: 0.95rem;
-		}
+
 		.promo-alt__features {
 			flex-direction: row;
 			flex-wrap: wrap;
@@ -607,12 +599,7 @@
 		.promo-alt__container {
 			padding: 3rem;
 		}
-		.promo-alt__title {
-			font-size: 3rem;
-		}
-		.promo-alt__text-primary {
-			font-size: 1.2rem;
-		}
+
 	}
 
 	/* Светлая тема: меняется только нейтральная часть — поверхность, панель и текст. */

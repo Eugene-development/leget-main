@@ -32,7 +32,7 @@
 		class="rounded-2xl bg-surface-raised p-8 shadow-sm"
 		in:p1_fly={{ y: 20, duration: 500, easing: cubicOut }}
 	>
-		<h2 class="ds-title-sub text-2xl text-ink-900">
+		<h2 class="text-section-title text-balance text-ink-900">
 			{editableText(data.title, 'Что входит в стоимость')}
 		</h2>
 
@@ -56,8 +56,8 @@
 						/>
 					</svg>
 					<div>
-						<h3 class="p1-title-sub text-ink-900">{service.title}</h3>
-						<p class="text-sm text-ink-600">{service.desc ?? ''}</p>
+						<h3 class="p1-title-sub text-ink-900 text-card-title">{service.title}</h3>
+						<p class="text-prose text-ink-600">{service.desc ?? ''}</p>
 					</div>
 				</div>
 			{/each}

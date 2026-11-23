@@ -17,8 +17,6 @@
 		isEditable?: boolean;
 	} = $props();
 
-	// Ink-блок: дефолт тёмный. Нейтральная палитра — из классов p1-*,
-	// акцентные плитки и кнопки остаются белым по цвету бренда.
 	const isLight = $derived(isLightBlock(data, 'dark'));
 	async function saveField(field: string, value: unknown) {
 		if (!editContext) return;
@@ -94,24 +92,7 @@
 	class="p1-surface relative isolate overflow-hidden py-section-sm sm:py-section"
 	data-p1-theme={isLight ? 'light' : 'dark'}
 >
-	<!-- Градиентная подложка — только в тёмной теме: на светлой она бы гасила контраст. -->
-	{#if !isLight}
-		<div
-			class="pointer-events-none absolute inset-0 bg-linear-to-br from-ink-800 to-ink-900"
-			aria-hidden="true"
-		></div>
-	{/if}
-	<!-- Декор: красное свечение-акцент и волосяные линии по краям -->
-	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
-		<div class="fm-glow absolute -top-40 -left-24 size-112 bg-brand-500/15"></div>
-		<div class="fm-glow absolute -right-32 bottom-0 size-96 bg-ink-400/10"></div>
-		<div
-			class="absolute inset-x-0 top-0 mx-auto h-px w-2/3 bg-linear-to-r from-transparent via-brand-500/60 to-transparent"
-		></div>
-		<div
-			class="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-on-dark/10 to-transparent"
-		></div>
-	</div>
+	<div class="fm-pattern pointer-events-none absolute" aria-hidden="true"></div>
 
 	<div use:revealOnScroll class="fm-reveal relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<div class="lg:grid lg:grid-cols-2 lg:items-end lg:gap-16">
@@ -125,7 +106,7 @@
 					class="fm-item fm-d1 block"
 				>
 					{#snippet children(displayValue)}
-						<h2 class="p1-title text-3xl text-pretty sm:text-4xl lg:text-5xl">
+						<h2 class="p1-title text-section-title text-balance">
 							<RichText value={displayValue} />
 						</h2>
 					{/snippet}
@@ -151,7 +132,7 @@
 							class="group p1-border p1-card p1-body hover:p1-card flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 backdrop-blur-sm transition duration-300 hover:border-brand-500/40"
 						>
 							<span
-								class="p1-accent flex size-8 shrink-0 items-center justify-center rounded-xl bg-brand-500/15 ring-1 ring-brand-500/25 transition duration-300 group-hover:bg-brand-500 p1-hover-on-dark"
+								class="fm-check flex size-8 shrink-0 items-center justify-center rounded-xl"
 								aria-hidden="true"
 							>
 								<svg
@@ -235,13 +216,44 @@
 </section>
 
 <style>
-	/* Классы глобальные: часть анимируемых узлов — обёртки <EditableField>. */
-
-	:global(.fm-glow) {
-		filter: blur(80px);
-		border-radius: 9999px;
+	.fm-pattern,
+	.fm-pattern::before,
+	.fm-pattern::after {
+		border: 1px solid color-mix(in oklab, var(--p1-title) 15%, transparent);
+		border-radius: 14% / 22%;
 	}
 
+	.fm-pattern {
+		inset-block-start: 50%;
+		inset-inline-end: clamp(-24rem, -15vw, -11rem);
+		inline-size: clamp(32rem, 66vw, 70rem);
+		aspect-ratio: 7 / 4;
+		background-color: color-mix(in oklab, var(--p1-title) 4%, transparent);
+		transform: translateY(-50%) rotate(-31deg);
+	}
+
+	.fm-pattern::before,
+	.fm-pattern::after {
+		position: absolute;
+		content: '';
+	}
+
+	.fm-pattern::before {
+		inset: -13% -5%;
+		opacity: 0.75;
+	}
+
+	.fm-pattern::after {
+		inset: -26% -10%;
+		opacity: 0.5;
+	}
+
+	.fm-check {
+		color: var(--ds-c-brand-on);
+		background-color: var(--ds-c-brand-fill);
+	}
+
+	/* Классы глобальные: часть анимируемых узлов — обёртки <EditableField>. */
 	@keyframes fm-rise {
 		from {
 			opacity: 0;

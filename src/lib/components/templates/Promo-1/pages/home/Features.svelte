@@ -27,8 +27,8 @@
 		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each items as item}
 				<div class="rounded-2xl border border-ink-100 bg-ink-50 p-8 shadow-sm">
-					<h3 class="p1-title-sub text-xl text-ink-900">{item.title}</h3>
-					<p class="mt-3 text-ink-600">{item.description}</p>
+					<h3 class="p1-title-sub text-card-title text-ink-900">{item.title}</h3>
+					<p class="mt-3 text-ink-600 text-prose">{item.description}</p>
 				</div>
 			{/each}
 		</div>
