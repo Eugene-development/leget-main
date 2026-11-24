@@ -413,9 +413,35 @@
 		pointer-events: none;
 	}
 
+	/* Полупрозрачный вариант для плит на предсказуемой поверхности секции. */
+	@media (prefers-reduced-transparency: no-preference) {
+		@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+			.p1-liquid-glass--translucent {
+				background-color: color-mix(
+					in oklab,
+					var(--p1-overlay) calc(var(--ds-liquid-glass-fill) - 30%),
+					transparent
+				);
+			}
+		}
+	}
+
 	@media (prefers-reduced-transparency: reduce) {
 		.p1-liquid-glass {
 			background-color: var(--p1-overlay);
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
+		}
+	}
+
+	/*
+		На мобильных размытие подложки выключено: `backdrop-filter` на телефонах —
+		тяжёлая перерисовка при прокрутке. Основание остаётся непрозрачным
+		(`--p1-overlay`), контраст текста не страдает.
+	*/
+	@media (width < 64rem) {
+		.p1-liquid-glass,
+		.p1-liquid-glass--translucent {
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
 		}

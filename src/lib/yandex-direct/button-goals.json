@@ -281,6 +281,7 @@
 		"variant": "design-project",
 		"serviceType": "design-project",
 		"locations": [
+			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" },
 			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }
 		]
@@ -482,6 +483,7 @@
 		"variant": "design-project",
 		"serviceType": "design-project",
 		"locations": [
+			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" },
 			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }
 		]
@@ -683,6 +685,7 @@
 		"variant": "design-project",
 		"serviceType": "design-project",
 		"locations": [
+			{ "template": "Promo-1", "page": "/", "article": "1.1.1.1" },
 			{ "template": "Promo-1", "page": "/plitka", "article": "1.23.6.1" },
 			{ "template": "Promo-1", "page": "/design-project", "article": "1.12.4.1" }
 		]
@@ -1375,7 +1378,7 @@
 	{
 		"id": "pages_home_heromain_v1_heromain_open_1",
 		"action": "open",
-		"label": "Консультация (текст кнопки настраивается)",
+		"label": "Составить дизайн проект (текст кнопки настраивается)",
 		"templates": ["Promo-1"],
 		"source": "templates/Promo-1/pages/home/HeroMain/v1/HeroMain.svelte",
 		"route": "/",

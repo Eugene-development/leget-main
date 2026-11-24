@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentResolver from '$lib/components/ComponentResolver.svelte';
+	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -26,7 +26,9 @@
 	{/if}
 </svelte:head>
 
-<ComponentResolver
+<PageRenderer
+	layout={data.layout}
+	componentMap={data.componentMap}
 	templateId={site?.templateId ?? null}
 	slug="/favorites"
 	headerData={site?.header?.data ?? null}

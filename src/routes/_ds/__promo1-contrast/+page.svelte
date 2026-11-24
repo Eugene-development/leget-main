@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { catalogEntries, resolveComponent, demoData } from '$lib/ds/registry';
+	import { demoData } from '$lib/ds/registry';
 	import SiteAppearance from '$lib/components/SiteAppearance.svelte';
 	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
-	const entries = catalogEntries().filter((e) => e.templateId === 1);
+	import type { PageData } from './$types';
+	let { data: pageData }: { data: PageData } = $props();
+	const entries = $derived(pageData.entries);
 	let index = $state(0),
 		theme = $state('light'),
 		palette = $state('default'),
@@ -10,7 +12,7 @@
 		allBlocks = $state(false),
 		accentColor = $state('#8b3f35');
 	const entry = $derived(entries[Math.max(0, Math.min(entries.length - 1, index))]);
-	const Block = $derived(resolveComponent(1, entry.pageSlug, entry.type)!);
+	const Block = $derived(entry.component);
 	const data = $derived({
 		...demoData(1, entry.pageSlug, entry.type, entry.version),
 		theme,
@@ -58,7 +60,7 @@
 	>
 	<label
 		>Система <select aria-label="Система" bind:value={system}
-			>{#each ['base', 'graphite', 'ochre', 'iris', 'apple'] as ds}<option>{ds}</option
+			>{#each ['base', 'graphite', 'ochre', 'iris', 'apple'] as ds (ds)}<option>{ds}</option
 				>{/each}</select
 		></label
 	>
@@ -69,8 +71,8 @@
 	<p data-testid="entry">{index}/{entries.length} {entry.pageSlug} {entry.type} v{entry.version}</p>
 </header>
 {#if allBlocks}
-	{#each entries.slice(index, index + 12) as sample, sampleIndex}
-		{@const SampleBlock = resolveComponent(1, sample.pageSlug, sample.type)!}
+	{#each entries.slice(index, index + 12) as sample, sampleIndex (`${sample.pageSlug}:${sample.type}:${sample.version}`)}
+		{@const SampleBlock = sample.component}
 		<div
 			data-testid="sample"
 			data-ds-contrast-root

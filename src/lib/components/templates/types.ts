@@ -32,11 +32,13 @@ export type PageComponentProps = {
 export type ComponentMap = Record<string, Component<PageComponentProps>>;
 
 /** Layout шаблона. PromoStrip и Banner есть только у Promo-1. */
+type LayoutProps = PageComponentProps & { editContext: EditContext | null; isEditable: boolean };
+
 export type TemplateLayout = {
-	PromoStrip?: Component<PageComponentProps> | null;
-	Banner?: Component<PageComponentProps> | null;
-	Header?: Component<PageComponentProps> | null;
-	Footer?: Component<PageComponentProps> | null;
+	PromoStrip?: Component<LayoutProps> | null;
+	Banner?: Component<LayoutProps> | null;
+	Header?: Component<LayoutProps> | null;
+	Footer?: Component<LayoutProps> | null;
 };
 
 /**
@@ -49,8 +51,8 @@ export type TemplateLayout = {
 export type ComponentMapsByTemplate = Record<number, ComponentMap>;
 
 /**
- * Резолв карты компонентов по templateId. Повторяет поведение
- * ComponentResolver: 1 → Promo-1, 2 → Promo-2, 3 → Promo-3, иначе Test.
+ * Резолв карты компонентов по templateId: 1 → Promo-1, 2 → Promo-2,
+ * 3 → Promo-3, иначе Test.
  */
 export function resolveComponentMap(
 	templateId: number | null,

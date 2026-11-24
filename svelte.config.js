@@ -1,4 +1,8 @@
 import adapter from '@sveltejs/adapter-node';
+import { copyFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+const nodeAdapter = adapter();
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -7,7 +11,17 @@ const config = {
 		runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
 	},
 	kit: {
-		adapter: adapter(),
+		adapter: {
+			...nodeAdapter,
+			async adapt(builder) {
+				await nodeAdapter.adapt(builder);
+				// Dynamic pages select their SSR styles from the client's Vite manifest.
+				copyFileSync(
+					join(builder.getClientDirectory(), '.vite/manifest.json'),
+					'build/server/client-manifest.json'
+				);
+			}
+		},
 		prerender: {
 			/**
 			 * Каталог дизайн-системы (/_ds) монтирует каждый блок в одиночку, поэтому

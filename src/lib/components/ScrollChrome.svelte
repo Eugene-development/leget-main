@@ -20,6 +20,10 @@
 		let lastScrollY = 0;
 		let frame = 0;
 		let motionFrame = 0;
+		// Кэш последних записанных значений: избегаем setProperty на каждый кадр
+		// прокрутки (на мобильных это постоянная перекраска страницы).
+		let lastOffset = '';
+		let lastOverlay = '';
 		// Те же пороги, что у Header Promo-2: не меняем направление перехода
 		// от небольшого движения тачпада или инерции прокрутки.
 		const HIDE_THRESHOLD = 60;
@@ -44,15 +48,21 @@
 			// Как в Promo-2: sticky всегда привязан к top: 0, а transform
 			// поднимает шапку ровно на высоту верхних полос, оставляя меню видимым.
 			const height = upper.getBoundingClientRect().height;
-			content.style.setProperty('--scroll-chrome-offset', revealed ? '0px' : `${-height}px`);
+			const offset = revealed ? '0px' : `${-height}px`;
+			if (offset !== lastOffset) {
+				lastOffset = offset;
+				content.style.setProperty('--scroll-chrome-offset', offset);
+			}
 			measure();
 		}
 
 		function measure() {
-			root.style.setProperty(
-				'--chrome-overlay',
-				`${Math.max(0, content.getBoundingClientRect().bottom)}px`
-			);
+			// Пишем переменную только при изменении значения.
+			const overlay = `${Math.max(0, content.getBoundingClientRect().bottom)}px`;
+			if (overlay !== lastOverlay) {
+				lastOverlay = overlay;
+				root.style.setProperty('--chrome-overlay', overlay);
+			}
 			node.dispatchEvent(new Event('scroll-chrome-position'));
 		}
 
@@ -146,6 +156,15 @@
 	@media (prefers-reduced-motion: no-preference) {
 		.scroll-chrome-content {
 			transition: transform var(--ds-motion-duration-ui-slow) var(--ds-motion-ease-ui);
+		}
+	}
+
+	/* На мобильных скрытие/показ верхних полос без анимации: убираем и сам
+	   transition, и rAF-цикл trackMotion, который замерял перекрытие во время
+	   скольжения шапки. */
+	@media (width < 64rem) {
+		.scroll-chrome-content {
+			transition: none;
 		}
 	}
 </style>

@@ -1,4 +1,4 @@
 import { catalogEntries } from '$lib/ds/registry';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = () => ({ entries: catalogEntries() });
+export const load: PageLoad = async () => ({ entries: await catalogEntries() });

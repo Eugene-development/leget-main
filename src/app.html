@@ -5,6 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<!-- Keep Tailwind's layer order after SvelteKit removes its inline SSR CSS in dev. -->
+		<style>
+			@layer properties, theme, base, components, utilities;
+		</style>
 		<script>
 			try {
 				if (sessionStorage.getItem('leget:promo-closed') === '1') {

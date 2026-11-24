@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ComponentResolver from '$lib/components/ComponentResolver.svelte';
+	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import type { PageSeoData } from '$lib/utils/page-edit';
 	import type { PageData } from './$types';
 
@@ -64,7 +64,9 @@
 	{/if}
 </svelte:head>
 
-<ComponentResolver
+<PageRenderer
+	layout={data.layout}
+	componentMap={data.componentMap}
 	{templateId}
 	slug={pageSlug}
 	headerData={site?.header?.data ?? null}

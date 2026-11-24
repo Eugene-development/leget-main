@@ -160,3 +160,74 @@
 		scroll-behavior: auto !important;
 	}
 }
+
+/*
+	Мобильная версия (< 64rem, граница `lg` шаблона): вход-по-скроллу отключён.
+
+	Блоки не скрываются по умолчанию (`opacity: 0`) и не проигрывают вход
+	заново при возврате в кадр — именно это на телефонах давало «контент
+	пропадает и подгружается» при прокрутке вверх/вниз. Умолчание — конечный
+	вид. Интерактивные переходы (аккордеон FAQ и т.п.) НЕ трогаем: убираем
+	только сценарий появления, а не отклик на касание.
+*/
+@media (width < 64rem) {
+	.p1-motion-scope
+		:is(
+			.ab-item,
+			.ab-card,
+			.ab-rule,
+			.ct-item,
+			.ct-rule,
+			.ct-card-enter,
+			.gt-item,
+			.gt-card,
+			.gt-rule,
+			.it-item,
+			.it-card,
+			.it-rule,
+			.tm-item,
+			.tm-card,
+			.tm-rule,
+			.vc-item,
+			.vc-card,
+			.vc-rule,
+			.hr-item,
+			.nf-item,
+			.nf-rule,
+			.ph-item,
+			.ph-frame,
+			.ph-rule,
+			.pb-item,
+			.pb-card,
+			.wi-item,
+			.wi-rule,
+			.wi-card,
+			.fm-item,
+			.fm-tile,
+			.pca-item,
+			.pca-frame,
+			.pca-rule,
+			.ah-item,
+			.ah-in,
+			.tile,
+			.ledger-row,
+			.stage-card,
+			.p1-stage-step,
+			.p1-stage-rule,
+			.contact-route__progress,
+			.contact-route__destination,
+			.contact-route__phone-wrap,
+			.paper-leaf,
+			.paper-cascade .ds-prose-content > *,
+			.animate-fade-up,
+			.animate-fade-up-in,
+			.animate-fade-in,
+			.animate-scale-in,
+			.animate-slide-right
+		) {
+		opacity: 1 !important;
+		transform: none !important;
+		stroke-dashoffset: 0 !important;
+		animation: none !important;
+	}
+}

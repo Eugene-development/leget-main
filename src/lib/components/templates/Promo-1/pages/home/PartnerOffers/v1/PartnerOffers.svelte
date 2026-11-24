@@ -45,7 +45,12 @@
 	import { isLightBlock } from '$lib/utils/block-theme';
 	import { animationsEnabled } from '$lib/motion/promo';
 	import { onMount } from 'svelte';
-	import { formatPromotionDeadline, promotionDeadline, promotionIsActive, type PromotionSchedule } from '$lib/promotions/time';
+	import {
+		formatPromotionDeadline,
+		promotionDeadline,
+		promotionIsActive,
+		type PromotionSchedule
+	} from '$lib/promotions/time';
 	import { usePromotionClock } from '$lib/promotions/clock.svelte';
 	import '../../../../theme.css';
 
@@ -120,15 +125,20 @@
 	);
 
 	const now = usePromotionClock(() => allOffers.map((offer) => promotionDeadline(offer)));
-	const offers = $derived(isEditable ? allOffers : allOffers.filter((offer) => promotionIsActive(offer, now())));
+	const offers = $derived(
+		isEditable ? allOffers : allOffers.filter((offer) => promotionIsActive(offer, now()))
+	);
 	const hasLandscapeBanner = $derived(offers.some((offer) => isLandscapeBanner(offer.image)));
 
 	function period(item: Offer) {
 		const from = (item.validFrom ?? '').trim();
 		const deadline = promotionDeadline(item);
-		const to = 'expiresAt' in item
-			? deadline === null ? '' : formatPromotionDeadline(deadline)
-			: (item.validUntil ?? '').trim();
+		const to =
+			'expiresAt' in item
+				? deadline === null
+					? ''
+					: formatPromotionDeadline(deadline)
+				: (item.validUntil ?? '').trim();
 		if (from && to) return `с ${from} по ${to}`;
 		if (from) return `с ${from}`;
 		if (to) return `по ${to}`;
@@ -457,45 +467,47 @@
 <!-- Высоту блока с шаблонными баннерами определяют их пропорции.
      Для остальных карточек высота экрана учитывает стабильную строку меню. -->
 {#if isEditable || offers.length}
-<section
-	bind:this={section}
-	class="p1-surface flex flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs {hasLandscapeBanner
-		? ''
-		: 'min-h-[calc(100svh-var(--header-h))]'}"
-	data-p1-theme={isLight ? 'light' : 'dark'}
->
-	<!-- Шапка. `shrink-0`, иначе на низком экране флекс сжал бы её раньше кадров. -->
-	<div class="mx-auto w-full max-w-3xl shrink-0 text-center">
-		<EditableField
-			fieldKey="PartnerOffers.title"
-			label="Заголовок"
-			value={title}
-			{isEditable}
-			onSave={(v) => saveField('title', v)}
-			class="block"
-		>
-			{#snippet children(displayValue)}
-				<h2 class="p1-title text-section-title text-balance"><RichText value={displayValue} /></h2>
-			{/snippet}
-		</EditableField>
+	<section
+		bind:this={section}
+		class="p1-surface flex flex-col px-4 py-section-2xs font-sans select-none sm:py-section-xs {hasLandscapeBanner
+			? ''
+			: 'min-h-[calc(100svh-var(--header-h))]'}"
+		data-p1-theme={isLight ? 'light' : 'dark'}
+	>
+		<!-- Шапка. `shrink-0`, иначе на низком экране флекс сжал бы её раньше кадров. -->
+		<div class="mx-auto w-full max-w-3xl shrink-0 text-center">
+			<EditableField
+				fieldKey="PartnerOffers.title"
+				label="Заголовок"
+				value={title}
+				{isEditable}
+				onSave={(v) => saveField('title', v)}
+				class="block"
+			>
+				{#snippet children(displayValue)}
+					<h2 class="p1-title text-section-title text-balance">
+						<RichText value={displayValue} />
+					</h2>
+				{/snippet}
+			</EditableField>
 
-		<EditableField
-			fieldKey="PartnerOffers.description"
-			label="Описание"
-			value={description}
-			{isEditable}
-			multiline
-			onSave={(v) => saveField('description', v)}
-			class="block"
-		>
-			{#snippet children(displayValue)}
-				<p class="p1-body mt-5 text-prose"><RichText value={displayValue} /></p>
-			{/snippet}
-		</EditableField>
-	</div>
+			<EditableField
+				fieldKey="PartnerOffers.description"
+				label="Описание"
+				value={description}
+				{isEditable}
+				multiline
+				onSave={(v) => saveField('description', v)}
+				class="block"
+			>
+				{#snippet children(displayValue)}
+					<p class="p1-body mt-5 text-prose"><RichText value={displayValue} /></p>
+				{/snippet}
+			</EditableField>
+		</div>
 
-	{#if isSlider}
-		<!-- `p1-settle` висит СНАРУЖИ горизонтального скроллера, и это не
+		{#if isSlider}
+			<!-- `p1-settle` висит СНАРУЖИ горизонтального скроллера, и это не
 		     стилистический выбор. `overflow-x: auto` заводит контейнер прокрутки,
 		     а `view()` считает видимость относительно ближайшего такого контейнера:
 		     повесь дыхание на карточку внутри ленты — и таймлайн станет мерить её
@@ -505,108 +517,108 @@
 
 		     `min-h-0` обязателен: без него флекс-элемент не сжимается ниже своего
 		     содержимого, и лента распирала бы секцию выше экрана. -->
-		<div
-			class="p1-settle mt-10 flex min-h-0 flex-1 flex-col"
-			role="group"
-			aria-roledescription="карусель"
-			aria-label={title}
-			onpointerenter={() => (held = true)}
-			onpointerleave={() => (held = false)}
-			onfocusin={() => (held = true)}
-			onfocusout={() => (held = false)}
-		>
 			<div
-				bind:this={scroller}
-				class="p1-offer-rail flex min-h-0 flex-1 snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain"
+				class="p1-settle mt-10 flex min-h-0 flex-1 flex-col"
+				role="group"
+				aria-roledescription="карусель"
+				aria-label={title}
+				onpointerenter={() => (held = true)}
+				onpointerleave={() => (held = false)}
+				onfocusin={() => (held = true)}
+				onfocusout={() => (held = false)}
 			>
-				{#each track as slot (`${slot.set}-${slot.i}`)}
-					<div
-						class="w-[85%] shrink-0 snap-start sm:w-[55%] lg:w-[42%]"
-						aria-hidden={slot.set === 1 ? undefined : 'true'}
-					>
-						{@render card(slot.offer, slot.i, slot.set !== 1)}
-					</div>
-				{/each}
-			</div>
+				<div
+					bind:this={scroller}
+					class="p1-offer-rail flex min-h-0 flex-1 snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain"
+				>
+					{#each track as slot (`${slot.set}-${slot.i}`)}
+						<div
+							class="w-[85%] shrink-0 snap-start sm:w-[55%] lg:w-[42%]"
+							aria-hidden={slot.set === 1 ? undefined : 'true'}
+						>
+							{@render card(slot.offer, slot.i, slot.set !== 1)}
+						</div>
+					{/each}
+				</div>
 
-			<!-- Подвал: только управление лентой, по центру. Срок ушёл отсюда на кадр,
+				<!-- Подвал: только управление лентой, по центру. Срок ушёл отсюда на кадр,
 			     а следом и действие — 17.08.2026 кнопка «Получить предложение» снята
 			     совсем, её место занял переход на страницу акции в углу кадра.
 			     Роли `p1-card` / `p1-border` / `p1-title` темозависимые, поэтому
 			     в светлой секции стрелки не остаются тёмными пятнами. -->
-			<div class="mt-6 flex shrink-0 items-center justify-center">
-				<div class="flex items-center gap-4">
-					<button
-						type="button"
-						onclick={() => step(-1)}
-						aria-label="Предыдущее предложение"
-						class="p1-card p1-border p1-title flex h-11 w-11 items-center justify-center rounded-full border transition-transform hover:scale-105 active:scale-95"
-					>
-						<svg
-							class="h-4 w-4"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							style="stroke-width: var(--ds-icon-stroke-bold)"
+				<div class="mt-6 flex shrink-0 items-center justify-center">
+					<div class="flex items-center gap-4">
+						<button
+							type="button"
+							onclick={() => step(-1)}
+							aria-label="Предыдущее предложение"
+							class="p1-card p1-border p1-title flex h-11 w-11 items-center justify-center rounded-full border transition-transform hover:scale-105 active:scale-95"
 						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-						</svg>
-					</button>
-
-					<div class="flex items-center gap-2">
-						{#each offers as item, i (i)}
-							<button
-								type="button"
-								onclick={() => goToOffer(i)}
-								aria-label={`Предложение ${i + 1} — ${item.partner}`}
-								aria-current={active === i ? 'true' : undefined}
-								class="p1-title flex h-4 items-center"
+							<svg
+								class="h-4 w-4"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								style="stroke-width: var(--ds-icon-stroke-bold)"
 							>
-								<!-- Состояние несёт ширина (6 против 1,5 — вчетверо), а не одна
+								<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+							</svg>
+						</button>
+
+						<div class="flex items-center gap-2">
+							{#each offers as item, i (i)}
+								<button
+									type="button"
+									onclick={() => goToOffer(i)}
+									aria-label={`Предложение ${i + 1} — ${item.partner}`}
+									aria-current={active === i ? 'true' : undefined}
+									class="p1-title flex h-4 items-center"
+								>
+									<!-- Состояние несёт ширина (6 против 1,5 — вчетверо), а не одна
 								     яркость: на 35% неактивная точка давала 3,13:1 против порога
 								     3:1 для управляющих элементов, то есть проходила без запаса.
 								     На 50% — 5,32:1, а различие активной держится на длине. -->
-								<span
-									class="h-1.5 rounded-full bg-current transition-all duration-[var(--ds-motion-duration-ui)] {active ===
-									i
-										? 'w-6 opacity-100'
-										: 'w-1.5 opacity-50'}"
-								></span>
-							</button>
-						{/each}
-					</div>
+									<span
+										class="h-1.5 rounded-full bg-current transition-all duration-[var(--ds-motion-duration-ui)] {active ===
+										i
+											? 'w-6 opacity-100'
+											: 'w-1.5 opacity-50'}"
+									></span>
+								</button>
+							{/each}
+						</div>
 
-					<button
-						type="button"
-						onclick={() => step(1)}
-						aria-label="Следующее предложение"
-						class="p1-card p1-border p1-title flex h-11 w-11 items-center justify-center rounded-full border transition-transform hover:scale-105 active:scale-95"
-					>
-						<svg
-							class="h-4 w-4"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							style="stroke-width: var(--ds-icon-stroke-bold)"
+						<button
+							type="button"
+							onclick={() => step(1)}
+							aria-label="Следующее предложение"
+							class="p1-card p1-border p1-title flex h-11 w-11 items-center justify-center rounded-full border transition-transform hover:scale-105 active:scale-95"
 						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-						</svg>
-					</button>
+							<svg
+								class="h-4 w-4"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								style="stroke-width: var(--ds-icon-stroke-bold)"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+							</svg>
+						</button>
+					</div>
 				</div>
 			</div>
-		</div>
-	{:else}
-		<!-- Грид: и срок, и переход у каждой карточки свои, но оба живут на самом
+		{:else}
+			<!-- Грид: и срок, и переход у каждой карточки свои, но оба живут на самом
 		     кадре — см. сниппет `card`. Подвала под карточками здесь больше нет. -->
-		<div class="mt-10 grid min-h-0 flex-1 grid-cols-1 gap-8 md:grid-cols-2">
-			{#each offers as item, i (i)}
-				<div class="p1-settle flex min-h-0 flex-col">
-					{@render card(item, i, false)}
-				</div>
-			{/each}
-		</div>
-	{/if}
-</section>
+			<div class="mt-10 grid min-h-0 flex-1 grid-cols-1 gap-8 md:grid-cols-2">
+				{#each offers as item, i (i)}
+					<div class="p1-settle flex min-h-0 flex-col">
+						{@render card(item, i, false)}
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</section>
 {/if}
 
 <style>
@@ -631,7 +643,7 @@
 	   `animation-timeline` и при `prefers-reduced-motion: reduce` карточка
 	   просто стоит на месте, а поле равно ступени. Умолчание — конечный вид. */
 	@supports (animation-timeline: view()) {
-		@media (prefers-reduced-motion: no-preference) {
+		@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
 			.p1-settle {
 				animation-name: p1-offer-settle;
 				animation-duration: auto;

@@ -5,6 +5,8 @@ import type { RenderPageResponse } from '$lib/server/render-page';
 declare global {
 	namespace App {
 		interface Locals {
+			/** CSS для layout и блоков, выбранных на сервере из динамических импортов. */
+			pageStylesheets?: string[];
 			/**
 			 * Дизайн-система, которой рендерится ЭТОТ запрос — slug, уже проверенный
 			 * по фронтовому реестру. Кладёт `loadRenderPage()`, читает

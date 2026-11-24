@@ -15,24 +15,24 @@ import type { EntryGenerator, PageLoad } from './$types';
  * Полагаться на обход ссылок с индекса можно, но хрупко: стоит кому-то отфильтровать
  * список на индексе — и часть карточек тихо перестанет собираться.
  */
-export const entries: EntryGenerator = () =>
-	catalogEntries().map((e) => ({
+export const entries: EntryGenerator = async () =>
+	(await catalogEntries()).map((e) => ({
 		template: String(e.templateId),
 		page: e.page,
 		type: e.type,
 		version: `v${e.version}`
 	}));
 
-export const load: PageLoad = ({ params }) => {
+export const load: PageLoad = async ({ params }) => {
 	const templateId = Number(params.template);
 	const pageSlug = decodePage(params.page);
 	const match = /^v(\d+)$/.exec(params.version);
 	const version = match ? Number(match[1]) : NaN;
 
-	if (
-		!Number.isInteger(templateId) ||
-		resolveComponent(templateId, pageSlug, params.type) === null
-	) {
+	const component = Number.isInteger(templateId)
+		? await resolveComponent(templateId, pageSlug, params.type)
+		: null;
+	if (!component) {
 		error(404, `Блок ${params.template}${pageSlug}:${params.type} в каталоге не найден`);
 	}
 
@@ -45,6 +45,7 @@ export const load: PageLoad = ({ params }) => {
 	}
 
 	return {
+		component,
 		templateId,
 		pageSlug,
 		type: params.type,

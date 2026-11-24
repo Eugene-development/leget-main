@@ -120,8 +120,14 @@
 			typeof window !== 'undefined' &&
 			typeof window.matchMedia === 'function' &&
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		// На мобильных вход-по-скроллу отключён: контент виден сразу и не
+		// пропадает при прокрутке вверх/вниз (см. promo.css, тот же гейт).
+		const mobile =
+			typeof window !== 'undefined' &&
+			typeof window.matchMedia === 'function' &&
+			window.matchMedia('(width < 64rem)').matches;
 
-		if (reducedMotion || typeof IntersectionObserver === 'undefined') {
+		if (reducedMotion || mobile || typeof IntersectionObserver === 'undefined') {
 			return {};
 		}
 
@@ -444,7 +450,11 @@
 							>
 						</li>
 						<li>
-							<a href="/b2b" class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none">B2B</a>
+							<a
+								href="/b2b"
+								class="p1-accent-hover rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:outline-none"
+								>B2B</a
+							>
 						</li>
 						{#if client}
 							<li>

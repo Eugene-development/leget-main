@@ -1,14 +1,13 @@
 <script lang="ts">
 	import EditableComponent from '$lib/components/EditableComponent.svelte';
 	import { dev } from '$app/environment';
-	import { resolveComponent } from '$lib/ds/registry';
 	import { catalogRubricFromSlug } from '$lib/utils/catalog-rubric';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	// load уже проверил, что компонент существует, — иначе была бы 404.
-	const Block = $derived(resolveComponent(data.templateId, data.pageSlug, data.type)!);
+	const Block = $derived(data.component);
 	const catalogRubric = $derived(catalogRubricFromSlug(data.templateId, data.pageSlug));
 
 	/**

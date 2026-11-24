@@ -105,7 +105,13 @@
 			typeof window !== 'undefined' &&
 			typeof window.matchMedia === 'function' &&
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (reduce || typeof IntersectionObserver === 'undefined') {
+		// На мобильных вход-по-скроллу отключён: контент виден сразу и не
+		// пропадает при прокрутке вверх/вниз (см. promo.css, тот же гейт).
+		const mobile =
+			typeof window !== 'undefined' &&
+			typeof window.matchMedia === 'function' &&
+			window.matchMedia('(width < 64rem)').matches;
+		if (reduce || mobile || typeof IntersectionObserver === 'undefined') {
 			node.style.opacity = '1';
 			return {};
 		}
@@ -593,7 +599,11 @@
 								</a>
 							</li>
 							<li>
-								<a href="/b2b" class="inline-block text-sm text-on-dark/60 transition-colors hover:text-on-dark">B2B</a>
+								<a
+									href="/b2b"
+									class="inline-block text-sm text-on-dark/60 transition-colors hover:text-on-dark"
+									>B2B</a
+								>
 							</li>
 							{#if client}
 								<li>

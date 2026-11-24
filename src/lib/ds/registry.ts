@@ -15,19 +15,16 @@
  */
 import type { Component } from 'svelte';
 import type { PageComponentProps } from '$lib/components/templates/types';
+import type { PageOverrides } from '$lib/components/templates/page-overrides';
 
-import * as Promo1 from '$lib/components/templates/Promo-1';
-import * as Promo2 from '$lib/components/templates/Promo-2';
-import * as Promo3 from '$lib/components/templates/Promo-3';
-import * as TestTemplate from '$lib/components/templates/Test';
+import { pageOverrides as promo1Pages } from '$lib/components/templates/Promo-1';
+import { pageOverrides as promo2Pages } from '$lib/components/templates/Promo-2';
+import { pageOverrides as promo3Pages } from '$lib/components/templates/Promo-3';
+import { pageOverrides as testPages } from '$lib/components/templates/Test';
+import { Header as Promo1Header } from '$lib/components/templates/Promo-1/layout';
+import Promo2TopBar from '$lib/components/templates/Promo-2/layout/TopBar/index.svelte';
 
 import defaultsJson from './defaults.json';
-
-type ComponentMap = Record<string, Component<PageComponentProps>>;
-
-type TemplateModule = {
-	pageOverrides?: Record<string, ComponentMap>;
-};
 
 type CatalogLayout = {
 	component: Component<PageComponentProps>;
@@ -56,11 +53,11 @@ const defaults = defaultsJson as unknown as DefaultsFile;
 const templateDefaults = (templateId: number): TemplateDefaults | undefined =>
 	defaults[String(templateId)] as TemplateDefaults | undefined;
 
-const MODULES: Record<number, TemplateModule> = {
-	1: Promo1 as TemplateModule,
-	2: Promo2 as TemplateModule,
-	3: Promo3 as TemplateModule,
-	0: TestTemplate as TemplateModule
+const PAGE_OVERRIDES: Record<number, PageOverrides> = {
+	1: promo1Pages,
+	2: promo2Pages,
+	3: promo3Pages,
+	0: testPages
 };
 
 /**
@@ -72,7 +69,7 @@ const MODULES: Record<number, TemplateModule> = {
 const CATALOG_LAYOUTS: Record<number, Record<string, CatalogLayout>> = {
 	1: {
 		Header: {
-			component: Promo1.Header as Component<PageComponentProps>,
+			component: Promo1Header as Component<PageComponentProps>,
 			versionCount: 5,
 			versionKey: 'menuVersion',
 			data: { siteName: 'LEGET' }
@@ -80,7 +77,7 @@ const CATALOG_LAYOUTS: Record<number, Record<string, CatalogLayout>> = {
 	},
 	2: {
 		TopBar: {
-			component: Promo2.TopBar as Component<PageComponentProps>,
+			component: Promo2TopBar as Component<PageComponentProps>,
 			versionCount: 2,
 			versionKey: 'topBarVersion',
 			data: {}
@@ -156,19 +153,21 @@ export type CatalogEntry = {
  * Блок, описанный в конфиге, но не имеющий компонента, отрендерить нельзя, поэтому
  * в список он не попадает.
  */
-export function catalogEntries(): CatalogEntry[] {
+export async function catalogEntries(onlyTemplateId?: number): Promise<CatalogEntry[]> {
 	const entries: CatalogEntry[] = [];
 
-	for (const [idRaw, module] of Object.entries(MODULES)) {
+	for (const [idRaw, overrides] of Object.entries(PAGE_OVERRIDES)) {
 		const templateId = Number(idRaw);
 
 		// Test — служебный фолбэк, в каталоге дизайн-системы ему не место.
-		if (templateId === 0) continue;
+		if (templateId === 0 || (onlyTemplateId !== undefined && templateId !== onlyTemplateId)) continue;
 
-		const overrides = module.pageOverrides ?? {};
 		const templateName = templateDefaults(templateId)?.name ?? `Template ${templateId}`;
+		const pages = await Promise.all(
+			Object.entries(overrides).map(async ([slug, load]) => [slug, (await load()).default] as const)
+		);
 
-		for (const [pageSlug, map] of Object.entries(overrides)) {
+		for (const [pageSlug, map] of pages) {
 			for (const type of Object.keys(map)) {
 				const count = versionCount(templateId, type, pageSlug);
 				const hasData = hasDemoData(templateId, pageSlug, type);
@@ -208,16 +207,17 @@ export function catalogEntries(): CatalogEntry[] {
 }
 
 /** Svelte-компонент по координатам, либо null если такого блока нет. */
-export function resolveComponent(
+export async function resolveComponent(
 	templateId: number,
 	pageSlug: string,
 	type: string
-): Component<PageComponentProps> | null {
-	return (
-		MODULES[templateId]?.pageOverrides?.[pageSlug]?.[type] ??
-		(pageSlug === '(layout)' ? CATALOG_LAYOUTS[templateId]?.[type]?.component : undefined) ??
-		null
-	);
+): Promise<Component<PageComponentProps> | null> {
+	if (pageSlug === '(layout)') return CATALOG_LAYOUTS[templateId]?.[type]?.component ?? null;
+
+	const pages = PAGE_OVERRIDES[templateId];
+	if (!pages || !Object.hasOwn(pages, pageSlug)) return null;
+	const { default: components } = await pages[pageSlug]();
+	return Object.hasOwn(components, type) ? components[type] : null;
 }
 
 /**

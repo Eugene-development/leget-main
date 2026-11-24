@@ -14,6 +14,7 @@
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
 	import ImagePickerDialog from '$lib/components/ImagePickerDialog.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { richTextToPlainText } from '$lib/utils/rich-text';
 	import { createEditableVisibility } from '$lib/utils/editable-visibility.svelte';
 	import { serviceOrderStore } from '$lib/stores/serviceOrder.svelte';
 	import { onMount, onDestroy } from 'svelte';
@@ -37,6 +38,16 @@
 		editContext?: EditContext | null;
 		isEditable?: boolean;
 	} = $props();
+
+	const defaultButtonText = 'Составить дизайн проект';
+	const savedButtonText = $derived(editableText(data?.buttonText, defaultButtonText));
+	const buttonText = $derived(
+		/^дизайн[ ‑-]проект (мебели|с расчётом стоимости)$/iu.test(
+			richTextToPlainText(savedButtonText).trim()
+		)
+			? defaultButtonText
+			: savedButtonText
+	);
 
 	// Видимость сохраняется вместе с контентом HeroMain и применяется на SSR:
 	// посетитель не получает скрытые части, а владелец видит их полупрозрачными
@@ -556,7 +567,7 @@
 					<EditableField
 						fieldKey="HeroMain.buttonText"
 						label="Текст кнопки"
-						value={editableText(data?.buttonText, 'Дизайн-проект с расчётом стоимости')}
+						value={buttonText}
 						{isEditable}
 						visible={visibility.isVisible('button')}
 						visibilityLabel="кнопку"
@@ -568,10 +579,10 @@
 						{#snippet children(displayValue)}
 							<button
 								data-metrika-goal="pages_home_heromain_v1_heromain_open_1"
-								data-goal-label="Консультация (текст кнопки настраивается)"
+								data-goal-label="Составить дизайн проект (текст кнопки настраивается)"
 								data-goal-action="open"
 								type="button"
-								onclick={() => serviceOrderStore.open('consultation')}
+								onclick={() => serviceOrderStore.open('design-project')}
 								class="hero-primary group cursor-pointer rounded-xl border border-ink-900 bg-ink-900 px-5 py-3 text-center text-sm font-semibold text-on-dark shadow-sm transition-all duration-[var(--ds-motion-duration-ui)] ease-ui hover:-translate-y-0.5 hover:bg-ink-800 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2 focus-visible:outline-none"
 							>
 								<HoverSwapLabel text={displayValue} disabled={isEditable || motionDisabled} />
@@ -627,7 +638,7 @@
 							{#snippet children(displayValue)}
 								{#if displayValue.trim()}
 									<p
-										class="hero-brands-label mb-3 min-h-4 p1-label text-ink-700 {isEditable
+										class="hero-brands-label p1-label mb-3 min-h-4 text-ink-700 {isEditable
 											? 'block'
 											: 'hidden md:block'}"
 									>
@@ -839,25 +850,49 @@
 
 	.glass-panel {
 		isolation: isolate;
-		background: linear-gradient(
-			135deg,
-			color-mix(
-				in srgb,
-				var(--ds-surface-raised) calc(var(--ds-liquid-glass-fill) - 14%),
-				transparent
-			),
-			color-mix(
-				in srgb,
-				var(--ds-surface-raised) calc(var(--ds-liquid-glass-fill) - 30%),
-				transparent
-			)
-		);
 		background-color: var(--ds-surface-raised);
+		-webkit-backdrop-filter: blur(var(--ds-liquid-glass-blur))
+			saturate(var(--ds-liquid-glass-saturation));
 		backdrop-filter: blur(var(--ds-liquid-glass-blur)) saturate(var(--ds-liquid-glass-saturation));
 		box-shadow:
 			var(--ds-light-shadow),
 			inset 0 1px 0 color-mix(in srgb, var(--ds-on-dark) 80%, transparent),
 			inset 0 -1px 0 color-mix(in srgb, var(--ds-on-dark) 30%, transparent);
+	}
+
+	@media (prefers-reduced-transparency: no-preference) {
+		@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+			.hero-shell .glass-panel {
+				background: linear-gradient(
+					135deg,
+					color-mix(
+						in srgb,
+						var(--ds-surface-raised) calc(var(--ds-liquid-glass-fill) - 14%),
+						transparent
+					),
+					color-mix(
+						in srgb,
+						var(--ds-surface-raised) calc(var(--ds-liquid-glass-fill) - 20%),
+						transparent
+					)
+				);
+			}
+		}
+	}
+
+	@media (prefers-reduced-transparency: reduce) {
+		.hero-shell .glass-panel {
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
+		}
+	}
+
+	/* На мобильных выключаем размытие стекла героя: дешевле для прокрутки. */
+	@media (width < 64rem) {
+		.hero-shell .glass-panel {
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
+		}
 	}
 
 	/* Light travels across the glass, while the content stays perfectly still. */
@@ -908,12 +943,6 @@
 	.hero-primary {
 		min-height: 44px;
 		max-width: 100%;
-	}
-
-	@supports not (backdrop-filter: blur(1px)) {
-		.glass-panel {
-			background: var(--ds-surface-raised);
-		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

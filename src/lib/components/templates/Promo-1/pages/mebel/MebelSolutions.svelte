@@ -81,8 +81,8 @@
 				<div
 					class="absolute inset-0 bg-linear-to-t from-ink-900/80 via-ink-900/20 to-transparent"
 				></div>
-				<div class="absolute right-0 bottom-0 left-0 p-6">
-					<h3 class="p1-title-sub text-card-title text-on-dark">
+				<div class="ds-media-panel absolute inset-x-0 bottom-0" data-ds-surface="dark">
+					<h3 class="ds-copy p1-title-sub text-card-title">
 						<EditableField
 							fieldKey="MebelSolutions.items.{i}.title"
 							label="Заголовок решения"
@@ -96,7 +96,7 @@
 							{/snippet}
 						</EditableField>
 					</h3>
-					<p class="mt-1 text-prose text-ink-300">
+					<p class="ds-copy mt-1 text-prose">
 						<EditableField
 							fieldKey="MebelSolutions.items.{i}.desc"
 							label="Описание решения"
@@ -115,3 +115,9 @@
 		{/each}
 	</div>
 </div>
+
+<style>
+	.ds-media-panel {
+		border-radius: 0;
+	}
+</style>

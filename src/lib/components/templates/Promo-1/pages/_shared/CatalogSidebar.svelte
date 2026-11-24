@@ -325,7 +325,6 @@
 			)}
 			<div
 				class="ms-item"
-				class:ms-item--link={!nestedBrands}
 				class:ms-item--active={isActive}
 				class:ms-item--off={isEditable && !isEnabled}
 				style="--i: {i}"
@@ -653,8 +652,8 @@
 			box-shadow 0.22s ease;
 	}
 	.ms-brand-link[aria-current='page'] {
-		background: var(--ms-accent-wash);
-		color: var(--ms-accent-deep);
+		background: var(--ds-ink-100);
+		color: var(--ds-light-title);
 		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
 	}
 	.ms-brand-link:hover {
@@ -662,10 +661,6 @@
 		color: var(--ds-light-title);
 		box-shadow: none;
 		transform: scale(1.02);
-	}
-	.ms-nav:has(a:hover) .ms-brand-link[aria-current='page']:not(:hover) {
-		background: transparent;
-		box-shadow: none;
 	}
 	.ms-expand:focus-visible,
 	.ms-brand-link:focus-visible {
@@ -683,19 +678,12 @@
 		font-family: var(--ds-font-body);
 		--ms-accent: var(--p1-catalog-accent-500, var(--ds-link-500));
 		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-link-700));
-		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-link-50));
-		--ms-shadow: var(--ms-accent-deep);
+		--ms-shadow: var(--ds-light-title);
 	}
 
 	[data-accent='amber'] {
 		--ms-accent: var(--p1-catalog-accent-500, var(--ds-cat-1-500));
 		--ms-accent-deep: var(--p1-catalog-accent-700, var(--ds-cat-1-700));
-		--ms-accent-wash: var(--p1-catalog-accent-50, var(--ds-cat-1-50));
-	}
-
-	/* Мебель: нейтральная тень активного пункта. */
-	[data-component='MebelSidebar'] {
-		--ms-shadow: var(--ds-light-title);
 	}
 
 	/* ---------------------------------------------------------------- *
@@ -839,13 +827,9 @@
 		pointer-events: none;
 	}
 
-	.ms-item--link.ms-item--active {
-		background: var(--ms-accent-wash);
+	.ms-item--active {
+		background: var(--ds-ink-100);
 		box-shadow: 0 8px 16px -12px color-mix(in srgb, var(--ms-shadow) 70%, transparent);
-	}
-	.ms-nav:has(a:hover) .ms-item--link.ms-item--active {
-		background: transparent;
-		box-shadow: none;
 	}
 
 	.ms-item:has(> .ms-link:hover)::before {
@@ -881,7 +865,7 @@
 	}
 
 	.ms-item--active .ms-link {
-		color: var(--ms-accent-deep);
+		color: var(--ds-light-title);
 		font-weight: 600;
 	}
 

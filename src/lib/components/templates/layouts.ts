@@ -11,8 +11,8 @@ import type { TemplateLayout } from './types';
  * рантайме — templateId приходит из API вместе с данными страницы. Это дешёвая
  * часть шаблона; тяжёлое (все страницы шаблона) в маршруты страниц не попадает.
  *
- * Соответствие 1 → Promo-1, 2 → Promo-2, 3 → Promo-3, иначе Test — то же, что
- * в ComponentResolver.resolveTemplate.
+ * Соответствие 1 → Promo-1, 2 → Promo-2, 3 → Promo-3, иначе Test совпадает
+ * с загрузчиком шаблонов общего маршрута.
  */
 export function resolveLayout(templateId: number | null): TemplateLayout {
 	switch (templateId) {

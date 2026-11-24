@@ -65,7 +65,7 @@
 		{#each steps as step, i}
 			<div class="p1-card-copy relative rounded-xl border border-ink-50 bg-surface-raised p-5 shadow-sm">
 				<span
-					class="absolute -top-3 left-5 flex h-7 w-7 items-center justify-center rounded-full bg-link-500 text-sm font-bold text-on-accent"
+					class="absolute -top-3 left-5 flex h-7 w-7 items-center justify-center rounded-full bg-(--ds-contrast-white-link-text) text-sm font-bold text-(color:--ds-contrast-black-copy)"
 				>
 					{i + 1}
 				</span>

@@ -1,4 +1,5 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
+import { assets } from '$app/paths';
 import { BASE_SLUG } from '$lib/design-systems/registry';
 import { requestError, userErrorMessage } from '$lib/utils/user-error.js';
 
@@ -43,6 +44,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 		 * комментарий, случайно содержащий `data-ds="base"`, не перехватит подмену.
 		 */
 		transformPageChunk: ({ html }) => {
+			const stylesheets = event.locals.pageStylesheets;
+			const headEnd = html.indexOf('</head>');
+			if (stylesheets?.length && headEnd !== -1) {
+				// Keep initial SSR styles mounted across client navigation, as Vite does.
+				const head = html.slice(0, headEnd);
+				const links = stylesheets
+					.map((path) => encodeURI(path))
+					.filter((path) => !head.includes(`/${path}"`))
+					.map((path) => `<link rel="stylesheet" href="${assets}/${path}">`)
+					.join('');
+				html = head + links + html.slice(headEnd);
+			}
 			const slug = event.locals.designSystem;
 			if (!slug || slug === BASE_SLUG) return html;
 
@@ -59,7 +72,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// some browsers and keeps the tab spinner spinning after the page renders.
 	const contentType = response.headers.get('content-type') ?? '';
 	const isDocument = contentType.startsWith('text/html');
-	if (!isDocument) {
+	if (isDocument) {
+		// SvelteKit also emits these preloads in <head>. Keep proxy headers bounded.
+		response.headers.delete('link');
+	} else {
 		response.headers.set('Cross-Origin-Resource-Policy', 'cross-origin');
 	}
 

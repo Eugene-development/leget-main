@@ -60,9 +60,7 @@
 	});
 
 	function toggle(index: number) {
-		opened = opened.includes(index)
-			? opened.filter((value) => value !== index)
-			: [...opened, index];
+		opened = opened.includes(index) ? [] : [index];
 	}
 
 	async function saveField(field: string, value: unknown) {
@@ -117,8 +115,7 @@
 				<div class="faq-item" class:expanded>
 					<h3 class="p1-title-sub faq-question-heading text-card-title" id="{uid}-question-{i}">
 						{#if isEditable}
-							<div class="faq-question">
-								<span class="faq-number" aria-hidden="true">{i + 1}.</span>
+							<div class="faq-question p1-liquid-glass p1-liquid-glass--translucent">
 								<EditableField
 									fieldKey="HomeFAQ.items.{i}.question"
 									label="Вопрос {i + 1}"
@@ -132,14 +129,13 @@
 							</div>
 						{:else}
 							<button
-								class="faq-question"
+								class="faq-question p1-liquid-glass p1-liquid-glass--translucent"
 								type="button"
 								aria-expanded={expanded}
 								aria-controls="{uid}-answer-{i}"
 								data-goal-ignore="Раскрытие ответа FAQ, не открывает форму"
 								onclick={() => toggle(i)}
 							>
-								<span class="faq-number" aria-hidden="true">{i + 1}.</span>
 								<span class="min-w-0 flex-1">{item.question}</span>
 								<svg
 									class="faq-icon"
@@ -233,30 +229,24 @@
 		width: 100%;
 		min-height: 5rem;
 		padding: 1.25rem 1.75rem;
-		border: 1px solid currentColor;
+		border: 1px solid var(--p1-border);
 		border-radius: var(--radius-2xl);
-		background: linear-gradient(110deg, var(--ds-link-800), var(--ds-link-700));
-		color: var(--ds-contrast-link-700-copy, var(--ds-on-dark));
-		box-shadow: 0 12px 28px -14px color-mix(in srgb, var(--ds-link-900) 45%, transparent);
+		color: var(--p1-title);
 		font: inherit;
 		text-align: left;
 		overflow-wrap: anywhere;
-		transition:
-			transform 220ms ease,
-			box-shadow 220ms ease;
+		transition: transform var(--ds-motion-duration-ui) var(--ds-motion-ease);
 	}
 	button.faq-question {
 		cursor: pointer;
 	}
 	button.faq-question:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 16px 32px -14px color-mix(in srgb, var(--ds-link-900) 55%, transparent);
 	}
 	button.faq-question:focus-visible {
-		outline: 3px solid var(--ds-link-600);
+		outline: 3px solid var(--p1-field-focus);
 		outline-offset: 5px;
 	}
-	.faq-number,
 	.faq-icon {
 		flex: none;
 	}

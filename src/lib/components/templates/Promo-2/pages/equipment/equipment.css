@@ -209,7 +209,7 @@
 }
 
 @supports (animation-timeline: view()) {
-	@media (prefers-reduced-motion: no-preference) {
+	@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
 		.equipment-swatch-motion {
 			animation: equipment-sample-in linear both;
 			animation-timeline: view();

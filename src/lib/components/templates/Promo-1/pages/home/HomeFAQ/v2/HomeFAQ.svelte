@@ -68,11 +68,10 @@
 			{#each items as item, i}
 				{@const expanded = isEditable || opened === i}
 				<div class="faq-item" class:expanded>
-					<div class="faq-item-surface">
+					<div class="faq-item-surface p1-liquid-glass p1-liquid-glass--translucent">
 						<h3 class="p1-title-sub faq-question-heading text-card-title" id="{uid}-question-{i}">
 							{#if isEditable}
 								<div class="faq-question">
-									<span class="faq-number ds-numeric" aria-hidden="true">{i + 1}</span>
 									<div class="faq-question-text">
 										<EditableField
 											fieldKey="HomeFAQ.items.{i}.question"
@@ -95,7 +94,6 @@
 									data-goal-ignore="Раскрытие ответа FAQ, не открывает форму"
 									onclick={() => toggle(i)}
 								>
-									<span class="faq-number ds-numeric" aria-hidden="true">{i + 1}</span>
 									<span class="faq-question-text">{item.question}</span>
 									<span class="faq-control" aria-hidden="true">
 										<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -202,20 +200,30 @@
 		gap: 0.5rem;
 	}
 	.faq-item {
+		position: relative;
 		padding: 1.5px;
 		border-radius: var(--ds-radius-4xl);
-		background: transparent;
 	}
-	.faq-item.expanded {
-		background: var(--faq-edge);
+	.faq-item.expanded::before {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		border: 1.5px solid var(--p1-border);
+		border-radius: inherit;
+		content: '';
+		pointer-events: none;
+	}
+	@supports (mask-composite: exclude) {
+		.faq-item.expanded::before {
+			border: 0;
+			padding: 1.5px;
+			background: var(--faq-edge);
+			mask: linear-gradient(currentColor 0 0) content-box, linear-gradient(currentColor 0 0);
+			mask-composite: exclude;
+		}
 	}
 	.faq-item-surface {
 		border-radius: inherit;
-		background: color-mix(in srgb, var(--p1-overlay) 55%, transparent);
-		transition: background var(--ds-motion-duration-ui) var(--ds-motion-ease);
-	}
-	.expanded .faq-item-surface {
-		background: var(--p1-overlay);
 	}
 	.faq-question-heading {
 		margin: 0;
@@ -244,18 +252,6 @@
 		flex: 1;
 		min-width: 0;
 		overflow-wrap: anywhere;
-	}
-	.faq-number {
-		display: grid;
-		flex: none;
-		place-items: center;
-		min-width: 1.75rem;
-		height: 1.75rem;
-		padding: 0 0.25rem;
-		border: 1px solid color-mix(in srgb, var(--p1-overlay) 60%, var(--p1-border));
-		border-radius: var(--ds-radius-lg);
-		background: color-mix(in srgb, var(--p1-overlay) 75%, transparent);
-		font-size: var(--text-sm);
 	}
 	.faq-control {
 		display: grid;
@@ -323,7 +319,7 @@
 	.faq-answer-content {
 		line-height: var(--ds-font-prose-leading);
 		font-size: var(--ds-font-prose-size);
-		padding: 0 5.5rem 2rem 4.25rem;
+		padding: 0 5.5rem 2rem 1.5rem;
 		overflow-wrap: anywhere;
 	}
 	.faq-answer-content > div {
@@ -365,11 +361,10 @@
 			padding: 1.125rem 1rem;
 		}
 		.faq-answer-content {
-			padding: 0 1.25rem 1.5rem;
+			padding: 0 1rem 1.5rem;
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.faq-item-surface,
 		.faq-control,
 		.faq-control svg,
 		.faq-answer {

@@ -57,26 +57,8 @@ export const MESSAGE_DEFAULT_TEXT =
  */
 export const MESSAGE_PROJECT_LINK_LABEL = 'Смотреть проект';
 
-const CHILDRENS_PROJECT_TITLE = 'Детская с рабочим местом';
-const CHILDRENS_PROJECT_DESCRIPTION =
-	'Кровать, стол и стеллаж одним объёмом. Плиты с сертификатом класса E0.';
-const CHILDRENS_PROJECT_IMAGE =
-	'https://storage.yandexcloud.net/leget-main/templates/promo-1/message-1.1.2.1/childrens-study-bedroom.webp';
-const CHILDRENS_PROJECT_IMAGE_ALIASES: ReadonlyMap<string, string> = new Map([
-	[
-		'https://storage.yandexcloud.net/leget-main/templates/promo-1/incentives/quality-v2.webp',
-		CHILDRENS_PROJECT_IMAGE
-	]
-]);
-
-/** Старые снимки страницы и сохранённые стартовые карточки могут содержать прежний URL. */
-export function messageProjectImageAliases({
-	title,
-	description
-}: Pick<MessageProject, 'title' | 'description'>) {
-	if (title === CHILDRENS_PROJECT_TITLE && description === CHILDRENS_PROJECT_DESCRIPTION)
-		return CHILDRENS_PROJECT_IMAGE_ALIASES;
-}
+const TEMPLATE_MEDIA = 'https://storage.yandexcloud.net/leget-main/templates/promo-1/';
+const PROJECT_MEDIA = TEMPLATE_MEDIA + 'message-1.1.2.1/';
 
 /**
  * Стартовые работы. Без чисел вида «более 1200 проектов»: стартовые данные
@@ -84,11 +66,12 @@ export function messageProjectImageAliases({
  * ложное социальное доказательство хуже отсутствующего. Изображения повторяют
  * серверные дефолты и используются при отсутствии сохранённых карточек.
  */
-export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
+const starterProjects: readonly (MessageProject & { image: string; previousImage: string })[] = [
 	{
 		title: 'Кухня из массива дуба',
 		description: 'Гарнитур 4,2 м со встроенной техникой и столешницей из кварцевого агломерата.',
-		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/custom_kitchens.png',
+		image: PROJECT_MEDIA + 'solid-oak-kitchen.webp',
+		previousImage: TEMPLATE_MEDIA + 'custom_kitchens.png',
 		alt: 'Кухня из массива дуба со встроенной техникой',
 		link: '',
 		specs: [
@@ -100,7 +83,8 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 	{
 		title: 'Гардеробная 9 м²',
 		description: 'Система хранения от пола до потолка: обувной модуль, подсветка полок.',
-		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/message-1.1.2.1/walk-in-wardrobe-9m2.webp',
+		image: PROJECT_MEDIA + 'walk-in-wardrobe-9m2.webp',
+		previousImage: TEMPLATE_MEDIA + 'custom_wardrobes.png',
 		alt: 'Гардеробная комната с подсветкой полок и обувным модулем',
 		link: '',
 		specs: [
@@ -112,7 +96,8 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 	{
 		title: 'Гостиная со стенкой под ТВ',
 		description: 'Прямая стенка 3,6 м: закрытые секции, ниша под технику, скрытая подсветка.',
-		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/furniture_hero.png',
+		image: PROJECT_MEDIA + 'living-room-tv-wall.webp',
+		previousImage: TEMPLATE_MEDIA + 'furniture_hero.png',
 		alt: 'Гостиная со встроенной стенкой под телевизор',
 		link: '',
 		specs: [
@@ -122,9 +107,10 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 		]
 	},
 	{
-		title: CHILDRENS_PROJECT_TITLE,
-		description: CHILDRENS_PROJECT_DESCRIPTION,
-		image: CHILDRENS_PROJECT_IMAGE,
+		title: 'Детская с рабочим местом',
+		description: 'Кровать, стол и стеллаж одним объёмом. Плиты с сертификатом класса E0.',
+		image: PROJECT_MEDIA + 'childrens-study-bedroom.webp',
+		previousImage: TEMPLATE_MEDIA + 'incentives/quality-v2.webp',
 		alt: 'Детская мебель с рабочим местом у окна',
 		link: '',
 		specs: [
@@ -134,6 +120,26 @@ export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = [
 		]
 	}
 ];
+
+export const MESSAGE_DEFAULT_PROJECTS: readonly MessageProject[] = starterProjects.map(
+	({ previousImage, ...project }) => project
+);
+
+const starterImageAliases = new Map(
+	starterProjects.map(({ title, description, image, previousImage }) => [
+		title,
+		{ description, urls: new Map([[previousImage, image]]) }
+	])
+);
+
+/** Старые снимки страницы и сохранённые стартовые карточки могут содержать прежний URL. */
+export function messageProjectImageAliases({
+	title,
+	description
+}: Pick<MessageProject, 'title' | 'description'>): ReadonlyMap<string, string> | undefined {
+	const starter = starterImageAliases.get(title);
+	if (starter?.description === description) return starter.urls;
+}
 
 function asText(value: unknown, fallback: string): string {
 	return value === null || typeof value === 'string' ? editableText(value) : fallback;

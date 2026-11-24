@@ -1,508 +1,64 @@
-import UniversityHero from './pages/university/UniversityHero.svelte';
-import UniversityProgram from './pages/university/UniversityProgram.svelte';
-import UniversityJournal from './pages/university/UniversityJournal.svelte';
-import UniversityApproach from './pages/university/UniversityApproach.svelte';
-import type { Component } from 'svelte';
-import PrivacyPolicy from '../../legal/PrivacyPolicy.svelte';
-import GlassRequest from './pages/steklo-i-zerkala/GlassRequest.svelte';
+import type { PageOverrides } from '../page-overrides';
 
-type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
+export const loadLayout = () => import('./page-modules/_layout').then((module) => module.default);
 
-// Layout components
-export { PromoStrip, Banner, Header, Footer } from './layout';
-
-// 404 page components
-import NotFound from './pages/404/NotFound.svelte';
-
-// Home page components
-import HomeHeroMain from './pages/home/HeroMain/index.svelte';
-import HomeMessage from './pages/home/Message/index.svelte';
-import HomePromoOffer from './pages/home/PromoOffer/index.svelte';
-import HomeEquipment from './pages/home/Equipment/index.svelte';
-import HomeStage from './pages/home/Stage/index.svelte';
-import HomeIncentives from './pages/home/Incentives/index.svelte';
-import HomeDirection from './pages/home/Direction/index.svelte';
-import HomePartnerOffers from './pages/home/PartnerOffers/index.svelte';
-import HomeBrands from './pages/home/Brands/index.svelte';
-import HomeFAQ from './pages/home/HomeFAQ/index.svelte';
-
-// About page components
-import AboutHero from './pages/about/Hero.svelte';
-import AboutText from './pages/about/Text/index.svelte';
-import AboutStatistics from './pages/about/Statistics.svelte';
-import AboutMission from './pages/about/Mission/index.svelte';
-import AboutValues from './pages/about/Values.svelte';
-import AboutWhyUs from './pages/about/WhyUs.svelte';
-import AboutCTA from './pages/about/AboutCTA.svelte';
-
-// Contact page components
-import ContactForm from './pages/contact/ContactForm.svelte';
-
-// Services components
-import ConsultationHero from './pages/services/consultation/ConsultationHero.svelte';
-import ConsultationFeatures from './pages/services/consultation/ConsultationFeatures.svelte';
-import ConsultationWhy from './pages/services/consultation/ConsultationWhy.svelte';
-
-import ConsultationCTA from './pages/services/consultation/ConsultationCTA.svelte';
-
-import DesignProjectHero from './pages/services/design-project/DesignProjectHero.svelte';
-import DesignProjectFeatures from './pages/services/design-project/DesignProjectFeatures.svelte';
-import DesignProjectWhy from './pages/services/design-project/DesignProjectWhy.svelte';
-import DesignProjectCTA from './pages/services/design-project/DesignProjectCTA.svelte';
-
-import MeasurementHero from './pages/services/measurement/MeasurementHero.svelte';
-import MeasurementFeatures from './pages/services/measurement/MeasurementFeatures.svelte';
-import MeasurementWhy from './pages/services/measurement/MeasurementWhy.svelte';
-import MeasurementCTA from './pages/services/measurement/MeasurementCTA.svelte';
-
-import FurnitureProjectHero from './pages/services/furniture-project/FurnitureProjectHero.svelte';
-import FurnitureProjectFeatures from './pages/services/furniture-project/FurnitureProjectFeatures.svelte';
-import FurnitureProjectWhy from './pages/services/furniture-project/FurnitureProjectWhy.svelte';
-import FurnitureProjectCTA from './pages/services/furniture-project/FurnitureProjectCTA.svelte';
-
-import AssemblyHero from './pages/services/assembly/AssemblyHero.svelte';
-import AssemblyFeatures from './pages/services/assembly/AssemblyFeatures.svelte';
-import AssemblyWhy from './pages/services/assembly/AssemblyWhy.svelte';
-import AssemblyCTA from './pages/services/assembly/AssemblyCTA.svelte';
-
-// Contacts page components
-import ContactsHero from './pages/contacts/Hero/index.svelte';
-import ContactChannels from './pages/contacts/ContactChannels.svelte';
-import ContactAddress from './pages/contacts/ContactAddress/index.svelte';
-import ContactMessengers from './pages/contacts/ContactMessengers.svelte';
-import ContactCTA from './pages/contacts/ContactCTA/index.svelte';
-
-// Actions page components
-import ActionsHero from './pages/actions/Hero.svelte';
-import ActionsCards from './pages/actions/ActionsCards.svelte';
-import ActionsCardsExtra from './pages/actions/ActionsCardsExtra.svelte';
-import ActionsBanner from './pages/actions/ActionsBanner.svelte';
-import ActionsCTA from './pages/actions/ActionsCTA/index.svelte';
-
-// Partnership page components
-import PartnershipHero from './pages/partnership/Hero.svelte';
-import WhoWeInvite from './pages/partnership/WhoWeInvite.svelte';
-import ForManufacturers from './pages/partnership/ForManufacturers.svelte';
-import PartnershipBenefits from './pages/partnership/Benefits.svelte';
-import HowToStart from './pages/partnership/HowToStart.svelte';
-import PartnershipCTA from './pages/partnership/PartnershipCTA.svelte';
-
-// Testimonials page components
-import TestimonialsHero from './pages/testimonials/Hero.svelte';
-import TestimonialsSummary from './pages/testimonials/TestimonialsSummary.svelte';
-import TestimonialsGrid from './pages/testimonials/TestimonialsGrid.svelte';
-
-// Installment page components
-import InstallmentHero from './pages/installment/Hero.svelte';
-import InstallmentPlans from './pages/installment/InstallmentPlans.svelte';
-import InstallmentRequirements from './pages/installment/InstallmentRequirements.svelte';
-import InstallmentSteps from './pages/installment/InstallmentSteps.svelte';
-import InstallmentBanks from './pages/installment/InstallmentBanks.svelte';
-import InstallmentFAQ from './pages/installment/InstallmentFAQ.svelte';
-import InstallmentCTA from './pages/installment/InstallmentCTA.svelte';
-
-// Guarantees page components
-import GuaranteesHero from './pages/guarantees/Hero.svelte';
-import GuaranteeTerms from './pages/guarantees/GuaranteeTerms.svelte';
-import WhatsCovered from './pages/guarantees/WhatsCovered.svelte';
-import HowToApply from './pages/guarantees/HowToApply.svelte';
-import GuaranteesCTA from './pages/guarantees/GuaranteesCTA.svelte';
-
-// Yandex Direct landing page components
-import YandexDirectHero from './pages/yandex-direct/Hero.svelte';
-import YandexDirectUSP from './pages/yandex-direct/USP.svelte';
-import YandexDirectAdvantages from './pages/yandex-direct/Advantages.svelte';
-import YandexDirectSteps from './pages/yandex-direct/Steps.svelte';
-import YandexDirectSocialProof from './pages/yandex-direct/SocialProof.svelte';
-import YandexDirectOffer from './pages/yandex-direct/Offer.svelte';
-import YandexDirectCTA from './pages/yandex-direct/CTA.svelte';
-
-// Mebel page components
-import MebelHero from './pages/mebel/MebelHero.svelte';
-import MebelBenefits from './pages/mebel/MebelBenefits/index.svelte';
-import MebelSolutions from './pages/mebel/MebelSolutions.svelte';
-import MebelProcess from './pages/mebel/MebelProcess/index.svelte';
-import MebelCTA from './pages/mebel/MebelCTA.svelte';
-import MebelLandingCTA from './pages/mebel/MebelLandingCTA.svelte';
-import MebelSidebar from './pages/mebel/MebelSidebar.svelte';
-import MebelCategoryHero from './pages/mebel/MebelCategoryHero.svelte';
-import MebelProjectsGrid from './pages/mebel/MebelProjectsGrid.svelte';
-import MebelProjectHero from './pages/mebel/MebelProjectHero.svelte';
-import MebelProjectDescription from './pages/mebel/MebelProjectDescription.svelte';
-import MebelProjectModel from './pages/mebel/MebelProjectModel.svelte';
-import MebelProjectSimilar from './pages/mebel/MebelProjectSimilar.svelte';
-
-// Projects page components
-import ProjectsHero from './pages/projects/ProjectsHero.svelte';
-import ProjectsFeed from './pages/projects/ProjectsFeed/index.svelte';
-
-// Browser-local favorites page
-import FavoritesPage from './pages/favorites/FavoritesPage.svelte';
-
-// Vacancy page components
-import VacancyHero from './pages/vacancy/VacancyHero.svelte';
-import VacancyList from './pages/vacancy/VacancyList.svelte';
-import VacancyForm from './pages/vacancy/VacancyForm.svelte';
-
-// Stoleshnica page components
-import StoleshnicaBrands from './pages/stoleshnica/StoleshnicaBrands.svelte';
-import StoleshnicaBrandHero from './pages/stoleshnica/StoleshnicaBrandHero.svelte';
-import StoleshnicaHero from './pages/stoleshnica/StoleshnicaHero.svelte';
-import StoleshnicaMaterials from './pages/stoleshnica/StoleshnicaMaterials.svelte';
-import StoleshnicaBenefits from './pages/stoleshnica/StoleshnicaBenefits.svelte';
-import StoleshnicaSolutions from './pages/stoleshnica/StoleshnicaSolutions.svelte';
-import StoleshnicaServices from './pages/stoleshnica/StoleshnicaServices.svelte';
-import StoleshnicaCTA from './pages/stoleshnica/StoleshnicaCTA.svelte';
-import StoleshnicaSidebar from './pages/stoleshnica/StoleshnicaSidebar.svelte';
-
-// Bytovaya-tehnika page components
-import ByttehnikaSidebar from './pages/bytovaya-tehnika/ByttehnikaSidebar.svelte';
-import ByttehnikaBrandHero from './pages/bytovaya-tehnika/ByttehnikaBrandHero.svelte';
-import BrandAbout from './pages/_shared/BrandAbout.svelte';
-import ByttehnikaHero from './pages/bytovaya-tehnika/ByttehnikaHero.svelte';
-import ByttehnikaBrands from './pages/bytovaya-tehnika/ByttehnikaBrands.svelte';
-import ByttehnikaBenefits from './pages/bytovaya-tehnika/ByttehnikaBenefits.svelte';
-import ByttehnikaCategories from './pages/bytovaya-tehnika/ByttehnikaCategories.svelte';
-import ByttehnikaComplex from './pages/bytovaya-tehnika/ByttehnikaComplex.svelte';
-import ByttehnikaCTA from './pages/bytovaya-tehnika/ByttehnikaCTA.svelte';
-
-// Santehnika page components
-import SantehnikaSidebar from './pages/santehnika/SantehnikaSidebar.svelte';
-import SantehnikaHero from './pages/santehnika/SantehnikaHero.svelte';
-import SantehnikaBrands from './pages/santehnika/SantehnikaBrands.svelte';
-import SantehnikaBrandHero from './pages/santehnika/SantehnikaBrandHero.svelte';
-import SantehnikaSinkTypes from './pages/santehnika/SantehnikaSinkTypes.svelte';
-import SantehnikaCategories from './pages/santehnika/SantehnikaCategories.svelte';
-import SantehnikaBenefits from './pages/santehnika/SantehnikaBenefits.svelte';
-import SantehnikaComplex from './pages/santehnika/SantehnikaComplex.svelte';
-import SantehnikaCTA from './pages/santehnika/SantehnikaCTA.svelte';
-import OsveshchenieSidebar from './pages/osveshchenie/OsveshchenieSidebar.svelte';
-import OsveshchenieHero from './pages/osveshchenie/OsveshchenieHero.svelte';
-import OsveshchenieBrands from './pages/osveshchenie/OsveshchenieBrands.svelte';
-import OsveshchenieBrandHero from './pages/osveshchenie/OsveshchenieBrandHero.svelte';
-import OsveshchenieCTA from './pages/osveshchenie/OsveshchenieCTA.svelte';
-
-import DveriSidebar from './pages/dveri/DveriSidebar.svelte';
-import DveriHero from './pages/dveri/DveriHero.svelte';
-import DveriBrands from './pages/dveri/DveriBrands.svelte';
-import DveriBrandHero from './pages/dveri/DveriBrandHero.svelte';
-import DveriBenefits from './pages/dveri/DveriBenefits.svelte';
-import DveriCategories from './pages/dveri/DveriCategories.svelte';
-import DveriComplex from './pages/dveri/DveriComplex.svelte';
-import DveriCTA from './pages/dveri/DveriCTA.svelte';
-import OknaSidebar from './pages/okna/OknaSidebar.svelte';
-import OknaHero from './pages/okna/OknaHero.svelte';
-import OknaBrands from './pages/okna/OknaBrands.svelte';
-import OknaBrandHero from './pages/okna/OknaBrandHero.svelte';
-import OknaBenefits from './pages/okna/OknaBenefits.svelte';
-import OknaCategories from './pages/okna/OknaCategories.svelte';
-import OknaComplex from './pages/okna/OknaComplex.svelte';
-import OknaCTA from './pages/okna/OknaCTA.svelte';
-
-// Furnitura page components
-import FurnituraSidebar from './pages/furnitura/FurnituraSidebar.svelte';
-import FurnituraHero from './pages/furnitura/FurnituraHero.svelte';
-import FurnituraShopHero from './pages/furnitura/FurnituraShopHero.svelte';
-import FurnituraShops from './pages/furnitura/FurnituraShops.svelte';
-import FurnituraCTA from './pages/furnitura/FurnituraCTA.svelte';
-
-// Plitka page components
-import PliitkaSidebar from './pages/plitka/PliitkaSidebar.svelte';
-import PliitkaHero from './pages/plitka/PliitkaHero.svelte';
-import PliitkaBrands from './pages/plitka/PliitkaBrands.svelte';
-import PliitkaBenefits from './pages/plitka/PliitkaBenefits.svelte';
-import PliitkaCategories from './pages/plitka/PliitkaCategories.svelte';
-import PliitkaComplex from './pages/plitka/PliitkaComplex.svelte';
-import PliitkaCTA from './pages/plitka/PliitkaCTA.svelte';
-
-import B2BDirectory from './pages/b2b/B2BDirectory.svelte';
-import B2BCompany from './pages/b2b/B2BCompany.svelte';
-
-// Page-specific overrides keyed by page slug
-export const pageOverrides: Record<string, ComponentMap> = {
-	'/b2b': { B2BDirectory },
-	'/b2b/{company}': { B2BCompany },
-	'/privacy': { PrivacyPolicy },
-	'/steklo-i-zerkala': { GlassRequest },
-	'/university': { UniversityHero, UniversityProgram, UniversityJournal, UniversityApproach },
+export const pageOverrides = {
+	'/b2b': () => import('./page-modules/b2b'),
+	'/b2b/{company}': () => import('./page-modules/b2b~{company}'),
+	'/privacy': () => import('./page-modules/privacy'),
+	'/steklo-i-zerkala': () => import('./page-modules/steklo-i-zerkala'),
+	'/university': () => import('./page-modules/university'),
 	// Страница 404. Рендерится и по прямому адресу /404, и как тело ошибки
 	// в src/routes/+error.svelte — см. loadRenderPage().
-	'/404': {
-		NotFound
-	},
-	'/': {
-		HeroMain: HomeHeroMain,
-		Message: HomeMessage,
-		PromoOffer: HomePromoOffer,
-		Equipment: HomeEquipment,
-		Stage: HomeStage,
-		Incentives: HomeIncentives,
-		Direction: HomeDirection,
-		PartnerOffers: HomePartnerOffers,
-		Brands: HomeBrands,
-		HomeFAQ
-	},
-	'/about': {
-		Hero: AboutHero,
-		Text: AboutText,
-		Statistics: AboutStatistics,
-		Mission: AboutMission,
-		Values: AboutValues,
-		WhyUs: AboutWhyUs,
-		AboutCTA
-	},
-	'/contact': {
-		ContactForm
-	},
-	'/contacts': {
-		ContactsHero: ContactsHero,
-		ContactChannels,
-		ContactAddress,
-		ContactMessengers,
-		ContactCTA
-	},
-	'/actions': {
-		Hero: ActionsHero,
-		ActionsCards,
-		ActionsCardsExtra,
-		ActionsBanner,
-		ActionsCTA
-	},
-	'/partnership': {
-		PartnershipHero: PartnershipHero,
-		WhoWeInvite,
-		ForManufacturers,
-		Benefits: PartnershipBenefits,
-		HowToStart,
-		PartnershipCTA
-	},
-	'/testimonials': {
-		Hero: TestimonialsHero,
-		TestimonialsSummary,
-		TestimonialsGrid
-	},
-	'/installment': {
-		InstallmentHero: InstallmentHero,
-		InstallmentPlans,
-		InstallmentRequirements,
-		InstallmentSteps,
-		InstallmentBanks,
-		InstallmentFAQ,
-		InstallmentCTA
-	},
-	'/guarantees': {
-		GuaranteesHero: GuaranteesHero,
-		GuaranteeTerms,
-		WhatsCovered,
-		HowToApply,
-		GuaranteesCTA
-	},
-	'/yandex-direct': {
-		Hero: YandexDirectHero,
-		USP: YandexDirectUSP,
-		Advantages: YandexDirectAdvantages,
-		Steps: YandexDirectSteps,
-		SocialProof: YandexDirectSocialProof,
-		Offer: YandexDirectOffer,
-		CTA: YandexDirectCTA
-	},
-	'/consultation': {
-		ConsultationHero,
-		ConsultationFeatures,
-		ConsultationWhy,
-		ConsultationCTA
-	},
-	'/design-project': {
-		DesignProjectHero,
-		DesignProjectFeatures,
-		DesignProjectWhy,
-		DesignProjectCTA
-	},
-	'/measurement': {
-		MeasurementHero,
-		MeasurementFeatures,
-		MeasurementWhy,
-		MeasurementCTA
-	},
-	'/furniture-project': {
-		FurnitureProjectHero,
-		FurnitureProjectFeatures,
-		FurnitureProjectWhy,
-		FurnitureProjectCTA
-	},
-	'/assembly': {
-		AssemblyHero,
-		AssemblyFeatures,
-		AssemblyWhy,
-		AssemblyCTA
-	},
-	'/mebel': {
-		MebelSidebar,
-		MebelHero,
-		MebelBenefits,
-		MebelSolutions,
-		MebelProcess,
-		MebelCTA: MebelLandingCTA
-	},
-	'/mebel/{category}': {
-		MebelSidebar,
-		MebelCategoryHero,
-		MebelProjectsGrid,
-		MebelBenefits,
-		MebelCTA
-	},
-	'/mebel/{category}/{project}': {
-		MebelSidebar,
-		MebelProjectHero,
-		MebelProjectModel,
-		MebelProjectDescription,
-		MebelProjectSimilar,
-		MebelCTA
-	},
+	'/404': () => import('./page-modules/404'),
+	'/': () => import('./page-modules/_root'),
+	'/about': () => import('./page-modules/about'),
+	'/contact': () => import('./page-modules/contact'),
+	'/contacts': () => import('./page-modules/contacts'),
+	'/actions': () => import('./page-modules/actions'),
+	'/partnership': () => import('./page-modules/partnership'),
+	'/testimonials': () => import('./page-modules/testimonials'),
+	'/installment': () => import('./page-modules/installment'),
+	'/guarantees': () => import('./page-modules/guarantees'),
+	'/yandex-direct': () => import('./page-modules/yandex-direct'),
+	'/consultation': () => import('./page-modules/consultation'),
+	'/design-project': () => import('./page-modules/design-project'),
+	'/measurement': () => import('./page-modules/measurement'),
+	'/furniture-project': () => import('./page-modules/furniture-project'),
+	'/assembly': () => import('./page-modules/assembly'),
+	'/mebel': () => import('./page-modules/mebel'),
+	'/mebel/{category}': () => import('./page-modules/mebel~{category}'),
+	'/mebel/{category}/{project}': () => import('./page-modules/mebel~{category}~{project}'),
 	// Страница «Проекты»: те же работы, что в рубрике «Мебель» каталога, но
 	// сплошной лентой. Сайдбара каталога здесь нет намеренно — это страница
 	// верхнего уровня из меню шапки, а не рубрика.
-	'/projects': {
-		ProjectsHero,
-		ProjectsFeed
-	},
-	'/favorites': {
-		FavoritesPage
-	},
+	'/projects': () => import('./page-modules/projects'),
+	'/favorites': () => import('./page-modules/favorites'),
 	// Страница «Вакансии». Слаг — `/vacancy`: именно на него ведёт ссылка
 	// «Вакансии» в подвале всех трёх версий Footer шаблона.
-	'/vacancy': {
-		VacancyHero,
-		VacancyList,
-		VacancyForm
-	},
-	'/stoleshnica': {
-		StoleshnicaSidebar,
-		StoleshnicaHero,
-		StoleshnicaBrands,
-		StoleshnicaMaterials,
-		StoleshnicaBenefits,
-		StoleshnicaSolutions,
-		StoleshnicaServices,
-		StoleshnicaCTA
-	},
-	'/stoleshnica/{material}': {
-		StoleshnicaSidebar,
-		StoleshnicaBrandHero,
-		StoleshnicaBrands,
-		StoleshnicaServices
-	},
-	'/stoleshnica/{material}/{brand}': {
-		StoleshnicaSidebar,
-		StoleshnicaBrandHero,
-		BrandAbout,
-		StoleshnicaBrands,
-		StoleshnicaServices
-	},
-	'/bytovaya-tehnika': {
-		ByttehnikaSidebar,
-		ByttehnikaHero,
-		ByttehnikaBrands,
-		ByttehnikaBenefits,
-		ByttehnikaCategories,
-		ByttehnikaComplex,
-		ByttehnikaCTA
-	},
+	'/vacancy': () => import('./page-modules/vacancy'),
+	'/stoleshnica': () => import('./page-modules/stoleshnica'),
+	'/stoleshnica/{material}': () => import('./page-modules/stoleshnica~{material}'),
+	'/stoleshnica/{material}/{brand}': () => import('./page-modules/stoleshnica~{material}~{brand}'),
+	'/bytovaya-tehnika': () => import('./page-modules/bytovaya-tehnika'),
 	// Страница бренда бытовой техники. Товарной сетки здесь нет и быть пока
 	// нечему: каталога позиций у техники не существует (у мебели её наполняют
 	// `mebel_projects`), поэтому страница — шапка бренда из справочника плюс
 	// общие блоки рубрики.
-	'/bytovaya-tehnika/{brand}': {
-		ByttehnikaSidebar,
-		ByttehnikaBrandHero,
-		BrandAbout,
-		ByttehnikaBenefits,
-		ByttehnikaCTA
-	},
-	'/santehnika': {
-		SantehnikaSidebar,
-		SantehnikaHero,
-		SantehnikaBrands,
-		SantehnikaSinkTypes,
-		SantehnikaCategories,
-		SantehnikaBenefits,
-		SantehnikaComplex,
-		SantehnikaCTA
-	},
+	'/bytovaya-tehnika/{brand}': () => import('./page-modules/bytovaya-tehnika~{brand}'),
+	'/santehnika': () => import('./page-modules/santehnika'),
 	// Страница бренда сантехники. Устроена как страница бренда бытовой техники:
 	// товарной сетки нет и наполнять её нечем — каталога позиций у сантехники
 	// не существует, поэтому страница это шапка бренда из справочника плюс
 	// общие блоки рубрики.
-	'/santehnika/{brand}': {
-		SantehnikaSidebar,
-		SantehnikaBrandHero,
-		BrandAbout,
-		SantehnikaBenefits,
-		SantehnikaCTA
-	},
-	'/osveshchenie': {
-		OsveshchenieSidebar,
-		OsveshchenieHero,
-		OsveshchenieBrands,
-		OsveshchenieCTA
-	},
-	'/osveshchenie/{brand}': {
-		OsveshchenieSidebar,
-		OsveshchenieBrandHero,
-		BrandAbout,
-		OsveshchenieCTA
-	},
-	'/dveri': {
-		DveriSidebar,
-		DveriHero,
-		DveriBrands,
-		DveriBenefits,
-		DveriCategories,
-		DveriComplex,
-		DveriCTA
-	},
-	'/dveri/{brand}': {
-		DveriSidebar,
-		DveriBrandHero,
-		BrandAbout,
-		DveriBenefits,
-		DveriCTA
-	},
-	'/okna': {
-		OknaSidebar,
-		OknaHero,
-		OknaBrands,
-		OknaBenefits,
-		OknaCategories,
-		OknaComplex,
-		OknaCTA
-	},
-	'/okna/{brand}': {
-		OknaSidebar,
-		OknaBrandHero,
-		BrandAbout,
-		OknaBenefits,
-		OknaCTA
-	},
-	'/furnitura': {
-		FurnituraSidebar,
-		FurnituraHero,
-		FurnituraShops,
-		FurnituraCTA
-	},
-	'/furnitura/{shop}': {
-		FurnituraSidebar,
-		FurnituraShopHero,
-		BrandAbout,
-		FurnituraCTA
-	},
-	'/plitka': {
-		PliitkaSidebar,
-		PliitkaHero,
-		PliitkaBrands,
-		PliitkaBenefits,
-		PliitkaCategories,
-		PliitkaComplex,
-		PliitkaCTA
-	}
-};
+	'/santehnika/{brand}': () => import('./page-modules/santehnika~{brand}'),
+	'/osveshchenie': () => import('./page-modules/osveshchenie'),
+	'/osveshchenie/{brand}': () => import('./page-modules/osveshchenie~{brand}'),
+	'/dveri': () => import('./page-modules/dveri'),
+	'/dveri/{brand}': () => import('./page-modules/dveri~{brand}'),
+	'/okna': () => import('./page-modules/okna'),
+	'/okna/{brand}': () => import('./page-modules/okna~{brand}'),
+	'/furnitura': () => import('./page-modules/furnitura'),
+	'/furnitura/{shop}': () => import('./page-modules/furnitura~{shop}'),
+	'/plitka': () => import('./page-modules/plitka')
+} satisfies PageOverrides;

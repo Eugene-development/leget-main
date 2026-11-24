@@ -1,219 +1,24 @@
-import type { Component } from 'svelte';
-import PrivacyPolicy from '../../legal/PrivacyPolicy.svelte';
+import type { PageOverrides } from '../page-overrides';
 
-type ComponentMap = Record<string, Component<{ data: Record<string, unknown> }>>;
+export const loadLayout = () => import('./page-modules/_layout').then((module) => module.default);
 
-// Layout components
-import Header from './layout/Header.svelte';
-import TopBar from './layout/TopBar/index.svelte';
-import Footer from './layout/Footer.svelte';
-export { Header, TopBar, Footer };
-
-import NotFound from './pages/404/NotFound.svelte';
-import FavoritesHero from './pages/favorites/FavoritesHero.svelte';
-import FavoritesGallery from './pages/favorites/FavoritesGallery.svelte';
-
-// Equipment page components
-import EquipmentHero from './pages/equipment/EquipmentHero/index.svelte';
-import EquipmentAppliances from './pages/equipment/EquipmentAppliances/index.svelte';
-import EquipmentWorktops from './pages/equipment/EquipmentWorktops/index.svelte';
-import EquipmentPlumbing from './pages/equipment/EquipmentPlumbing/index.svelte';
-import EquipmentLighting from './pages/equipment/EquipmentLighting/index.svelte';
-import EquipmentStorage from './pages/equipment/EquipmentStorage/index.svelte';
-import EquipmentCTA from './pages/equipment/EquipmentCTA/index.svelte';
-
-// Home page components
-import HomeHero from './pages/home/Hero.svelte';
-import HomeStyles from './pages/home/Styles.svelte';
-import HomeVideo from './pages/home/Video.svelte';
-import HomeAdvantages from './pages/home/Advantages.svelte';
-import HomeDetails from './pages/home/Details.svelte';
-import HomeCTA from './pages/home/CTA.svelte';
-
-// About page components
-import AboutHero from './pages/about/Hero.svelte';
-import AboutLeaderSection from './pages/about/LeaderSection.svelte';
-import AboutMission from './pages/about/Mission.svelte';
-import AboutFactory from './pages/about/Factory.svelte';
-import AboutPrinciples from './pages/about/Principles.svelte';
-import AboutCTA from './pages/about/AboutCTA.svelte';
-
-// Contact page components
-import ContactFormComponent from './pages/contact/ContactForm.svelte';
-import MapComponent from './pages/contact/Map.svelte';
-
-// Actions page components
-import ActionsHero from './pages/actions/Hero/index.svelte';
-import ActionsTimer from './pages/actions/ActionsTimer.svelte';
-import ActionsCards from './pages/actions/ActionsCards.svelte';
-import ActionsBanner from './pages/actions/ActionsBanner.svelte';
-import ActionsSteps from './pages/actions/ActionsSteps.svelte';
-import ActionsCTA from './pages/actions/ActionsCTA.svelte';
-
-// News page components
-import NewsHero from './pages/news/Hero.svelte';
-import NewsList from './pages/news/NewsList.svelte';
-import NewsCTA from './pages/news/NewsCTA.svelte';
-
-// Styles page components
-import StylesHero from './pages/styles/Hero.svelte';
-import StylesGrid from './pages/styles/StylesGrid.svelte';
-import StylesCTA from './pages/styles/StylesCTA.svelte';
-
-// Facades page components
-import FacadesHero from './pages/facades/Hero.svelte';
-import FacadesCatalog from './pages/facades/FacadesCatalog/index.svelte';
-import FacadesCTA from './pages/facades/FacadesCTA.svelte';
-
-// Furniture page components
-import FurnitureHero from './pages/furniture/Hero.svelte';
-import FurnitureIntro from './pages/furniture/FurnitureIntro.svelte';
-import BrandsSection from './pages/furniture/BrandsSection.svelte';
-import FurnitureCTA from './pages/furniture/FurnitureCTA.svelte';
-
-// Kitchens page components
-import KitchensHero from './pages/kitchens/Hero.svelte';
-import KitchensGallery from './pages/kitchens/KitchensGallery.svelte';
-import ProductionCycle from './pages/kitchens/ProductionCycle.svelte';
-import KitchenStyles from './pages/kitchens/KitchenStyles.svelte';
-import KitchensCTA from './pages/kitchens/KitchensCTA.svelte';
-
-// Wardrobes page components
-import WardrobesHero from './pages/wardrobes/Hero.svelte';
-import WardrobesGallery from './pages/wardrobes/WardrobesGallery.svelte';
-import WardrobeFeatures from './pages/wardrobes/WardrobeFeatures.svelte';
-import WardrobeTypes from './pages/wardrobes/WardrobeTypes.svelte';
-import WardrobesCTA from './pages/wardrobes/WardrobesCTA.svelte';
-
-// Showrooms page components
-import ShowroomsHero from './pages/showrooms/Hero.svelte';
-import ShowroomsMap from './pages/showrooms/ShowroomsMap.svelte';
-import ShowroomsCTA from './pages/showrooms/ShowroomsCTA.svelte';
-
-// Careers page components
-import CareersHero from './pages/careers/Hero.svelte';
-import CareersPerks from './pages/careers/CareersPerks.svelte';
-import CareersVacancies from './pages/careers/CareersVacancies.svelte';
-import CareersForm from './pages/careers/CareersForm.svelte';
-
-// Designers page components
-import DesignersHero from './pages/designers/Hero.svelte';
-import DesignersBenefits from './pages/designers/DesignersBenefits.svelte';
-import DesignersTracks from './pages/designers/DesignersTracks.svelte';
-import DesignersSteps from './pages/designers/DesignersSteps.svelte';
-import DesignersForm from './pages/designers/DesignersForm.svelte';
-
-// Yandex Direct landing page components
-import YandexDirectHero from './pages/yandex-direct/Hero.svelte';
-import YandexDirectUSP from './pages/yandex-direct/USP.svelte';
-import YandexDirectAdvantages from './pages/yandex-direct/Advantages.svelte';
-import YandexDirectSteps from './pages/yandex-direct/Steps.svelte';
-import YandexDirectSocialProof from './pages/yandex-direct/SocialProof.svelte';
-import YandexDirectOffer from './pages/yandex-direct/Offer.svelte';
-import YandexDirectCTA from './pages/yandex-direct/CTA.svelte';
-
-// Page-specific overrides keyed by page slug
-export const pageOverrides: Record<string, ComponentMap> = {
-	'/404': { NotFound },
-	'/equipment': {
-		EquipmentHero,
-		EquipmentAppliances,
-		EquipmentWorktops,
-		EquipmentPlumbing,
-		EquipmentLighting,
-		EquipmentStorage,
-		EquipmentCTA
-	},
-	'/privacy': { PrivacyPolicy },
-	'/favorites': { FavoritesHero, FavoritesGallery },
-	'/': {
-		Hero: HomeHero,
-		Styles: HomeStyles,
-		Video: HomeVideo,
-		Advantages: HomeAdvantages,
-		Details: HomeDetails,
-		CTA: HomeCTA
-	},
-	'/about': {
-		Hero: AboutHero,
-		LeaderSection: AboutLeaderSection,
-		Mission: AboutMission,
-		Factory: AboutFactory,
-		Principles: AboutPrinciples,
-		AboutCTA: AboutCTA
-	},
-	'/contact': {
-		ContactForm: ContactFormComponent,
-		Map: MapComponent
-	},
-	'/actions': {
-		Hero: ActionsHero,
-		ActionsTimer: ActionsTimer,
-		ActionsCards: ActionsCards,
-		ActionsBanner: ActionsBanner,
-		ActionsSteps: ActionsSteps,
-		ActionsCTA: ActionsCTA
-	},
-	'/news': {
-		Hero: NewsHero,
-		NewsList: NewsList,
-		NewsCTA: NewsCTA
-	},
-	'/styles': {
-		Hero: StylesHero,
-		StylesGrid: StylesGrid,
-		StylesCTA: StylesCTA
-	},
-	'/facades': {
-		Hero: FacadesHero,
-		FacadesCatalog: FacadesCatalog,
-		FacadesCTA: FacadesCTA
-	},
-	'/furniture': {
-		Hero: FurnitureHero,
-		FurnitureIntro: FurnitureIntro,
-		BrandsSection: BrandsSection,
-		FurnitureCTA: FurnitureCTA
-	},
-	'/kitchens': {
-		Hero: KitchensHero,
-		KitchensGallery: KitchensGallery,
-		ProductionCycle: ProductionCycle,
-		KitchenStyles: KitchenStyles,
-		KitchensCTA: KitchensCTA
-	},
-	'/wardrobes': {
-		Hero: WardrobesHero,
-		WardrobesGallery: WardrobesGallery,
-		WardrobeFeatures: WardrobeFeatures,
-		WardrobeTypes: WardrobeTypes,
-		WardrobesCTA: WardrobesCTA
-	},
-	'/showrooms': {
-		Hero: ShowroomsHero,
-		ShowroomsMap: ShowroomsMap,
-		ShowroomsCTA: ShowroomsCTA
-	},
-	'/careers': {
-		Hero: CareersHero,
-		CareersPerks: CareersPerks,
-		CareersVacancies: CareersVacancies,
-		CareersForm: CareersForm
-	},
-	'/designers': {
-		Hero: DesignersHero,
-		DesignersBenefits: DesignersBenefits,
-		DesignersTracks: DesignersTracks,
-		DesignersSteps: DesignersSteps,
-		DesignersForm: DesignersForm
-	},
-	'/yandex-direct': {
-		Hero: YandexDirectHero,
-		USP: YandexDirectUSP,
-		Advantages: YandexDirectAdvantages,
-		Steps: YandexDirectSteps,
-		SocialProof: YandexDirectSocialProof,
-		Offer: YandexDirectOffer,
-		CTA: YandexDirectCTA
-	}
-};
+export const pageOverrides = {
+	'/404': () => import('./page-modules/404'),
+	'/equipment': () => import('./page-modules/equipment'),
+	'/privacy': () => import('./page-modules/privacy'),
+	'/favorites': () => import('./page-modules/favorites'),
+	'/': () => import('./page-modules/_root'),
+	'/about': () => import('./page-modules/about'),
+	'/contact': () => import('./page-modules/contact'),
+	'/actions': () => import('./page-modules/actions'),
+	'/news': () => import('./page-modules/news'),
+	'/styles': () => import('./page-modules/styles'),
+	'/facades': () => import('./page-modules/facades'),
+	'/furniture': () => import('./page-modules/furniture'),
+	'/kitchens': () => import('./page-modules/kitchens'),
+	'/wardrobes': () => import('./page-modules/wardrobes'),
+	'/showrooms': () => import('./page-modules/showrooms'),
+	'/careers': () => import('./page-modules/careers'),
+	'/designers': () => import('./page-modules/designers'),
+	'/yandex-direct': () => import('./page-modules/yandex-direct')
+} satisfies PageOverrides;
