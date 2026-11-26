@@ -1,7 +1,18 @@
 <script lang="ts">
 	import { toast } from '$lib/stores/toast.svelte';
+	import { writeToClipboard } from '$lib/utils/clipboard';
 	import { notifyError } from '$lib/utils/notify-error';
 	let host: HTMLDivElement;
+	let copyResult = $state.raw<{ notification: NonNullable<typeof toast.current>; copied: boolean } | null>(null);
+	let copyStatus = $derived(copyResult && copyResult.notification === toast.current ? copyResult.copied : null);
+
+	async function copyNotification() {
+		const notification = toast.current;
+		if (notification?.kind !== 'error') return;
+
+		const copied = await writeToClipboard(notification.message, host);
+		if (notification === toast.current) copyResult = { notification, copied };
+	}
 
 	$effect(() => {
 		if (!toast.current || !host) return;
@@ -53,13 +64,39 @@
 					<path d="m5 12 4 4L19 6" />
 				{/if}
 			</svg>
-			<span class="min-w-0 wrap-break-word">{toast.current.message}</span>
+			<div class="min-w-0 wrap-break-word">
+				<span>{toast.current.message}</span>
+				{#if copyStatus === true}
+					<span class="sr-only">Уведомление скопировано</span>
+				{:else if copyStatus === false}
+					<span class="block text-xs text-ink-700">Не удалось скопировать уведомление</span>
+				{/if}
+			</div>
 			{#if toast.current.kind === 'error'}
-				<button type="button" class="pointer-events-auto ml-auto grid size-9 shrink-0 place-items-center rounded-md text-ink-700 hover:bg-ink-100" aria-label="Закрыть уведомление" data-goal-ignore="dismiss-notification" onclick={() => toast.clear()}>
-					<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-						<path d="m6 6 12 12M18 6 6 18" />
-					</svg>
-				</button>
+				<div class="ml-auto flex shrink-0">
+					<button
+						type="button"
+						class="pointer-events-auto grid size-9 place-items-center rounded-md text-ink-700 hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-link-600"
+						aria-label="Скопировать уведомление"
+						title={copyStatus === true ? 'Уведомление скопировано' : 'Скопировать уведомление'}
+						data-goal-ignore="copy-notification"
+						onclick={copyNotification}
+					>
+						<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+							{#if copyStatus === true}
+								<path d="m5 12 4 4L19 6" />
+							{:else}
+								<rect x="8" y="8" width="12" height="12" rx="2" />
+								<path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+							{/if}
+						</svg>
+					</button>
+					<button type="button" class="pointer-events-auto grid size-9 place-items-center rounded-md text-ink-700 hover:bg-ink-100" aria-label="Закрыть уведомление" data-goal-ignore="dismiss-notification" onclick={() => toast.clear()}>
+						<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+							<path d="m6 6 12 12M18 6 6 18" />
+						</svg>
+					</button>
+				</div>
 			{/if}
 		</div>
 	{/if}

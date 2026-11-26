@@ -52,7 +52,7 @@
 				<span class="study-list-icon"><Icon name="check" size={17} /></span>
 				<div>
 					<h3><a href={lessonUrl(data.course, 'exam')}>Итоговый экзамен</a></h3>
-					<p>После зачёта всех уроков. Сертификат при результате от 75%.</p>
+					<p>После зачёта всех уроков. Сертификат при результате от 75% действует один год.</p>
 				</div>
 			</article>
 		</div>

@@ -20,6 +20,7 @@ const shared = [
 	'ClientAuthModal',
 	'ClientAuthButtons',
 	'LoginModal',
+	'LeadCatcher',
 	...(smsLogin.enabled ? ['SmsLogin'] : [])
 ];
 // Content CRUD is owner-only, not a visitor conversion (see metrika-goals.md).
@@ -142,7 +143,7 @@ for (const file of [
 		const template = path.match(/^templates\/([^/]+)/)?.[1];
 		const templates = template
 			? [template]
-			: pageRouteShared(file)
+			: path === 'LeadCatcher.svelte' || pageRouteShared(file)
 				? ['Promo-1', 'Promo-2', 'Promo-3']
 				: path.startsWith('LoginModal') || path === 'SmsLogin.svelte'
 					? ['Promo-1', 'Promo-2', 'Promo-3', 'Test']

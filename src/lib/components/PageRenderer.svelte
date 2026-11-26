@@ -32,6 +32,9 @@
 	import CrmButton from '$lib/components/CrmButton.svelte';
 	import YandexDirectGoalsButton from '$lib/components/YandexDirectGoalsButton.svelte';
 	import SiteSettingsButton from '$lib/components/SiteSettingsButton.svelte';
+	import LeadCatcher from '$lib/components/LeadCatcher.svelte';
+	import { leadCatcherPolicy, supportsLeadCatcher } from '$lib/utils/lead-catcher';
+	import { isLightBlock } from '$lib/utils/block-theme';
 	import SiteAnalytics from '$lib/components/SiteAnalytics.svelte';
 	import EditableComponent from '$lib/components/EditableComponent.svelte';
 	import {
@@ -400,6 +403,7 @@
 			(editContext !== null || slug !== null) // Allow editing if we have a slug as fallback
 	);
 
+	const siteTemplateId = $derived(templateId ?? editContext?.templateId);
 	const catalogRubric = $derived(catalogRubricFromSlug(editContext?.templateId, slug));
 
 	const PromoStrip = $derived(layout.PromoStrip ?? null);
@@ -557,11 +561,20 @@
 
 <div
 	class="contents"
-	data-site-template={templateId ?? editContext?.templateId ?? undefined}
+	data-site-template={siteTemplateId ?? undefined}
 	data-ds-contrast-root
 	data-site-appearance={hasSiteAppearance(headerDataState.siteAppearance) ? '' : undefined}
 >
 	{#if !draftMode}<SiteAnalytics data={headerDataState} enabled={!isEditable} />{/if}
+
+	{#if supportsLeadCatcher(siteTemplateId) && headerDataState.leadCatcherEnabled === true && !isEditable && !draftMode && !sharedPreview}
+		<LeadCatcher
+			enabled
+			formId={`promo${siteTemplateId}-lead-catcher`}
+			policyHref={leadCatcherPolicy(headerDataState.leadCatcherPolicyHref) || '/privacy'}
+			isLight={siteTemplateId !== 1 || isLightBlock(headerDataState, 'dark', 'bannerTheme')}
+		/>
+	{/if}
 
 	{#if browser && isOwner && editContext && !sharedPreview}
 		{#key `${editContext.licenseId}:${editContext.slug}`}

@@ -99,6 +99,8 @@ export function goalLocations(root, write = false) {
 						text.replace(/\s+/g, '').includes(`openPromo2Form('${button.variant}'`)
 				)
 				.flatMap(([path]) => owners(path));
+		else if (button.source === 'LeadCatcher.svelte')
+			locations = button.templates.map((template) => ({ template, page: '(layout)', article: '' }));
 		else if (button.source === 'SmsLogin.svelte')
 			locations = [
 				...owners('LoginModal.svelte'),

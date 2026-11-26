@@ -1,8 +1,17 @@
-import type { Attempt, Course, Resource } from './types';
+import type { Attempt, Certificate, Course, Resource } from './types';
 export function passes(course: Course, attempts: Attempt[]) {
 	return new Set(
-		attempts.filter((a) => a.course_slug === course.slug && a.passed).map((a) => a.assessment)
+		attempts
+			.filter((a) => a.course_slug === course.slug && a.passed && a.counts_toward_progress)
+			.map((a) => a.assessment)
 	);
+}
+export function dateLabel(date: string) {
+	const [year, month, day] = date.slice(0, 10).split('-');
+	return `${day}.${month}.${year}`;
+}
+export function certificateValidity(certificate: Pick<Certificate, 'expires_at' | 'is_valid'>) {
+	return `${certificate.is_valid ? 'Действует до' : 'Срок истёк'} ${dateLabel(certificate.expires_at)}`;
 }
 export function lessonUrl(course: Course | string, id: string) {
 	const slug = typeof course === 'string' ? course : course.slug;

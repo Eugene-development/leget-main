@@ -400,7 +400,7 @@
 {/snippet}
 
 {#if uiStore.menuOpen}
-	<div class="px-3 pt-1 pb-4 lg:hidden" transition:fly={{ y: -14, duration: 460, easing: expoOut }}>
+	<div class="px-3 pt-1 pb-4">
 		<!-- Двойная оправа: внешняя «алюминиевая» подложка + внутренняя белая карта -->
 		<nav
 			class="rounded-[1.75rem] bg-ink-100/70 p-1.5 shadow-[0_28px_70px_-24px] ring-1 shadow-ink-900/45 ring-ink-900/5 backdrop-blur-2xl"
@@ -408,7 +408,7 @@
 		>
 			<div
 				data-ds-surface="raised"
-				class="max-h-[70dvh] overflow-y-auto rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+				class="rounded-[calc(1.75rem-0.375rem)] bg-surface-raised/95 p-2 shadow-[inset_0_1px_1px] ring-1 shadow-on-dark/60 ring-ink-900/3"
 			>
 				{@render accountBlock()}
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { notifyError } from '$lib/utils/notify-error';
-	import LeadCatcher from './LeadCatcher.svelte';
+	import LeadCatcher from '$lib/components/LeadCatcher.svelte';
 	import { leadCatcherPolicy } from '$lib/utils/lead-catcher';
 	import BannerV1 from './v1/Banner.svelte';
 	import BannerV2 from './v2/Banner.svelte';
@@ -63,32 +63,7 @@
 		});
 	}
 	let leadPreview = $state(false);
-	let leadSaving = $state(false);
-	let leadError = $state('');
-	let policyDraft = $state('');
-	const policyHref = $derived(leadCatcherPolicy(data.leadCatcherPolicyHref));
-	$effect(() => {
-		policyDraft = policyHref;
-	});
-	async function saveLeadSettings(enabled: boolean) {
-		if (!editContext || leadSaving) return;
-		const policy = leadCatcherPolicy(policyDraft);
-		if (enabled && !policy) {
-			leadError = 'Укажите путь к действующей политике сайта, например /privacy';
-			return;
-		}
-		leadSaving = true;
-		leadError = '';
-		try {
-			const updated = { ...data, leadCatcherEnabled: enabled, leadCatcherPolicyHref: policy };
-			await saveLayoutData(editContext, 'Header', updated);
-			data = updated;
-		} catch {
-			leadError = 'Не удалось сохранить настройки. Попробуйте ещё раз.';
-		} finally {
-			leadSaving = false;
-		}
-	}
+	const policyHref = $derived(leadCatcherPolicy(data.leadCatcherPolicyHref) || '/privacy');
 
 	let isResetting = $state(false);
 	let hasManuallySelected = $state(false);
@@ -231,14 +206,8 @@
 	{/if}
 </div>
 
-<LeadCatcher
-	enabled={data.leadCatcherEnabled === true && !isEditable && selectedVersion !== 'disabled'}
-	bind:preview={leadPreview}
-	{isLight}
-	{policyHref}
-/>
-
 {#if isEditable && editContext}
+	<LeadCatcher bind:preview={leadPreview} {isLight} {policyHref} />
 	<SideDrawer bind:open={drawerOpen} title="Баннер">
 		<div class="flex flex-col gap-6">
 			<!-- Артикул выбранной версии -->
@@ -327,46 +296,11 @@
 
 			<section class="border-t border-on-dark/10 pt-5">
 				<h4 class="ds-title-sub text-sm text-on-dark">Ловец лидов</h4>
-				<p class="mt-2 text-xs leading-relaxed text-ink-300">
-					Бесплатная консультация при выходе курсора вверх после 15 секунд на сайте. Не чаще раза в
-					сутки, только с мышью.
-				</p>
-				<label class="mt-4 flex items-center gap-3 text-sm text-on-dark">
-					<input
-						type="checkbox"
-						checked={data.leadCatcherEnabled === true}
-						disabled={leadSaving}
-						onchange={(event) => {
-							const next = event.currentTarget.checked;
-							event.currentTarget.checked = data.leadCatcherEnabled === true;
-							void saveLeadSettings(next);
-						}}
-					/>
-					Включить ловец лидов
-				</label>
-				<label class="mt-4 block text-xs text-ink-300"
-					>Путь к политике конфиденциальности
-					<input
-						type="text"
-						bind:value={policyDraft}
-						placeholder="/privacy"
-						class="mt-2 w-full rounded-lg border border-on-dark/20 bg-ink-900 p-3 text-sm text-on-dark"
-					/>
-				</label>
-				<p class="mt-2 text-xs text-ink-400">
-					Укажите существующую страницу этого сайта. Пока ссылка не задана, автоматический показ
-					отключён.
-				</p>
-				{#if leadError}<p role="alert" class="mt-3 text-sm text-cat-6-400">{leadError}</p>{/if}
-				<div class="mt-4 flex gap-3">
-					<button
-						type="button"
-						disabled={leadSaving}
-						onclick={() => saveLeadSettings(data.leadCatcherEnabled === true)}
-						data-goal-ignore="Сохранение настроек владельцем"
-						class="rounded-lg bg-link-500 px-4 py-2 text-sm text-on-accent"
-						>{leadSaving ? 'Сохраняем…' : 'Сохранить'}</button
-					>
+				<div class="mt-4 flex flex-wrap gap-3">
+					<a
+						href="/site-settings/unlock"
+						class="rounded-lg border border-on-dark/20 px-4 py-2 text-sm text-on-dark"
+					>Настройки сайта</a>
 					<button
 						type="button"
 						onclick={() => {

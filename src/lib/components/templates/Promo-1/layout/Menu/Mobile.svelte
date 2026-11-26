@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { uiStore } from '$lib/stores/ui.svelte';
 	import MobileMenuV1 from './v1/MobileMenu.svelte';
 	import MobileMenuV2 from './v2/MobileMenu.svelte';
 	import MobileMenuV3 from './v3/MobileMenu.svelte';
@@ -78,7 +79,16 @@
 	}
 </script>
 
-<div class="contents" data-ds-contrast-root use:portal>
+<!-- Слой под шапкой перекрывает страницу сразу и прокручивает все варианты меню. -->
+<div
+	id="p1-mobile-menu"
+	data-p1-theme="light"
+	data-ds-contrast-root
+	class="p1-overlay fixed inset-x-0 bottom-0 z-[149] overflow-y-auto overscroll-contain [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden"
+	class:hidden={!uiStore.menuOpen}
+	style="top: var(--p1-sheet-top, 3.5rem);"
+	use:portal
+>
 	{#if version === 'v4'}
 		<MobileMenuV4
 			{links}

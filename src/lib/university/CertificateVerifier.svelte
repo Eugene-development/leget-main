@@ -1,8 +1,14 @@
 <script lang="ts">
+	import { certificateValidity, dateLabel } from './navigation';
+	import type { Certificate } from './types';
+
 	interface Verification {
 		designer_name: string;
 		matched_certificate_id: string;
-		certificates: { id: string; course_title: string; discipline: string; issued_at: string }[];
+		certificates: Pick<
+			Certificate,
+			'id' | 'course_title' | 'discipline' | 'issued_at' | 'expires_at' | 'is_valid'
+		>[];
 	}
 	let certificateId = $state('');
 	let busy = $state(false);
@@ -19,10 +25,6 @@
 		result = null;
 		problem = '';
 		invalidId = false;
-	}
-	function dateLabel(date: string) {
-		const [year, month, day] = date.slice(0, 10).split('-');
-		return `${day}.${month}.${year}`;
 	}
 	async function verify(event: SubmitEvent) {
 		event.preventDefault();
@@ -119,8 +121,11 @@
 	{#if problem}<p class="verification-problem" role="alert">{problem}</p>{/if}
 	<div aria-live="polite" aria-atomic="true" class="ym-hide-content">
 		{#if result}
+			{@const matched = result.certificates.find((c) => c.id === result?.matched_certificate_id)}
 			<div class="verification-result">
-				<p class="verification-confirmed">Сертификат подтверждён</p>
+				<p class="verification-confirmed">
+					{matched?.is_valid ? 'Сертификат действителен' : 'Срок действия сертификата истёк'}
+				</p>
 				<h3 class="p1-title text-3xl md:text-4xl">{result.designer_name}</h3>
 				<p class="verification-note p1-body">Имя получателя в указанном сертификате.</p>
 				<h4 class="verification-list-title p1-title-sub">
@@ -136,7 +141,8 @@
 									>{/if}
 							</div>
 							<p class="p1-body">
-								{certificate.discipline} · Выдан {dateLabel(certificate.issued_at)}
+								{certificate.discipline} · Выдан {dateLabel(certificate.issued_at)} ·
+								{certificateValidity(certificate)}
 							</p>
 							<p class="verification-record p1-body">ID записи: <code>{certificate.id}</code></p>
 						</li>

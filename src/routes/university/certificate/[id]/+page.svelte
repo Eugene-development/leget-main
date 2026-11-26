@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Frame from '$lib/university/StudyShell.svelte';
+	import { dateLabel } from '$lib/university/navigation';
 	import UniversityMark from '$lib/components/templates/Promo-1/pages/university/UniversityMark.svelte';
 	import type { PageData } from './$types';
 	let { data }: { data: PageData } = $props();
@@ -32,7 +33,11 @@
 			<p>Дисциплина «{data.certificate.discipline}»</p>
 			<div class="study-certificate-meta">
 				<p>Результат экзамена<strong>{data.certificate.score}%</strong></p>
-				<p>Дата выдачи<strong>{data.certificate.issued_at.slice(0, 10)}</strong></p>
+				<p>Дата выдачи<strong>{dateLabel(data.certificate.issued_at)}</strong></p>
+				<p>
+					{data.certificate.is_valid ? 'Действует до' : 'Срок истёк'}
+					<strong>{dateLabel(data.certificate.expires_at)}</strong>
+				</p>
 			</div>
 			<p class="study-fine">Номер записи: {data.certificate.id}</p>
 			<p class="study-fine">

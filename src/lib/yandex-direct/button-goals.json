@@ -152,6 +152,48 @@
 		]
 	},
 	{
+		"id": "lead_catcher_close",
+		"action": "close",
+		"label": "Закрыть форму",
+		"templates": ["Promo-1", "Promo-2", "Promo-3"],
+		"source": "LeadCatcher.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "" }
+		]
+	},
+	{
+		"id": "lead_catcher_success_close",
+		"action": "close",
+		"label": "Закрыть",
+		"templates": ["Promo-1", "Promo-2", "Promo-3"],
+		"source": "LeadCatcher.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "" }
+		]
+	},
+	{
+		"id": "lead_catcher_submit",
+		"action": "submit_click",
+		"label": "Получить консультацию",
+		"templates": ["Promo-1", "Promo-2", "Promo-3"],
+		"source": "LeadCatcher.svelte",
+		"route": null,
+		"mock": false,
+		"locations": [
+			{ "template": "Promo-1", "page": "(layout)", "article": "" },
+			{ "template": "Promo-2", "page": "(layout)", "article": "" },
+			{ "template": "Promo-3", "page": "(layout)", "article": "" }
+		]
+	},
+	{
 		"id": "loginmodal_close_1",
 		"action": "close",
 		"label": "Закрыть",
@@ -810,45 +852,6 @@
 		"variant": "promo",
 		"serviceType": "promo",
 		"locations": []
-	},
-	{
-		"id": "lead_catcher_close",
-		"action": "close",
-		"label": "Закрыть форму",
-		"templates": ["Promo-1"],
-		"source": "templates/Promo-1/layout/Banner/LeadCatcher.svelte",
-		"route": null,
-		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
-		]
-	},
-	{
-		"id": "lead_catcher_success_close",
-		"action": "close",
-		"label": "Закрыть",
-		"templates": ["Promo-1"],
-		"source": "templates/Promo-1/layout/Banner/LeadCatcher.svelte",
-		"route": null,
-		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
-		]
-	},
-	{
-		"id": "lead_catcher_submit",
-		"action": "submit_click",
-		"label": "Получить консультацию",
-		"templates": ["Promo-1"],
-		"source": "templates/Promo-1/layout/Banner/LeadCatcher.svelte",
-		"route": null,
-		"mock": false,
-		"locations": [
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.1" },
-			{ "template": "Promo-1", "page": "(layout)", "article": "1.Б.1.2" }
-		]
 	},
 	{
 		"id": "lead_catcher_preview_open",

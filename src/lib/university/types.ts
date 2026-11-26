@@ -29,6 +29,7 @@ export interface Attempt {
 	score: number;
 	passed: boolean;
 	created_at: string;
+	counts_toward_progress: boolean;
 }
 export interface Certificate {
 	id: string;
@@ -38,6 +39,8 @@ export interface Certificate {
 	discipline: string;
 	score: number;
 	issued_at: string;
+	expires_at: string;
+	is_valid: boolean;
 }
 export interface Dashboard {
 	student: { name: string; email: string };

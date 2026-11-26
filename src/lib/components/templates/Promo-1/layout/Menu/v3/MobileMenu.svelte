@@ -457,15 +457,12 @@
 {/snippet}
 
 {#if uiStore.menuOpen}
-	<div
-		class="px-3 pt-1 pb-4 lg:hidden"
-		transition:fly={{ y: -14, duration: 440, easing: quintOut }}
-	>
+	<div class="px-3 pt-1 pb-4">
 		<div
 			class="rounded-sm bg-alt-petrol-200/85 p-1.5 shadow-[0_32px_90px_-38px] ring-1 shadow-alt-petrol-950/55 ring-alt-petrol-950/8 backdrop-blur-2xl"
 		>
 			<nav
-				class="max-h-[74dvh] overflow-y-auto rounded-sm bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+				class="rounded-sm bg-surface-raised shadow-[inset_0_1px_0] shadow-on-dark/95"
 				aria-label="Мобильная навигация"
 			>
 				<!-- Шапка острова = тёмная колонка десктопной панели, положенная сверху. -->

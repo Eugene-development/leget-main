@@ -12,12 +12,14 @@
 		enabled = false,
 		preview = $bindable(false),
 		isLight = false,
-		policyHref = ''
+		policyHref = '/privacy',
+		formId = 'promo1-lead-catcher'
 	}: {
 		enabled?: boolean;
 		preview?: boolean;
 		isLight?: boolean;
 		policyHref?: string;
+		formId?: string;
 	} = $props();
 	let dialog = $state<HTMLDialogElement>();
 	let open = $state(false);
@@ -66,8 +68,8 @@
 	});
 	$effect(() => {
 		const path = page.url.pathname;
-		if (!enabled || !policyHref || path.startsWith('/_') || preview) return;
-		const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+		if (!enabled || path.startsWith('/_') || preview) return;
+		const finePointer = window.matchMedia('(any-hover: hover) and (any-pointer: fine)');
 		let storage: Storage | null = null;
 		try {
 			storage = window.localStorage;
@@ -77,8 +79,8 @@
 		const gate = createLeadCatcherGate(window.location.host, storage);
 		let previousY: number | null = null;
 		let active = true;
-		function move(event: MouseEvent) {
-			if (event.clientY > 0) previousY = event.clientY;
+		function move(event: PointerEvent) {
+			if (event.pointerType === 'mouse' && event.clientY > 0) previousY = event.clientY;
 		}
 		function eligible() {
 			return (
@@ -92,9 +94,11 @@
 				document.body.style.overflow !== 'hidden'
 			);
 		}
-		function leave(event: MouseEvent) {
-			if (!isTopExit(event, previousY) || !eligible()) return;
+		function leave(event: PointerEvent) {
+			if (event.pointerType !== 'mouse' || event.relatedTarget !== null) return;
+			const topExit = isTopExit(event, previousY, window.innerWidth);
 			previousY = null;
+			if (!topExit || !eligible()) return;
 			const claim = () => {
 				if (eligible() && gate.claim()) show();
 			};
@@ -103,12 +107,12 @@
 				void navigator.locks.request('leget-lead-catcher', claim).catch(() => {});
 			else claim();
 		}
-		document.addEventListener('mousemove', move, { passive: true });
-		document.addEventListener('mouseout', leave);
+		document.addEventListener('pointermove', move, { passive: true });
+		document.addEventListener('pointerout', leave);
 		return () => {
 			active = false;
-			document.removeEventListener('mousemove', move);
-			document.removeEventListener('mouseout', leave);
+			document.removeEventListener('pointermove', move);
+			document.removeEventListener('pointerout', leave);
 		};
 	});
 
@@ -123,7 +127,7 @@
 		try {
 			await submitServiceRequest({
 				serviceType: 'consultation',
-				formId: 'promo1-lead-catcher',
+				formId,
 				formTitle: 'Получите бесплатную консультацию',
 				phone,
 				consent,
@@ -137,8 +141,7 @@
 			}
 		} catch (cause) {
 			if (current === generation)
-				error =
-					notifyError(cause, 'Не удалось отправить заявку. Попробуйте ещё раз.');
+				error = notifyError(cause, 'Не удалось отправить заявку. Попробуйте ещё раз.');
 		} finally {
 			if (current === generation) busy = false;
 		}
@@ -148,13 +151,14 @@
 {#if open}
 	<dialog
 		bind:this={dialog}
-		data-p1-theme={isLight ? 'light' : 'dark'}
+		data-ds-surface={isLight ? 'light' : 'dark'}
 		aria-labelledby="lead-catcher-title"
-		class="lead-catcher p1-surface p1-title fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-2xl border-0 p-6 shadow-2xl shadow-scrim/25 sm:p-8"
+		class="lead-catcher fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-2xl border-0 p-6 shadow-2xl shadow-scrim/25 sm:p-8"
 		oncancel={(event) => {
 			event.preventDefault();
 			close();
 		}}
+		data-goal-ignore="Закрытие по подложке без нажатия кнопки"
 		onclick={(event) => {
 			if (event.target === dialog) {
 				const box = dialog.getBoundingClientRect();
@@ -171,7 +175,7 @@
 	>
 		<button
 			type="button"
-			class="p1-muted p1-accent-hover absolute top-3 right-3 flex size-10 items-center justify-center rounded-lg focus-visible:outline-2"
+			class="ds-accent absolute top-3 right-3 flex size-10 items-center justify-center rounded-lg focus-visible:outline-2"
 			aria-label="Закрыть форму"
 			onclick={close}
 			data-metrika-goal="lead_catcher_close"
@@ -188,30 +192,30 @@
 			>
 		</button>
 		{#if sent}
-			<h2 id="lead-catcher-title" class="p1-title ds-title-sub pr-8 text-2xl">Заявка принята</h2>
-			<p role="status" class="p1-body mt-4">Мы свяжемся с вами.</p>
+			<h2 id="lead-catcher-title" class="ds-title-sub pr-8 text-2xl">Заявка принята</h2>
+			<p role="status" class="ds-copy mt-4">Мы свяжемся с вами.</p>
 			<button
 				type="button"
-				class="mt-6 w-full rounded-xl bg-brand-500 px-5 py-3 font-semibold text-on-accent"
+				class="ds-action mt-6 w-full rounded-xl px-5 py-3 font-semibold"
 				onclick={close}
 				data-metrika-goal="lead_catcher_success_close"
 				data-goal-action="close">Закрыть</button
 			>
 		{:else}
 			<form onsubmit={submit} novalidate>
-				<h2 id="lead-catcher-title" class="p1-title ds-title-sub pr-8 text-2xl">
+				<h2 id="lead-catcher-title" class="ds-title-sub pr-8 text-2xl">
 					Получите бесплатную консультацию
 				</h2>
-				<p class="p1-body mt-4 text-sm leading-relaxed">
+				<p class="ds-copy mt-4 text-sm leading-relaxed">
 					Оставьте телефон — мы свяжемся с вами и ответим на ваши вопросы.
 				</p>
-				{#if preview}<p class="p1-muted mt-3 text-sm">
+				{#if preview}<p class="ds-copy mt-3 text-sm">
 						Предпросмотр. Отправка заявки отключена.
 					</p>{/if}
 				<div class="mt-6">
 					<PhoneInput bind:value={phone} error={phoneError} id="lead-catcher-phone" />
 				</div>
-				<label class="p1-body mt-4 flex items-start gap-3 text-xs leading-relaxed">
+				<label class="ds-copy mt-4 flex items-start gap-3 text-xs leading-relaxed">
 					<input
 						type="checkbox"
 						aria-required="true"
@@ -220,10 +224,10 @@
 					/>
 					<span
 						>Согласен на обработку персональных данных в соответствии с <a
-							href={policyHref || undefined}
+							href={policyHref}
 							target="_blank"
 							rel="noopener"
-							class="p1-accent underline underline-offset-2">политикой конфиденциальности</a
+							class="ds-accent underline underline-offset-2">политикой конфиденциальности</a
 						>.</span
 					>
 				</label>
@@ -231,7 +235,7 @@
 				<button
 					type="submit"
 					disabled={busy || preview}
-					class="mt-6 w-full rounded-xl bg-brand-500 px-5 py-3.5 font-semibold text-on-accent transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-50"
+					class="ds-action mt-6 w-full rounded-xl px-5 py-3.5 font-semibold transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-50"
 					data-metrika-goal="lead_catcher_submit"
 					data-goal-action="submit_click"
 				>
@@ -243,18 +247,32 @@
 {/if}
 
 <style>
+	.lead-catcher {
+		background: var(--lead-catcher-surface);
+		color: var(--ds-copy);
+	}
+	.lead-catcher[data-ds-surface='light'] {
+		--lead-catcher-surface: var(--ds-light-surface);
+		--lead-catcher-card: var(--ds-light-card);
+		--lead-catcher-border: var(--ds-light-border);
+	}
+	.lead-catcher[data-ds-surface='dark'] {
+		--lead-catcher-surface: var(--ds-dark-surface);
+		--lead-catcher-card: var(--ds-dark-card);
+		--lead-catcher-border: var(--ds-dark-border);
+	}
 	.lead-catcher::backdrop {
 		background: color-mix(in srgb, var(--ds-scrim) 60%, transparent);
 	}
 	.lead-catcher :global(input[type='tel']) {
-		background: var(--p1-card);
-		color: var(--p1-title);
-		border-color: var(--p1-border);
+		background: var(--lead-catcher-card);
+		color: var(--ds-copy);
+		border-color: var(--lead-catcher-border);
 	}
 	.lead-catcher :global(label[for='lead-catcher-phone']) {
-		color: var(--p1-title);
+		color: var(--ds-copy);
 	}
 	.lead-catcher :global(input[type='tel']::placeholder) {
-		color: var(--p1-muted);
+		color: var(--ds-copy);
 	}
 </style>

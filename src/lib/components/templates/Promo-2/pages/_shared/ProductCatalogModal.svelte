@@ -26,6 +26,7 @@
 		onchanged: (items: CatalogProduct[]) => void;
 	} = $props();
 	const uid = $props.id();
+	const maxSortOrder = 1_000_000;
 	const copy = $derived(
 		kind === 'wardrobe'
 			? {
@@ -81,7 +82,10 @@
 	let pendingFile = $state<File | null>(null);
 	let deleteConfirm = $state(false);
 	let titleInput = $state<HTMLInputElement>();
+	let descriptionInput = $state<HTMLTextAreaElement>();
 	let fileInput = $state<HTMLInputElement>();
+	let descriptionChecked = $state(false);
+	const descriptionInvalid = $derived(descriptionChecked && !form?.description.trim());
 	const dirty = $derived(form !== null && (JSON.stringify(form) !== original || file !== null));
 	let disposed = false;
 
@@ -150,10 +154,14 @@
 					description: '',
 					image: '',
 					isActive: true,
-					sortOrder: Math.max(0, ...products.map((item) => item.sortOrder)) + 1
+					sortOrder: Math.min(
+						maxSortOrder,
+						Math.max(0, ...products.map((item) => item.sortOrder)) + 1
+					)
 				};
 		original = JSON.stringify(form);
 		deleteConfirm = false;
+		descriptionChecked = false;
 		error = '';
 		notice = '';
 		await tick();
@@ -192,7 +200,7 @@
 		error = '';
 	}
 	function publish() {
-		products = [...products].sort((a, b) => a.sortOrder - b.sortOrder || a.id.localeCompare(b.id));
+		products = [...products].sort((a, b) => b.sortOrder - a.sortOrder || b.id.localeCompare(a.id));
 		onchanged(products.filter((item) => item.isActive));
 	}
 	async function save(event: SubmitEvent) {
@@ -201,6 +209,12 @@
 		if (!form.title.trim()) {
 			error = copy.nameRequired;
 			titleInput?.focus();
+			return;
+		}
+		const description = form.description.trim();
+		if (!description) {
+			descriptionChecked = true;
+			descriptionInput?.focus();
 			return;
 		}
 		if (!form.image && !file) {
@@ -219,7 +233,8 @@
 			}
 			const saved = await saveCatalogProduct(licenseId, kind, {
 				...form,
-				title: form.title.trim()
+				title: form.title.trim(),
+				description
 			});
 			products = [...products.filter((item) => item.id !== saved.id), saved];
 			form = { ...saved };
@@ -345,7 +360,7 @@
 							<span class="min-w-0"
 								><span class="block truncate font-medium">{product.title}</span><span
 									class="text-xs text-secondary"
-									>{product.isActive ? copy.statusShown : copy.statusHidden} · Порядок: {product.sortOrder}</span
+									>{product.isActive ? copy.statusShown : copy.statusHidden} · Приоритет: {product.sortOrder}</span
 								></span
 							>
 						</button>
@@ -373,12 +388,22 @@
 								<label for={`${uid}-description`} class="mb-2 block text-sm font-medium"
 									>Описание</label
 								><textarea
+									bind:this={descriptionInput}
 									id={`${uid}-description`}
 									bind:value={form.description}
+									required
 									maxlength="1000"
 									rows="3"
+									oninvalid={() => (descriptionChecked = true)}
+									aria-invalid={descriptionInvalid || undefined}
+									aria-describedby={descriptionInvalid ? `${uid}-description-error` : undefined}
 									class="w-full resize-y rounded-lg border border-border-light bg-surface px-3 py-2.5 focus-visible:outline-2 focus-visible:outline-accent"
 								></textarea>
+								{#if descriptionInvalid}
+									<p id={`${uid}-description-error`} class="mt-1 text-sm" role="alert">
+										Введите описание товара.
+									</p>
+								{/if}
 							</div>
 							<div>
 								<label for={`${uid}-photo`} class="mb-2 block text-sm font-medium">Фотография</label
@@ -405,17 +430,22 @@
 							</div>
 							<div class="flex flex-wrap items-end gap-5">
 								<div>
-									<label for={`${uid}-order`} class="mb-2 block text-sm font-medium">Порядок</label
+									<label for={`${uid}-order`} class="mb-2 block text-sm font-medium"
+										>Приоритет показа</label
 									><input
 										id={`${uid}-order`}
 										type="number"
 										min="0"
-										max="1000000"
+										max={maxSortOrder}
 										step="1"
 										required
 										bind:value={form.sortOrder}
+										aria-describedby={`${uid}-order-help`}
 										class="w-28 rounded-lg border border-border-light bg-surface px-3 py-2.5 focus-visible:outline-2 focus-visible:outline-accent"
 									/>
+									<p id={`${uid}-order-help`} class="mt-2 text-xs text-secondary">
+										Карточки с большим приоритетом идут первыми.
+									</p>
 								</div>
 								<label class="flex min-h-11 items-center gap-2 text-sm"
 									><input

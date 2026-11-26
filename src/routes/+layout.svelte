@@ -2,7 +2,7 @@
 	import { canonicalUrl } from '$lib/seo.js';
 	import { afterNavigate, onNavigate, replaceState } from '$app/navigation';
 	import { navigating, page } from '$app/state';
-	import { setContext, tick } from 'svelte';
+	import { onMount, setContext, tick } from 'svelte';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import ServiceOrderIsland from '$lib/components/ServiceOrderIsland.svelte';
@@ -10,12 +10,23 @@
 	import { clientAuthModal } from '$lib/stores/client-auth.svelte';
 	import SiteSearchModal from '$lib/components/SiteSearchModal.svelte';
 	import Toast from '$lib/components/Toast.svelte';
+	import { toast } from '$lib/stores/toast.svelte';
+	import { watchYandexImageAccess } from '$lib/utils/yandex-image-access';
 	import ContentBoundary from '$lib/components/ContentBoundary.svelte';
 	import { siteSearch } from '$lib/stores/site-search.svelte';
 	import NavigationBody from '$lib/components/NavigationBody.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
 
 	let { children } = $props();
+	if (import.meta.env.PROD) {
+		onMount(() =>
+			watchYandexImageAccess(() => {
+				toast.info(
+					'Изображения не загрузились. Если включён VPN, попробуйте отключить его и обновить страницу.'
+				);
+			})
+		);
+	}
 	let pendingContent = $state(0);
 	let navigationBodies = $state(0);
 	setContext('leget-navigation-body', {

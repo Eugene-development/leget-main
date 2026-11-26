@@ -20,12 +20,11 @@
 	let busy = $state('');
 	let integrationMessage = $state('');
 	let integrationError = $state('');
+	let creationFeedback = $state(false);
 	let cancelled = $state(false);
 	const ownTemplate = $derived(selectedTemplate === data.goalsSite.template);
 	const missingGoals = $derived(
-		goalDefinitions.filter(
-			(goal) => goal.status === 'implemented' && remoteStates[goal.eventName]?.state === 'missing'
-		)
+		goalDefinitions.filter((goal) => remoteStateFor(goal)?.state === 'missing')
 	);
 	const canCreate = $derived(
 		data.metrikaConfigured && !!counterId && ownTemplate && statesLoaded && !busy
@@ -55,14 +54,14 @@
 	async function refreshMetrika() {
 		if (busy) return;
 		busy = 'refresh';
+		creationFeedback = false;
 		integrationError = '';
 		integrationMessage = '';
 		statesLoaded = false;
 		try {
 			await readRemoteState();
 		} catch (error) {
-			integrationError =
-				notifyError(error, 'Не удалось проверить подключение.');
+			integrationError = notifyError(error, 'Не удалось проверить подключение.');
 		} finally {
 			busy = '';
 		}
@@ -70,6 +69,7 @@
 	async function connectCounter() {
 		if (busy || !selectedCounter) return;
 		busy = 'connect';
+		creationFeedback = false;
 		integrationError = '';
 		integrationMessage = '';
 		statesLoaded = false;
@@ -88,6 +88,7 @@
 	async function createGoals(goals: GoalDefinition[]) {
 		if (!canCreate) return;
 		busy = 'create';
+		creationFeedback = true;
 		integrationError = '';
 		integrationMessage = '';
 		cancelled = false;
@@ -110,8 +111,10 @@
 		} catch (error) {
 			statesLoaded = false;
 			integrationMessage = `Подтверждено целей: ${completed} из ${goals.length}.`;
-			integrationError =
-				notifyError(error, 'Не удалось создать цель. Обновите статусы перед повтором.');
+			integrationError = notifyError(
+				error,
+				'Не удалось создать цель. Обновите статусы перед повтором.'
+			);
 		} finally {
 			busy = '';
 		}
@@ -120,6 +123,7 @@
 		if (data.metrikaConfigured) void refreshMetrika();
 		return () => {
 			cancelled = true;
+			clearTimeout(copyTimeout);
 		};
 	});
 
@@ -133,15 +137,38 @@
 	} from '$lib/yandex-direct/goals';
 
 	type TypeFilter = 'all' | GoalType;
+	type MetrikaStatus = GoalRemoteState['state'] | 'unchecked';
+
+	const typeOptions = [
+		{ value: 'all', label: 'Все типы' },
+		{ value: 'click', label: 'Клики по кнопкам' },
+		{ value: 'compound', label: 'Составные цели' }
+	] as const satisfies readonly { value: TypeFilter; label: string }[];
+
+	const metrikaStatusLabels = {
+		created: 'Создана в Метрике',
+		missing: 'Не создана в Метрике',
+		conflict: 'Конфликт в Метрике',
+		unchecked: 'Статус в Метрике не проверен'
+	} satisfies Record<MetrikaStatus, string>;
 
 	let query = $state('');
 	let typeFilter = $state<TypeFilter>('all');
+	let metrikaFilter = $state<'all' | MetrikaStatus>('all');
 	let routeFilter = $state('all');
 	let copiedId = $state<string | null>(null);
 	let copyMessage = $state('');
+	let copyFailed = $state(false);
+	let copyTimeout: ReturnType<typeof setTimeout> | undefined;
 
 	function pageKey(page: GoalPage): string {
 		return page.scope === 'sitewide' ? 'sitewide' : `route:${page.path}`;
+	}
+
+	function remoteStateFor(goal: GoalDefinition): GoalRemoteState | undefined {
+		return ownTemplate && data.metrikaConfigured && counterId && goal.status === 'implemented'
+			? remoteStates[goal.eventName]
+			: undefined;
 	}
 
 	const routeOptions = $derived.by(() => {
@@ -162,11 +189,19 @@
 			const matchesType = typeFilter === 'all' || goal.type === typeFilter;
 			const matchesRoute =
 				routeFilter === 'all' || goal.pages.some((page) => pageKey(page) === routeFilter);
+			const matchesMetrika =
+				metrikaFilter === 'all' ||
+				(goal.status === 'implemented' &&
+					(remoteStateFor(goal)?.state ?? 'unchecked') === metrikaFilter);
+			if (!matchesType || !matchesRoute || !matchesMetrika) return false;
+			if (!needle) return true;
+
 			const searchable = [
 				goal.name,
 				goal.description,
 				goal.eventName,
 				goal.buttonLabel ?? '',
+				goal.selector ?? '',
 				...goal.pages.flatMap((page) => [
 					page.label,
 					page.scope === 'sitewide' ? 'весь сайт все страницы' : page.path
@@ -174,41 +209,49 @@
 			]
 				.join(' ')
 				.toLocaleLowerCase('ru');
-			return matchesType && matchesRoute && (!needle || searchable.includes(needle));
+			return searchable.includes(needle);
 		});
 	});
 
 	const clickGoals = $derived(filteredGoals.filter((goal) => goal.type === 'click'));
 	const compoundGoals = $derived(filteredGoals.filter((goal) => goal.type === 'compound'));
 	const activeFilterCount = $derived(
-		(typeFilter === 'all' ? 0 : 1) + (routeFilter === 'all' ? 0 : 1) + (query ? 1 : 0)
+		(typeFilter === 'all' ? 0 : 1) +
+			(metrikaFilter === 'all' ? 0 : 1) +
+			(routeFilter === 'all' ? 0 : 1) +
+			(query.trim() ? 1 : 0)
 	);
 	const selectedRouteLabel = $derived(
 		routeFilter === 'all'
-			? 'Все'
-			: (routeOptions.find((page) => pageKey(page) === routeFilter)?.label ?? 'Все')
+			? 'Любая страница'
+			: routeFilter === 'sitewide'
+				? 'Весь сайт'
+				: (routeOptions.find((page) => pageKey(page) === routeFilter)?.label ?? 'Любая страница')
 	);
 
 	function resetFilters() {
 		query = '';
 		typeFilter = 'all';
+		metrikaFilter = 'all';
 		routeFilter = 'all';
 	}
 
 	async function copyEvent(goal: GoalDefinition) {
 		try {
 			await navigator.clipboard.writeText(goal.eventName);
+			clearTimeout(copyTimeout);
 			copiedId = goal.id;
-			copyMessage = `Событие ${goal.eventName} скопировано.`;
-			setTimeout(() => {
-				if (copiedId === goal.id) {
-					copiedId = null;
-					copyMessage = '';
-				}
-			}, 1600);
+			copyFailed = false;
+			copyMessage = `Идентификатор ${goal.eventName} скопирован.`;
+			copyTimeout = setTimeout(() => {
+				copiedId = null;
+				copyMessage = '';
+			}, 2400);
 		} catch {
-			copiedId = null;
-			copyMessage = 'Не удалось скопировать событие. Выделите его имя вручную.';
+			clearTimeout(copyTimeout);
+			copiedId = goal.id;
+			copyFailed = true;
+			copyMessage = 'Не удалось скопировать. Идентификатор можно выделить в деталях цели.';
 		}
 	}
 
@@ -223,520 +266,721 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<main class="min-h-screen bg-ink-50 text-text-primary">
+<main class="goals min-h-screen bg-ink-50 text-text-primary">
 	<header class="border-b border-border-light bg-surface-card">
-		<div class="mx-auto max-w-[1500px] px-5 py-7 sm:px-8 lg:px-10">
-			<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-				<div class="max-w-3xl">
-					<a
-						href="/"
-						class="mb-5 inline-flex items-center gap-2 text-sm text-text-secondary transition hover:text-link-600 focus-visible:ring-2 focus-visible:ring-link-600 focus-visible:ring-offset-2"
-					>
-						<svg
-							class="h-4 w-4"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							aria-hidden="true"
-						>
-							<path
-								d="m15 18-6-6 6-6"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								style="stroke-width: var(--ds-icon-stroke-bold)"
-							/>
-						</svg>
-						На главную страницу сайта
-					</a>
-					<h1 class="text-4xl text-balance sm:text-5xl">Карта целей Яндекс Метрики</h1>
-					<p class="mt-4 max-w-[70ch] text-sm text-text-secondary sm:text-base">
-						Выберите шаблон, чтобы увидеть его кнопки и идентификаторы целей. Подключите счётчик и
-						создавайте цели прямо из карты. Нажатие «Отправить» не означает успешную отправку
-						данных.
-					</p>
-				</div>
-
-				<div class="flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label="Сводка карты целей">
-					<span><strong>{goalDefinitions.length}</strong> всего</span>
-					<span
-						><strong>{goalDefinitions.filter((goal) => goal.type === 'click').length}</strong> кликовых</span
-					>
-					<span
-						><strong>{goalDefinitions.filter((goal) => goal.type === 'compound').length}</strong> составных</span
-					>
-					<span class="text-brand-600"
-						><strong
-							>{goalDefinitions.filter((goal) => goal.status === 'implemented').length}</strong
-						> подключено в коде</span
-					>
-				</div>
-			</div>
+		<div class="frame py-6 sm:py-8">
+			<a
+				href="/"
+				class="inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:underline"
+			>
+				<svg
+					class="size-4"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					aria-hidden="true"
+				>
+					<path d="M19 12H5m6-6-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				На сайт
+			</a>
+			<h1 class="mt-2 text-3xl text-balance sm:text-4xl">Карта целей Яндекс Метрики</h1>
+			<p class="mt-3 max-w-[68ch] text-sm leading-relaxed text-text-secondary sm:text-base">
+				Найдите нужную кнопку или сценарий, скопируйте идентификатор события либо создайте цель в
+				подключённом счётчике.
+			</p>
 		</div>
 	</header>
 
-	<section
-		class="mx-auto max-w-[1500px] px-5 pt-8 sm:px-8 lg:px-10"
-		aria-label="Подключение Яндекс Метрики"
-	>
-		<div class="rounded-xl border border-border-light bg-surface-card p-5 sm:p-6">
-			<h2 class="text-2xl">Счётчик сайта</h2>
-			<p class="mt-2 text-sm text-text-secondary">
-				{data.goalsSite.domain} · {data.goalsSite.template}{counterId
-					? ` · Счётчик № ${counterId}`
-					: ''}
-			</p>
-			{#if !data.metrikaConfigured}
-				<p class="mt-4 text-sm text-text-secondary">
-					Подключение пока не настроено. Администратору нужно добавить токен Яндекс Метрики на
-					сервер. После подключения здесь появятся доступные счётчики и создание целей.
-				</p>
-			{:else}
-				<div class="mt-5 flex flex-wrap items-end gap-3">
-					<div class="min-w-0 flex-1 basis-72">
-						<label for="metrika-counter" class="mb-2 block text-sm"
-							>Доступные счётчики этого домена</label
-						>
+	<div class="frame space-y-6 py-6 sm:py-8">
+		<section class="counter panel grid gap-5 p-4 sm:p-6" aria-labelledby="counter-title">
+			<div class="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+				<div class="min-w-0">
+					<h2 id="counter-title" class="text-xl">Счётчик сайта</h2>
+					<p class="mt-1 text-sm wrap-anywhere text-text-secondary">
+						{data.goalsSite.domain} · {data.goalsSite.template}
+					</p>
+				</div>
+				<span class="status bg-surface-card">
+					{#if !data.metrikaConfigured}
+						Интеграция не настроена
+					{:else if counterId}
+						Счётчик № {counterId}
+					{:else}
+						Счётчик не выбран
+					{/if}
+				</span>
+			</div>
+
+			{#if data.metrikaConfigured}
+				<div class="grid gap-3 sm:flex sm:flex-wrap sm:items-end">
+					<div class="min-w-0 sm:max-w-lg sm:flex-1 sm:basis-64">
+						<label for="metrika-counter" class="field-label">Доступные счётчики домена</label>
 						<select
 							id="metrika-counter"
 							bind:value={selectedCounter}
 							disabled={!!busy || !counters.length}
-							class="w-full rounded-xl border-border-light bg-surface-card p-3 text-sm disabled:opacity-60"
+							class="field"
 						>
-							{#if !counters.some((counter) => counter.id === selectedCounter)}<option value=""
-									>Выберите счётчик</option
-								>{/if}
-							{#each counters as counter (counter.id)}<option value={counter.id}
-									>{counter.name} · № {counter.id}</option
-								>{/each}
+							{#if !counters.some((counter) => counter.id === selectedCounter)}
+								<option value="">Выберите счётчик</option>
+							{/if}
+							{#each counters as counter (counter.id)}
+								<option value={counter.id}>{counter.name} · № {counter.id}</option>
+							{/each}
 						</select>
 					</div>
 					<button
 						type="button"
 						onclick={connectCounter}
+						data-goal-ignore="Настройка счётчика владельцем сайта"
 						disabled={!!busy || !selectedCounter || selectedCounter === counterId}
-						class="min-h-11 rounded-xl bg-ink-900 px-4 py-3 text-sm text-on-dark disabled:opacity-50"
-						>{busy === 'connect' ? 'Подключение…' : 'Подключить счётчик'}</button
+						class="action action-primary"
 					>
+						{busy === 'connect' ? 'Подключение…' : 'Подключить счётчик'}
+					</button>
 					<button
 						type="button"
 						onclick={refreshMetrika}
+						data-goal-ignore="Проверка статусов владельцем сайта"
 						disabled={!!busy}
-						class="min-h-11 rounded-xl border border-border-medium px-4 py-3 text-sm disabled:opacity-50"
-						>{busy === 'refresh' ? 'Проверка…' : 'Обновить статусы'}</button
+						class="action"
 					>
-					<button
-						type="button"
-						onclick={() => createGoals(missingGoals)}
-						disabled={!canCreate || !missingGoals.length}
-						class="min-h-11 rounded-xl border border-link-600 px-4 py-3 text-sm text-link-600 disabled:opacity-50"
-						>Создать все цели {selectedTemplate} ({missingGoals.length})</button
-					>
-					{#if busy === 'create'}<button
-							type="button"
-							onclick={() => (cancelled = true)}
-							disabled={cancelled}
-							class="min-h-11 rounded-xl border border-border-medium px-4 py-3 text-sm"
-							>{cancelled ? 'Остановка…' : 'Остановить после текущей цели'}</button
-						>{/if}
-				</div>
-				{#if !ownTemplate}<p class="mt-4 text-sm text-text-secondary">
-						Это карта другого шаблона. Для счётчика текущего сайта создаются только цели {data
-							.goalsSite.template}.
-					</p>{/if}
-				{#if !busy && !counters.length && !integrationError}<p
-						class="mt-4 text-sm text-text-secondary"
-					>
-						Счётчики с полным доступом для этого домена не найдены. Проверьте основной адрес или
-						зеркала счётчика в Метрике.
-					</p>{/if}
-			{/if}
-			<p class="mt-3 text-sm text-text-secondary" role="status" aria-live="polite">
-				{integrationMessage}
-			</p>
-			{#if integrationError}<p class="mt-3 text-sm text-brand-600" role="alert">
-					{integrationError} Нажмите «Обновить статусы» перед повтором.
-				</p>{/if}
-		</div>
-	</section>
-
-	<div
-		class="mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-12 lg:px-10 lg:py-10"
-	>
-		<aside
-			class="w-full max-w-full min-w-0 lg:sticky lg:top-8 lg:self-start"
-			aria-label="Фильтры целей"
-		>
-			<label for="goal-template" class="mb-2 block text-sm">Шаблон сайта</label>
-			<select
-				id="goal-template"
-				bind:value={selectedTemplate}
-				disabled={!!busy}
-				onchange={resetFilters}
-				class="mb-6 w-full rounded-xl border-border-light bg-surface-card p-3"
-			>
-				{#each goalTemplates as template (template)}<option value={template}>{template}</option
-					>{/each}
-			</select>
-			<div class="border-b border-border-medium pb-6">
-				<label for="goal-search" class="mb-2 block text-sm text-text-primary">Поиск</label>
-				<div class="relative">
-					<svg
-						class="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-text-muted"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						aria-hidden="true"
-					>
-						<circle cx="11" cy="11" r="7" style="stroke-width: var(--ds-icon-stroke)" />
-						<path d="m20 20-3.5-3.5" style="stroke-width: var(--ds-icon-stroke)" />
-					</svg>
-					<input
-						id="goal-search"
-						type="search"
-						bind:value={query}
-						placeholder="Название или событие"
-						class="w-full rounded-xl border-border-light bg-surface-card py-2.5 pr-3 pl-10 text-sm text-text-primary shadow-sm placeholder:text-text-muted focus:border-link-600 focus:ring-2 focus:ring-link-600"
-					/>
-				</div>
-			</div>
-
-			<fieldset class="w-full min-w-0 border-b border-border-medium py-6">
-				<legend class="mb-3 text-sm text-text-primary">Тип цели</legend>
-				<div class="flex flex-wrap gap-2 lg:flex-col">
-					{#each [{ value: 'all', label: 'Все цели' }, { value: 'click', label: 'Клик по кнопке' }, { value: 'compound', label: 'Составная' }] as option}
-						<button
-							type="button"
-							class="rounded-xl px-3 py-2 text-left text-sm transition focus-visible:ring-2 focus-visible:ring-link-600 {typeFilter ===
-							option.value
-								? 'bg-ink-900 text-on-dark'
-								: 'bg-surface-card text-text-secondary hover:text-text-primary'}"
-							onclick={() => (typeFilter = option.value as TypeFilter)}
-							aria-pressed={typeFilter === option.value}
-						>
-							{option.label}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
-
-			<details class="border-b border-border-medium py-5 lg:hidden">
-				<summary
-					class="flex cursor-pointer list-none items-center justify-between gap-3 text-sm text-text-primary focus-visible:ring-2 focus-visible:ring-link-600"
-				>
-					<span>Страница срабатывания</span>
-					<span class="flex items-center gap-2 text-text-secondary">
-						{selectedRouteLabel}
-						<svg
-							class="h-4 w-4"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							aria-hidden="true"
-						>
-							<path
-								d="m6 9 6 6 6-6"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								style="stroke-width: var(--ds-icon-stroke)"
-							/>
-						</svg>
-					</span>
-				</summary>
-				<div class="mt-4 flex max-h-64 flex-col gap-1 overflow-y-auto pr-1">
-					{@render routeFilterList()}
-				</div>
-			</details>
-
-			<fieldset class="hidden w-full min-w-0 py-6 lg:block">
-				<legend class="mb-3 text-sm text-text-primary">Страница срабатывания</legend>
-				<div class="flex max-h-72 flex-col gap-1 overflow-y-auto pr-1">
-					{@render routeFilterList()}
-				</div>
-			</fieldset>
-
-			{#if activeFilterCount > 0}
-				<button
-					type="button"
-					class="text-sm text-link-600 transition hover:text-link-500 focus-visible:ring-2 focus-visible:ring-link-600"
-					onclick={resetFilters}
-				>
-					Сбросить фильтры ({activeFilterCount})
-				</button>
-			{/if}
-		</aside>
-
-		<section class="w-full max-w-full min-w-0" aria-live="polite">
-			<span class="sr-only" aria-live="polite">{copyMessage}</span>
-			<div
-				class="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-border-medium pb-4"
-			>
-				<p class="text-sm text-text-secondary">
-					Показано <strong class="text-text-primary">{filteredGoals.length}</strong> из {goalDefinitions.length}
-				</p>
-				<span class="inline-flex items-center gap-2 text-xs text-text-secondary">
-					<span class="h-2 w-2 rounded-full bg-brand-500"></span>
-					Статусы Метрики — для счётчика текущего сайта
-				</span>
-			</div>
-
-			{#if filteredGoals.length === 0}
-				<div class="border-y border-border-medium py-16 text-center">
-					<h2 class="text-3xl">Цели не найдены</h2>
-					<p class="mt-3 text-sm text-text-secondary">
-						Измените запрос или сбросьте фильтры, чтобы увидеть всю карту.
-					</p>
-					<button
-						type="button"
-						class="mt-5 rounded-xl border border-border-medium bg-surface-card px-4 py-2.5 text-sm transition hover:bg-surface-muted focus-visible:ring-2 focus-visible:ring-link-600"
-						onclick={resetFilters}
-					>
-						Показать все цели
+						{busy === 'refresh' ? 'Проверка…' : 'Обновить статусы'}
 					</button>
 				</div>
+				{#if !busy && !counters.length && !integrationError}
+					<p class="text-sm text-text-secondary">
+						Счётчики с полным доступом для этого домена не найдены. Проверьте основной адрес или
+						зеркала счётчика в Метрике.
+					</p>
+				{/if}
 			{:else}
-				{#if clickGoals.length > 0}
-					<div class="mb-10">
-						<div class="mb-3 flex items-end justify-between gap-4">
-							<h2 class="text-2xl sm:text-3xl">Клики по кнопкам</h2>
-							<span class="text-sm text-text-muted">{clickGoals.length}</span>
-						</div>
-						<div class="divide-y divide-border-light border-y border-border-medium bg-surface-card">
-							{#each clickGoals as goal (goal.id)}
-								{@render goalRow(goal)}
-							{/each}
-						</div>
-					</div>
-				{/if}
-
-				{#if compoundGoals.length > 0}
-					<div>
-						<div class="mb-3 flex items-end justify-between gap-4">
-							<h2 class="text-2xl sm:text-3xl">Поведенческие составные цели</h2>
-							<span class="text-sm text-text-muted">{compoundGoals.length}</span>
-						</div>
-						<div class="divide-y divide-border-light border-y border-border-medium bg-surface-card">
-							{#each compoundGoals as goal (goal.id)}
-								{@render goalRow(goal)}
-							{/each}
-						</div>
-					</div>
-				{/if}
+				<p class="max-w-[72ch] text-sm leading-relaxed text-text-secondary">
+					Для подключения нужен серверный токен Метрики. Цели можно добавить вручную по
+					идентификаторам из карты.
+				</p>
+			{/if}
+			{#if !creationFeedback}
+				{@render integrationFeedback()}
 			{/if}
 		</section>
+
+		<div class="workspace grid items-start gap-6">
+			<aside class="filters panel min-w-0 p-4 sm:p-5" aria-labelledby="filters-title">
+				<h2 id="filters-title" class="text-xl">Фильтры</h2>
+				<div class="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+					<div class="min-w-0">
+						<label for="goal-template" class="field-label">Шаблон сайта</label>
+						<select
+							id="goal-template"
+							bind:value={selectedTemplate}
+							disabled={!!busy}
+							onchange={resetFilters}
+							class="field"
+						>
+							{#each goalTemplates as template (template)}
+								<option value={template}>
+									{template}{template === data.goalsSite.template ? ' · текущий сайт' : ''}
+								</option>
+							{/each}
+						</select>
+					</div>
+					<div class="min-w-0">
+						<label for="goal-search" class="field-label">Поиск по карте</label>
+						<input
+							id="goal-search"
+							type="search"
+							bind:value={query}
+							placeholder="Название или идентификатор"
+							class="field"
+						/>
+					</div>
+					<div class="min-w-0">
+						<label for="goal-metrika-status" class="field-label">Статус в Метрике</label>
+						<select id="goal-metrika-status" bind:value={metrikaFilter} class="field">
+							<option value="all">Все статусы</option>
+							{#each Object.entries(metrikaStatusLabels) as [value, label] (value)}
+								<option {value}>{label}</option>
+							{/each}
+						</select>
+					</div>
+				</div>
+
+				<fieldset class="mt-4 min-w-0">
+					<legend class="field-label">Тип цели</legend>
+					<div class="flex flex-wrap gap-1 lg:flex-col">
+						{#each typeOptions as option (option.value)}
+							<button
+								type="button"
+								class="filter-option"
+								onclick={() => (typeFilter = option.value)}
+								data-goal-ignore="Фильтр административной карты целей"
+								aria-pressed={typeFilter === option.value}
+							>
+								{option.label}
+							</button>
+						{/each}
+					</div>
+				</fieldset>
+
+				<details class="group/filter mt-4 border-t border-border-light pt-2 lg:hidden">
+					<summary
+						class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-2 text-sm"
+					>
+						<span class="shrink-0 font-medium">Страница</span>
+						<span
+							class="flex min-w-0 items-center gap-2 text-right wrap-anywhere text-text-secondary"
+						>
+							{selectedRouteLabel}
+							{@render chevron('size-4 shrink-0 group-open/filter:rotate-180')}
+						</span>
+					</summary>
+					<div class="route-options">
+						{@render routeFilterList()}
+					</div>
+				</details>
+
+				<fieldset class="mt-4 hidden min-w-0 border-t border-border-light pt-4 lg:block">
+					<legend class="sr-only">Страница срабатывания</legend>
+					<p class="field-label">Страница срабатывания</p>
+					<div class="route-options">
+						{@render routeFilterList()}
+					</div>
+				</fieldset>
+
+				{#if activeFilterCount > 0}
+					<button
+						type="button"
+						class="mt-2 min-h-11 text-sm font-medium underline underline-offset-4"
+						onclick={resetFilters}
+						data-goal-ignore="Сброс фильтров административной карты целей"
+					>
+						Сбросить фильтры ({activeFilterCount})
+					</button>
+				{/if}
+			</aside>
+
+			<section class="min-w-0" aria-labelledby="registry-title">
+				<div class="mb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+					<div>
+						<h2 id="registry-title" class="text-2xl">Цели {selectedTemplate}</h2>
+						<p class="mt-1 text-sm text-text-secondary tabular-nums" role="status">
+							Показано {filteredGoals.length} из {goalDefinitions.length}
+						</p>
+					</div>
+					{#if data.metrikaConfigured && ownTemplate}
+						<div class="flex flex-wrap items-center gap-2">
+							<button
+								type="button"
+								onclick={() => createGoals(missingGoals)}
+								data-goal-ignore="Массовое создание целей владельцем сайта"
+								disabled={!canCreate || !missingGoals.length}
+								class="action action-primary"
+							>
+								Создать все цели ({missingGoals.length})
+							</button>
+							{#if busy === 'create'}
+								<button
+									type="button"
+									onclick={() => (cancelled = true)}
+									data-goal-ignore="Остановка создания целей владельцем сайта"
+									disabled={cancelled}
+									class="action"
+								>
+									{cancelled ? 'Остановка…' : 'Остановить после текущей цели'}
+								</button>
+							{/if}
+						</div>
+					{/if}
+				</div>
+				{#if data.metrikaConfigured && !ownTemplate}
+					<p class="counter panel mb-4 px-4 py-3 text-sm text-text-secondary">
+						Для счётчика этого сайта доступны цели шаблона {data.goalsSite.template}.
+					</p>
+				{/if}
+				{#if creationFeedback}
+					<div class="mb-4 space-y-2">
+						{@render integrationFeedback()}
+					</div>
+				{/if}
+				<p class="sr-only" role="status">{copyMessage}</p>
+
+				{#if filteredGoals.length === 0}
+					<div class="panel bg-surface-card px-4 py-12 text-center">
+						<h3 class="text-xl">Цели не найдены</h3>
+						<p class="mt-2 text-sm text-text-secondary">
+							Измените запрос или сбросьте фильтры, чтобы увидеть всю карту.
+						</p>
+						<button
+							type="button"
+							class="action mt-4"
+							onclick={resetFilters}
+							data-goal-ignore="Сброс фильтров административной карты целей"
+						>
+							Показать все цели
+						</button>
+					</div>
+				{:else}
+					<div class="space-y-6">
+						{#if clickGoals.length > 0}
+							{@render goalGroup('click', 'Клики по кнопкам', clickGoals)}
+						{/if}
+						{#if compoundGoals.length > 0}
+							{@render goalGroup('compound', 'Составные цели', compoundGoals)}
+						{/if}
+					</div>
+				{/if}
+			</section>
+		</div>
 	</div>
 </main>
 
+{#snippet integrationFeedback()}
+	<p class={integrationMessage ? 'counter panel px-4 py-3 text-sm' : 'sr-only'} role="status">
+		{integrationMessage}
+	</p>
+	{#if integrationError}
+		<p class="error panel px-4 py-3 text-sm" role="alert">
+			{integrationError} Нажмите «Обновить статусы» перед повтором.
+		</p>
+	{/if}
+{/snippet}
+
+{#snippet chevron(className: string)}
+	<svg class={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+		<path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+	</svg>
+{/snippet}
+
+{#snippet goalGroup(type: GoalType, title: string, goals: GoalDefinition[])}
+	<section class="goal-group panel" data-type={type} aria-labelledby={'group-' + type}>
+		<div class="group-header flex flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-5">
+			<h3 id={'group-' + type} class="text-xl">{title}</h3>
+			<span class="status bg-surface-card tabular-nums">{goals.length}</span>
+		</div>
+		{#if type === 'click'}
+			<p class="border-b border-border-light px-4 py-3 text-sm text-text-secondary sm:px-5">
+				Цель «Нажатие отправки» фиксирует клик. Приём заявки проверяется отдельно.
+			</p>
+		{/if}
+		<ul class="divide-y divide-border-light">
+			{#each goals as goal (goal.id)}
+				<li class="relative">{@render goalRow(goal)}</li>
+			{/each}
+		</ul>
+	</section>
+{/snippet}
+
 {#snippet goalRow(goal: GoalDefinition)}
-	<details class="group max-w-full min-w-0 px-4 py-5 wrap-anywhere sm:px-6">
-		<summary
-			class="flex cursor-pointer list-none items-start gap-4 focus-visible:ring-2 focus-visible:ring-link-600"
-		>
-			<span
-				class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full {goal.priority === 'high'
-					? 'bg-brand-500'
-					: goal.priority === 'medium'
-						? 'bg-cat-6-500'
-						: 'bg-ink-400'}"
-			></span>
-			<span class="min-w-0 flex-1">
-				<span class="flex flex-wrap items-center gap-x-3 gap-y-1">
-					<strong class="text-base text-text-primary sm:text-lg">{goal.name}</strong>
-					<span class="rounded-full bg-surface-muted px-2.5 py-1 text-xs text-text-secondary">
-						{goal.type === 'click' ? 'Клик' : 'Составная'}
-					</span>
-				</span>
-				<span class="mt-2 block text-sm text-text-secondary">{goal.description}</span>
-				<span class="mt-3 flex flex-wrap gap-2">
-					{#each goal.pages as page (pageKey(page))}
-						{#if page.scope === 'route'}
-							<a
-								href={page.path}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-lg border border-border-light bg-surface px-2.5 py-1 text-xs text-link-600 transition hover:border-link-500 focus-visible:ring-2 focus-visible:ring-link-600"
-								onclick={(event) => event.stopPropagation()}
-							>
-								{page.label}
-								<code class="text-text-muted">{page.path}</code>
-							</a>
-						{:else}
-							<span
-								class="inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-lg border border-border-light bg-surface px-2.5 py-1 text-xs text-text-secondary"
-							>
-								{page.label}
-								<code class="text-text-muted">*</code>
-							</span>
-						{/if}
-					{/each}
+	{@const remote = remoteStateFor(goal)}
+	{@const metrikaStatus = remote?.state ?? 'unchecked'}
+	{@const sitewide = goal.pages.some((page) => page.scope === 'sitewide')}
+	{@const copied = copiedId === goal.id && !copyFailed}
+	<details class="group/row min-w-0">
+		<summary class="goal-summary grid cursor-pointer list-none items-center gap-x-3 gap-y-2 py-3.5">
+			<span class="goal-title min-w-0 wrap-anywhere">
+				<strong class="block text-sm font-semibold sm:text-base">{goal.name}</strong>
+				<span class="mt-0.5 block text-sm text-text-secondary">
+					{sitewide ? 'Весь сайт' : goal.pages[0]?.label}{!sitewide && goal.pages.length > 1
+						? ` · ещё ${goal.pages.length - 1}`
+						: ''}
+					· {goal.status === 'implemented' ? 'Подключена в коде' : 'Черновик'}
 				</span>
 			</span>
-			<svg
-				class="mt-1 h-5 w-5 shrink-0 text-text-muted transition-transform group-open:rotate-180"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				aria-hidden="true"
-			>
-				<path
-					d="m6 9 6 6 6-6"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					style="stroke-width: var(--ds-icon-stroke-bold)"
-				/>
-			</svg>
+			{#if goal.status === 'implemented'}
+				<span class="goal-status status" data-state={metrikaStatus}>
+					{metrikaStatusLabels[metrikaStatus]}
+				</span>
+			{/if}
+			{@render chevron('goal-chevron size-5 text-text-secondary group-open/row:rotate-180')}
+			{#if copiedId === goal.id && copyFailed}
+				<span class="error col-span-full rounded-md px-3 py-2 text-sm">{copyMessage}</span>
+			{/if}
 		</summary>
 
 		<div
-			class="mt-5 grid gap-5 border-t border-border-light pt-5 sm:grid-cols-2 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] [&>div]:min-w-0"
+			class="goal-detail grid min-w-0 gap-x-6 gap-y-5 border-t border-border-light px-4 py-5 sm:px-5 xl:grid-cols-2"
 		>
-			<div>
-				<p class="text-xs text-text-muted">Условие</p>
-				<p class="mt-1 text-sm text-text-primary">{goal.condition}</p>
-				{#if goal.dependsOn}
-					<ul class="mt-3 space-y-1.5 text-sm text-text-secondary">
-						{#each goal.dependsOn as dependency}
-							<li class="flex gap-2">
-								<span aria-hidden="true">—</span>
-								<span>{dependency}</span>
+			<div class="min-w-0 space-y-4">
+				<div>
+					<p class="field-label">Условие срабатывания</p>
+					<p class="text-sm leading-relaxed">{goal.condition}</p>
+					{#if goal.dependsOn}
+						<ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-text-secondary">
+							{#each goal.dependsOn as dependency}
+								<li>{dependency}</li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+				<div>
+					<p class="field-label">Где срабатывает</p>
+					<p class="text-sm leading-relaxed wrap-anywhere text-text-secondary">
+						{goal.description}
+					</p>
+					<ul class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+						{#each goal.pages as page (pageKey(page))}
+							<li class="min-w-0 wrap-anywhere">
+								{#if page.scope === 'route'}
+									<a
+										href={page.path}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="inline-block py-2 text-sm underline underline-offset-4"
+									>
+										{page.label} <code class="text-xs">{page.path}</code>
+									</a>
+								{:else}
+									<span class="text-sm text-text-secondary">{page.label}</span>
+								{/if}
 							</li>
 						{/each}
 					</ul>
-				{/if}
-			</div>
-
-			<div>
-				<p class="text-xs text-text-muted">Событие</p>
-				<div class="mt-1 flex items-center gap-2">
-					<code class="min-w-0 truncate rounded-lg bg-ink-900 px-2.5 py-1.5 text-xs text-on-dark">
-						{goal.eventName}
-					</code>
-					<button
-						type="button"
-						class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border-light text-text-secondary transition hover:text-link-600 focus-visible:ring-2 focus-visible:ring-link-600"
-						onclick={() => copyEvent(goal)}
-						title="Скопировать имя события"
-						aria-label="Скопировать имя события {goal.eventName}"
-					>
-						{#if copiedId === goal.id}
-							<svg
-								class="h-4 w-4"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<path
-									d="m5 12 4 4L19 6"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									style="stroke-width: var(--ds-icon-stroke-bold)"
-								/>
-							</svg>
-						{:else}
-							<svg
-								class="h-4 w-4"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								aria-hidden="true"
-							>
-								<rect
-									x="8"
-									y="8"
-									width="11"
-									height="11"
-									rx="2"
-									style="stroke-width: var(--ds-icon-stroke)"
-								/>
-								<path
-									d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
-									style="stroke-width: var(--ds-icon-stroke)"
-								/>
-							</svg>
-						{/if}
-					</button>
 				</div>
-				{#if goal.buttonLabel}
-					<p class="mt-3 text-xs text-text-secondary">Кнопка: «{goal.buttonLabel}»</p>
-				{/if}
-				{#if goal.selector}
-					<code class="mt-2 block text-xs break-all text-text-muted">{goal.selector}</code>
-				{/if}
 			</div>
 
-			<div class="sm:col-span-2 xl:col-span-1">
-				<p class="text-xs text-text-muted">Готовность</p>
-				<dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-sm">
-					<dt class="text-text-secondary">Статус</dt>
-					<dd class="text-brand-600">
-						{goal.status === 'implemented' ? 'Подключена в коде' : 'Черновик'}
-					</dd>
+			<div class="min-w-0">
+				<p class="field-label">Идентификатор события</p>
+				<code class="event-box block px-3 py-2 text-sm leading-relaxed wrap-anywhere select-all">
+					{goal.eventName}
+				</code>
+
+				<dl
+					class="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1.5 text-sm wrap-anywhere"
+				>
+					{#if goal.buttonLabel}
+						<dt class="text-text-secondary">Кнопка</dt>
+						<dd>«{goal.buttonLabel}»</dd>
+					{/if}
+					{#if goal.selector}
+						<dt class="text-text-secondary">Селектор</dt>
+						<dd><code class="text-xs">{goal.selector}</code></dd>
+					{/if}
 					<dt class="text-text-secondary">Приоритет</dt>
 					<dd>{priorityLabel(goal.priority)}</dd>
 					<dt class="text-text-secondary">Отправка</dt>
 					<dd>
-						{goal.status === 'implemented'
-							? 'reachGoal · при настроенном счётчике'
-							: 'Не подключена'}
+						{goal.status === 'implemented' ? 'reachGoal при настроенном счётчике' : 'Не подключена'}
 					</dd>
 				</dl>
-				{#if goal.status === 'implemented'}
-					{@const remote = ownTemplate ? remoteStates[goal.eventName] : undefined}
-					<p class="mt-4 text-sm text-text-secondary">
-						{remote?.state === 'created'
-							? `Создана в Метрике · № ${remote.id}`
-							: remote?.state === 'conflict'
-								? 'Конфликт условий — проверьте цель в Метрике'
-								: remote?.state === 'missing'
-									? 'Не создана в Метрике'
-									: 'Статус Метрики не проверен'}
-					</p>
-					<button
-						type="button"
-						onclick={() => createGoals([goal])}
-						disabled={!canCreate || remote?.state !== 'missing'}
-						class="mt-3 min-h-11 rounded-xl border border-border-medium px-4 py-2 text-sm text-link-600 disabled:opacity-50"
-					>
-						{remote?.state === 'created'
-							? 'Уже создана'
-							: busy === 'create'
-								? 'Создание…'
-								: 'Создать в Метрике'}
-					</button>
+
+				{#if goal.status === 'implemented' && ownTemplate && data.metrikaConfigured}
+					{#if remote?.state === 'missing'}
+						<button
+							type="button"
+							onclick={() => createGoals([goal])}
+							data-goal-ignore="Создание цели владельцем сайта"
+							disabled={!canCreate}
+							class="action mt-4"
+						>
+							{busy === 'create' ? 'Создание целей…' : 'Создать в Метрике'}
+						</button>
+					{:else}
+						<p class="mt-4 text-sm text-text-secondary">
+							{remote?.state === 'created'
+								? `Создана в Метрике · № ${remote.id}`
+								: remote?.state === 'conflict'
+									? 'Конфликт условий. Проверьте цель в Метрике.'
+									: 'Статус цели в Метрике не проверен.'}
+						</p>
+					{/if}
 				{/if}
 			</div>
 		</div>
 	</details>
+	<button
+		type="button"
+		class="copy-action action absolute top-3.5 grid size-11 place-items-center"
+		data-copied={copied}
+		title={copied ? 'Скопировано' : 'Скопировать идентификатор цели'}
+		aria-label={copied
+			? `Идентификатор скопирован · ${goal.name}`
+			: `Скопировать идентификатор цели · ${goal.name}`}
+		onclick={() => copyEvent(goal)}
+		data-goal-ignore="Копирование идентификатора в административной карте целей"
+	>
+		<svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+			{#if copied}
+				<path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round" />
+			{:else}
+				<rect x="8" y="8" width="12" height="12" rx="2" />
+				<path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke-linecap="round" />
+			{/if}
+		</svg>
+	</button>
 {/snippet}
 
 {#snippet routeFilterList()}
 	<button
 		type="button"
-		class="flex items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition focus-visible:ring-2 focus-visible:ring-link-600 {routeFilter ===
-		'all'
-			? 'bg-surface-muted text-text-primary'
-			: 'text-text-secondary hover:bg-surface-card hover:text-text-primary'}"
+		class="filter-option w-full"
 		onclick={() => (routeFilter = 'all')}
+		data-goal-ignore="Фильтр административной карты целей"
 		aria-pressed={routeFilter === 'all'}
 	>
-		<span>Все области</span>
-		<span class="text-xs text-text-muted">{goalDefinitions.length}</span>
+		Любая страница
 	</button>
 	{#each routeOptions as route (pageKey(route))}
 		{@const key = pageKey(route)}
 		<button
 			type="button"
-			class="flex w-full min-w-0 flex-col items-start gap-1 rounded-lg px-3 py-2 text-left text-sm transition focus-visible:ring-2 focus-visible:ring-link-600 {routeFilter ===
-			key
-				? 'bg-surface-muted text-text-primary'
-				: 'text-text-secondary hover:bg-surface-card hover:text-text-primary'}"
+			class="filter-option w-full wrap-anywhere"
 			onclick={() => (routeFilter = key)}
+			data-goal-ignore="Фильтр административной карты целей"
 			aria-pressed={routeFilter === key}
 		>
-			<span class="max-w-full break-words whitespace-normal">{route.label}</span>
-			<code class="max-w-full min-w-0 text-xs break-all whitespace-normal text-text-muted">
-				{route.scope === 'sitewide' ? '*' : route.path}
-			</code>
+			{route.scope === 'sitewide' ? 'Весь сайт' : route.label}
+			{#if route.scope === 'route'}
+				<code class="block text-xs text-text-secondary">{route.path}</code>
+			{/if}
 		</button>
 	{/each}
 {/snippet}
+
+<style>
+	.goals {
+		--counter-fill: color-mix(in srgb, var(--color-link-500) 8%, var(--color-surface-card));
+		--filter-fill: color-mix(in srgb, var(--color-cat-1-500) 9%, var(--color-surface-card));
+		--selected-fill: color-mix(in srgb, var(--color-link-500) 14%, var(--color-surface-card));
+		--control-border: color-mix(in srgb, var(--color-text-primary) 42%, var(--color-surface-card));
+	}
+
+	.frame {
+		width: min(100%, 90rem);
+		margin-inline: auto;
+		padding-inline: 1rem;
+	}
+
+	.panel {
+		border: 1px solid var(--color-border-light);
+		border-radius: var(--ds-radius-xl);
+	}
+
+	.counter {
+		background: var(--counter-fill);
+	}
+
+	.filters {
+		background: var(--filter-fill);
+	}
+
+	.field-label {
+		display: block;
+		margin-bottom: 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.field,
+	.action {
+		min-height: 2.75rem;
+		border: 1px solid var(--control-border);
+		border-radius: var(--ds-radius-lg);
+		background-color: var(--color-surface-card);
+		color: var(--color-text-primary);
+		font-size: 0.875rem;
+	}
+
+	.field {
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+	}
+
+	select.field {
+		padding-right: 2rem;
+	}
+
+	.field::placeholder {
+		color: var(--color-text-secondary);
+	}
+
+	.action {
+		padding: 0.5rem 0.875rem;
+		font-weight: 600;
+	}
+
+	.action-primary {
+		border-color: var(--color-ink-900);
+		background: var(--color-ink-900);
+		color: var(--color-on-dark);
+	}
+
+	.action:not(:disabled):hover {
+		background: var(--selected-fill);
+	}
+
+	.action-primary:not(:disabled):hover {
+		background: var(--color-ink-800);
+	}
+
+	.field:disabled,
+	.action:disabled {
+		cursor: not-allowed;
+		opacity: 0.55;
+	}
+
+	.filters summary::-webkit-details-marker,
+	.goal-summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.filter-option {
+		min-height: 2.75rem;
+		padding: 0.375rem 0.625rem;
+		border: 1px solid transparent;
+		border-radius: var(--ds-radius-lg);
+		text-align: left;
+		font-size: 0.875rem;
+	}
+
+	.filter-option:hover {
+		background: var(--color-surface-card);
+	}
+
+	.filter-option[aria-pressed='true'] {
+		border-color: var(--control-border);
+		background: var(--selected-fill);
+		font-weight: 600;
+	}
+
+	.route-options {
+		display: grid;
+		max-height: 13rem;
+		gap: 0.125rem;
+		overflow-y: auto;
+		padding: 0.1875rem;
+	}
+
+	.goals :is(a, button, input, select, summary):focus-visible {
+		outline: 2px solid var(--color-text-primary);
+		outline-offset: 2px;
+	}
+
+	.goal-group {
+		background: var(--color-surface-card);
+		--goal-row-inset: 1rem;
+		--group-color: var(--color-cat-9-500);
+		--group-fill: color-mix(in srgb, var(--group-color) 14%, var(--color-surface-card));
+		--detail-fill: color-mix(in srgb, var(--group-color) 5%, var(--color-surface-card));
+	}
+
+	.goal-group[data-type='compound'] {
+		--group-color: var(--color-cat-3-500);
+	}
+
+	.group-header {
+		border-bottom: 1px solid var(--color-border-light);
+		border-radius: inherit;
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+		background: var(--group-fill);
+	}
+
+	.goal-summary {
+		grid-template-columns: minmax(0, 1fr) 2.75rem 1.25rem;
+		grid-template-areas: 'title copy chevron';
+		grid-template-rows: minmax(2.75rem, auto);
+		padding-inline: var(--goal-row-inset);
+	}
+
+	.goal-summary:has(.goal-status) {
+		grid-template-areas: 'title copy chevron' 'status status status';
+	}
+
+	.goal-summary:hover,
+	details[open] > .goal-summary {
+		background: var(--detail-fill);
+	}
+
+	.goal-summary:focus-visible {
+		outline-offset: -3px;
+	}
+
+	.goal-title {
+		grid-area: title;
+	}
+
+	.goal-status {
+		grid-area: status;
+		justify-self: start;
+	}
+
+	.goal-chevron {
+		grid-area: chevron;
+	}
+
+	.copy-action {
+		right: calc(var(--goal-row-inset) + 2rem);
+		padding: 0;
+	}
+
+	.status {
+		display: inline-flex;
+		align-items: center;
+		border: 1px solid var(--color-border-light);
+		border-radius: var(--ds-radius-md);
+		padding: 0.1875rem 0.5rem;
+		background-color: var(--color-surface-card);
+		font-size: 0.75rem;
+		font-weight: 600;
+	}
+
+	.goal-status[data-state='missing'] {
+		background-color: var(--filter-fill);
+	}
+
+	.goal-status[data-state='created'],
+	.copy-action[data-copied='true'] {
+		background-color: color-mix(in srgb, var(--color-cat-2-500) 13%, var(--color-surface-card));
+	}
+
+	.error,
+	.goal-status[data-state='conflict'] {
+		background-color: color-mix(in srgb, var(--color-cat-6-500) 13%, var(--color-surface-card));
+	}
+
+	.goal-detail {
+		background: var(--detail-fill);
+	}
+
+	.event-box {
+		border: 1px solid var(--color-border-light);
+		border-radius: var(--ds-radius-lg);
+		background-color: var(--color-surface-card);
+	}
+
+	.goals svg {
+		stroke-width: var(--ds-icon-stroke-bold);
+	}
+
+	@media (min-width: 40rem) {
+		.frame {
+			padding-inline: 2rem;
+		}
+
+		.goal-group {
+			--goal-row-inset: 1.25rem;
+		}
+
+		.goal-summary:has(.goal-status) {
+			grid-template-columns: minmax(0, 1fr) auto 2.75rem 1.25rem;
+			grid-template-areas: 'title status copy chevron';
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.workspace {
+			grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+		}
+	}
+
+	@media (min-width: 64rem) and (min-height: 48rem) {
+		.filters {
+			position: sticky;
+			top: 1rem;
+			max-height: calc(100dvh - 2rem);
+			overflow-y: auto;
+		}
+	}
+</style>

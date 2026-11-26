@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { writeToClipboard } from '$lib/utils/clipboard';
 	import { fade } from 'svelte/transition';
 	import { browser } from '$app/environment';
 
@@ -64,34 +65,6 @@
 	let copied = $state(false);
 	let copyTimer: ReturnType<typeof setTimeout> | undefined;
 	$effect(() => () => clearTimeout(copyTimer));
-
-	async function writeToClipboard(text: string): Promise<boolean> {
-		try {
-			if (navigator.clipboard?.writeText) {
-				await navigator.clipboard.writeText(text);
-				return true;
-			}
-		} catch {
-			// Clipboard API есть, но отказал (нет фокуса у документа, политика
-			// разрешений во фрейме) — не сдаёмся, пробуем старый способ.
-		}
-		try {
-			// Фолбэк: и для небезопасного контекста (http не на localhost), где
-			// Clipboard API вовсе недоступен, и для отказа выше.
-			const ta = document.createElement('textarea');
-			ta.value = text;
-			ta.setAttribute('readonly', '');
-			ta.style.position = 'fixed';
-			ta.style.opacity = '0';
-			document.body.appendChild(ta);
-			ta.select();
-			const ok = document.execCommand('copy');
-			document.body.removeChild(ta);
-			return ok;
-		} catch {
-			return false;
-		}
-	}
 
 	async function copyArticle() {
 		if (!article) return;

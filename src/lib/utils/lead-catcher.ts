@@ -1,6 +1,10 @@
 export const LEAD_CATCHER_DELAY = 15_000;
 export const LEAD_CATCHER_COOLDOWN = 24 * 60 * 60 * 1000;
 
+export function supportsLeadCatcher(templateId: number | null | undefined): boolean {
+	return templateId === 1 || templateId === 2 || templateId === 3;
+}
+
 /** One browser-app session; survives Svelte route and Banner variant changes. No visitor data. */
 const visits = new Map<string, { started: number; shown: boolean }>();
 export function createLeadCatcherGate(
@@ -35,11 +39,14 @@ export function createLeadCatcherGate(
 }
 
 export function isTopExit(
-	event: { relatedTarget: EventTarget | null; clientY: number },
-	previousY: number | null
+	event: Pick<PointerEvent, 'clientX' | 'clientY' | 'buttons'>,
+	previousY: number | null,
+	viewportWidth: number
 ) {
 	return (
-		event.relatedTarget === null &&
+		event.buttons === 0 &&
+		event.clientX > 0 &&
+		event.clientX < viewportWidth &&
 		event.clientY <= 0 &&
 		previousY !== null &&
 		previousY > event.clientY

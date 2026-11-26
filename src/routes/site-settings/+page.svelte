@@ -17,6 +17,8 @@
 			appearanceEnabled?: boolean;
 			designSystem?: string;
 			headerButtonColor?: string | null;
+			leadCatcherEnabled?: boolean;
+			leadCatcherPolicyHref?: string;
 		};
 		faviconUrl?: string | null;
 	};
@@ -28,6 +30,7 @@
 		{ id: 'design-system', label: 'Дизайн-система' },
 		{ id: 'appearance', label: 'Базовый стиль' },
 		{ id: 'header-action', label: 'Кнопка в шапке' },
+		{ id: 'lead-catcher', label: 'Ловец лидов' },
 		{ id: 'summary', label: 'Сводка' }
 	] as const;
 	type SectionId = (typeof sections)[number]['id'];
@@ -36,6 +39,7 @@
 	function errorSection(errors: Feedback['errors']): SectionId | undefined {
 		if (!errors) return;
 		if (errors.yandexMetrica || errors.googleAnalytics) return 'analytics';
+		if (errors.leadCatcherPolicyHref) return 'lead-catcher';
 		if (errors.headerButtonColor) return 'header-action';
 		if (errors.designSystem) return 'design-system';
 		if (Object.keys(errors).length) return 'appearance';
@@ -83,6 +87,10 @@
 	let headerButtonCustom = $state(Boolean(data.site.headerButtonColor));
 	// svelte-ignore state_referenced_locally
 	let headerButtonColor = $state(data.site.headerButtonColor ?? '#b8860b');
+	// svelte-ignore state_referenced_locally
+	let leadCatcherEnabled = $state(data.site.leadCatcherEnabled);
+	// svelte-ignore state_referenced_locally
+	let leadCatcherPolicyHref = $state(data.site.leadCatcherPolicyHref);
 
 	// Список готовых к выбору систем и признак, удалось ли его получить, приезжают
 	// из load. Владельцу предлагаются только системы, опубликованные для его шаблона
@@ -119,6 +127,10 @@
 		if (values.radiusPreset) radiusPreset = values.radiusPreset;
 		if (typeof values.appearanceEnabled === 'boolean') appearanceEnabled = values.appearanceEnabled;
 		if (typeof values.designSystem === 'string') designSystem = values.designSystem;
+		if (typeof values.leadCatcherEnabled === 'boolean')
+			leadCatcherEnabled = values.leadCatcherEnabled;
+		if (typeof values.leadCatcherPolicyHref === 'string')
+			leadCatcherPolicyHref = values.leadCatcherPolicyHref;
 		if ('headerButtonColor' in values) {
 			headerButtonCustom = values.headerButtonColor !== null;
 			if (typeof values.headerButtonColor === 'string')
@@ -225,7 +237,7 @@
 				class="settings-nav flex gap-2 overflow-x-auto py-5 lg:flex-col"
 				aria-label="Разделы настроек"
 			>
-				{#each sections.filter((section) => section.id !== 'header-action' || site.templateId === 2) as section (section.id)}
+				{#each sections.filter(({ id }) => (id !== 'header-action' || site.templateId === 2) && (id !== 'lead-catcher' || site.leadCatcherAvailable)) as section (section.id)}
 					<button
 						type="button"
 						class="settings-nav-link"
@@ -663,6 +675,49 @@
 								>
 							</button>
 						</div>
+					</section>
+				{/if}
+
+				{#if site.leadCatcherAvailable}
+					<section id="lead-catcher" hidden={activeSection !== 'lead-catcher'}>
+						<h2 class="text-3xl">Ловец лидов</h2>
+						<input type="hidden" name="leadCatcherSettings" value="1" />
+						<label class="mt-6 flex min-h-11 items-center gap-3 text-sm">
+							<input
+								type="checkbox"
+								name="leadCatcherEnabled"
+								bind:checked={leadCatcherEnabled}
+								aria-describedby="lead-catcher-help"
+							/>
+							Показывать форму при уходе со страницы
+						</label>
+						<p id="lead-catcher-help" class="max-w-prose text-sm text-text-secondary">
+							Форма консультации появляется, когда посетитель уводит курсор за верхнюю границу
+							страницы. Показ возможен после 15 секунд на сайте и не чаще раза в сутки.
+						</p>
+						<label class="mt-6 block max-w-md text-sm" for="lead-catcher-policy">
+							<span class="mb-2 block text-text-primary">Путь к политике конфиденциальности</span>
+							<input
+								id="lead-catcher-policy"
+								name="leadCatcherPolicyHref"
+								type="text"
+								bind:value={leadCatcherPolicyHref}
+								placeholder="/privacy"
+								class="settings-input"
+								aria-describedby={feedback?.errors?.leadCatcherPolicyHref
+									? 'lead-catcher-policy-help lead-catcher-policy-error'
+									: 'lead-catcher-policy-help'}
+								aria-invalid={feedback?.errors?.leadCatcherPolicyHref ? 'true' : undefined}
+							/>
+							<span id="lead-catcher-policy-help" class="mt-2 block text-xs text-text-secondary">
+								Укажите существующую страницу сайта. По умолчанию используется /privacy.
+							</span>
+							{#if feedback?.errors?.leadCatcherPolicyHref}
+								<span id="lead-catcher-policy-error" class="mt-2 block text-sm text-brand-700">
+									{feedback.errors.leadCatcherPolicyHref}
+								</span>
+							{/if}
+						</label>
 					</section>
 				{/if}
 

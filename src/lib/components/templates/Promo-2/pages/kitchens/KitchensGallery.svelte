@@ -3,6 +3,8 @@
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.9.2.1 — см. docs/architecture/component-articles-map.md
 	import ProductCatalogModal from '../_shared/ProductCatalogModal.svelte';
+	import CopyPhotoLink from '../_shared/CopyPhotoLink.svelte';
+	import GalleryScrollButton from '../_shared/GalleryScrollButton.svelte';
 	import type { CatalogProduct } from '../_shared/product-catalog';
 	import FavoriteButton from '../../favorites/FavoriteButton.svelte';
 	import { favoriteVariant } from '../../favorites/storage';
@@ -287,65 +289,29 @@
 		{#if items.length > 3}
 			<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
 				{#if canScrollLeft}
-					<div class="flex items-center gap-2 sm:gap-4">
-						<button
-							type="button"
-							onclick={scrollLeft}
-							data-goal-ignore="Прокрутка галереи влево"
-							class="group flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary bg-primary text-on-dark shadow-soft transition-colors duration-300 hover:bg-primary-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
-							aria-label="Листать влево"
-						>
-							<svg
-								class="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								stroke-width="2"
-							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7" />
-							</svg>
-						</button>
-						<span class="text-xs font-semibold tracking-[0.06em] text-primary uppercase sm:text-sm"
-							><ContentText
-								bind:data
-								{editContext}
-								{isEditable}
-								componentType="KitchensGallery"
-								path={['copy', 'scrollLeftText']}
-								fallback={'Листайте влево'}
-								label="Листайте влево"
-							/></span
-						>
-					</div>
-				{/if}
-				<div class="ml-auto flex items-center gap-2 sm:gap-4">
-					<span class="text-xs font-semibold tracking-[0.06em] text-primary uppercase sm:text-sm"
-						><ContentText
+					<GalleryScrollButton direction="left" {isEditable} onclick={scrollLeft}>
+						<ContentText
 							bind:data
 							{editContext}
 							{isEditable}
 							componentType="KitchensGallery"
-							path={['copy', 'scrollRightText']}
-							fallback={'Листайте вправо'}
-							label="Листайте вправо"
-						/></span
-					>
-					<button
-						onclick={scrollRight}
-						class="group flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary bg-primary text-on-dark shadow-soft transition-colors duration-300 hover:bg-primary-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
-						aria-label="Листать вправо"
-					>
-						<svg
-							class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-						</svg>
-					</button>
-				</div>
+							path={['copy', 'scrollLeftText']}
+							fallback={'Листайте влево'}
+							label="Листайте влево"
+						/>
+					</GalleryScrollButton>
+				{/if}
+				<GalleryScrollButton direction="right" {isEditable} onclick={scrollRight}>
+					<ContentText
+						bind:data
+						{editContext}
+						{isEditable}
+						componentType="KitchensGallery"
+						path={['copy', 'scrollRightText']}
+						fallback={'Листайте вправо'}
+						label="Листайте вправо"
+					/>
+				</GalleryScrollButton>
 			</div>
 		{/if}
 
@@ -457,6 +423,7 @@
 					class="text-sm text-primary underline underline-offset-4">Открыть оригинал</a
 				>
 			{/if}
+			<CopyPhotoLink url={selectedPhoto.image} />
 			<button
 				type="button"
 				onclick={savePhoto}

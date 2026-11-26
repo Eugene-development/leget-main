@@ -1,10 +1,8 @@
 <script lang="ts">
 	// Мобильная половина версии 1.М.1.4 — см. ./Menu.svelte и ../Mobile.svelte
 	import { page } from '$app/stores';
-	import { fly } from 'svelte/transition';
 	import { uiStore } from '$lib/stores/ui.svelte';
 	import { cityStore } from '$lib/stores/city.svelte';
-	import { createMenuMotion } from '../motion.svelte';
 	import { iconPath } from '../icons';
 	import type { CatalogItem } from '../../catalogItems';
 	import type { ServiceItem } from '../../serviceItems';
@@ -60,7 +58,6 @@
 
 	type ToggleHandler = (href: string, currentEnabled: boolean, e: Event) => void;
 
-	const motion = createMenuMotion();
 	const account = createClientAccount();
 	const phoneHref = $derived(sitePhoneHref(sitePhone));
 
@@ -110,14 +107,13 @@
 {/snippet}
 
 <!-- Ячейка решётки: иконка-якорь, под ней лестница «рубрика → пояснение». -->
-{#snippet shelfCell(item: CatalogItem, idx: number)}
+{#snippet shelfCell(item: CatalogItem)}
 	{@const isComingSoon = item.comingSoon === true}
 	{@const isEnabled = !isComingSoon && !disabledRubrics.includes(item.href)}
 	<div
 		class="p1-overlay p1-accent-wash flex items-start justify-between gap-2 px-4 py-4"
 		class:opacity-50={isComingSoon || (isEditable && !isEnabled)}
 		title={isComingSoon ? 'В разработке' : undefined}
-		in:fly={{ y: -5, duration: motion.enterDuration, delay: motion.enterDelay(idx) }}
 	>
 		<a
 			href={isComingSoon ? undefined : item.href}
@@ -155,14 +151,13 @@
 {/snippet}
 
 <!-- Услуги: строкой, иконка слева — узкая колонка десктопной половины. -->
-{#snippet serviceRow(service: ServiceItem, idx: number)}
+{#snippet serviceRow(service: ServiceItem)}
 	{@const isComingSoon = service.comingSoon === true}
 	{@const isEnabled = !isComingSoon && !disabledServices.includes(service.href)}
 	<div
 		class="p1-overlay p1-accent-wash flex w-full items-stretch justify-between"
 		class:opacity-50={isComingSoon || (isEditable && !isEnabled)}
 		title={isComingSoon ? 'В разработке' : undefined}
-		in:fly={{ y: -5, duration: motion.enterDuration, delay: motion.enterDelay(idx) }}
 	>
 		<a
 			href={service.href}
@@ -339,8 +334,7 @@
 
 {#if uiStore.menuOpen}
 	<nav
-		data-p1-theme="light"
-		class="p1-border grid max-h-[74dvh] grid-cols-1 gap-px overflow-y-auto border-t bg-[var(--p1-line)] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden"
+		class="p1-border grid grid-cols-1 gap-px border-t bg-[var(--p1-line)]"
 		aria-label="Мобильная навигация"
 	>
 		{@render accountBlock()}
@@ -349,15 +343,15 @@
 			{#if link.label === 'Услуги'}
 				{@render shelfHeader(link.label, visibleServiceItems.length)}
 				<div class="grid grid-cols-1 gap-px">
-					{#each visibleServiceItems as service, idx (service.href)}
-						{@render serviceRow(service, idx)}
+					{#each visibleServiceItems as service (service.href)}
+						{@render serviceRow(service)}
 					{/each}
 				</div>
 			{:else if link.label === 'Каталог'}
 				{@render shelfHeader(link.label, visibleCatalogItems.length)}
 				<div class="grid grid-cols-2 gap-px">
-					{#each visibleCatalogItems as item, idx (item.href)}
-						{@render shelfCell(item, idx)}
+					{#each visibleCatalogItems as item (item.href)}
+						{@render shelfCell(item)}
 					{/each}
 				</div>
 			{:else}

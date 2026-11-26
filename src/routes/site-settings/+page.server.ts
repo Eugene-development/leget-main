@@ -1,3 +1,4 @@
+import { leadCatcherPolicy, supportsLeadCatcher } from '$lib/utils/lead-catcher';
 import { normalizeHeaderButtonColor } from '$lib/site-settings/header-button';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { adminAuthApi } from '$lib/server/admin-api';
@@ -270,6 +271,9 @@ function publicSettings(license: LicenseSettings) {
 		domain: license.domain,
 		name: license.name,
 		templateId: license.templateId,
+		leadCatcherAvailable: supportsLeadCatcher(license.templateId),
+		leadCatcherEnabled: headerData.leadCatcherEnabled === true,
+		leadCatcherPolicyHref: leadCatcherPolicy(headerData.leadCatcherPolicyHref) || '/privacy',
 		faviconUrl: license.faviconUrl,
 		yandexMetrica: normalizeYandexCounterId(headerData.yandexMetrica),
 		googleAnalytics: normalizeGoogleTagId(headerData.googleAnalytics),
@@ -371,6 +375,11 @@ export const actions: Actions = {
 		const googleAnalytics = field(formData, 'googleAnalytics').toUpperCase();
 		const designSystem = field(formData, 'designSystem');
 		const appearanceEnabled = formData.get('appearanceEnabled') === 'on';
+		const updateLeadCatcher =
+			supportsLeadCatcher(license.templateId) && formData.get('leadCatcherSettings') === '1';
+		const leadCatcherEnabled = formData.get('leadCatcherEnabled') === 'on';
+		const leadCatcherPath = field(formData, 'leadCatcherPolicyHref') || '/privacy';
+		const leadCatcherPolicyHref = leadCatcherPolicy(leadCatcherPath);
 		const headerButtonSettings = formData.get('headerButtonSettings') === '1';
 		const headerButtonColor = headerButtonSettings
 			? formData.get('headerButtonCustom') === 'on'
@@ -385,6 +394,9 @@ export const actions: Actions = {
 		} = appearanceEnabled
 			? parseAppearance(formData)
 			: { appearance: undefined, values: undefined, errors: {} as Record<string, string> };
+
+		if (updateLeadCatcher && !leadCatcherPolicyHref)
+			errors.leadCatcherPolicyHref = 'Укажите путь к политике на этом сайте, например /privacy.';
 
 		if (headerButtonColor !== null && !isHexColor(headerButtonColor))
 			errors.headerButtonColor = 'Выберите цвет в формате #RRGGBB.';
@@ -407,6 +419,7 @@ export const actions: Actions = {
 
 		const values = {
 			headerButtonColor,
+			...(updateLeadCatcher ? { leadCatcherEnabled, leadCatcherPolicyHref: leadCatcherPath } : {}),
 			yandexMetrica,
 			googleAnalytics,
 			appearanceEnabled,
@@ -419,6 +432,7 @@ export const actions: Actions = {
 
 		const headerData = {
 			...record(license.headerData),
+			...(updateLeadCatcher ? { leadCatcherEnabled, leadCatcherPolicyHref } : {}),
 			yandexMetrica: yandexMetrica || null,
 			googleAnalytics: googleAnalytics || null,
 			siteAppearance: appearanceEnabled ? appearance : null,
