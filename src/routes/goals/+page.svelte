@@ -198,13 +198,14 @@
 
 			const searchable = [
 				goal.name,
-				goal.description,
+				goal.description ?? '',
 				goal.eventName,
 				goal.buttonLabel ?? '',
 				goal.selector ?? '',
 				...goal.pages.flatMap((page) => [
 					page.label,
-					page.scope === 'sitewide' ? 'весь сайт все страницы' : page.path
+					page.scope === 'sitewide' ? 'весь сайт все страницы' : page.path,
+					...(page.articles ?? [])
 				])
 			]
 				.join(' ')
@@ -575,17 +576,13 @@
 {#snippet goalRow(goal: GoalDefinition)}
 	{@const remote = remoteStateFor(goal)}
 	{@const metrikaStatus = remote?.state ?? 'unchecked'}
-	{@const sitewide = goal.pages.some((page) => page.scope === 'sitewide')}
 	{@const copied = copiedId === goal.id && !copyFailed}
 	<details class="group/row min-w-0">
 		<summary class="goal-summary grid cursor-pointer list-none items-center gap-x-3 gap-y-2 py-3.5">
 			<span class="goal-title min-w-0 wrap-anywhere">
 				<strong class="block text-sm font-semibold sm:text-base">{goal.name}</strong>
 				<span class="mt-0.5 block text-sm text-text-secondary">
-					{sitewide ? 'Весь сайт' : goal.pages[0]?.label}{!sitewide && goal.pages.length > 1
-						? ` · ещё ${goal.pages.length - 1}`
-						: ''}
-					· {goal.status === 'implemented' ? 'Подключена в коде' : 'Черновик'}
+					{goal.status === 'implemented' ? 'Подключена в коде' : 'Черновик'}
 				</span>
 			</span>
 			{#if goal.status === 'implemented'}
@@ -614,30 +611,49 @@
 						</ul>
 					{/if}
 				</div>
-				<div>
-					<p class="field-label">Где срабатывает</p>
+				{#if goal.description}
 					<p class="text-sm leading-relaxed wrap-anywhere text-text-secondary">
 						{goal.description}
 					</p>
-					<ul class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+				{/if}
+				<details class="group/locations rounded-lg border border-border-light bg-surface-card">
+					<summary
+						class="location-summary flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-lg px-3 py-2 text-sm"
+					>
+						<span class="font-semibold">Где срабатывает</span>
+						<span class="ml-auto text-xs text-text-secondary tabular-nums">{goal.pages.length}</span
+						>
+						{@render chevron('size-4 shrink-0 text-text-secondary group-open/locations:rotate-180')}
+					</summary>
+					<ul class="divide-y divide-border-light border-t border-border-light">
 						{#each goal.pages as page (pageKey(page))}
-							<li class="min-w-0 wrap-anywhere">
+							<li class="px-3 py-3 wrap-anywhere">
 								{#if page.scope === 'route'}
 									<a
 										href={page.path}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="inline-block py-2 text-sm underline underline-offset-4"
+										class="inline-flex flex-wrap items-baseline gap-x-2 text-sm underline underline-offset-4"
 									>
 										{page.label} <code class="text-xs">{page.path}</code>
 									</a>
 								{:else}
-									<span class="text-sm text-text-secondary">{page.label}</span>
+									<span class="text-sm">{page.label}</span>
+								{/if}
+								{#if page.articles?.length}
+									<p class="mt-1 text-xs text-text-secondary">
+										{page.articles.length === 1 ? 'Артикул' : 'Артикулы'}
+										{page.articles.join(', ')}
+									</p>
+								{:else if page.articles}
+									<p class="mt-1 text-xs text-text-secondary">
+										Общая форма без отдельного артикула
+									</p>
 								{/if}
 							</li>
 						{/each}
 					</ul>
-				</div>
+				</details>
 			</div>
 
 			<div class="min-w-0">
@@ -821,7 +837,8 @@
 	}
 
 	.filters summary::-webkit-details-marker,
-	.goal-summary::-webkit-details-marker {
+	.goal-summary::-webkit-details-marker,
+	.location-summary::-webkit-details-marker {
 		display: none;
 	}
 

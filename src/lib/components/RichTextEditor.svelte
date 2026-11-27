@@ -38,10 +38,11 @@
 	const selectedSize = $derived.by(() => {
 		revision;
 		if (!editor) return '';
-		const { from, to, empty } = editor.state.selection;
-		if (empty) return normalizeFontSize(editor.getAttributes('fontSize').size) ?? '';
+		const { doc, selection } = editor.state;
+		if (editor.isEmpty) return normalizeFontSize(editor.getAttributes('fontSize').size) ?? '';
+		const { from, to } = selection.empty ? { from: 0, to: doc.content.size } : selection;
 		const sizes = new Set<string>();
-		editor.state.doc.nodesBetween(from, to, (node) => {
+		doc.nodesBetween(from, to, (node) => {
 			if (node.isText)
 				sizes.add(
 					normalizeFontSize(node.marks.find((mark) => mark.type.name === 'fontSize')?.attrs.size) ??
@@ -53,9 +54,16 @@
 
 	function setFontSize(value: string) {
 		if (!editor || disabled) return;
+		const size = normalizeFontSize(value);
+		if (value !== '' && !size) return;
+		const selection = editor.state.selection;
+		const wholeField = selection.empty && !editor.isEmpty;
 		const chain = editor.chain().focus();
-		if (value === '') chain.unsetMark('fontSize').run();
-		else if (normalizeFontSize(value)) chain.setMark('fontSize', { size: value }).run();
+		if (wholeField) chain.selectAll();
+		if (size) chain.setMark('fontSize', { size });
+		else chain.unsetMark('fontSize');
+		if (wholeField) chain.setTextSelection(selection.from);
+		chain.run();
 	}
 	const tools = [
 		{ label: 'Жирный', type: 'bold', icon: 'M6 4h7a4 4 0 0 1 0 8H6zm0 8h8a4 4 0 0 1 0 8H6z' },
@@ -230,7 +238,7 @@
 	>
 		<select
 			aria-label="Размер шрифта"
-			title="Размер выделенного текста"
+			title="Размер выделенного текста или всего поля"
 			value={selectedSize}
 			disabled={!editor || disabled}
 			onchange={(event) => setFontSize(event.currentTarget.value)}
@@ -278,10 +286,14 @@
 	</div>
 	{#if loadError}<p class="p-4 text-sm text-cat-6-600" role="alert">{loadError}</p>
 	{:else if !editor}<p class="p-4 text-sm text-ink-500" role="status">Загрузка редактора…</p>{/if}
-	<div bind:this={element} class="editor-content text-base text-ink-900"></div>
+	<div
+		bind:this={element}
+		class="editor-content text-base text-ink-900"
+		style:font-size={defaultFontSize}
+	></div>
 </div>
 <p class="mt-2 text-xs text-ink-500">
-	Выделите текст и выберите формат. Enter — абзац, Shift+Enter — новая строка.
+	Без выделения размер применяется ко всему полю. Enter — абзац, Shift+Enter — новая строка.
 </p>
 
 <style>

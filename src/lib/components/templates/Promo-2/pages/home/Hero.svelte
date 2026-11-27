@@ -87,7 +87,12 @@
 	let heroVisible = $state(false);
 	let videoEls = $state<HTMLVideoElement[]>([]);
 	let isDesktop = $state(false);
-	const editingMobileTitle = $derived(isEditable && !isDesktop);
+	let titleElement = $state<HTMLHeadingElement | null>(null);
+	const activeTitleKey = $derived(editStore.activeField?.key);
+	const editingMobileTitle = $derived(
+		isEditable &&
+			(activeTitleKey === mobileTitleKey || (!isDesktop && activeTitleKey !== desktopTitleKey))
+	);
 
 	function saveDesktopTitle(value: string) {
 		return saveField('title', value);
@@ -106,6 +111,7 @@
 			value: forPhone ? phoneTitle : desktopTitle,
 			multiline: false,
 			richText: true,
+			defaultFontSize: titleElement ? getComputedStyle(titleElement).fontSize : undefined,
 			onSave: forPhone ? saveMobileTitle : saveDesktopTitle
 		});
 	}
@@ -409,6 +415,7 @@
 						{/snippet}
 						{#snippet children(displayValue)}
 							<h1
+								bind:this={titleElement}
 								class="text-page-title text-primary opacity-0 max-md:[@media(max-height:700px)]:text-[length:calc(var(--ds-font-page-title-size)*0.74)]"
 								style="font-family: var(--font-heading); animation-delay: 0.5s"
 								class:animate-fade-up={heroVisible}

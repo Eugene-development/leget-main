@@ -49,6 +49,7 @@
 >
 	<div class="absolute inset-0 z-0">
 		<ImageFallback
+			proxyPublicImage
 			imagePath={['image']}
 			src={String(
 				data?.image ??

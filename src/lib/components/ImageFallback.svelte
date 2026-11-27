@@ -4,11 +4,13 @@
 	import { useImageEditing } from '$lib/utils/image-editing.svelte';
 	import { editStore } from '$lib/stores/edit.svelte';
 	import { type ImagePathPart } from '$lib/utils/component-images';
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import type { HTMLImgAttributes } from 'svelte/elements';
 
 	let {
 		src,
 		srcAliases,
+		proxyPublicImage = false,
 		imagePath,
 		imageDefaults = {},
 		imageRole,
@@ -21,6 +23,7 @@
 	}: HTMLImgAttributes & {
 		src?: string | null;
 		srcAliases?: ReadonlyMap<string, string>;
+		proxyPublicImage?: boolean;
 		imagePath?: ImagePathPart[];
 		imageDefaults?: Record<string, unknown>;
 		imageRole?: 'preview';
@@ -42,7 +45,10 @@
 	const active = $derived(
 		imagePath && editStore.activeField?.key === fieldKey && editStore.activeField.kind === 'image'
 	);
-	const displaySrc = $derived(active ? editStore.activeField?.draft : savedSrc);
+	const currentSrc = $derived(active ? editStore.activeField?.draft : savedSrc);
+	const displaySrc = $derived(
+		proxyPublicImage && currentSrc ? publicMediaUrl(currentSrc) : currentSrc
+	);
 	const label = $derived(alt || 'Изображение');
 	$effect(() => {
 		if (!editor?.editable || !imagePath || imageRole === 'preview') return;

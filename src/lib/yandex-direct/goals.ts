@@ -15,7 +15,7 @@ export interface SitewideGoalPage {
 	label: string;
 }
 
-export type GoalPage = RouteGoalPage | SitewideGoalPage;
+export type GoalPage = (RouteGoalPage | SitewideGoalPage) & { articles?: string[] };
 
 export interface GoalDefinition {
 	id: string;
@@ -23,7 +23,7 @@ export interface GoalDefinition {
 	type: GoalType;
 	status: 'draft' | 'implemented';
 	priority: GoalPriority;
-	description: string;
+	description?: string;
 	eventName: string;
 	condition: string;
 	pages: GoalPage[];
@@ -173,27 +173,19 @@ const pageNames: Record<string, string> = {
 	'/santehnika': 'Сантехника',
 	'/stoleshnica': 'Столешницы'
 };
-function locationLabel(path: string): string {
-	return path === '(layout)' ? 'Все страницы' : `${pageNames[path] || 'Страница'} (${path})`;
-}
-function describeLocations(button: (typeof buttons)[number], template: string): string {
-	const groups = new Map<string, string[]>();
-	for (const location of button.locations.filter((location) => location.template === template)) {
-		const articles = groups.get(location.page) ?? [];
-		if (location.article && !articles.includes(location.article)) articles.push(location.article);
+function pagesForButton(button: (typeof buttons)[number], template: string): GoalPage[] {
+	const groups = new Map<string, Set<string>>();
+	for (const location of button.locations) {
+		if (location.template !== template) continue;
+		const articles = groups.get(location.page) ?? new Set<string>();
+		if (location.article) articles.add(location.article);
 		groups.set(location.page, articles);
 	}
-	const location = [...groups]
-		.map(([page, articles]) =>
-			articles.length
-				? `${locationLabel(page)} · ${articles.length === 1 ? 'Артикул' : 'Артикулы'}: ${articles.join(', ')}`
-				: `${locationLabel(page)} · Общая форма, отдельный артикул не назначен`
-		)
-		.join('; ');
-	return (
-		(location ||
-			`${locationLabel(button.route || '(layout)')} · Общая форма, отдельный артикул не назначен`) +
-		(button.mock ? ' · Демонстрационная форма: серверная отправка не реализована.' : '')
+	if (groups.size === 0) groups.set(button.route || '(layout)', new Set<string>());
+	return Array.from(groups, ([path, articles]) =>
+		path === '(layout)'
+			? { scope: 'sitewide', label: 'Весь сайт', articles: [...articles] }
+			: { scope: 'route', label: pageNames[path] || 'Страница', path, articles: [...articles] }
 	);
 }
 
@@ -212,28 +204,15 @@ export function goalsForTemplate(template: string): GoalDefinition[] {
 			type: 'click',
 			status: 'implemented',
 			priority: button.action === 'submit_click' ? 'high' : 'medium',
-			description: describeLocations(button, template),
+			description: button.mock
+				? 'Демонстрационная форма. Серверная отправка не реализована.'
+				: undefined,
 			eventName: templateGoalName(template, button.id),
 			condition:
 				button.action === 'submit_click'
 					? 'Нажатие кнопки отправки. Не подтверждает валидацию или приём данных сервером.'
 					: `${actions[button.action]}: нажатие отмеченной кнопки.`,
-			pages: [
-				...new Set(
-					button.locations
-						.filter((location) => location.template === template)
-						.map((location) => location.page)
-						.concat(
-							button.locations.some((location) => location.template === template)
-								? []
-								: [button.route || '(layout)']
-						)
-				)
-			].map((path) =>
-				path === '(layout)'
-					? { scope: 'sitewide' as const, label: 'Все страницы' }
-					: { scope: 'route' as const, label: pageNames[path] || 'Страница', path }
-			),
+			pages: pagesForButton(button, template),
 			buttonLabel: button.label,
 			selector:
 				'baseId' in button

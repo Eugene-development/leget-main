@@ -13,6 +13,7 @@
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { publicMediaPrefix } from '$lib/utils/public-media';
 
 	let {
 		data = $bindable(),
@@ -38,7 +39,7 @@
 		data = { ...data, items: next };
 	}
 
-	let selectedPhoto = $state<{ image: string; title: string } | null>(null);
+	let selectedPhoto = $state<{ image: string; title: string; downloadUrl: string } | null>(null);
 	let photoDialog: HTMLDialogElement;
 	let savingPhoto = $state(false);
 	let saveError = $state('');
@@ -50,7 +51,12 @@
 				? event.currentTarget.parentElement?.querySelector('img')
 				: null;
 		if (!image?.currentSrc) return;
-		selectedPhoto = { image: image.currentSrc, title: project.title };
+		const source = new URL(image.currentSrc);
+		const downloadUrl =
+			source.origin === location.origin && source.pathname.startsWith(publicMediaPrefix)
+				? image.currentSrc
+				: `/api/gallery-image?url=${encodeURIComponent(image.currentSrc)}`;
+		selectedPhoto = { image: image.currentSrc, title: project.title, downloadUrl };
 		saveError = '';
 		photoDialog.showModal();
 	}
@@ -71,9 +77,7 @@
 		savingPhoto = true;
 		saveError = '';
 		try {
-			const response = await fetch(`/api/gallery-image?url=${encodeURIComponent(photo.image)}`, {
-				signal: controller.signal
-			});
+			const response = await fetch(photo.downloadUrl, { signal: controller.signal });
 			if (!response.ok) throw new Error('Download failed');
 			const blob = await response.blob();
 			if (!blob.type.startsWith('image/')) throw new Error('Invalid image');
@@ -328,6 +332,7 @@
 						style="animation-delay: {0.1 + i * 0.05}s"
 					>
 						<ImageFallback
+							proxyPublicImage
 							imageRole="preview"
 							loading="lazy"
 							src={project.image}

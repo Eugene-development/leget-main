@@ -125,6 +125,7 @@
 				>
 					<div class="aspect-[4/3] w-full overflow-hidden">
 						<ImageFallback
+							proxyPublicImage
 							imagePath={['styles', i, 'image']}
 							imageDefaults={{ styles }}
 							loading="lazy"
