@@ -4,7 +4,11 @@
 </script>
 
 <svg
-	class={className}
+	class={[
+		className,
+		'text-header-action-outline transition-colors group-hover/favorite:text-header-action-start group-focus-visible/favorite:text-header-action-start',
+		'motion-safe:group-hover/favorite:animate-pulse motion-safe:group-focus-visible/favorite:animate-pulse [animation-duration:650ms]! [animation-iteration-count:1]!'
+	]}
 	viewBox="0 0 24 24"
 	fill={filled ? 'currentColor' : 'none'}
 	stroke="currentColor"

@@ -30,7 +30,7 @@
 			name: 'Современный',
 			description:
 				'Чистые линии, минимализм, интегрированная техника и матовые текстуры для создания идеального пространства',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/sovremjknvndgvhj.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/sovremjknvndgvhj.jpg',
 			tags: ['Минимализм', 'Hi-Tech', 'Матовость']
 		},
 		{
@@ -38,7 +38,7 @@
 			name: 'Классика',
 			description:
 				'Традиционные формы, резные фасады, обилие дерева и теплые оттенки для уюта и респектабельности',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/claskjdgnbkdgmj.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/claskjdgnbkdgmj.jpg',
 			tags: ['Дерево', 'Резьба', 'Патина']
 		},
 		{
@@ -46,7 +46,7 @@
 			name: 'Лофт',
 			description:
 				'Индустриальный шик: бетон, кирпич, металл и брутальные формы, создающие стильное современное пространство',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/loftelkjbngrtobnhekrjthbn.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/loftelkjbngrtobnhekrjthbn.jpg',
 			tags: ['Бетон', 'Металл', 'Брутальность']
 		},
 		{
@@ -54,7 +54,7 @@
 			name: 'Минимализм',
 			description:
 				'Лаконичность, строгая геометрия форм без лишних деталей, нейтральная палитра для создания просторного интерьера',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/minimkjfvnfsjnvk.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/minimkjfvnfsjnvk.jpg',
 			tags: ['Лаконичность', 'Геометрия', 'Пространство']
 		},
 		{
@@ -62,7 +62,7 @@
 			name: 'Модерн',
 			description:
 				'Плавные линии, элегантная асимметрия, сочетание природных мотивов и современных материалов в каждой детали',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/modernlkthetrlkmjkdrythk.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/modernlkthetrlkmjkdrythk.jpg',
 			tags: ['Плавные линии', 'Элегантность', 'Природа']
 		},
 		{
@@ -70,7 +70,7 @@
 			name: 'Ретро',
 			description:
 				'Винтажный шарм, смелые цветовые акценты, стилизованная техника и эстетика, отсылающая к ярким эпохам прошлого',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/retrofmsjvbjksdfvbnjksdjds.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/retrofmsjvbjksdfvbnjksdjds.jpg',
 			tags: ['Винтаж', 'Акценты', 'Стилизация']
 		},
 		{
@@ -78,7 +78,7 @@
 			name: 'Неоклассика',
 			description:
 				'Изящное сочетание традиционных элементов с современными материалами и светлыми интерьерными тонами',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/neokjewtgniertwjv.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/neokjewtgniertwjv.jpg',
 			tags: ['Изящность', 'Мрамор', 'Светлые тона']
 		},
 		{
@@ -86,7 +86,7 @@
 			name: 'Скандинавский',
 			description:
 				'Максимум света и пространства, натуральные материалы, светлое дерево и функциональный лаконичный дизайн',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/scandkjbfvkjsdenbkj.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/scandkjbfvkjsdenbkj.jpg',
 			tags: ['Свет', 'Уют', 'Функциональность']
 		},
 		{
@@ -94,7 +94,7 @@
 			name: 'Прованс',
 			description:
 				'Французский кантри с пастельными тонами, винтажной фурнитурой и домашним теплом',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/provanjvngkjenbkjrn.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/provanjvngkjenbkjrn.jpg',
 			tags: ['Кантри', 'Винтаж', 'Уют']
 		}
 	];

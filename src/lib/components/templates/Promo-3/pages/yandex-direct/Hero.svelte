@@ -41,7 +41,7 @@
 	<div class="absolute inset-0">
 		<ImageFallback
 			imagePath={['bgImage']}
-			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg')}
+			src={String(data?.bgImage ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-3/legacy/novostroy/bg/hero-2.jpg')}
 			alt={editableText(data?.title, 'Мебель на заказ')}
 			class="size-full object-cover"
 		/>

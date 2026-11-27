@@ -42,7 +42,7 @@
 			subtitle: 'Цифровое моделирование пространства',
 			description:
 				'Создаем интерактивную 3D-модель вашей будущей кухни в реальном масштабе. Вы увидите фотореалистичный рендер материалов, текстур и освещения еще до начала производства.',
-			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
+			bgImage: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-1.jpg',
 			gradient: 'from-cat-3-600 via-cat-4-600 to-link-500',
 			accentColor: 'text-cat-3-400',
 			glowColor: 'rgba(139, 92, 246, 0.15)',
@@ -58,7 +58,7 @@
 			subtitle: 'Умная организация пространства',
 			description:
 				'Индивидуальный расчет высоты рабочих зон под ваш рост. Разработка скрытых выдвижных систем, бесшумных угловых решений и идеальной последовательности рабочих треугольников.',
-			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
+			bgImage: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-2.jpg',
 			gradient: 'from-cat-5-600 via-link-600 to-cat-4-500',
 			accentColor: 'text-cat-5-400',
 			glowColor: 'rgba(6, 182, 212, 0.15)',
@@ -74,7 +74,7 @@
 			subtitle: 'Эстетика премиальных текстур',
 			description:
 				'Работаем с лучшими мировыми материалами. Натуральный шпон дуба, итальянские эмали Soft-touch, кварцевый агломерат повышенной прочности и ультрасовременные нано-покрытия Fenix.',
-			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg',
+			bgImage: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/vector-kitchen.jpg',
 			gradient: 'from-cat-2-600 via-cat-9-600 to-link-500',
 			accentColor: 'text-cat-2-400',
 			glowColor: 'rgba(16, 185, 129, 0.15)',
@@ -90,7 +90,7 @@
 			subtitle: 'Безупречная интеграция за 1 день',
 			description:
 				'Монтаж выполняют сертифицированные инженеры фабрики LEGET с использованием лазерного нивелирования. Чистая установка со строительными пылесосами Festool и врезка всей бытовой техники.',
-			bgImage: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
+			bgImage: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-2.jpg',
 			gradient: 'from-cat-1-600 via-cat-6-600 to-cat-4-500',
 			accentColor: 'text-cat-1-400',
 			glowColor: 'rgba(245, 158, 11, 0.15)',
@@ -111,22 +111,22 @@
 			: [
 					{
 						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 						url: 'https://www.hettich.com'
 					},
 					{
 						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 						url: 'https://www.egger.com'
 					},
 					{
 						name: 'Аристо',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/aristo-Logo.png',
 						url: 'https://www.aristo.ru'
 					},
 					{
 						name: 'Blum',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/blum-Logo.png',
 						url: 'https://www.blum.com'
 					}
 				]

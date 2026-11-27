@@ -5,9 +5,11 @@
 	import EditableField from '$lib/components/EditableField.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import FavoriteButton from '../../favorites/FavoriteButton.svelte';
 	import Heart from '../../favorites/Heart.svelte';
 	import { readFavorites, subscribeFavorites, type FavoriteVariant } from '../../favorites/storage';
+	import GalleryPhotoDialog from '../_shared/GalleryPhotoDialog.svelte';
 	let {
 		data = $bindable(),
 		editContext = null,
@@ -20,6 +22,7 @@
 	let items = $state<FavoriteVariant[]>([]);
 	let ready = $state(false);
 	let filter = $state<'all' | 'kitchen' | 'wardrobe'>('all');
+	let selectedPhoto = $state<FavoriteVariant | null>(null);
 	$effect(() => {
 		items = readFavorites();
 		ready = true;
@@ -107,7 +110,7 @@
 			</p>
 		{:else if items.length === 0 || isEditable}
 			<div class="py-16 text-center">
-				<div class="mb-6 flex justify-center text-secondary"><Heart class="h-12 w-12" /></div>
+				<div class="mb-6 flex justify-center"><Heart class="h-12 w-12" /></div>
 				<EditableField
 					fieldKey="FavoritesGallery.emptyTitle"
 					label="Заголовок пустого списка"
@@ -180,18 +183,25 @@
 				{#each visibleItems as item (item.id)}
 					<article>
 						<div class="relative aspect-[4/3] overflow-hidden rounded-sm bg-surface-muted">
-							<a
-								href={item.kind === 'kitchen' ? '/kitchens' : '/wardrobes'}
-								aria-label={`Смотреть ${item.kind === 'kitchen' ? 'кухни' : 'шкафы'}: ${item.title}`}
-								class="block h-full focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-accent"
+							<button
+								type="button"
+								onclick={() => {
+									selectedPhoto = {
+										...item,
+										image: new URL(publicMediaUrl(item.image), location.origin).href
+									};
+								}}
+								data-goal-ignore="Просмотр фотографии из избранного без формы"
+								aria-label={`Открыть фото: ${item.title}`}
+								class="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-accent"
 							>
 								<img
-									src={item.image}
+									src={publicMediaUrl(item.image)}
 									alt={item.title}
 									loading="lazy"
 									class="h-full w-full object-cover"
 								/>
-							</a>
+							</button>
 							<div class="absolute top-4 right-4 z-20"><FavoriteButton {item} /></div>
 						</div>
 						<div class="mt-5 flex items-baseline gap-1">
@@ -238,3 +248,11 @@
 		{/if}
 	</div>
 </section>
+
+{#if selectedPhoto}
+	<GalleryPhotoDialog
+		photo={selectedPhoto}
+		kind={selectedPhoto.kind}
+		onclose={() => (selectedPhoto = null)}
+	/>
+{/if}

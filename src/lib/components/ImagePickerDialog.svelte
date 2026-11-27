@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import { notifyError } from '$lib/utils/notify-error';
 	import { toast } from '$lib/stores/toast.svelte';
 	import { uploadSiteFile } from '$lib/utils/site-file-upload';
@@ -549,7 +550,7 @@
 					<!-- Current image -->
 					{#key selectedIndex}
 						<img
-							src={previewUrl}
+							src={publicMediaUrl(previewUrl)}
 							alt={`Предпросмотр: ${title.toLocaleLowerCase('ru-RU')}`}
 							class="slide-image {previewFit === 'contain' ? 'slide-image-contain' : ''}"
 							transition:fade={{ duration: 150 }}
@@ -597,7 +598,7 @@
 							aria-label="Изображение {i + 1}"
 							title="Изображение {i + 1}"
 						>
-							<img src={img.url} alt="Миниатюра {i + 1}" class="thumb-img" loading="lazy" />
+							<img src={publicMediaUrl(img.url)} alt="Миниатюра {i + 1}" class="thumb-img" loading="lazy" />
 							{#if img.url === currentImage}
 								<span class="thumb-current-dot"></span>
 							{/if}

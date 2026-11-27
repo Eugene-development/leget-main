@@ -35,9 +35,7 @@
 	aria-label={`${selected ? 'Удалить из избранного' : 'Добавить в избранное'}: ${item.title}`}
 	aria-pressed={selected}
 	title={selected ? 'Удалить из избранного' : 'Добавить в избранное'}
-	class="relative z-20 flex h-11 w-11 items-center justify-center rounded-full border border-border-light bg-surface/95 {selected
-		? 'text-accent'
-		: 'text-primary'} shadow-soft transition-colors hover:bg-surface-warm hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+	class="group/favorite relative z-20 flex h-11 w-11 items-center justify-center rounded-full border border-border-light bg-surface/95 shadow-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-header-action-outline"
 >
 	<Heart filled={selected} />
 </button>

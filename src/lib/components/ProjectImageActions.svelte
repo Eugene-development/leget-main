@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import FavoriteProjectButton from './FavoriteProjectButton.svelte';
 
 	let {
@@ -29,7 +30,7 @@
 		error = '';
 		downloading = true;
 		try {
-			const response = await fetch(imageUrl);
+			const response = await fetch(publicMediaUrl(imageUrl));
 			if (!response.ok) throw new Error('Image request failed');
 			const blob = await response.blob();
 			const objectUrl = URL.createObjectURL(blob);
@@ -95,7 +96,7 @@
 			error = 'Не удалось открыть изображение для печати.';
 		};
 		doc.body.appendChild(image);
-		image.src = imageUrl;
+		image.src = publicMediaUrl(imageUrl);
 	}
 </script>
 

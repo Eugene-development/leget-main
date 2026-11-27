@@ -32,7 +32,7 @@
 		{
 			title: 'Современный',
 			description: 'Чистые линии, минималистичные формы и функциональность мебели',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/sovremjknvndgvhj.jpg'
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/sovremjknvndgvhj.jpg'
 		},
 		{
 			title: 'Классический',
@@ -43,7 +43,7 @@
 		{
 			title: 'Лофт',
 			description: 'Индустриальный шик: бетон, металл и брутальные формы для смелых интерьеров',
-			image: 'https://storage.yandexcloud.net/zovtop/stiles/loftelkjbngrtobnhekrjthbn.jpg'
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/loftelkjbngrtobnhekrjthbn.jpg'
 		}
 	];
 

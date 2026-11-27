@@ -208,22 +208,22 @@
 	const defaultBrands: PartnerBrand[] = [
 		{
 			name: 'Hettich',
-			logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+			logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 			url: 'https://www.hettich.com'
 		},
 		{
 			name: 'Egger',
-			logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+			logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 			url: 'https://www.egger.com'
 		},
 		{
 			name: 'Аристо',
-			logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+			logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/aristo-Logo.png',
 			url: 'https://www.aristo.ru'
 		},
 		{
 			name: 'Blum',
-			logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+			logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/blum-Logo.png',
 			url: 'https://www.blum.com'
 		}
 	];

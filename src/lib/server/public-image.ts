@@ -6,7 +6,11 @@ const imageTypes = new Map([
 	['image/png', 'png'],
 	['image/webp', 'webp'],
 	['image/avif', 'avif'],
-	['image/gif', 'gif']
+	['image/gif', 'gif'],
+	['image/svg+xml', 'svg'],
+	['image/bmp', 'bmp'],
+	['image/x-icon', 'ico'],
+	['image/vnd.microsoft.icon', 'ico']
 ]);
 
 export async function fetchPublicImage(source: URL, fetchImage: typeof fetch) {
@@ -48,5 +52,10 @@ export async function fetchPublicImage(source: URL, fetchImage: typeof fetch) {
 	} finally {
 		reader.releaseLock();
 	}
-	return { blob: new Blob(chunks as BlobPart[], { type }), type, extension };
+	return {
+		blob: new Blob(chunks as BlobPart[], { type }),
+		type,
+		extension,
+		lastModified: image.headers.get('last-modified')
+	};
 }

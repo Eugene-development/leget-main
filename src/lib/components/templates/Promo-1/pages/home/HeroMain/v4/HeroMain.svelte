@@ -68,22 +68,22 @@
 			: [
 					{
 						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 						url: 'https://www.hettich.com'
 					},
 					{
 						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 						url: 'https://www.egger.com'
 					},
 					{
 						name: 'Аристо',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/aristo-Logo.png',
 						url: 'https://www.aristo.ru'
 					},
 					{
 						name: 'Blum',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/blum-Logo.png',
 						url: 'https://www.blum.com'
 					}
 				]
@@ -327,7 +327,7 @@
 							<ImageFallback
 								imagePath={['renderImage']}
 								src={String(
-									data?.renderImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg'
+									data?.renderImage ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-2.jpg'
 								)}
 								alt="LEGET Premium Kitchen"
 								class="h-full w-full object-cover grayscale-[20%] transition-transform duration-700 hover:scale-105"
@@ -359,7 +359,7 @@
 							<ImageFallback
 								imagePath={['materialImage']}
 								src={String(
-									data?.materialImage ?? 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg'
+									data?.materialImage ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/vector-kitchen.jpg'
 								)}
 								alt="Текстура натурального шпона"
 								class="h-full w-full object-cover"

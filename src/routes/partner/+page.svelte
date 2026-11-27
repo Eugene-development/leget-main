@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import CompanyCardEditor from './CompanyCardEditor.svelte';
-	import cabinetBackground from './partner-cabinet-background.jpg';
 
 	let { data, form } = $props();
 
@@ -36,7 +35,7 @@
 	<div
 		aria-hidden="true"
 		class="cabinet-background pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-		style:--cabinet-art={`url("${cabinetBackground}")`}
+		style:--cabinet-art={`url("/media/leget-main/shared/partner/partner-cabinet-background-7fc95c52d950.jpg")`}
 	></div>
 	<div class="mx-auto max-w-3xl">
 		{#if data.serviceUnavailable}

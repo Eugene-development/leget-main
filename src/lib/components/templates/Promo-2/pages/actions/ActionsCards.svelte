@@ -25,6 +25,12 @@
 	} from './promotion-cards';
 	import '../../../Promo-1/theme.css';
 
+	const kitchenImage = 'https://storage.yandexcloud.net/leget-main/templates/promo-2/actions/cards/kitchen-9e90defb4564.webp';
+
+	const deliveryImage = 'https://storage.yandexcloud.net/leget-main/templates/promo-2/actions/cards/delivery-86730c81f2be.webp';
+
+	const applianceImage = 'https://storage.yandexcloud.net/leget-main/templates/promo-2/actions/cards/appliances-06daa785d4d2.webp';
+
 	let {
 		data = $bindable(),
 		editContext = null,
@@ -46,6 +52,11 @@
 		{ key: 'service', label: 'Услуги' },
 		{ key: 'tech', label: 'Техника' }
 	];
+	const categoryImages = new Map([
+		['furniture', kitchenImage],
+		['service', deliveryImage],
+		['tech', applianceImage]
+	]);
 
 	const defaultCards: PromotionCard[] = [
 		{
@@ -337,7 +348,7 @@
 							imagePath={['cards', index, 'image']}
 							imageDefaults={{ cards }}
 							loading="lazy"
-							src={card.image || undefined}
+							src={card.image ?? categoryImages.get(card.category)}
 							alt={card.title}
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 						/>
@@ -436,7 +447,6 @@
 												label="Старая цена"
 												placeholder="Старая цена"
 												defaults={{ cards }}
-												richText={false}
 												multiline
 											/>
 											{#if card.oldPrice}<ContentText
@@ -466,7 +476,6 @@
 												label="Цена по акции"
 												placeholder="Цена по акции"
 												defaults={{ cards }}
-												richText={false}
 												multiline
 											/>
 											{#if card.newPrice}<span class="text-base">

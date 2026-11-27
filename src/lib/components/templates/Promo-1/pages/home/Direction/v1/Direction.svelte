@@ -26,7 +26,7 @@
 				}[])
 			: [
 					{
-						image: 'https://storage.yandexcloud.net/novostroy/bg/vector-kitchen.jpg',
+						image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/vector-kitchen.jpg',
 						alt: 'Кухонные гарнитуры',
 						badge: 'Основное направление',
 						title: 'Кухонные гарнитуры',
@@ -34,7 +34,7 @@
 						buttonHref: '/contact'
 					},
 					{
-						image: 'https://storage.yandexcloud.net/novostroy/bg/prih.jpg',
+						image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/prih.jpg',
 						alt: 'Шкафы и гардеробы',
 						badge: 'Основное направление',
 						title: 'Шкафы и гардеробы',

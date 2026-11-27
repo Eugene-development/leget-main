@@ -1,27 +1,23 @@
 <script lang="ts">
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
-	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.1.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
-	import furniturePromotionsBackground from './furniture-promotions.webp';
 	import { onMount } from 'svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import EditableField from '$lib/components/EditableField.svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
 
+	const furniturePromotionsBackground = 'https://storage.yandexcloud.net/leget-main/templates/promo-2/actions/hero/furniture-promotions-edee6835cfb0.webp';
+
 	let {
 		data = $bindable(),
 		editContext = null,
-		isEditable = false,
-		showOffer = true,
-		showStats = true
+		isEditable = false
 	}: {
 		data: Record<string, unknown>;
 		editContext?: EditContext | null;
 		isEditable?: boolean;
-		showOffer?: boolean;
-		showStats?: boolean;
 	} = $props();
 
 	async function saveField(field: string, value: string) {
@@ -29,6 +25,18 @@
 		const updated = { ...data, [field]: value };
 		await saveComponentData(editContext, 'Hero', updated);
 		data = updated;
+	}
+
+	function scrollToNextBlock(event: MouseEvent) {
+		if (isEditable) return;
+		const block = (event.currentTarget as HTMLElement).closest('[data-field-toolbar-scope]');
+		let next = block?.nextElementSibling;
+		while (next && next.getClientRects().length === 0) next = next.nextElementSibling;
+		if (!next) return;
+		next.scrollIntoView({
+			behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+			block: 'start'
+		});
 	}
 
 	let heroVisible = $state(false);
@@ -59,57 +67,6 @@
 		class:animate-fade-in={heroVisible}
 		style="animation-delay: 1.2s"
 	></div>
-
-	{#if showOffer}
-	<!-- Floating discount badge -->
-	<div
-		class="absolute top-1/4 right-8 hidden opacity-0 lg:flex lg:flex-col lg:items-center lg:gap-1"
-		class:animate-fade-in={heroVisible}
-		style="animation-delay: 1.1s"
-	>
-		<div
-			class="flex h-24 w-24 flex-col items-center justify-center border border-secondary/30 bg-white/50 text-center shadow-soft backdrop-blur-sm"
-		>
-			<span class="text-xs tracking-[0.2em] text-secondary/70 uppercase"
-				><ContentText
-					bind:data
-					{editContext}
-					{isEditable}
-					componentType="Hero"
-					path={['copy', 'discountPrefix']}
-					fallback={'до'}
-					label="до"
-				/></span
-			>
-			<span
-				class="text-3xl leading-none font-light text-secondary"
-				style="font-family: var(--font-heading);"
-			>
-				<EditableField
-					fieldKey="Hero.discountBadge"
-					label="Бейдж скидки"
-					value={editableText(data?.discountBadge, '−30%')}
-					{isEditable}
-					onSave={(v) => saveField('discountBadge', v)}
-				>
-					{#snippet children(displayValue)}<RichText value={displayValue} />{/snippet}
-				</EditableField>
-			</span>
-			<span class="mt-0.5 text-xs tracking-[0.15em] text-muted uppercase"
-				><ContentText
-					bind:data
-					{editContext}
-					{isEditable}
-					componentType="Hero"
-					path={['copy', 'discountLabel']}
-					fallback={'скидка'}
-					label="скидка"
-				/></span
-			>
-		</div>
-	</div>
-
-	{/if}
 
 	<!-- Content -->
 	<div class="relative z-10 flex min-h-[90vh] items-center pt-40 pb-32">
@@ -166,7 +123,6 @@
 					{/snippet}
 				</EditableField>
 
-				{#if showStats}
 				<!-- Stats row -->
 				<div
 					class="mt-10 flex items-center gap-8 opacity-0"
@@ -255,8 +211,6 @@
 					</div>
 				</div>
 
-				{/if}
-
 				<!-- CTA Button -->
 				<div
 					class="mt-10 flex flex-wrap items-center gap-4 opacity-0"
@@ -264,25 +218,22 @@
 					style="animation-delay: 0.9s"
 				>
 					<EditableField
-						fieldKey="Hero.ctaText"
+						fieldKey="Hero.scrollCtaText"
 						label="Текст кнопки"
-						value={editableText(data?.ctaText, 'Расчёт проекта за час')}
+						value={editableText(data?.scrollCtaText, 'Подробнее')}
 						{isEditable}
-						onSave={(v) => saveField('ctaText', v)}
+						onSave={(v) => saveField('scrollCtaText', v)}
 					>
 						{#snippet children(displayValue)}
 							<button
 								class="group inline-flex cursor-pointer items-center gap-3 rounded-sm border border-primary bg-primary px-8 py-4 text-xs tracking-[0.15em] text-inverse uppercase transition-all duration-500 hover:border-secondary hover:bg-secondary"
 								type="button"
-								data-metrika-goal="pages_actions_hero_v1_hero_open"
-								data-goal-action="open"
-								onclick={() => {
-									if (!isEditable) openPromo2Form('estimate', '');
-								}}
+								data-goal-ignore="Навигация к следующему блоку страницы"
+								onclick={scrollToNextBlock}
 							>
 								<RichText value={displayValue} />
 								<svg
-									class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+									class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1"
 									fill="none"
 									viewBox="0 0 24 24"
 									stroke="currentColor"
@@ -291,7 +242,7 @@
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
-										d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+										d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
 									/>
 								</svg>
 							</button>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import type { ProjectCaption } from './project-caption';
 	let {
 		enabled = $bindable(false),
@@ -94,7 +95,7 @@
 				bind:clientWidth={previewWidth}
 			>
 				<img
-					src={preview}
+						src={publicMediaUrl(preview)}
 					alt="Пример подписи на первом новом фото"
 					class="block h-auto w-full"
 					onload={(event) => {

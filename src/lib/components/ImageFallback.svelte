@@ -10,7 +10,6 @@
 	let {
 		src,
 		srcAliases,
-		proxyPublicImage = false,
 		imagePath,
 		imageDefaults = {},
 		imageRole,
@@ -23,7 +22,6 @@
 	}: HTMLImgAttributes & {
 		src?: string | null;
 		srcAliases?: ReadonlyMap<string, string>;
-		proxyPublicImage?: boolean;
 		imagePath?: ImagePathPart[];
 		imageDefaults?: Record<string, unknown>;
 		imageRole?: 'preview';
@@ -46,9 +44,7 @@
 		imagePath && editStore.activeField?.key === fieldKey && editStore.activeField.kind === 'image'
 	);
 	const currentSrc = $derived(active ? editStore.activeField?.draft : savedSrc);
-	const displaySrc = $derived(
-		proxyPublicImage && currentSrc ? publicMediaUrl(currentSrc) : currentSrc
-	);
+	const displaySrc = $derived(publicMediaUrl(currentSrc));
 	const label = $derived(alt || 'Изображение');
 	$effect(() => {
 		if (!editor?.editable || !imagePath || imageRole === 'preview') return;

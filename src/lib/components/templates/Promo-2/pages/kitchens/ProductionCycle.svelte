@@ -160,12 +160,11 @@
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
 						<ImageFallback
-							proxyPublicImage
 							imagePath={['designImage']}
 							loading="lazy"
 							src={String(
 								data?.designImage ??
-									'https://storage.yandexcloud.net/zovtop/foto/technoljergbmeogkmbktgg.jpg'
+									'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/technoljergbmeogkmbktgg.jpg'
 							)}
 							alt="Проектирование кухни технологами"
 							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
@@ -183,12 +182,11 @@
 				<div class="lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
 						<ImageFallback
-							proxyPublicImage
 							imagePath={['productionImage']}
 							loading="lazy"
 							src={String(
 								data?.productionImage ??
-									'https://storage.yandexcloud.net/zovtop/foto/proizvodlkfegbmrgbm.jpg'
+									'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/proizvodlkfegbmrgbm.jpg'
 							)}
 							alt="Производственный процесс"
 							class="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
@@ -413,7 +411,6 @@
 				<div class="order-1 lg:order-2 lg:w-1/2">
 					<div class="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-elevated">
 						<ImageFallback
-							proxyPublicImage
 							imagePath={['assemblyImage']}
 							loading="lazy"
 							src={String(

@@ -64,7 +64,7 @@
 						imagePath={['image']}
 						loading="lazy"
 						src={String(
-							data?.image ?? 'https://storage.yandexcloud.net/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg'
+							data?.image ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/logo/logo-2-sdgjkbnrklbmnk.jpg'
 						)}
 						alt={String(data?.imageAlt ?? '')}
 						class="h-[400px] w-full object-cover lg:h-[500px]"

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import { page } from '$app/state';
 	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import promo1NotFound from '$lib/components/templates/Promo-1/page-modules/404';
@@ -37,7 +38,7 @@
 		{/if}
 		<meta name="robots" content="noindex" />
 		{#if site.faviconUrl}
-			<link rel="icon" href={site.faviconUrl} />
+			<link rel="icon" href={publicMediaUrl(site.faviconUrl)} />
 		{/if}
 	{/if}
 </svelte:head>

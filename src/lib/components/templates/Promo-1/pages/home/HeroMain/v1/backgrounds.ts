@@ -1,8 +1,8 @@
 export type HeroBackground = { url: string; enabled: boolean };
 
 const DEFAULT_BACKGROUNDS = [
-	'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
-	'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
+	'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-2.jpg',
+	'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-1.jpg',
 	'https://storage.yandexcloud.net/leget-main/templates/promo-1/hero-interior-3-20260908.webp',
 	'https://storage.yandexcloud.net/leget-main/templates/promo-1/hero-interior-4-neoclassic-20260909.webp',
 	'https://storage.yandexcloud.net/leget-main/templates/promo-1/hero-interior-5-user-20260910.webp'

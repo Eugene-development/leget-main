@@ -30,11 +30,11 @@
 		Array.isArray(data?.factoryImages)
 			? (data.factoryImages as string[])
 			: [
-					'https://storage.yandexcloud.net/zovtop/foto/fabr-1jhbnikjnmim.jpg',
-					'https://storage.yandexcloud.net/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg',
-					'https://storage.yandexcloud.net/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg',
-					'https://storage.yandexcloud.net/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg',
-					'https://storage.yandexcloud.net/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg'
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/fabr-1jhbnikjnmim.jpg',
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/fabr-2jfnvkjfdvijkmf.jpg',
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/fabr-3kjvndfnvjhdgnvjhd.jpg',
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/fabr-4dlkfvmdfmvjkfd.jpg',
+					'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/fabr-5kjfndvjkdfgknkgj.jpg'
 				]
 	);
 

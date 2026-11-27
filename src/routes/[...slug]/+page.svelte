@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import type { PageSeoData } from '$lib/utils/page-edit';
 	import type { PageData } from './$types';
@@ -60,7 +61,7 @@
 		<meta name="keywords" content={seo.keywords} />
 	{/if}
 	{#if site?.faviconUrl}
-		<link rel="icon" href={site.faviconUrl} />
+		<link rel="icon" href={publicMediaUrl(site.faviconUrl)} />
 	{/if}
 </svelte:head>
 

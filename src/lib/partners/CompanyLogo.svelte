@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	let {
 		name = '',
 		src = null,
@@ -28,7 +29,7 @@
 >
 	{#if src && failedSrc !== src}
 		<img
-			{src}
+			src={publicMediaUrl(src)}
 			alt=""
 			loading={eager ? 'eager' : 'lazy'}
 			decoding="async"

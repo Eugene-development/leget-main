@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import * as Promo1Layout from '$lib/components/templates/Promo-1/layout';
 	import B2BDirectory from '$lib/components/templates/Promo-1/pages/b2b/B2BDirectory.svelte';
@@ -24,7 +25,7 @@
 <svelte:head>
 	{#if seo.title}<title>{seo.title}</title>{/if}
 	{#if seo.description}<meta name="description" content={seo.description} />{/if}
-	{#if site.faviconUrl}<link rel="icon" href={site.faviconUrl} />{/if}
+	{#if site.faviconUrl}<link rel="icon" href={publicMediaUrl(site.faviconUrl)} />{/if}
 </svelte:head>
 
 <PageRenderer

@@ -24,7 +24,7 @@
 			origin: 'Австрия',
 			description:
 				'Австрийская компания Blum — признанный лидер в мире фурнитуры. Это синоним безупречного движения, долговечности и инноваций. Механизмы Blum рассчитаны на срок службы всей мебели и даже больше, обеспечивая плавность закрывания и комфорт в каждом движении.',
-			image: 'https://storage.yandexcloud.net/zovtop/foto/blumdsflgelgmdklbgmlf.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/blumdsflgelgmdklbgmlf.jpg',
 			features: [
 				'Системы петель CLIP top BLUMOTION',
 				'Подъемные механизмы AVENTOS',
@@ -39,7 +39,7 @@
 			origin: 'Германия',
 			description:
 				'Немецкое качество Hettich устанавливает стандарты во всем мире. Интеллектуальные технологии сочетаются с лаконичным дизайном. Hettich обеспечивает максимальную стабильность для самых широких и тяжелых фасадов, делая вашу мебель надежной и совершенной.',
-			image: 'https://storage.yandexcloud.net/zovtop/foto/hettichjnbjkwetnbkje.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/hettichjnbjkwetnbkje.jpg',
 			features: [
 				'Выдвижные ящики IT Atira, ArciTech, AvanTech',
 				'Инновационные петли Sensys',
@@ -54,7 +54,7 @@
 			origin: 'Польша',
 			description:
 				'Динамично развивающийся европейский бренд GTV предлагает современные решения для любой мебели. Это оптимальное сочетание высокого качества, премиального комфорта, новейших трендов в дизайне и ценовой доступности.',
-			image: 'https://storage.yandexcloud.net/zovtop/foto/gtvklsdfbnjsnbi.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/gtvklsdfbnjsnbi.jpg',
 			features: [
 				'Ультратонкие ящики Axis Pro',
 				'Системы скрытого монтажа Modern SLIDE PRO',

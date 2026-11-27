@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import { notifyError } from '$lib/utils/notify-error';
 	import { invalidateAll } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -60,7 +61,7 @@
 <svelte:head>
 	<title>Подключение партнёра — {promo1Site?.name || 'LEGET'}</title>
 	{#if promo1Site?.faviconUrl}
-		<link rel="icon" href={promo1Site.faviconUrl} />
+		<link rel="icon" href={publicMediaUrl(promo1Site.faviconUrl)} />
 	{/if}
 </svelte:head>
 

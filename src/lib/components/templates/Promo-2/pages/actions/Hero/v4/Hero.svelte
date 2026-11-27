@@ -32,7 +32,7 @@
 			<ImageFallback
 				imagePath={['image']}
 				src={String(
-					data?.image ?? 'https://storage.yandexcloud.net/zovtop/bg/promosfvmwklfvmk.jpg'
+					data?.image ?? 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/bg/promosfvmwklfvmk.jpg'
 				)}
 				alt={editableText(data?.title, 'Акции на мебель')}
 				class="ah-photo"

@@ -27,41 +27,41 @@
 			: [
 					{
 						name: 'BLUM',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/blum-Logo.png',
 						country: 'Австрия',
 						description: 'Компания BLUM занимается производством премиальной мебельной фурнитуры'
 					},
 					{
 						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 						country: 'Германия',
 						description:
 							'Бренд, специализирующийся на производстве мебельной фурнитуры высокого класса'
 					},
 					{
 						name: 'FGV',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/FGV-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/FGV-Logo.png',
 						country: 'Италия',
 						description:
 							'Компания, специализирующаяся на производстве систем выдвижения и мебельных петель'
 					},
 					{
 						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 						country: 'Австрия',
 						description:
 							'Производство плитных материалов различной толщины для каркасов и мебельных фасадов'
 					},
 					{
 						name: 'Renolit',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/Renolit_logo.svg.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/Renolit_logo.svg.png',
 						country: 'Германия',
 						description:
 							'Высококачественные полимерные пленки и термопластик для фасадов различного цвета'
 					},
 					{
 						name: 'GTV',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/GTV-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/GTV-Logo.png',
 						country: 'Польша',
 						description:
 							'Доступная и качественная мебельная фурнитура и освещение с доставкой по всему миру'
@@ -73,7 +73,7 @@
 		Array.isArray(data?.partners) && data.partners.length > 0
 			? (data.partners as { name: string; logo: string; url: string }[])
 			: [
-					{ name: 'ЗОВ', logo: 'https://zov.com.by/images/logo3.png', url: 'https://zov.top/' },
+					{ name: 'ЗОВ', logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/brands/zov.png', url: 'https://zov.top/' },
 					{
 						name: 'Стильные кухни',
 						logo: 'https://avatars.mds.yandex.net/i?id=ada48033e9cfa95f38d69fc9ae7b5bcc25b72f13-5037427-images-thumbs&n=13',
@@ -96,7 +96,7 @@
 					},
 					{
 						name: 'Аристо',
-						logo: 'https://www.aristo.ru/include/logo_header.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/brands/aristo.png',
 						url: 'https://www.aristo.ru'
 					}
 				]

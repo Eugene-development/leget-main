@@ -3,7 +3,7 @@
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.10.2.1 — см. docs/architecture/component-articles-map.md
 	import ProductCatalogModal from '../_shared/ProductCatalogModal.svelte';
-	import CopyPhotoLink from '../_shared/CopyPhotoLink.svelte';
+	import GalleryPhotoDialog from '../_shared/GalleryPhotoDialog.svelte';
 	import GalleryScrollButton from '../_shared/GalleryScrollButton.svelte';
 	import type { CatalogProduct } from '../_shared/product-catalog';
 	import FavoriteButton from '../../favorites/FavoriteButton.svelte';
@@ -38,10 +38,6 @@
 	}
 
 	let selectedPhoto = $state<{ image: string; title: string } | null>(null);
-	let photoDialog: HTMLDialogElement;
-	let savingPhoto = $state(false);
-	let saveError = $state('');
-	let saveController: AbortController | null = null;
 
 	function openPhoto(event: MouseEvent, project: CatalogProduct) {
 		const image =
@@ -50,64 +46,7 @@
 				: null;
 		if (!image?.currentSrc) return;
 		selectedPhoto = { image: image.currentSrc, title: project.title };
-		saveError = '';
-		photoDialog.showModal();
 	}
-
-	function closePhoto() {
-		if (photoDialog.open) photoDialog.close();
-		saveController?.abort();
-		saveController = null;
-		savingPhoto = false;
-		selectedPhoto = null;
-	}
-
-	async function savePhoto() {
-		if (!selectedPhoto || savingPhoto) return;
-		const photo = selectedPhoto;
-		const controller = new AbortController();
-		saveController = controller;
-		savingPhoto = true;
-		saveError = '';
-		try {
-			const response = await fetch(`/api/gallery-image?url=${encodeURIComponent(photo.image)}`, {
-				signal: controller.signal
-			});
-			if (!response.ok) throw new Error('Download failed');
-			const blob = await response.blob();
-			if (!blob.type.startsWith('image/')) throw new Error('Invalid image');
-			if (controller.signal.aborted) return;
-			const extension = blob.type.split('/')[1].split('+')[0].replace('jpeg', 'jpg');
-			const filename = photo.title.replace(/[\\/:*?"<>|]/g, '-').trim() || 'Шкаф';
-			const url = URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = `${filename}.${extension}`;
-			document.body.appendChild(link);
-			link.click();
-			link.remove();
-			setTimeout(() => URL.revokeObjectURL(url), 60000);
-		} catch {
-			if (!controller.signal.aborted)
-				saveError =
-					'Не удалось скачать фото. Откройте оригинал и сохраните его через меню браузера.';
-		} finally {
-			if (saveController === controller) {
-				savingPhoto = false;
-				saveController = null;
-			}
-		}
-	}
-
-	$effect(() => {
-		if (!selectedPhoto) return;
-		const previousOverflow = document.body.style.overflow;
-		document.body.style.overflow = 'hidden';
-		return () => {
-			document.body.style.overflow = previousOverflow;
-			saveController?.abort();
-		};
-	});
 
 	let visible = $state(false);
 	let canScrollLeft = $state(false);
@@ -352,65 +291,10 @@
 	/>
 {/if}
 
-<dialog
-	bind:this={photoDialog}
-	onclose={closePhoto}
-	onclick={(event) => {
-		if (event.target === photoDialog) closePhoto();
-	}}
-	data-goal-ignore="Закрытие просмотра фото по фону без формы"
-	aria-label={selectedPhoto ? `Фото шкафа: ${selectedPhoto.title}` : 'Фото шкафа'}
-	class="fixed inset-0 m-auto max-h-[95dvh] w-[calc(100%-2rem)] max-w-6xl overflow-y-auto rounded-2xl border-0 bg-surface-warm p-0 text-primary shadow-elevated backdrop:bg-primary/80"
->
-	<div
-		class="flex items-center justify-between gap-4 border-b border-border-light px-4 py-3 sm:px-6"
-	>
-		<h3 class="min-w-0 text-card-title" style="font-family: var(--font-heading);">
-			{selectedPhoto?.title ?? ''}
-		</h3>
-		<button
-			type="button"
-			onclick={closePhoto}
-			data-goal-ignore="Закрытие просмотра фото без формы"
-			aria-label="Закрыть фото"
-			class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border-light transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-accent"
-		>
-			<svg
-				class="h-5 w-5"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" stroke-linecap="round" /></svg
-			>
-		</button>
-	</div>
-	{#if selectedPhoto}
-		<ImageFallback
-			imageRole="preview"
-			src={selectedPhoto.image}
-			alt={selectedPhoto.title}
-			class="mx-auto max-h-[70dvh] w-full object-contain"
-		/>
-		<div class="flex flex-wrap items-center justify-end gap-4 px-4 py-4 sm:px-6">
-			{#if saveError}
-				<p role="status" class="w-full text-sm text-secondary">{saveError}</p>
-				<a
-					href={selectedPhoto.image}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-sm text-primary underline underline-offset-4">Открыть оригинал</a
-				>
-			{/if}
-			<CopyPhotoLink url={selectedPhoto.image} />
-			<button
-				type="button"
-				onclick={savePhoto}
-				data-goal-ignore="Скачивание фотографии шкафа без формы"
-				disabled={savingPhoto}
-				class="min-h-11 rounded-full bg-primary px-6 py-3 text-sm text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-wait disabled:opacity-60"
-				>{savingPhoto ? 'Сохранение…' : 'Сохранить'}</button
-			>
-		</div>
-	{/if}
-</dialog>
+{#if selectedPhoto}
+	<GalleryPhotoDialog
+		photo={selectedPhoto}
+		kind="wardrobe"
+		onclose={() => (selectedPhoto = null)}
+	/>
+{/if}

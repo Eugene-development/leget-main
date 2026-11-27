@@ -2252,7 +2252,6 @@
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" },
-			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }
 		]
 	},
@@ -2417,7 +2416,6 @@
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" },
-			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }
 		]
 	},
@@ -2582,7 +2580,6 @@
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.2" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" },
-			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" },
 			{ "template": "Promo-2", "page": "/yandex-direct", "article": "2.14.6.1" }
 		]
 	},
@@ -2739,16 +2736,6 @@
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.3" },
 			{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.4" }
 		]
-	},
-	{
-		"id": "pages_actions_hero_v1_hero_open",
-		"action": "open",
-		"label": "Hero",
-		"templates": ["Promo-2"],
-		"source": "templates/Promo-2/pages/actions/Hero/v1/Hero.svelte",
-		"route": "/actions",
-		"mock": false,
-		"locations": [{ "template": "Promo-2", "page": "/actions", "article": "2.8.1.1" }]
 	},
 	{
 		"id": "pages_careers_careersform_submit_click_1",

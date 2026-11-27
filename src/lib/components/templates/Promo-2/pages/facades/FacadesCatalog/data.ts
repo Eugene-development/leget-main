@@ -4,7 +4,7 @@ export const defaultFacades = [
 		title: 'Эмаль (Крашеный МДФ)',
 		description:
 			'Гладкие матовые или глянцевые поверхности любого оттенка. Эмаль наносится в несколько слоев, что создает идеальное покрытие без швов по кромке. Идеально для современных, минималистичных и неоклассических интерьеров.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-enamel-dark-green-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-enamel-dark-green-20261106.webp',
 		details: {
 			base: 'Плита МДФ',
 			coating: 'Многослойная эмаль (матовая / глянцевая)',
@@ -18,7 +18,7 @@ export const defaultFacades = [
 		title: 'Массив дерева',
 		description:
 			'Классика, которая никогда не выходит из моды. Натуральная текстура дуба или ясеня привносит в дом тепло и уют. Фасады из массива поддаются реставрации и с годами становятся только благороднее.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-wood-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-wood-20261106.webp',
 		details: {
 			base: 'Массив ясеня / дуба',
 			coating: 'Эмаль, масловоск, воскобейц, патина',
@@ -32,7 +32,7 @@ export const defaultFacades = [
 		title: 'Пластики',
 		description:
 			'Максимально устойчивые к царапинам, ударам и температурам материал. Пластики идеально имитируют текстуры бетона, камня или дерева, сохраняя при этом индустриальную строгость и премиальный вид.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-hpl-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-hpl-20261106.webp',
 		details: {
 			base: 'Плита МДФ',
 			coating: 'Декоративный пластик',
@@ -46,7 +46,7 @@ export const defaultFacades = [
 		title: 'Шпон натуральный',
 		description:
 			'Фасады из натурального шпона дуба или ясеня — это классика, которая никогда не выходит из моды. Натуральная текстура дерева привносит в дом тепло и уют.',
-		image: 'https://storage.yandexcloud.net/zovtop/stiles/shponjdfnvkjsvnkjsf.jpg',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/stiles/shponjdfnvkjsvnkjsf.jpg',
 		details: {
 			base: 'Плита МДФ',
 			coating: 'Шпон дуба или ясеня',
@@ -60,7 +60,7 @@ export const defaultFacades = [
 		title: 'Акрил',
 		description:
 			'Идеально ровная, зеркальная глянцевая или бархатистая матовая поверхность. Фасады из акрила обладают высокой ударопрочностью, не выцветают на солнце и придают интерьеру премиальный блеск.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-acrylic-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-acrylic-20261106.webp',
 		details: {
 			base: 'Плита МДФ',
 			coating: 'Акриловый пластик',
@@ -74,7 +74,7 @@ export const defaultFacades = [
 		title: 'ЛДСП',
 		description:
 			'Ламинированная древесно-стружечная плита для фасадов и каркасов. Однотонные и древесные декоры позволяют выдержать мебель в единой гамме. Кромка ПВХ подобрана в цвет; допустимые размеры зависят от направления текстуры.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-ldsp-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-ldsp-20261106.webp',
 		details: {
 			base: 'Плита ДСП',
 			coating: 'Ламинированная поверхность, кромка ПВХ в цвет',
@@ -88,7 +88,7 @@ export const defaultFacades = [
 		title: 'ЛМДФ',
 		description:
 			'Ламинированные фасады на основе МДФ. В серии PRIME декоративная PET-плёнка дополнена кромкой ABS в цвет, а обратная сторона соответствует лицевой. Представленный образец — «Кофейный крем»; характеристики указаны для PRIME.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-lmdf-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-lmdf-20261106.webp',
 		details: {
 			base: 'Плита МДФ, серия PRIME',
 			coating: 'Декоративная PET-плёнка, кромка ABS в цвет',
@@ -102,7 +102,7 @@ export const defaultFacades = [
 		title: 'Стекло в алюминии',
 		description:
 			'Стеклянный фасад в алюминиевой рамке LINE. У профиля T001 видимая ширина рамки составляет 8 мм — тонкий контур подчёркивает стекло. Представлен чёрный матовый профиль; размеры и толщина указаны для T001.',
-		image: 'https://storage.yandexcloud.net/zovtop/foto/facade-glass-aluminium-20261106.webp',
+		image: 'https://storage.yandexcloud.net/leget-main/templates/promo-2/legacy/zovtop/foto/facade-glass-aluminium-20261106.webp',
 		details: {
 			base: 'Алюминиевый профиль LINE T001 со стеклом',
 			coating: 'Чёрный матовый профиль; стеклянное заполнение',

@@ -65,7 +65,7 @@
 		{:else if selectedVersion === 'v2'}
 			<HeroV2 bind:data {editContext} {isEditable} showOffer={Boolean(showOffer)} showStats={Boolean(showStats)} />
 		{:else}
-			<HeroV1 bind:data {editContext} {isEditable} showOffer={Boolean(showOffer)} showStats={Boolean(showStats)} />
+			<HeroV1 bind:data {editContext} {isEditable} />
 		{/if}
 	</div>
 {/if}

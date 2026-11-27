@@ -250,15 +250,15 @@
 
 <!-- Mobile Menu Panel -->
 <div
-	class="fixed top-0 right-0 z-40 flex h-full w-80 max-w-[85vw] flex-col overflow-y-auto bg-white pt-20 shadow-elevated transition-transform duration-500 lg:hidden {mobileMenuOpen
+	class="fixed top-0 right-0 z-40 flex h-screen h-dvh w-80 max-w-[85vw] flex-col overflow-y-auto overscroll-contain bg-white pt-20 shadow-elevated transition-transform duration-500 lg:hidden {mobileMenuOpen
 		? 'translate-x-0'
 		: 'translate-x-full'}"
 >
-	<nav class="flex flex-col px-8 py-6">
+	<nav class="flex shrink-0 flex-col px-8 pt-3 pb-2">
 		{#each mainNav as item}
 			<a
 				href={item.href}
-				class="border-b border-border-light py-4 text-xl tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
+				class="border-b border-border-light py-3 text-xl tracking-wide text-primary transition-colors duration-300 hover:text-secondary"
 				style="font-family: var(--font-heading);"
 				onclick={closeMenu}
 			>
@@ -278,7 +278,7 @@
 		{/each}
 	</nav>
 
-	<div class="mt-4 flex flex-col gap-3 px-8">
+	<div class="mt-3 flex shrink-0 flex-col gap-3 px-8">
 		{#each topLinks as link}
 			<a
 				href={link.href}
@@ -290,7 +290,7 @@
 		{/each}
 	</div>
 
-	<div class="mt-auto px-8 pt-6 pb-4">
+	<div class="shrink-0 px-8 pt-6 pb-4">
 		<button
 			style={headerButtonStyle(data?.headerButtonColor)}
 			class="ds-header-action cta-btn group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-lg px-5 py-3.5 text-sm font-medium tracking-wide shadow-md transition-all duration-300 hover:shadow-lg active:scale-[0.98]"
@@ -333,7 +333,7 @@
 		</button>
 	</div>
 
-	<div class="border-t border-border-light px-8 py-6">
+	<div class="shrink-0 border-t border-border-light px-8 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
 		<div class="flex flex-col gap-3">
 			{#if phone}
 				<a href={sitePhoneHref(phone)} class="flex items-center gap-2 text-sm text-secondary">

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import PageRenderer from '$lib/components/PageRenderer.svelte';
 	import type { PageData } from './$types';
 
@@ -22,7 +23,7 @@
 		content={page?.seo?.description ?? 'Сохранённые кухни, шкафы и проекты'}
 	/>
 	{#if site?.faviconUrl}
-		<link rel="icon" href={site.faviconUrl} />
+		<link rel="icon" href={publicMediaUrl(site.faviconUrl)} />
 	{/if}
 </svelte:head>
 

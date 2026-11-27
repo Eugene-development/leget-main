@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { publicMediaUrl } from '$lib/utils/public-media';
 	import { flushSync } from 'svelte';
 	import { toast } from '$lib/stores/toast.svelte';
 	import { headerButtonStyle } from '$lib/site-settings/header-button';
@@ -300,7 +301,7 @@
 								class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-border-light bg-ink-50"
 							>
 								{#if faviconUrl}
-									<img src={faviconUrl} alt="Текущая фавиконка" class="h-8 w-8 object-contain" />
+									<img src={publicMediaUrl(faviconUrl)} alt="Текущая фавиконка" class="h-8 w-8 object-contain" />
 								{:else}
 									<svg
 										class="h-7 w-7 text-text-secondary"

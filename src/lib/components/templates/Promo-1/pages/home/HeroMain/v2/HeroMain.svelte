@@ -35,52 +35,52 @@
 			: [
 					{
 						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 						url: 'https://www.hettich.com'
 					},
 					{
 						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 						url: 'https://www.egger.com'
 					},
 					{
 						name: 'Аристо',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/aristo-Logo.png',
 						url: 'https://www.aristo.ru'
 					},
 					{
 						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 						url: 'https://www.hettich.com'
 					},
 					{
 						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 						url: 'https://www.egger.com'
 					},
 					{
 						name: 'Аристо',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/aristo-Logo.png',
 						url: 'https://www.aristo.ru'
 					},
 					{
 						name: 'Hettich',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/hettich-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/hettich-Logo.png',
 						url: 'https://www.hettich.com'
 					},
 					{
 						name: 'Egger',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/egger-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/egger-Logo.png',
 						url: 'https://www.egger.com'
 					},
 					{
 						name: 'Аристо',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/aristo-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/aristo-Logo.png',
 						url: 'https://www.aristo.ru'
 					},
 					{
 						name: 'Blum',
-						logo: 'https://storage.yandexcloud.net/novostroy/logo/blum-Logo.png',
+						logo: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/logo/blum-Logo.png',
 						url: 'https://www.blum.com'
 					}
 				]
@@ -96,7 +96,7 @@
 			name: 'Лофт',
 			description:
 				'Матовые графитовые фасады, глубокая текстура дерева, темный металл и строгая геометрия.',
-			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-2.jpg',
 			hotspots: [
 				{
 					x: 32,
@@ -128,7 +128,7 @@
 			name: 'Минимализм',
 			description:
 				'Чистые линии, фасады без ручек с системой открывания Push-to-Open и скрытые системы хранения.',
-			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-1.jpg',
 			hotspots: [
 				{
 					x: 52,
@@ -160,7 +160,7 @@
 			name: 'Классика',
 			description:
 				'Изящные фрезеровки, светлые пастельные тона, латунная фурнитура и благородная сдержанность.',
-			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/vector-kitchen.jpg',
 			hotspots: [
 				{
 					x: 42,
@@ -185,7 +185,7 @@
 			id: 'scandi',
 			name: 'Сканди',
 			description: 'Натуральное дерево, белые матовые оттенки и обилие естественного света.',
-			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-1.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-1.jpg',
 			hotspots: [
 				{
 					x: 35,
@@ -211,7 +211,7 @@
 			name: 'Хай-Тек',
 			description:
 				'Космический дизайн: стеклянные фасады в тонких алюминиевых рамах, умная сенсорная техника.',
-			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-2.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/hero-2.jpg',
 			hotspots: [
 				{
 					x: 48,
@@ -237,7 +237,7 @@
 			name: 'Прованс',
 			description:
 				'Уютный средиземноморский стиль: фасады с эффектом старения, открытые полки и теплые пастельные тона.',
-			image: 'https://storage.yandexcloud.net/novostroy/bg/hero-3.jpg',
+			image: 'https://storage.yandexcloud.net/leget-main/templates/promo-1/legacy/novostroy/bg/vector-kitchen.jpg',
 			hotspots: [
 				{
 					x: 40,
