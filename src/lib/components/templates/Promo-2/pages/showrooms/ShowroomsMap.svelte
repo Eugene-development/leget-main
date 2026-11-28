@@ -160,7 +160,7 @@
 
 <section
 	bind:this={sectionEl}
-	class="relative bg-surface py-section-sm lg:py-section"
+	class="relative -scroll-mt-6 bg-surface py-section-sm lg:py-section"
 	id="network-section"
 >
 	<div class="p2-container mx-auto">
@@ -379,7 +379,7 @@
 
 				<div class="mt-10 flex">
 					<button
-						class="group inline-flex items-center gap-3 rounded-sm border border-border-medium px-6 py-3 text-xs tracking-[0.15em] text-primary uppercase transition-all duration-500 hover:border-secondary hover:text-secondary"
+						class="group inline-flex items-center gap-3 rounded-sm border border-secondary bg-secondary px-6 py-3 text-xs tracking-[0.15em] text-white uppercase transition-colors duration-300 hover:border-primary hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
 						type="button"
 						data-metrika-goal="pages_showrooms_showroomsmap_open"
 						data-goal-action="open"

@@ -57,9 +57,7 @@
 			imagePath={['image']}
 			src={String(data?.image ?? furniturePromotionsBackground)}
 			alt={editableText(data?.title, 'Акции')}
-			class="h-full w-full object-cover transition-transform duration-[2s] {heroVisible
-				? 'scale-105'
-				: ''}"
+			class="h-full w-full object-cover object-top"
 		/>
 		<div class="absolute inset-0 bg-linear-to-r from-white/65 via-white/35 to-transparent"></div>
 		<div class="absolute inset-0 bg-linear-to-t from-white/20 via-transparent to-transparent"></div>
@@ -73,11 +71,11 @@
 	></div>
 
 	<!-- Content -->
-	<div class="relative z-10 flex min-h-[90vh] items-center pt-40 pb-32">
+	<div class="relative z-10 flex min-h-[90vh] items-center pt-40 pb-32 md:pt-24 md:pb-48">
 		<div class="p2-container mx-auto w-full">
 			<div
 				data-ds-surface="white"
-				class="hero-glass relative isolate max-w-2xl rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
+				class="hero-glass relative isolate max-w-xl rounded-2xl border border-white/60 bg-white/70 p-6 shadow-[0_20px_60px] shadow-primary/10 backdrop-blur-xl supports-[backdrop-filter:blur(1px)]:bg-white/35 md:p-10"
 			>
 				<div
 					class="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] bg-linear-to-br from-white/50 via-white/10 to-transparent"
