@@ -30,13 +30,17 @@
 	function scrollToNextBlock(event: MouseEvent) {
 		if (isEditable) return;
 		const block = (event.currentTarget as HTMLElement).closest('[data-field-toolbar-scope]');
-		let next = block?.nextElementSibling;
-		while (next && next.getClientRects().length === 0) next = next.nextElementSibling;
+		let next = block?.nextElementSibling as HTMLElement | null;
+		while (next && next.getClientRects().length === 0) next = next.nextElementSibling as HTMLElement | null;
 		if (!next) return;
+		// Компенсируем общий зазор якорей, сохраняя отступ под закреплённой шапкой.
+		const previousMargin = next.style.scrollMarginTop;
+		next.style.scrollMarginTop = '-1.5rem';
 		next.scrollIntoView({
 			behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
 			block: 'start'
 		});
+		next.style.scrollMarginTop = previousMargin;
 	}
 
 	let heroVisible = $state(false);

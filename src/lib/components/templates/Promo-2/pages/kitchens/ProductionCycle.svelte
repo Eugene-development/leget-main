@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { editableText } from '$lib/utils/editable-text';
 	import { RICH_TEXT_PREFIX } from '$lib/utils/rich-text';
 	// Артикул: 2.9.3.1 — см. docs/architecture/component-articles-map.md
@@ -47,7 +48,7 @@
 		<!-- Section Header -->
 		<div
 			class="mb-16 text-center opacity-0 transition-all duration-700"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<EditableField
 				fieldKey="ProductionCycle.label"
@@ -105,7 +106,7 @@
 			<!-- Step 1: Проектирование -->
 			<div
 				class="flex flex-col items-center gap-16 opacity-0 transition-all duration-700 lg:flex-row"
-				class:animate-slide-right={visible}
+				use:reveal={"animate-slide-right"}
 				style="animation-delay: 0.1s"
 			>
 				<div class="order-2 lg:order-1 lg:w-1/2">
@@ -176,7 +177,7 @@
 			<!-- Step 2: Производство -->
 			<div
 				class="flex flex-col items-center gap-16 opacity-0 transition-all duration-700 lg:flex-row"
-				class:animate-slide-right={visible}
+				use:reveal={"animate-slide-right"}
 				style="animation-delay: 0.2s"
 			>
 				<div class="lg:w-1/2">
@@ -247,7 +248,7 @@
 			<!-- Steps 3 & 4: Упаковка & Доставка -->
 			<div
 				class="relative grid grid-cols-1 gap-16 py-12 opacity-0 transition-all duration-700 md:grid-cols-2"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.3s"
 			>
 				<div
@@ -356,7 +357,7 @@
 			<!-- Step 5: Сборка -->
 			<div
 				class="flex flex-col items-center gap-16 opacity-0 transition-all duration-700 lg:flex-row"
-				class:animate-slide-right={visible}
+				use:reveal={"animate-slide-right"}
 				style="animation-delay: 0.4s"
 			>
 				<div class="order-2 lg:order-1 lg:w-1/2">

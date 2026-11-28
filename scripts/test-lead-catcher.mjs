@@ -85,7 +85,7 @@ const settings = loadServerModule(
 				request: async (query, variables) => {
 					if (query.includes('mutation SaveSiteSettings')) {
 						const license = licenses.find(({ id }) => id === variables.id);
-						license.headerData = variables.headerData;
+						license.headerData = { ...license.headerData, ...variables.headerDataPatch };
 						return { updateLicense: license };
 					}
 					if (query.includes('SiteSettingsDesignSystems')) return { designSystems: [] };

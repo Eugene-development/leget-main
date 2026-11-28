@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.1.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -58,7 +59,7 @@
 	<div class="p2-container mx-auto">
 		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
 			<!-- Image -->
-			<div class="relative opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.2s">
+			<div class="relative opacity-0" use:reveal={"animate-fade-up"} style="animation-delay: 0.2s">
 				<div class="relative z-40 overflow-hidden">
 					<ImageFallback
 						imagePath={['image']}
@@ -77,7 +78,7 @@
 			</div>
 
 			<!-- Content -->
-			<div class="opacity-0" class:animate-fade-up={visible} style="animation-delay: 0.4s">
+			<div class="opacity-0" use:reveal={"animate-fade-up"} style="animation-delay: 0.4s">
 				<EditableField
 					fieldKey="HomeDetails.label"
 					label="Лейбл"

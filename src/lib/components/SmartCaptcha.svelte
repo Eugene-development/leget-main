@@ -69,17 +69,19 @@
 	}
 	button {
 		min-height: 44px;
-		padding-inline: 0.5rem;
-		color: inherit;
-		text-decoration: underline;
-		text-underline-offset: 0.2em;
+		padding: 0.625rem 1rem;
+		border-radius: 0.5rem;
+		background: var(--ds-color-action);
+		color: var(--ds-color-on-action);
+		font-weight: 600;
 		cursor: pointer;
 	}
 	button:hover {
-		text-decoration-thickness: 2px;
+		background: var(--ds-color-action-hover);
+		color: var(--ds-color-on-action-hover);
 	}
 	button:focus-visible {
-		outline: 2px solid currentColor;
+		outline: 2px solid var(--ds-color-action);
 		outline-offset: 2px;
 	}
 </style>

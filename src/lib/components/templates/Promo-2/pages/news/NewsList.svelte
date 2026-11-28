@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.3.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -117,7 +118,7 @@
 			{#each filteredNews as item, i (item.id)}
 				<article
 					class="group flex flex-col gap-3 rounded-sm py-8 opacity-0 transition-all duration-500 hover:bg-surface-warm/40 md:flex-row md:items-start md:gap-10 lg:px-4"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.05 + i * 0.07}s"
 				>
 					<!-- Date + Category -->

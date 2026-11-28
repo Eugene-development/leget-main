@@ -31,6 +31,7 @@ import type { Cookies } from '@sveltejs/kit';
 
 const COOKIE_NAME = 'leget_site_settings_jwt';
 const COOKIE_PATH = '/site-settings';
+const MAX_LOGO_SIZE = 2 * 1024 * 1024;
 const MAX_FAVICON_SIZE = 1024 * 1024;
 
 const MY_LICENSES_QUERY = `
@@ -42,7 +43,6 @@ const MY_LICENSES_QUERY = `
 			faviconUrl
 			templateId
 			headerData
-			footerData
 		}
 	}
 `;
@@ -63,10 +63,18 @@ const DESIGN_SYSTEMS_QUERY = `
 `;
 
 const UPDATE_HEADER_MUTATION = `
-	mutation SaveSiteSettings($id: ID!, $headerData: JSON) {
-		updateLicense(id: $id, headerData: $headerData) {
+	mutation SaveSiteSettings($id: ID!, $headerDataPatch: JSON) {
+		updateLicense(id: $id, headerDataPatch: $headerDataPatch) {
 			id
 			headerData
+		}
+	}
+`;
+
+const UPDATE_LOGO_MUTATION = `
+	mutation SaveSiteLogo($id: ID!, $logoUrl: String) {
+		updateLicense(id: $id, logoUrl: $logoUrl) {
+			id
 		}
 	}
 `;
@@ -107,7 +115,6 @@ interface LicenseSettings {
 	faviconUrl: string | null;
 	templateId: number | null;
 	headerData: Record<string, unknown> | null;
-	footerData: Record<string, unknown> | null;
 }
 
 interface LicensesResponse {
@@ -275,6 +282,7 @@ function publicSettings(license: LicenseSettings) {
 		leadCatcherEnabled: headerData.leadCatcherEnabled === true,
 		leadCatcherPolicyHref: leadCatcherPolicy(headerData.leadCatcherPolicyHref) || '/privacy',
 		faviconUrl: license.faviconUrl,
+		logoUrl: typeof headerData.logoUrl === 'string' ? headerData.logoUrl : null,
 		yandexMetrica: normalizeYandexCounterId(headerData.yandexMetrica),
 		googleAnalytics: normalizeGoogleTagId(headerData.googleAnalytics),
 		appearanceEnabled: hasSiteAppearance(headerData.siteAppearance),
@@ -327,7 +335,7 @@ function parseAppearance(formData: FormData): {
 	};
 }
 
-function detectFaviconType(bytes: Uint8Array): 'image/png' | 'image/x-icon' | 'image/webp' | null {
+function detectLogoType(bytes: Uint8Array): 'image/png' | 'image/jpeg' | 'image/webp' | null {
 	if (
 		bytes.length >= 8 &&
 		bytes[0] === 0x89 &&
@@ -341,8 +349,8 @@ function detectFaviconType(bytes: Uint8Array): 'image/png' | 'image/x-icon' | 'i
 	) {
 		return 'image/png';
 	}
-	if (bytes.length >= 4 && bytes[0] === 0 && bytes[1] === 0 && bytes[2] === 1 && bytes[3] === 0) {
-		return 'image/x-icon';
+	if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+		return 'image/jpeg';
 	}
 	if (
 		bytes.length >= 12 &&
@@ -352,6 +360,28 @@ function detectFaviconType(bytes: Uint8Array): 'image/png' | 'image/x-icon' | 'i
 		return 'image/webp';
 	}
 	return null;
+}
+
+function hasIcoDirectory(buffer: ArrayBuffer): boolean {
+	const headerSize = 6;
+	const entrySize = 16;
+	const view = new DataView(buffer);
+	if (
+		view.byteLength < headerSize ||
+		view.getUint16(0, true) !== 0 ||
+		view.getUint16(2, true) !== 1
+	) return false;
+
+	const count = view.getUint16(4, true);
+	const directoryEnd = headerSize + count * entrySize;
+	if (count === 0 || directoryEnd >= view.byteLength) return false;
+
+	for (let entry = headerSize; entry < directoryEnd; entry += entrySize) {
+		const size = view.getUint32(entry + 8, true);
+		const offset = view.getUint32(entry + 12, true);
+		if (size === 0 || offset < directoryEnd || offset + size > view.byteLength) return false;
+	}
+	return true;
 }
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
@@ -365,6 +395,38 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		designSystemsAvailable: designSystems.available
 	};
 };
+
+async function uploadBrandingImage(
+	client: ReturnType<typeof createGraphQLClient>,
+	licenseId: string,
+	file: File,
+	mimeType: string,
+	filename: string,
+	folder: 'logos' | 'favicons'
+): Promise<string> {
+	const upload = await client.request<UploadResponse>(GENERATE_UPLOAD_URL_MUTATION, {
+		filename,
+		mimeType,
+		folder,
+		licenseId
+	});
+	const uploadResponse = await fetch(upload.generateUploadUrl.uploadUrl, {
+		method: 'PUT',
+		headers: { 'Content-Type': mimeType },
+		body: file,
+		signal: AbortSignal.timeout(15000)
+	});
+
+	if (!uploadResponse.ok) throw new Error('Upload failed');
+
+	const publicResponse = await fetch(upload.generateUploadUrl.objectUrl, {
+		method: 'HEAD',
+		redirect: 'error',
+		signal: AbortSignal.timeout(5000)
+	});
+	if (!publicResponse.ok) throw new Error('Public readback failed');
+	return upload.generateUploadUrl.objectUrl;
+}
 
 export const actions: Actions = {
 	save: async ({ cookies, request, url }) => {
@@ -430,8 +492,7 @@ export const actions: Actions = {
 			return fail(400, { success: false, message: 'Проверьте отмеченные поля.', errors, values });
 		}
 
-		const headerData = {
-			...record(license.headerData),
+		const headerDataPatch = {
 			...(updateLeadCatcher ? { leadCatcherEnabled, leadCatcherPolicyHref } : {}),
 			yandexMetrica: yandexMetrica || null,
 			googleAnalytics: googleAnalytics || null,
@@ -448,7 +509,7 @@ export const actions: Actions = {
 			const client = createGraphQLClient({ Authorization: `Bearer ${token}` });
 			await client.request(UPDATE_HEADER_MUTATION, {
 				id: license.id,
-				headerData
+				headerDataPatch
 			});
 		} catch {
 			return fail(502, {
@@ -467,6 +528,60 @@ export const actions: Actions = {
 		};
 	},
 
+	uploadLogo: async ({ cookies, request, url }) => {
+		const token = await requireSession(cookies);
+		const license = await ownedLicense(url.hostname, token);
+		const file = (await request.formData()).get('logo');
+
+		if (!(file instanceof File) || file.size === 0) {
+			return fail(400, { success: false, message: 'Выберите файл логотипа.' });
+		}
+		if (file.size > MAX_LOGO_SIZE) {
+			return fail(400, { success: false, message: 'Файл должен быть не больше 2 МБ.' });
+		}
+
+		const mimeType = detectLogoType(new Uint8Array(await file.slice(0, 12).arrayBuffer()));
+		if (!mimeType) {
+			return fail(400, {
+				success: false,
+				message: 'Поддерживаются только PNG, JPEG и WEBP.'
+			});
+		}
+
+		try {
+			const client = createGraphQLClient({ Authorization: `Bearer ${token}` });
+			const extension = mimeType === 'image/jpeg' ? 'jpg' : mimeType.split('/')[1];
+			const logoUrl = await uploadBrandingImage(
+				client,
+				license.id,
+				file,
+				mimeType,
+				`logo.${extension}`,
+				'logos'
+			);
+			await client.request(UPDATE_LOGO_MUTATION, { id: license.id, logoUrl });
+			return { success: true, message: 'Логотип загружен и опубликован.' };
+		} catch {
+			return fail(502, {
+				success: false,
+				message: 'Не удалось загрузить логотип. Попробуйте ещё раз.'
+			});
+		}
+	},
+
+	deleteLogo: async ({ cookies, url }) => {
+		const token = await requireSession(cookies);
+		const license = await ownedLicense(url.hostname, token);
+
+		try {
+			const client = createGraphQLClient({ Authorization: `Bearer ${token}` });
+			await client.request(UPDATE_LOGO_MUTATION, { id: license.id, logoUrl: null });
+			return { success: true, message: 'Логотип удалён.' };
+		} catch {
+			return fail(502, { success: false, message: 'Не удалось удалить логотип.' });
+		}
+	},
+
 	uploadFavicon: async ({ cookies, request, url }) => {
 		const token = await requireSession(cookies);
 		const license = await ownedLicense(url.hostname, token);
@@ -476,53 +591,37 @@ export const actions: Actions = {
 		if (!(file instanceof File) || file.size === 0) {
 			return fail(400, { success: false, message: 'Выберите файл фавиконки.' });
 		}
+		if (!file.name.toLowerCase().endsWith('.ico')) {
+			return fail(400, { success: false, message: 'Выберите файл с расширением .ico.' });
+		}
 		if (file.size > MAX_FAVICON_SIZE) {
 			return fail(400, { success: false, message: 'Файл должен быть не больше 1 МБ.' });
 		}
 
-		const bytes = new Uint8Array(await file.arrayBuffer());
-		const mimeType = detectFaviconType(bytes);
-		if (!mimeType) {
-			return fail(400, { success: false, message: 'Поддерживаются только PNG, ICO и WEBP.' });
+		if (!hasIcoDirectory(await file.arrayBuffer())) {
+			return fail(400, { success: false, message: 'Файл повреждён или не является фавиконкой ICO.' });
 		}
 
 		try {
 			const client = createGraphQLClient({ Authorization: `Bearer ${token}` });
-			const upload = await client.request<UploadResponse>(GENERATE_UPLOAD_URL_MUTATION, {
-				filename: `favicon.${mimeType === 'image/png' ? 'png' : mimeType === 'image/webp' ? 'webp' : 'ico'}`,
-				mimeType,
-				folder: 'favicons',
-				licenseId: license.id
-			});
-			const uploadResponse = await fetch(upload.generateUploadUrl.uploadUrl, {
-				method: 'PUT',
-				headers: { 'Content-Type': mimeType },
-				body: bytes
-			});
-
-			if (!uploadResponse.ok) throw new Error('Upload failed');
-
-			const publicResponse = await fetch(upload.generateUploadUrl.objectUrl, {
-				method: 'HEAD',
-				redirect: 'error',
-				signal: AbortSignal.timeout(5000)
-			});
-			if (!publicResponse.ok) {
-				return fail(502, {
-					success: false,
-					message: 'Хранилище не подтвердило доступность фавиконки. Загрузите файл ещё раз.'
-				});
-			}
+			const faviconUrl = await uploadBrandingImage(
+				client,
+				license.id,
+				file,
+				'image/x-icon',
+				'favicon.ico',
+				'favicons'
+			);
 
 			await client.request(UPDATE_FAVICON_MUTATION, {
 				id: license.id,
-				faviconUrl: upload.generateUploadUrl.objectUrl
+				faviconUrl
 			});
 
 			return {
 				success: true,
 				message: 'Фавиконка загружена и опубликована.',
-				faviconUrl: upload.generateUploadUrl.objectUrl
+				faviconUrl
 			};
 		} catch {
 			return fail(502, {

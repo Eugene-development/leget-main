@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
@@ -74,7 +75,7 @@
 	<div class="p2-container mx-auto">
 		<div
 			class="relative flex flex-col items-center gap-16 opacity-0 transition-all duration-700 lg:flex-row lg:justify-between lg:gap-24"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<!-- Text content -->
 			<div class="flex-1 text-center lg:text-left">

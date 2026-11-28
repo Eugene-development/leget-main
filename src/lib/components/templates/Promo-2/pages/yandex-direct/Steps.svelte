@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.4.1 — см. docs/architecture/component-articles-map.md
@@ -76,7 +77,7 @@
 <section class="relative overflow-hidden py-section-sm lg:py-section" bind:this={sectionEl}>
 	<div class="p2-container mx-auto">
 		<!-- Header -->
-		<div class="mb-16 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div class="mb-16 opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="Steps.label"
 				label="Лейбл"
@@ -115,7 +116,7 @@
 			{#each steps as step, i}
 				<div
 					class="group relative border-b border-border-light py-10 opacity-0 transition-colors duration-300 hover:bg-surface-warm/50 sm:border-r sm:last:border-r-0 lg:border-b-0 lg:px-8 lg:first:pl-0 lg:last:pr-0"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.1 + i * 0.12}s"
 				>
 					<!-- Step number -->

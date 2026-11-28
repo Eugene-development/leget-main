@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.13.5.1 — см. docs/architecture/component-articles-map.md
@@ -105,7 +106,7 @@
 	<div class="relative p2-container mx-auto">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
 			<!-- Left: text -->
-			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+			<div class="opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 				<EditableField
 					fieldKey="DesignersForm.label"
 					label="Лейбл"
@@ -203,7 +204,7 @@
 			<!-- Right: form -->
 			<div
 				class="opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.2s"
 			>
 				{#if !formSent}

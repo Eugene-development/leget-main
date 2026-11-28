@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.11.2.1 — см. docs/architecture/component-articles-map.md
@@ -165,7 +166,7 @@
 	<div class="p2-container mx-auto">
 		<div class="grid items-start gap-16 lg:grid-cols-12 lg:gap-12">
 			<!-- Left Column: Locations List -->
-			<div class="flex flex-col opacity-0 lg:col-span-5" class:animate-fade-up={visible}>
+			<div class="flex flex-col opacity-0 lg:col-span-5" use:reveal={"animate-fade-up"}>
 				<h2 class="text-section-title text-primary" style="font-family: var(--font-heading);">
 					<ContentText
 						bind:data
@@ -416,7 +417,7 @@
 			<!-- Right Column: Yandex Map -->
 			<div
 				class="sticky top-32 h-[600px] opacity-0 lg:col-span-7 lg:h-[750px]"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.3s"
 			>
 				<div class="relative h-full w-full overflow-hidden bg-surface-warm shadow-soft">

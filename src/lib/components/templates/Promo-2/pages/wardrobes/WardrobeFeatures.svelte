@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.10.3.1 — см. docs/architecture/component-articles-map.md
@@ -73,7 +74,7 @@
 <section bind:this={sectionEl} class="p2-container mx-auto py-section-sm lg:py-section">
 	<div
 		class="mb-16 text-center opacity-0 transition-all duration-700"
-		class:animate-fade-up={visible}
+		use:reveal={"animate-fade-up"}
 	>
 		<EditableField
 			fieldKey="WardrobeFeatures.heading"
@@ -95,7 +96,7 @@
 		{#each features as feature, i}
 			<div
 				class="relative flex min-h-[250px] flex-col justify-end overflow-hidden rounded-3xl bg-white p-10 opacity-0 shadow-soft transition-shadow duration-300 hover:shadow-elevated {feature.colSpan}"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: {0.1 + i * 0.1}s"
 			>
 				<div

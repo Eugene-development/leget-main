@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.5.1 — см. docs/architecture/component-articles-map.md
@@ -76,7 +77,7 @@
 		<!-- Header -->
 		<div
 			class="mb-16 flex flex-col gap-4 opacity-0 transition-all duration-700 lg:flex-row lg:items-end lg:justify-between"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<div>
 				<EditableField
@@ -156,7 +157,7 @@
 			{#each reviews as review, i}
 				<div
 					class="flex flex-col gap-6 bg-white p-8 opacity-0 transition-all duration-300 hover:bg-surface-warm/30"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.1 + i * 0.12}s"
 				>
 					<!-- Stars -->

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.4.1 — см. docs/architecture/component-articles-map.md
 	import ImageFallback from '$lib/components/ImageFallback.svelte';
@@ -55,7 +56,7 @@
 <section class="relative bg-surface py-section-sm lg:py-section" bind:this={sectionEl}>
 	<div class="p2-container mx-auto">
 		<!-- Header -->
-		<div class="mb-12 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div class="mb-12 opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="Factory.label"
 				label="Лейбл"
@@ -113,7 +114,7 @@
 			<!-- Cell 1 — large, spans 2 cols + 2 rows -->
 			<div
 				class="bento-cell bento-cell--large opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.1s"
 			>
 				<ImageFallback
@@ -129,7 +130,7 @@
 			<!-- Cell 2 — top right -->
 			<div
 				class="bento-cell bento-cell--medium opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.2s"
 			>
 				<ImageFallback
@@ -145,7 +146,7 @@
 			<!-- Cell 3 — middle right -->
 			<div
 				class="bento-cell bento-cell--medium opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.3s"
 			>
 				<ImageFallback
@@ -161,7 +162,7 @@
 			<!-- Cell 4 — bottom left -->
 			<div
 				class="bento-cell bento-cell--medium opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.4s"
 			>
 				<ImageFallback
@@ -177,7 +178,7 @@
 			<!-- Cell 5 — bottom right wide -->
 			<div
 				class="bento-cell bento-cell--wide opacity-0 transition-all duration-700"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.5s"
 			>
 				<ImageFallback

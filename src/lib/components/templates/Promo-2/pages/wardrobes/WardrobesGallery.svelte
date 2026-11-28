@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.10.2.1 — см. docs/architecture/component-articles-map.md
@@ -143,7 +144,7 @@
 <section bind:this={sectionEl} class="bg-white py-section-sm lg:py-section">
 	<div class="p2-container mx-auto">
 		<div class="mb-10 text-center">
-			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+			<div class="opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 				<EditableField
 					fieldKey="WardrobesGallery.label"
 					label="Лейбл"
@@ -242,7 +243,7 @@
 				{#each items as project, i (project.id)}
 					<div
 						class="group relative aspect-[4/3] min-w-[85vw] snap-start overflow-hidden rounded-2xl bg-surface-warm opacity-0 shadow-soft transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated md:min-w-[45vw] lg:min-w-[calc(50%-16px)]"
-						class:animate-fade-up={visible}
+						use:reveal={"animate-fade-up"}
 						style="animation-delay: {0.1 + i * 0.1}s"
 					>
 						<ImageFallback

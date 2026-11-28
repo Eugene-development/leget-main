@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.2.1 — см. docs/architecture/component-articles-map.md
@@ -80,7 +81,7 @@
 
 	<div class="relative p2-container mx-auto">
 		<!-- Header -->
-		<div class="mb-16 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div class="mb-16 opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="USP.label"
 				label="Лейбл"
@@ -138,7 +139,7 @@
 			{#each items as item, i}
 				<div
 					class="group flex gap-6 rounded-sm border-b border-border-light py-8 opacity-0 transition-colors duration-300 first:border-t hover:bg-surface-warm/50 lg:px-6 xl:px-1"
-					class:animate-slide-right={visible}
+					use:reveal={"animate-slide-right"}
 					style="animation-delay: {0.1 + i * 0.12}s"
 				>
 					<span class="mt-0.5 shrink-0 text-xs font-medium text-accent"

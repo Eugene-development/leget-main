@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
@@ -117,7 +118,7 @@
 		<!-- Header -->
 		<div
 			class="mb-10 flex flex-col gap-6 opacity-0 transition-all duration-700 sm:flex-row sm:items-end sm:justify-between"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<div>
 				<EditableField
@@ -165,7 +166,7 @@
 		<!-- Department filter -->
 		<div
 			class="mb-8 flex flex-wrap gap-2 opacity-0 transition-all duration-700"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 			style="animation-delay: 0.15s"
 		>
 			{#each departments as dept}
@@ -198,7 +199,7 @@
 			{#each filteredVacancies as vac, i}
 				<div
 					class="opacity-0 transition-all duration-500"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.25 + i * 0.06}s"
 				>
 					<button

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.1.3.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -119,7 +120,7 @@
 	<div class="relative p2-container mx-auto">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: Header + Stats -->
-			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+			<div class="opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 				<EditableField
 					fieldKey="HomeAdvantages.label"
 					label="Лейбл"
@@ -173,7 +174,7 @@
 					{#each stats as stat, i}
 						<div
 							class="opacity-0"
-							class:animate-fade-up={visible}
+							use:reveal={"animate-fade-up"}
 							style="animation-delay: {0.3 + i * 0.1}s"
 						>
 							<EditableField
@@ -213,7 +214,7 @@
 				{#each advantages as adv, i}
 					<div
 						class="group flex gap-6 rounded-sm border-b border-border-light py-8 opacity-0 transition-colors duration-300 first:border-t hover:bg-surface-warm/50 lg:px-6 xl:px-1"
-						class:animate-slide-right={visible}
+						use:reveal={"animate-slide-right"}
 						style="animation-delay: {0.2 + i * 0.15}s"
 					>
 						<EditableField

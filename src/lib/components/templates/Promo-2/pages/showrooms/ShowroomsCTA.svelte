@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.11.3.1 — см. docs/architecture/component-articles-map.md
@@ -51,7 +52,7 @@
 	></div>
 
 	<div class="relative mx-auto max-w-4xl px-6 text-center xl:px-1">
-		<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div class="opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="ShowroomsCTA.heading"
 				label="Заголовок"

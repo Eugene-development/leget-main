@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { notifyError } from '$lib/utils/notify-error';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	// Артикул: 2.4.2.1 — см. docs/architecture/component-articles-map.md
@@ -209,7 +210,7 @@
 		{#each styles as style, i (i)}
 			<div
 				class="group flex cursor-pointer flex-col opacity-0"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: {0.1 + i * 0.07}s"
 			>
 				<!-- Image container -->

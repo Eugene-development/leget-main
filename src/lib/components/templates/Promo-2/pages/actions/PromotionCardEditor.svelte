@@ -5,7 +5,7 @@
 	import {
 		parsePromotionTime,
 		promotionDeadline,
-		promotionTimeInput,
+		cardDateInput,
 		type PromotionCard,
 		type PromotionCardFields
 	} from './promotion-cards';
@@ -24,7 +24,7 @@
 		onClose: (saved?: boolean) => void;
 	} = $props();
 	const dialogId = $props.id();
-	const initialDeadline = untrack(() => (card ? promotionTimeInput(promotionDeadline(card)) : ''));
+	const initialDeadline = untrack(() => (card ? cardDateInput(promotionDeadline(card)) : ''));
 	let deadlineInput = $state(initialDeadline);
 	let categoryInput = $state(untrack(() => card?.category ?? categories[0]?.key ?? 'all'));
 	let titleInput = $state('');
@@ -48,9 +48,10 @@
 			saveError = 'Введите название акции.';
 			return;
 		}
-		const deadline = deadlineInput ? parsePromotionTime(deadlineInput) : null;
+		const start = deadlineInput ? parsePromotionTime(`${deadlineInput}T00:00`) : null;
+		const deadline = start === null ? null : start + 24 * 60 * 60 * 1000;
 		if (mode !== 'remove' && deadlineInput && deadline === null) {
-			saveError = 'Укажите действительную дату и время окончания.';
+			saveError = 'Укажите действительную дату окончания.';
 			return;
 		}
 		const expiresAt =
@@ -115,9 +116,9 @@
 					</select>
 				</label>
 				<label class="grid gap-1.5 text-sm font-medium">
-					Дата и время окончания (мск)
+					Дата окончания
 					<input
-						type="datetime-local"
+						type="date"
 						class={dialogInput}
 						bind:value={deadlineInput}
 						data-promotion-initial-focus={mode === 'edit' ? '' : undefined}

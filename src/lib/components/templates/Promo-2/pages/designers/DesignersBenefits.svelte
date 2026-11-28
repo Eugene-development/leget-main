@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.13.2.1 — см. docs/architecture/component-articles-map.md
@@ -82,7 +83,7 @@
 
 <section bind:this={sectionEl} class="py-section-sm lg:py-section">
 	<div class="p2-container mx-auto">
-		<div class="mb-14 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div class="mb-14 opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="DesignersBenefits.label"
 				label="Лейбл"
@@ -120,7 +121,7 @@
 			{#each benefits as b, i}
 				<div
 					class="group border border-border-light bg-white p-8 opacity-0 shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-elevated"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.1 + i * 0.08}s"
 				>
 					<div

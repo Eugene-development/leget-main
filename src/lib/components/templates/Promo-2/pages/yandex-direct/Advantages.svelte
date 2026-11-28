@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.14.3.1 — см. docs/architecture/component-articles-map.md
@@ -76,7 +77,7 @@
 	<div class="p2-container mx-auto">
 		<div class="grid gap-16 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: stats -->
-			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+			<div class="opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 				<EditableField
 					fieldKey="Advantages.label"
 					label="Лейбл"
@@ -114,7 +115,7 @@
 					{#each stats as stat, i}
 						<div
 							class="opacity-0"
-							class:animate-fade-up={visible}
+							use:reveal={"animate-fade-up"}
 							style="animation-delay: {0.3 + i * 0.1}s"
 						>
 							<div
@@ -153,7 +154,7 @@
 			<!-- Right: features list -->
 			<div
 				class="opacity-0 transition-all duration-700"
-				class:animate-slide-right={visible}
+				use:reveal={"animate-slide-right"}
 				style="animation-delay: 0.2s"
 			>
 				<p class="mb-8 text-[11px] tracking-[0.3em] text-secondary uppercase">
@@ -172,7 +173,7 @@
 					{#each features as feature, i}
 						<div
 							class="flex items-center gap-4 border-b border-border-light py-5 opacity-0 first:border-t"
-							class:animate-fade-up={visible}
+							use:reveal={"animate-fade-up"}
 							style="animation-delay: {0.3 + i * 0.08}s"
 						>
 							<div class="h-px w-6 shrink-0 bg-accent"></div>

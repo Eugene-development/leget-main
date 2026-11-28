@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.3.3.1 — см. docs/architecture/component-articles-map.md
@@ -50,7 +51,7 @@
 	></div>
 
 	<div class="relative mx-auto max-w-3xl px-6 text-center xl:px-1">
-		<div class="opacity-0" class:animate-fade-up={visible}>
+		<div class="opacity-0" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="NewsCTA.eyebrow"
 				label="Надпись"

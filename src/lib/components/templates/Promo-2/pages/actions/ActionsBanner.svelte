@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
 	// Артикул: 2.8.4.1 — см. docs/architecture/component-articles-map.md
@@ -48,7 +49,7 @@
 	<div class="p2-container mx-auto">
 		<div
 			class="relative overflow-hidden opacity-0 transition-all duration-700"
-			class:animate-scale-in={visible}
+			use:reveal={"animate-scale-in"}
 		>
 			<ImageFallback
 				imagePath={['image']}

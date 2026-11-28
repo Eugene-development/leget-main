@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.10.4.1 — см. docs/architecture/component-articles-map.md
@@ -86,7 +87,7 @@
 	<div class="p2-container mx-auto">
 		<div
 			class="mb-16 flex flex-col items-end justify-between gap-8 opacity-0 transition-all duration-700 lg:flex-row"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<div class="max-w-2xl">
 				<EditableField
@@ -124,7 +125,7 @@
 			{#each types as type, i}
 				<div
 					class="group cursor-pointer opacity-0 {type.offset}"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.1 + i * 0.1}s"
 				>
 					<div

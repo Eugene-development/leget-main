@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
@@ -51,7 +52,7 @@
 	<div class="absolute right-0 bottom-0 h-64 w-64 border border-white/5 opacity-50"></div>
 
 	<div class="relative p2-container mx-auto text-center">
-		<div class="opacity-0" class:animate-fade-up={visible}>
+		<div class="opacity-0" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="FurnitureCTA.eyebrow"
 				label="Надпись"

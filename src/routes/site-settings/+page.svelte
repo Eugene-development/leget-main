@@ -26,7 +26,7 @@
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 	const sections = [
-		{ id: 'favicon', label: 'Фавиконка' },
+		{ id: 'favicon', label: 'Логотип и фавиконка' },
 		{ id: 'analytics', label: 'Счётчики' },
 		{ id: 'design-system', label: 'Дизайн-система' },
 		{ id: 'appearance', label: 'Базовый стиль' },
@@ -163,6 +163,10 @@
 		if (!window.confirm('Удалить фавиконку с сайта?')) cancel();
 	};
 
+	const confirmLogoDelete: SubmitFunction = ({ cancel }) => {
+		if (!window.confirm('Удалить общий логотип с сайта?')) cancel();
+	};
+
 	// Сохранение идёт фоновым POST и вместе с очисткой кеша сайта занимает заметное
 	// время: без индикатора кнопка выглядит нерабочей и владелец жмёт её повторно.
 	let saving = $state(false);
@@ -270,7 +274,7 @@
 					<div>
 						<h2 class="text-3xl">Фавиконка</h2>
 						<p class="mt-3 max-w-[65ch] text-sm text-text-secondary">
-							Используйте квадратный PNG, ICO или WEBP размером до 1 МБ.
+							Загрузите файл с расширением .ico размером до 1 МБ.
 						</p>
 
 						<form
@@ -286,7 +290,7 @@
 									id="favicon-file"
 									name="favicon"
 									type="file"
-									accept=".png,.ico,.webp,image/png,image/x-icon,image/vnd.microsoft.icon,image/webp"
+									accept=".ico"
 									required
 									class="block w-full rounded-xl border-border-light bg-surface-card text-sm file:mr-4 file:min-h-11 file:border-0 file:bg-ink-100 file:px-4 file:text-text-primary hover:file:bg-ink-200 focus:ring-2 focus:ring-link-600"
 								/>
@@ -337,6 +341,48 @@
 									Удалить фавиконку
 								</button>
 							</form>
+						{/if}
+					</div>
+				</div>
+				<div class="mt-8 grid gap-6 border-t border-border-light pt-8 md:grid-cols-[minmax(0,1fr)_minmax(280px,0.7fr)] md:items-start">
+					<div>
+						<h2 class="text-3xl">Логотип сайта</h2>
+						<p class="mt-3 max-w-[65ch] text-sm text-text-secondary">
+							Общий логотип для шапки и футера. Загрузите PNG, JPEG или WEBP размером до 2 МБ.
+						</p>
+						<form
+							method="POST"
+							action="?/uploadLogo"
+							enctype="multipart/form-data"
+							use:enhance
+							class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end"
+						>
+							<label class="block min-w-0 flex-1 text-sm" for="logo-file">
+								<span class="mb-2 block">Файл логотипа</span>
+								<input
+									id="logo-file"
+									name="logo"
+									type="file"
+									accept="image/png,image/jpeg,image/webp"
+									required
+									class="block w-full rounded-xl border-border-light bg-surface-card text-sm file:mr-4 file:min-h-11 file:border-0 file:bg-ink-100 file:px-4 file:text-text-primary hover:file:bg-ink-200 focus:ring-2 focus:ring-link-600"
+								/>
+							</label>
+							<button type="submit" class="settings-secondary-button" data-goal-ignore="Настройки сайта: загрузка общего логотипа">Загрузить</button>
+						</form>
+					</div>
+					<div class="border border-border-light bg-surface-card p-5">
+						{#if site.logoUrl}
+							<img src={publicMediaUrl(site.logoUrl)} alt="Текущий логотип сайта" class="h-16 max-w-full object-contain object-left" />
+							<form method="POST" action="?/deleteLogo" use:enhance={confirmLogoDelete} class="mt-5 border-t border-border-light pt-4">
+								<button
+									type="submit"
+									class="min-h-11 text-sm text-brand-600 transition hover:text-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500"
+									data-goal-ignore="Настройки сайта: удаление общего логотипа"
+								>Удалить общий логотип</button>
+							</form>
+						{:else}
+							<p class="text-sm text-text-secondary">Общий логотип не загружен</p>
 						{/if}
 					</div>
 				</div>

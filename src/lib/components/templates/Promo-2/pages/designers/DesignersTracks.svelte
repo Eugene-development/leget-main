@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
@@ -87,7 +88,7 @@
 	id="how-it-works"
 >
 	<div class="p2-container mx-auto">
-		<div class="mb-10 opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+		<div class="mb-10 opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="DesignersTracks.label"
 				label="Лейбл"
@@ -124,7 +125,7 @@
 		<!-- Tab switcher -->
 		<div
 			class="mb-10 flex gap-8 border-b border-border-light opacity-0 transition-all duration-700"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 			style="animation-delay: 0.15s"
 		>
 			{#each tracks as track, trackIndex}
@@ -159,7 +160,7 @@
 				<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
 					<div
 						class="opacity-0 transition-all duration-500"
-						class:animate-fade-up={visible}
+						use:reveal={"animate-fade-up"}
 						style="animation-delay: 0.25s"
 					>
 						<h3 class="text-subsection-title text-primary" style="font-family: var(--font-heading);">
@@ -224,7 +225,7 @@
 
 					<div
 						class="opacity-0 transition-all duration-500"
-						class:animate-fade-up={visible}
+						use:reveal={"animate-fade-up"}
 						style="animation-delay: 0.35s"
 					>
 						<ul class="divide-y divide-border-light">

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.9.4.1 — см. docs/architecture/component-articles-map.md
@@ -76,7 +77,7 @@
 	<div class="p2-container mx-auto">
 		<div
 			class="mb-16 text-center opacity-0 transition-all duration-700"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<EditableField
 				fieldKey="KitchenStyles.heading"
@@ -120,7 +121,7 @@
 			{#each styles as style, i}
 				<div
 					class="group overflow-hidden rounded-2xl bg-white opacity-0 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:shadow-elevated"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.1 + i * 0.1}s"
 				>
 					<div class="aspect-[4/3] w-full overflow-hidden">

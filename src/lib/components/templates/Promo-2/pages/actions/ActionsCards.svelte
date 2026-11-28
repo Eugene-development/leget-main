@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { usePromotionClock } from '$lib/promotions/clock.svelte';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
@@ -17,7 +18,7 @@
 		type EditableVisibility
 	} from '$lib/utils/editable-visibility.svelte';
 	import {
-		formatPromotionDeadline,
+		formatCardDate,
 		promotionDeadline,
 		removePromotion,
 		type PromotionCard,
@@ -247,7 +248,7 @@
 		<!-- Section Header -->
 		<div
 			class="mb-12 flex flex-col items-start justify-between gap-6 opacity-0 transition-all duration-700 md:flex-row md:items-end"
-			class:animate-fade-up={visible}
+			use:reveal={"animate-fade-up"}
 		>
 			<div>
 				<EditableField
@@ -339,7 +340,7 @@
 			{#each filteredCards as { card, index, deadline }, i (card.id)}
 				<div
 					class="p1-card group relative flex flex-col overflow-hidden opacity-0 shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-elevated"
-					class:animate-fade-up={visible}
+					use:reveal={"animate-fade-up"}
 					style="animation-delay: {0.15 + i * 0.1}s"
 				>
 					<!-- Image -->
@@ -436,7 +437,7 @@
 							<div class="flex items-end justify-between">
 								<div>
 									{#if card.oldPrice || canManage}
-										<p class="p1-muted text-xs" class:line-through={!!card.oldPrice}>
+										<p class="p1-muted text-xs">
 											<ContentText
 												bind:data
 												{editContext}
@@ -508,7 +509,7 @@
 										</p>
 										<p class="p1-body text-xs">
 											{#if card.expiresAt && deadline !== null}
-												<time datetime={card.expiresAt}>{formatPromotionDeadline(deadline)}</time>
+																<time datetime={card.expiresAt}>{formatCardDate(deadline)}</time>
 											{:else}
 												<ContentText
 													bind:data

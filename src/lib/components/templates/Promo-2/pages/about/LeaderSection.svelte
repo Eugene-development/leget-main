@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.2.2.1 — см. docs/architecture/component-articles-map.md
@@ -67,7 +68,7 @@
 			<!-- Photo -->
 			<div
 				class="relative flex w-full justify-center opacity-0 lg:w-5/12 lg:justify-end"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.2s"
 			>
 				<div class="relative">
@@ -96,7 +97,7 @@
 			<!-- Text Content -->
 			<div
 				class="relative flex w-full flex-col items-center text-center opacity-0 lg:w-7/12 lg:items-start lg:text-left"
-				class:animate-fade-up={visible}
+				use:reveal={"animate-fade-up"}
 				style="animation-delay: 0.4s"
 			>
 				<!-- Large Quote Icon -->

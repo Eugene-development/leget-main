@@ -16,6 +16,20 @@ export type PromotionCard = {
 
 export type PromotionCardFields = Pick<PromotionCard, 'title' | 'category' | 'expiresAt'>;
 
+export function cardDateInput(deadline: number | null): string {
+	if (deadline === null) return '';
+	const moscow = new Date(deadline + 3 * 60 * 60 * 1000);
+	const midnight = moscow.toISOString().slice(11) === '00:00:00.000Z';
+	return new Date(moscow.getTime() - (midnight ? 1 : 0)).toISOString().slice(0, 10);
+}
+
+export function formatCardDate(deadline: number): string {
+	const date = cardDateInput(deadline);
+	return new Intl.DateTimeFormat('ru-RU', {
+		timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric'
+	}).format(new Date(`${date}T00:00:00Z`));
+}
+
 export {
 	formatPromotionDeadline,
 	parsePromotionTime,

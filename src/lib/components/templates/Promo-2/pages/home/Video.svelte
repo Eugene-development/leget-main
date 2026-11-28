@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	// Артикул: 2.1.6.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
 	import { saveComponentData, type EditContext } from '$lib/utils/page-edit';
@@ -101,7 +102,7 @@
 	<div class="p2-container mx-auto">
 		<div
 			class="relative overflow-hidden rounded-3xl opacity-0 shadow-[0_28px_60px_-12px] shadow-primary/40"
-			class:animate-scale-in={visible}
+			use:reveal={"animate-scale-in"}
 		>
 			<video
 				bind:this={videoEl}

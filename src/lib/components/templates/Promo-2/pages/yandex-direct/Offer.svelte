@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import ContentText from '$lib/components/templates/Promo-2/ContentText.svelte';
 	import { editableText } from '$lib/utils/editable-text';
 	import { openPromo2Form } from '$lib/components/templates/Promo-2/forms/request';
@@ -65,7 +66,7 @@
 	<div class="p2-container mx-auto">
 		<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
 			<!-- Left: offer info -->
-			<div class="opacity-0 transition-all duration-700" class:animate-fade-up={visible}>
+			<div class="opacity-0 transition-all duration-700" use:reveal={"animate-fade-up"}>
 				<EditableField
 					fieldKey="Offer.badge"
 					label="Лейбл"
@@ -171,7 +172,7 @@
 			<!-- Right: what's included -->
 			<div
 				class="opacity-0 transition-all duration-700"
-				class:animate-slide-right={visible}
+				use:reveal={"animate-slide-right"}
 				style="animation-delay: 0.2s"
 			>
 				<p class="mb-8 text-[11px] tracking-[0.3em] text-secondary uppercase">
@@ -190,7 +191,7 @@
 					{#each includes as item, i}
 						<div
 							class="flex items-center gap-4 border-b border-border-light py-5 opacity-0 first:border-t"
-							class:animate-fade-up={visible}
+							use:reveal={"animate-fade-up"}
 							style="animation-delay: {0.3 + i * 0.08}s"
 						>
 							<svg

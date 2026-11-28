@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$lib/components/templates/Promo-2/reveal';
 	import { editableText } from '$lib/utils/editable-text';
 	// Артикул: 2.6.2.1 — см. docs/architecture/component-articles-map.md
 	import { onMount } from 'svelte';
@@ -46,7 +47,7 @@
 	bind:this={sectionEl}
 >
 	<div class="p2-container mx-auto text-center">
-		<div class="opacity-0" class:animate-fade-up={visible}>
+		<div class="opacity-0" use:reveal={"animate-fade-up"}>
 			<EditableField
 				fieldKey="FurnitureIntro.eyebrow"
 				label="Надпись"
